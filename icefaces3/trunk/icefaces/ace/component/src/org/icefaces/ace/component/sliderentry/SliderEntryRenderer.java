@@ -200,8 +200,10 @@ public class SliderEntryRenderer extends CoreRenderer{
 		writer.writeAttribute("type", "text/javascript", null);
 
 		JSONBuilder jb = JSONBuilder.create();
-		writer.write(this.resolveWidgetVar(slider) + " = new ");
-		jb.beginFunction("ice.ace.Slider")
+		writer.write(this.resolveWidgetVar(slider) + " = ");
+		jb.beginFunction("ice.ace.create")
+			.item("Slider")
+            .beginArray()
 			.item(clientId)
 			.beginMap()
 			.entry("input", clientId + "_hidden");
@@ -236,7 +238,7 @@ public class SliderEntryRenderer extends CoreRenderer{
 
 		encodeClientBehaviors(context, slider, jb);
 		
-        jb.endMap().endFunction();
+        jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());
 	
 		writer.endElement("script");

@@ -71,22 +71,25 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
         JSONBuilder json = JSONBuilder.create();
         writer.write("ice.ace.jq(function() {");
         
-		writer.write(widgetVar + " = new ");
-        json.beginFunction("ice.ace.ContextMenu").
-            item(clientId).
-            beginMap().
-                entry("target", trigger, true).
-                entry("zindex", menu.getZindex()).
-				entry("direction", menu.getDirection()).
+		writer.write(widgetVar + " = ");
+        json.beginFunction("ice.ace.create").
+        item("ContextMenu").
+        beginArray().
+        item(clientId).
+        beginMap().
+        entry("target", trigger, true).
+        entry("zindex", menu.getZindex()).
+        entry("direction", menu.getDirection()).
 
-                beginMap("animation").
-                    entry("animated", menu.getEffect()).
-                    entry("duration", menu.getEffectDuration()).
-                endMap().
+        beginMap("animation").
+        entry("animated", menu.getEffect()).
+        entry("duration", menu.getEffectDuration()).
+        endMap().
 
-                entryNonNullValue("styleClass", menu.getStyleClass()).
-                entryNonNullValue("style", menu.getStyle()).
-            endMap().
+        entryNonNullValue("styleClass", menu.getStyleClass()).
+        entryNonNullValue("style", menu.getStyle()).
+        endMap().
+        endArray().
         endFunction();
 
         writer.write(json.toString());

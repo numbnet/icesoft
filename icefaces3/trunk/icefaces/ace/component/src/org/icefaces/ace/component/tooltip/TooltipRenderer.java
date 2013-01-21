@@ -141,7 +141,9 @@ public class TooltipRenderer extends CoreRenderer {
 		writer.write(this.resolveWidgetVar(tooltip) + " = new ");
 
 		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.Tooltip")
+		jb.beginFunction("ice.ace.create")
+            .item("Tooltip")
+            .beginArray()
 			.beginMap()
 				.entry("global", global)
 				.entry("id", clientId)
@@ -221,7 +223,7 @@ public class TooltipRenderer extends CoreRenderer {
 		.endMap();
 
         encodeClientBehaviors(facesContext, tooltip, jb);
-		jb.endMap().endFunction();
+		jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());
 
 		writer.write("});");

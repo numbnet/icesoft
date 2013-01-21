@@ -98,13 +98,15 @@ public class DraggableRenderer extends CoreRenderer {
 		writer.startElement("script", draggable);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        writer.write(this.resolveWidgetVar(draggable) + " = new ");
+        writer.write(this.resolveWidgetVar(draggable) + " = ");
 		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.Draggable");
-			jb.item(clientId);
-			jb.beginMap();
-			jb.entry("target", target);
-			jb.entryNonNullValue("cursor", draggable.getCursor());
+		jb.beginFunction("ice.ace.create");
+        jb.item("Draggable");
+        jb.beginArray();
+        jb.item(clientId);
+        jb.beginMap();
+        jb.entry("target", target);
+        jb.entryNonNullValue("cursor", draggable.getCursor());
         //Configuration
         if (draggable.isDisabled())
             jb.entry("disabled", true);
@@ -138,15 +140,8 @@ public class DraggableRenderer extends CoreRenderer {
             jb.entry("dragStart", true);
         }
 		encodeClientBehaviors(facesContext, draggable, jb);
-        //Dashboard support
-/*
-        if (dashboard != null) {
-            Dashboard db = (Dashboard) draggable.findComponent(dashboard);
-            if (db == null) throw new FacesException("Cannot find dashboard \"" + dashboard + "\" in view");
-            writer.write(",connectToSortable:'" + ComponentUtils.escapeJQueryId(db.getClientId(facesContext)) + " .ui-dashboard-column'");
-        }
-*/
-        jb.endMap().endFunction();
+
+        jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());
 
         writer.write("});");

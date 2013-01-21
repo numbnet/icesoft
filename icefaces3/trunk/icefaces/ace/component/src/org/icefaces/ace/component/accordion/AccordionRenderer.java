@@ -103,10 +103,11 @@ public class AccordionRenderer extends CoreRenderer {
 
 	protected void encodeScript(FacesContext context, Accordion acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-		String clientId = acco.getClientId(context);
+        JSONBuilder jb = JSONBuilder.create();
+        String clientId = acco.getClientId(context);
         int activeIndex = acco.getActiveIndex();
-
         boolean hasTabChangeListener = acco.getPaneChangeListener() != null;
+
         for (String eventId : acco.getClientBehaviors().keySet()) {
             if (eventId.equals("panechange") && !((AjaxBehavior)(acco.getClientBehaviors().get(eventId).get(0))).isDisabled()) {
                 hasTabChangeListener = true;
@@ -115,17 +116,18 @@ public class AccordionRenderer extends CoreRenderer {
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write(resolveWidgetVar(acco) + " = new ");
-		
-		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.AccordionPanel")
-			.item(clientId)
-			.beginMap()
-				.entry("animated", acco.getEffect());
+		writer.write(resolveWidgetVar(acco) + " = ");
+
+		jb.beginFunction("ice.ace.create")
+          .item("AccordionPanel")
+          .beginArray()
+          .item(clientId)
+		  .beginMap()
+          .entry("animated", acco.getEffect());
 		
 		String event = acco.getEvent();
-		if(event != null) jb.entry("event", event);
+
+        if(event != null) jb.entry("event", event);
 		if(!acco.isAutoHeight()) jb.entry("autoHeight", false);
 		if(acco.isCollapsible()) jb.entry("collapsible", true);
 		if(acco.isFillSpace()) jb.entry("fillSpace", true);
@@ -134,12 +136,16 @@ public class AccordionRenderer extends CoreRenderer {
         if(hasTabChangeListener) {
             jb.entry("ajaxTabChange", true);
         }
-        encodeClientBehaviors(context, acco, jb);
-        jb.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
-//        jb.entry("ariaEnabled", false);
 
-        jb.endMap().endFunction();
-		writer.write(jb.toString());
+        encodeClientBehaviors(context, acco, jb);
+
+        jb.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
+
+        jb.endMap()
+          .endArray()
+          .endFunction();
+
+        writer.write(jb.toString());
 		
 		writer.endElement("script");
 	}

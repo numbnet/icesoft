@@ -223,7 +223,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
                         "\t var cfg = {reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + ", tableId:'" + tableId + "'", null);
         encodeClientBehaviors(FacesContext.getCurrentInstance(), component);
         writer.writeText("};" +
-                        "\t" + jsId + " = new ice.ace.TableConf('" + clientId + "', cfg);\n" +
+                        "\t" + jsId + " = ice.ace.create('TableConf', ['" + clientId + "', cfg]);\n" +
                         "});", null);
         writer.endElement(HTML.SCRIPT_ELEM);
     }

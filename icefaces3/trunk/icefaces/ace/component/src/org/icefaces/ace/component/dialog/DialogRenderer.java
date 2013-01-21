@@ -70,39 +70,41 @@ public class DialogRenderer extends CoreRenderer {
 
         writer.write("ice.ace.jq(function() {");
 
-        writer.write(resolveWidgetVar(dialog) + " = new ");
+        writer.write(resolveWidgetVar(dialog) + " = ");
 		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.Dialog")
-			.item(clientId + "_main")
-			.beginMap()
-				.entry("isVisible", dialog.isVisible())
-				.entry("minHeight", dialog.getMinHeight());
+		jb.beginFunction("ice.ace.create")
+        .item("Dialog")
+        .beginArray()
+        .item(clientId + "_main")
+        .beginMap()
+        .entry("isVisible", dialog.isVisible())
+        .entry("minHeight", dialog.getMinHeight());
 
         String styleClass = dialog.getStyleClass();
-		if(styleClass != null) jb.entry("dialogClass", styleClass);
-		int width = dialog.getWidth();
+        String showEffect = dialog.getShowEffect();
+        String hideEffect = dialog.getHideEffect();
+        String headerText = dialog.getHeader();
+        String position = dialog.getPosition();
+        int width = dialog.getWidth();
+        int height = dialog.getHeight();
+        int zIndex = dialog.getZindex();
+        int minWidth = dialog.getMinWidth();
+
+        if(styleClass != null) jb.entry("dialogClass", styleClass);
         if(width > 0) jb.entry("width", width);
-		int height = dialog.getHeight();
         if(height > 0) jb.entry("height", height);
         if(!dialog.isDraggable()) jb.entry("draggable", false);
         if(dialog.isModal()) jb.entry("modal", true);
-		int zIndex = dialog.getZindex();
         if(zIndex != 1000) jb.entry("zIndex", zIndex);
         if(!dialog.isResizable()) jb.entry("resizable", false);
-		int minWidth = dialog.getMinWidth();
         if(minWidth != 150) jb.entry("minWidth", minWidth);
-		String showEffect = dialog.getShowEffect();
         if(showEffect != null) jb.entry("show", showEffect);
-		String hideEffect = dialog.getHideEffect();
         if(hideEffect != null) jb.entry("hide", hideEffect);
         if(!dialog.isCloseOnEscape()) jb.entry("closeOnEscape", false);
-//        if(dialog.isAppendToBody()) jb.entry("appendToBody", true);
         if(!dialog.isClosable()) jb.entry("closable", false);
         if(!dialog.isShowHeader()) jb.entry("showHeader", false);
-        String headerText = dialog.getHeader();
         jb.entryNonNullValue("title", headerText);
         //Position
-        String position = dialog.getPosition();
         if (position != null) {
             if (position.contains(",")) {
 				jb.entry("position", "[" + position + "]", true);
@@ -114,15 +116,16 @@ public class DialogRenderer extends CoreRenderer {
         //Client side callbacks
 		
 		String onShow = dialog.getOnShow();
+        String onHide = dialog.getOnHide();
+
         if(onShow != null) jb.entry("onShow", "function(event, ui) {" + onShow + "}", true);
-		String onHide = dialog.getOnHide();
         if(onHide != null) jb.entry("onHide", "function(event, ui) {" + onHide + "}", true);
         jb.entry("ariaEnabled", ariaEnabled);
 
         //Behaviors
         encodeClientBehaviors(context, dialog, jb);
 
-        jb.endMap().endFunction();
+        jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());
 		writer.write("});");
 

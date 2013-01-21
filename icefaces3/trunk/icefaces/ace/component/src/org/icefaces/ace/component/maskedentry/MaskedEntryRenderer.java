@@ -93,13 +93,15 @@ public class MaskedEntryRenderer extends InputRenderer {
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(this.resolveWidgetVar(maskedEntry) + " = new ");
+        writer.write(this.resolveWidgetVar(maskedEntry) + " = ");
 		
 		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.InputMask")
-			.item(clientId)
-			.beginMap()
-				.entry("mask", maskedEntry.getMask());
+		jb.beginFunction("ice.ace.create")
+        .item("InputMask")
+        .beginArray()
+        .item(clientId)
+        .beginMap()
+        .entry("mask", maskedEntry.getMask());
 
         String placeHolder = maskedEntry.getPlaceHolder();
 		if(placeHolder!=null) {
@@ -119,7 +121,7 @@ public class MaskedEntryRenderer extends InputRenderer {
             jb.entry("theme", false);
         }
 
-		jb.endMap().endFunction();
+		jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());
 	
 		writer.endElement("script");

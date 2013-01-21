@@ -88,8 +88,10 @@ public class NotificationPanelRenderer extends CoreRenderer {
         JSONBuilder json = JSONBuilder.create();
 		writer.write("ice.ace.jq(document).ready(function(){");
 
-		writer.write(this.resolveWidgetVar(bar) + " = new ");
-        json.beginFunction("ice.ace.NotificationBar").
+		writer.write(this.resolveWidgetVar(bar) + " = ");
+        json.beginFunction("ice.ace.create").
+            item("NotificationBar").
+            beginArray().
             item(clientId).
             beginMap().
                 entry("position", bar.getPosition()).
@@ -101,7 +103,7 @@ public class NotificationPanelRenderer extends CoreRenderer {
 
                 encodeClientBehaviors(facesContext, bar, json);
             json.endMap();
-        json.endFunction();
+        json.endArray().endFunction();
         writer.write(json.toString());
 		writer.write("});");
 		

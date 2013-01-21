@@ -80,9 +80,11 @@ public class TextAreaEntryRenderer extends InputRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(resolveWidgetVar(textAreaEntry) + " = new ");
+        writer.write(resolveWidgetVar(textAreaEntry) + " = ");
         JSONBuilder jb = JSONBuilder.create();
-        jb.beginFunction("ice.ace.TextAreaEntry")
+        jb.beginFunction("ice.ace.create")
+                .item("TextAreaEntry")
+                .beginArray()
                 .item(clientId)
                 .beginMap();
         jb.entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"));
@@ -95,7 +97,7 @@ public class TextAreaEntryRenderer extends InputRenderer {
             jb.entry("theme", false);
         }
 
-        jb.endMap().endFunction();
+        jb.endMap().endArray().endFunction();
         writer.write(jb.toString());
 
         writer.endElement("script");
