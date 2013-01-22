@@ -22,18 +22,46 @@
     <parent>
         <groupId>com.icesoft.icefaces-ee</groupId>
         <artifactId>samples-parent</artifactId>
-        <version>1.2.0.BETA</version>
+        <version>1.2.0.GA</version>
     </parent>
     <artifactId>mobileshowcase</artifactId>
     <packaging>war</packaging>
     <name>ICEmobile Component Showcase sample</name>
 
     <dependencies>
-        <dependency>
+       <dependency>
             <groupId>com.uwyn</groupId>
             <artifactId>jhighlight</artifactId>
             <version>1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.xml.stream</groupId>
+					<artifactId>stax-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.1.5</version>
+			<scope>runtime</scope>
+		</dependency> 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -42,6 +70,6 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
     </build>
 </project>
