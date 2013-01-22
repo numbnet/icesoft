@@ -174,19 +174,27 @@ if (!window.ice.icefaces) {
             return e;
         }
 
-        //function used to safely retrieve ViewState key -- form['javax.faces.ViewState'] sometimes fails in IE
-        function lookupViewStateElement(element) {
-            var viewStateElement = element['javax.faces.ViewState'];
+        //function used to safely retrieve named element -- form[name] sometimes fails in IE
+        function lookupNamedInputElement(form, name) {
+            var e = form[name];
 
-            if (!viewStateElement) {
-                viewStateElement = detect(element.getElementsByTagName('input'), function(input) {
-                    return input.name && input.name == 'javax.faces.ViewState';
-                }, function() {
-                    throw 'cannot find javax.faces.ViewState element';
+            if (!e) {
+                e = detect(form.getElementsByTagName('input'), function(input) {
+                    return input.name && input.name == name;
                 });
             }
 
-            return viewStateElement;
+            return e;
+        }
+
+        //function used to safely retrieve ViewState key element
+        function lookupViewStateElement(element) {
+            var e = lookupNamedInputElement(element, 'javax.faces.ViewState');
+            if (e) {
+                return e;
+            } else {
+                throw 'cannot find javax.faces.ViewState input element';
+            }
         }
 
         function lookupViewState(element) {
@@ -291,7 +299,7 @@ if (!window.ice.icefaces) {
                     try {
                         //dispose is the final operation on this page, so no harm
                         //in modifying the action to remove CDI conversation id
-                        var encodedURLElement = form['javax.faces.encodedURL'];
+                        var encodedURLElement = lookupNamedInputElement(form, 'javax.faces.encodedURL');
                         var url = encodedURLElement ? encodedURLElement.value : form.action;
                         form.action = url.replace(/(\?|&)cid=[0-9]+/, "$1");
                         debug(logger, 'dispose window and associated views ' + viewIDs);
@@ -765,10 +773,10 @@ if (!window.ice.icefaces) {
         }
 
         function isComponentRendered(form) {
-            return form['javax.faces.encodedURL'] ||
-                form['javax.faces.ViewState'] ||
-                form['ice.window'] ||
-                form['ice.view'] ||
+            return lookupNamedInputElement(form, 'javax.faces.encodedURL') ||
+                lookupNamedInputElement(form, 'javax.faces.ViewState') ||
+                lookupNamedInputElement(form, 'ice.window') ||
+                lookupNamedInputElement(form, 'ice.view') ||
                 (form.id && form[form.id] && form.id == form[form.id].value);
         }
 
@@ -904,14 +912,14 @@ if (!window.ice.icefaces) {
         //ICE-7188
         var formViewID;
         namespace.onBeforeSubmit(function(source) {
-            formViewID = formOf(source)['ice.view'].value;
+            formViewID = lookupNamedInputElement(formOf(source), 'ice.view').value;
         });
         namespace.onAfterUpdate(function(updates) {
             ifViewStateUpdated(updates, function(viewState) {
                 //update only the forms that have the same viewID with the one used by the submitting form
                 each(document.getElementsByTagName('form'), function(form) {
-                    var viewIDElement = form['ice.view'];
-                    var viewStateElement = form['javax.faces.ViewState'];
+                    var viewIDElement = lookupNamedInputElement(form, 'ice.view');
+                    var viewStateElement = lookupNamedInputElement(form, 'javax.faces.ViewState');
                     if (viewStateElement && viewIDElement && viewIDElement.value == formViewID) {
                         viewStateElement.value = viewState;
                     }
