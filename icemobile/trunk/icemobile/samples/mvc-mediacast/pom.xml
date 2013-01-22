@@ -23,7 +23,7 @@
     <artifactId>mvc-mediacast</artifactId>
     <version>1.2.0</version>
     <packaging>war</packaging>
-    <name>ICEmobile Spring JSP Component Showcase sample</name>
+    <name>ICEmobile Spring JSP mediacast sample</name>
 	<properties>
         <ice.version>3.2.0</ice.version>
         <mobi.version>1.2.0</mobi.version>
