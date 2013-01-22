@@ -287,3 +287,13 @@ html.android .mobi-pagePanel-header a.mobi-button:visited {
     text-align: center;
     padding: 10px;
 }
+.media img{
+    padding-right:5px;
+    border:none;
+    height:50px;
+}
+.media span{
+    font-size:12px;
+    vertical-align:top; 
+}
+}
