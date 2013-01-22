@@ -34,6 +34,7 @@ import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Utils;
 
 /**
@@ -285,7 +286,8 @@ public class MediaController implements Serializable {
 	}
 	
 	public boolean isEnhancedBrowser(){
-	    return MobiJSFUtils.getClientDescriptor().isICEmobileContainer();
+	    ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+	    return client.isICEmobileContainer() || client.isSXRegistered();
 	}
 	
 
