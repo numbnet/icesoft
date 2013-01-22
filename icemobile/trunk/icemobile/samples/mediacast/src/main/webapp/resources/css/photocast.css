@@ -296,4 +296,10 @@ html.android .mobi-pagePanel-header a.mobi-button:visited {
     font-size:12px;
     vertical-align:top; 
 }
+.mobi-list-item, .mobi-list > .mobi-list-item > .mobi-list-item-default > a{
+    padding: 0;
+    margin: 0;
+}
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a{
+    height:50px;
 }
