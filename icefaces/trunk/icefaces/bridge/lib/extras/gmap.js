@@ -38,9 +38,12 @@ GMapWrapper.prototype = {
         this.realGMap = realGMap;
         this.controls = new Object();
         this.overlays = new Object();
+		this.directions = new Object();
         this.geoMarker = new Object();
         this.geoMarkerAddress;
         this.geoMarkerSet = false;
+		this.currentMarker = null;
+		this.currentInfoWindow = null;
     },
 
     getElementId: function() {
@@ -97,15 +100,32 @@ Ice.GoogleMap = {
         return gmapWrapper;
     },
 
-    loadDirection:function(id, text_div, query) {
-        var direction = GMapRepository[id + 'dir'];
+    loadDirection:function(id, textDivId, from, to) {
+        var wrapper = Ice.GoogleMap.getGMapWrapper(id);
         var map = Ice.GoogleMap.getGMapWrapper(id).getRealGMap();
-        if (direction == null) {
-            var directionsPanel = document.getElementById(text_div);
-            direction = new GDirections(map, directionsPanel);
-            GMapRepository[id + 'dir'] = direction;
-        }
-        direction.load(query);
+        service=new google.maps.DirectionsService();
+		var origin = (from == "(") ? "origin: new google.maps.LatLng" + from + ", " : "origin: \"" + from + "\", ";
+		var destination = (to == "(") ? "destination: new google.maps.LatLng" + to + ", " : "destination: \"" + to + "\", ";
+		var request = "({" + origin + destination +"travelMode:google.maps.TravelMode.DRIVING})";
+		var directionsCallback = function(response, status) {
+			if (status != google.maps.DirectionsStatus.OK) {
+				alert('Error was: ' + status);
+				} else {
+					var renderer = (wrapper.directions[id] != null) ? wrapper.directions[id] : new google.maps.DirectionsRenderer();
+					renderer.setMap(null);
+					renderer.setMap(map);
+					renderer.setDirections(response);
+					if (textDivId) {
+						var textDiv = $(textDivId);
+						if (textDiv) {
+							textDiv.innerHTML = '';
+							renderer.setPanel(textDiv);
+						}
+					}
+					wrapper.directions[id] = renderer;
+				}
+			};
+		service.route(eval(request), directionsCallback);
     },
 
     addOverlay:function (ele, overlayId, ovrLay) {
@@ -135,59 +155,99 @@ Ice.GoogleMap = {
         }
         gmapWrapper.overlays = newOvrLyArray;
     },
-    
-    locateAddress: function(clientId, address) {
-        var gLatLng = function(point) {
-            if (!point) {
-                alert(address + ' not found');
-            } else {
-                var gmapWrapper = Ice.GoogleMap.getGMapWrapper(clientId);
-                if (gmapWrapper) {
-                    gmapWrapper.getRealGMap().setCenter(point, 13);
-                    var marker = new GMarker(point);
-                    gmapWrapper.getRealGMap().addOverlay(marker);
-                    marker.openInfoWindowHtml(address);
-                    gmapWrapper.geoMarker = marker;
-                    gmapWrapper.geoMarkerAddress = address;
-                    Ice.GoogleMap.submitEvent(clientId, gmapWrapper.getRealGMap(), "geocoder");
-                } else {
-                    //FOR IS DEFINED BUT MAP IS NOT FOUND,
-                    //LOGGING CAN BE DONE HERE
-                }
-            } //outer if
-        }; //function ends here
-
-        var geocoder = Ice.GoogleMap.getGeocoder(clientId);
-        geocoder.getLatLng(address, gLatLng);
+	
+	addKML:function (ele, overlayId, URL) {
+        var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
+		var overlay = gmapWrapper.overlays[overlayId];
+        if (overlay == null || overlay.getMap() == null) {
+            var ctaLayer = new google.maps.KmlLayer(URL);
+			ctaLayer.setMap(map); 
+			gmapWrapper.overlays[overlayId] = ctaLayer;
+        }
+    },
+	
+    removeKML:function(ele, overlayId) {
+        var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+        var overlay = gmapWrapper.overlays[overlayId];
+        if (overlay != null) {
+            overlay.setMap(null);
+        } else {
+            //nothing found just return
+            return;
+        }
+        var newOvrLyArray = new Object();
+        for (overlayObj in gmapWrapper.overlays) {
+            if (overlay != overlayObj) {
+                newOvrLyArray[overlayObj] = gmapWrapper.overlays[overlayObj];
+            }
+        }
+        gmapWrapper.overlays = newOvrLyArray;
+    },
+	
+	addMarker:function (ele, overlayId, marker) {
+        var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
+		var overlay = gmapWrapper.overlays[overlayId];
+        if (overlay == null || overlay.getMap() == null) {
+            var mapMarker = eval(marker); 
+			gmapWrapper.overlays[overlayId] = mapMarker;
+        }
     },
 
-    create:function (ele) {
-        var gmapWrapper = new GMapWrapper(ele, new GMap2(document.getElementById(ele)));
-        var hiddenField = document.getElementById(ele + 'hdn');
-        var mapTypedRegistered = false;
-
-        GEvent.addListener(gmapWrapper.getRealGMap(), "zoomend", function(oldLevel, newLevel) {
-            if (oldLevel != null)
-                Ice.GoogleMap.submitEvent(ele, gmapWrapper.getRealGMap(), "zoomend", newLevel);
-        });
-
-        GEvent.addListener(gmapWrapper.getRealGMap(), "dragend", function() {
-            Ice.GoogleMap.submitEvent(ele, gmapWrapper.getRealGMap(), "dragend");
-        });
-
-        GEvent.addListener(gmapWrapper.getRealGMap(), "maptypechanged", function() {
-            if (mapTypedRegistered) {
-                var type = $(ele + 'type');
-                type.value = gmapWrapper.getRealGMap().getCurrentMapType().getName();
-                Ice.GoogleMap.submitEvent(ele, gmapWrapper.getRealGMap(), "maptypechanged");
+    removeMarker:function(ele, overlayId) {
+        var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+        var overlay = gmapWrapper.overlays[overlayId];
+        if (overlay != null) {
+            overlay.setMap(null);
+        } else {
+            //nothing found just return
+            return;
+        }
+        var newOvrLyArray = new Object();
+        for (overlayObj in gmapWrapper.overlays) {
+            if (overlay != overlayObj) {
+                newOvrLyArray[overlayObj] = gmapWrapper.overlays[overlayObj];
             }
-            mapTypedRegistered = true;
-        });
+        }
+        gmapWrapper.overlays = newOvrLyArray;
+    },
+    
+    locateAddress:function (clientId, address) {
+		var map = Ice.GoogleMap.getGMapWrapper(clientId).getRealGMap();
+        var geocoder = new google.maps.Geocoder();
+		geocoder.geocode( {'address': address}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				map.setCenter(results[0].geometry.location);
+				Ice.GoogleMap.showMarkerAndInfoWindow(map, Ice.GoogleMap.getGMapWrapper(clientId), results[0]);
+			} else {
+				alert("Geocode was not successful for the following reason: " + status);
+			}
+		}); 
+	},
+	
+	showMarkerAndInfoWindow: function(map, wrapper, result) {
+		if (!wrapper.currentMarker || !wrapper.currentInfoWindow) {
+			wrapper.currentMarker = new google.maps.Marker({draggable:false});
+			wrapper.currentInfoWindow = new google.maps.InfoWindow({});
+		}
+		wrapper.currentMarker.setMap(map);
+		wrapper.currentMarker.setPosition(result.geometry.location);
+		wrapper.currentInfoWindow.setPosition(result.geometry.location);
+		wrapper.currentInfoWindow.setContent(result.formatted_address);
+		wrapper.currentInfoWindow.open(map);
+	},
+
+    create:function (ele) {
+        var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele),{mapTypeId: google.maps.MapTypeId.ROADMAP, zoom:8, center: new google.maps.LatLng(0,0), disableDefaultUI:"true"}));
+		var hiddenField = document.getElementById(ele + 'hdn');
+        var mapTypedRegistered = false;
+		
         initializing = false;
         GMapRepository[ele] = gmapWrapper;
         return gmapWrapper;
     },
-
+	
     submitEvent: function(ele, map, eventName, zoomLevel) {
         try {
             var center = map.getCenter();
@@ -240,9 +300,31 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         var control = gmapWrapper.controls[controlName];
         if (control == null) {
-            control = eval('new ' + controlName + '()');
-            gmapWrapper.getRealGMap().addControl(control);
-            gmapWrapper.controls[controlName] = control;
+			gmapWrapper.controls[controlName] = controlName;
+			var mapOption = {};
+			if (controlName == 'GScaleControl') controlName = 'scaleControl';
+			else if (controlName == 'GMapTypeControl') {
+				controlName = 'mapTypeControl';
+				mapOption.mapTypeControlOptions = { 
+					mapTypeIds: [ google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.SATELLITE, google.maps.MapTypeId.HYBRID ] 
+				}; 
+			} else if (controlName == 'GOverviewMapControl') {
+				controlName = 'overviewMapControl';
+				mapOption.overviewMapControlOptions = { opened: true };
+			} else if (controlName == 'GSmallZoomControl') {
+				controlName = 'zoomControl';
+				mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.SMALL }; 
+			} else if (controlName == 'GSmallMapControl') {
+				controlName = 'panControl';
+				mapOption.zoomControl = true;
+				mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.SMALL }; 
+			} else if (controlName == 'GLargeMapControl') {
+				controlName = 'panControl';
+				mapOption.zoomControl = true;
+				mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.LARGE }; 
+			}
+			mapOption[controlName] = true;
+            gmapWrapper.getRealGMap().setOptions(mapOption);
         }
     },
 
@@ -250,15 +332,47 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         var control = gmapWrapper.controls[controlName];
         if (control != null) {
-            gmapWrapper.getRealGMap().removeControl(control);
+			var newCtrlArray = new Object();
+			for (ctrl in gmapWrapper.controls) {
+				if (controlName != ctrl) {
+					newCtrlArray[ctrl] = gmapWrapper.controls[ctrl];
+				}
+			}
+			gmapWrapper.controls = newCtrlArray;
+			var mapOption = {};
+			if (controlName == 'GScaleControl') controlName = 'scaleControl';
+			else if (controlName == 'GMapTypeControl') controlName = 'mapTypeControl';
+			else if (controlName == 'GOverviewMapControl') controlName = 'overviewMapControl';
+			else if (controlName == 'GSmallZoomControl') {
+				if (!gmapWrapper.controls['GSmallMapControl'] && !gmapWrapper.controls['GLargeMapControl']) {
+					controlName = 'zoomControl';
+				}
+				if (gmapWrapper.controls['GLargeMapControl']) {
+					mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.LARGE }; 
+				}
+			} else if (controlName == 'GSmallMapControl') {
+				if (gmapWrapper.controls['GLargeMapControl']) {
+					mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.LARGE }; 
+				} else if (gmapWrapper.controls['GSmallZoomControl']) {
+					controlName = 'panControl';
+				} else {
+					controlName = 'panControl';
+					mapOption.zoomControl = false;
+				}
+			} else if (controlName == 'GLargeMapControl') {
+				if (gmapWrapper.controls['GSmallMapControl']) {
+					mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.SMALL }; 
+				} else if (gmapWrapper.controls['GSmallZoomControl']) {
+					controlName = 'panControl';
+					mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.SMALL }; 
+				} else {
+					controlName = 'panControl';
+					mapOption.zoomControl = false;
+				}
+			}
+			mapOption[controlName] = false;
+            gmapWrapper.getRealGMap().setOptions(mapOption);
         }
-        var newCtrlArray = new Object();
-        for (control in gmapWrapper.controls) {
-            if (controlName != control) {
-                newCtrlArray[control] = gmapWrapper.controls[control];
-            }
-        }
-        gmapWrapper.controls = newCtrlArray;
     },
 
     remove:function(ele) {
@@ -283,22 +397,21 @@ Ice.GoogleMap = {
             gmapWrapper.geoMarker.openInfoWindowHtml(gmapWrapper.geoMarkerAddress);
             gmapWrapper.geoMarkerSet = false;
         }
-        if (gmapWrapper.getRealGMap().getCurrentMapType() != null) {
-            //set the map type only when difference found
-            if (gmapWrapper.getRealGMap().getCurrentMapType().getName() != type) {
-                switch (type)
-                        {
-                    case "Satellite":
-                        gmapWrapper.getRealGMap().setMapType(G_SATELLITE_MAP);
-                        break
-                    case "Hybrid":
-                        gmapWrapper.getRealGMap().setMapType(G_HYBRID_MAP);
-                        break
-                    case "Map":
-                        gmapWrapper.getRealGMap().setMapType(G_NORMAL_MAP);
-                        break
+        if (gmapWrapper.getRealGMap().getMapTypeId() != null) {
+            switch (type) {
+                case "Satellite":
+                    gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.SATELLITE);
+                    break
+                case "Hybrid":
+                    gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.HYBRID);
+                    break
+                case "Map":
+                    gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.ROADMAP);
+                    break
+				case "Terrain":
+                    gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.TERRAIN);
+                    break
                 }//switch
-            }//inner if
         }//outer if        
     }//setMapType    
 }

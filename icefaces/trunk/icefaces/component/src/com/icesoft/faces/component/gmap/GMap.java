@@ -47,8 +47,8 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 public class GMap extends UIPanel{
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMap";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.GMapRenderer";
-    private static final String DEFAULT_LONGITUDE = "-101.162109375";
-    private static final String DEFAULT_LATITUDE = "56.46249048388979";
+    private static final String DEFAULT_LONGITUDE = "-114.08538937568665";
+    private static final String DEFAULT_LATITUDE = "51.06757388616548";
     private String longitude;
     private String latitude;
     private Integer zoomLevel;
@@ -144,6 +144,9 @@ public class GMap extends UIPanel{
         	JavascriptContext.addJavascriptCall(context, 
         			"Ice.GoogleMap.locateAddress('"+ getClientId(context)+"', '"+ 
         				getAddress() +"');");
+			JavascriptContext.addJavascriptCall(context,
+					"Ice.GoogleMap.getGMapWrapper('" + getClientId(context) +
+							"').getRealGMap().setZoom(" + getZoomLevel() + ");");
         	initilized = true;
     	} else {
     		if (isLocatedByGeocoder(context)) {
@@ -162,8 +165,10 @@ public class GMap extends UIPanel{
                 }
                 JavascriptContext.addJavascriptCall(context, 
                         "Ice.GoogleMap.getGMapWrapper('"+ getClientId(context)+
-                        "').getRealGMap().setCenter(new GLatLng("+ latitude 
-                        +", "+ longitude +"), "+ getZoomLevel() +");");
+                        "').getRealGMap().setCenter(new google.maps.LatLng("+ latitude + "," + longitude + "));");
+				JavascriptContext.addJavascriptCall(context,
+                        "Ice.GoogleMap.getGMapWrapper('" + getClientId(context) +
+                                "').getRealGMap().setZoom(" + getZoomLevel() + ");");
     		}
     	}
     	JavascriptContext.addJavascriptCall(context, 
@@ -175,7 +180,7 @@ public class GMap extends UIPanel{
         if (jsLibraryLoaded) return;
         String key = context.getCurrentInstance().getExternalContext().getInitParameter("com.icesoft.faces.gmapKey");
         if(key != null) {
-            JavascriptContext.includeLib("http://maps.google.com/maps?file=api&v=2&key="+ key, FacesContext.getCurrentInstance());
+            JavascriptContext.includeLib("http://maps.googleapis.com/maps/api/js?key=" + key + "&sensor=true", FacesContext.getCurrentInstance());
             jsLibraryLoaded = true;
         } else {
             //log you must need to define googlemap key in web.xml
@@ -187,7 +192,7 @@ public class GMap extends UIPanel{
             return zoomLevel.intValue();
         }
         ValueBinding vb = getValueBinding("zoomLevel");
-        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 3;
+        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 5;
 	}
 
 	public void setZoomLevel(int zoomLevel) {

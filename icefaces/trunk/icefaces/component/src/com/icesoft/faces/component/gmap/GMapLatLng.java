@@ -106,7 +106,7 @@ public class GMapLatLng extends UIPanel{
             }
             localeLat = currentLat;
             localeLng = currentLng;
-			String script = "new GLatLng("+ getLatitude() + ","+ getLongitude() +")"+ changed;
+			String script = "new google.maps.LatLng("+ getLatitude() + ","+ getLongitude() +")"+ changed;
 			getAttributes().put("latLngScript", script);
 		}
 
