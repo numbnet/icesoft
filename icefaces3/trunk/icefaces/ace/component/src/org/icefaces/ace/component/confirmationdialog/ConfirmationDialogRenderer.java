@@ -102,14 +102,14 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		JSONBuilder jb = JSONBuilder.create();
-		writer.write(this.resolveWidgetVar(dialog) + " = ");
 		
-		jb.beginFunction("ice.ace.create")
-        .item("ConfirmDialog")
-        .beginArray()
-        .item(clientId)
-        .beginMap()
-        .entry("minHeight", 0);
+		jb.initialiseVar(this.resolveWidgetVar(dialog))
+          .beginFunction("ice.ace.create")
+          .item("ConfirmDialog")
+          .beginArray()
+          .item(clientId)
+          .beginMap()
+          .entry("minHeight", 0);
 		
 		String styleClass = dialog.getStyleClass();
         String showEffect = dialog.getShowEffect();
@@ -130,9 +130,9 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		if(!dialog.isClosable()) jb.entry("closable", false);
 
 		//Position
-		String position = dialog.getPosition();	
-		if(position != null) {
-			if(position.contains(","))
+		String position = dialog.getPosition();
+        if (position != null) {
+			if (position.contains(","))
 				jb.entry("position", "[" + position + "]", true);
 			else
 				jb.entry("position", position);

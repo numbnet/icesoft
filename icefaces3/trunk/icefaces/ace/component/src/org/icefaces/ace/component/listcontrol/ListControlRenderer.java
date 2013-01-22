@@ -269,14 +269,16 @@ public class ListControlRenderer extends CoreRenderer {
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
 
-        JSONBuilder cfgBuilder = new JSONBuilder();
+        JSONBuilder cfgBuilder = JSONBuilder.create().initialiseVar(widgetVar)
+                .beginFunction("ice.ace.create").item("ListControl")
+                .beginArray().item(clientId);
 
         cfgBuilder.beginMap();
         cfgBuilder.entry("separator", UINamingContainer.getSeparatorChar(context));
         cfgBuilder.entry("selector", control.getSelector(clientId.replace(":","\\:"), renderContext.dualListMode));
-        cfgBuilder.endMap();
+        cfgBuilder.endMap().endArray().endFunction();
 
-        writer.write("var " + widgetVar + " = new ice.ace.create('ListControl', ['" + clientId + "', " + cfgBuilder +"]);");
+        writer.write(cfgBuilder.toString());
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
     }

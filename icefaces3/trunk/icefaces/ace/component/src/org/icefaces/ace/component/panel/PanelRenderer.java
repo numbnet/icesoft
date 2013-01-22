@@ -78,9 +78,9 @@ public class PanelRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(this.resolveWidgetVar(panel) + " = ");
-		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.create")
+        JSONBuilder jb = JSONBuilder.create()
+            .initialiseVar(this.resolveWidgetVar(panel))
+            .beginFunction("ice.ace.create")
             .item("Panel")
             .beginArray()
 			.item(clientId)
@@ -108,8 +108,8 @@ public class PanelRenderer extends CoreRenderer {
         encodeClientBehaviors(context, panel, jb);
 
         jb.endMap().endArray().endFunction();
+
 		writer.write(jb.toString());
-		
         writer.endElement("script");
     }
 

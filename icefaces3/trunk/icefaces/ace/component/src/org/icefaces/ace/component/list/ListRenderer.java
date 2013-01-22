@@ -326,13 +326,14 @@ public class ListRenderer extends CoreRenderer {
 
         String styleClass = component.getPlaceholderClass();
         styleClass = styleClass == null ? placeholderStyleClass : styleClass + " " + placeholderStyleClass;
-
-        String dropGroup = component.getDropGroup();
-        JSONBuilder cfgBuilder = new JSONBuilder();
         String selectionMode = component.getSelectionMode();
+        String dropGroup = component.getDropGroup();
+
+        JSONBuilder cfgBuilder = JSONBuilder.create().initialiseVar(widgetVar)
+                .beginFunction("ice.ace.create").item("List").beginArray()
+                .item(clientId);
 
         cfgBuilder.beginMap();
-
         cfgBuilder.entry("separator", UINamingContainer.getSeparatorChar(context));
 
         if (component.isPlaceholder())
@@ -350,9 +351,9 @@ public class ListRenderer extends CoreRenderer {
 
         encodeClientBehaviors(context, component, cfgBuilder);
 
-        cfgBuilder.endMap();
+        cfgBuilder.endMap().endArray().endFunction();
 
-        writer.write("var " + widgetVar + " = new ice.ace.create('List', ['" + clientId + "', " + cfgBuilder +"]);");
+        writer.write(cfgBuilder.toString());
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
     }

@@ -134,26 +134,25 @@ public class TextEntryRenderer extends InputRenderer {
         writer.endElement("span");
 
         writer.startElement("span", textEntry);
-//        writer.writeAttribute("id", clientId + "_script", "clientId");
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(this.resolveWidgetVar(textEntry) + " = ");
-
         JSONBuilder jb = JSONBuilder.create();
-        jb.beginFunction("ice.ace.create")
-            .item("TextEntry")
-            .beginArray()
-            .item(clientId)
-            .beginMap()
-                .entryNonNullValue("embeddedLabel", embeddedLabel);
+        jb.initialiseVar(this.resolveWidgetVar(textEntry))
+          .beginFunction("ice.ace.create")
+          .item("TextEntry")
+          .beginArray()
+          .item(clientId)
+          .beginMap()
+          .entryNonNullValue("embeddedLabel", embeddedLabel)
+          .entry("autoTab", textEntry.isAutoTab() && textEntry.getMaxlength() > 0);
 
         encodeClientBehaviors(context, textEntry, jb);
 
         if(!themeForms()) {
             jb.entry("theme", false);
         }
-        jb.entry("autoTab", textEntry.isAutoTab() && textEntry.getMaxlength() > 0);
+
         StringBuilder sb = new StringBuilder();
         sb.append(indicatorPosition).append(labelPosition);
         jb.entry("hashCode", sb.toString().hashCode());

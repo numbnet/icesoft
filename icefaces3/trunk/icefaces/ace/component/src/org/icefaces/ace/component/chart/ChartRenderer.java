@@ -127,8 +127,9 @@ public class ChartRenderer extends CoreRenderer {
 
         String title = component.getTitle();
 
-        JSONBuilder dataBuilder = new JSONBuilder();
-        JSONBuilder cfgBuilder = new JSONBuilder();
+        JSONBuilder json = JSONBuilder.create().initialiseVar(widgetVar)
+                .beginFunction("ice.ace.create").item("Chart")
+                .beginArray().item(clientId);
 
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_script", null);
@@ -136,47 +137,47 @@ public class ChartRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
 
         // Build data arrays
-        dataBuilder.beginArray();
+        json.beginArray();
         if (data != null)
             for (ChartSeries series : data)
-                dataBuilder.item(series.getDataJSON(component).toString(), false);
-        dataBuilder.endArray();
+                json.item(series.getDataJSON(component).toString(), false);
+        json.endArray();
 
 
         // Build configuration object
-        cfgBuilder.beginMap();
-        encodeAxesConfig(cfgBuilder, component);
-        encodeSeriesConfig(cfgBuilder, component, seriesDefaults, data);
-        encodeLegendConfig(cfgBuilder, component);
-        encodeHighlighterConfig(cfgBuilder, component);
-        if (title != null) cfgBuilder.entry("title", title);
-        if (stacking) cfgBuilder.entry("stackSeries", true);
-        if (animated == null) cfgBuilder.entry("animate", "!ice.ace.jq.jqplot.use_excanvas", true);
-        else if (animated) cfgBuilder.entry("animate", true);
+        json.beginMap();
+        encodeAxesConfig(json, component);
+        encodeSeriesConfig(json, component, seriesDefaults, data);
+        encodeLegendConfig(json, component);
+        encodeHighlighterConfig(json, component);
+        if (title != null) json.entry("title", title);
+        if (stacking) json.entry("stackSeries", true);
+        if (animated == null) json.entry("animate", "!ice.ace.jq.jqplot.use_excanvas", true);
+        else if (animated) json.entry("animate", true);
         if (isAjaxClick(component))
-            cfgBuilder.entry("handlePointClick", true);
-        if (!hiddenInit) cfgBuilder.entry("disableHiddenInit", true);
-        encodeClientBehaviors(context, component, cfgBuilder);
+            json.entry("handlePointClick", true);
+        if (!hiddenInit) json.entry("disableHiddenInit", true);
+        encodeClientBehaviors(context, component, json);
 
         if (cursor != null) {
-            cfgBuilder.beginMap("cursor");
-            cfgBuilder.entry("show", cursor);
-            if (zoom != null) cfgBuilder.entry("zoom", zoom);
-            if (showTooltip != null) cfgBuilder.entry("showTooltip", showTooltip);
-            cfgBuilder.endMap();
+            json.beginMap("cursor");
+            json.entry("show", cursor);
+            if (zoom != null) json.entry("zoom", zoom);
+            if (showTooltip != null) json.entry("showTooltip", showTooltip);
+            json.endMap();
         }
 
         if (cursor != null) {
-            cfgBuilder.beginMap("cursor");
-            cfgBuilder.entry("show", cursor);
-            if (zoom != null) cfgBuilder.entry("zoom", zoom);
-            if (showTooltip != null) cfgBuilder.entry("showTooltip", showTooltip);
-            cfgBuilder.endMap();
+            json.beginMap("cursor");
+            json.entry("show", cursor);
+            if (zoom != null) json.entry("zoom", zoom);
+            if (showTooltip != null) json.entry("showTooltip", showTooltip);
+            json.endMap();
         }
-        cfgBuilder.endMap();
 
-        // Call plot init
-        writer.write("var " + widgetVar + " = ice.ace.create('Chart', ['" + clientId + "', " + dataBuilder + ", " + cfgBuilder +"]);");
+        json.endMap().endArray().endFunction();;
+
+        writer.write(json.toString());
 
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);

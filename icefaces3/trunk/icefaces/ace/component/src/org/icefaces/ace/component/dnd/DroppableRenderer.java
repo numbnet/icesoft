@@ -96,33 +96,34 @@ public class DroppableRenderer extends CoreRenderer {
 
         writer.write("ice.ace.jq(function() {");
 
-        writer.write(this.resolveWidgetVar(droppable) + " = ");
 		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.create")
-        .item("Droppable")
-        .beginArray()
-        .item(clientId)
-        .beginMap()
-        .entry("target", target);
 
-        if(droppable.isDisabled()) jb.entry("disabled", true);
-        if(droppable.getHoverStyleClass() != null) jb.entry("hoverClass", droppable.getHoverStyleClass());
-        if(droppable.getActiveStyleClass() != null) jb.entry("activeClass", droppable.getActiveStyleClass());
-        if(droppable.getAccept() != null) jb.entry("accept", droppable.getAccept());
-        if(droppable.getScope() != null) jb.entry("scope", droppable.getScope());
-        if(droppable.getTolerance() != null) jb.entry("tolerance", droppable.getTolerance());
+        jb.initialiseVar(this.resolveWidgetVar(droppable))
+          .beginFunction("ice.ace.create")
+          .item("Droppable")
+          .beginArray()
+          .item(clientId)
+          .beginMap()
+          .entry("target", target);
 
-        if(droppable.getDropListener() != null) {
+        if (droppable.isDisabled()) jb.entry("disabled", true);
+        if (droppable.getHoverStyleClass() != null) jb.entry("hoverClass", droppable.getHoverStyleClass());
+        if (droppable.getActiveStyleClass() != null) jb.entry("activeClass", droppable.getActiveStyleClass());
+        if (droppable.getAccept() != null) jb.entry("accept", droppable.getAccept());
+        if (droppable.getScope() != null) jb.entry("scope", droppable.getScope());
+        if (droppable.getTolerance() != null) jb.entry("tolerance", droppable.getTolerance());
+
+        if (droppable.getDropListener() != null) {
             jb.entry("ajaxDrop", true);
         }
 
         encodeClientBehaviors(context, droppable, jb);
+
         jb.endMap().endArray().endFunction();
+
 		writer.write(jb.toString());
         writer.write("});");
-
         writer.endElement("script");
-		
 		writer.endElement("span");
     }
 

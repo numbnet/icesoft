@@ -200,20 +200,20 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
         script.append("ice.ace.jq(function(){").append(resolveWidgetVar(dateTimeEntry)).append(" = new ");
 
-        json.beginMap().
-            entry("widgetVar", resolveWidgetVar(dateTimeEntry)).
-            entry("id", clientId).
-            entry("popup", dateTimeEntry.isPopup()).
-            entry("locale", dateTimeEntry.calculateLocale(context).toString()).
-            entryNonNullValue("pattern", DateTimeEntryUtils.convertPattern(dateTimeEntry.getPattern()));
+        json.beginMap()
+            .entry("widgetVar", resolveWidgetVar(dateTimeEntry))
+            .entry("id", clientId)
+            .entry("popup", dateTimeEntry.isPopup())
+            .entry("locale", dateTimeEntry.calculateLocale(context).toString())
+            .entryNonNullValue("pattern", DateTimeEntryUtils.convertPattern(dateTimeEntry.getPattern()));
 
         if(dateTimeEntry.getPages() != 1)
             json.entry("numberOfMonths", dateTimeEntry.getPages());
 
-        json.entryNonNullValue("minDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMindate())).
-             entryNonNullValue("maxDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMaxdate())).
-             entryNonNullValue("showButtonPanel", dateTimeEntry.isShowButtonPanel()).
-             entryNonNullValue("yearRange", dateTimeEntry.getYearRange());
+        json.entryNonNullValue("minDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMindate()))
+            .entryNonNullValue("maxDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMaxdate()))
+            .entryNonNullValue("showButtonPanel", dateTimeEntry.isShowButtonPanel())
+            .entryNonNullValue("yearRange", dateTimeEntry.getYearRange());
 
         if(dateTimeEntry.isShowWeek())
             json.entry("showWeek", true);
@@ -233,32 +233,32 @@ public class DateTimeEntryRenderer extends InputRenderer {
         if(!showOn.equalsIgnoreCase("focus")) {
             String iconSrc = dateTimeEntry.getPopupIcon() != null ? getResourceURL(context, dateTimeEntry.getPopupIcon()) : getResourceRequestPath(context, DateTimeEntry.POPUP_ICON);
 
-            json.entry("showOn", showOn).
-            entry("buttonImage", iconSrc).
-            entry("buttonImageOnly", dateTimeEntry.isPopupIconOnly());
+            json.entry("showOn", showOn)
+                .entry("buttonImage", iconSrc)
+                .entry("buttonImageOnly", dateTimeEntry.isPopupIconOnly());
         }
 
         if(dateTimeEntry.isShowOtherMonths()) {
-            json.entry("showOtherMonths", true).
-            entry("selectOtherMonths", dateTimeEntry.isSelectOtherMonths());
+            json.entry("showOtherMonths", true)
+                .entry("selectOtherMonths", dateTimeEntry.isSelectOtherMonths());
         }
 
         //time
         if(dateTimeEntry.hasTime()) {
-            json.entry("timeOnly", timeOnly).
+            json.entry("timeOnly", timeOnly)
 
             //step
-            entry("stepHour", dateTimeEntry.getStepHour()).
-            entry("stepMinute", dateTimeEntry.getStepMinute()).
-            entry("stepSecond", dateTimeEntry.getStepSecond()).
+            .entry("stepHour", dateTimeEntry.getStepHour())
+            .entry("stepMinute", dateTimeEntry.getStepMinute())
+            .entry("stepSecond", dateTimeEntry.getStepSecond())
 
             //minmax
-            entry("hourMin", dateTimeEntry.getMinHour()).
-            entry("hourMax", dateTimeEntry.getMaxHour()).
-            entry("minuteMin", dateTimeEntry.getMinMinute()).
-            entry("minuteMax", dateTimeEntry.getMaxMinute()).
-            entry("secondMin", dateTimeEntry.getMinSecond()).
-            entry("secondMax", dateTimeEntry.getMaxSecond());
+            .entry("hourMin", dateTimeEntry.getMinHour())
+            .entry("hourMax", dateTimeEntry.getMaxHour())
+            .entry("minuteMin", dateTimeEntry.getMinMinute())
+            .entry("minuteMax", dateTimeEntry.getMaxMinute())
+            .entry("secondMin", dateTimeEntry.getMinSecond())
+            .entry("secondMax", dateTimeEntry.getMaxSecond());
         }
 
         encodeClientBehaviors(context, dateTimeEntry, json);

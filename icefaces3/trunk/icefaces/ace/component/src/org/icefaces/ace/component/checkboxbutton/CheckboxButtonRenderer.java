@@ -144,38 +144,41 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 	    //note that ScriptWriter takes care of the span tag surrounding the script
 	    String boxValue = String.valueOf(val);
 	    boolean isChecked = isChecked(boxValue);
-
         StringBuilder sb = new StringBuilder();
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        Integer tabindex = checkbox.getTabindex();
+
         sb.append(checkbox.getStyle()).
            append(checkbox.getStyleClass());
 
-        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
-        Integer tabindex = checkbox.getTabindex();
         if (ariaEnabled && tabindex == null) {
             tabindex = 0;
         }
 
         JSONBuilder jb = JSONBuilder.create();
-        jb.beginFunction("ice.ace.checkboxbutton.updateProperties").
-                item(clientId).
-                beginMap().
-                    entry("type", "checkbox").
-                    entry("checked", isChecked).
-                    entry("disabled", checkbox.isDisabled()).
-                    entryNonNullValue("tabindex", tabindex).
-                    entry("label", label);
-					encodeClientBehaviors(facesContext, checkbox, jb);
-                jb.endMap().
-                beginMap().
-                    entry("hashCode", sb.toString().hashCode()).
-                    entry("ariaEnabled", ariaEnabled);
+        jb.beginFunction("ice.ace.checkboxbutton.updateProperties")
+          .item(clientId)
+          .beginMap()
+          .entry("type", "checkbox")
+          .entry("checked", isChecked)
+          .entry("disabled", checkbox.isDisabled())
+          .entryNonNullValue("tabindex", tabindex)
+          .entry("label", label);
+
+        encodeClientBehaviors(facesContext, checkbox, jb);
+
+        jb.endMap()
+          .beginMap()
+          .entry("hashCode", sb.toString().hashCode())
+          .entry("ariaEnabled", ariaEnabled);
+
         if (uiParamChildren != null) {
             jb.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
         }
+
         jb.endMap().endFunction();
 
         String finalScript = jb.toString();
-        //System.out.println("CheckboxButtonRenderer  finalScript: " + finalScript);
         ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
         
         writer.endElement(HTML.DIV_ELEM);

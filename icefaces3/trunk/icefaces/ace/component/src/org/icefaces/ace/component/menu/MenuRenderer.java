@@ -67,28 +67,27 @@ public class MenuRenderer extends BaseMenuRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
         JSONBuilder json = JSONBuilder.create();
-		writer.write(widgetVar + " = ");
-        json.beginFunction("ice.ace.create").
-        item("Menu")
-        .beginArray()
-        .item(clientId).
-        beginMap().
+        json.initialiseVar(widgetVar)
+            .beginFunction("ice.ace.create")
+            .item("Menu")
+            .beginArray()
+            .item(clientId)
+            .beginMap()
+            .entry("zindex", menu.getZindex())
 
-        entry("zindex", menu.getZindex()).
+            //animation
+            .beginMap("animation")
+            .entry("animated", menu.getEffect())
+            .entry("duration", menu.getEffectDuration())
+            .endMap();
 
-        //animation
-        beginMap("animation").
-        entry("animated", menu.getEffect()).
-        entry("duration", menu.getEffectDuration()).
-        endMap();
-
-        if(type.equalsIgnoreCase("sliding")) {
-            json.entry("mode", "sliding").
-            entry("backLinkText", menu.getBackLabel()).
-            entry("maxHeight", menu.getMaxHeight());
+        if (type.equalsIgnoreCase("sliding")) {
+            json.entry("mode", "sliding")
+                .entry("backLinkText", menu.getBackLabel())
+                .entry("maxHeight", menu.getMaxHeight());
         }
 
-        if(position.equalsIgnoreCase("dynamic")) {
+        if (position.equalsIgnoreCase("dynamic")) {
             String triggerId = menu.getTrigger();
             if (triggerId != null) {
                 json.entry("position", "dynamic").
@@ -106,14 +105,13 @@ public class MenuRenderer extends BaseMenuRenderer {
             json.entry("position", "static");
         }
 
-        json.entryNonNullValue("styleClass", menu.getStyleClass()).
-        entryNonNullValue("style", menu.getStyle()).
-        endMap().
-        endArray()
-        .endFunction();
+        json.entryNonNullValue("styleClass", menu.getStyleClass())
+            .entryNonNullValue("style", menu.getStyle())
+            .endMap()
+            .endArray()
+            .endFunction();
 
         writer.write(json.toString());
-
 		writer.endElement("script");
 	}
 

@@ -116,30 +116,26 @@ public class AccordionRenderer extends CoreRenderer {
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		writer.write(resolveWidgetVar(acco) + " = ");
 
-		jb.beginFunction("ice.ace.create")
+        jb.initialiseVar(resolveWidgetVar(acco))
+          .beginFunction("ice.ace.create")
           .item("AccordionPanel")
           .beginArray()
           .item(clientId)
 		  .beginMap()
-          .entry("animated", acco.getEffect());
-		
+          .entry("animated", acco.getEffect())
+          .entry("ariaEnabled", EnvUtils.isAriaEnabled(context));;
+
 		String event = acco.getEvent();
 
-        if(event != null) jb.entry("event", event);
-		if(!acco.isAutoHeight()) jb.entry("autoHeight", false);
-		if(acco.isCollapsible()) jb.entry("collapsible", true);
-		if(acco.isFillSpace()) jb.entry("fillSpace", true);
-		if(acco.isDisabled()) jb.entry("disabled", true);
-
-        if(hasTabChangeListener) {
-            jb.entry("ajaxTabChange", true);
-        }
+        if (event != null) jb.entry("event", event);
+		if (!acco.isAutoHeight()) jb.entry("autoHeight", false);
+		if (acco.isCollapsible()) jb.entry("collapsible", true);
+		if (acco.isFillSpace()) jb.entry("fillSpace", true);
+		if (acco.isDisabled()) jb.entry("disabled", true);
+        if (hasTabChangeListener) jb.entry("ajaxTabChange", true);
 
         encodeClientBehaviors(context, acco, jb);
-
-        jb.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
 
         jb.endMap()
           .endArray()
