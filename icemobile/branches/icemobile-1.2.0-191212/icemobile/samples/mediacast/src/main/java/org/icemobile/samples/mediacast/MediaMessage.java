@@ -127,9 +127,9 @@ public class MediaMessage implements Serializable {
             return iconMedia;
         }
         if (null != getAudio())  {
-            return MediaHelper.getSoundIcon();
+            return MediaHelper.SOUND_ICON;
         }
-        return MediaHelper.getBrokenIcon();
+        return MediaHelper.BROKEN_ICON;
     }
 
     public String getIconURL()  {

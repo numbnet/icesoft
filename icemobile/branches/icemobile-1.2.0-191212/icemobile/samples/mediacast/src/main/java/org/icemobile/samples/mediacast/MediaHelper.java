@@ -53,9 +53,9 @@ public class MediaHelper implements Serializable{
 	private String audioConvertCommand;
 	private String thumbConvertCommand;
 	
-	private static Media brokenIcon;
-	private static Media soundIcon;
-	private Media movieIcon;
+	static Media BROKEN_ICON;
+	static Media SOUND_ICON;
+	static Media MOVIE_ICON;
 	private Media soundIconSmall;
 	private Media movieIconSmall;
 	
@@ -91,17 +91,17 @@ public class MediaHelper implements Serializable{
 			imageStream = externalContext
 					.getResourceAsStream("/resources/images/help.png");
 			image = ImageIO.read(imageStream);
-			brokenIcon = createPhoto(image, image.getWidth(), image.getHeight());
+			BROKEN_ICON = createPhoto(image, image.getWidth(), image.getHeight());
 
 			imageStream = externalContext
 					.getResourceAsStream("/resources/images/soundIcon.png");
 			image = ImageIO.read(imageStream);
-			soundIcon = createPhoto(image, image.getWidth(), image.getHeight());
+			SOUND_ICON = createPhoto(image, image.getWidth(), image.getHeight());
 
 			imageStream = externalContext
 					.getResourceAsStream("/resources/images/movieIcon.png");
 			image = ImageIO.read(imageStream);
-			movieIcon = createPhoto(image, image.getWidth(), image.getHeight());
+			MOVIE_ICON = createPhoto(image, image.getWidth(), image.getHeight());
 
 			imageStream = externalContext
 					.getResourceAsStream("/resources/images/soundIconSmall.png");
@@ -179,7 +179,7 @@ public class MediaHelper implements Serializable{
 			return;
 		}
 
-		Media customMovieIcon = movieIcon;
+		Media customMovieIcon = MOVIE_ICON;
 		Media customMovieIconSmall = movieIconSmall;
 
 		try {
@@ -358,17 +358,17 @@ public class MediaHelper implements Serializable{
 		return calculateImageSize(thumbSize, width, height);
 	}
 
-    public static Media getBrokenIcon()  {
-        return brokenIcon;
+    public Media getBrokenIcon()  {
+        return BROKEN_ICON;
     }
 
-	public static Media getSoundIcon() {
-		return soundIcon;
+	public Media getSoundIcon() {
+		return SOUND_ICON;
 	}
 
 
 	public Media getMovieIcon() {
-		return movieIcon;
+		return MOVIE_ICON;
 	}
 
 
