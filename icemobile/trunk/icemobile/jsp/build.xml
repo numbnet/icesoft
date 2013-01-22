@@ -161,39 +161,26 @@
 		<buildCSS3Skin skin="honeycomb" />
 		<buildCSS3Skin skin="ipad" />
 		<buildCSS3Skin skin="iphone" />
+    	
+        <replaceregexp match="(\/\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="">
+            <fileset dir="${build.dir}/skins/in" includes="**/*.css"></fileset>
+        </replaceregexp>
+
         
         <!-- concatenate -->
         <!-- Generate a single CSS file per skin -->
         <concatskin name="android" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
-        <replaceregexp file="${build.dir}/skins/out/android/android.css"
-		               match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
-		               replace=""/>
-		<concatskin name="honeycomb" inputdir="${build.dir}/skins/in"
+        <concatskin name="honeycomb" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
-        <replaceregexp file="${build.dir}/skins/out/honeycomb/honeycomb.css"
-		               match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
-		               replace=""/>
-		<concatskin name="iphone" inputdir="${build.dir}/skins/in"
+        <concatskin name="iphone" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
-        <replaceregexp file="${build.dir}/skins/out/iphone/iphone.css"
-		               match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
-		               replace=""/>
-		<concatskin name="bberry" inputdir="${build.dir}/skins/in"
+        <concatskin name="bberry" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
-        <replaceregexp file="${build.dir}/skins/out/bberry/bberry.css"
-		               match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
-		               replace=""/>
-		<concatskin name="ipad" inputdir="${build.dir}/skins/in"
+        <concatskin name="ipad" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
-		<replaceregexp file="${build.dir}/skins/out/ipad/ipad.css"
-		               match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
-		               replace=""/>
-    	<concatskin name="archaic" inputdir="${build.dir}/skins/in"
+		<concatskin name="archaic" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
-        <replaceregexp file="${build.dir}/skins/out/archaic/archaic.css"
-                       match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
-                       replace=""/>
     	        
         <!-- compress -->
         <ant target="compress-css"/>
