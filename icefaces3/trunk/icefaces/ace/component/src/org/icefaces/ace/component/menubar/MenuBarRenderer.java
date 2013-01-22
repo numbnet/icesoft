@@ -69,32 +69,29 @@ public class MenuBarRenderer extends BaseMenuRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        JSONBuilder json = JSONBuilder.create();
-		writer.write(widgetVar + " = ");
-        json.beginFunction("ice.ace.create").
-        item("Menubar").
+        JSONBuilder json = JSONBuilder.create().initialiseVar(widgetVar);
 
-        beginArray().
+        json.beginFunction("ice.ace.create")
+            .item("Menubar")
+            .beginArray()
+            .item(clientId)
+            .beginMap()
 
-        item(clientId).
-        beginMap().
+            .entry("autoSubmenuDisplay", menubar.isAutoSubmenuDisplay())
+            .entry("direction", menubar.getDirection())
+            .entryNonNullValue("styleClass", menubar.getStyleClass())
+            .entryNonNullValue("style", menubar.getStyle())
 
-        entry("autoSubmenuDisplay", menubar.isAutoSubmenuDisplay()).
-        entry("direction", menubar.getDirection()).
-        entryNonNullValue("styleClass", menubar.getStyleClass()).
-        entryNonNullValue("style", menubar.getStyle()).
+            .beginMap("animation")
+            .entry("animated", menubar.getEffect())
+            .entry("duration", menubar.getEffectDuration())
+            .endMap()
 
-        beginMap("animation").
-        entry("animated", menubar.getEffect()).
-        entry("duration", menubar.getEffectDuration()).
-        endMap().
-
-        endMap().
-        endArray().
-        endFunction();
+            .endMap()
+            .endArray()
+            .endFunction();
 
         writer.write(json.toString());
-
         writer.endElement("script");
 	}
 

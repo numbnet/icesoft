@@ -66,6 +66,8 @@ public class ResizableRenderer extends CoreRenderer {
         String clientId = resizable.getClientId(context);
 		UIComponent target = findTarget(context, resizable);
         String targetId = target.getClientId(context);
+        String handles = resizable.getHandles();
+        int grid = resizable.getGrid();
 
         writer.startElement("span",null);
         writer.writeAttribute("id", clientId, null);
@@ -77,26 +79,26 @@ public class ResizableRenderer extends CoreRenderer {
             writer.write("ice.ace.jq(ice.ace.escapeClientId('" + targetId + "')).load(function(){");
         else
             writer.write("ice.ace.jq(function(){");
-		
-		writer.write(this.resolveWidgetVar(resizable) + " = ");
-		
+
 		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.create")
-            .item("Resizable")
-            .beginArray()
-			.item(clientId)
-			.beginMap()
-				.entry("target", targetId);
+		jb.initialiseVar(this.resolveWidgetVar(resizable))
+          .beginFunction("ice.ace.create")
+          .item("Resizable")
+          .beginArray()
+	      .item(clientId)
+          .beginMap()
+          .entry("target", targetId);
 
         //Boundaries
 		int minWidth = resizable.getMinWidth();
-        if(minWidth != Integer.MIN_VALUE) jb.entry("minWidth", minWidth);
-		int maxWidth = resizable.getMaxWidth();
-        if(maxWidth != Integer.MAX_VALUE) jb.entry("maxWidth", maxWidth);
-		int minHeight = resizable.getMinHeight();
-        if(minHeight != Integer.MIN_VALUE) jb.entry("minHeight", minHeight);
-		int maxHeight = resizable.getMaxHeight();
-        if(maxHeight != Integer.MAX_VALUE) jb.entry("maxHeight", maxHeight);
+        int maxWidth = resizable.getMaxWidth();
+        int minHeight = resizable.getMinHeight();
+        int maxHeight = resizable.getMaxHeight();
+
+        if (minWidth != Integer.MIN_VALUE) jb.entry("minWidth", minWidth);
+        if (maxWidth != Integer.MAX_VALUE) jb.entry("maxWidth", maxWidth);
+        if (minHeight != Integer.MIN_VALUE) jb.entry("minHeight", minHeight);
+        if (maxHeight != Integer.MAX_VALUE) jb.entry("maxHeight", maxHeight);
 
         //Animation
         if(resizable.isAnimate()) {
@@ -106,14 +108,12 @@ public class ResizableRenderer extends CoreRenderer {
         }
 
         //Config
-        if(resizable.isProxy()) jb.entry("helper", "ui-resizable-proxy");
-		String handles = resizable.getHandles();
-        if(handles != null) jb.entry("handles", handles);
-		int grid = resizable.getGrid();
-        if(grid != 1) jb.entry("grid", grid);
-        if(resizable.isAspectRatio()) jb.entry("aspectRatio", true);
-        if(resizable.isGhost()) jb.entry("ghost", true);
-        if(resizable.isContainment()) jb.entry("containment", "ice.ace.escapeClientId('" + resizable.getParent().getClientId(context) +"')", true);
+        if (resizable.isProxy()) jb.entry("helper", "ui-resizable-proxy");
+        if (handles != null) jb.entry("handles", handles);
+        if (grid != 1) jb.entry("grid", grid);
+        if (resizable.isAspectRatio()) jb.entry("aspectRatio", true);
+        if (resizable.isGhost()) jb.entry("ghost", true);
+        if (resizable.isContainment()) jb.entry("containment", "ice.ace.escapeClientId('" + resizable.getParent().getClientId(context) +"')", true);
 
         //Ajax resize
         if(resizable.getResizeListener() != null) {
@@ -121,11 +121,11 @@ public class ResizableRenderer extends CoreRenderer {
         }
 		
         encodeClientBehaviors(context, resizable, jb);
-		jb.endMap().endArray().endFunction();
-		writer.write(jb.toString());
-		
+
+        jb.endMap().endArray().endFunction();
+
+        writer.write(jb.toString());
 		writer.write("});");
-		
 		writer.endElement("script");
         writer.endElement("span");
 	}

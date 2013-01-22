@@ -124,31 +124,30 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 	
 	private String getInitCall(ResponseWriter writer, MenuButton button, String clientId)  throws IOException {
         JSONBuilder json = JSONBuilder.create();
-		writer.write(this.resolveWidgetVar(button) + " = ");
-        json.beginFunction("ice.ace.create").
-            item("MenuButton").
 
-            beginArray().
-            item(clientId).
+        json.initialiseVar(this.resolveWidgetVar(button))
+            .beginFunction("ice.ace.create")
+            .item("MenuButton")
 
-            beginMap().
+            .beginArray()
+            .item(clientId)
 
-            beginMap("animation").
-            entry("animated", button.getEffect()).
-            entry("duration", button.getEffectDuration()).
-            endMap().
+            .beginMap()
 
-            entry("zindex", button.getZindex()).
-            entryNonNullValue("styleClass", button.getStyleClass()).
-            entryNonNullValue("style", button.getStyle());
+            .beginMap("animation")
+            .entry("animated", button.getEffect())
+            .entry("duration", button.getEffectDuration())
+            .endMap()
 
-        if(button.isDisabled()) {
-            json.entry("disabled", true);
-        }
+            .entry("zindex", button.getZindex())
+            .entryNonNullValue("styleClass", button.getStyleClass())
+            .entryNonNullValue("style", button.getStyle());
 
-        json.endMap().
-        endArray().
-        endFunction();
+        if (button.isDisabled()) json.entry("disabled", true);
+
+        json.endMap()
+            .endArray()
+            .endFunction();
 		
 		return json.toString();
 	}

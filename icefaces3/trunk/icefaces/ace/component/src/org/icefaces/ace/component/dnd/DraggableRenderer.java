@@ -98,8 +98,9 @@ public class DraggableRenderer extends CoreRenderer {
 		writer.startElement("script", draggable);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        writer.write(this.resolveWidgetVar(draggable) + " = ");
-		JSONBuilder jb = JSONBuilder.create();
+
+        JSONBuilder jb = JSONBuilder.create();
+        jb.initialiseVar(this.resolveWidgetVar(draggable));
 		jb.beginFunction("ice.ace.create");
         jb.item("Draggable");
         jb.beginArray();

@@ -75,21 +75,18 @@ public class TextAreaEntryRenderer extends InputRenderer {
         encodeLabelAndInput(component, labelAttributes);
         writer.endElement("span");
 
-//        writer.startElement("span", textAreaEntry);
-//        writer.writeAttribute("id", clientId + "_script", "clientId");
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(resolveWidgetVar(textAreaEntry) + " = ");
         JSONBuilder jb = JSONBuilder.create();
-        jb.beginFunction("ice.ace.create")
-                .item("TextAreaEntry")
-                .beginArray()
-                .item(clientId)
-                .beginMap();
-        jb.entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"));
-        jb.entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
-//        jb.entry("labelIsInField", (Boolean) labelAttributes.get("labelIsInField"));
+        jb.initialiseVar(resolveWidgetVar(textAreaEntry))
+          .beginFunction("ice.ace.create")
+          .item("TextAreaEntry")
+          .beginArray()
+          .item(clientId)
+          .beginMap()
+          .entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"))
+          .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
 
         encodeClientBehaviors(context, textAreaEntry, jb);
 
@@ -101,10 +98,8 @@ public class TextAreaEntryRenderer extends InputRenderer {
         writer.write(jb.toString());
 
         writer.endElement("script");
-//        writer.endElement("span");
 
         domUpdateMap.putAll(labelAttributes);
-//        printMap(domUpdateMap);
         writer.startElement("span", textAreaEntry);
         writer.writeAttribute("data-hashcode", domUpdateMap.hashCode(), null);
         writer.writeAttribute("style", "display: none;", null);

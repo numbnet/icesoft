@@ -84,26 +84,26 @@ public class NotificationPanelRenderer extends CoreRenderer {
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		
-        JSONBuilder json = JSONBuilder.create();
 		writer.write("ice.ace.jq(document).ready(function(){");
 
-		writer.write(this.resolveWidgetVar(bar) + " = ");
-        json.beginFunction("ice.ace.create").
-            item("NotificationBar").
-            beginArray().
-            item(clientId).
-            beginMap().
-                entry("position", bar.getPosition()).
-                entry("effect", bar.getEffect()).
-                entry("effectSpeed", bar.getEffectSpeed());
+        JSONBuilder json = JSONBuilder.create();
+        json.initialiseVar(this.resolveWidgetVar(bar))
+            .beginFunction("ice.ace.create")
+            .item("NotificationBar")
+            .beginArray()
+            .item(clientId)
+            .beginMap()
 
-                    json.entry("visible", bar.isVisible());
-                    json.entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
+            .entry("position", bar.getPosition())
+            .entry("effect", bar.getEffect())
+            .entry("effectSpeed", bar.getEffectSpeed())
+            .entry("visible", bar.isVisible())
+            .entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
 
-                encodeClientBehaviors(facesContext, bar, json);
-            json.endMap();
-        json.endArray().endFunction();
+        encodeClientBehaviors(facesContext, bar, json);
+
+        json.endMap().endArray().endFunction();
+
         writer.write(json.toString());
 		writer.write("});");
 		

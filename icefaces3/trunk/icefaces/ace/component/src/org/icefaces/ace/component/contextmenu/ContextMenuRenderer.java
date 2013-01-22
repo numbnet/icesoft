@@ -68,33 +68,32 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		writer.startElement("script", menu);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        JSONBuilder json = JSONBuilder.create();
         writer.write("ice.ace.jq(function() {");
-        
-		writer.write(widgetVar + " = ");
-        json.beginFunction("ice.ace.create").
-        item("ContextMenu").
-        beginArray().
-        item(clientId).
-        beginMap().
-        entry("target", trigger, true).
-        entry("zindex", menu.getZindex()).
-        entry("direction", menu.getDirection()).
 
-        beginMap("animation").
-        entry("animated", menu.getEffect()).
-        entry("duration", menu.getEffectDuration()).
-        endMap().
+        JSONBuilder json = JSONBuilder.create();
+        json.initialiseVar(widgetVar)
+            .beginFunction("ice.ace.create")
+            .item("ContextMenu")
+            .beginArray()
+            .item(clientId)
+            .beginMap()
+            .entry("target", trigger, true)
+            .entry("zindex", menu.getZindex())
+            .entry("direction", menu.getDirection())
 
-        entryNonNullValue("styleClass", menu.getStyleClass()).
-        entryNonNullValue("style", menu.getStyle()).
-        endMap().
-        endArray().
-        endFunction();
+            .beginMap("animation")
+            .entry("animated", menu.getEffect())
+            .entry("duration", menu.getEffectDuration())
+            .endMap()
+
+            .entryNonNullValue("styleClass", menu.getStyleClass())
+            .entryNonNullValue("style", menu.getStyle())
+            .endMap()
+            .endArray()
+            .endFunction();
 
         writer.write(json.toString());
         writer.write("});");
-
 		writer.endElement("script");
 	}
 	

@@ -139,19 +139,19 @@ public class TooltipRenderer extends CoreRenderer {
 
         writer.write("ice.ace.jq(function() {");
 
-		writer.write(this.resolveWidgetVar(tooltip) + " = new ");
+        String delegateId = tooltip.getForDelegate();
+        JSONBuilder jb = JSONBuilder.create();
+		jb.initialiseVar(this.resolveWidgetVar(tooltip))
+          .beginFunction("ice.ace.create")
+          .item("Tooltip")
+          .beginArray()
+	      .beginMap()
+          .entry("global", global)
+          .entry("id", clientId)
+          .entry("displayListener", (tooltip.getDisplayListener() != null));
 
-		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.create")
-            .item("Tooltip")
-            .beginArray()
-			.beginMap()
-				.entry("global", global)
-				.entry("id", clientId)
-				.entry("displayListener", (tooltip.getDisplayListener() != null));
 		if (tooltip.isSpeechBubble()) jb.entry("speechBubble", true);
 
-		String delegateId = tooltip.getForDelegate();
 		if(!global && delegateId == null) {
 			owner = getTarget(facesContext, tooltip);
 			if (owner instanceof ArrayList) {

@@ -317,7 +317,6 @@ public class DataTableRenderer extends CoreRenderer {
 		String clientId = table.getClientId(context);
         String filterEvent = table.getFilterEvent();
         UIComponent form = ComponentUtils.findParentForm(context, table);
-        JSONBuilder json = new JSONBuilder();
 
         if (form == null) 
             throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
@@ -345,6 +344,10 @@ public class DataTableRenderer extends CoreRenderer {
         final boolean noHidden = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.scroll.nohiddencheck"));
         final String widgetVar = resolveWidgetVar(table);
         final boolean devMode = FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Development);
+
+        JSONBuilder json = JSONBuilder.create().initialiseVar(widgetVar)
+                .beginFunction("ice.ace.create").item("DataTable").beginArray()
+                .item(clientId);
 
         json.beginMap();
         json.entry("formId", form.getClientId(context));
@@ -379,11 +382,11 @@ public class DataTableRenderer extends CoreRenderer {
 
         encodeClientBehaviors(context, table, json);
 
-        json.endMap();
+        json.endMap().endArray().endFunction();
 
 		writer.startElement(HTML.SCRIPT_ELEM, table);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);        
-        writer.write("var " + widgetVar + " = ice.ace.create('DataTable', ['" + clientId + "', " + json + "]);");
+        writer.write(json.toString());
 		writer.endElement(HTML.SCRIPT_ELEM);
 	}
 

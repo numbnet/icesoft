@@ -195,48 +195,46 @@ public class SliderEntryRenderer extends CoreRenderer{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = slider.getClientId(context);
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
+        int min = slider.getMin();
+        int max = slider.getMax();
+        float stepPercent = slider.getStepPercent();
+        float step = ((max - min) * stepPercent) / (float) 100;
+        Integer tabindex = slider.getTabindex();
+        String orientation = "y".equals(slider.getAxis()) ? "vertical" : "horizontal";
+        String length = slider.getLength();
 
 		writer.startElement("script", slider);
 		writer.writeAttribute("type", "text/javascript", null);
 
 		JSONBuilder jb = JSONBuilder.create();
-		writer.write(this.resolveWidgetVar(slider) + " = ");
-		jb.beginFunction("ice.ace.create")
-			.item("Slider")
-            .beginArray()
-			.item(clientId)
-			.beginMap()
-			.entry("input", clientId + "_hidden");
-		int min = slider.getMin();
-		jb.entry("min", min);
-		int max = slider.getMax();
-		jb.entry("max", max);
-		jb.entry("animate", slider.isAnimate());
-		float stepPercent = slider.getStepPercent();
-		float step = ((max - min) * stepPercent) / (float) 100;
-		jb.entry("step", step);
-		String orientation = "y".equals(slider.getAxis()) ? "vertical" : "horizontal";
-		jb.entry("orientation", orientation);
-		String length = slider.getLength();
+        jb.initialiseVar(this.resolveWidgetVar(slider))
+          .beginFunction("ice.ace.create")
+          .item("Slider")
+          .beginArray()
+	      .item(clientId)
+	      .beginMap()
+	      .entry("input", clientId + "_hidden")
+          .entry("min", min)
+          .entry("max", max)
+          .entry("animate", slider.isAnimate())
+          .entry("step", step)
+          .entry("orientation", orientation)
+          .entry("clickableRail", slider.isClickableRail())
+          .entry("value", slider.getValue())
+          .entry("ariaEnabled", ariaEnabled);
+
 		if (length.toLowerCase().indexOf("px") == -1) {
 			length += "px";
 		}
 		jb.entry("length", length);
-		
-		Integer tabindex = slider.getTabindex();
-		if (tabindex != null) {
-			jb.entry("tabindex", tabindex.toString());
-		}
-		jb.entry("clickableRail", slider.isClickableRail());
-		
+
 		if(slider.isDisabled()) jb.entry("disabled", true);
         if(slider.getOnSlideStart() != null) jb.entry("onSlideStart", "function(event, ui) {" + slider.getOnSlideStart() + "}", true);
         if(slider.getOnSlide() != null) jb.entry("onSlide", "function(event, ui) {" + slider.getOnSlide() + "}", true);
         if(slider.getOnSlideEnd() != null) jb.entry("onSlideEnd", "function(event, ui) {" + slider.getOnSlideEnd() + "}", true);
-        jb.entry("value", slider.getValue());
-        jb.entry("ariaEnabled", ariaEnabled);
+        if(tabindex != null) jb.entry("tabindex", tabindex.toString());
 
-		encodeClientBehaviors(context, slider, jb);
+        encodeClientBehaviors(context, slider, jb);
 		
         jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());

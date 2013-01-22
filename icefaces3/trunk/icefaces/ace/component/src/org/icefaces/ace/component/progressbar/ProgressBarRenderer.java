@@ -115,37 +115,37 @@ public class ProgressBarRenderer extends CoreRenderer {
 
         writer.startElement("script", progressBar);
         writer.writeAttribute("type", "text/javascript", null);
-
         writer.write("ice.ace.jq(function() {");
 
-        writer.write(this.resolveWidgetVar(progressBar) + " = ");
-        JSONBuilder json = JSONBuilder.create();
-        json.beginFunction("ice.ace.create").
-            item("ProgressBar").
-            beginArray().
-            item(clientId).
-            beginMap().
-                entry("value", progressBar.getValue());
+        JSONBuilder json = JSONBuilder.create()
+            .initialiseVar(this.resolveWidgetVar(progressBar))
+            .beginFunction("ice.ace.create")
+            .item("ProgressBar")
+            .beginArray()
+            .item(clientId)
+            .beginMap()
+            .entry("value", progressBar.getValue());
 
-                if(progressBar.isUsePolling()) {
-                    json.entry("usePolling", true);
-                    json.entry("pollingInterval", progressBar.getPollingInterval());
-                } else {
-                    json.entry("usePolling", false);
-                }
+        if (progressBar.isUsePolling()) {
+            json.entry("usePolling", true);
+            json.entry("pollingInterval", progressBar.getPollingInterval());
+        } else {
+            json.entry("usePolling", false);
+        }
 
-                if(progressBar.isDisabled()) {
-                    json.entry("disabled", true);
-                }
-                json.entry("hasChangeListener", hasChangeListener);
-                encodeClientBehaviors(facesContext, progressBar, json);
-                json.entry("ariaEnabled", ariaEnabled);
-            json.endMap();
-        json.endArray().endFunction();
+        if (progressBar.isDisabled()) {
+            json.entry("disabled", true);
+        }
+
+        json.entry("hasChangeListener", hasChangeListener);
+        json.entry("ariaEnabled", ariaEnabled);
+
+        encodeClientBehaviors(facesContext, progressBar, json);
+
+        json.endMap().endArray().endFunction();
+
         writer.write(json.toString());
-
         writer.write("});");
-
         writer.endElement("script");
     }
 }

@@ -130,7 +130,9 @@ public class TreeRenderer extends CoreRenderer {
         boolean indexIds = converter instanceof NodeModelLazyListKeyConverter ||
                 converter instanceof NodeModelListSequenceKeyConverter;
 
-        confJson.beginMap();
+        confJson.initialiseVar(widgetVar).beginFunction("ice.ace.create").item("Tree")
+                .beginArray().beginMap();
+
         confJson.entry("id", clientId);
         confJson.entry("widgetVar", widgetVar);
         confJson.entry("expansionMode", tree.getExpansionMode().name());
@@ -150,11 +152,11 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         encodeClientBehaviors(facesContext, tree, confJson);
-        confJson.endMap();
+        confJson.endMap().endArray().endFunction();
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-        writer.write("var " + widgetVar + " = new ice.ace.create('Tree', ["+confJson.toString()+"]);" );
+        writer.write(confJson.toString());
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 

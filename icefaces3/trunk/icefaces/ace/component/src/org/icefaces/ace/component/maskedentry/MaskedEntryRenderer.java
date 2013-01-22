@@ -93,22 +93,24 @@ public class MaskedEntryRenderer extends InputRenderer {
         writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(this.resolveWidgetVar(maskedEntry) + " = ");
-		
-		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.create")
-        .item("InputMask")
-        .beginArray()
-        .item(clientId)
-        .beginMap()
-        .entry("mask", maskedEntry.getMask());
+		JSONBuilder jb = JSONBuilder.create()
+            .initialiseVar(this.resolveWidgetVar(maskedEntry))
+            .beginFunction("ice.ace.create")
+            .item("InputMask")
+            .beginArray()
+            .item(clientId)
+            .beginMap()
+            .entry("mask", maskedEntry.getMask());
 
         String placeHolder = maskedEntry.getPlaceHolder();
-		if(placeHolder!=null) {
+
+        if (placeHolder!=null) {
 			jb.entry("placeholder", placeHolder);
         }
+
         jb.entry("inFieldLabel", inFieldLabel);
         jb.entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
+
         if (isValueBlank(ComponentUtils.getStringValueToRender(context, maskedEntry))) {
             jb.entry("labelIsInField", true);
         } else {
@@ -117,13 +119,13 @@ public class MaskedEntryRenderer extends InputRenderer {
 
         encodeClientBehaviors(context, maskedEntry, jb);
 
-        if(!themeForms()) {
+        if (!themeForms()) {
             jb.entry("theme", false);
         }
 
 		jb.endMap().endArray().endFunction();
-		writer.write(jb.toString());
-	
+
+        writer.write(jb.toString());
 		writer.endElement("script");
 	}
 	
