@@ -19,13 +19,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.icefaces</groupId>
+    <groupId>org.icesoft</groupId>
     <artifactId>icemobile-jsp</artifactId>
     <version>1.2.0</version>
     <packaging>jar</packaging>
     <name>ICEmobile JSP component library</name>
     <url>http://www.icefaces.org</url>
-    <description>ICEmobile mobile component library.</description>
+    <description>ICEmobile mobile JSP component library.</description>
     <licenses>
         <license>
             <name>Apache License Version 2.0</name>
