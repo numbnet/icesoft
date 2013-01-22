@@ -209,6 +209,7 @@ function QTip(target, options, id, attr)
 	function createButton()
 	{
 		var button = options.content.title.button,
+            ariaEnabled = options.ariaEnabled,
 			isString = typeof button === 'string',
 			close = isString ? button : 'Close tooltip';
 
@@ -221,9 +222,9 @@ function QTip(target, options, id, attr)
 		else {
 			elements.button = $('<a />', {
 				'class': 'ui-state-default ui-tooltip-close ' + (options.style.widget ? '' : uitooltip+'-icon'),
-				'title': close,
-				'aria-label': close
+				'title': close
 			})
+            .attr('aria-label', function () { return ariaEnabled ? close : undefined; })
 			.prepend(
 				$('<span />', {
 					'class': 'ui-icon ui-icon-close',
@@ -234,7 +235,7 @@ function QTip(target, options, id, attr)
 
 		// Create button and setup attributes
 		elements.button.appendTo(elements.titlebar)
-			.attr('role', 'button')
+			.attr('role', function () { return ariaEnabled ? 'button' : undefined; })
 			.click(function(event) {
 				if(!tooltip.hasClass(disabled)) { self.hide(event); }
 				return FALSE;
@@ -258,9 +259,9 @@ function QTip(target, options, id, attr)
 		.append(
 			elements.title = $('<div />', {
 				'id': id,
-				'class': uitooltip + '-title',
-				'aria-atomic': TRUE
+				'class': uitooltip + '-title'
 			})
+            .attr('aria-atomic', function () { return options.ariaEnabled ? TRUE : undefined; })
 		)
 		.insertBefore(elements.content)
 
@@ -729,10 +730,13 @@ function QTip(target, options, id, attr)
 			var text = options.content.text,
 				title = options.content.title.text,
 				posOptions = options.position,
+                ariaEnabled = options.ariaEnabled,
 				callback = $.Event('tooltiprender');
 
 			// Add ARIA attributes to target
+            if (ariaEnabled) {
 			$.attr(target[0], 'aria-describedby', tooltipID);
+            }
 
 			// Create tooltip element
 			tooltip = elements.tooltip = $('<div/>', {
@@ -740,15 +744,15 @@ function QTip(target, options, id, attr)
 					'class': uitooltip + ' qtip ui-helper-reset ' + defaultClass + ' ' + options.style.classes + ' '+ uitooltip + '-pos-' + options.position.my.abbrev(),
 					'width': options.style.width || '',
 					'height': options.style.height || '',
-					'tracking': posOptions.target === 'mouse' && posOptions.adjust.mouse,
-
-					/* ARIA specific attributes */
-					'role': 'alert',
-					'aria-live': 'polite',
-					'aria-atomic': FALSE,
-					'aria-describedby': tooltipID + '-content',
-					'aria-hidden': TRUE
+					'tracking': posOptions.target === 'mouse' && posOptions.adjust.mouse
 				})
+                .attr({
+                    'role': function () { return ariaEnabled ? 'tooltip' : undefined; },
+                    'aria-live': function () { return ariaEnabled ? 'polite' : undefined; },
+                    'aria-atomic': function () { return ariaEnabled ? FALSE : undefined; },
+                    'aria-describedby': function () { return ariaEnabled ? tooltipID + '-content' : undefined; },
+                    'aria-hidden': function () { return ariaEnabled ? TRUE : undefined; }
+                })
 				.toggleClass(disabled, cache.disabled)
 				.data('qtip', self)
 				.appendTo(options.position.container)
@@ -756,9 +760,9 @@ function QTip(target, options, id, attr)
 					// Create content element
 					elements.content = $('<div />', {
 						'class': uitooltip + '-content',
-						'id': tooltipID + '-content',
-						'aria-atomic': TRUE
+						'id': tooltipID + '-content'
 					})
+                    .attr('aria-atomic', function () { return ariaEnabled ? TRUE : undefined; })
 				);
 
 			// Set rendered flag and prevent redundant redraw/reposition calls for now
@@ -953,7 +957,9 @@ function QTip(target, options, id, attr)
 			if(callback.isDefaultPrevented()){ return self; }
 
 			// Set ARIA hidden status attribute
+            if (options.ariaEnabled) {
 			$.attr(tooltip[0], 'aria-hidden', !!!state);
+            }
 
 			// Execute state specific properties
 			if(state) {
@@ -1347,7 +1353,9 @@ function QTip(target, options, id, attr)
 
 			if(self.rendered) {
 				tooltip.toggleClass(disabled, state);
+                if (options.ariaEnabled) {
 				$.attr(tooltip[0], 'aria-disabled', state);
+                }
 			}
 			else {
 				cache.disabled = !!state;

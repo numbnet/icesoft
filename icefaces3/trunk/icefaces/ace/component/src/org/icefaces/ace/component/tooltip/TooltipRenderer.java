@@ -45,6 +45,7 @@ import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.component.delegate.Delegate;
+import org.icefaces.util.EnvUtils;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -223,6 +224,8 @@ public class TooltipRenderer extends CoreRenderer {
 		.endMap();
 
         encodeClientBehaviors(facesContext, tooltip, jb);
+        jb.entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
+//        jb.entry("ariaEnabled", false);
 		jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());
 
