@@ -17,7 +17,6 @@
 package org.icemobile.samples.mediacast;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
@@ -34,6 +33,7 @@ import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Utils;
 
 /**
@@ -61,8 +61,7 @@ public class MediaController implements Serializable {
     @ManagedProperty(value="#{mediaStore}")
     private MediaStore mediaStore;
     
-    //static allows use from UploadServlet
-	@ManagedProperty(value="#{mediaHelper}")
+    @ManagedProperty(value="#{mediaHelper}")
 	private MediaHelper mediaHelper;
 
 	@ManagedProperty(value="#{mediaView}")
@@ -286,7 +285,8 @@ public class MediaController implements Serializable {
 	}
 	
 	public boolean isEnhancedBrowser(){
-	    return MobiJSFUtils.getClientDescriptor().isICEmobileContainer();
+	    ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+	    return client.isICEmobileContainer() || client.isSXRegistered();
 	}
 	
 
