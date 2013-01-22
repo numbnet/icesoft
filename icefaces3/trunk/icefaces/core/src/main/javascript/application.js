@@ -106,7 +106,7 @@ if (!window.ice.icefaces) {
                 }
                 cursor = cursor.parentNode;
             }
-            append(elementUpdateListeners, {identifier: id, handler: callback, ancestors: ancestorIDs.join('*')});
+            append(elementUpdateListeners, {identifier: id, handler: callback, ancestors: ('*' + ancestorIDs.join('*') + '*')});
         };
 
         function configurationOf(element) {
@@ -881,7 +881,7 @@ if (!window.ice.icefaces) {
                     var element = lookupElementById(id);
                     //test if inner element still exists, sometimes client side code can remove DOM fragments
                     if (element) {
-                        var updated = contains(idCallbackTuple.ancestors, updatedElementId);
+                        var updated = contains(idCallbackTuple.ancestors, '*' + updatedElementId + '*');
                         if (updated) {
                             var callback = idCallbackTuple.handler;
                             try {
