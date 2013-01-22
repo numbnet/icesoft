@@ -355,20 +355,20 @@
 	<includeBase3Resources dir="${theme.dir.path}/honeycomb" skin="honeycomb" />
 	<includeBase3Resources dir="${theme.dir.path}/ipad" skin="ipad" />
 	<includeBase3Resources dir="${theme.dir.path}/iphone" skin="iphone" />
+	
+    <replaceregexp match="(\/\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="">
+        <fileset dir="${build}/skins/in" includes="**/*.css"></fileset>
+    </replaceregexp>
 
 	<!-- Generate a single CSS file per skin -->
-	<concatskin name="android" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-	<replaceregexp file="${build}/skins/out/android/android.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
-	<concatskin name="honeycomb" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-	<replaceregexp file="${build}/skins/out/honeycomb/honeycomb.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
-	<concatskin name="iphone" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-	<replaceregexp file="${build}/skins/out/iphone/iphone.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
-	<concatskin name="bberry" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-	<replaceregexp file="${build}/skins/out/bberry/bberry.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
-	<concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-	<replaceregexp file="${build}/skins/out/ipad/ipad.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
-    <concatskin name="archaic" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-    <replaceregexp file="${build}/skins/out/archaic/archaic.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
+    <concatskin name="android" inputdir="${build}/skins/in" outputdir="${build}/skins/out"/>
+    <concatskin name="honeycomb" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+    <concatskin name="iphone" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+    <concatskin name="bberry" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+    <concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	<concatskin name="archaic" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	
+    
 
 	<!-- Copy all resources to the skins resource library -->
 	<copy todir="${resources}/${skins.lib}">
