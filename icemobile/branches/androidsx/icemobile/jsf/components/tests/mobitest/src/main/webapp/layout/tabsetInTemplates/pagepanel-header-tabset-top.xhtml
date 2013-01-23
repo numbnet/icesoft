@@ -1,0 +1,41 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      template="/templates/pagepanel-header.xhtml">
+    <ui:param name="parentHeader" value="true"/>
+    <ui:param name="parentFooter" value="false"/>
+    <ui:param name="orientation" value="top"/>
+    <ui:define name="head">
+    </ui:define>
+    <ui:define name="large">
+        <mobi:splitPane scrollable="true" columnDivider="30">
+            <f:facet name="left">
+                <h2>Menu</h2>
+            </f:facet>
+            <f:facet name="right">
+                <ui:include src="tabset-content.xhtml"/>
+            </f:facet>
+        </mobi:splitPane>
+    </ui:define>
+    <ui:define name="small">
+        <ui:include src="tabset-content.xhtml"/>
+    </ui:define>
+</ui:composition>
