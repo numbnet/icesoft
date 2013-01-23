@@ -87,7 +87,7 @@ public class NotificationPanelRenderer extends CoreRenderer {
 		writer.write("ice.ace.jq(document).ready(function(){");
 
         JSONBuilder json = JSONBuilder.create();
-        json.initialiseVar(this.resolveWidgetVar(bar))
+        json.initialiseWindowVar(this.resolveWidgetVar(bar))
             .beginFunction("ice.ace.create")
             .item("NotificationBar")
             .beginArray()

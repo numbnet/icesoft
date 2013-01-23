@@ -71,7 +71,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.write("ice.ace.jq(function() {");
 
         JSONBuilder jb = JSONBuilder.create();
-        jb.initialiseVar(resolveWidgetVar(dialog))
+        jb.initialiseWindowVar(resolveWidgetVar(dialog))
           .beginFunction("ice.ace.create")
           .item("Dialog")
           .beginArray()

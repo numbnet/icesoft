@@ -16,8 +16,6 @@
 
 package org.icefaces.ace.util;
 
-import java.util.ArrayList;
-
 /**
  * Utility API that builds the parameter strings, performs param escaping.
  * Output is a JSON string as specified at <a href="http://www.json.org/">json.org</a>.
@@ -38,6 +36,12 @@ public class JSONBuilder {
     
     public JSONBuilder initialiseVar(String varName) {
         params.append("var ");
+        params.append(varName);
+        params.append(" = ");
+        return this;
+    }
+
+    public JSONBuilder initialiseWindowVar(String varName) {
         params.append(varName);
         params.append(" = ");
         return this;
