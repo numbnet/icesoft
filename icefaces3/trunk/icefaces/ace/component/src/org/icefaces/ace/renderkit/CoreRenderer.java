@@ -365,7 +365,7 @@ public class CoreRenderer extends Renderer {
                //System.out.println("CoreRenderer.decodeBehaviors()  behaviorSource: " + behaviorSource);
                //System.out.println("CoreRenderer.decodeBehaviors()  clientId: " + clientId);
 
-               if(behaviorSource != null && behaviorSource.startsWith(clientId)) {
+               if(behaviorSource != null && behaviorSource.equals(clientId)) {
                    for (ClientBehavior behavior: behaviorsForEvent) {
                        behavior.decode(context, component);
                    }
