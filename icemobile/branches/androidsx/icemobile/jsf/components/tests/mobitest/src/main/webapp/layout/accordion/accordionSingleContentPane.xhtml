@@ -1,0 +1,137 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>Accordion Single Content Pane</title>
+    <mobi:deviceResource   includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}" />
+</h:head>
+
+<h:body>
+
+
+      <h1> test page for accordion single ontentPane which is client false so must go to server</h1>
+    <p>autoHeight is true</p>
+      <br />
+     <h:form id="contentForm">
+       <mobi:accordion id="test1"
+                       selectedId="panel1"
+                       style="#{layoutBean.style}"
+                       disabled="#{layoutBean.disabled}"
+                       styleClass="#{layoutBean.styleClass}"
+                       autoHeight="#{layoutBean.autoHeight}">
+              <mobi:contentPane id="panel1" title="panel1">
+                  <div id="inner1">
+                      <fieldset title="panel1">
+                      <legend>Panel1</legend>
+                      <h3> header for panel 1</h3>
+                       <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                           <img width="85" height="150"
+                          src="../../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                      <p>
+                          some more stuff to make sure that the heights
+                          of contentPanes are not equal
+                      </p>
+                  </fieldset>
+                  </div>
+              </mobi:contentPane>
+       </mobi:accordion>
+      </h:form>
+        <h1> test page for accordion single contentPane which is client true should be no submit</h1>
+      <br />
+     <h:form id="content2Form">
+       <mobi:accordion id="test2"
+                       selectedId="panel1"
+                       style="#{layoutBean.style}"
+                       disabled="#{layoutBean.disabled}"
+                       styleClass="#{layoutBean.styleClass}"
+                       autoHeight="#{layoutBean.autoHeight}">
+              <mobi:contentPane id="panel1" title="panel1ClientTrue" client="true">
+                  <div id="inner1">
+                      <fieldset title="panel1">
+                      <legend>Panel1</legend>
+                      <h3> header for panel 1</h3>
+                       <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                           <img width="85" height="150"
+                          src="../../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                      <p>
+                          some more stuff to make sure that the heights
+                          of contentPanes are not equal
+                      </p>
+                  </fieldset>
+                  </div>
+              </mobi:contentPane>
+       </mobi:accordion>
+      </h:form>
+      <h:form id="outputfrm">
+      <h3>DYNAMIC UPDATES</h3>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="autoHeight" value="AutoHeight:"/>
+                <mobi:flipswitch id="autoHeight" value="#{layoutBean.autoHeight}" singleSubmit="true"/>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:"/>
+                <mobi:flipswitch id="disabled" value="#{layoutBean.disabled}" singleSubmit="true"/>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="sc" value="StyleClass"/>
+                <mobi:inputText id="sc" value="#{layoutBean.styleClass}" singleSubmit="true" />
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="s" value="Style"/>
+                <mobi:inputText id="s" value="#{layoutBean.style}" singleSubmit="true" />
+           </mobi:fieldsetRow>
+      <h3>RESULTS:</h3>
+
+            <mobi:fieldsetRow>
+                <h:outputLabel for="ah" value="AutoHeight"/>
+                 <h:outputText id="ah" value="#{layoutBean.autoHeight}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="disabledOut" value="Disabled:"/>
+                <h:outputText id="disabledOut" value="#{layoutBean.disabled}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="scOut" value="StyleClass:"/>
+                <h:outputText id="scOut" value="#{layoutBean.styleClass}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="sOut" value="Style:"/>
+                <h:outputText id="sOut" value="#{layoutBean.style}"/>
+            </mobi:fieldsetRow>
+     </h:form>
+
+    <footer>
+
+        <a href="../../layoutComponents.html">index page</a>
+    </footer>
+
+</h:body>
+</html>
