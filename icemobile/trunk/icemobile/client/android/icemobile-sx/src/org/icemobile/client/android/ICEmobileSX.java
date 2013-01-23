@@ -24,6 +24,9 @@ import java.util.Enumeration;
 import java.util.TreeSet;
 import java.util.Arrays;
 import java.util.Vector;
+import java.util.Map;
+import java.util.HashMap;
+import java.net.URLDecoder;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -31,10 +34,14 @@ import android.app.ProgressDialog;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 import android.widget.EditText;
+import android.widget.Button;
+import android.widget.TextView;
 import android.content.DialogInterface;
 import android.webkit.HttpAuthHandler;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.content.res.Configuration;
 import android.view.Window;
@@ -68,6 +75,7 @@ import android.view.View;
 import android.webkit.DownloadListener;
 import android.net.Uri;
 import android.content.ActivityNotFoundException;
+import android.provider.Browser;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.c2dm.C2dmRegistrationHandler;
@@ -95,9 +103,10 @@ import java.lang.reflect.Field;
 
 import android.graphics.Paint;
 
-public class ICEmobileContainer extends Activity
+public class ICEmobileSX extends Activity
     implements SharedPreferences.OnSharedPreferenceChangeListener,
 	       ConnectionChangeListener, C2dmRegistrationHandler {
+    private static final String LOG_TAG = "ICEmobileSX";
 
     /* Container configuration constants */
     protected static final String HOME_URL = "http://www.icemobile.org/demos.html";
@@ -163,6 +172,55 @@ public class ICEmobileContainer extends Activity
     private String authPw;
     private String mUserAgentString; 
     private boolean pendingCloudPush;
+    private TextView mDebugTextView;
+    private Uri mReturnUri;
+
+class TestButton extends Button {
+    boolean isClicked = false;
+
+    OnClickListener clicker = new OnClickListener() {
+        public void onClick(View v) {
+            if (isClicked) {
+                setText("clicked");
+            } else {
+                setText("not clicked");
+            }
+            isClicked = !isClicked;
+            if (null == mReturnUri)  {
+                mReturnUri = Uri.parse("http://www.google.com");
+            }
+            Intent browserIntent = new 
+                    Intent(Intent.ACTION_VIEW, 
+                    mReturnUri);
+            Context context = getContext();
+            browserIntent.putExtra(
+                    Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+            startActivity(browserIntent);
+        }
+    };
+
+    public TestButton(Context ctx) {
+        super(ctx);
+        setText("return to Chrome");
+        setOnClickListener(clicker);
+    }
+}
+
+    public Map parseQuery(Uri uri)  {
+        HashMap parts = new HashMap();
+        String uriString = uri.toString();
+        String fullCommand = uriString.substring("icemobile://".length());
+//        parts.put("fullCommand", fullCommand);
+        String[] nvpairs = fullCommand.split("&");
+        for (String pair : nvpairs)  {
+            int index = pair.indexOf("=");
+            String name = URLDecoder.decode(pair.substring(0, index));
+            String value = URLDecoder.decode(pair.substring(index + 1));
+            parts.put(name, value);
+        }
+        return parts;
+        
+    }
 
     /**
      * Called when the activity is first created.
@@ -178,40 +236,74 @@ public class ICEmobileContainer extends Activity
         boolean bound = self.bindService(bindingIntent, mConnection,
                                          Context.BIND_AUTO_CREATE);
 
-        /* Establish view */
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.main);
 
-        /* Initialize the WebView */
-        mWebView = (WebView) findViewById(R.id.webview);
-        mWebView.clearCache(true);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.getSettings().setPluginsEnabled(true);
-        mWebView.getSettings().setDomStorageEnabled(true);
-        mWebView.setWebViewClient(new ICEfacesWebViewClient());
-        mWebView.setWebChromeClient(new ICEfacesWebChromeClient());
-        mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        Log.e("ICEmobile", "User Agent = " + mWebView.getSettings().getUserAgentString());
+        Intent intent = getIntent();
+        Uri uri = intent.getData();
+Log.d(LOG_TAG, "URL launched " + uri);
 
-        mUserAgentString = mWebView.getSettings().getUserAgentString();
+
+        Bundle extras = getIntent().getExtras();
+        if (null != extras) {
+//            mFileName = extras.getString(MediaStore.EXTRA_OUTPUT);
+        }
+
+        LinearLayout ll = new LinearLayout(this);
+        TestButton testButton = new TestButton(this);
+        ll.addView(testButton,
+            new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                0));
+        mDebugTextView = new TextView(this);
+        Map commandParts = parseQuery(uri);
+        mReturnUri = Uri.parse((String) commandParts.get("r"));
+        mDebugTextView.setText(commandParts.toString());
+        ll.addView(mDebugTextView,
+            new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                0));
+
+        setContentView(ll);
+
         assetManager = getAssets();
         fileLoader = new FileLoader(assetManager);
-        mWebView.addJavascriptInterface(fileLoader, "ICEassets");
 
-        mWebView.setDownloadListener(new DownloadListener() {
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition,
-                                        String mimeType, long size) {
-                Intent viewIntent = new Intent(Intent.ACTION_VIEW);
-                viewIntent.setDataAndType(Uri.parse(url), mimeType);
-                try {
-                    startActivity(viewIntent);
-                } catch (ActivityNotFoundException ex) {
-                    Log.e("ICEcontainer", "Couldn't find activity to view mimetype: " + mimeType);
-                }
-            }
-        });
+
+//        /* Establish view */
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        setContentView(R.layout.main);
+//
+//        /* Initialize the WebView */
+//        mWebView = (WebView) findViewById(R.id.webview);
+//        mWebView.clearCache(true);
+//        mWebView.getSettings().setJavaScriptEnabled(true);
+//        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+//        mWebView.getSettings().setPluginsEnabled(true);
+//        mWebView.getSettings().setDomStorageEnabled(true);
+//        mWebView.setWebViewClient(new ICEfacesWebViewClient());
+//        mWebView.setWebChromeClient(new ICEfacesWebChromeClient());
+//        mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+//        Log.e("ICEmobile", "User Agent = " + mWebView.getSettings().getUserAgentString());
+//
+//        mUserAgentString = mWebView.getSettings().getUserAgentString();
+//        assetManager = getAssets();
+//        fileLoader = new FileLoader(assetManager);
+//        mWebView.addJavascriptInterface(fileLoader, "ICEassets");
+//
+//        mWebView.setDownloadListener(new DownloadListener() {
+//            public void onDownloadStart(String url, String userAgent,
+//                                        String contentDisposition,
+//                                        String mimeType, long size) {
+//                Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+//                viewIntent.setDataAndType(Uri.parse(url), mimeType);
+//                try {
+//                    startActivity(viewIntent);
+//                } catch (ActivityNotFoundException ex) {
+//                    Log.e("ICEcontainer", "Couldn't find activity to view mimetype: " + mimeType);
+//                }
+//            }
+//        });
 
         /* Establish initial container configuration */
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -254,9 +346,9 @@ public class ICEmobileContainer extends Activity
         newURL = prefs.getString("url", HOME_URL);
         setGallery(prefs.getBoolean("gallery", false));
 
-        progressDialog = new ProgressDialog(ICEmobileContainer.this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        showLoadProgress = prefs.getBoolean(PREFERENCE_PROGRESS_BAR_KEY, false);
+//        progressDialog = new ProgressDialog(ICEmobileContainer.this);
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        showLoadProgress = prefs.getBoolean(PREFERENCE_PROGRESS_BAR_KEY, false);
     }
 
     @Override
@@ -273,13 +365,13 @@ public class ICEmobileContainer extends Activity
                 case HISTORY_CODE:
                     newURL = data.getStringExtra("url");
                     historyManager.add(newURL);
-                    loadUrl();
+//                    loadUrl();
                     break;
                 case SCAN_CODE:
                     String scanResult = data.getStringExtra(Intents.Scan.RESULT);
-                    utilInterface.loadURL(
-                        "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId, '" +
-                            scanResult + "');");
+//                    utilInterface.loadURL(
+//                        "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId, '" +
+//                            scanResult + "');");
                     break;
                 case RECORD_CODE:
                     mAudioRecorder.gotAudio(data);
@@ -294,7 +386,7 @@ public class ICEmobileContainer extends Activity
     @Override
 	protected void onResume() {
         super.onResume();
-        utilInterface.loadURL("javascript:ice.push.connection.resumeConnection();");
+//        utilInterface.loadURL("javascript:ice.push.connection.resumeConnection();");
         if (!newURL.equals(currentURL)) {
             loadUrl();
         } else {
@@ -302,7 +394,7 @@ public class ICEmobileContainer extends Activity
 	    if (pendingCloudPush) {
 		pendingCloudPush = false;
 		mC2dmHandler.clearPendingNotification();
-		utilInterface.loadURL("javascript:ice.mobiRefresh();");
+//		utilInterface.loadURL("javascript:ice.mobiRefresh();");
 	    }
 	}
     }
@@ -311,7 +403,7 @@ public class ICEmobileContainer extends Activity
     protected void onPause() {
         super.onPause();
         mAudioPlayer.release();
-        utilInterface.loadURL("javascript:ice.push.connection.pauseConnection();");
+//        utilInterface.loadURL("javascript:ice.push.connection.pauseConnection();");
     }
 
     @Override
@@ -424,8 +516,8 @@ public class ICEmobileContainer extends Activity
 
     protected void setCloudNotificationId() {
         //Log.e("ICEmobile", "Setting cloud push: " + getCloudNotificationId());
-        utilInterface.loadURL("javascript:if( ice.push ){ ice.push.parkInactivePushIds('" +
-                                  getCloudNotificationId() + "');}");
+//        utilInterface.loadURL("javascript:if( ice.push ){ ice.push.parkInactivePushIds('" +
+//                                  getCloudNotificationId() + "');}");
     }
 
     protected String getCloudNotificationId() {
@@ -461,13 +553,13 @@ public class ICEmobileContainer extends Activity
     private class ICEfacesWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
+//            view.loadUrl(url);
             return true;
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            view.loadUrl("javascript:eval(' ' + window.ICEassets.loadAssetFile('native-interface.js'));");
+//            view.loadUrl("javascript:eval(' ' + window.ICEassets.loadAssetFile('native-interface.js'));");
             setCloudNotificationId();
             utilInterface.setUrl(url);
             historyManager.add(url);
@@ -574,60 +666,60 @@ public class ICEmobileContainer extends Activity
     }
 
     private void loadUrl() {
-        currentURL = newURL;
-        utilInterface.setUrl(currentURL);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("url", currentURL);
-        editor.commit();
-        mWebView.loadUrl(currentURL);
-        historyManager.add(currentURL);
+//        currentURL = newURL;
+//        utilInterface.setUrl(currentURL);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString("url", currentURL);
+//        editor.commit();
+//        mWebView.loadUrl(currentURL);
+//        historyManager.add(currentURL);
     }
 
     private void includeUtil() {
         utilInterface = new UtilInterface(this, mWebView, mUserAgentString);
-        mWebView.addJavascriptInterface(utilInterface, "ICEutil");
+//        mWebView.addJavascriptInterface(utilInterface, "ICEutil");
     }
 
     private void includeCamera() {
         mCameraHandler = new CameraHandler(this, mWebView, utilInterface, TAKE_PHOTO_CODE);
         mCameraInterface = new CameraInterface(mCameraHandler);
-        mWebView.addJavascriptInterface(mCameraInterface, "ICEcamera");
+//        mWebView.addJavascriptInterface(mCameraInterface, "ICEcamera");
     }
 
     private void includeContacts() {
 
 //        mContactListHandler = new ContactListHandler( this, utilInterface);
         mContactListInterface = new ContactListInterface(utilInterface, this, getContentResolver());
-        mWebView.addJavascriptInterface(mContactListInterface, "ICEContacts");
+//        mWebView.addJavascriptInterface(mContactListInterface, "ICEContacts");
     }
 
     private void includeARView() {
         mARViewHandler = new ARViewHandler(this, mWebView, utilInterface, ARVIEW_CODE);
         mARViewInterface = new ARViewInterface(mARViewHandler);
-        mWebView.addJavascriptInterface(mARViewInterface, "ARView");
+//        mWebView.addJavascriptInterface(mARViewInterface, "ARView");
     }
 
     private void includeQRCode() {
         mCaptureInterface = new CaptureJSInterface(this, SCAN_CODE, SCAN_ID);
-        mWebView.addJavascriptInterface(mCaptureInterface, "ICEqrcode");
+//        mWebView.addJavascriptInterface(mCaptureInterface, "ICEqrcode");
     }
 
     private void includeLogger() {
         mLoggerInterface = new JavascriptLoggerInterface();
-        mWebView.addJavascriptInterface(mLoggerInterface, "ICElogger");
+//        mWebView.addJavascriptInterface(mLoggerInterface, "ICElogger");
     }
 
     private void includeVideo() {
         mVideoHandler = new VideoHandler(this, mWebView, utilInterface, TAKE_VIDEO_CODE);
         mVideoInterface = new VideoInterface(mVideoHandler);
-        mWebView.addJavascriptInterface(mVideoInterface, "ICEvideo");
+//        mWebView.addJavascriptInterface(mVideoInterface, "ICEvideo");
     }
 
     private void includeAudio() {
         mAudioRecorder = new AudioRecorder(this, utilInterface, RECORD_CODE);
         mAudioPlayer = new AudioPlayer();
         mAudioInterface = new AudioInterface(mAudioRecorder, mAudioPlayer);
-        mWebView.addJavascriptInterface(mAudioInterface, "ICEaudio");
+//        mWebView.addJavascriptInterface(mAudioInterface, "ICEaudio");
     }
     
     private void includeC2dm() {
@@ -759,11 +851,11 @@ public class ICEmobileContainer extends Activity
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-            case PROGRESS_DIALOG:
-                progressDialog = new ProgressDialog(ICEmobileContainer.this);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setMessage("Loading...");
-                return progressDialog;
+//            case PROGRESS_DIALOG:
+//                progressDialog = new ProgressDialog(ICEmobileContainer.this);
+//                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//                progressDialog.setMessage("Loading...");
+//                return progressDialog;
             case AUTH_DIALOG:
                 AlertDialog.Builder builder;
                 AlertDialog authDialog;
@@ -803,7 +895,7 @@ public class ICEmobileContainer extends Activity
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName comp, IBinder service) {
             connectionChangeService = ((ConnectionChangeService.LocalBinder) service).getService();
-            isNetworkUp = connectionChangeService.setListener(ICEmobileContainer.this,
+            isNetworkUp = connectionChangeService.setListener(ICEmobileSX.this,
                                                               NETWORK_DOWN_DELAY, self);
             if (!isNetworkUp) {
                 networkIsDown();
@@ -838,7 +930,7 @@ public class ICEmobileContainer extends Activity
                 if (networkDialog != null) {
                     networkDialog.hide();
                 }
-                mWebView.reload();
+//                mWebView.reload();
             }
         });
     }
