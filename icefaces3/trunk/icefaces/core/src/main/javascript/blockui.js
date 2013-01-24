@@ -68,10 +68,24 @@
         }
     }
 
+    function isBlurEvent() {
+        var c = arguments.callee.caller;
+        while (c) {
+            if (c == namespace.fullSubmit) {
+                var eventArgument = c.arguments[2];
+                return eventArgument.type == 'blur';
+            }
+            c = c.arguments.callee.caller;
+        }
+
+        return false;
+    }
+
     var stopBlockingUI = noop;
-    namespace.onBeforeSubmit(function(source,isClientRequest) {
+    namespace.onBeforeSubmit(function(source, isClientRequest) {
         //Only block the UI for client-initiated requests (not push requests)
-        if (isClientRequest && isBlockUIEnabled(source)) {
+        //do not block submit triggered by the 'blur' event -- most probably it is issued by a partial submits
+        if (isClientRequest && isBlockUIEnabled(source) && not(isBlurEvent())) {
             debug(logger, 'blocking UI');
             var blockUIOverlay = Overlay();
             var rollbacks = inject(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
