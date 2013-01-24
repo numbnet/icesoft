@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Vector;
 import java.util.Map;
 import java.util.HashMap;
+import java.net.URLEncoder;
 import java.net.URLDecoder;
 
 import android.app.Activity;
@@ -76,6 +77,7 @@ import android.webkit.DownloadListener;
 import android.net.Uri;
 import android.content.ActivityNotFoundException;
 import android.provider.Browser;
+import android.provider.MediaStore;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.c2dm.C2dmRegistrationHandler;
@@ -174,6 +176,9 @@ public class ICEmobileSX extends Activity
     private boolean pendingCloudPush;
     private TextView mDebugTextView;
     private Uri mReturnUri;
+    private Uri mPOSTUri;
+    private String mCurrentId;
+    private String mCurrentMediaFile;
 
 class TestButton extends Button {
     boolean isClicked = false;
@@ -274,8 +279,10 @@ Log.d(LOG_TAG, "processing command " + command);
             commandName = command.substring(0, queryIndex);
             String commandParams = command.substring(queryIndex + 1);
             Map params = parseQuery(commandParams);
+            mCurrentId = (String) params.get("id");
 
             mReturnUri = Uri.parse((String) commandParts.get("r"));
+            mPOSTUri = Uri.parse((String) commandParts.get("u"));
         }
 
         mDebugTextView.setText(commandName + " :: " + commandParts.toString());
@@ -376,22 +383,38 @@ Log.d(LOG_TAG, "processing command " + command);
     }
 
     public void dispatch(String command, Map params)  {
+//        mCurrentId = (String) params.get("id");
         if ("camera".equals(command))  {
             String path = mCameraInterface
-                .shootPhoto((String) params.get("id"), "");
+                .shootPhoto(mCurrentId, "");
+            mCurrentMediaFile = path;
 Log.d(LOG_TAG, "dispatched camera " + path);
         }
+    }
+
+    public String encodeMedia(String id, String path)  {
+        return "file-" + id + "=" + URLEncoder.encode(path);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
-Log.d(LOG_TAG, "onActivityResult " + requestCode);
+Log.d(LOG_TAG, "onActivityResult " + requestCode + " " + data);
+        //better to store return data in the intent than keep member
+        //fields on this class
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TAKE_PHOTO_CODE:
+Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
                     mCameraHandler.gotPhoto();
+//                    String encodedForm = encodeMedia(mCurrentId,
+//                            data.getStringExtra(MediaStore.EXTRA_OUTPUT));
+                    String encodedForm = encodeMedia(mCurrentId,
+                            mCurrentMediaFile);
+                    utilInterface.setUrl(mPOSTUri.toString());
+                    utilInterface.submitForm("", encodedForm);
+Log.e(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
                     break;
                 case TAKE_VIDEO_CODE:
                     mVideoHandler.gotVideo(data);
