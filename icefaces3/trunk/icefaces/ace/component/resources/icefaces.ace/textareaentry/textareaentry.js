@@ -18,6 +18,7 @@ ice.ace.TextAreaEntry = function(id, cfg) {
     var jQ = ice.ace.jq;
     var inputId = id + "_input";
     var labelName = id + "_label";
+    var maxlength = cfg.maxlength;
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(inputId);
@@ -45,6 +46,13 @@ ice.ace.TextAreaEntry = function(id, cfg) {
     this.jq.blur(function() {
         setFocus();
     });
+    if (maxlength > 0) {
+        this.jq.on("keyup change", function (e) {
+            if (this.value.length > maxlength) {
+                this.value = this.value.substring(0, maxlength);
+            }
+        });
+    }
     if (this.cfg.behaviors) {
         ice.ace.attachBehaviors(this.jq, this.cfg.behaviors);
     }
