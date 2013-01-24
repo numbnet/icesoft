@@ -206,18 +206,20 @@ class TestButton extends Button {
     }
 }
 
-    public Map parseQuery(Uri uri)  {
+    public Map parseQuery(String uri)  {
         HashMap parts = new HashMap();
-        String uriString = uri.toString();
-        String fullCommand = uriString.substring("icemobile://".length());
-//        parts.put("fullCommand", fullCommand);
-        String[] nvpairs = fullCommand.split("&");
+        String[] nvpairs = uri.split("&");
         for (String pair : nvpairs)  {
             int index = pair.indexOf("=");
-            String name = URLDecoder.decode(pair.substring(0, index));
-            String value = URLDecoder.decode(pair.substring(index + 1));
-            parts.put(name, value);
+            if (-1 == index)  {
+                parts.put(pair, null);
+            } else {
+                String name = URLDecoder.decode(pair.substring(0, index));
+                String value = URLDecoder.decode(pair.substring(index + 1));
+                parts.put(name, value);
+            }
         }
+
         return parts;
         
     }
@@ -255,9 +257,28 @@ Log.d(LOG_TAG, "URL launched " + uri);
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 0));
         mDebugTextView = new TextView(this);
-        Map commandParts = parseQuery(uri);
-        mReturnUri = Uri.parse((String) commandParts.get("r"));
-        mDebugTextView.setText(commandParts.toString());
+
+        Map commandParts = new HashMap();
+        String commandName = null;
+
+        if (null != uri)  {
+            String uriString = uri.toString();
+            String fullCommand = uriString.substring("icemobile://".length());
+            commandParts = parseQuery(fullCommand);
+
+Log.d(LOG_TAG, "processing commandParts " + commandParts);
+            String command = (String) commandParts.get("c");
+Log.d(LOG_TAG, "processing command " + command);
+
+            int queryIndex = command.indexOf("?");
+            commandName = command.substring(0, queryIndex);
+            String commandParams = command.substring(queryIndex + 1);
+            Map params = parseQuery(commandParams);
+
+            mReturnUri = Uri.parse((String) commandParts.get("r"));
+        }
+
+        mDebugTextView.setText(commandName + " :: " + commandParts.toString());
         ll.addView(mDebugTextView,
             new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -349,11 +370,24 @@ Log.d(LOG_TAG, "URL launched " + uri);
 //        progressDialog = new ProgressDialog(ICEmobileContainer.this);
 //        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 //        showLoadProgress = prefs.getBoolean(PREFERENCE_PROGRESS_BAR_KEY, false);
+        if (null != commandName)  {
+            dispatch(commandName, commandParts);
+        }
+    }
+
+    public void dispatch(String command, Map params)  {
+        if ("camera".equals(command))  {
+            String path = mCameraInterface
+                .shootPhoto((String) params.get("id"), "");
+Log.d(LOG_TAG, "dispatched camera " + path);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
+Log.d(LOG_TAG, "onActivityResult " + requestCode);
+
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TAKE_PHOTO_CODE:
