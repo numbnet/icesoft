@@ -40,7 +40,14 @@ public class MultipartFacesServlet extends HttpServlet {
         ServletContext servletContext = request.getServletContext();
         RequestDispatcher facesDispatcher = servletContext
                 .getNamedDispatcher("Faces Servlet");
-        facesDispatcher.forward(request, response);
+        if( null == facesDispatcher ){
+            log.warning("Missing Faces Servlet. Please configure the Faces " +
+            		"Servlet in the web.xml for use with the ICEmobile " +
+            		"MultipartFacesServlet.");
+        }
+        else{
+            facesDispatcher.forward(request, response);
+        }
     }
 
 }
