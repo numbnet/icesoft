@@ -110,7 +110,7 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
 
     public void release(){
         super.release();
-        LOG.info("release Fragment");
+        LOG.finest("release Fragment");
         this.writer= null;
         this.renderer=null;
     }
