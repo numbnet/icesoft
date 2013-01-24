@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.annotation.MultipartConfig;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @MultipartConfig
@@ -41,9 +40,9 @@ public class MultipartFacesServlet extends HttpServlet {
         RequestDispatcher facesDispatcher = servletContext
                 .getNamedDispatcher("Faces Servlet");
         if( null == facesDispatcher ){
-            log.warning("Missing Faces Servlet. Please configure the Faces " +
-            		"Servlet in the web.xml for use with the ICEmobile " +
-            		"MultipartFacesServlet.");
+            throw new ServletException("Missing Faces Servlet. Please configure the Faces " +
+                    "Servlet in the web.xml for use with the ICEmobile " +
+                    "MultipartFacesServlet.");
         }
         else{
             facesDispatcher.forward(request, response);
