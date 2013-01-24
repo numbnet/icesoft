@@ -41,3 +41,17 @@
         </editor-class>
     </property-extension>
 </property>
+<property>
+    <description>
+        Advisory title information about markup elements generated for
+        this component.
+    </description>
+    <property-name>title</property-name>
+    <property-extension>
+        <category>APPEARANCE</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+        

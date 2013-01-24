@@ -155,6 +155,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         int radioIndex = ((Integer) uiComponent.getAttributes().get("index")).intValue();
         if (radioIndex < 0) radioIndex = 0;
         if (radioIndex >= selectItemList.size()) radioIndex = selectItemList.size() - 1;
+        String title = (String) uiComponent.getAttributes().get("title");
         SelectItem selectItem = (SelectItem) selectItemList.get(radioIndex);
 
         String selectOneClientId = selectOne.getClientId(facesContext);
@@ -189,6 +190,9 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
             submittedValue, componentValue))
         {
             input.setAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR);
+        }
+        if (title != null) {
+            input.setAttribute(HTML.TITLE_ATTR, title);
         }
         addJavaScript(facesContext, selectOne, input, excludes);
 
