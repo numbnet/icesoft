@@ -20,6 +20,7 @@ import org.icefaces.ace.renderkit.InputRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.ace.event.TextChangeEvent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -51,6 +52,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		autoCompleteEntry.setPopulateList(false);
 		autoCompleteEntry.setItemList(null);
         Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
+		KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, requestMap);
         String clientId = autoCompleteEntry.getClientId(facesContext);
         String text = (String) requestMap.get(clientId + "_input");
 		String oldText = (String) autoCompleteEntry.getText();
@@ -59,25 +61,23 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			if (autoCompleteEntry.isCaseSensitive()) {
 				if (!text.equals(oldText)) {
 					autoCompleteEntry.setPopulateList(true);
-					// queue text change event
+					autoCompleteEntry.queueEvent(new TextChangeEvent(autoCompleteEntry, text, oldText, keyEvent.getKeyCode()));
 				}
 			} else {
 				if (!text.equalsIgnoreCase(oldText)) {
 					autoCompleteEntry.setPopulateList(true);
-					// queue text change event
+					autoCompleteEntry.queueEvent(new TextChangeEvent(autoCompleteEntry, text, oldText, keyEvent.getKeyCode()));
 				}			
 			}
 			if ("".equals(text) && oldText == null) {
 				autoCompleteEntry.setPopulateList(false);
 			}
-			//autoCompleteEntry.setSubmittedValue(text);
 			autoCompleteEntry.setText(text);
         }
 		
-        KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, requestMap);
 		boolean isEventSource = false;
 		Object sourceId = requestMap.get("ice.event.captured");
-        if (sourceId != null && sourceId.toString().equals(clientId + "_input")) {
+        if (sourceId != null && (sourceId.toString().equals(clientId) || sourceId.toString().equals(clientId + "_input"))) {
 			isEventSource = true;
         }
         if (isEventSource) {
@@ -89,6 +89,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			}
         } else {
 			autoCompleteEntry.setPopulateList(false);
+			autoCompleteEntry.setSubmittedValue(text);
 		}
 		if (keyEvent.getKeyCode() == KeyEvent.TAB) {
 			autoCompleteEntry.setPopulateList(false);

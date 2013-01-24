@@ -28,6 +28,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.el.ValueExpression;
+import javax.el.MethodExpression;
 
 import java.util.List;
 
@@ -121,6 +122,11 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
 	@Property(tlddoc = "Boolean value that indicates whether the autocomplete functionality should be done on the client or on the server. Client-side mode can be faster, as no round trips to the server need to be made. However, if the list of possible results is too large, the browser might become slower, since the entire list has to be stored in the client as HTML nodes. It is recommended not to use lists of more than 1000 items when using the client-side mode.", defaultValue="false")
 	private boolean clientSide;
+	
+    @Property(
+    	expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.event.TextChangeEvent",
+    	tlddoc = "MethodExpression representing a text change listener method that will be notified when the text of the input field changes or when the user presses other keys. This is different from a value change event in that in this case the user has not yet given a definite input and is just typing strings to to obtain lists of possible values. The value change event differs in that it only fires once the user has selected a value from the list or has pressed 'enter' on the input field. The expression must evaluate to a public method that takes a org.icefaces.ace.event.TextChageEvent parameter, with a return type of void.")
+    private MethodExpression textChangeListener;
 
     @Field(defaultValue="false")
     private Boolean populateList;
