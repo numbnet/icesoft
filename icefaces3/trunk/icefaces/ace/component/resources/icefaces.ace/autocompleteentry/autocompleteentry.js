@@ -297,6 +297,7 @@ ice.ace.Autocompleter.prototype = {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
 					setFocus('');
+					return;
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
@@ -304,6 +305,8 @@ ice.ace.Autocompleter.prototype = {
 						return false;
 					}
                     this.getUpdatedChoices(true, event, -1);
+					event.stopPropagation();
+					event.preventDefault();
                     return;
 				case ice.ace.Autocompleter.keys.KEY_UP:
                 case ice.ace.Autocompleter.keys.KEY_DOWN:
@@ -316,6 +319,7 @@ ice.ace.Autocompleter.prototype = {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
 					setFocus('');
+					return;
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
@@ -474,6 +478,8 @@ ice.ace.Autocompleter.prototype = {
 		setFocus('');
 		if (this.ajaxBlur) {
 			if (this.blurObserver) clearTimeout(this.blurObserver);
+			this.ajaxBlur.params = this.ajaxBlur.params || {};
+			this.ajaxBlur.params[this.id + '_hardSubmit'] = true;
 			var self = this;
 			this.blurObserver = setTimeout(function() { ice.ace.ab(self.ajaxBlur); }, 200);
 		}
@@ -720,7 +726,11 @@ ice.ace.Autocompleter.prototype = {
 				this.clientSideModeUpdate();
 			}
 			if (this.ajaxSubmit) {
-				ice.ace.ab(this.ajaxSubmit);
+				var ajaxCfg = {};
+				var options = {params: {}};
+				options.params['ice.event.keycode'] = event.keyCode;
+				ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
+				ice.ace.ab(ajaxCfg);
 			} else if (!this.clientSideModeCfg) {
 				ice.s(event, this.element);
 			}

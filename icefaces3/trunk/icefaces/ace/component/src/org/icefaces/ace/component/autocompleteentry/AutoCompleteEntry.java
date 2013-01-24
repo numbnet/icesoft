@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.component.autocompleteentry;
 
+import org.icefaces.ace.event.TextChangeEvent;
+
 import javax.faces.component.NamingContainer;
 import javax.faces.model.SelectItem;
 import javax.faces.component.UINamingContainer;
@@ -23,6 +25,9 @@ import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.el.MethodExpression;
 import java.util.*;
 
 public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingContainer {
@@ -145,5 +150,17 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
             }
         }
         return selectItems;
+    }
+	
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        super.broadcast(event);
+
+        if (event != null && event instanceof TextChangeEvent) {
+            
+            MethodExpression method = getTextChangeListener();
+            if (method != null) {
+                method.invoke(getFacesContext().getELContext(), new Object[]{event});
+            }
+        }
     }
 }
