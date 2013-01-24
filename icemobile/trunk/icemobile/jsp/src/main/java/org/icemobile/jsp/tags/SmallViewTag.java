@@ -32,7 +32,7 @@ public class SmallViewTag extends BaseBodyTag {
             return EVAL_BODY_INCLUDE;
         }
         else{
-            return EVAL_PAGE;
+            return SKIP_BODY;
         }
     }
     
