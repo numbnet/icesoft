@@ -103,7 +103,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
         } catch (IOException e) {
             content = new byte[0];
         }
-        return new ResourceEntry(RICHTEXTENTRY_CKEDITOR_DIR + CKEDITOR_MAPPING_JS, resource.getRequestPath(), content);
+        return new ResourceEntry(RICHTEXTENTRY_CKEDITOR_DIR + CKEDITOR_MAPPING_JS, resource, content);
     }
 
     private static byte[] readIntoByteArray(InputStream in) throws IOException {
@@ -122,13 +122,13 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
     private static class ResourceEntry extends Resource {
         private Date lastModified = new Date();
         private String localPath;
-        private String requestPath;
+        private Resource wrapped;
         private byte[] content;
         private String mimeType;
 
-        private ResourceEntry(String localPath, String requestPath, byte[] content) {
+        private ResourceEntry(String localPath, Resource wrapped, byte[] content) {
             this.localPath = localPath;
-            this.requestPath = requestPath;
+            this.wrapped = wrapped;
             this.content = content;
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ExternalContext externalContext = facesContext.getExternalContext();
@@ -164,7 +164,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
         }
 
         public String getRequestPath() {
-            return requestPath;
+            return wrapped.getRequestPath();
         }
 
         public URL getURL() {
