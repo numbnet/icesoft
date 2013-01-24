@@ -75,4 +75,7 @@ public class TextAreaEntryMeta extends UIInputMeta {
 
     @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "A localized user presentable name for this component.")
     private String label;
+
+    @Property(tlddoc = "The maximum number of characters that may be entered in this field.")
+    private int maxlength;
 }

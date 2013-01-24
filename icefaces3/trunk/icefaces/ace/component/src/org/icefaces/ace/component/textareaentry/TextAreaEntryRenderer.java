@@ -81,12 +81,13 @@ public class TextAreaEntryRenderer extends InputRenderer {
         JSONBuilder jb = JSONBuilder.create();
         jb.initialiseVar(resolveWidgetVar(textAreaEntry))
           .beginFunction("ice.ace.create")
-          .item("TextAreaEntry")
-          .beginArray()
-          .item(clientId)
+                .item("TextAreaEntry")
+                .beginArray()
+                .item(clientId)
           .beginMap()
           .entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"))
           .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
+        jb.entry("maxlength", textAreaEntry.getMaxlength());
 
         encodeClientBehaviors(context, textAreaEntry, jb);
 
@@ -137,7 +138,7 @@ public class TextAreaEntryRenderer extends InputRenderer {
         }
         defaultClass += textAreaEntry.isResizable() ? " ui-textareaentry-resizable" : " ui-textareaentry-non-resizable";
 
-        renderPassThruAttributes(context, textAreaEntry, HTML.INPUT_TEXTAREA_ATTRS);
+        renderPassThruAttributes(context, textAreaEntry, HTML.TEXTAREA_ATTRS);
 
         if (ariaEnabled) {
             final TextAreaEntry compoent = (TextAreaEntry) component;
