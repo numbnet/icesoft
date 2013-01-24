@@ -127,4 +127,7 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
     @Field()
     private List itemList;
+	
+	@Field()
+	private String text;
 }
