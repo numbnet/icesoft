@@ -41,7 +41,7 @@ import org.icefaces.ace.event.ProgressBarChangeEvent;
             // Java Source
             @ExampleResource(type = ResourceType.java,
                     title="ProgressBarClientAndServer.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/progressbar/progressBarClientAndServer.java")
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/progressbar/ProgressBarClientAndServer.java")
         }
 )
 @ManagedBean(name= ProgressBarClientAndServer.BEAN_NAME)
