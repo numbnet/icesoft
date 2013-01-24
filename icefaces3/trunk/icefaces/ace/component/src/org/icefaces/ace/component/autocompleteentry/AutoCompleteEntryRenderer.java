@@ -52,23 +52,26 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		autoCompleteEntry.setItemList(null);
         Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = autoCompleteEntry.getClientId(facesContext);
-        String value = (String) requestMap.get(clientId + "_input");
-		String oldValue = (String) autoCompleteEntry.getValue();
+        String text = (String) requestMap.get(clientId + "_input");
+		String oldText = (String) autoCompleteEntry.getText();
 		
-        if (value != null) {
+        if (text != null) {
 			if (autoCompleteEntry.isCaseSensitive()) {
-				if (!value.equals(oldValue)) {
+				if (!text.equals(oldText)) {
 					autoCompleteEntry.setPopulateList(true);
+					// queue text change event
 				}
 			} else {
-				if (!value.equalsIgnoreCase(oldValue)) {
+				if (!text.equalsIgnoreCase(oldText)) {
 					autoCompleteEntry.setPopulateList(true);
+					// queue text change event
 				}			
 			}
-			if ("".equals(value) && oldValue == null) {
+			if ("".equals(text) && oldText == null) {
 				autoCompleteEntry.setPopulateList(false);
 			}
-			autoCompleteEntry.setSubmittedValue(value);
+			//autoCompleteEntry.setSubmittedValue(text);
+			autoCompleteEntry.setText(text);
         }
 		
         KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, requestMap);
@@ -79,8 +82,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         }
         if (isEventSource) {
 			if (isHardSubmit(facesContext, autoCompleteEntry)) {
-					autoCompleteEntry.setPopulateList(false);
-					autoCompleteEntry.queueEvent(new ActionEvent(autoCompleteEntry));
+				autoCompleteEntry.setPopulateList(false);
+				autoCompleteEntry.setSubmittedValue(text);
 			} else if (keyEvent.getKeyCode() == KeyEvent.UP_ARROW_KEY || keyEvent.getKeyCode() == KeyEvent.DOWN_ARROW_KEY) {
 				autoCompleteEntry.setPopulateList(true);
 			}
@@ -105,7 +108,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         String inFieldLabel = (String) labelAttributes.get("inFieldLabel");
         String inFieldLabelStyleClass = "";
         String iceFocus = (String) paramMap.get("ice.focus");
-        String value = (String) autoCompleteEntry.getValue();
+        String text = (String) autoCompleteEntry.getText();
         String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
         String onfocusCombinedValue = "setFocus(this.id);";
         String onblurCombinedValue = "";
@@ -114,12 +117,12 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         Object onchangeAppValue = uiComponent.getAttributes().get("onchange");
 
 
-        if (isValueBlank(value)) value = null;
+        if (isValueBlank(text)) text = null;
         String inputClientId = clientId + "_input";
         boolean labelIsInField = false;
 
-        if (value == null && !isValueBlank(inFieldLabel) && !inputClientId.equals(iceFocus)) {
-            value = inFieldLabel;
+        if (text == null && !isValueBlank(inFieldLabel) && !inputClientId.equals(iceFocus)) {
+            text = inFieldLabel;
             inFieldLabelStyleClass = " " + IN_FIELD_LABEL_STYLE_CLASS;
             labelIsInField = true;
         }
@@ -158,12 +161,6 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         if (onchangeAppValue != null)
             writer.writeAttribute("onchange", onchangeAppValue.toString(), null);
 
-        Object submittedValue = autoCompleteEntry.getSubmittedValue();
-        if ((value != null && submittedValue != null && "".equals((String) submittedValue) && !"".equals(value) && autoCompleteEntry.isRequired())
-                || value == null) {
-            value = "";
-        }
-
         if (ariaEnabled) {
             final AutoCompleteEntry compoent = (AutoCompleteEntry) uiComponent;
             Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
@@ -189,12 +186,12 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         writer.endElement("div");
 
         encodeScript(facesContext, writer, clientId, autoCompleteEntry,
-                paramMap, inFieldLabel, value, inputClientId, labelIsInField);
+                paramMap, inFieldLabel, text, inputClientId, labelIsInField);
 
 		writer.endElement("div");
     }
 
-    private void encodeScript(FacesContext facesContext, ResponseWriter writer, String clientId, AutoCompleteEntry autoCompleteEntry, Map paramMap, String inFieldLabel, String value, String inputClientId, boolean labelIsInField) throws IOException {
+    private void encodeScript(FacesContext facesContext, ResponseWriter writer, String clientId, AutoCompleteEntry autoCompleteEntry, Map paramMap, String inFieldLabel, String text, String inputClientId, boolean labelIsInField) throws IOException {
         String divId = clientId + AUTOCOMPLETE_DIV;
         Object sourceId = paramMap.get("ice.event.captured");
         boolean isEventSource = sourceId != null && sourceId.toString().equals(inputClientId);
@@ -265,7 +262,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.writeText("(function() {", null);
         writer.writeText("var instance = ice.ace.Autocompleters[\"" + clientId + "\"];", null);
-        writer.writeText("instance.updateField('" + escapeBackslashes(value) + "', " + focus + ");", null);
+        writer.writeText("instance.updateField('" + escapeBackslashes(text) + "', " + focus + ");", null);
         writer.writeText("})();", null);
         writer.endElement("script");
         writer.endElement("span");
@@ -277,7 +274,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		String clientId = autoCompleteEntry.getClientId(facesContext);
 		if (autoCompleteEntry.isClientSide()) {
 			populateClientSideList(facesContext, autoCompleteEntry);
-		} else if (autoCompleteEntry.getValue() != null && autoCompleteEntry.isPopulateList()) {
+		} else if (autoCompleteEntry.getText() != null && autoCompleteEntry.isPopulateList()) {
 			populateList(facesContext, autoCompleteEntry);
         } else {
             writer.startElement("div", null);
@@ -293,9 +290,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		String clientId = autoCompleteEntry.getClientId(facesContext);
         autoCompleteEntry.populateItemList();
         Iterator matches = autoCompleteEntry.getItemListIterator();
-		String filter = ((String) autoCompleteEntry.getValue());
 		FilterMatchMode filterMatchMode = getFilterMatchMode(autoCompleteEntry);
-		String mainValue = (String) autoCompleteEntry.getValue();
+		String text = (String) autoCompleteEntry.getText();
 		String timestamp = getTimestamp(facesContext, autoCompleteEntry);
         int rows = autoCompleteEntry.getRows();
         if (rows == 0) rows = Integer.MAX_VALUE;
@@ -320,7 +316,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				requestMap.put(listVar, matches.next());
 				String value = (String) filterBy.getValue(elContext);
 			
-				if (satisfiesFilter(value, filter, filterMatchMode, autoCompleteEntry)) {
+				if (satisfiesFilter(value, text, filterMatchMode, autoCompleteEntry)) {
 					rowCounter++;
 					writer.startElement("div", null);
 					writer.writeAttribute("style", "border: 0;", null);
@@ -352,7 +348,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			writer.endElement("div");
             String call = "ice.ace.Autocompleters[\"" + clientId +
                     "\"].updateNOW(ice.ace.jq(ice.ace.escapeClientId('" + clientId + "_update')).get(0).firstChild.innerHTML);";
-            encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + mainValue + " " + timestamp);
+            encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + text + " " + timestamp);
 			writer.endElement("div");
         } else {
             if (matches.hasNext()) {
@@ -368,7 +364,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 							itemLabel = item.getValue().toString();
 						}
                     }
-					if (satisfiesFilter(itemLabel, filter, filterMatchMode, autoCompleteEntry)) {
+					if (satisfiesFilter(itemLabel, text, filterMatchMode, autoCompleteEntry)) {
                     sb.append("<div style=\"border: 0;\">").append(itemLabel).append("</div>");
 							rowCounter++;
 					}
@@ -376,7 +372,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 sb.append("</div>");
                 String call = "ice.ace.Autocompleters[\"" + clientId + "\"]" +
                         ".updateNOW('" + escapeSingleQuote(sb.toString()) + "');";
-                encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + mainValue + " " + timestamp);
+                encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + text + " " + timestamp);
             }
         }
 		writer.endElement("div");
@@ -502,6 +498,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
     }
 	
 	private static String escapeBackslashes(String str) {
+		if (str == null) return "";
 		return str.replace("\\", "\\\\");
 	}
 	
