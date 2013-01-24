@@ -75,10 +75,10 @@ public abstract class SessionDispatcher implements PseudoServlet {
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
     //ICE-3073 - manage sessions with this structure
     private final static Map SessionMonitors = new HashMap();
+    private static String sessionIdDelimiter;
 
     private final Map sessionBoundServers = new WeakHashMap();
     private final Map activeRequests = new HashMap();
-    private final String sessionIdDelimiter;
     private final PseudoServlet notFoundServer;
     private final PseudoServlet sessionExpiredServlet;
 
@@ -134,7 +134,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
             final Monitor monitor;
             synchronized (SessionMonitors) {
                 if (!SessionMonitors.containsKey(id)) {
-                    monitor = new Monitor(session);
+                    monitor = new Monitor(id, session);
                     SessionMonitors.put(id, monitor);
                 } else {
                     monitor = (Monitor) SessionMonitors.get(id);
@@ -205,11 +205,11 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    private String getId(final HttpSession session) {
+    private static String getId(final HttpSession session) {
         return getId(session.getId());
     }
 
-    private String getId(final String sessionID) {
+    private static String getId(final String sessionID) {
         if (sessionIdDelimiter == null) {
             return sessionID;
         } else {
@@ -270,16 +270,16 @@ public abstract class SessionDispatcher implements PseudoServlet {
             sessionDispatcher.notifySessionShutdown(session);
 
             synchronized (SessionMonitors) {
-                String sessionId = session.getId();
+                String sessionId = getId(session);
                 try {
-                  sessionDispatcher.sessionDestroy(sessionId);
+                    sessionDispatcher.sessionDestroy(sessionId);
                 } catch (Exception e) {
                     Log.debug(e);
                 }
                 Monitor monitor = (Monitor) SessionMonitors.get(sessionId);
                 if (monitor != null) {
                       monitor.removeSessionContext(context);
-                      if(monitor.getSessionContextSize() == 0){
+                      if (monitor.getSessionContextSize() == 0){
                             //ICE-3189 - do this before invalidating the session
                             SessionMonitors.remove(sessionId);
                       }
@@ -380,8 +380,10 @@ public abstract class SessionDispatcher implements PseudoServlet {
         private Set contexts = new HashSet();
         private HttpSession session;
         private long lastAccess;
+        private String id;
 
-        private Monitor(HttpSession session) {
+        public Monitor(String id, HttpSession session) {
+            this.id = id;
             this.session = session;
             this.lastAccess = session.getLastAccessedTime();
             session.setAttribute(Monitor.class.getName(), this);
@@ -442,6 +444,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 session.invalidate();
             } catch (IllegalStateException e) {
                 Log.debug("Session already invalidated.");
+                SessionMonitors.remove(id);
             }
         }
 
