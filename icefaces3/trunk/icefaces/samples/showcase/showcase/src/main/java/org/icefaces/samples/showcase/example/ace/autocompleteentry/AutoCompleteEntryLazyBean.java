@@ -34,7 +34,7 @@ import java.util.StringTokenizer;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import javax.faces.event.ValueChangeEvent;
+import org.icefaces.ace.event.TextChangeEvent;
 
 @ComponentExample(
         parent = AutoCompleteEntryBean.BEAN_NAME,
@@ -89,7 +89,7 @@ public class AutoCompleteEntryLazyBean extends ComponentExampleImpl<AutoComplete
 		return cities;
 	}
 	
-	public void valueChangeEventHandler(ValueChangeEvent event) {
+	public void textChangeEventHandler(TextChangeEvent event) {
 		cities.clear();
 		String filter = event.getNewValue() != null ? (String) event.getNewValue() : "";
 		for (City city : AutoCompleteEntryData.getCities()) {
