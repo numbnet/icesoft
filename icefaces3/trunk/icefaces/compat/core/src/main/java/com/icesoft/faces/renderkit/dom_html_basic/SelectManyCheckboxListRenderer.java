@@ -291,6 +291,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         int checkboxIndex = ((Integer) uiComponent.getAttributes().get("index")).intValue();
         if (checkboxIndex < 0) checkboxIndex = 0;
         if (checkboxIndex >= selectItemList.size()) checkboxIndex = selectItemList.size() - 1;
+        String title = (String) uiComponent.getAttributes().get("title");
         SelectItem selectItem = (SelectItem) selectItemList.get(checkboxIndex);
 
         String selectManyClientId = selectMany.getClientId(facesContext);
@@ -320,6 +321,9 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
             submittedValue, componentValue))
         {
             input.setAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR);
+        }
+        if (title != null) {
+            input.setAttribute(HTML.TITLE_ATTR, title);
         }
         addJavaScript(facesContext, selectMany, input, excludes);
 
