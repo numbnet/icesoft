@@ -204,6 +204,11 @@ public class UtilInterface implements JavascriptInterface,
     }
 
     public void loadURL(final String url) {
+        //ICEmobile-SX case where we do not have a WebView
+        if (null == view)  {
+            Log.e("ICEutil", "WebView is null, ignoring loadURL " + url);
+            return;
+        }
 	handler.post(new Runnable() {
 		public void run() {
 		    //Log.e("ICEmobile","Loading URL: " + url);
