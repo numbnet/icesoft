@@ -44,3 +44,9 @@
 .mobi-pagePanel-header .mobi-button-back{
     left: 0.5em;
 }
+.mobi-button-placeholder{
+    padding-left: 2em;
+}
+.mobi-button-back input{
+	left: 0;
+}
