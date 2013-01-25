@@ -15,6 +15,12 @@
  */
 
 (function() {
+    var consoleLog = function(msg) {
+        if (window.console) {
+            //console.log(msg);
+        }
+    };
+
     var broadcast = function(funcs, args) {
         args = args || [];
 
@@ -58,13 +64,13 @@
         var overlay = document.createElement('div');
         overlay.className = 'ui-widget-overlay';
         overlay.style.cssText = 'position: absolute; z-index: 28000; zoom: 1; display: none;';
-        //console.log('Overlay  Built overlay');
+        consoleLog('Overlay  Built overlay');
         if (container == document.body) {
             container.appendChild(overlay);
         } else {
             container.parentNode.appendChild(overlay);
         }
-        //console.log('Overlay  Added overlay');
+        consoleLog('Overlay  Added overlay');
 
         var cloneToRemove;
         var revertElem;
@@ -76,23 +82,23 @@
             cloneToRemove.css('z-index', '28001');
             cloneToRemove.css('display', 'none');
             cloneToRemove.children().addClass('ui-panel-titlebar ui-widget-header ui-corner-all');
-            //console.log('Overlay  autoCenter  built clone');
+            consoleLog('Overlay  autoCenter  built clone');
             if (container == document.body) {
                 cloneToRemove.appendTo(container);
                 cloneToRemove.css('position', 'fixed');
-                //console.log('Overlay  autoCenter  added clone over body');
+                consoleLog('Overlay  autoCenter  added clone over body');
             } else {
                 cloneToRemove.appendTo(container.parentNode);
                 cloneToRemove.css('position', 'absolute');
-                //console.log('Overlay  autoCenter  added clone over other');
+                consoleLog('Overlay  autoCenter  added clone over other');
             }
         } else {
             revertElem = ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display");
-            //console.log('Overlay  !autoCenter  found revert');
+            consoleLog('Overlay  !autoCenter  found revert');
         }
 
         setTimeout(function() {
-            //console.log('Overlay  setTimeout to add overlay / clone / revert  addElements: ' + addElements);
+            consoleLog('Overlay  setTimeout to add overlay / clone / revert  addElements: ' + addElements);
             whenShownFunc();
             if (!addElements) {
                 return;
@@ -101,7 +107,7 @@
                 revertZIndex = revertElem.css('z-index');
                 revertElem.css('z-index', '28001');
                 revertElem.css('display', '');
-                //console.log('Overlay  setTimeout  showed revert');
+                consoleLog('Overlay  setTimeout  showed revert');
             }
             if (overlay) {
                 var overlayWidth = 0, overlayHeight = 0;
@@ -122,7 +128,7 @@
                         of: container,
                         collision: 'none'});
                 }
-                //console.log('Overlay  setTimeout  showed and positioned overlay');
+                consoleLog('Overlay  setTimeout  showed and positioned overlay');
             }
             if (cloneToRemove) {
                 cloneToRemove.css('display', '');
@@ -132,20 +138,20 @@
                         at: 'center center',
                         of: window,
                         collision: 'fit'});
-                    //console.log('Overlay  setTimeout  showed and positioned clone over body');
+                    consoleLog('Overlay  setTimeout  showed and positioned clone over body');
                 } else {
                     cloneToRemove.position({
                         my: 'center center',
                         at: 'center center',
                         of: container,
                         collision: 'fit'});
-                    //console.log('Overlay  setTimeout  showed and positioned clone over other');
+                    consoleLog('Overlay  setTimeout  showed and positioned clone over other');
                 }
             }
         }, addDelay);
 
         return function() {
-            //console.log('Overlay  function to cleanup overlay and clone  addElements(sets false): ' + addElements);
+            consoleLog('Overlay  function to cleanup overlay and clone  addElements(sets false): ' + addElements);
             addElements = false;
             if (overlay) {
                 try { overlay.parentNode.removeChild(overlay); }
@@ -173,9 +179,9 @@
     var anticipatePossibleSecondSubmit = UNANTICIPATED;
 
     var NOOP = function () {
-        //console.log('stopBlockingUI NOOP');
+        consoleLog('stopBlockingUI NOOP');
     };
-    //console.log('stopBlockingUI = NOOP  from  init');
+    consoleLog('stopBlockingUI = NOOP  from  init');
     var stopBlockingUI = NOOP;
 
     if (!ice.ace) ice.ace = {};
@@ -250,11 +256,9 @@
                 var eventType = ( (e.type != undefined && e.type != null) ? e.type : null );
                 var triggeringElement = e.srcElement ? e.srcElement : e.target;
                 var capturingElement = element;
-                /*
-                console.log('Monitor '+uniqueId+'>'+jqId+'  event [type: ' + eventType +
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  event [type: ' + eventType +
                         ', triggered by: ' + (triggeringElement.id || triggeringElement) +
                         ', captured in: ' + (capturingElement.id || capturingElement) + '] was discarded.');
-                */
                 return false;
             }
         }
@@ -265,7 +269,7 @@
 
         var changeState = function(state) {
             currentState = state;
-            //console.log('Monitor '+uniqueId+'>'+jqId+'  changeState: ' + state + ' : ' + allStates[state]);
+            consoleLog('Monitor '+uniqueId+'>'+jqId+'  changeState: ' + state + ' : ' + allStates[state]);
             ice.ace.jq(jqId+'_display > div.ice-sub-mon-mid').hide().filter('.'+allStates[state]).show();
             ice.ace.jq(jqId+'_clone > div.ice-sub-mon-mid').hide().filter('.'+allStates[state]).show();
         };
@@ -276,7 +280,7 @@
         var doOverlayIfBlockingUI = function(source) {
             //Only block the UI for client-initiated requests (not push requests)
             if (isBlockUIEnabled()) {
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  Blocking UI');
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  Blocking UI');
 
                 var overlayShown = false;
                 var overlayShownFunc = function() {
@@ -285,27 +289,25 @@
                 var eventSinkFirstClickCount = 0;
                 function eventSinkFirstClick(firstSubmitSource, element, originalOnclick, regularSink) {
                     return function(e) {
-                        //console.log('Monitor '+uniqueId+'>'+jqId+'  eventSinkFirstClick()  overlayShown: ' + overlayShown + '  eventSinkFirstClickCount: ' + eventSinkFirstClickCount);
+                        consoleLog('Monitor '+uniqueId+'>'+jqId+'  eventSinkFirstClick()  overlayShown: ' + overlayShown + '  eventSinkFirstClickCount: ' + eventSinkFirstClickCount);
                         if (overlayShown) {
-                            //console.log('eventSinkFirstClick()  overlay shown');
+                            consoleLog('eventSinkFirstClick()  overlay shown');
                             return regularSink(e);
                         }
                         if (eventSinkFirstClickCount > 0) {
-                            //console.log('eventSinkFirstClick()  not first click');
+                            consoleLog('eventSinkFirstClick()  not first click');
                             return regularSink(e);
                         }
                         eventSinkFirstClickCount++;
 
 						e = e || window.event;
                         var triggeringElement = ( (e.srcElement != undefined && e.srcElement != null) ? e.srcElement : e.target);
-                        /*
-                        console.log('event [type: ' + e.type +
+                        consoleLog('event [type: ' + e.type +
                                 ', triggered by: ' + (triggeringElement.id || triggeringElement) +
                                 ', captured in: ' + (element.id || element) + ']');
-                        console.log('first submit element: ' + (firstSubmitSource.id || firstSubmitSource));
-                        */
+                        consoleLog('first submit element: ' + (firstSubmitSource.id || firstSubmitSource));
                         if ((firstSubmitSource == triggeringElement) || (firstSubmitSource == element)) {
-                            //console.log('eventSinkFirstClick()  clicked on same element as first submit');
+                            consoleLog('eventSinkFirstClick()  clicked on same element as first submit');
                             regularSink(e);
                             // checkbox in Firefox:  onclick, onchange, but in Chrome: onchange, onclick
                             // If icecore:singleSubmit submits onchange, then onclick is trapped, and must
@@ -313,7 +315,7 @@
                             return true;
                         }
 
-                        //console.log('eventSinkFirstClick()  calling original onclick');
+                        consoleLog('eventSinkFirstClick()  calling original onclick');
                         // Might not be an onclick directly on that element, it might
                         // have to bubble up, like with icecore:singleSubmit
                         anticipatePossibleSecondSubmit = ANTICIPATED;
@@ -323,9 +325,9 @@
                     }
                 }
 
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  after eventSinkFirstClick');
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  after eventSinkFirstClick');
                 var overlayContainerElem = resolveBlockUIElement(source);
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  overlayContainerElem: ' + overlayContainerElem);
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  overlayContainerElem: ' + overlayContainerElem);
                 var blockUIOverlay = Overlay(cfg, overlayContainerElem, overlayShownFunc);
                 var rollbacks = fold(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
                     return result.concat(
@@ -359,10 +361,10 @@
                     broadcast(rollbacks);
                     blockUIOverlay();
                     stopBlockingUI = NOOP;
-                    //console.log('Monitor '+uniqueId+'>'+jqId+'  Unblocked UI');
+                    consoleLog('Monitor '+uniqueId+'>'+jqId+'  Unblocked UI');
                 };
             } else {
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  stopBlockingUI = NOOP  from  else of isBlockUIEnabled()');
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  stopBlockingUI = NOOP  from  else of isBlockUIEnabled()');
                 stopBlockingUI = NOOP;
             }
         };
@@ -372,22 +374,22 @@
 
         function handleCleanup(isBeforeSubmit) {
             if (cleanup == CLEANUP_ACKNOWLEDGED) {
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  handleCleanup  DEAD');
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  handleCleanup  DEAD');
                 return true;
             } else if (cleanup == CLEANUP_PENDING) {
                 cleanup = CLEANUP_ACKNOWLEDGED;
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  handleCleanup  CLEANUP PENDING -> ACKNOWLEDGED');
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  handleCleanup  CLEANUP PENDING -> ACKNOWLEDGED');
                 //TODO Remove all listeners
                 return isBeforeSubmit;
             }
             return false;
         }
 
-        //console.log('Monitor '+uniqueId+'>'+jqId+'  Register onElementUpdate: '+cfg.id+'_script');
+        consoleLog('Monitor '+uniqueId+'>'+jqId+'  Register onElementUpdate: '+cfg.id+'_script');
 
         window.ice.onElementUpdate(cfg.id+'_script', function() {
             cleanup = CLEANUP_PENDING;
-            //console.log('Monitor '+uniqueId+'>'+jqId+'  onElementUpdate  -> CLEANUP_PENDING');
+            consoleLog('Monitor '+uniqueId+'>'+jqId+'  onElementUpdate  -> CLEANUP_PENDING');
         });
 
         window.ice.onBeforeSubmit(function(source, isClientRequest) {
@@ -403,20 +405,20 @@
             }
             begunApplicableToThis = true;
 
-            //console.log('Monitor '+uniqueId+'>'+jqId+'  onBeforeSubmit()  IS  monitoring source: ' + source + '  id: ' + source.id);
-            //console.log('Monitor '+uniqueId+'>'+jqId+'  onBeforeSubmit()  ' + anticipationStrings[anticipatePossibleSecondSubmit]);
+            consoleLog('Monitor '+uniqueId+'>'+jqId+'  onBeforeSubmit()  IS  monitoring source: ' + source + '  id: ' + source.id);
+            consoleLog('Monitor '+uniqueId+'>'+jqId+'  onBeforeSubmit()  ' + anticipationStrings[anticipatePossibleSecondSubmit]);
             if (isBlockUITypeAmenableToCombining() && (anticipatePossibleSecondSubmit == ANTICIPATED)) {
-                //console.log('onBeforeSubmit()  anticipated -> commenced');
+                consoleLog('onBeforeSubmit()  anticipated -> commenced');
                 anticipatePossibleSecondSubmit = COMMENCED;
             } else {
-                //console.log('onBeforeSubmit()  regular');
+                consoleLog('onBeforeSubmit()  regular');
                 changeState(ACTIVE);
                 doOverlayIfBlockingUI(source);
             }
         });
 
         var whenUpdate = function(xmlContent, source) {
-            //console.log('Monitor '+uniqueId+'>'+jqId+'  whenUpdate()  stopping');
+            consoleLog('Monitor '+uniqueId+'>'+jqId+'  whenUpdate()  stopping');
             anticipatePossibleSecondSubmit = UNANTICIPATED;
             stopBlockingUI();
             changeState(IDLE);
@@ -430,22 +432,22 @@
             // before the update, so doesn't necessarily exist any more, nor
             // a new component with the same id.
             if (!begunApplicableToThis) {
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  NOT begunApplicableToThis for source: ' + source + '  id: ' + source.id);
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  NOT begunApplicableToThis for source: ' + source + '  id: ' + source.id);
                 return;
             }
             begunApplicableToThis = false;
-            //console.log('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  IS  begunApplicableToThis for source: ' + source + '  id: ' + source.id);
+            consoleLog('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  IS  begunApplicableToThis for source: ' + source + '  id: ' + source.id);
 
-            //console.log('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  ' + anticipationStrings[anticipatePossibleSecondSubmit]);
+            consoleLog('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  ' + anticipationStrings[anticipatePossibleSecondSubmit]);
             if (isBlockUITypeAmenableToCombining() && (anticipatePossibleSecondSubmit == ANTICIPATED)) {
                 setTimeout(function() {
-                    //console.log('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  DELAYED  ' + anticipationStrings[anticipatePossibleSecondSubmit]);
+                    consoleLog('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  DELAYED  ' + anticipationStrings[anticipatePossibleSecondSubmit]);
                     if (anticipatePossibleSecondSubmit != COMMENCED) {
                         whenUpdate(xmlContent, source);
                     }
                 }, 260);
             } else if (isSessionExpired(xmlContent)) {
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  isSessionExpired');
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  isSessionExpired');
                 anticipatePossibleSecondSubmit = UNANTICIPATED;
                 changeState(SESSION_EXPIRED);
             } else {
@@ -471,11 +473,11 @@
 
         /*
         window.ice.onSessionExpiry(function() {
-            //console.log('Monitor '+uniqueId+'>'+jqId+'  onSessionExpiry');
+            //consoleLog('Monitor '+uniqueId+'>'+jqId+'  onSessionExpiry');
             if (handleCleanup(false)) {
                 return;
             }
-            //console.log('Monitor '+uniqueId+'>'+jqId+'  onSessionExpiry  Handling');
+            //consoleLog('Monitor '+uniqueId+'>'+jqId+'  onSessionExpiry  Handling');
             anticipatePossibleSecondSubmit = UNANTICIPATED;
             changeState(SESSION_EXPIRED);
         });
