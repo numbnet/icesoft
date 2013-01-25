@@ -1,5 +1,5 @@
-/***
- * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+/*
+ * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the
@@ -52,17 +52,17 @@
 }
 
 .simAugL {
-    background-image: url(#{resource['org.icefaces.component.util:sim-augl.jpg']});
+    background-image: url('sim-augl.jpg');
     height: 225px;
 }
 
 .simAugM {
-    background-image: url(#{resource['org.icefaces.component.util:sim-augm.jpg']});
+    background-image: url('sim-augm.jpg');
     height: 225px;
 }
 
 .simScan {
-    background-image: url(#{resource['org.icefaces.component.util:sim-qrscan.jpg']});
+    background-image: url('sim-qrscan.jpg');
     height: 225px;
 }
 
@@ -74,22 +74,22 @@
 }
 
 .b1 {
-    background-image: url(#{resource['org.icefaces.component.util:sim-one.png']});
+    background-image: url('sim-one.png');
 }
 
 .b2 {
-    background-image: url(#{resource['org.icefaces.component.util:sim-two.png']});
+    background-image: url('sim-two.png');
 }
 
 .b3 {
-    background-image: url(#{resource['org.icefaces.component.util:sim-three.png']});
+    background-image: url('sim-three.png');
 }
 
 .vid1 {
-    background-image: url(#{resource['org.icefaces.component.util:sim-vid1.png']});
+    background-image: url('sim-vid1.png');
 }
 
 .mic1 {
-    background-image: url(#{resource['org.icefaces.component.util:sim-snd1.png']});
+    background-image: url('sim-snd1.png');
 }
 
