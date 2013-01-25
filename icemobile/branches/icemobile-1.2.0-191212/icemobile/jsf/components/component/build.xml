@@ -158,6 +158,25 @@
             </copy>
         </sequential>
     </macrodef>
+	
+	<macrodef name="buildSimulatorSkin">
+        <sequential>
+            <mkdir dir="${root.dir.path}/simulator" />
+            <!-- Copy all resources to the input directory for SmartSprites. -->
+            <mkdir dir="${root.dir.path}/simulator/" />
+            <!-- copy the actual skin -->
+            <copy todir="${root.dir.path}/simulator/" overwrite="true">
+                <fileset dir="${theme.dir.path}/simulator" includes="**" />
+            </copy>
+            
+            <!-- At the same time, copy all resources to the SmartSprites output directory.
+                          with the exclusion of the the .css files -->
+            <mkdir dir="${output.dir.path}/simulator/" />
+            <copy todir="${output.dir.path}/simulator/">
+                <fileset dir="${root.dir.path}/simulator/" excludes="**/*.css" />
+            </copy>
+        </sequential>
+    </macrodef>
 
 	<!-- check for any file modifications and call smartsprites -->
 	<macrodef name="generatesprites">
@@ -350,6 +369,7 @@
 	<includeBase3Resources dir="${theme.dir.path}/honeycomb" skin="honeycomb" />
 	<includeBase3Resources dir="${theme.dir.path}/ipad" skin="ipad" />
 	<includeBase3Resources dir="${theme.dir.path}/iphone" skin="iphone" />
+	<buildSimulatorSkin/>
 	
     <replaceregexp match="(\/\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="">
         <fileset dir="${build}/skins/in" includes="**/*.css"></fileset>
@@ -362,7 +382,7 @@
     <concatskin name="bberry" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
     <concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="archaic" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-	
+	<concatskin name="simulator" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
     
 
 	<!-- Copy all resources to the skins resource library -->
@@ -429,6 +449,7 @@
 	<compresscssmacro name="honeycomb" />
 	<compresscssmacro name="bberry" />
 	<compresscssmacro name="archaic" />
+	<compresscssmacro name="simulator" />
 </target>
 
 <target name="smartsprites" description="Performs CSS sprite processing." if="${skin}.modified">
