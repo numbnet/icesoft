@@ -17,7 +17,11 @@
 package org.icemobile.samples.spring;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.channels.FileChannel;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,10 +39,10 @@ public class FileUploadUtils {
      * @return The name of the saved file
      * @throws IOException If the file could not be successfully saved
      */
-    public static String saveImage(HttpServletRequest request,
+    public static String saveImage(HttpServletRequest request, String id,
             MultipartFile file, MultipartFile inputFile) throws IOException {
 
-        return saveMedia(request,file,inputFile,"img","jpg");
+        return saveMedia(request,id,file,inputFile,"img","jpg");
     }
     
     /**
@@ -50,10 +54,10 @@ public class FileUploadUtils {
      * @return The name of the saved file
      * @throws IOException If the file could not be successfully saved
      */
-    public static String saveAudio(HttpServletRequest request,
+    public static String saveAudio(HttpServletRequest request, String id,
             MultipartFile file, MultipartFile inputFile) throws IOException {
 
-       return saveMedia(request,file,inputFile,"audio","m4a");
+       return saveMedia(request,id,file,inputFile,"audio","m4a");
     }
 
     /**
@@ -65,14 +69,15 @@ public class FileUploadUtils {
      * @return The name of the saved file
      * @throws IOException If the file could not be successfully saved
      */
-    public static String saveVideo(HttpServletRequest request,
+    public static String saveVideo(HttpServletRequest request, String id,
             MultipartFile file, MultipartFile inputFile) throws IOException {
 
-        return saveMedia(request,file,inputFile,"video","mp4");
+        return saveMedia(request,id,file,inputFile,"video","mp4");
     }
     
-    private static String saveMedia(HttpServletRequest request,
-            MultipartFile file, MultipartFile inputFile, String prefix, String suffix) throws IOException {
+    private static String saveMedia(HttpServletRequest request, String id, 
+            MultipartFile file, MultipartFile inputFile, String prefix, String suffix) 
+                    throws IOException {
 
         String uuid = Long.toString(
                 Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
@@ -82,10 +87,34 @@ public class FileUploadUtils {
         if ((null != file) && !file.isEmpty()) {
             file.transferTo(newFile);
         }
-        if ((null != inputFile) && !inputFile.isEmpty()) {
+        else if ((null != inputFile) && !inputFile.isEmpty()) {
             inputFile.transferTo(newFile);
+        }
+        else{
+            String simulatedFile = request.getParameter(id);
+            if( simulatedFile != null ){
+                InputStream is = FileUploadUtils.class
+                        .getClassLoader().getResourceAsStream(
+                            "META-INF/web-resources/org.icefaces.component.skins/simulator/" +
+                            simulatedFile );
+                FileOutputStream fos = new FileOutputStream(newFile);
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.close();
+                is.close();
+            }
         }
 
         return filename;
+    }
+    
+    public static boolean saveSimulatedUploade(HttpServletRequest request){
+        boolean result = false;
+        
+        
+        return result;
     }
 }
