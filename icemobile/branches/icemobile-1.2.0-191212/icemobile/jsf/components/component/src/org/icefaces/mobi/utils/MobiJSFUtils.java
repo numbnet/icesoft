@@ -122,7 +122,7 @@ public class MobiJSFUtils {
                 contentType = CONTENT_TYPES.get(fileExtension);
                 fileStream = MobiJSFUtils.class
                     .getClassLoader().getResourceAsStream(
-                        "META-INF/resources/org.icefaces.component.util/" +
+                        "META-INF/resources/org.icefaces.component.skins/simulator/" +
                         simulatedFile );
             }
         }
