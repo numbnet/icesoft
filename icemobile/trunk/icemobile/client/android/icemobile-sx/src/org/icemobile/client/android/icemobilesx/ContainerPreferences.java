@@ -14,9 +14,18 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.icemobilesx;
 
-public interface ConnectionChangeListener {
-    public void networkIsUp();
-    public void networkIsDown();
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.view.Window;
+
+public class ContainerPreferences extends PreferenceActivity {
+
+    @Override
+	public void onCreate(Bundle savedInstanceState) {     
+	requestWindowFeature(Window.FEATURE_NO_TITLE);
+	super.onCreate(savedInstanceState);        
+	addPreferencesFromResource(R.xml.preferences);
+    }
 }

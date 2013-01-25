@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.icemobilesx;
 
 import android.content.Intent;
 import android.content.Context;

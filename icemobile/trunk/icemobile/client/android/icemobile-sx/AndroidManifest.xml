@@ -17,7 +17,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	  package="org.icemobile.client.android"
+	  package="org.icemobile.client.android.icemobilesx"
 	  android:versionCode="13"
 	  android:versionName="1.2">
   <permission android:name="org.icemobile.client.android.permission.C2D_MESSAGE"
@@ -52,19 +52,19 @@
             <data android:scheme="icemobile" />
         </intent-filter>
     </activity>
-    <activity android:name=".ContainerPreferences"/>
+    <activity android:name="org.icemobile.client.android.ContainerPreferences"/>
 
-    <activity android:name=".arview.ARViewActivity" android:label="Graphics/CameraPreview" android:screenOrientation="landscape">
+    <activity android:name="org.icemobile.client.android.arview.ARViewActivity" android:label="Graphics/CameraPreview" android:screenOrientation="landscape">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.SAMPLE_CODE" />
         </intent-filter>
     </activity>
-    <activity android:name=".audio.SimpleAudioRecorder" android:label="Audio Recorder" android:screenOrientation="portrait">
+    <activity android:name="org.icemobile.client.android.audio.SimpleAudioRecorder" android:label="Audio Recorder" android:screenOrientation="portrait">
     </activity>
 
-    <activity android:name=".HistoryList" android:label="@string/history_name"/>
-    <activity android:name=".qrcode.CaptureActivity"
+    <activity android:name="org.icemobile.client.android.HistoryList" android:label="@string/history_name"/>
+    <activity android:name="org.icemobile.client.android.qrcode.CaptureActivity"
 	      android:label="@string/app_name"
               android:screenOrientation="landscape"
               android:clearTaskOnLaunch="true"
