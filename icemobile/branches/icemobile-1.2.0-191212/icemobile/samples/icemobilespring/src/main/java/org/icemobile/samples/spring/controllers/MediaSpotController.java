@@ -112,7 +112,7 @@ public class MediaSpotController extends BaseController{
             MediaSpotBean spotBean,
             Model model){
         log.info("post(): " + spotBean);
-        if( photoFile != null ){
+        if( photoFile != null || request.getParameter("spotcam") != null){
             processPhotoUpload(request,photoFile,spotBean,model);
         }
         else{

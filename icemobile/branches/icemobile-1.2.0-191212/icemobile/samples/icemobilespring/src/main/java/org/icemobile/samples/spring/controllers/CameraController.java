@@ -68,7 +68,7 @@ public class CameraController extends BaseController{
             ModelBean cameraBean,
             @RequestParam(value = "cam", required = false) MultipartFile file,
             Model model) {
-        if( file != null ){
+       if( file != null || request.getParameterMap().get("cam") != null ){
             processUpload(request,cameraBean,file,model);
         }
         model.addAttribute("cameraBean",cameraBean);
@@ -82,7 +82,7 @@ public class CameraController extends BaseController{
         log.info("processUpload() "+ cameraBean);
         String newFileName;
         try {
-            newFileName = FileUploadUtils.saveImage(request, file, null);
+            newFileName = FileUploadUtils.saveImage(request, "cam", file, null);
             model.addAttribute("cameraMessage", "Hello " + cameraBean.getName() 
                     + ", your file was uploaded successfully.");
             if (null != newFileName) {
@@ -102,7 +102,7 @@ public class CameraController extends BaseController{
                          @RequestParam(value = "cam", required = false) MultipartFile inputFile,
                          Model model) throws IOException {
 
-        String newFileName = FileUploadUtils.saveImage(request, file, inputFile);
+        String newFileName = FileUploadUtils.saveImage(request, "cam", file, inputFile);
         
         Map additionalParams = modelBean.getAdditionalInfo();
         String imcheck = " ";

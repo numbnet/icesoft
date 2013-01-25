@@ -73,7 +73,7 @@ public class MicrophoneController extends BaseController{
             @RequestParam(value = "mic", required = false) MultipartFile file, 
             Model model){
 	    
-	    if( file != null ){
+	    if( file != null || request.getParameter("mic") != null ){
             processUpload(request,microphoneBean,file,model);
         }
         model.addAttribute("microphoneBean",microphoneBean);
@@ -88,7 +88,7 @@ public class MicrophoneController extends BaseController{
         log.info("processUpload() "+ microphoneBean);
         String newFileName;
         try {
-            newFileName = FileUploadUtils.saveAudio(request, file, null);
+            newFileName = FileUploadUtils.saveAudio(request, "mic", file, null);
             model.addAttribute("micMessage", "Hello " + microphoneBean.getName() 
                     + ", your file was uploaded successfully.");
             if (null != newFileName) {
@@ -105,7 +105,7 @@ public class MicrophoneController extends BaseController{
 	@RequestMapping(value = "/jsonmic", method=RequestMethod.POST)
 	public @ResponseBody MicUpdate jsonMicrophone(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic", required = false) MultipartFile file, Model model) throws IOException {
 
-        String newFileName = FileUploadUtils.saveImage(request, file, null);
+        String newFileName = FileUploadUtils.saveImage(request, "mic", file, null);
 
         Map additionalParams = modelBean.getAdditionalInfo();
         String imcheck = " ";

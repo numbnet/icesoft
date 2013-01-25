@@ -60,8 +60,8 @@ public class CamcorderController extends BaseController{
 	public void processVideo(HttpServletRequest request, ModelBean modelBean,
                              @RequestParam(value = "camvid", required = false) MultipartFile file,
                              Model model) throws IOException {
-	    if( file != null ){
-    	    String videoFilename = FileUploadUtils.saveVideo(request, file, null);
+	    if( file != null || request.getParameter("camvid") != null ){
+    	    String videoFilename = FileUploadUtils.saveVideo(request, "camvid", file, null);
             model.addAttribute("camcorderUploadReady", true);
     		model.addAttribute("camcorderMessage", "Hello " + modelBean.getName() +
                     ", your video was uploaded successfully.");
