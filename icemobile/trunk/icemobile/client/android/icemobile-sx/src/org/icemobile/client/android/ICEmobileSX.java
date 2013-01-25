@@ -191,16 +191,7 @@ class TestButton extends Button {
                 setText("not clicked");
             }
             isClicked = !isClicked;
-            if (null == mReturnUri)  {
-                mReturnUri = Uri.parse("http://www.google.com");
-            }
-            Intent browserIntent = new 
-                    Intent(Intent.ACTION_VIEW, 
-                    mReturnUri);
-            Context context = getContext();
-            browserIntent.putExtra(
-                    Browser.EXTRA_APPLICATION_ID, context.getPackageName());
-            startActivity(browserIntent);
+            returnToBrowser();
         }
     };
 
@@ -210,6 +201,19 @@ class TestButton extends Button {
         setOnClickListener(clicker);
     }
 }
+
+    public void returnToBrowser()  {
+        if (null == mReturnUri)  {
+            mReturnUri = Uri.parse("http://www.google.com");
+        }
+        Intent browserIntent = new 
+                Intent(Intent.ACTION_VIEW, 
+                mReturnUri);
+//        Context context = getContext();
+        browserIntent.putExtra(
+                Browser.EXTRA_APPLICATION_ID, "_icemobilesx");
+        startActivity(browserIntent);
+    }
 
     public Map parseQuery(String uri)  {
         HashMap parts = new HashMap();
@@ -276,10 +280,14 @@ Log.d(LOG_TAG, "processing commandParts " + commandParts);
 Log.d(LOG_TAG, "processing command " + command);
 
             int queryIndex = command.indexOf("?");
-            commandName = command.substring(0, queryIndex);
-            String commandParams = command.substring(queryIndex + 1);
-            Map params = parseQuery(commandParams);
-            mCurrentId = (String) params.get("id");
+            if (-1 == queryIndex)  {
+                commandName = command;
+            } else {
+                commandName = command.substring(0, queryIndex);
+                String commandParams = command.substring(queryIndex + 1);
+                Map params = parseQuery(commandParams);
+                mCurrentId = (String) params.get("id");
+            }
 
             mReturnUri = Uri.parse((String) commandParts.get("r"));
             mPOSTUri = Uri.parse((String) commandParts.get("u"));
@@ -384,11 +392,25 @@ Log.d(LOG_TAG, "processing command " + command);
 
     public void dispatch(String command, Map params)  {
 //        mCurrentId = (String) params.get("id");
+        String jsessionid  = (String) params.get("JSESSIONID");
+        String postUriString = mPOSTUri.toString();
+
+        if (null != jsessionid)  {
+            utilInterface.setCookie(postUriString,
+                    "JSESSIONID=" +
+                    jsessionid);
+        }
+
         if ("camera".equals(command))  {
             String path = mCameraInterface
                 .shootPhoto(mCurrentId, "");
             mCurrentMediaFile = path;
 Log.d(LOG_TAG, "dispatched camera " + path);
+        } else if ("register".equals(command))  {
+            utilInterface.setUrl(postUriString);
+            utilInterface.submitForm("", "");
+Log.e(LOG_TAG, "POST to register URL with jsessionid " + jsessionid);
+//            returnToBrowser();
         }
     }
 
@@ -415,6 +437,7 @@ Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm);
 Log.e(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
+//                    returnToBrowser();
                     break;
                 case TAKE_VIDEO_CODE:
                     mVideoHandler.gotVideo(data);
