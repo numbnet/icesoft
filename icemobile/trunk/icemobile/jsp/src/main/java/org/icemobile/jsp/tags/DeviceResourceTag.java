@@ -69,7 +69,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 	public static final String SCRIPT_ICEMOBILE = "<script type='text/javascript' src='%s%s/javascript/icemobile.js'></script>";
 	public static final String SCRIPT_ICEMOBILE_PROD = "<script type='text/javascript' src='%s%s/javascript/icemobile-min.js'></script>";
 	public static final String SCRIPT_SIMULATOR = "<script type='text/javascript' src='%s%s/javascript/simulator-interface.js'></script>";
-	public static final String CSS_SIMULATOR = "<link type='text/css' rel='stylesheet' href='%s%s/javascript/simulator.css'/>";
+	public static final String CSS_SIMULATOR = "<link type='text/css' rel='stylesheet' href='%s%s/%s/simulator/simulator.css' />";
 
 	//tag attributes
 	private String name;
@@ -126,8 +126,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		}
 		
 		if (client.isDesktopBrowser() && client.isSimulator())  {
-		    out.write(String.format(CSS_SIMULATOR, contextRoot,
-                    MobiJspConstants.RESOURCE_BASE_URL));
+		    out.write(String.format(CSS_SIMULATOR, contextRoot, MobiJspConstants.RESOURCE_BASE_URL, DEFAULT_LIBRARY));
 		    out.write(String.format(SCRIPT_SIMULATOR, contextRoot,
                     MobiJspConstants.RESOURCE_BASE_URL));
 		}
