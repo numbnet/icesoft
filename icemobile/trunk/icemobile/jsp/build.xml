@@ -161,6 +161,7 @@
 		<buildCSS3Skin skin="honeycomb" />
 		<buildCSS3Skin skin="ipad" />
 		<buildCSS3Skin skin="iphone" />
+    	<buildSimulatorSkin/>
     	
         <replaceregexp match="(\/\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="">
             <fileset dir="${build.dir}/skins/in" includes="**/*.css"></fileset>
@@ -199,6 +200,7 @@
         <compresscss name="android"/>
         <compresscss name="honeycomb"/>
         <compresscss name="bberry"/>
+    	<compresscss name="simulator"/>
     </target>
 
     <macrodef name="compresscss">
@@ -335,6 +337,16 @@
             <fileset dir="${theme.resources.dir}"/>
         </delete>
     </target>
+	
+	<!-- include source images and css for sprite generation -->
+    <macrodef name="buildSimulatorSkin">
+        <sequential>
+            <mkdir dir="build/skins/out/simulator/" />
+            <copy todir="build/skins/out/simulator/">
+                <fileset dir="${theme.dir}/simulator" />
+            </copy>
+        </sequential>
+    </macrodef>
     
     
 	<!-- include source images and css for sprite generation -->

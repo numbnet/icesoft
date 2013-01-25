@@ -193,7 +193,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
 
         Resource simulatorCss = facesContext.getApplication()
             .getResourceHandler().createResource(
-                CSS_SIMULATOR, UTIL_RESOURCE );
+                CSS_SIMULATOR, CSS_LOCATION );
         writer.startElement(HTML.LINK_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.LINK_TYPE_TEXT_CSS,
                 HTML.TYPE_ATTR);
