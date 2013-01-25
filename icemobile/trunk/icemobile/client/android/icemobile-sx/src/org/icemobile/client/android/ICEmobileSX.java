@@ -209,7 +209,6 @@ class TestButton extends Button {
         Intent browserIntent = new 
                 Intent(Intent.ACTION_VIEW, 
                 mReturnUri);
-//        Context context = getContext();
         browserIntent.putExtra(
                 Browser.EXTRA_APPLICATION_ID, "_icemobilesx");
         startActivity(browserIntent);
@@ -410,7 +409,7 @@ Log.d(LOG_TAG, "dispatched camera " + path);
             utilInterface.setUrl(postUriString);
             utilInterface.submitForm("", "");
 Log.e(LOG_TAG, "POST to register URL with jsessionid " + jsessionid);
-//            returnToBrowser();
+            returnToBrowser();
         }
     }
 
@@ -437,7 +436,7 @@ Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm);
 Log.e(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
-//                    returnToBrowser();
+                    returnToBrowser();
                     break;
                 case TAKE_VIDEO_CODE:
                     mVideoHandler.gotVideo(data);
