@@ -267,6 +267,7 @@ Log.d(LOG_TAG, "URL launched " + uri);
         mDebugTextView = new TextView(this);
 
         Map commandParts = new HashMap();
+        Map commandParams = new HashMap();
         String commandName = null;
 
         if (null != uri)  {
@@ -283,9 +284,9 @@ Log.d(LOG_TAG, "processing command " + command);
                 commandName = command;
             } else {
                 commandName = command.substring(0, queryIndex);
-                String commandParams = command.substring(queryIndex + 1);
-                Map params = parseQuery(commandParams);
-                mCurrentId = (String) params.get("id");
+                String commandParamsString = command.substring(queryIndex + 1);
+                commandParams = parseQuery(commandParamsString);
+                mCurrentId = (String) commandParams.get("id");
             }
 
             mReturnUri = Uri.parse((String) commandParts.get("r"));
@@ -367,9 +368,9 @@ Log.d(LOG_TAG, "processing command " + command);
             includeLogger();
         }
 
-        if (prefs.getBoolean("c2dm", true)) {
+//        if (prefs.getBoolean("c2dm", true)) {
             includeC2dm();
-        }
+//        }
 
         historyManager = new HistoryManager(HISTORY_SIZE);
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -385,13 +386,14 @@ Log.d(LOG_TAG, "processing command " + command);
 //        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 //        showLoadProgress = prefs.getBoolean(PREFERENCE_PROGRESS_BAR_KEY, false);
         if (null != commandName)  {
-            dispatch(commandName, commandParts);
+            dispatch(commandName, commandParts, commandParams);
         }
     }
 
-    public void dispatch(String command, Map params)  {
-//        mCurrentId = (String) params.get("id");
-        String jsessionid  = (String) params.get("JSESSIONID");
+    public void dispatch(String command, Map env, Map params)  {
+//        mCurrentId = (String) env.get("id");
+Log.d(LOG_TAG, "dispatch " + command);
+        String jsessionid  = (String) env.get("JSESSIONID");
         String postUriString = mPOSTUri.toString();
 
         if (null != jsessionid)  {
@@ -405,12 +407,62 @@ Log.d(LOG_TAG, "processing command " + command);
                 .shootPhoto(mCurrentId, "");
             mCurrentMediaFile = path;
 Log.d(LOG_TAG, "dispatched camera " + path);
+        } else if ("camcorder".equals(command))  {
+            String path = mVideoInterface
+                .shootVideo(mCurrentId, "");
+            mCurrentMediaFile = path;
+Log.d(LOG_TAG, "dispatched camcorder " + path);
+        } else if ("fetchContacts".equals(command))  {
+            mContactListInterface
+                .fetchContact(mCurrentId, "");
+//            String contactInfo = mContactListInterface.getContactInfo();
+//            String encodedForm = "";
+//Log.e(LOG_TAG, "POST to fetchContacts with info " + contactInfo);
+//            if (null != contactInfo)  {
+//                encodedForm = "hidden-" + mCurrentId + "=" +
+//                        URLEncoder.encode(contactInfo);
+//            }
+//            utilInterface.setUrl(postUriString);
+//            utilInterface.submitForm("", encodedForm);
+//            returnToBrowser();
+//Log.d(LOG_TAG, "dispatched fetchContacts " + contactInfo);
+        } else if ("microphone".equals(command))  {
+            String path = mAudioInterface
+                .recordAudio(mCurrentId);
+            mCurrentMediaFile = path;
+Log.d(LOG_TAG, "dispatched microphone " + path);
+        } else if ("aug".equals(command))  {
+            mARViewInterface
+                .arView(mCurrentId, packParams(params));
+Log.d(LOG_TAG, "dispatched augmented reality " + packParams(params));
         } else if ("register".equals(command))  {
+            String encodedForm = "";
+            String cloudNotificationId = getCloudNotificationId();
+            if (null != cloudNotificationId)  {
+                encodedForm = "hidden-iceCloudPushId=" +
+                        URLEncoder.encode(cloudNotificationId);
+            }
+Log.e(LOG_TAG, "POST to register will send " + encodedForm);
             utilInterface.setUrl(postUriString);
-            utilInterface.submitForm("", "");
+            utilInterface.submitForm("", encodedForm);
 Log.e(LOG_TAG, "POST to register URL with jsessionid " + jsessionid);
             returnToBrowser();
         }
+    }
+
+    public String packParams(Map params)  {
+        StringBuilder result = new StringBuilder();
+        String separator = "";
+        for (Object key : params.keySet())  {
+            result.append(separator);
+//            result.append(URLEncoder.encode(String.valueOf(key)));
+            result.append(String.valueOf(key));
+            result.append("=");
+//            result.append(URLEncoder.encode(String.valueOf(params.get(key))));
+            result.append(String.valueOf(params.get(key)));
+            separator = "&";
+        }
+        return result.toString();
     }
 
     public String encodeMedia(String id, String path)  {
@@ -424,6 +476,8 @@ Log.d(LOG_TAG, "onActivityResult " + requestCode + " " + data);
         //better to store return data in the intent than keep member
         //fields on this class
 
+        String encodedForm = null;
+
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TAKE_PHOTO_CODE:
@@ -431,7 +485,7 @@ Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
                     mCameraHandler.gotPhoto();
 //                    String encodedForm = encodeMedia(mCurrentId,
 //                            data.getStringExtra(MediaStore.EXTRA_OUTPUT));
-                    String encodedForm = encodeMedia(mCurrentId,
+                    encodedForm = encodeMedia(mCurrentId,
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm);
@@ -440,6 +494,12 @@ Log.e(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
                     break;
                 case TAKE_VIDEO_CODE:
                     mVideoHandler.gotVideo(data);
+                    encodedForm = encodeMedia(mCurrentId,
+                            mCurrentMediaFile);
+                    utilInterface.setUrl(mPOSTUri.toString());
+                    utilInterface.submitForm("", encodedForm);
+Log.e(LOG_TAG, "onActivityResult completed TAKE_VIDEO_CODE");
+                    returnToBrowser();
                     break;
                 case HISTORY_CODE:
                     newURL = data.getStringExtra("url");
@@ -454,9 +514,17 @@ Log.e(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
                     break;
                 case RECORD_CODE:
                     mAudioRecorder.gotAudio(data);
+                    encodedForm = encodeMedia(mCurrentId,
+                            mCurrentMediaFile);
+                    utilInterface.setUrl(mPOSTUri.toString());
+                    utilInterface.submitForm("", encodedForm);
+Log.e(LOG_TAG, "onActivityResult completed RECORD_CODE");
+                    returnToBrowser();
                     break;
                 case ARVIEW_CODE:
 //		mARViewHandler.arViewComplete(data);
+Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
+                    returnToBrowser();
                     break;
             }
         }
