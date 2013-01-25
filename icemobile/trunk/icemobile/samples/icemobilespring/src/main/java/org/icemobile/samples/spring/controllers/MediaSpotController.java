@@ -112,7 +112,7 @@ public class MediaSpotController extends BaseController{
             MediaSpotBean spotBean,
             Model model){
         log.info("post(): " + spotBean);
-        if( photoFile != null ){
+        if( photoFile != null || request.getParameter("spotcam") != null){
             processPhotoUpload(request,photoFile,spotBean,model);
         }
         else{
@@ -127,8 +127,8 @@ public class MediaSpotController extends BaseController{
 	    log.info("postPhotoUpload() photoFile="+photoFile);
         String newFileName = null;
         try {
-            if (null != photoFile)  {
-                newFileName = FileUploadUtils.saveImage(request, photoFile, null);
+            if (null != photoFile || request.getParameter("spotcam") != null )  {
+                newFileName = FileUploadUtils.saveImage(request, "spotcam", photoFile, null);
                 
                 spotBean.setFileName(newFileName);
                 String title = spotBean.getTitle();
