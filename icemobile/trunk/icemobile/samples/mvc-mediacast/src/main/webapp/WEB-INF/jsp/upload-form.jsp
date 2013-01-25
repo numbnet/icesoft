@@ -29,14 +29,7 @@
         <mobi:fieldsetGroup inset="true">
            <mobi:fieldsetRow style="font-weight: bold;color: #326ADB">
                 <span>
-                    <c:choose>
-                        <c:when test="${desktop}">
-                            Share a photo, video clip, or audio recording with your mobile device.
-                        </c:when>
-                        <c:otherwise>
-                            Upload a photo, video clip, or audio recording.
-                        </c:otherwise>
-                    </c:choose>
+                    Share a photo, video clip, or audio recording.
                 </span>
            </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
@@ -46,13 +39,13 @@
         <c:if test="${sessionScope['sxRegistered'] or enhanced}">
             <mobi:fieldsetGroup inset="true">
                  <mobi:fieldsetRow>
-                    <c:if test="${!desktop and !sxPhotoUploadReady}">
+                    <c:if test="${!sxPhotoUploadReady}">
                         <mobi:camera id="camera"/>
                     </c:if>
-                    <c:if test="${!desktop and !sxVideoUploadReady}">
+                    <c:if test="${!sxVideoUploadReady}">
                         <mobi:camcorder id="camcorder"/>
                     </c:if>
-                    <c:if test="${!desktop and !sxAudioUploadReady}">
+                    <c:if test="${!sxAudioUploadReady}">
                         <mobi:microphone id="microphone" buttonLabel="Audio"/>
                     </c:if>
                  </mobi:fieldsetRow>  
