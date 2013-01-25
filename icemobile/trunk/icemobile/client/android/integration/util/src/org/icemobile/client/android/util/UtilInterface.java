@@ -251,6 +251,12 @@ public class UtilInterface implements JavascriptInterface,
         return res.toArray(new BasicNameValuePair[0]);
     }
 
+    public void setCookie(String URL, String value) {
+        CookieSyncManager.createInstance(container);
+	    CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setCookie(URL, value);
+    }
+
     public void setUrl(String URL) {
         CookieSyncManager.createInstance(container);
 	    CookieManager cookieManager = CookieManager.getInstance();
