@@ -16,28 +16,24 @@
 
 package org.icefaces.ace.generator.artifacts;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.Facet;
 import org.icefaces.ace.generator.behavior.Behavior;
 import org.icefaces.ace.generator.context.ComponentContext;
 import org.icefaces.ace.generator.context.GeneratorContext;
 import org.icefaces.ace.generator.utils.FileWriter;
-import org.icefaces.ace.generator.utils.Utility;
-import java.util.logging.Logger;
-
-
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-
 import org.icefaces.ace.generator.utils.PropertyValues;
+import org.icefaces.ace.generator.utils.Utility;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Facet;
+import org.icefaces.resources.ICEBrowserDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class ComponentArtifact extends Artifact{
 
@@ -83,8 +79,10 @@ public class ComponentArtifact extends Artifact{
         writer.append("import javax.faces.component.UIViewRoot;\n\n");
 //        writer.append("import org.icefaces.ace.util.PartialStateHolderImpl;\n\n");
 
-        writer.append("import javax.faces.application.ResourceDependencies;\n");
-        writer.append("import javax.faces.application.ResourceDependency;\n\n");
+        writer.append("import org.icefaces.resources.ICEResourceDependencies;\n");
+        writer.append("import org.icefaces.resources.ICEResourceDependency;\n\n");
+        writer.append("import org.icefaces.resources.ICEBrowserDependency;\n\n");
+        writer.append("import org.icefaces.resources.BrowserType;\n\n");
 
 
         for (Behavior behavior: getComponentContext().getBehaviors()) {
@@ -93,15 +91,22 @@ public class ComponentArtifact extends Artifact{
         writer.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
 
         // copy @ResourceDependency annotations
-        if (clazz.isAnnotationPresent(ResourceDependencies.class)) {
+        if (clazz.isAnnotationPresent(ICEResourceDependencies.class)) {
             writer.append("\n");
-            writer.append("@ResourceDependencies({\n");
+            writer.append("@ICEResourceDependencies({\n");
 
-            ResourceDependencies rd = (ResourceDependencies) clazz.getAnnotation(ResourceDependencies.class);
-            ResourceDependency[] rds = rd.value();
+            ICEResourceDependencies rd = (ICEResourceDependencies) clazz.getAnnotation(ICEResourceDependencies.class);
+            ICEResourceDependency[] rds = rd.value();
             int rdsLength = rds.length;
             for (int i = 0; i < rdsLength; i++) {
-                writer.append("\t@ResourceDependency(name=\"" + rds[i].name() + "\",library=\"" + rds[i].library() + "\",target=\"" + rds[i].target() + "\")");
+                String overrideString = getOverrideString(rds[i]);
+
+                writer.append(
+                        "\t@ICEResourceDependency(name=\"" + rds[i].name() + "\"," +
+                        "library=\"" + rds[i].library() +  "\"," +
+                        "target=\"" + rds[i].target() + "\"," +
+                        "browser=BrowserType." + rds[i].browser().toString() + "," +
+                        "browserOverride=" + overrideString + ")");
                 if (i < (rdsLength-1)) {
                     writer.append(",");
                 }
@@ -110,9 +115,9 @@ public class ComponentArtifact extends Artifact{
 
             writer.append("})");
             writer.append("\n\n");
-        } else if (clazz.isAnnotationPresent(ResourceDependency.class)) {
-            ResourceDependency rd = (ResourceDependency) clazz.getAnnotation(ResourceDependency.class);
-            writer.append("@ResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n\n");
+        } else if (clazz.isAnnotationPresent(ICEResourceDependency.class)) {
+            ICEResourceDependency rd = (ICEResourceDependency) clazz.getAnnotation(ICEResourceDependency.class);
+            writer.append("@ICEResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n\n");
         }
 
         writer.append("public class ");
@@ -145,6 +150,29 @@ public class ComponentArtifact extends Artifact{
         writer.append("\n\tpublic String getFamily() {\n\t\treturn \"");
         writer.append(Utility.getFamily(component));
         writer.append("\";\n\t}\n\n");
+    }
+
+    private String getOverrideString(ICEResourceDependency rd) {
+        String ret = "{";
+        ICEBrowserDependency[] overrides = rd.browserOverride();
+
+        if (overrides.length > 0) {
+            ICEBrowserDependency bd;
+            for (int i = 0; i < overrides.length; i++) {
+                bd = overrides[i];
+                ret += "\t@ICEBrowserDependency(name=\"" + bd.name() + "\"," +
+                            "library=\"" + bd.library() +  "\"," +
+                            "target=\"" + bd.target() + "\"," +
+                            "browser=BrowserType." + bd.browser().toString() + ")";
+                if (i == overrides.length - 1)
+                    ret += "\n";
+                else
+                    ret += ",\n";
+            }
+            ret += "}";
+        } else ret = "{}";
+
+        return ret;
     }
 
 

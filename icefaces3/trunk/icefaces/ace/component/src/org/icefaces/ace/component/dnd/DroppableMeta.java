@@ -27,8 +27,8 @@ import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 @Component(
     tagName = "droppable",
@@ -47,9 +47,9 @@ import javax.faces.application.ResourceDependency;
 	@ClientEvent(name="drop", javadoc="Fired when a draggable component is dropped on this droppable component (default event).", 
 	tlddoc="Fired when a draggable component is dropped on this droppable component (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="drop")
-@ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+@ICEResourceDependencies({
+	@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+	@ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 public class DroppableMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "The JavaScript component instance variable name.")

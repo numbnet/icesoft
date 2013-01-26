@@ -39,9 +39,9 @@ import javax.el.ELContext;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependencies;
+import org.icefaces.resources.ICEResourceDependencies;
 
-@ResourceDependencies({
+@ICEResourceDependencies({
 
 })
 public class Row extends RowBase {

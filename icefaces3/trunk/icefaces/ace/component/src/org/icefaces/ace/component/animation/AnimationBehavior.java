@@ -16,24 +16,22 @@
 
 package org.icefaces.ace.component.animation;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
-
 import javax.faces.component.behavior.FacesBehavior;
-
 import javax.faces.context.FacesContext;
+import java.util.HashMap;
+import java.util.Map;
 
 @FacesBehavior("org.icefaces.ace.animation.Animation")
-@ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+@ICEResourceDependencies({
+	@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+	@ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 public class AnimationBehavior extends BehaviorBase {
     public final static String BEHAVIOR_ID = "org.icefaces.ace.animation.Animation";

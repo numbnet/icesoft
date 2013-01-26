@@ -32,9 +32,9 @@
 
 package org.icefaces.ace.component.excludefromexport;
 
-import javax.faces.application.ResourceDependencies;
+import org.icefaces.resources.ICEResourceDependencies;
 
-@ResourceDependencies({
+@ICEResourceDependencies({
 
 })
 public class ExcludeFromExport extends ExcludeFromExportBase {

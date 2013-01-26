@@ -18,10 +18,11 @@ package org.icefaces.ace.component.tree;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
-import org.icefaces.ace.model.tree.*;
-
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.ace.model.tree.KeySegmentConverter;
+import org.icefaces.ace.model.tree.NodeStateCreationCallback;
+import org.icefaces.ace.model.tree.NodeStateMap;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 @Component(
         tagName = "tree",
@@ -36,10 +37,10 @@ import javax.faces.application.ResourceDependency;
                 "selection and expansion. Other features available include: user reordering of nodes, multiple selection " +
                 "and lazy node state initialization." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Tree\">Tree Wiki Documentation</a>.</p>")
-@ResourceDependencies({
-        @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
-        @ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-        @ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+@ICEResourceDependencies({
+        @ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
+        @ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+        @ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name="expand",

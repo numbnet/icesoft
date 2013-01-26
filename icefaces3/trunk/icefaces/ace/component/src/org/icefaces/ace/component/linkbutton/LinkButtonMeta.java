@@ -16,8 +16,8 @@
 
 package org.icefaces.ace.component.linkbutton;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.baseMeta.UICommandMeta;
@@ -40,10 +40,10 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		tlddoc = "The Link Button is a component that functions like an HTML link." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/LinkButton\">LinkButton Wiki Documentation</a>."
 )
-@ResourceDependencies({
-		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
-		@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-        @ResourceDependency(name="util/ace-yui.js",library="icefaces.ace")
+@ICEResourceDependencies({
+		@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
+		@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+        @ICEResourceDependency(name="util/ace-yui.js",library="icefaces.ace")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="Fired when the button is clicked or pressed by any other means (default event).", tlddoc="Fired when the button is clicked or pressed by any other means (default event).", defaultRender="@all", defaultExecute="@all")

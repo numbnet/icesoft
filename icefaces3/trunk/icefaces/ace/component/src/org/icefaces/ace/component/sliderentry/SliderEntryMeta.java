@@ -16,8 +16,8 @@
 
 package org.icefaces.ace.component.sliderentry;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
@@ -54,10 +54,10 @@ import javax.el.MethodExpression;
                 "<a href=\"htp://wiki.icefaces.org/display/ICE/SliderEntry\">SliderEntry Wiki Documentation</a>.</p>"
         )
 
-@ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+@ICEResourceDependencies({
+	@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 
 @ClientBehaviorHolder(events = {

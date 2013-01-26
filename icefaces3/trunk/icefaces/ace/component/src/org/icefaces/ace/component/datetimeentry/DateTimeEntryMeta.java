@@ -23,8 +23,8 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 @Component(
         tagName = "dateTimeEntry",
@@ -38,10 +38,10 @@ import javax.faces.application.ResourceDependency;
         tlddoc = "The DateTime Entry is a component that allows the user to configure and input a date and/or time in various ways." +
                  "<p>For more information, see the " +
                 "<a href=\"http://wiki.icefaces.org/display/ICE/DateTimeEntry\">DateTimeEntry Wiki Documentation</a>.")
-@ResourceDependencies({
-		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
-        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+@ICEResourceDependencies({
+		@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
+        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="dateSelect", javadoc="Fired when a date is selected from the calendar (default event).", tlddoc="Fired when a date is selected from the calendar (default event).", defaultRender="@all", defaultExecute="@all", argumentClass="org.icefaces.ace.event.DateSelectEvent"),

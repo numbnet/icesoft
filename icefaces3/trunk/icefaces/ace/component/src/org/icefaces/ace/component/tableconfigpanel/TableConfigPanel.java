@@ -20,8 +20,8 @@ package org.icefaces.ace.component.tableconfigpanel;
 import org.icefaces.ace.component.datatable.DataTable;
 
 import javax.faces.FacesException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 public class TableConfigPanel extends TableConfigPanelBase {
