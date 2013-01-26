@@ -16,17 +16,12 @@
 
 package org.icefaces.ace.component.accordion;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import javax.el.MethodExpression;
-
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
-import org.icefaces.ace.meta.annotation.Expression;
-import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
-import org.icefaces.ace.meta.annotation.ClientEvent;
-import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
+import javax.el.MethodExpression;
 
 @Component(
         tagName         = "accordion",
@@ -42,10 +37,10 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
                  "<a href=\"http://wiki.icefaces.org/display/ICE/Accordion\">Accordion Wiki Documentation</a>."
         )
 
-@ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+@ICEResourceDependencies({
+	@ICEResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
+	@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+	@ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="panechange",

@@ -20,8 +20,8 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 @Component(
         tagName = "gMapOverlay",
@@ -37,10 +37,10 @@ import javax.faces.application.ResourceDependency;
                 " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
 )
 
-@ResourceDependencies({
-        @ResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.css"),
-        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+@ICEResourceDependencies({
+        @ICEResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.css"),
+        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 
 public class GMapOverlayMeta extends UIPanelMeta {

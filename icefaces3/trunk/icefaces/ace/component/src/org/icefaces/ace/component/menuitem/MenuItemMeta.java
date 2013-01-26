@@ -20,7 +20,7 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 
-import javax.faces.application.ResourceDependencies;
+import org.icefaces.resources.ICEResourceDependencies;
 
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
@@ -37,7 +37,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/MenuItem\">MenuItem Wiki Documentation</a>."
 )
-@ResourceDependencies({
+@ICEResourceDependencies({
 
 })
 @ClientBehaviorHolder(events = {

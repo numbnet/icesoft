@@ -16,8 +16,8 @@
 
 package org.icefaces.impl.component;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -25,10 +25,10 @@ import javax.faces.event.ActionEvent;
 import java.io.IOException;
 import java.util.Map;
 
-@ResourceDependencies({
-        @ResourceDependency(name = "navigation-notifier/blank.html"),
-        @ResourceDependency(name = "navigation-notifier/json2007.js"),
-        @ResourceDependency(name = "navigation-notifier/rsh.js")
+@ICEResourceDependencies({
+        @ICEResourceDependency(name = "navigation-notifier/blank.html"),
+        @ICEResourceDependency(name = "navigation-notifier/json2007.js"),
+        @ICEResourceDependency(name = "navigation-notifier/rsh.js")
 })
 public class NavigationNotifier extends UICommand {
     public NavigationNotifier() {

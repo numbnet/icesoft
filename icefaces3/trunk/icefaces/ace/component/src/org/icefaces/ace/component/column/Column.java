@@ -25,7 +25,6 @@ import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.model.DataModel;
 import java.io.Serializable;
 import java.util.List;

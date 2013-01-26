@@ -19,9 +19,7 @@ package org.icefaces.ace.component.accordion;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
-
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
 
 @Component(
         tagName         = "accordionPane",
@@ -36,7 +34,7 @@ import javax.faces.application.ResourceDependency;
                 "<a href=\"http://wiki.icefaces.org/display/ICE/AccordionPane\">AccordionPane Wiki Documentation</a>."
         )
 
-@ResourceDependencies({
+@ICEResourceDependencies({
 
 })
 public class AccordionPaneMeta extends UIComponentBaseMeta {

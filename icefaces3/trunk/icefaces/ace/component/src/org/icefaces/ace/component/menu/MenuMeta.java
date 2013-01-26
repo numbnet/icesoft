@@ -21,8 +21,8 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.model.MenuModel;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 @Component(
         tagName = "menu",
@@ -38,10 +38,10 @@ import javax.faces.application.ResourceDependency;
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/Menu+and+Menubar\">Menu Wiki Documentation</a>."
 )
-@ResourceDependencies({
-		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
-        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "util/ace-menu.js")
+@ICEResourceDependencies({
+		@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
+        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-menu.js")
 })
 public class MenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Javascript variable name of the wrapped widget.")

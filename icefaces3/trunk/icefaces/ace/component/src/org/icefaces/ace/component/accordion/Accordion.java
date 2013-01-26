@@ -32,8 +32,6 @@ package org.icefaces.ace.component.accordion;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIPanel;

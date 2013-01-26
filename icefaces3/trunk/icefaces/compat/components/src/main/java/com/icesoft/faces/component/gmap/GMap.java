@@ -20,17 +20,17 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.JavascriptContext;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import java.io.IOException;
 import java.util.Map;
 
-@ResourceDependencies({
-        @ResourceDependency(name = "gmap/gmap.js"),
-        @ResourceDependency(name = "gmap/main.js")
+@ICEResourceDependencies({
+    @ICEResourceDependency(name = "gmap/gmap.js"),
+    @ICEResourceDependency(name = "gmap/main.js")
 })
 public class GMap extends UIPanel {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.GMap";

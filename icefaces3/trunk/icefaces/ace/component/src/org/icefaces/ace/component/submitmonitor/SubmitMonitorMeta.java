@@ -23,8 +23,8 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 import javax.faces.component.UIComponent;
 import java.lang.Boolean;
 import java.lang.String;
@@ -53,10 +53,10 @@ import java.lang.String;
         "<a href=\"http://wiki.icefaces.org/display/ICE/SubmitMonitor\">" +
         "SubmitMonitor Wiki Documentation</a>."
 )
-@ResourceDependencies({
-    @ResourceDependency(library = "icefaces.ace", name = "util/combined.css"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+@ICEResourceDependencies({
+    @ICEResourceDependency(library = "icefaces.ace", name = "util/combined.css"),
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 public class SubmitMonitorMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Label to be displayed on the submitMonitor when no " +

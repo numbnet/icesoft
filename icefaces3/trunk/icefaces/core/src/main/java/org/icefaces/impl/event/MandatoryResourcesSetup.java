@@ -18,10 +18,13 @@ package org.icefaces.impl.event;
 
 import org.icefaces.impl.renderkit.DOMRenderKit;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceUtils;
+import org.icefaces.resources.ResourceInfo;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.util.UserAgentInfo;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -83,11 +86,16 @@ public class MandatoryResourcesSetup implements SystemEventListener {
         RenderKit rk = context.getRenderKit();
         if (rk instanceof DOMRenderKit) {
             DOMRenderKit drk = (DOMRenderKit) rk;
-            Set<ResourceDependency> addedResourceDependencies = new HashSet<ResourceDependency>();
+            Set<ResourceInfo> addedResourceDependencies = new HashSet<ResourceInfo>();
             List<MandatoryResourceComponent> mandatoryResourceComponents = drk.getMandatoryResourceComponents();
             String resourceConfig = EnvUtils.getMandatoryResourceConfig(context);
+
+
             //pad with spaces to allow contains checking
             String resourceConfigPad = " " + resourceConfig + " ";
+            UserAgentInfo uaInfo = new UserAgentInfo(FacesContext.getCurrentInstance()
+                    .getExternalContext().getRequestHeaderMap().get("user-agent"));
+
             for (MandatoryResourceComponent mrc : mandatoryResourceComponents) {
                 String compClassName = mrc.value();
                 if (!"all".equalsIgnoreCase(resourceConfig)) {
@@ -95,6 +103,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                     if (!resourceConfigPad.contains(" " + compClassName + " ") &&
                             (tagName != null && tagName.length() > 0 &&
                                     !resourceConfigPad.contains(" " + tagName + " "))) {
+                        // TODO: Add browser specificity
                         continue;
                     }
                 }
@@ -104,15 +113,18 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                     // annotations, creating components for
                     // each unique one, so they'll add the mandatory
                     // resources.
-                    ResourceDependencies resourceDependencies = compClass.getAnnotation(ResourceDependencies.class);
+                    ICEResourceDependencies resourceDependencies = compClass.getAnnotation(ICEResourceDependencies.class);
                     if (resourceDependencies != null) {
-                        for (ResourceDependency resDep : resourceDependencies.value()) {
-                            addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resDep, collectedResourceComponents);
+                        for (ICEResourceDependency resDep : resourceDependencies.value()) {
+                            ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resDep);
+                            if (resInfo != null)
+                                addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo, collectedResourceComponents);
                         }
                     }
-                    ResourceDependency resourceDependency = compClass.getAnnotation(ResourceDependency.class);
-                    if (resourceDependency != null) {
-                        addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resourceDependency, collectedResourceComponents);
+                    ICEResourceDependency resourceDependency = compClass.getAnnotation(ICEResourceDependency.class);
+                    ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resourceDependency);
+                    if (resInfo != null) {
+                        addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo, collectedResourceComponents);
                     }
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
@@ -155,15 +167,15 @@ public class MandatoryResourcesSetup implements SystemEventListener {
     private static void addMandatoryResourceDependency(
             FacesContext facesContext,
             String compClassName,
-            Set<ResourceDependency> addedResDeps,
-            ResourceDependency resDep,
+            Set<ResourceInfo> addedResDeps,
+            ResourceInfo resDep,
             Map collectedResourceComponents) {
         if (addedResDeps.contains(resDep)) {
             return;
         }
         addedResDeps.add(resDep);
-        addMandatoryResource(facesContext, compClassName, resDep.name(),
-                resDep.library(), resDep.target(), collectedResourceComponents);
+        addMandatoryResource(facesContext, compClassName, resDep.name,
+                resDep.library, resDep.target, collectedResourceComponents);
     }
 
     private static void addMandatoryResource(FacesContext facesContext,

@@ -276,7 +276,6 @@
         <delete file="${ace-chart.js.uncompressed}" verbose="${ace-chart.js.uncompressed.present}"/>
         <concat destfile="${ace-chart.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
-                <file name="icefaces.ace/chart/excanvas.js"/>
                 <file name="icefaces.ace/chart/jquery.jqplot.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.barRenderer.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.pieRenderer.js"/>

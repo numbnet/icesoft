@@ -16,18 +16,13 @@
 
 package org.icefaces.ace.component.tooltip;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIOutputMeta;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
-import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
-import org.icefaces.ace.meta.annotation.ClientEvent;
-import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
         tagName         = "tooltip",
@@ -41,10 +36,10 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		tlddoc = "The Tooltip is a component that displays a tooltip with various events, effects and customization options." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Tooltip\">Tooltip Wiki Documentation</a>."
         )
-@ResourceDependencies({
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/combined.css")
+@ICEResourceDependencies({
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js"),
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/combined.css")
 //    @ResourceDependency(library="icefaces.ace", name="tooltip/jquery.qtip.debug-1.0.0-rc3.js"),
 })
 @ClientBehaviorHolder(events = {

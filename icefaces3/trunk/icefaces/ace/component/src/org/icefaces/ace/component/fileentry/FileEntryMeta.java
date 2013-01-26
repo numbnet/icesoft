@@ -18,8 +18,8 @@ package org.icefaces.ace.component.fileentry;
 
 import javax.el.MethodExpression;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.application.ResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
@@ -53,9 +53,9 @@ import org.icefaces.ace.meta.annotation.Property;
         "frequent than once every 2 seconds, and are only sent at 1% " +
         "progress increments. <p>For more information, see the " +
         "<a href=\"http://wiki.icefaces.org/display/ICE/FileEntry\">FileEntry Wiki Documentation</a>.")
-@ResourceDependencies({
-    @ResourceDependency(library="icefaces.ace", name="fileentry/fileEntry.css"),
-    @ResourceDependency(library="icefaces.ace", name="fileentry/fileEntry.js")
+@ICEResourceDependencies({
+    @ICEResourceDependency(library="icefaces.ace", name="fileentry/fileEntry.css"),
+    @ICEResourceDependency(library="icefaces.ace", name="fileentry/fileEntry.js")
 })
 public class FileEntryMeta extends UIComponentBaseMeta {
 

@@ -42,12 +42,12 @@ import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependencies;
+import org.icefaces.resources.ICEResourceDependencies;
 import javax.faces.event.AbortProcessingException;
 import java.util.List;
 import java.util.ArrayList;
 
-@ResourceDependencies({
+@ICEResourceDependencies({
 
 })
 public class RowEditor extends RowEditorBase {

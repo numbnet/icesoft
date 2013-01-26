@@ -35,11 +35,11 @@ package org.icefaces.ace.component.celleditor;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependencies;
+import org.icefaces.resources.ICEResourceDependencies;
 import java.util.List;
 import java.util.ArrayList;
 
-@ResourceDependencies({
+@ICEResourceDependencies({
 
 })
 public class CellEditor extends CellEditorBase {

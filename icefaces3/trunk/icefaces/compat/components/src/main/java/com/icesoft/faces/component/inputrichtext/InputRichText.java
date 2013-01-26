@@ -20,8 +20,8 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.util.CoreUtils;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -30,10 +30,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-@ResourceDependencies({
-        @ResourceDependency(name = "ckeditor/ckeditor.mapping.js", library = "inputrichtext"),
-        @ResourceDependency(name = "ckeditor/ckeditor.js", library = "inputrichtext"),
-        @ResourceDependency(name = "ckeditor_ext.js", library = "inputrichtext")
+@ICEResourceDependencies({
+    @ICEResourceDependency(name = "ckeditor/ckeditor.mapping.js", library = "inputrichtext"),
+    @ICEResourceDependency(name = "ckeditor/ckeditor.js", library = "inputrichtext"),
+    @ICEResourceDependency(name = "ckeditor_ext.js", library = "inputrichtext")
 })
 public class InputRichText extends UIInput {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.InputRichText";

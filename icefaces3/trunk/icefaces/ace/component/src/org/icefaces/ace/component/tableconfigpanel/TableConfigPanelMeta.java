@@ -19,8 +19,8 @@ package org.icefaces.ace.component.tableconfigpanel;
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 @Component(
     tagName = "tableConfigPanel",
@@ -33,10 +33,10 @@ import javax.faces.application.ResourceDependency;
     componentFamily = "org.icefaces.ace.TableConfigPanel",
     tlddoc = "<p>Renders a hidden panel with controls to configure column features. The table whose columns are to be configured is targeted with the 'for' attribute. The location of the button to reveal this panel is configured via the 'type' attribute.</p>" +
              "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TableConfigPanel\">TableConfigPanel Wiki Documentation</a>.</p>")
-@ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-datatable.js")
+@ICEResourceDependencies({
+	@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-datatable.js")
 })
 
 @ClientBehaviorHolder(events = {

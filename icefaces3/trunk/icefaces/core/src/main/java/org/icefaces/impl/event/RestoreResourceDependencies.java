@@ -16,8 +16,12 @@
 
 package org.icefaces.impl.event;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceUtils;
+import org.icefaces.resources.ResourceInfo;
+import org.icefaces.util.UserAgentInfo;
+
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -38,31 +42,38 @@ public class RestoreResourceDependencies implements SystemEventListener {
         final FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot viewRoot = facesContext.getViewRoot();
         VisitContext visitContext = VisitContext.createVisitContext(facesContext, null, HINTS);
+        final UserAgentInfo uaInfo = new UserAgentInfo(FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestHeaderMap().get("user-agent"));
+
         viewRoot.visitTree(visitContext, new VisitCallback() {
             public VisitResult visit(VisitContext context, UIComponent target) {
                 VisitResult result = VisitResult.ACCEPT;
                 Class<UIComponent> compClass = (Class<UIComponent>) target.getClass();
-                ResourceDependencies resourceDependencies = compClass.getAnnotation(ResourceDependencies.class);
+
+                ICEResourceDependencies resourceDependencies = compClass.getAnnotation(ICEResourceDependencies.class);
                 if (resourceDependencies != null) {
-                    for (ResourceDependency resDep : resourceDependencies.value()) {
-                        addResourceDependency(facesContext, resDep);
+                    for (ICEResourceDependency resDep : resourceDependencies.value()) {
+                        ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resDep);
+                        if (resInfo != null) addResourceDependency(facesContext, resInfo);
                     }
                 }
-                ResourceDependency resourceDependency = compClass.getAnnotation(ResourceDependency.class);
-                if (resourceDependency != null) {
-                    addResourceDependency(facesContext, resourceDependency);
-                }
+
+                ICEResourceDependency resourceDependency = compClass.getAnnotation(ICEResourceDependency.class);
+                ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resourceDependency);
+                if (resInfo != null)
+                    addResourceDependency(facesContext, resInfo);
+
                 return result;
             }
         });
     }
 
-    private void addResourceDependency(FacesContext context, ResourceDependency resourceDependency) {
+    private void addResourceDependency(FacesContext context, ResourceInfo resourceInfo) {
         UIViewRoot viewRoot = context.getViewRoot();
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        String name = resourceDependency.name();
-        String library = resourceDependency.library();
-        String target = resourceDependency.target();
+        String name = resourceInfo.name;
+        String library = resourceInfo.library;
+        String target = resourceInfo.target;
         target = target == null || "".equals(target) ? "head" : target;
 
         List<UIComponent> componentResources = viewRoot.getComponentResources(context, target);

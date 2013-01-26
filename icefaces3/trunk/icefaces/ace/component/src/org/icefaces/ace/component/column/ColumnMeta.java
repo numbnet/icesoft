@@ -22,7 +22,7 @@ import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIColumnMeta;
 
-import javax.faces.application.ResourceDependencies;
+import org.icefaces.resources.ICEResourceDependencies;
 import java.util.Comparator;
 
 @Component(
@@ -35,7 +35,7 @@ import java.util.Comparator;
 		componentFamily = "org.icefaces.ace.component",
 		tlddoc = "<p>Component that represents a column in an ace:dataTable.</p>" +
                  "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Column\">Column Wiki Documentation</a>.</p>")
-@ResourceDependencies({
+@ICEResourceDependencies({
 
 })
 

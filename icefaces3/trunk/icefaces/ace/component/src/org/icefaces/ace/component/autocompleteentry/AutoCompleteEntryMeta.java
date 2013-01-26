@@ -25,8 +25,8 @@ import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 import javax.el.ValueExpression;
 import javax.el.MethodExpression;
 
@@ -49,9 +49,9 @@ import java.util.List;
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/AutoCompleteEntry\">AutoCompleteEntry Wiki Documentation</a>."
 )
-@ResourceDependencies({
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ResourceDependency(library = "icefaces.ace", name="util/ace-components.js")
+@ICEResourceDependencies({
+	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ICEResourceDependency(library = "icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent( name="submit",
