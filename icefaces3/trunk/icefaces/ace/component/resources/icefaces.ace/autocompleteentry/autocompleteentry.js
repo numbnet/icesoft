@@ -179,6 +179,12 @@ ice.ace.Autocompleter.prototype = {
 				if (behaviors.behaviors.blur) {
 					this.ajaxBlur = behaviors.behaviors.blur;
 				}
+				if (behaviors.behaviors.textChange) {
+					this.ajaxTextChange = behaviors.behaviors.textChange;
+				}
+				if (behaviors.behaviors.change) {
+					this.ajaxValueChange = behaviors.behaviors.change;
+				}
 			}
 		}
 		
@@ -360,6 +366,8 @@ ice.ace.Autocompleter.prototype = {
         else {
             if (event.keyCode == ice.ace.Autocompleter.keys.KEY_TAB || event.keyCode == ice.ace.Autocompleter.keys.KEY_RETURN) return;
         }
+		
+		if (!this.isCharacterCode(event.keyCode)) return;
 
         this.changed = true;
         this.hasFocus = true;
@@ -711,12 +719,16 @@ ice.ace.Autocompleter.prototype = {
 		if (this.observer) clearTimeout(this.observer);
 		if (this.blurObserver) clearTimeout(this.blurObserver);
 		if (isHardSubmit) {
-			if (this.ajaxSubmit) {
+			if (this.ajaxValueChange || this.ajaxSubmit) {
 				var ajaxCfg = {};
 				var options = {params: {}};
 				options.params[this.id + '_hardSubmit'] = true;
 				options.params['ice.event.keycode'] = event.keyCode;
-				ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
+				if (this.ajaxValueChange) {
+					ice.ace.jq.extend(ajaxCfg, this.ajaxValueChange, options);
+				} else {
+					ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
+				}
 				ice.ace.ab(ajaxCfg);
 			} else if (!this.clientSideModeCfg) {
 				ice.s(event, this.element);
@@ -725,11 +737,15 @@ ice.ace.Autocompleter.prototype = {
 			if (this.clientSideModeCfg) {
 				this.clientSideModeUpdate();
 			}
-			if (this.ajaxSubmit) {
+			if (this.ajaxTextChange || this.ajaxSubmit) {
 				var ajaxCfg = {};
 				var options = {params: {}};
 				options.params['ice.event.keycode'] = event.keyCode;
-				ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
+				if (this.ajaxTextChange) {
+					ice.ace.jq.extend(ajaxCfg, this.ajaxTextChange, options);
+				} else {
+					ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
+				}
 				ice.ace.ab(ajaxCfg);
 			} else if (!this.clientSideModeCfg) {
 				ice.s(event, this.element);
@@ -792,6 +808,18 @@ ice.ace.Autocompleter.prototype = {
 		return item.indexOf(value, item.length - value.length) > -1;
 	},
 	noFilter: function(item, value) {
+		return true;
+	},
+	
+	isCharacterCode: function(keyCode) {
+		if (keyCode == 8 || keyCode == 46) return true; // backspace, del
+		if (keyCode >= 16 && keyCode <= 20) return false; // shift, ctrl, alt, pause, caps lock
+		if (keyCode >= 33 && keyCode <= 40) return false; // pg up, pg down, end, home, arrow keys
+		if (keyCode == 44 || keyCode == 45) return false; // print screen, insert
+		if (keyCode == 144 || keyCode == 145) return false; // num lock, scroll lock
+		if (keyCode >= 91 && keyCode <= 93) return false; // windows keys, context menu
+		if (keyCode >= 112 && keyCode <= 123) return false; // f keys
+		if (keyCode == 9 || keyCode == 10 || keyCode == 13 || keyCode ==  27) return false; // tab, lf, cr, esc
 		return true;
 	},
 

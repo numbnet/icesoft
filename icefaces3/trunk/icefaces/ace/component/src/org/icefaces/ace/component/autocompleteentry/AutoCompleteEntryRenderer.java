@@ -56,17 +56,18 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         String clientId = autoCompleteEntry.getClientId(facesContext);
         String text = (String) requestMap.get(clientId + "_input");
 		String oldText = (String) autoCompleteEntry.getText();
+		boolean textChanged = false;
 		
         if (text != null) {
 			if (autoCompleteEntry.isCaseSensitive()) {
 				if (!text.equals(oldText)) {
 					autoCompleteEntry.setPopulateList(true);
-					autoCompleteEntry.queueEvent(new TextChangeEvent(autoCompleteEntry, text, oldText, keyEvent.getKeyCode()));
+					textChanged = true;
 				}
 			} else {
 				if (!text.equalsIgnoreCase(oldText)) {
 					autoCompleteEntry.setPopulateList(true);
-					autoCompleteEntry.queueEvent(new TextChangeEvent(autoCompleteEntry, text, oldText, keyEvent.getKeyCode()));
+					textChanged = true;
 				}			
 			}
 			if ("".equals(text) && oldText == null) {
@@ -86,6 +87,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				autoCompleteEntry.setSubmittedValue(text);
 			} else if (keyEvent.getKeyCode() == KeyEvent.UP_ARROW_KEY || keyEvent.getKeyCode() == KeyEvent.DOWN_ARROW_KEY) {
 				autoCompleteEntry.setPopulateList(true);
+			} else if (textChanged) {
+				autoCompleteEntry.queueEvent(new TextChangeEvent(autoCompleteEntry, text, oldText, keyEvent.getKeyCode()));
 			}
         } else {
 			autoCompleteEntry.setPopulateList(false);
