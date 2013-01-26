@@ -55,12 +55,20 @@ import java.util.List;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent( name="submit",
-		javadoc="Fired any time the value of the text input field is submitted to the server, either by typing a symbol, clicking on an option or pressing enter.",
-		tlddoc="Fired any time the value of the text input field is submitted to the server, either by typing a symbol, clicking on an option or pressing enter",
+		javadoc="Fired any time the value of the text input field is submitted to the server, either by typing a character, clicking on an option from the list, selecting an option with the keyboard, or pressing enter on the text field. If there are also textChange and/or valueChange events registered for this component, this event will not fire in those cases, since the other events are more specific and have precedence.",
+		tlddoc="Fired any time the value of the text input field is submitted to the server, either by typing a character, clicking on an option from the list, selecting an option with the keyboard, or pressing enter on the text field. If there are also textChange and/or valueChange events registered for this component, this event will not fire in those cases, since the other events are more specific and have precedence.",
 		defaultRender="@all", defaultExecute="@all" ),
 	@ClientEvent( name="blur",
 		javadoc="Fired any time the text input field loses focus.",
 		tlddoc="Fired any time the text input field loses focus.",
+		defaultRender="@all", defaultExecute="@all" ),
+	@ClientEvent( name="textChange",
+		javadoc="Fired any time the user adds or removes characters from the text field by typing or by pasting text.",
+		tlddoc="Fired any time the user adds or removes characters from the text field by typing or by pasting text.",
+		defaultRender="@all", defaultExecute="@all" ),
+	@ClientEvent( name="valueChange",
+		javadoc="Fired when the user gives a more definite input for this component either by clicking on an option from the list, or selecting an option with the keyboard, or pressing enter on the text field.",
+		tlddoc="Fired when the user gives a more definite input for this component either by clicking on an option from the list, or selecting an option with the keyboard, or pressing enter on the text field.",
 		defaultRender="@all", defaultExecute="@all" )},
 	defaultEvent="submit" )
 public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
@@ -125,7 +133,7 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
     @Property(
     	expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.event.TextChangeEvent",
-    	tlddoc = "MethodExpression representing a text change listener method that will be notified when the text of the input field changes or when the user presses other keys. This is different from a value change event in that in this case the user has not yet given a definite input and is just typing strings to to obtain lists of possible values. The value change event differs in that it only fires once the user has selected a value from the list or has pressed 'enter' on the input field. The expression must evaluate to a public method that takes a org.icefaces.ace.event.TextChageEvent parameter, with a return type of void.")
+    	tlddoc = "MethodExpression representing a text change listener method that will be notified when the text of the input field changes after the user types new characters or removes them. This is different from a value change event in that in this case the user has not yet given a definite input and is just typing strings to to obtain lists of possible values. The value change event differs in that it only fires once the user has selected a value from the list or has pressed 'enter' on the input field. The expression must evaluate to a public method that takes a org.icefaces.ace.event.TextChageEvent parameter, with a return type of void.")
     private MethodExpression textChangeListener;
 
     @Field(defaultValue="false")
