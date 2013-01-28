@@ -174,12 +174,11 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
             for (Part part : parts) {
                 String partType = part.getContentType();
                 String partName = part.getName();
-                if (null == partType)  {
-                    auxRequestMap.put(partName, 
-                            request.getParameter(part.getName()) );
+                Object partParameter = request.getParameter(partName);
+                if (null != partParameter)  {
+                    auxRequestMap.put(partName, partParameter );
                     if (CLOUD_PUSH_KEY.equals(partName))  {
-                        session.setAttribute(CLOUD_PUSH_KEY, 
-                                request.getParameter(part.getName()));
+                        session.setAttribute(CLOUD_PUSH_KEY, partParameter);
                     }
                 } else {
                     auxRequestMap.put(partName,
