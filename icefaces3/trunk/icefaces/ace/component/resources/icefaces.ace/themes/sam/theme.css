@@ -441,3 +441,8 @@
 .ui-textareaentry-container .ui-input-label-right, .ui-textareaentry-container .ui-required-indicator-right, .ui-textareaentry-container .ui-optional-indicator-right {
     vertical-align: top;
 }
+
+/* faces messages */
+.ui-faces-message .ui-icon {
+    float: left;
+}
