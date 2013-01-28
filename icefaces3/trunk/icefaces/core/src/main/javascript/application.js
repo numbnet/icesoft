@@ -538,17 +538,27 @@ if (!window.ice.icefaces) {
             namespace.onServerError(stopDelay);
         };
 
-        namespace.captureEnterKey = function(id) {
+        namespace.captureEnterKey = function(id, keyMap) {
             var f = document.getElementById(id);
             f.onkeypress = function(ev) {
                 var e = $event(ev, f);
                 var element = triggeredBy(e);
                 var type = toLowerCase(element.nodeName);
-                if (isEnterKey(e) && (type != 'textarea' && type != 'a')) {
-                    submit(ev || window.event, element);
-                    return false;
-                } else {
-                    return true;
+                if (type != 'textarea' && type != 'a') {
+                    //capture any key when default submit element is defined
+                    if (keyMap) {
+                        var elementID = keyMap[keyCode(e)];
+                        if (elementID) {
+                            element = lookupElementById(elementID);
+                            submit(ev || window.event, element);
+                            return false;
+                        }
+                        if (isEnterKey(e)) {
+                            submit(ev || window.event, element);
+                            return false;
+                        }
+                        return true;
+                    }
                 }
             };
         };

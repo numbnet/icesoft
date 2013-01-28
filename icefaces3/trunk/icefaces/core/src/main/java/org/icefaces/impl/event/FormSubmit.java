@@ -16,6 +16,7 @@
 
 package org.icefaces.impl.event;
 
+import org.icefaces.impl.component.DefaultAction;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -52,6 +53,8 @@ public class FormSubmit implements SystemEventListener {
                 if (form.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
                     return;
                 }
+                Object keyMap = form.getAttributes().get(DefaultAction.class.getName());
+
                 String formId = form.getClientId(context);
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", "type");
@@ -63,7 +66,9 @@ public class FormSubmit implements SystemEventListener {
                 writer.write(");");
                 writer.write("ice.captureEnterKey('");
                 writer.write(formId);
-                writer.write("');");
+                writer.write("',");
+                writer.write(keyMap == null ? "null" : keyMap.toString());
+                writer.write(");");
                 writer.endElement("script");
             }
         };

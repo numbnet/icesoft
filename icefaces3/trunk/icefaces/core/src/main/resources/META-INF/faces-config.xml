@@ -52,6 +52,10 @@
         <component-type>org.icefaces.impl.component.NavigationNotifier</component-type>
         <component-class>org.icefaces.impl.component.NavigationNotifier</component-class>
     </component>
+    <component>
+        <component-type>org.icefaces.impl.component.DefaultAction</component-type>
+        <component-class>org.icefaces.impl.component.DefaultAction</component-class>
+    </component>
     <lifecycle>
         <phase-listener>org.icefaces.impl.event.DeltaSubmitPhaseListener</phase-listener>
         <phase-listener>org.icefaces.impl.event.FacesMessagesPhaseListener</phase-listener>
@@ -112,6 +116,10 @@
         <system-event-listener>
             <system-event-listener-class>org.icefaces.impl.event.ResourceOrdering$RegisterListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.icefaces.impl.component.DefaultAction$AttachToForm</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
         <!-- MainEventListener, AjaxDisabledList and DebugTagListener are added programatically -->
     </application>

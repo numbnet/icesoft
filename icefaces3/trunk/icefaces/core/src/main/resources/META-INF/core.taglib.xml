@@ -139,6 +139,39 @@
     </tag>
 
     <tag>
+        <tag-name>defaultAction</tag-name>
+        <description>
+            This tag can be used to trigger an action whenever a form is submitted by a key press.
+        </description>
+        <component>
+            <component-type>org.icefaces.impl.component.DefaultAction</component-type>
+        </component>
+        <attribute>
+            <description>
+                The name of the key that triggers the default action (defaults to "Enter").
+            </description>
+            <name>key</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                The reference to a bean method that will be invoked when Enter key is pressed on any of the elements in the form.
+            </description>
+            <name>action</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                The reference to a bean method that will be invoked when Enter key is pressed on any of the elements in the form.
+            </description>
+            <name>actionListener</name>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
         <tag-name>push</tag-name>
         <description>
             This tag can be used to configure push behavior on a per-view basis.
