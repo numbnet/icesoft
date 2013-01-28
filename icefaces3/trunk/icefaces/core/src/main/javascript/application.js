@@ -538,7 +538,7 @@ if (!window.ice.icefaces) {
             namespace.onServerError(stopDelay);
         };
 
-        namespace.captureEnterKey = function(id, keyMap) {
+        namespace.captureKeypress = function(id, keyMap) {
             var f = document.getElementById(id);
             f.onkeypress = function(ev) {
                 var e = $event(ev, f);
