@@ -89,7 +89,7 @@ if (!window.ice.icefaces) {
             var element = lookupElementById(id);
             var ancestorIDs = [];
             var cursor = element;
-            while (cursor)  {
+            while (cursor) {
                 var cursorID;
                 if (cursor == document.body) {
                     cursorID = 'javax.faces.ViewBody';
@@ -111,11 +111,11 @@ if (!window.ice.icefaces) {
 
         function configurationOf(element) {
             var result = configurationOfImpl(element);
-            if (result)  {
+            if (result) {
                 return result;
             }
             result = configurationOfImpl(document.getElementById(element.id));
-            if (result)  {
+            if (result) {
                 return result;
             }
             debug(logger, 'configuration not found for ' + element.nodeName);
@@ -147,7 +147,7 @@ if (!window.ice.icefaces) {
         function formOf(element) {
             try {
                 return formOfNode(element);
-            } catch (e)  {
+            } catch (e) {
                 //page update may have occurred
                 return formOfNode(document.getElementById(element.id));
             }
@@ -449,6 +449,7 @@ if (!window.ice.icefaces) {
                 debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
             }
         }
+
         jsf.ajax.addOnEvent(logReceivedUpdates);
 
         //include submit.js
@@ -663,9 +664,9 @@ if (!window.ice.icefaces) {
 
                     //focusout is required for older IE versions
                     //only check for the value changing if we are not relying on blur
-                    if( !useBlur && eType == "focusout"){
+                    if (!useBlur && eType == "focusout") {
 
-                        if(element.value == element.previousTextValue){
+                        if (element.value == element.previousTextValue) {
                             return;
                         }
 
@@ -877,22 +878,22 @@ if (!window.ice.icefaces) {
 
         function findAndNotifyUpdatedElements(update) {
             var updatedElementId = update.getAttribute('id');
-            if ("javax.faces.ViewState" === updatedElementId)  {
+            if ("javax.faces.ViewState" === updatedElementId) {
                 return;
             }
             var fvsTail = updatedElementId.substr(updatedElementId.length - 13);
-            if ("_fixviewstate" === fvsTail)  {
+            if ("_fixviewstate" === fvsTail) {
                 return;
             }
             var updatedElement = lookupElementById(updatedElementId);
             if (updatedElement) {
                 elementUpdateListeners = reject(elementUpdateListeners, function(idCallbackTuple) {
-                    var id = idCallbackTuple.identifier;
-                    var element = lookupElementById(id);
-                    //test if inner element still exists, sometimes client side code can remove DOM fragments
-                    if (element) {
-                        var updated = contains(idCallbackTuple.ancestors, '*' + updatedElementId + '*');
-                        if (updated) {
+                    var updated = contains(idCallbackTuple.ancestors, '*' + updatedElementId + '*');
+                    if (updated) {
+                        var id = idCallbackTuple.identifier;
+                        var element = lookupElementById(id);
+                        //test if inner element still exists, sometimes client side code can remove DOM fragments
+                        if (element) {
                             var callback = idCallbackTuple.handler;
                             try {
                                 callback(element);
@@ -910,6 +911,7 @@ if (!window.ice.icefaces) {
                 });
             }
         }
+
         // determine which elements are about to be removed by an update,
         // and clean them up while they're still in place
         namespace.onBeforeUpdate(function(updates) {
