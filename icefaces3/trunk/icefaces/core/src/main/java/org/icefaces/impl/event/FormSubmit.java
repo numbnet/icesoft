@@ -64,7 +64,7 @@ public class FormSubmit implements SystemEventListener {
                 writer.write("',");
                 writer.write(Boolean.toString(deltaSubmit));
                 writer.write(");");
-                writer.write("ice.captureEnterKey('");
+                writer.write("ice.captureKeypress('");
                 writer.write(formId);
                 writer.write("',");
                 writer.write(keyMap == null ? "null" : keyMap.toString());
