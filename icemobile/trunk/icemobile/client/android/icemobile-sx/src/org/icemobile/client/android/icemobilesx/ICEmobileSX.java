@@ -834,9 +834,19 @@ Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
     }
 
     private void includeContacts() {
-
 //        mContactListHandler = new ContactListHandler( this, utilInterface);
         mContactListInterface = new ContactListInterface(utilInterface, this, getContentResolver());
+        mContactListInterface.setCompletionCallback(new Runnable() {
+                public void run()  {
+                    String encodedContact = 
+                            mContactListInterface.getEncodedContactList();
+                    String encodedForm = "hidden-" + mCurrentId + "=" + encodedContact;
+                    utilInterface.setUrl(mPOSTUri.toString());
+                    utilInterface.submitForm("", encodedForm);
+Log.e(LOG_TAG, "completionCallback completed fetchContacts");
+                    returnToBrowser();
+                }
+            });
 //        mWebView.addJavascriptInterface(mContactListInterface, "ICEContacts");
     }
 

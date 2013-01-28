@@ -20,6 +20,7 @@ import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,6 +44,7 @@ import android.util.Log;
 
 	private Context mContext; 
 	private ContentResolver mResolver; 
+	private Runnable mCompletionCallback; 
 
 	private String[] mContactArray;	
 	private String[] mIdArray;	
@@ -65,6 +67,10 @@ import android.util.Log;
 	    mResolver = cr; 
 	    mInterface = util;
 	}
+
+    public void setCompletionCallback(Runnable callback)  {
+        mCompletionCallback = callback;
+    }
 
 	public void fetchContact(String id, String attr) {
 
@@ -167,8 +173,27 @@ import android.util.Log;
 	 * Upload the contact info to the hidden fields in the javascript layer via the UtilInterface.loadURL method. 
 	 */
 	private void uploadContactInfo() {
+	    if (selected < 0) {
+            return;
+        }
+		String encodedContactList = getEncodedContactList(); 
+		try { 
+		    Log.d("ICEcontacts", "Encoded Contact = " + encodedContactList);
+		    mInterface.loadURL("javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
+            if (null != mCompletionCallback)  {
+                mCompletionCallback.run();
+            }
+		} catch (Exception e) { 
+		    Log.e("ICEmobile", "Exception encoding contact information: " + e); 
+		}
+    }
+    
+	public String getEncodedContactList() {
 
-	    if (selected >= 0) {
+	    if (selected < 0) {
+            return null;
+        }
+
 		StringBuilder contactList = new StringBuilder(); 
 		if (mFetchContact) { 
 		    contactList.append( NAME_FIELD+"=" + mContactArray [selected] + "&");
@@ -199,15 +224,16 @@ import android.util.Log;
 		    }
 		}
 
-		String encodedContactList = null; 
-		try { 
-		    encodedContactList = URLEncoder.encode(contactList.toString(), "utf-8");
-		    Log.d("ICEcontacts", "Encoded Contact = " + encodedContactList);
-		    mInterface.loadURL("javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
-		} catch (Exception e) { 
+		String encodedContactList = null;
+        try {
+            encodedContactList = URLEncoder.encode(
+                contactList.toString(), "utf-8");
+        } catch (Exception e)  {
 		    Log.e("ICEmobile", "Exception encoding contact information: " + e); 
-		}
-	    }
+        }
+
+        return encodedContactList;
+
 	}
 
 	class SingleSelectListener implements DialogInterface.OnClickListener {

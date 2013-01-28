@@ -90,7 +90,7 @@ public class GetEnhancedCoreRenderer {
             }
             writer.writeText(msg);
 
-            if( client.isIOS() ){
+            if( client.isIOS() || client.isAndroidOS() ){
                 writer.startElement(ANCHOR_ELEM, null);
                 writer.writeAttribute(HREF_ATTR,"#");
                 writer.writeAttribute(CLASS_ATTR, "mobi-button mobi-button-important");
