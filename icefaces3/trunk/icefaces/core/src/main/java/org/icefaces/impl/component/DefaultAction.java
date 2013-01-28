@@ -34,6 +34,7 @@ import java.util.Map;
 
 public class DefaultAction extends UICommand {
     private final static HashMap<String, Integer> keyCodeMapping = new HashMap();
+
     static {
         keyCodeMapping.put("Enter", 13);
         keyCodeMapping.put("Esc", 27);
@@ -59,6 +60,7 @@ public class DefaultAction extends UICommand {
         keyCodeMapping.put("F12", 123);
         //..extend with more keys
     }
+
     private enum PropertyKeys {
         key
     }
@@ -67,7 +69,7 @@ public class DefaultAction extends UICommand {
     }
 
     public String getId() {
-        return "defaultActionOn" + getKey();
+        return "defaultActionOn" + getKey().replace(' ', '_');
     }
 
     public String getKey() {
