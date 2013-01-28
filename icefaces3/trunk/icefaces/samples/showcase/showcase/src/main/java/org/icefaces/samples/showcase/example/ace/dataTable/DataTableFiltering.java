@@ -22,6 +22,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,13 @@ import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 public class DataTableFiltering extends ComponentExampleImpl<DataTableFiltering> implements Serializable {
     public static final String BEAN_NAME = "dataTableFiltering";
     private List<Car> carsData;
+    private List<SelectItem> accelOptions = new ArrayList<SelectItem>() {{
+        add(new SelectItem(""));
+        add(new SelectItem(5));
+        add(new SelectItem(10));
+        add(new SelectItem(15));
+    }};
+
     /////////////---- CONSTRUCTOR BEGIN
     public DataTableFiltering() {
         super(DataTableFiltering.class);
@@ -66,4 +74,12 @@ public class DataTableFiltering extends ComponentExampleImpl<DataTableFiltering>
     /////////////---- GETTERS & SETTERS BEGIN
     public List<Car> getCarsData() { return carsData; }
     public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
+
+    public List<SelectItem> getAccelOptions() {
+        return accelOptions;
+    }
+
+    public void setAccelOptions(List<SelectItem> accelOptions) {
+        this.accelOptions = accelOptions;
+    }
 }
