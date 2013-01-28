@@ -37,6 +37,26 @@ public class DefaultAction extends UICommand {
     static {
         keyCodeMapping.put("Enter", 13);
         keyCodeMapping.put("Esc", 27);
+        keyCodeMapping.put("Space", 32);
+        keyCodeMapping.put("Page Up", 33);
+        keyCodeMapping.put("Page Down", 34);
+        keyCodeMapping.put("Page Up", 32);
+        keyCodeMapping.put("Left arrow", 37);
+        keyCodeMapping.put("Up arrow", 38);
+        keyCodeMapping.put("Right arrow", 39);
+        keyCodeMapping.put("Down arrow", 40);
+        keyCodeMapping.put("F1", 112);
+        keyCodeMapping.put("F2", 113);
+        keyCodeMapping.put("F3", 114);
+        keyCodeMapping.put("F4", 115);
+        keyCodeMapping.put("F5", 116);
+        keyCodeMapping.put("F6", 117);
+        keyCodeMapping.put("F7", 118);
+        keyCodeMapping.put("F8", 119);
+        keyCodeMapping.put("F9", 120);
+        keyCodeMapping.put("F10", 121);
+        keyCodeMapping.put("F11", 122);
+        keyCodeMapping.put("F12", 123);
         //..extend with more keys
     }
     private enum PropertyKeys {
