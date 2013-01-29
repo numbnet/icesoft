@@ -72,6 +72,10 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
         carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
 
+    public Class getClazz() {
+        return getClass();
+    }
+
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
