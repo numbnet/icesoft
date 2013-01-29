@@ -178,7 +178,9 @@ public class ICEmobileSX extends Activity
     private Uri mReturnUri;
     private Uri mPOSTUri;
     private String mCurrentId;
+    private String mCurrentjsessionid;
     private String mCurrentMediaFile;
+    private boolean doRegister = false;
 
 class TestButton extends Button {
     boolean isClicked = false;
@@ -393,13 +395,13 @@ Log.d(LOG_TAG, "processing command " + command);
     public void dispatch(String command, Map env, Map params)  {
 //        mCurrentId = (String) env.get("id");
 Log.d(LOG_TAG, "dispatch " + command);
-        String jsessionid  = (String) env.get("JSESSIONID");
+        mCurrentjsessionid  = (String) env.get("JSESSIONID");
         String postUriString = mPOSTUri.toString();
 
-        if (null != jsessionid)  {
+        if (null != mCurrentjsessionid)  {
             utilInterface.setCookie(postUriString,
                     "JSESSIONID=" +
-                    jsessionid);
+                    mCurrentjsessionid);
         }
 
         if ("camera".equals(command))  {
@@ -436,17 +438,18 @@ Log.d(LOG_TAG, "dispatched microphone " + path);
                 .arView(mCurrentId, packParams(params));
 Log.d(LOG_TAG, "dispatched augmented reality " + packParams(params));
         } else if ("register".equals(command))  {
-            String encodedForm = "";
-            String cloudNotificationId = getCloudNotificationId();
-            if (null != cloudNotificationId)  {
-                encodedForm = "hidden-iceCloudPushId=" +
-                        URLEncoder.encode(cloudNotificationId);
-            }
-Log.e(LOG_TAG, "POST to register will send " + encodedForm);
-            utilInterface.setUrl(postUriString);
-            utilInterface.submitForm("", encodedForm);
-Log.e(LOG_TAG, "POST to register URL with jsessionid " + jsessionid);
-            returnToBrowser();
+            doRegister = true;
+//            String encodedForm = "";
+//            String cloudNotificationId = getCloudNotificationId();
+//            if (null != cloudNotificationId)  {
+//                encodedForm = "hidden-iceCloudPushId=" +
+//                        URLEncoder.encode(cloudNotificationId);
+//            }
+//Log.e(LOG_TAG, "POST to register will send " + encodedForm);
+//            utilInterface.setUrl(postUriString);
+//            utilInterface.submitForm("", encodedForm);
+//Log.e(LOG_TAG, "POST to register URL with jsessionid " + jsessionid);
+//            returnToBrowser();
         }
     }
 
@@ -655,6 +658,21 @@ Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
 
     public void handleC2dmRegistration(String id) {
         setCloudNotificationId();
+        if (doRegister)  {
+            String postUriString = mPOSTUri.toString();
+            doRegister = false;
+            String encodedForm = "";
+            String cloudNotificationId = getCloudNotificationId();
+            if (null != cloudNotificationId)  {
+                encodedForm = "hidden-iceCloudPushId=" +
+                        URLEncoder.encode(cloudNotificationId);
+            }
+Log.e(LOG_TAG, "POST to register will send " + encodedForm);
+            utilInterface.setUrl(postUriString);
+            utilInterface.submitForm("", encodedForm);
+Log.e(LOG_TAG, "POST to register URL with jsessionid " + mCurrentjsessionid);
+            returnToBrowser();
+        }
     }
 
     public void handleC2dmNotification() {
