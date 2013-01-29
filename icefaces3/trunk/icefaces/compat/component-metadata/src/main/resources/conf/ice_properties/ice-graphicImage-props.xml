@@ -118,3 +118,30 @@
     </property-extension>
 </property>
 
+<property>
+    <description>
+    <![CDATA[   
+          The value of this component can be set to one of the following type:
+          <ul>
+            <li>String</li>
+            <li>byte[]</li>
+            <li>com.icesoft.faces.context.Resource
+                 <ul>
+                    <li>com.icesoft.faces.context.JarResource</li>
+                    <li>com.icesoft.faces.context.FileResource</li>
+                    <li>com.icesoft.faces.context.ByteArrayResource</li>
+                 </ul>
+            </li>
+          </ul>          
+    ]]>
+    </description>
+    <property-name>value</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>DATA</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+

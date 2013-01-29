@@ -16,11 +16,22 @@
 
 package com.icesoft.faces.component.ext;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.net.URI;
+import java.util.Date;
+
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.context.Resource;
+import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.context.ResourceRegistryLocator;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.util.pooling.ClientIdPool;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -67,6 +78,14 @@ public class HtmlGraphicImage
                                          getFacesContext());
         }
         super.setValueBinding(s, vb);
+    }
+	
+    public void encodeBegin(FacesContext context) throws IOException {
+        Object value = getValue();
+        if (value instanceof byte[]) {
+            getImageByteArrayResource(context).setContent((byte[]) value);
+        }
+        super.encodeBegin(context);
     }
 
     /**
@@ -436,5 +455,57 @@ public class HtmlGraphicImage
         visible = (Boolean)values[18];
         mimeType = (String)values[19];
         styleClass = (String)values[20];
+    }
+    public String getByteArrayImagePath(FacesContext context) {
+        return getImageByteArrayResource(context).getPath();
+    }
+    
+    private ImageByteArrayResource getImageByteArrayResource(FacesContext context) {
+        if(!getAttributes().containsKey(ClientIdPool.get(getClientId(context)+"ImgBytArrRes"))) {
+            ImageByteArrayResource imageByteArrayResource = new ImageByteArrayResource(context,this);
+            getAttributes().put(ClientIdPool.get(getClientId(context)+"ImgBytArrRes"), imageByteArrayResource);
+            
+        }
+        return (ImageByteArrayResource)getAttributes().get(ClientIdPool.get(getClientId(context)+"ImgBytArrRes"));
+    }
+}
+
+class ImageByteArrayResource implements Resource, Serializable {
+    private Date lastModified;
+    private byte[] content;
+    private String mimetype;
+    private URI uri;
+
+    public ImageByteArrayResource(FacesContext context, HtmlGraphicImage component) {
+        this.lastModified =  new Date(System.currentTimeMillis());
+        this.mimetype = component.getMimeType();
+		ResourceRegistry registry = ResourceRegistryLocator.locate(context);
+        uri = registry.registerResource(this);
+    }
+    
+    public String calculateDigest() {
+        return String.valueOf(this.hashCode());
+    }
+    
+    public Date lastModified() {
+        return lastModified;
+    }
+    
+    public InputStream open() throws IOException {
+          return new ByteArrayInputStream(content);
+    }
+
+    public void withOptions(Options options) throws IOException {
+        Date now = new Date();
+        options.setExpiresBy(now);
+        options.setLastModified(now);
+        options.setMimeType(mimetype);
+    }
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
+
+    public String getPath() {
+        return uri.getPath()+ "?"+ content.hashCode();
     }
 }
