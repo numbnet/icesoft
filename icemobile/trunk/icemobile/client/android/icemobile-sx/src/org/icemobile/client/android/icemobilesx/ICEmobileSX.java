@@ -239,6 +239,7 @@ class TestButton extends Button {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+	Log.e("ICEmobile-life", "onCreate");
         super.onCreate(savedInstanceState);
         self = this;
 	pendingCloudPush = false;
@@ -249,15 +250,6 @@ class TestButton extends Button {
                                          Context.BIND_AUTO_CREATE);
 
 
-        Intent intent = getIntent();
-        Uri uri = intent.getData();
-Log.d(LOG_TAG, "URL launched " + uri);
-
-
-        Bundle extras = getIntent().getExtras();
-        if (null != extras) {
-//            mFileName = extras.getString(MediaStore.EXTRA_OUTPUT);
-        }
 
         LinearLayout ll = new LinearLayout(this);
         TestButton testButton = new TestButton(this);
@@ -268,39 +260,13 @@ Log.d(LOG_TAG, "URL launched " + uri);
                 0));
         mDebugTextView = new TextView(this);
 
-        Map commandParts = new HashMap();
-        Map commandParams = new HashMap();
-        String commandName = null;
 
-        if (null != uri)  {
-            String uriString = uri.toString();
-            String fullCommand = uriString.substring("icemobile://".length());
-            commandParts = parseQuery(fullCommand);
-
-Log.d(LOG_TAG, "processing commandParts " + commandParts);
-            String command = (String) commandParts.get("c");
-Log.d(LOG_TAG, "processing command " + command);
-
-            int queryIndex = command.indexOf("?");
-            if (-1 == queryIndex)  {
-                commandName = command;
-            } else {
-                commandName = command.substring(0, queryIndex);
-                String commandParamsString = command.substring(queryIndex + 1);
-                commandParams = parseQuery(commandParamsString);
-                mCurrentId = (String) commandParams.get("id");
-            }
-
-            mReturnUri = Uri.parse((String) commandParts.get("r"));
-            mPOSTUri = Uri.parse((String) commandParts.get("u"));
-        }
-
-        mDebugTextView.setText(commandName + " :: " + commandParts.toString());
+	/*        mDebugTextView.setText(commandName + " :: " + commandParts.toString());
         ll.addView(mDebugTextView,
             new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                0));
+                0)); */
 
         setContentView(ll);
 
@@ -387,9 +353,50 @@ Log.d(LOG_TAG, "processing command " + command);
 //        progressDialog = new ProgressDialog(ICEmobileContainer.this);
 //        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 //        showLoadProgress = prefs.getBoolean(PREFERENCE_PROGRESS_BAR_KEY, false);
-        if (null != commandName)  {
-            dispatch(commandName, commandParts, commandParams);
-        }
+	handleIntent(getIntent());
+    }
+
+    public void onNewIntent(Intent intent) {
+	Log.e("ICEmobile-life", "onNewIntent");
+	handleIntent(intent);
+    }
+
+    private void handleIntent (Intent intent) {
+        Uri uri = intent.getData();
+	Log.d(LOG_TAG, "URL launched " + uri);
+        Bundle extras = intent.getExtras();
+        if (null != extras) {
+	    //            mFileName = extras.getString(MediaStore.EXTRA_OUTPUT);
+	}
+	Map commandParts = new HashMap();
+	Map commandParams = new HashMap();
+	String commandName = null;
+
+	if (null != uri)  {
+	    String uriString = uri.toString();
+	    String fullCommand = uriString.substring("icemobile://".length());
+	    commandParts = parseQuery(fullCommand);
+
+	    Log.d(LOG_TAG, "processing commandParts " + commandParts);
+	    String command = (String) commandParts.get("c");
+	    Log.d(LOG_TAG, "processing command " + command);
+
+	    int queryIndex = command.indexOf("?");
+	    if (-1 == queryIndex)  {
+		commandName = command;
+	    } else {
+		commandName = command.substring(0, queryIndex);
+		String commandParamsString = command.substring(queryIndex + 1);
+		commandParams = parseQuery(commandParamsString);
+		mCurrentId = (String) commandParams.get("id");
+	    }
+
+	    mReturnUri = Uri.parse((String) commandParts.get("r"));
+	    mPOSTUri = Uri.parse((String) commandParts.get("u"));
+	}
+	if (null != commandName)  {
+	    dispatch(commandName, commandParts, commandParams);
+	}
     }
 
     public void dispatch(String command, Map env, Map params)  {
@@ -438,7 +445,11 @@ Log.d(LOG_TAG, "dispatched microphone " + path);
                 .arView(mCurrentId, packParams(params));
 Log.d(LOG_TAG, "dispatched augmented reality " + packParams(params));
         } else if ("register".equals(command))  {
-            doRegister = true;
+	    if (getCloudNotificationId() == null) {
+		doRegister = true;
+	    } else {
+		registerSX();
+	    }
 //            String encodedForm = "";
 //            String cloudNotificationId = getCloudNotificationId();
 //            if (null != cloudNotificationId)  {
@@ -451,6 +462,22 @@ Log.d(LOG_TAG, "dispatched augmented reality " + packParams(params));
 //Log.e(LOG_TAG, "POST to register URL with jsessionid " + jsessionid);
 //            returnToBrowser();
         }
+    }
+
+    private void registerSX() {
+	String postUriString = mPOSTUri.toString();
+	doRegister = false;
+	String encodedForm = "";
+	String cloudNotificationId = getCloudNotificationId();
+	if (null != cloudNotificationId)  {
+	    encodedForm = "hidden-iceCloudPushId=" +
+		URLEncoder.encode(cloudNotificationId);
+	}
+	Log.e(LOG_TAG, "POST to register will send " + encodedForm);
+	utilInterface.setUrl(postUriString);
+	utilInterface.submitForm("", encodedForm);
+	Log.e(LOG_TAG, "POST to register URL with jsessionid " + mCurrentjsessionid);
+	returnToBrowser();
     }
 
     public String packParams(Map params)  {
@@ -535,6 +562,7 @@ Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
 
     @Override
 	protected void onResume() {
+	Log.e("ICEmobile-life", "onResume");
         super.onResume();
 //        utilInterface.loadURL("javascript:ice.push.connection.resumeConnection();");
         if (!newURL.equals(currentURL)) {
@@ -552,18 +580,26 @@ Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
     @Override
     protected void onPause() {
         super.onPause();
+	Log.e("ICEmobile-life", "onPause");
         mAudioPlayer.release();
 //        utilInterface.loadURL("javascript:ice.push.connection.pauseConnection();");
     }
 
     @Override
     protected void onStop() {
+	Log.e("ICEmobile-life", "onStop");
         historyManager.save();
         try {
             self.unbindService(mConnection);
         } catch (Exception e) {
         }
         super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+	Log.e("ICEmobile-life", "onStart");
+        super.onStart();
     }
 
     @Override
@@ -659,19 +695,7 @@ Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
     public void handleC2dmRegistration(String id) {
         setCloudNotificationId();
         if (doRegister)  {
-            String postUriString = mPOSTUri.toString();
-            doRegister = false;
-            String encodedForm = "";
-            String cloudNotificationId = getCloudNotificationId();
-            if (null != cloudNotificationId)  {
-                encodedForm = "hidden-iceCloudPushId=" +
-                        URLEncoder.encode(cloudNotificationId);
-            }
-Log.e(LOG_TAG, "POST to register will send " + encodedForm);
-            utilInterface.setUrl(postUriString);
-            utilInterface.submitForm("", encodedForm);
-Log.e(LOG_TAG, "POST to register URL with jsessionid " + mCurrentjsessionid);
-            returnToBrowser();
+	    registerSX();
         }
     }
 
