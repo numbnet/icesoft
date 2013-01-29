@@ -86,7 +86,7 @@
 
         <h:form id="form">
            <ace:dataTable id="carTableRowExpansion"
-                          binding="#{dataTableBindings.tables[dataTableRowState.getClass()]}"
+                          binding="#{dataTableBindings.tables[dataTableRowState.clazz]}"
                           stateMap="${dataTableRowState.stateMap}"
                           value="#{dataTableRowState.carsData}"
                           selectionMode="multiple"

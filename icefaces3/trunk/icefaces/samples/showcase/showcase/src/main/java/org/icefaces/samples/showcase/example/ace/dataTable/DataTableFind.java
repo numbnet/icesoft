@@ -91,6 +91,10 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
         cars = new ArrayList<Car>(DataTableData.getDefaultData());
     }
 
+    public Class getClazz() {
+        return getClass();
+    }
+
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();

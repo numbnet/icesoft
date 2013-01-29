@@ -66,6 +66,10 @@ public class DataTableGrouping extends ComponentExampleImpl<DataTableGrouping> i
         carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
 
+    public Class getClazz() {
+        return getClass();
+    }
+
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
