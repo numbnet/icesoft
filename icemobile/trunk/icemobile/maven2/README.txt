@@ -1,29 +1,37 @@
 ICEmobile-Faces-1.2.0 Maven2 Support
 
-If this is a source distribution, you will NEED to build the jars first so they are residing in the 
-lib directories of their respective folders!!!
+If this is the ICEmobile source distribution, you need to first build the jars so that they are residing in the lib directories 
+of their respective folders. 
+
+NOTE: Thsese instructions assume that you have maven2 installed.
 
 The following utilities are provided:
 
-1) In /maven2 an ant script is provided with the poms for the jars to install to whatever local repository you have specified in build.properties file (edit build. properties and set the location of the local repository you would like to install to).
-2) ant target "get-maven" will copy off the internet (make sure you have internet access)  the required jar to run maven from ant, to icemobile/lib
-3) ant target "install" will install icepush, icefaces and icefaces-mobi jar and poms to your local repository.
+1) In /maven2 an ant build script is provided along with the poms for the jars that will be installed to the local repository 
+specified in the build.properties file. You will need to edit the build.properties and set the location of the local repository 
+you would like to install to.
 
-This really isn't necessary if you can use the releases repository at
-http://anonsvn.icefaces.org/repo/maven2/releases/
-Once the release has been made, it will take a day or so for the proper entries to be accessed.
+2) The ant target "get-maven" requires an internet connection in order to obtain the jar needed to run maven from ant. This jar 
+will be placed into icemobile/lib.
 
+3) The ant target "install" will install icepush, icefaces and icefaces-mobi jar and poms to the local repository specified in 
+the build.properties file.
 
-NOTE: The instructions above assume that you have previously installed maven2.
+These steps are not needed if you choose to use the releases repository at
+http://anonsvn.icefaces.org/repo/maven2/releases/. 
+Once a release has been made, it will take a day or so for the proper entries to be made available.
 
-Each example has it's own build pom and you can run >mvn clean package to create 2 different profiles
-See which one in the pom is the default.  (either Tomcat6 or Glassfishv3 for now-->really just builds with 
-jsf2 jars (tomcat) or without (glassfish).
-You could also use the mvn command line (or your IDE) to install for example in command-line from this directory:-
+Each example in the ICEmobile bundle has it's own build pom and >mvn clean package can be run to create 1 of 2 different 
+profiles: web or profile. The web profile will not include the jsf2 jars (ex. Glassfish and Jboss) while the servlet profile will (ex. Tomcat). 
+For example:
+
+>mvn clean package -Pservlet runs the profile for a server which doesn't already contain the jsf jars.
+
+Another approach is to use the mvn command line (or your IDE) to install from this directory:
+
 > mvn install:install-file -Dfile=../lib/icefaces.jar -DpomFile=icefaces.pom
 
-...or >mvn clean package -Ptomcat6 
-(which runs the correct profile for a server which doesn't already contain the jsf jars).
+ 
 
 
 
