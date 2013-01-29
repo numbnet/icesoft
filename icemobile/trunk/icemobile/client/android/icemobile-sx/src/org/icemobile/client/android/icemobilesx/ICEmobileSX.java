@@ -724,9 +724,9 @@ Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
                 }
             }
         }
-        if (id == null) {
+	/*        if (id == null) {
             id = new String("");
-        }
+	    }*/
         return id;
     }
 
