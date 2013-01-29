@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the
@@ -71,10 +71,11 @@
 		</mobi:fieldsetRow>
 
 		<mobi:fieldsetRow styleClass="mobi-center">
-			<mobi:commandButton buttonType='important' name="pushType"
+			<mobi:commandButton buttonType='important' 
 				value="Simple Push" type="submit" />
-			<mobi:commandButton buttonType='attention' name="pushType"
+			<mobi:commandButton buttonType='attention' 
 				value="Priority Push" type="submit" />
+             <input type="hidden" name="pushType" id="hiddenSubmitVal" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -105,5 +106,8 @@
 </form:form>
 
 <script type="text/javascript">
+	$('input[type=submit]').click(function(e) {
+		$('#hiddenSubmitVal').val(this.value);
+	});
 	MvcUtil.enhanceForm("#notificationsform");
 </script>
