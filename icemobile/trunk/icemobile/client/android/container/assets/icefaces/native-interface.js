@@ -296,7 +296,9 @@ if (!window.ice.mobile) {
                             }
                             break;
                         default:
-                            addField(prefix + el.name, el.value);
+                            if (el.type)  {
+                                addField(prefix + el.name, el.value);
+                            }
                     }
                 }
             }
