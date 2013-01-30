@@ -47,6 +47,7 @@ import org.icefaces.samples.showcase.example.compat.tree.TreeBean;
 import org.icefaces.samples.showcase.example.compat.selector.SelectorBean;
 import org.icefaces.samples.showcase.example.compat.series.SeriesBean;
 import org.icefaces.samples.showcase.example.compat.stacking.StackingBean;
+import org.icefaces.samples.showcase.example.compat.graphicimage.GraphicImageBean;
 import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 
@@ -63,6 +64,7 @@ import java.io.Serializable;
             @MenuLink(title = "menu.compat.paginator.title", exampleBeanName = PaginatorBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.dataTable.title", exampleBeanName = DataTableBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.map.title", exampleBeanName = MapBean.BEAN_NAME),
+			@MenuLink(title = "menu.compat.graphicimage.title", exampleBeanName = GraphicImageBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.richtext.title", exampleBeanName = RichTextBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.menuBar.title", exampleBeanName = MenuBarBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.menuPopup.title", exampleBeanName = MenuPopupBean.BEAN_NAME),
