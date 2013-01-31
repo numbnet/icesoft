@@ -14,156 +14,93 @@
  * governing permissions and limitations under the License.
  */
 
-ice.ace.checkboxbutton = {
-    initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-        var Dom = YAHOO.util.Dom;
-        var divNode = document.getElementById(clientId);
+// Constructor
+ice.ace.checkboxbutton = function(clientId, options) {
+    this.options = options;
 
-//      if (YAHOO.widget.Logger){
-//	 	  YAHOO.widget.Logger.enableBrowserConsole();
-//      }
-        var spanId = clientId + "_span";
-        var button = new YAHOO.widget.Button(spanId, {type: jsProps.type, tabindex: null});
+    // Selectors
+    this.jqId = ice.ace.escapeClientId(clientId);
+    this.spanSelector = this.jqId + " > span"
+    this.innerSpanSelector = this.jqId + " > span > span"
+    this.fieldSelector = this.jqId + " > input"
+    this.buttonSelector = this.jqId + " > span > span > button"
+    this.iconSelector = this.buttonSelector + " > span.ui-icon"
 
-        button.addStateCSSClasses = function(state) {
+    // References
+    this.button = ice.ace.jq(this.buttonSelector);
+    this.icon = ice.ace.jq(this.iconSelector);
+    var self = this;
 
-            var node = ice.ace.jq(this._button);
-            // add span for icon
-            if (!node.find('.ui-icon').get(0)) {
-                node.prepend(ice.ace.jq('<span />').addClass('ui-icon').addClass('ui-icon-unchecked'));
-            }
+    // Event Binding
+    ice.ace.jq(this.jqId)
+            .on("click", function() { self.toggleCheckbox(); })
+            .on("mouseenter", function() { self.addStateCSSClasses('hover'); })
+            .on("mouseleave", function() { self.removeStateCSSClasses('hover') ; });
 
-            if (state == 'hover') {
-                ice.ace.jq(this._button).addClass('ui-state-hover');
-            } else if (state == 'checked') {
-                var node = ice.ace.jq(this._button);
-                node.addClass('ui-state-active');
-                node.find('.ui-icon').removeClass('ui-icon-unchecked').addClass('ui-icon-check');
-            } else if (state == 'disabled') {
-                ice.ace.jq(this._button).addClass('ui-state-disabled');
-            }
-        };
+    if (options.ariaEnabled)
+        ice.ace.jq(this.jqId).on("keypress", function() { self.onAriaKeypress(); });
+};
 
-        button.removeStateCSSClasses = function(state) {
+ice.ace.checkboxbutton.prototype.isChecked = function() {
+    return ice.ace.jq(this.fieldSelector).val() == 'true' ? true : false;
+};
 
-            if (state == 'hover') {
-                ice.ace.jq(this._button).removeClass('ui-state-hover');
-            } else if (state == 'checked') {
-                var node = ice.ace.jq(this._button);
-                node.removeClass('ui-state-active');
-                node.find('.ui-icon').removeClass('ui-icon-check').addClass('ui-icon-unchecked');
-            } else if (state == 'disabled') {
-                ice.ace.jq(this._button).removeClass('ui-state-disabled');
-            }
-        };
+ice.ace.checkboxbutton.prototype.setChecked = function(bool) {
+    ice.ace.jq(this.fieldSelector).val(bool == true ? 'true' : 'false');
+};
 
-        var hiddenField = Dom.get(clientId + "_hidden");
+ice.ace.checkboxbutton.prototype.addStateCSSClasses = function(state) {
+    if (state == 'hover') {
+        this.button.addClass('ui-state-hover');
+    }
+    else if (state == 'checked') {
+        this.button.addClass('ui-state-active');
+        this.icon.removeClass('ui-icon-unchecked')
+                 .addClass('ui-icon-check');
+    }
+};
 
-        //use input hidden field instead to update value for server push
-        if (jsProps.checked) {
-            button.set('checked', hiddenField.value);
+ice.ace.checkboxbutton.prototype.removeStateCSSClasses = function(state) {
+    if (state == 'hover') {
+        this.button.removeClass('ui-state-hover');
+    }
+    else if (state == 'checked') {
+        this.button.removeClass('ui-state-active');
+        this.icon.removeClass('ui-icon-check')
+                 .addClass('ui-icon-unchecked');
+    }
+};
+
+ice.ace.checkboxbutton.prototype.onAriaKeypress = function (e) {
+    var isSpace = e.keyCode == 32;
+    var submittedValue = this.isChecked();
+
+    if (isSpace) {
+        var innerSpan = ice.ace.jq(this.innerSpanSelector);
+
+        if (submittedValue) {
+            innerSpan.attr("aria-checked", true);
+        } else {
+            innerSpan.attr("aria-checked", false);
         }
+    }
+}
 
-        var onCheckedChange = function (e) {
-            var context = ice.ace.getJSContext(clientId);
-            var postParameters = context.getJSFProps().postParameters;
-            var params = function(parameter) {
-                if (postParameters != null) {
-                    var argCount = postParameters.length / 2;
-                    for (var idx = 0; idx < argCount; idx ++) {
-                        parameter(postParameters[idx * 2], postParameters[(idx * 2) + 1]);
-                    }
-                }
-            };
-            buttonNode = document.getElementById(spanId);
-            if (context.jsfProps.ariaEnabled) {
-                buttonNode.firstChild.setAttribute("aria-checked", e.newValue);
-            }
-            divNode = document.getElementById(clientId);
-            //get the current value of checked
-            var submittedValue = e.newValue;
+ice.ace.checkboxbutton.prototype.toggleCheckbox = function (e) {
+    var newValue = !this.isChecked();
 
-            YAHOO.log("         e.newValue=" + e.newValue + " old=" + e.prevValue);
+    this.setChecked(newValue);
+    if (newValue == true) this.addStateCSSClasses('checked');
+    else this.removeStateCSSClasses('checked');
 
-            hiddenField.value = submittedValue;
-
-            YAHOO.log(" hidden Field=" + clientId + "_hidden" + " has value=" + hiddenField.value);
-
-            var behaviors = context.getJSProps().behaviors;
-            if (behaviors) {
-                if (behaviors.activate) {
-                    ice.ace.ab(behaviors.activate);
-                }
-            }
-        };
-
-        button.on("checkedChange", onCheckedChange);
-
-        // add icon element
-        var addIcon = function() {
-            if (jsProps.checked) {
-                button.addStateCSSClasses('checked');
-            } else {
-                button.addStateCSSClasses('');
-            }
-        };
-        setTimeout(addIcon, 10);
-
-        if (jsfProps.ariaEnabled) {
-            //add roles and attributes to the YUI slider widget
-            buttonNode = document.getElementById(spanId);
-            buttonNode.firstChild.setAttribute("role", "checkbox");
-            buttonNode.firstChild.setAttribute("aria-describedby", jsProps.label);
-            if (jsfProps.disabled) {
-                buttonNode.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
-            }
-            //listen for keydown event, to provide short-cut key support.
-
-            button.on("keydown", function(event) {
-                //get the current value of the element and set the aria values
-                //the space bar toggles the button
-                var isSpace = event.keyCode == 32;
-
-                if (isSpace) {
-                    // submit the thing
-                    YAHOO.log(" submit this thing for keycode=" + event.keyCode);
-
-                    //update the root of this element to set the aria values
-                    buttonNode = document.getElementById(spanId);
-                    //get the current value of checked
-                    var submittedValue = event.newValue;
-                    if (submittedValue) {
-                        buttonNode.firstChild.setAttribute("aria-checked", true);
-                    } else {
-                        buttonNode.firstChild.setAttribute("aria-checked", false);
-                    }
-
-                    //the space seems to fire the onClick event for both FF and Safari
-                }
-            }, divNode);
-        }
-        bindYUI(button);
-    },
-
-    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
-    updateProperties:function(clientId, jsProps, jsfProps, events) {
-
-        var context = ice.ace.getJSContext(clientId);
-        if (context && context.isAttached()) {
-            var prevJSFProps = context.getJSFProps();
-            if (prevJSFProps.hashCode != jsfProps.hashCode) {
-                context.getComponent().destroy();
-                document.getElementById(clientId)['JSContext'] = null;
-                JSContext[clientId] = null;
-            }
-        }
-        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
-    },
-
-    //delegate call to ice.yui.getInstance(..) with the reference of this lib
-    getInstance:function(clientId, callback) {
-        ice.ace.getInstance(clientId, callback, this);
+    if (this.options.ariaEnabled) {
+        ice.ace.jq(this.innerSpanSelector).attr("aria-checked", newValue);
     }
 
-
+    if (this.options.behaviors && this.options.behaviors.activate) {
+        ice.ace.ab(ice.ace.extendAjaxArguments(
+            this.options.behaviors.activate,
+            {params: this.options.uiParams}
+        ));
+    }
 };

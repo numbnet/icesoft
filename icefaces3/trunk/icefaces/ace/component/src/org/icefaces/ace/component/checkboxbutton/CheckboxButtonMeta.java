@@ -42,9 +42,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/CheckboxButton\">CheckboxButton Wiki Documentation</a>."
         )
 @ICEResourceDependencies({
-        @ICEResourceDependency(name="util/combined.css",library="icefaces.ace"),
-		@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-        @ICEResourceDependency(library="icefaces.ace", name="util/ace-yui.js")
+    @ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js"),
+    @ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="Fired when the button is clicked or pressed by any other means (default event).", tlddoc="Fired when the button is clicked or pressed by any other means (default event).", defaultRender="@all", defaultExecute="@all")
