@@ -2074,6 +2074,7 @@ Autocompleter.Base.prototype = {
         this.element.setAttribute('autocomplete', 'off');
         Element.hide(this.update);
         Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this));
+        Event.observe(this.element, "focus", this.onFocus.bindAsEventListener(this));
         var keyEvent = "keypress";
         if (Prototype.Browser.IE || Prototype.Browser.WebKit) {
             keyEvent = "keyup";
@@ -2265,6 +2266,10 @@ Autocompleter.Base.prototype = {
         this.hide();
     },
 
+    onFocus: function(event) {
+        this.hasFocus = true;
+    },
+
     onBlur: function(event) {
         if (navigator.userAgent.indexOf("MSIE") >= 0) { // ICE-2225
             var strictMode = document.compatMode && document.compatMode == "CSS1Compat";
@@ -2390,7 +2395,7 @@ Autocompleter.Base.prototype = {
     },
 
     updateChoices: function(choices) {
-        if (!this.changed && this.hasFocus) {
+        if (!this.changed) {
             this.update.innerHTML = choices;
             Element.cleanWhitespace(this.update);
             Element.cleanWhitespace(this.update.firstChild);
@@ -2431,6 +2436,7 @@ Autocompleter.Base.prototype = {
         Event.stopObserving(this.element, "mouseover", this.onHover);
         Event.stopObserving(this.element, "click", this.onClick);
         Event.stopObserving(this.element, "mousemove", this.onMove);
+        Event.stopObserving(this.element, "focus", this.onFocus);
         Event.stopObserving(this.element, "blur", this.onBlur);
         Event.stopObserving(this.element, "keypress", this.onKeyPress);
         if (Prototype.Browser.IE || Prototype.Browser.WebKit)
@@ -2565,6 +2571,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         }
 
         //     form.focus_hidden_field.value=this.element.id;
+        setFocus();
         if (isEnterKey && !this.partialSubmit) {
             Ice.Autocompleter.logger.debug("Sending submit");
             iceSubmit(form, this.element, event);
@@ -2583,12 +2590,12 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
     },
 
     updateNOW: function(text) {
-
-        this.hasFocus = true;
         Element.cleanWhitespace(this.update);
         this.updateChoices(text);
-        this.show();
-        this.render();
+        if (this.hasFocus) {
+            this.show();
+            this.render();
+        }
     }
 });
 
