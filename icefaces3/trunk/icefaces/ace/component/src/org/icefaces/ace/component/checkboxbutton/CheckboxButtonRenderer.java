@@ -19,6 +19,7 @@ package org.icefaces.ace.component.checkboxbutton;
 
 
 import java.io.IOException;
+import java.lang.String;
 import java.util.*;
 
 
@@ -41,159 +42,143 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 
 @MandatoryResourceComponent(tagName="checkboxButton", value="org.icefaces.ace.component.checkboxbutton.CheckboxButton")
 public class CheckboxButtonRenderer extends CoreRenderer {
-
-     List <UIParameter> uiParamChildren;
-
-	public CheckboxButtonRenderer(){
-		super();
-	}
+    List <UIParameter> uiParamChildren;
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-	        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-	        CheckboxButton checkbox = (CheckboxButton) uiComponent;
-	        String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
-	        String clientId = uiComponent.getClientId();
-	        //update with hidden field
-	        String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
-	        if (null==hiddenValue || hiddenValue.equals("null")){
-	        	return;
-	        }else {
-			    boolean submittedValue = isChecked(hiddenValue);
-			    checkbox.setSubmittedValue(submittedValue);  
-	        }
-			
-			decodeBehaviors(facesContext, checkbox);
+        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+        CheckboxButton checkbox = (CheckboxButton) uiComponent;
+        String clientId = uiComponent.getClientId();
+        String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
+
+        if (null==hiddenValue || hiddenValue.equals("null")){
+            return;
+        }else {
+            boolean submittedValue = isChecked(hiddenValue);
+            checkbox.setSubmittedValue(submittedValue);
+        }
+
+        decodeBehaviors(facesContext, checkbox);
     }
 
 
-	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        CheckboxButton checkbox = (CheckboxButton) uiComponent;
+        String clientId = uiComponent.getClientId(facesContext);
+        String firstWrapperClass = "yui-button yui-checkboxbutton-button ui-button ui-widget ui-state-default";
+        String secondWrapperClass = "first-child";
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        uiParamChildren = Utils.captureParameters(checkbox);
+
+        // Root Container
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+
+        encodeRootStyle(writer, checkbox);
+
+        // First Wrapper
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute(HTML.CLASS_ATTR, firstWrapperClass, null);
+
+        // Second Wrapper
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute(HTML.CLASS_ATTR, secondWrapperClass, null);
+
+        if (ariaEnabled)
+            encodeAriaAttributes(writer, checkbox);
+
+        // Button Element
+        writer.startElement(HTML.BUTTON_ELEM, uiComponent);
+        writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
+
+        encodeButtonTabIndex(writer, checkbox, ariaEnabled);
+        encodeButtonStyle(writer, checkbox);
+
+        renderPassThruAttributes(facesContext, checkbox, HTML.BUTTON_ATTRS, new String[]{"style"});
+
+        // Another Damn Element. Previously added dynamically with JS.
+        writer.startElement(HTML.SPAN_ELEM, null);
+
+        encodeIconStyle(writer, checkbox);
+
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.BUTTON_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
+    }
+
+    private void encodeAriaAttributes(ResponseWriter writer, CheckboxButton checkbox) throws IOException {
+        writer.writeAttribute(HTML.ROLE_ATTR, "checkbox", null);
+        writer.writeAttribute(HTML.ARIA_DESCRIBED_BY_ATTR, checkbox.getLabel(), null);
+        writer.writeAttribute(HTML.ARIA_DISABLED_ATTR, checkbox.isDisabled(), null);
+    }
+
+    private void encodeButtonTabIndex(ResponseWriter writer, CheckboxButton checkbox, boolean ariaEnabled) throws IOException {
+        Integer tabindex = checkbox.getTabindex();
+
+        if (ariaEnabled && tabindex == null)
+            tabindex = 0;
+
+        if (tabindex != null)
+            writer.writeAttribute(HTML.TABINDEX_ATTR, tabindex, null);
+    }
+
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         CheckboxButton checkbox = (CheckboxButton) uiComponent;
-
-         // capture any children UIParameter (f:param) parameters.
-        uiParamChildren = Utils.captureParameters( checkbox );
-
-		// root element
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        String styleClass = checkbox.getStyleClass();
-        String styleClassVal = "";
-        if (styleClass != null && styleClass.trim().length() > 0) {
-            styleClassVal = " " + styleClass;
-        }
-		writer.writeAttribute(HTML.CLASS_ATTR, "ice-checkboxbutton" + styleClassVal, null);
-        String style = checkbox.getStyle();
-        if (style != null && style.trim().length() > 0) {
-            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-        }
-
-		writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);      
-        String yuiBaseClass= "yui-button yui-checkboxbutton-button ui-button ui-widget ui-state-default";
-		writer.writeAttribute(HTML.CLASS_ATTR, yuiBaseClass, null);
-
-		// first child
-		writer.startElement(HTML.SPAN_ELEM, uiComponent);
-		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
-	 	writer.writeAttribute(HTML.ID_ATTR, clientId+"_s2", null);
-	 	//labelling  should be label images are skinned
-
-		String label=this.findCheckboxLabel(checkbox);
-
-			
-			// should be either a label or an image as a minimum
-/*
-			writer.startElement(HTML.LABEL_ELEM, uiComponent);
-    		writer.writeAttribute(HTML.FOR_ATTR, clientId+"_span-button", null );
-            writer.writeText(label,null);
-	   		writer.endElement("label");		*/
-	
-	 	
-		// button element
-		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
-		renderPassThruAttributes(facesContext, checkbox, HTML.BUTTON_ATTRS, new String[]{"style"});
-		
-		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
-		writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);
-    }
-    
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = uiComponent.getClientId(facesContext);
-		CheckboxButton checkbox = (CheckboxButton) uiComponent;
- 		String label = findCheckboxLabel(checkbox);
         Object val = checkbox.getValue();
 
-        writer.endElement(HTML.BUTTON_ELEM);
-		writer.endElement(HTML.SPAN_ELEM);  
-	    
-		writer.endElement(HTML.SPAN_ELEM);			
-		
-	    writer.startElement("input", uiComponent);
-	    writer.writeAttribute("type", "hidden", null);
-	    writer.writeAttribute("name",clientId+"_hidden", null);
-	    writer.writeAttribute("id",clientId+"_hidden", null);
-	    writer.writeAttribute("value",val, null);
-	    writer.endElement("input");	
-     
-		// js call using JSONBuilder utility ICE-5831 and ScriptWriter ICE-5830
-	    //note that ScriptWriter takes care of the span tag surrounding the script
-	    String boxValue = String.valueOf(val);
-	    boolean isChecked = isChecked(boxValue);
-        StringBuilder sb = new StringBuilder();
-        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
-        Integer tabindex = checkbox.getTabindex();
+        writer.startElement("input", uiComponent);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("name",clientId+"_hidden", null);
+        writer.writeAttribute("value",val, null);
+        writer.endElement("input");
 
-        sb.append(checkbox.getStyle()).
-           append(checkbox.getStyleClass());
-
-        if (ariaEnabled && tabindex == null) {
-            tabindex = 0;
+        if (!checkbox.isDisabled()) {
+            encodeScript(facesContext, checkbox, clientId);
         }
 
+        writer.endElement(HTML.DIV_ELEM);
+    }
+
+    private void encodeScript(FacesContext facesContext, CheckboxButton checkbox, String clientId) throws IOException {
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         JSONBuilder jb = JSONBuilder.create();
-        jb.beginFunction("ice.ace.checkboxbutton.updateProperties")
+        jb.beginFunction("ice.ace.create")
+          .item("checkboxbutton")
+          .beginArray()
           .item(clientId)
           .beginMap()
-          .entry("type", "checkbox")
-          .entry("checked", isChecked)
-          .entry("disabled", checkbox.isDisabled())
-          .entryNonNullValue("tabindex", tabindex)
-          .entry("label", label);
-
-        encodeClientBehaviors(facesContext, checkbox, jb);
-
-        jb.endMap()
-          .beginMap()
-          .entry("hashCode", sb.toString().hashCode())
           .entry("ariaEnabled", ariaEnabled);
 
         if (uiParamChildren != null) {
-            jb.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
+            jb.beginMap("uiParams");
+            for (UIParameter p : uiParamChildren)
+                jb.entry(p.getName(), (String)p.getValue());
+            jb.endMap();
         }
 
-        jb.endMap().endFunction();
+        encodeClientBehaviors(facesContext, checkbox, jb);
 
-        String finalScript = jb.toString();
-        ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
-        
-        writer.endElement(HTML.DIV_ELEM);
+        jb.endMap().endArray().endFunction();
+
+        ScriptWriter.insertScript(facesContext, checkbox, jb.toString());
     }
-    
+
     private String findCheckboxLabel(CheckboxButton checkbox){
-    	String label="";
+        String label="";
         String checkLabel = checkbox.getLabel();
-		if (null!=checkLabel && !checkLabel.equals("")){
-			label=checkLabel;
-		}
-		return label;
+        if (null!=checkLabel && !checkLabel.equals("")){
+            label=checkLabel;
+        }
+        return label;
     }
- 
- 
+
+
     /**
      * support similar return values as jsf component
      * so can use strings true/false, on/off, yes/no to
@@ -202,21 +187,66 @@ public class CheckboxButtonRenderer extends CoreRenderer {
      * @return
      */
     private boolean isChecked(String hiddenValue) {
-		return hiddenValue.equalsIgnoreCase("on") ||
-		       hiddenValue.equalsIgnoreCase("yes") ||
-		       hiddenValue.equalsIgnoreCase("true");
-	}
-    
-    //forced converter support. It's either a boolean or string.   
+        return hiddenValue.equalsIgnoreCase("true") ||
+               hiddenValue.equalsIgnoreCase("on") ||
+               hiddenValue.equalsIgnoreCase("yes");
+    }
+
+    //forced converter support. It's either a boolean or string.
     @Override
     public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent,
-    		                        Object submittedValue) throws ConverterException{
-    	if (submittedValue instanceof Boolean) {
+                                    Object submittedValue) throws ConverterException{
+        if (submittedValue instanceof Boolean) {
             return submittedValue;
         }
-    	else {
+        else {
             return Boolean.valueOf(submittedValue.toString());
         }
     }
-    
+
+    private void encodeButtonStyle(ResponseWriter writer, CheckboxButton checkbox) throws IOException {
+        String buttonClasses = "";
+        String selectedClass = "ui-state-active";
+        String disabledClass = "ui-state-disabled";
+        Boolean val = (Boolean)checkbox.getValue();
+
+        if (val) {
+            buttonClasses += selectedClass + " ";
+        } else if (checkbox.isDisabled()) {
+            buttonClasses += disabledClass + " ";
+        }
+
+        if (!buttonClasses.equals("")) {
+            writer.writeAttribute(HTML.CLASS_ATTR, buttonClasses.trim(), null);
+        }
+    }
+
+    private void encodeIconStyle(ResponseWriter writer, CheckboxButton checkbox) throws IOException {
+        String iconClass = "ui-icon";
+        String selectedStyle = "ui-icon-check";
+        String unselectedStyle = "ui-icon-unchecked";
+        Boolean val = (Boolean)checkbox.getValue();
+
+        if (val) {
+            iconClass += " " + selectedStyle;
+        } else {
+            iconClass += " " + unselectedStyle;
+        };
+
+        writer.writeAttribute(HTML.CLASS_ATTR, iconClass, null);
+    }
+
+    private void encodeRootStyle(ResponseWriter writer, CheckboxButton checkbox) throws IOException {
+        String styleClass = checkbox.getStyleClass();
+        String styleClassVal = "ice-checkboxbutton";
+        String style = checkbox.getStyle();
+
+        if (styleClass != null && styleClass.trim().length() > 0)
+            styleClassVal += " " + styleClass;
+
+        if (style != null && style.trim().length() > 0)
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+
+        writer.writeAttribute(HTML.CLASS_ATTR, styleClassVal, null);
+    }
 }
