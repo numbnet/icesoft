@@ -445,22 +445,17 @@ Log.d(LOG_TAG, "dispatched microphone " + path);
                 .arView(mCurrentId, packParams(params));
 Log.d(LOG_TAG, "dispatched augmented reality " + packParams(params));
         } else if ("register".equals(command))  {
-	    if (getCloudNotificationId() == null) {
-		doRegister = true;
-	    } else {
-		registerSX();
-	    }
-//            String encodedForm = "";
-//            String cloudNotificationId = getCloudNotificationId();
-//            if (null != cloudNotificationId)  {
-//                encodedForm = "hidden-iceCloudPushId=" +
-//                        URLEncoder.encode(cloudNotificationId);
-//            }
-//Log.e(LOG_TAG, "POST to register will send " + encodedForm);
-//            utilInterface.setUrl(postUriString);
-//            utilInterface.submitForm("", encodedForm);
-//Log.e(LOG_TAG, "POST to register URL with jsessionid " + jsessionid);
-//            returnToBrowser();
+Log.d(LOG_TAG, "dispatched register ");
+            //if GCM registration does not occur in 3 seconds,
+            //proceed with registration anyway
+            mHandler.postDelayed(new Runnable() {
+                public void run()  {
+                    if (doRegister)  {
+                        registerSX();
+                    }
+                }
+            }, 3000);
+            doRegister = true;
         }
     }
 
@@ -693,6 +688,7 @@ Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
     }
 
     public void handleC2dmRegistration(String id) {
+Log.e(LOG_TAG, "handleC2dmRegistration " + id);
         setCloudNotificationId();
         if (doRegister)  {
 	    registerSX();
@@ -700,10 +696,12 @@ Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
     }
 
     public void handleC2dmNotification() {
+Log.e(LOG_TAG, "handleC2dmNotification ");
         pendingCloudPush = true;
     }
 
     protected void setCloudNotificationId() {
+Log.e(LOG_TAG, "setCloudNotificationId ");
         //Log.e("ICEmobile", "Setting cloud push: " + getCloudNotificationId());
 //        utilInterface.loadURL("javascript:if( ice.push ){ ice.push.parkInactivePushIds('" +
 //                                  getCloudNotificationId() + "');}");
