@@ -63,26 +63,24 @@ public class MandatoryResourcesSetup implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
-        Map collectedResourceComponents = new HashMap();
         //make resource containers transient so that the removal and addition of resource is not track by the JSF state saving
         Collection<UIComponent> facets = context.getViewRoot().getFacets().values();
         for (UIComponent c: facets) {
             c.setInView(false);
         }
         //add mandatory resources, replace any resources previously added by JSF
-        addMandatoryResources(context, collectedResourceComponents);
+        addMandatoryResources(context);
         //jsf.js might be added already by a page or component
         UIComponent jsfResource = ResourceOutputUtil.createTransientScriptResourceComponent("jsf.js", "javax.faces");
         //add jsf.js resource or replace it if already added by JSF
-        addOrCollectReplacingResource(context, "jsf.js", "javax.faces", "head", jsfResource, collectedResourceComponents);
+        addOrCollectReplacingResource(context, "jsf.js", "javax.faces", "head", jsfResource);
         //restore resource containers to non-transient state
         for (UIComponent c: facets) {
             c.setInView(true);
         }
     }
 
-    private void addMandatoryResources(FacesContext context,
-                                       Map collectedResourceComponents) {
+    private void addMandatoryResources(FacesContext context) {
         RenderKit rk = context.getRenderKit();
         if (rk instanceof DOMRenderKit) {
             DOMRenderKit drk = (DOMRenderKit) rk;
@@ -103,7 +101,6 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                     if (!resourceConfigPad.contains(" " + compClassName + " ") &&
                             (tagName != null && tagName.length() > 0 &&
                                     !resourceConfigPad.contains(" " + tagName + " "))) {
-                        // TODO: Add browser specificity
                         continue;
                     }
                 }
@@ -118,13 +115,13 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                         for (ICEResourceDependency resDep : resourceDependencies.value()) {
                             ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resDep);
                             if (resInfo != null)
-                                addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo, collectedResourceComponents);
+                                addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo);
                         }
                     }
                     ICEResourceDependency resourceDependency = compClass.getAnnotation(ICEResourceDependency.class);
                     ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resourceDependency);
                     if (resInfo != null) {
-                        addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo, collectedResourceComponents);
+                        addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo);
                     }
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
@@ -134,33 +131,6 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                     }
                 }
             }
-
-
-            //replace collected resource mandatory components in one shot, otherwise MyFaces will keep re-adding
-            //the components registered directly by it
-            replaceCollectedResourceComponents(context, "head", collectedResourceComponents);
-            replaceCollectedResourceComponents(context, "body", collectedResourceComponents);
-        }
-    }
-
-    private void replaceCollectedResourceComponents(FacesContext context,
-                                                    String target,
-                                                    Map collectedResourceComponents) {
-        UIViewRoot root = context.getViewRoot();
-        List<UIComponent> components = new ArrayList<UIComponent>(root.getComponentResources(context, target));
-        for (UIComponent next : components) {
-            root.removeComponentResource(context, next, target);
-        }
-
-        for (UIComponent next : components) {
-            String name = (String) next.getAttributes().get("name");
-            String library = (String) next.getAttributes().get("library");
-            UIComponent c = (UIComponent) collectedResourceComponents.get(calculateKey(name, library, target));
-            if (c == null) {
-                root.addComponentResource(context, next, target);
-            } else {
-                root.addComponentResource(context, c, target);
-            }
         }
     }
 
@@ -168,21 +138,19 @@ public class MandatoryResourcesSetup implements SystemEventListener {
             FacesContext facesContext,
             String compClassName,
             Set<ResourceInfo> addedResDeps,
-            ResourceInfo resDep,
-            Map collectedResourceComponents) {
+            ResourceInfo resDep) {
         if (addedResDeps.contains(resDep)) {
             return;
         }
         addedResDeps.add(resDep);
         addMandatoryResource(facesContext, compClassName, resDep.name,
-                resDep.library, resDep.target, collectedResourceComponents);
+                resDep.library, resDep.target);
     }
 
     private static void addMandatoryResource(FacesContext facesContext,
                                              String compClassName, String name,
                                              String library,
-                                             String target,
-                                             Map collectedResourceComponents) {
+                                             String target) {
         if (target == null || target.length() == 0) {
             target = "head";
         }
@@ -197,7 +165,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
             }
         } else {
             UIComponent component = ResourceOutputUtil.createResourceComponent(name, library, rendererType, true);
-            addOrCollectReplacingResource(facesContext, name, library, target, component, collectedResourceComponents);
+            addOrCollectReplacingResource(facesContext, name, library, target, component);
         }
     }
 
@@ -205,8 +173,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                                                      String name,
                                                      String library,
                                                      String target,
-                                                     UIComponent component,
-                                                     Map collectedResourceComponents) {
+                                                     UIComponent component) {
         UIViewRoot viewRoot = context.getViewRoot();
         List<UIComponent> componentResources = viewRoot.getComponentResources(context, target);
         int position = -1;
@@ -222,10 +189,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
             }
         }
 
-        if (position > -1) {
-            //collect the component resource to replace it after all mandatory resources are read
-            collectedResourceComponents.put(calculateKey(name, library, target), component);
-        } else {
+        if (position == -1) {
             viewRoot.addComponentResource(context, component, target);
         }
     }
