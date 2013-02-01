@@ -131,13 +131,13 @@ public class TreeRenderer extends CoreRenderer {
                 converter instanceof NodeModelListSequenceKeyConverter;
 
         confJson.initialiseVar(widgetVar).beginFunction("ice.ace.create").item("Tree")
-                .beginArray().beginMap();
-
-        confJson.entry("id", clientId);
-        confJson.entry("widgetVar", widgetVar);
-        confJson.entry("expansionMode", tree.getExpansionMode().name());
-        confJson.entry("selectionMode", tree.getSelectionMode().name());
-        confJson.entry("indexIds", indexIds);
+                .beginArray()
+                .item(clientId)
+                .beginMap()
+                .entry("widgetVar", widgetVar)
+                .entry("expansionMode", tree.getExpansionMode().name())
+                .entry("selectionMode", tree.getSelectionMode().name())
+                .entry("indexIds", indexIds);
 
         if (reordering)
             confJson.entry("reorder", true);

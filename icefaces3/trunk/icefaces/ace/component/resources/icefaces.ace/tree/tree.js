@@ -14,7 +14,8 @@
  * governing permissions and limitations under the License.
  */
 
-ice.ace.Tree = function (cfg) {
+ice.ace.Tree = function (clientId, cfg) {
+    cfg.id = clientId;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(cfg.id);
     this.element = ice.ace.jq(this.jqId);
