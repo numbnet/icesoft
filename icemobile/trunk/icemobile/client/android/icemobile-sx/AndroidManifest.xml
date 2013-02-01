@@ -20,9 +20,9 @@
 	  package="org.icemobile.client.android.icemobilesx"
 	  android:versionCode="13"
 	  android:versionName="1.2">
-  <permission android:name="org.icemobile.client.android.permission.C2D_MESSAGE"
+  <permission android:name="org.icemobile.client.android.icemobilesx.permission.C2D_MESSAGE"
 	      android:protectionLevel="signature" />
-  <uses-permission android:name="org.icemobile.client.android.permission.C2D_MESSAGE" />
+  <uses-permission android:name="org.icemobile.client.android.icemobilesx.permission.C2D_MESSAGE" />
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.INTERNET" />
@@ -78,11 +78,11 @@
 	      android:permission="com.google.android.c2dm.permission.SEND">
       <intent-filter>
 	<action android:name="com.google.android.c2dm.intent.RECEIVE" />
-	<category android:name="org.icemobile.client.android" /> 
+	<category android:name="org.icemobile.client.android.icemobilesx" /> 
       </intent-filter>
       <intent-filter>
 	<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-	<category android:name="org.icemobile.client.android" /> 
+	<category android:name="org.icemobile.client.android.icemobilesx" /> 
       </intent-filter>
     </receiver>
 <!--    <receiver android:name="org.icemobile.client.android.ConnectionChangeReceiver"
