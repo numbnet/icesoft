@@ -166,13 +166,13 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             writer.writeAttribute("onchange", onchangeAppValue.toString(), null);
 
         if (ariaEnabled) {
-            final AutoCompleteEntry compoent = (AutoCompleteEntry) uiComponent;
+            final AutoCompleteEntry component = (AutoCompleteEntry) uiComponent;
             Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
                 put("autocomplete", "list");
-                put("readonly", compoent.isReadonly());
-                put("required", compoent.isRequired());
-                put("disabled", compoent.isDisabled());
-                put("invalid", !compoent.isValid());
+                put("readonly", component.isReadonly());
+                put("required", component.isRequired());
+                put("disabled", component.isDisabled());
+                put("invalid", !component.isValid());
             }};
             writeAriaAttributes(ariaAttributes, labelAttributes);
         }
@@ -266,7 +266,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.writeText("(function() {", null);
         writer.writeText("var instance = ice.ace.Autocompleters[\"" + clientId + "\"];", null);
-        writer.writeText("instance.updateField('" + escapeBackslashes(text) + "', " + focus + ");", null);
+        writer.writeText("instance.updateField('" + escapeJavascriptString(text) + "', " + focus + ");", null);
         writer.writeText("})();", null);
         writer.endElement("script");
         writer.endElement("span");
@@ -501,9 +501,9 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         return buffer.toString();
     }
 	
-	private static String escapeBackslashes(String str) {
+	private static String escapeJavascriptString(String str) {
 		if (str == null) return "";
-		return str.replace("\\", "\\\\");
+		return str.replace("\\", "\\\\").replace("\'","\\'");
 	}
 	
 	private String getTimestamp(FacesContext facesContext, AutoCompleteEntry autoCompleteEntry) {
