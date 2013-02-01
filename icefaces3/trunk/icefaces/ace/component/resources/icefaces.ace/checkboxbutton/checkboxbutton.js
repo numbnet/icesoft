@@ -19,6 +19,7 @@ ice.ace.checkboxbutton = function(clientId, options) {
     this.options = options;
 
     // Selectors
+    this.id = clientId;
     this.jqId = ice.ace.escapeClientId(clientId);
     this.spanSelector = this.jqId + " > span"
     this.innerSpanSelector = this.jqId + " > span > span"
@@ -33,12 +34,23 @@ ice.ace.checkboxbutton = function(clientId, options) {
 
     // Event Binding
     ice.ace.jq(this.jqId)
-            .on("click", function() { self.toggleCheckbox(); })
             .on("mouseenter", function() { self.addStateCSSClasses('hover'); })
             .on("mouseleave", function() { self.removeStateCSSClasses('hover') ; });
 
+    if (!options.disabled)
+        ice.ace.jq(this.jqId).on("click", function() { self.toggleCheckbox(); });
+
     if (options.ariaEnabled)
         ice.ace.jq(this.jqId).on("keypress", function() { self.onAriaKeypress(); });
+
+    var unload = function() {
+        // Unload WidgetVar
+
+        // Unload events
+        ice.ace.jq(self.jqId).off("click mouseenter mouseleave keypress");
+    }
+
+    ice.onElementUpdate(this.id, unload);
 };
 
 ice.ace.checkboxbutton.prototype.isChecked = function() {

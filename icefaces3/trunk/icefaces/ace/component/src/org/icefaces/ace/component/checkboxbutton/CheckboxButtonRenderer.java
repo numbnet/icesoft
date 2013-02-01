@@ -44,6 +44,10 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 public class CheckboxButtonRenderer extends CoreRenderer {
     List <UIParameter> uiParamChildren;
 
+    private enum EventType {
+        HOVER, FOCUS
+    }
+
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         CheckboxButton checkbox = (CheckboxButton) uiComponent;
@@ -75,6 +79,7 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
+        encodeScript(facesContext, writer, checkbox, clientId, EventType.HOVER);
         encodeRootStyle(writer, checkbox);
 
         // First Wrapper
@@ -95,6 +100,7 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 
         encodeButtonTabIndex(writer, checkbox, ariaEnabled);
         encodeButtonStyle(writer, checkbox);
+        encodeScript(facesContext, writer, checkbox, clientId, EventType.FOCUS);
 
         renderPassThruAttributes(facesContext, checkbox, HTML.BUTTON_ATTRS, new String[]{"style"});
 
@@ -138,14 +144,11 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         writer.writeAttribute("value",val, null);
         writer.endElement("input");
 
-        if (!checkbox.isDisabled()) {
-            encodeScript(facesContext, checkbox, clientId);
-        }
-
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    private void encodeScript(FacesContext facesContext, CheckboxButton checkbox, String clientId) throws IOException {
+    private void encodeScript(FacesContext facesContext, ResponseWriter writer,
+                              CheckboxButton checkbox, String clientId, EventType type) throws IOException {
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         JSONBuilder jb = JSONBuilder.create();
         jb.beginFunction("ice.ace.create")
@@ -154,6 +157,9 @@ public class CheckboxButtonRenderer extends CoreRenderer {
           .item(clientId)
           .beginMap()
           .entry("ariaEnabled", ariaEnabled);
+
+        if (checkbox.isDisabled())
+            jb.entry("disabled", true);
 
         if (uiParamChildren != null) {
             jb.beginMap("uiParams");
@@ -166,7 +172,13 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 
         jb.endMap().endArray().endFunction();
 
-        ScriptWriter.insertScript(facesContext, checkbox, jb.toString());
+        String eventType = "";
+        if (EventType.HOVER.equals(type))
+            eventType = HTML.ONMOUSEOVER_ATTR;
+        else if (EventType.FOCUS.equals(type))
+            eventType = HTML.ONFOCUS_ATTR;
+
+        writer.writeAttribute(eventType, jb.toString(), null);
     }
 
     private String findCheckboxLabel(CheckboxButton checkbox){
