@@ -199,7 +199,7 @@ class TestButton extends Button {
 
     public TestButton(Context ctx) {
         super(ctx);
-        setText("return to Chrome");
+        setText("Back to Browser");
         setOnClickListener(clicker);
     }
 }
@@ -260,13 +260,11 @@ class TestButton extends Button {
                 0));
         mDebugTextView = new TextView(this);
 
-
-	/*        mDebugTextView.setText(commandName + " :: " + commandParts.toString());
         ll.addView(mDebugTextView,
             new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                0)); */
+                0));
 
         setContentView(ll);
 
@@ -363,6 +361,7 @@ class TestButton extends Button {
 
     private void handleIntent (Intent intent) {
         Uri uri = intent.getData();
+        mDebugTextView.setText(String.valueOf(uri));
 	Log.d(LOG_TAG, "URL launched " + uri);
         Bundle extras = intent.getExtras();
         if (null != extras) {
