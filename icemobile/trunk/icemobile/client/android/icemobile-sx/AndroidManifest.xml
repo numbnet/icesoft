@@ -85,15 +85,15 @@
 	<category android:name="org.icemobile.client.android" /> 
       </intent-filter>
     </receiver>
-    <receiver android:name="org.icemobile.client.android.ConnectionChangeReceiver"
+<!--    <receiver android:name="org.icemobile.client.android.ConnectionChangeReceiver"
 	      android:label="NetworkConnection">
       <intent-filter>
 	<action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
       </intent-filter>
-    </receiver>
+    </receiver> -->
 
     <service android:name="org.icemobile.client.android.c2dm.C2dmService"/>
-    <service android:name="org.icemobile.client.android.ConnectionChangeService"/>
+<!--    <service android:name="org.icemobile.client.android.ConnectionChangeService"/> -->
   </application>
 
   <uses-sdk android:minSdkVersion="8" />

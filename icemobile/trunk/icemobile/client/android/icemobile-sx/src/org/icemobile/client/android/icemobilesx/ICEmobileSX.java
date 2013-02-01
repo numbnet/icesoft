@@ -245,9 +245,9 @@ class TestButton extends Button {
 	pendingCloudPush = false;
 
         /* Bind to network connectivity monitoring service */
-        Intent bindingIntent = new Intent(self, ConnectionChangeService.class);
+	/*        Intent bindingIntent = new Intent(self, ConnectionChangeService.class);
         boolean bound = self.bindService(bindingIntent, mConnection,
-                                         Context.BIND_AUTO_CREATE);
+	Context.BIND_AUTO_CREATE); */
 
 
 
