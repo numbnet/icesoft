@@ -30,7 +30,7 @@ Array.prototype.diff = function(a) {
     return this.filter(function(i) {return !(a.indexOf(i) > -1);});
 };
 
-
+ice.ace.components = {};
 ice.ace.escapeClientId = function(id) {
     return "#" + id.replace(/:/g,"\\:");
 };
@@ -44,19 +44,33 @@ ice.ace.showWatermarks = function(){
 };
 
 ice.ace.create = function(name, args) {
-    if (ice.ace.jq.isFunction(ice.ace[name])) {
-        var temp = function(){}, // constructor-less duplicate class
-            inst, ret;
-        temp.prototype = ice.ace[name].prototype;
-        inst = new temp; // init constructor-less class
-        ret = ice.ace[name].apply(inst, args); // apply original constructor
-        return Object(ret) === ret ? ret : inst;
-    }
-    else
-        throw 'Missing resources for "' + name + '" component. ' +
-              'See "http://www.icesoft.org/wiki/display/ICE/mandatoryResourceConfiguration" ' +
-              'for more details.';
+    var clientId = args[0],
+        registerComponent = function(component) {
+            ice.ace.components[clientId] = component;
 
+            ice.onElementUpdate(clientId, function() {
+                if (ice.ace.components[clientId] && ice.ace.components[clientId].unload)
+                    ice.ace.components[clientId].unload();
+                ice.ace.components[clientId] = undefined;
+            });
+        };
+
+    if (ice.ace.components[clientId] == undefined) {
+        if (ice.ace.jq.isFunction(ice.ace[name])) {
+            var temp = function(){}, // constructor-less duplicate class
+                    inst, ret;
+            temp.prototype = ice.ace[name].prototype;
+            inst = new temp; // init constructor-less class
+            ret = ice.ace[name].apply(inst, args); // apply original constructor
+            ret = Object(ret) === ret ? ret : inst;
+            registerComponent(ret);
+            return ret;
+        }
+        else
+            throw 'Missing resources for "' + name + '" component. ' +
+                    'See "http://www.icesoft.org/wiki/display/ICE/mandatoryResourceConfiguration" ' +
+                    'for more details.';
+    }
 };
 
 ice.ace.addSubmitParam = function(parent, name, value) {
