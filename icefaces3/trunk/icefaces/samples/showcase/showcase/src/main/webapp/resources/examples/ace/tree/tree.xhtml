@@ -92,7 +92,7 @@
             <h:panelGroup>
                 <span style="font-weight:bold; text-align: left">Selections:</span><br/>
                 <ul class="output ui-corner-all ui-widget-content" style="">
-                    <ui:repeat var="selection" value="#{treeBean.stateMap.selected}">
+                    <ui:repeat var="selection" value="#{treeBean.stateMap.getSelected()}">
                         <li><h:outputText value="#{selection.name}" /></li>
                     </ui:repeat>
                 </ul>
