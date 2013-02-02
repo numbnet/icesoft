@@ -39,6 +39,8 @@ public class ICEfacesContext extends FacesContextWrapper {
             if (EnvUtils.instanceofPortletRequest(wrapped.getRequest())) {
                 return wrapped.encodeResourceURL(url);
             }
+            //the following tests should not be necessary since the encodeResourceURL should be used only to encode
+            //resource URLs, unfortunately Mojarra's OutputLinkRenderer uses this method for encoding the hyperlink URLs
             if (url.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
                 return url;
             }
