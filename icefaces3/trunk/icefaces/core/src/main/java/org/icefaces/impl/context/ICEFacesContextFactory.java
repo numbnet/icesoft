@@ -25,12 +25,12 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-public class IceFacesContextFactory extends FacesContextFactory  {
+public class ICEFacesContextFactory extends FacesContextFactory  {
     public static String AJAX_FORCED_VIEWS = "org.icefaces.ajaxforcedviews";
 
     FacesContextFactory delegate;
 
-    public IceFacesContextFactory(FacesContextFactory delegate)  {
+    public ICEFacesContextFactory(FacesContextFactory delegate)  {
         this.delegate = delegate;
     }
 
@@ -62,8 +62,8 @@ public class IceFacesContextFactory extends FacesContextFactory  {
             }
         }
 
-        return delegate.getFacesContext(context, 
-                wrappedRequest, response, lifecycle);
+        return new ICEfacesContext(delegate.getFacesContext(context,
+                wrappedRequest, response, lifecycle));
     }
     
     private Object wrapIfMultipart(HttpServletRequest request)  {
