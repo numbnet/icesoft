@@ -18,7 +18,7 @@ package org.icefaces.ace.component.fileentry;
 
 import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.event.FormSubmit;
-import org.icefaces.impl.context.IceFacesContextFactory;
+import org.icefaces.impl.context.ICEFacesContextFactory;
 
 import javax.faces.event.SystemEventListener;
 import javax.faces.event.SystemEvent;
@@ -37,7 +37,7 @@ public class FileEntryFormSubmit implements SystemEventListener {
     static final String IFRAME_ID = "hiddenIframe";
     private static final String ID_SUFFIX = "_captureFileOnsubmit";
     private static final String AJAX_FORCED_VIEWS = 
-            IceFacesContextFactory.AJAX_FORCED_VIEWS;
+            ICEFacesContextFactory.AJAX_FORCED_VIEWS;
     private boolean partialStateSaving;
 
     public FileEntryFormSubmit()  {
