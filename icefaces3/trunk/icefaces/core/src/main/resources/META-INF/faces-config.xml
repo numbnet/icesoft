@@ -23,7 +23,7 @@
     <name>ICEfacesCore</name>
     <factory>
         <faces-context-factory>
-            org.icefaces.impl.context.IceFacesContextFactory
+            org.icefaces.impl.context.ICEFacesContextFactory
         </faces-context-factory>
         <partial-view-context-factory>
             org.icefaces.impl.context.DOMPartialViewContextFactory
