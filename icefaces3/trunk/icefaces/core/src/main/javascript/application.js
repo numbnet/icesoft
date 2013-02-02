@@ -347,6 +347,9 @@ if (!window.ice.icefaces) {
                 var submitElement = submitEvent.source;
                 //if we have the submit element and the view ID set (ICEfaces render enabled) then the callbacks are invoked
                 if (submitElement) {
+                    //re-lookup submit element, sometimes in IE the queued requests are not serialized properly and the
+                    //submit element might have been replaced by another response
+                    submitElement = lookupElementById(submitElement.id);
                     try {
                         viewID = viewIDOf(submitElement);
                     } catch (e) {
