@@ -29,8 +29,6 @@ import java.util.Map;
 @MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapRenderer extends CoreRenderer {
 
-    String[] oldValues = {"", "", "", ""};
-
     public void encodeBegin(FacesContext context, UIComponent component)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -84,40 +82,40 @@ public class GMapRenderer extends CoreRenderer {
         String lng = String.valueOf(requestParameterMap.get(clientId + "_lng"));
         String zoom = String.valueOf(requestParameterMap.get(clientId + "_zoom"));
         String type = String.valueOf(requestParameterMap.get(clientId + "_type"));
-        if (!map.getLatitude().equalsIgnoreCase(oldValues[0])) {
+        if (!map.getLatitude().equalsIgnoreCase(map.getOldLatitude())) {
             if (map.getLatitude() != null && !map.getLatitude().equalsIgnoreCase("null")) {
                 lat = map.getLatitude();
-                oldValues[0] = lat;
+                map.setOldLatitude(lat);
             }
         }
-        if (!map.getLongitude().equalsIgnoreCase(oldValues[1])) {
+        if (!map.getLongitude().equalsIgnoreCase(map.getOldLongitude())) {
             if (map.getLongitude() != null && !map.getLongitude().equalsIgnoreCase("null")) {
                 lng = map.getLongitude();
-                oldValues[1] = lng;
+                map.setOldLongitude(lng);
             }
         }
-        if (!map.getZoomLevel().equalsIgnoreCase(oldValues[2])) {
+        if (!map.getZoomLevel().equalsIgnoreCase(map.getOldZoomLevel())) {
             if (map.getZoomLevel() != null && !map.getZoomLevel().equalsIgnoreCase("null")) {
                 zoom = map.getZoomLevel();
-                oldValues[2] = zoom;
+                map.setOldZoomLevel(zoom);
             }
         }
-        if (!map.getType().equalsIgnoreCase(oldValues[3])) {
+        if (!map.getType().equalsIgnoreCase(map.getOldType())) {
             if (map.getType() != null && !map.getType().equalsIgnoreCase("null")) {
                 type = map.getType();
-                oldValues[3] = type;
+                map.setOldType(type);
             }
         }
-        if (lat != null && !lat.equals("null")) {
+        if (lat != null && !lat.equals("") && !lat.equals("null")) {
             map.setLatitude(lat);
         }
-        if (lng != null && !lng.equals("null")) {
+        if (lng != null && !lng.equals("") && !lng.equals("null")) {
             map.setLongitude(lng);
         }
-        if (zoom != null && !zoom.equals("null")) {
+        if (zoom != null && !zoom.equals("") && !zoom.equals("null")) {
             map.setZoomLevel(zoom);
         }
-        if (type != null && !type.equals("null")) {
+        if (type != null && !type.equals("") && !type.equals("null")) {
             map.setType(type);
         }
     }

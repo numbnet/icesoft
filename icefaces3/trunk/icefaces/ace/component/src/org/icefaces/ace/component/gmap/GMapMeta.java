@@ -18,6 +18,7 @@ package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 
 import org.icefaces.resources.ICEResourceDependencies;
@@ -78,4 +79,16 @@ public class GMapMeta extends UIPanelMeta {
 
     @Property(tlddoc = "The classname for the main gMap div.")
     private String styleClass;
+	
+	@Field
+	private String oldLatitude;
+
+	@Field
+	private String oldLongitude;
+	
+	@Field
+	private String oldZoomLevel;
+	
+	@Field
+	private String oldType;	
 }
