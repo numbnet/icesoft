@@ -23,7 +23,7 @@ if (!window['ice']['ace']) {
 
 ice.ace.fileentry = {
     iframeLoaded : function(context, id) {
-        //alert("iframeLoaded()  begin");
+        //alert("iframeLoaded()  begin  id: " + id);
         
         var i = document.getElementById(id);
         if ((typeof XMLDocument != "undefined") && i.contentDocument) {
@@ -91,7 +91,7 @@ ice.ace.fileentry = {
 
         // Set every fileEntry component in the form into the indeterminate
         // state, before progress notifications arrive, if icepush is present
-        ice.ace.fileentry.setFormFileEntryStates(formElem, "uploading");
+        ice.ace.fileentry.setFormFileEntryStates(formElem, "uploading", true);
 
         //TODO To get context.sourceid, use on of the following techniques
         //Firefox || Opera || IE || unsupported (No WebKit)
@@ -102,7 +102,7 @@ ice.ace.fileentry = {
         //submitted = submitted.nodeType == 1 ? submitted : submitted.parentNode;
 
         var context = {};
-        context.sourceid = formElem;
+        context.sourceid = formElem.id;
         context.formid = formElem.id;
         context.render = "@all";
         var context_execute = formElem.id; // Don't do "@all" or else FacesMessagePhaseListener doesn't work
@@ -153,7 +153,7 @@ ice.ace.fileentry = {
 
             // Set every fileEntry component in the form into the complete
             // state, which hides the progress
-            ice.ace.fileentry.setFormFileEntryStates(formElem, "complete");
+            ice.ace.fileentry.setFormFileEntryStates(formElem, "complete", false);
 
             ice.ace.fileentry.iframeLoaded(context, iframeId);
             
@@ -210,6 +210,9 @@ ice.ace.fileentry = {
 
         window.ice.push.post(progressResourcePath, function(parameter) {}, function(statusCode, contentAsText, contentAsDOM) {
             //alert('onProgress()  GET  contentAsText: ' + contentAsText);
+            if (!contentAsText) {
+                return;
+            }
             var progressInfo = eval("(" + contentAsText + ")");
             var percent = progressInfo['percent'];
             var percentStr = percent + "%";
@@ -220,7 +223,7 @@ ice.ace.fileentry = {
                 if (fileDiv) {
                     var outerDiv = fileDiv.childNodes[1];
                     if (outerDiv) {
-                        if (outerDiv.className != "complete") {
+                        if (outerDiv.className != "complete" && outerDiv.className != "inactive") {
                             var progDiv = outerDiv.firstChild.firstChild;
                             if (progDiv) {
                                 if (percent != 100) {
@@ -250,7 +253,7 @@ ice.ace.fileentry = {
         return inputElem;
     },
 
-    setFormFileEntryStates : function(formElem, className) {
+    setFormFileEntryStates : function(formElem, className, pulse) {
         var fileEntryDivs = ice.ace.fileentry.getElementsByClass(
                 "ice-file-entry",formElem,"div");
         var fileEntryLen = fileEntryDivs.length;
@@ -265,7 +268,7 @@ ice.ace.fileentry = {
                         progDiv.style.width = "100%";
                     }
                     outerDiv.className = className;
-                    if (progDiv) {
+                    if (progDiv && pulse) {
                         ice.ace.fileentry.pulseElementUntilChangedStyleClass(0, progDiv, outerDiv, className);
                     }
                 }
