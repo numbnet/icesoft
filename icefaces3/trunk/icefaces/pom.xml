@@ -25,8 +25,8 @@
     <artifactId>bundle-parent</artifactId>
     <version>3.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>ICEfaces Core and Components</name>
-    <!--<name>ICEfaces EE Core and Components</name>-->
+    <name>ICEfaces</name>
+    <!--<name>ICEfaces EE</name>-->
     <url>http://www.icesoft.org</url>
 
     <licenses>
@@ -77,11 +77,14 @@
         <!--<icefaces.product.group>com.icesoft.icefaces-ee</icefaces.product.group>-->
         <!--<icefaces.product.name>ICEfaces EE</icefaces.product.name>-->
         <!--<icefaces.lib.name>icefaces-ee</icefaces.lib.name>-->
+
+        <!--<icepush.product.group>com.icesoft.icefaces-ee</icepush.product.group>-->
+        <!--<icepush.product.name>ICEpush EE</icepush.product.name>-->
         <!--<icepush.lib.name>icepush-ee</icepush.lib.name>-->
 
         <icesoft.company.name>ICEsoft Technologies Inc.</icesoft.company.name>
         <icesoft.copyright>ICEsoft Technologies Canada Corp., All Rights Reserved.</icesoft.copyright>
-        <icesoft.copyright.year>2012</icesoft.copyright.year>
+        <icesoft.copyright.year>2013</icesoft.copyright.year>
 
         <javadoc.title>
             ${icefaces.product.name} Java API Documentation
