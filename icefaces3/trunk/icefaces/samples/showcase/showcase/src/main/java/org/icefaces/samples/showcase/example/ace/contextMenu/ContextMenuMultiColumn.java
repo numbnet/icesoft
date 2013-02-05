@@ -40,7 +40,7 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.java,
                     title="ContextMenuMultiColumn.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/contextMenu/contextMenuMultiColumn.java")
+                    "/example/ace/contextMenu/ContextMenuMultiColumn.java")
         }
 )
 @ManagedBean(name= ContextMenuMultiColumn.BEAN_NAME)

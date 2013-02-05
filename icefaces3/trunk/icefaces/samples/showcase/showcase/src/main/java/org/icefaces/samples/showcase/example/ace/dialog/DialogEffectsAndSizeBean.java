@@ -40,7 +40,7 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.java,
                     title="dialogEffectsAndSize.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/dialog/dialogEffectsAndSizeBean.java")
+                    "/example/ace/dialog/DialogEffectsAndSizeBean.java")
         }
 )
 @ManagedBean(name= DialogEffectsAndSizeBean.BEAN_NAME)
