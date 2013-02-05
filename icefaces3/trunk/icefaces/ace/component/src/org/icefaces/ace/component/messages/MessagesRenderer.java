@@ -55,11 +55,19 @@ public class MessagesRenderer extends Renderer {
         writer.startElement("div", messages);
         writer.writeAttribute("id", messages.getClientId(), "id");
         writer.writeAttribute("class", "ui-faces-messages ui-widget", null);
+        while (messageIter.hasNext()) {
+            FacesMessage facesMessage = (FacesMessage) messageIter.next();
+            if (!facesMessage.isRendered() || messages.isRedisplay()) {
+                encodeMessage(writer, messages, facesMessage);
+            }
+        }
+/*
         if ("table".equals(messages.getLayout())) {
             encodeMessageTable(writer, messages, messageIter);
         } else {
             encodeMessageList(writer, messages, messageIter);
         }
+*/
         writer.endElement("div");
     }
 
@@ -115,7 +123,7 @@ public class MessagesRenderer extends Renderer {
         String detail = (null != (detail = facesMessage.getDetail())) ? detail : ""; // Mojarra defaults to summary. Not good.
         String text = ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
         int ordinal = facesMessage.getSeverity().getOrdinal();
-        ordinal = iconIndex = ++iconIndex % 4;
+//        ordinal = iconIndex = ++iconIndex % 4;
 
         writer.startElement("div", messages);
         writer.writeAttribute("class", "ui-corner-all ui-state-" + states[ordinal] + (text.equals("") ? " ui-empty-message" : ""), null);
