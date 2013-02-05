@@ -124,7 +124,10 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
                     var inputElement= document.getElementById(inputID);
                     ice.ace.jq(inputElement).unbind('focus', ice.ace.jq.datepicker._showDatepicker);
                     inputElement.focus();
-                    ice.ace.jq(inputElement).bind('focus', ice.ace.jq.datepicker._showDatepicker);
+                    setTimeout(function() {
+                        ice.ace.jq(inputElement).bind('focus', ice.ace.jq.datepicker._showDatepicker);
+                    }, 50);
+
                 };
                 ice.ace.ab.call(_self, dateSelectBehavior);
             }
