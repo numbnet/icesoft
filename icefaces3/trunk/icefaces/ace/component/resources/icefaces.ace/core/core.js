@@ -30,7 +30,6 @@ Array.prototype.diff = function(a) {
     return this.filter(function(i) {return !(a.indexOf(i) > -1);});
 };
 
-ice.ace.components = {};
 ice.ace.escapeClientId = function(id) {
     return "#" + id.replace(/:/g,"\\:");
 };
@@ -45,17 +44,13 @@ ice.ace.showWatermarks = function(){
 
 ice.ace.create = function(name, args) {
     var clientId = args[0],
+        jqId = ice.ace.escapeClientId(clientId),
+        elem = ice.ace.jq(jqId),
         registerComponent = function(component) {
-            ice.ace.components[clientId] = component;
-
-            ice.onElementUpdate(clientId, function() {
-                if (ice.ace.components[clientId] && ice.ace.components[clientId].unload)
-                    ice.ace.components[clientId].unload();
-                ice.ace.components[clientId] = undefined;
-            });
+            elem.attr('widget', component);
         };
 
-    if (ice.ace.components[clientId] == undefined) {
+    if (elem.attr('widget') == undefined) {
         if (ice.ace.jq.isFunction(ice.ace[name])) {
             var temp = function(){}, // constructor-less duplicate class
                     inst, ret;
