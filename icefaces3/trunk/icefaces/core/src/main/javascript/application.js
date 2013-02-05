@@ -519,7 +519,11 @@ if (!window.ice.icefaces) {
                     });
 
                     each(container.getElementsByTagName('form'), function(form) {
-                        form.submit = null;
+                        try {
+                            form.submit = null;
+                        } catch (ex) {
+                            //ignore exception thrown by IE, let the rest of cleanup proceed
+                        }
                         form.onsubmit = null;
                         each(form.elements, clearEventHandlers);
                     });
