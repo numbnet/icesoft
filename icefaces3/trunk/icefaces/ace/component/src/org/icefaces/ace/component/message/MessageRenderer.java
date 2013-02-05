@@ -23,52 +23,74 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 
 @MandatoryResourceComponent(tagName = "message", value = "org.icefaces.ace.component.message.Message")
 public class MessageRenderer extends Renderer {
-//    private static int iconIndex = -1;
+
+    private static int iconIndex = -1;
+    private static String[] icons = new String[]{"notice", "info", "alert", "alert"};
+    private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         Message message = (Message) component;
-        String forId = message.findComponent(message.getFor()).getClientId();
-        Iterator messageIter = context.getMessages(forId);
+        String forId = message.getFor();
+        Iterator messageIter = Collections.EMPTY_LIST.iterator();
+
+        UIComponent forComponent = forId == null ? null : message.findComponent(forId);
+        if (forComponent != null) {
+            messageIter = context.getMessages(forComponent.getClientId(context));
+        }
 
         writer.startElement("span", message);
         writer.writeAttribute("id", message.getClientId(), "id");
-        writer.writeAttribute("class", "ui-faces-message", null);
-        if (messageIter.hasNext()) {
-            FacesMessage facesMessage = (FacesMessage) messageIter.next();
+
+        boolean rendered = false;
+        FacesMessage facesMessage;
+        String styleClass = "ui-faces-message";
+        while (messageIter.hasNext()) {
+            facesMessage = (FacesMessage) messageIter.next();
             if (!facesMessage.isRendered() || message.isRedisplay()) {
-                encodeMessage(writer, message, facesMessage);
+                encodeMessage(writer, message, facesMessage, styleClass);
+                rendered = true;
+                break;
             }
+        }
+        if (!rendered) {
+            writer.writeAttribute("class", styleClass, null);
         }
         writer.endElement("span");
     }
 
-    private void encodeMessage(ResponseWriter writer, Message message, FacesMessage facesMessage) throws IOException {
+    private void encodeMessage(ResponseWriter writer, Message message, FacesMessage facesMessage, String styleClass) throws IOException {
 
-        String[] states = new String[]{"default", "default", "error", "error"};
-        String[] icons = new String[]{"info", "lightbulb", "alert", "flag"};
         boolean showSummary = message.isShowSummary();
         boolean showDetail = message.isShowDetail();
+        String summary = (null != (summary = facesMessage.getSummary())) ? summary : "";
+        String detail = (null != (detail = facesMessage.getDetail())) ? detail : ""; // Mojarra defaults to summary. Not good.
+        String text = ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
         int ordinal = facesMessage.getSeverity().getOrdinal();
-//        ordinal = iconIndex = ++iconIndex % 4;
+        ordinal = iconIndex = ++iconIndex % 4;
 
-        writer.startElement("span", message);
-        writer.writeAttribute("class", "ui-state-" + states[ordinal], null);
+        if (text.equals("")) {
+            styleClass += " ui-empty-message";
+        }
+        writer.writeAttribute("class", styleClass + " ui-widget ui-corner-all ui-state-" + states[ordinal], null);
 
         writer.startElement("span", message);
         writer.writeAttribute("class", "ui-icon ui-icon-" + icons[ordinal], null);
         writer.endElement("span");
 
-        String summary = (null != (summary = facesMessage.getSummary())) ? summary : "";
-        String detail = (null != (detail = facesMessage.getDetail())) ? detail : "";
-        String text = ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
-        writer.writeText(text, message, null);
+        writer.startElement("span", message);
+        writer.writeAttribute("class", "ui-icon-padding", null);
         writer.endElement("span");
+
+        if (!text.equals("")) {
+            writer.writeText(text, message, null);
+        }
 
         facesMessage.rendered();
     }
