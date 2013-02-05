@@ -35,6 +35,11 @@ package org.icefaces.ace.component.celleditor;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
+import javax.faces.context.ResponseWriter;
+
+import org.icefaces.ace.component.datatable.DataTableConstants;
+import org.icefaces.ace.model.table.RowState;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.resources.ICEResourceDependencies;
 import java.util.List;
 import java.util.ArrayList;
@@ -43,4 +48,17 @@ import java.util.ArrayList;
 
 })
 public class CellEditor extends CellEditorBase {
+
+    public void processDecodes(FacesContext context) {
+        RowState rowState = (RowState) context.getExternalContext().getRequestMap().get("rowState");
+        List<String> selectedEditorIds = rowState.getActiveCellEditorIds();
+
+        if (selectedEditorIds.contains(this.getId())) {
+            this.getFacet("input").setRendered(true);
+        } else {
+            this.getFacet("input").setRendered(false);
+        }
+
+        super.processDecodes(context);
+    }
 }
