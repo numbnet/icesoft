@@ -337,7 +337,7 @@ ice.ace.DataTable.prototype.unload = function() {
 
     var clientState = {scrollTop : this.scrollTop, scrollLeft : this.scrollLeft};
     ice.ace.DataTables[this.id] = clientState;
-    window[this.cfg.widgetVar] = clientState;
+    window[this.cfg.widgetVar] = undefined;
 }
 
 ice.ace.DataTable.prototype.setupFilterEvents = function () {
@@ -1490,6 +1490,7 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
     headCells.css('z-index', '1');
 
     if (ie8 || ie9) {
+        headCells.css('margin-top','-1px').height(headCells.eq(0).height() + 'px');
         bodyCells.first().css('border-top','0px');
         bodyCells.css('position','relative')
                 .each(function(i,e) {
