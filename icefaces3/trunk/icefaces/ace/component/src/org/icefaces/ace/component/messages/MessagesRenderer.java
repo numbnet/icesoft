@@ -29,6 +29,10 @@ import java.util.Iterator;
 @MandatoryResourceComponent(tagName = "messages", value = "org.icefaces.ace.component.messages.Messages")
 public class MessagesRenderer extends Renderer {
 
+    private static int iconIndex = -1;
+    private static String[] icons = new String[]{"notice", "info", "alert", "alert"};
+    private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
+
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -50,24 +54,26 @@ public class MessagesRenderer extends Renderer {
         }
         writer.startElement("div", messages);
         writer.writeAttribute("id", messages.getClientId(), "id");
-        writer.writeAttribute("class", "ui-faces-messages", null);
-        if (messageIter.hasNext()) {
-            if ("table".equals(messages.getLayout())) {
-                encodeMessageTable(writer, messages, messageIter);
-            } else {
-                encodeMessageList(writer, messages, messageIter);
-            }
+        writer.writeAttribute("class", "ui-faces-messages ui-widget", null);
+        if ("table".equals(messages.getLayout())) {
+            encodeMessageTable(writer, messages, messageIter);
+        } else {
+            encodeMessageList(writer, messages, messageIter);
         }
         writer.endElement("div");
     }
 
     private void encodeMessageTable(ResponseWriter writer, Messages messages, Iterator messageIter) throws IOException {
 
-        writer.startElement("table", messages);
+        boolean wroteTable = false;
         while (messageIter.hasNext()) {
             FacesMessage facesMessage = (FacesMessage) messageIter.next();
             if (facesMessage.isRendered() && !messages.isRedisplay()) {
                 continue;
+            }
+            if (!wroteTable) {
+                writer.startElement("table", messages);
+                wroteTable = true;
             }
             writer.startElement("tr", messages);
             writer.startElement("td", messages);
@@ -75,49 +81,54 @@ public class MessagesRenderer extends Renderer {
             writer.endElement("td");
             writer.endElement("tr");
         }
-        writer.endElement("table");
+        if (wroteTable) {
+            writer.endElement("table");
+        }
     }
 
     private void encodeMessageList(ResponseWriter writer, Messages messages, Iterator messageIter) throws IOException {
 
-        writer.startElement("ul", messages);
+        boolean wroteSpan = false;
         while (messageIter.hasNext()) {
             FacesMessage facesMessage = (FacesMessage) messageIter.next();
             if (facesMessage.isRendered() && !messages.isRedisplay()) {
                 continue;
             }
+            if (!wroteSpan) {
+                writer.startElement("ul", messages);
+                wroteSpan = true;
+            }
             writer.startElement("li", messages);
             encodeMessage(writer, messages, facesMessage);
             writer.endElement("li");
         }
-        writer.endElement("ul");
+        if (wroteSpan) {
+            writer.endElement("ul");
+        }
     }
 
     private void encodeMessage(ResponseWriter writer, Messages messages, FacesMessage facesMessage) throws IOException {
 
-        String[] states = new String[]{"default", "default", "error", "error"};
-        String[] icons = new String[]{"info", "lightbulb", "alert", "flag"};
         boolean showSummary = messages.isShowSummary();
         boolean showDetail = messages.isShowDetail();
+        String summary = (null != (summary = facesMessage.getSummary())) ? summary : "";
+        String detail = (null != (detail = facesMessage.getDetail())) ? detail : ""; // Mojarra defaults to summary. Not good.
+        String text = ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
         int ordinal = facesMessage.getSeverity().getOrdinal();
+        ordinal = iconIndex = ++iconIndex % 4;
 
-        writer.startElement("span", messages);
-        writer.writeAttribute("class", "ui-faces-message", null);
-
-        writer.startElement("span", messages);
-        writer.writeAttribute("class", "ui-state-" + states[ordinal], null);
+        writer.startElement("div", messages);
+        writer.writeAttribute("class", "ui-corner-all ui-state-" + states[ordinal] + (text.equals("") ? " ui-empty-message" : ""), null);
 
         writer.startElement("span", messages);
         writer.writeAttribute("class", "ui-icon ui-icon-" + icons[ordinal], null);
         writer.endElement("span");
 
-        String summary = (null != (summary = facesMessage.getSummary())) ? summary : "";
-        String detail = (null != (detail = facesMessage.getDetail())) ? detail : "";
-        String text = ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
-        writer.writeText(text, messages, null);
-        writer.endElement("span");
+        if (!text.equals("")) {
+            writer.writeText(text, messages, null);
+        }
+        writer.endElement("div");
 
-        writer.endElement("span");
         facesMessage.rendered();
     }
 }

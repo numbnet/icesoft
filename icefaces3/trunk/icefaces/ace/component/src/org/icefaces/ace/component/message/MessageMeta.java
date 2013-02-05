@@ -19,9 +19,8 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIMessageMeta;
-
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 @Component(
         tagName = "message",
@@ -32,13 +31,11 @@ import javax.faces.application.ResourceDependency;
         componentType = "org.icefaces.ace.component.Message",
         rendererType = "org.icefaces.ace.component.MessageRenderer",
         componentFamily = "org.icefaces.ace.Message",
-        tlddoc = "The message tag renders a Faces message for a specific component." +
-                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Message\">Message Wiki Documentation</a>."
+        tlddoc = "The message tag renders the first Faces message (if redisplay is true) or " +
+                "the first undisplayed Faces message (if redisplay is false) for a specific component."
 )
-@ResourceDependencies({
-        @ResourceDependency(library = "icefaces.ace", name = "util/combined.css"),
-        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+@ICEResourceDependencies({
+        @ICEResourceDependency(library = "icefaces.ace", name = "util/combined.css")
 })
 public class MessageMeta extends UIMessageMeta {
 
