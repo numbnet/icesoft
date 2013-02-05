@@ -309,7 +309,7 @@
 .ui-faces-message.ui-corner-all {
     position: relative;
     padding: 0.3em 0.3em 0.3em 0.6em;
-    /*zoom: 1;*/
+    zoom: 1; /* for IE7, sets hasLayout */
 }
 
 .ui-faces-message.ui-empty-message {
@@ -319,7 +319,7 @@
 .ui-faces-message .ui-icon {
     position: absolute;
     left: 0.3em;
-    top: 0.3em;
+    bottom: 0.3em;
 }
 
 .ui-faces-message .ui-icon-padding {
@@ -328,7 +328,7 @@
 
 .ui-faces-messages .ui-icon {
     float: left;
-    margin-right: 0.3em;
+    margin: 0.2em 0.3em 0 0;
 }
 
 .ui-faces-messages div.ui-empty-message  .ui-icon {

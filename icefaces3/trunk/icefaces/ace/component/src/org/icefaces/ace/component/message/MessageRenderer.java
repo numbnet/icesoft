@@ -73,7 +73,7 @@ public class MessageRenderer extends Renderer {
         String detail = (null != (detail = facesMessage.getDetail())) ? detail : ""; // Mojarra defaults to summary. Not good.
         String text = ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
         int ordinal = facesMessage.getSeverity().getOrdinal();
-        ordinal = iconIndex = ++iconIndex % 4;
+//        ordinal = iconIndex = ++iconIndex % 4;
 
         if (text.equals("")) {
             styleClass += " ui-empty-message";

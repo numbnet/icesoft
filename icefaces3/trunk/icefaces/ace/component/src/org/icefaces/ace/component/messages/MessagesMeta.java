@@ -44,8 +44,10 @@ public class MessagesMeta extends UIMessagesMeta {
     @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS)
     private String forValue;
 
+/*
     @Property(tlddoc = "The type of layout markup to use when rendering error messages." +
             " Valid values are \"table\" (an HTML table) and \"list\" (an HTML list)." +
             " If not specified, the default value is \"list\".")
     private String layout;
+*/
 }
