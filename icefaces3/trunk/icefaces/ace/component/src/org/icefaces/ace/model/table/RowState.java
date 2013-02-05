@@ -117,7 +117,10 @@ public class RowState implements Serializable{
      * @param editor
      */
     public void addActiveCellEditor(UIComponent editor) {
-        if (editor != null) getActiveCellEditorIds().add(editor.getId());
+        if (editor != null) {
+            getActiveCellEditorIds().add(editor.getId());
+            editor.getFacet("input").setRendered(true);
+        }
     }
 
     /**
@@ -126,6 +129,9 @@ public class RowState implements Serializable{
      * @param editor
      */
     public void removeActiveCellEditor(UIComponent editor) {
-        if (editor != null) getActiveCellEditorIds().remove(editor.getId());
+        if (editor != null) {
+            getActiveCellEditorIds().remove(editor.getId());
+            editor.getFacet("input").setRendered(false);
+        }
     }
 }
