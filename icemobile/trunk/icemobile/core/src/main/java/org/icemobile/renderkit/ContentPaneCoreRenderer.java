@@ -20,6 +20,7 @@ import org.icemobile.component.IAccordion;
 import org.icemobile.component.IContentPane;
 import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Utils;
+import org.icemobile.util.CSSUtils;
 
 
 import java.io.IOException;
@@ -62,7 +63,7 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
         boolean client = pane.isClient();
         boolean autoheight = accordion.isAutoHeight();
         String myId = pane.getId();
-        String handleClass = "handle";
+        String handleClass = "handle " + CSSUtils.STYLECLASS_BAR_B;
         String pointerClass = "pointer";
         writer.startElement(SECTION_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId+"_sect");

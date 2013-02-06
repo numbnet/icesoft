@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.list;
 
 
 import org.icefaces.mobi.utils.HTML;
+import org.icemobile.util.CSSUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -41,7 +42,7 @@ public class OutputListItemRenderer extends Renderer {
         String userDefinedClass = item.getStyleClass();
         String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS;
         if (item.isGroup()) {
-            styleClass = OutputListItem.OUTPUTLISTITEMGROUP_CLASS;
+            styleClass = OutputListItem.OUTPUTLISTITEMGROUP_CLASS + " " + CSSUtils.STYLECLASS_BAR_B;
             if (userDefinedClass != null) {
                 styleClass += " " + userDefinedClass;
             }

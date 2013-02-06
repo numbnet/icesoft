@@ -26,6 +26,7 @@ import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icemobile.util.CSSUtils;
 
 
 public class PagePanelRenderer extends BaseLayoutRenderer {
@@ -42,12 +43,15 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, pagePanel,
                 pagePanel.getCommonAttributeNames());
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnl", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.CLASS_ATTR, CSSUtils.STYLECLASS_BODY_A, null);
         if (pagePanel.getStyle()!=null){
             writer.writeAttribute(HTML.STYLE_ATTR, pagePanel.getStyle(), HTML.STYLE_ATTR);
         }
         StringBuilder headerClass = new StringBuilder(PagePanel.HEADER_CLASS);
+        headerClass.append(" ").append(CSSUtils.STYLECLASS_BAR_A);
         StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS);
         StringBuilder footerClass = new StringBuilder(PagePanel.FOOTER_CLASS);
+        footerClass.append(" ").append(CSSUtils.STYLECLASS_BAR_A);
         StringBuilder headerFooterContentsClass = new StringBuilder(PagePanel.CTR_CLASS);
 
         // find out if header and/or footer facets are present as this will directly 
