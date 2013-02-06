@@ -29,6 +29,7 @@ import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icemobile.renderkit.IResponseWriter;
 import org.icemobile.renderkit.PanelPopupCoreRenderer;
+import org.icemobile.util.CSSUtils;
 
 
 public class PanelPopupRenderer extends BaseLayoutRenderer {
@@ -75,7 +76,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         if (labelFacet != null || headerText != null) {
             writer.startElement(HTML.DIV_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, panelPopup.getClientId() + "_title");
-            writer.writeAttribute("class", PanelPopup.TITLE_CLASS);
+            writer.writeAttribute("class", PanelPopup.TITLE_CLASS + " " + CSSUtils.STYLECLASS_BAR_B);
             if (labelFacet != null) {
                 JSFUtils.renderChild(facesContext, labelFacet);
             } else if (headerText != null) {

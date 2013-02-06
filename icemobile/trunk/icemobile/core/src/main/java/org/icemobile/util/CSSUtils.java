@@ -47,6 +47,12 @@ public class CSSUtils {
     public static final String STYLECLASS_COLLAPSIBLEHEADINGTOGGLE = "ui-collapsible-heading-toggle";
        //div
     public static final String STYLECLASS_COLLAPSIBLECONTENT = "ui-collapsible-content";
+    /* Bar */
+    public static final String STYLECLASS_BAR_A = "ui-bar-a"; //default for headers, footers
+    public static final String STYLECLASS_BAR_B = "ui-bar-b"; //default for list group headers
+    /* body */
+    public static final String STYLECLASS_BODY_A = "ui-body-a"; //default for body
+
     
     public enum Theme{ IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, ARCHAIC;
         public String fileName(){

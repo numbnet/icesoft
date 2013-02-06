@@ -19,6 +19,7 @@ package org.icemobile.renderkit;
 import org.icemobile.util.Constants;
 import org.icemobile.component.ICarousel;
 import org.icemobile.util.ClientDescriptor;
+import org.icemobile.util.CSSUtils;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -30,12 +31,13 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
             Logger.getLogger(CarouselCoreRenderer.class.toString());
 
     StringBuilder baseClass = new StringBuilder(ICarousel.CAROUSEL_CLASS);
-    StringBuilder scrollerClass = new StringBuilder(ICarousel.SCROLLER_CLASS) ;
+    StringBuilder scrollerClass = new StringBuilder(ICarousel.SCROLLER_CLASS);
     StringBuilder listClass = new StringBuilder(ICarousel.LIST_CLASS) ;
     StringBuilder pagClass = new StringBuilder("") ; //currently a problem with existing css
 
     public void encodeBegin(ICarousel component, IResponseWriter writer)
             throws IOException {
+
         String userDefinedClass = component.getStyleClass();
         if (userDefinedClass!=null){
             baseClass.append(" ").append(userDefinedClass);
@@ -77,7 +79,7 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
             renderPagination(carousel, writer, String.valueOf(nextLabel),clientId, "next" );
         }
         writer.startElement(DIV_ELEM, carousel);
-        writer.writeAttribute("class", ICarousel.CAROUSEL_CURSOR_CLASS);
+        writer.writeAttribute("class", ICarousel.CAROUSEL_CURSOR_CLASS + " " + CSSUtils.STYLECLASS_BAR_B);
         writer.writeAttribute("style", carousel.getStyle());
         writer.startElement(DIV_ELEM, carousel);
         writer.writeAttribute("class", ICarousel.CAROUSEL_CURSOR_CURSOR_CENTER_CLASS);

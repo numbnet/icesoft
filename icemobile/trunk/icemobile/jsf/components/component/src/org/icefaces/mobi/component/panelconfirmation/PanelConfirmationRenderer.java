@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
+import org.icemobile.util.CSSUtils;
 
 /**
  * for now the css for this class is just reused from the dateSpinner popup container classes
@@ -63,7 +64,7 @@ public class  PanelConfirmationRenderer extends BaseLayoutRenderer {
         //title
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_title", HTML.ID_ATTR);
-        writer.writeAttribute("class", PanelConfirmation.TITLE_CLASS, null);
+        writer.writeAttribute("class", PanelConfirmation.TITLE_CLASS + " " + CSSUtils.STYLECLASS_BAR_B, null);
         writer.write(panel.getTitle());
         writer.endElement(HTML.DIV_ELEM);
         //message
