@@ -1361,9 +1361,9 @@ ice.ace.DataTable.prototype.ie7UnpinColumn = function(i) {
     // Handle non static header cases
     if (tbody.length == 0) tbody = ice.ace.jq(this.jqId + ' > div > table');
 
-    var bodyCells = tbody.find(' > tbody > tr > td:nth-child('+i+')'),
-        headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
-        footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
+    var bodyCells = tbody.find('tbody:first > tr > td:nth-child('+i+')'),
+        headCells = thead.find('thead:first > tr > th:nth-child('+i+')'),
+        footCells = tfoot.find('tfoot:first > tr > td:nth-child('+i+')'),
         offsetWidth = headCells.first().width(),
         bodyContainer = tbody.parent();
 
@@ -1630,9 +1630,9 @@ ice.ace.DataTable.prototype.ie7PinColumn = function(i) {
     // Set table as position bounds and hide overflowing pinned cols
     tbody.parent().parent().parent().css('position', 'relative').css('overflow-y','hidden');
 
-    var bodyCells = tbody.find(' > tbody > tr > td:not:nth-child('+i+')'),
-        headCells = thead.find(' > thead > tr > th:not:nth-child('+i+')'),
-        footCells = tfoot.find(' > tfoot > tr > td:not:nth-child('+i+')'),
+    var bodyCells = tbody.find('tbody:first > tr > td:not:nth-child('+i+')'),
+        headCells = thead.find('thead:first > tr > th:not:nth-child('+i+')'),
+        footCells = tfoot.find('tfoot:first > tr > td:not:nth-child('+i+')'),
         cellWidth = bodyCells.eq(0).width();
 
     // Add new column to pinning state
