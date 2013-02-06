@@ -16,6 +16,7 @@
 package org.icefaces.ace.component.message;
 
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -41,6 +42,7 @@ public class MessageRenderer extends Renderer {
         Iterator messageIter = Collections.EMPTY_LIST.iterator();
         String style = message.getStyle();
         String styleClass = "ui-faces-message" + ((styleClass = message.getStyleClass()) == null ? "" : " " + styleClass);
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 
         UIComponent forComponent = forId == null ? null : message.findComponent(forId);
         if (forComponent != null) {
@@ -51,6 +53,12 @@ public class MessageRenderer extends Renderer {
         writer.writeAttribute("id", message.getClientId(), "id");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
+        }
+        if (ariaEnabled) {
+            writer.writeAttribute("role", "alert", null);
+            writer.writeAttribute("aria-atomic", "true", null);
+            writer.writeAttribute("aria-live", "polite", null);
+            writer.writeAttribute("aria-relevant", "all", null);
         }
 
         boolean rendered = false;
