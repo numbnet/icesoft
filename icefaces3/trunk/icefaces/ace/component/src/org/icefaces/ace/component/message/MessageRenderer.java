@@ -39,6 +39,8 @@ public class MessageRenderer extends Renderer {
         Message message = (Message) component;
         String forId = message.getFor();
         Iterator messageIter = Collections.EMPTY_LIST.iterator();
+        String style = message.getStyle();
+        String styleClass = "ui-faces-message" + ((styleClass = message.getStyleClass()) == null ? "" : " " + styleClass);
 
         UIComponent forComponent = forId == null ? null : message.findComponent(forId);
         if (forComponent != null) {
@@ -47,10 +49,12 @@ public class MessageRenderer extends Renderer {
 
         writer.startElement("span", message);
         writer.writeAttribute("id", message.getClientId(), "id");
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
 
         boolean rendered = false;
         FacesMessage facesMessage;
-        String styleClass = "ui-faces-message";
         while (messageIter.hasNext()) {
             facesMessage = (FacesMessage) messageIter.next();
             if (!facesMessage.isRendered() || message.isRedisplay()) {
