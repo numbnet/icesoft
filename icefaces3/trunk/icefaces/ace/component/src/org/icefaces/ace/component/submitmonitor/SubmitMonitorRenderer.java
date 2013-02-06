@@ -141,6 +141,7 @@ public class SubmitMonitorRenderer extends CoreRenderer {
     }
 
     public JSONBuilder writeConfig(SubmitMonitor monitor, JSONBuilder config) {
+        config.item(monitor.getClientId());
         config.beginMap();
         config.entry("id", monitor.getClientId());
         config.entryNonNullValue("blockUI", monitor.resolveBlockUI());
