@@ -73,7 +73,11 @@
         while (c) {
             if (c == namespace.fullSubmit) {
                 var eventArgument = c.arguments[2];
-                return eventArgument.type == 'blur';
+                if (eventArgument)  {
+                    return eventArgument.type == 'blur';
+                } else {
+                    return false;
+                }
             }
             c = c.arguments.callee.caller;
         }
