@@ -1,0 +1,134 @@
+/*
+ * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+body{
+    font-family: Droid, Helvetica, Arial, sans-serif;
+}
+.mobi-tap-highlight{
+    -webkit-tap-highlight-color: #082658;
+}
+/* HEADER, FOOTER default */
+.ui-bar-a{
+	background: #ededed;
+	background: -moz-linear-gradient(top,  #ededed 1%, #dddddd 4%, #c9c9c9 98%, #b7b7b7 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ededed), color-stop(4%,#dddddd), color-stop(98%,#c9c9c9), color-stop(100%,#b7b7b7));
+	background: -webkit-linear-gradient(top,  #ededed 1%,#dddddd 4%,#c9c9c9 98%,#b7b7b7 100%);
+	background: -o-linear-gradient(top,  #ededed 1%,#dddddd 4%,#c9c9c9 98%,#b7b7b7 100%);
+	background: -ms-linear-gradient(top,  #ededed 1%,#dddddd 4%,#c9c9c9 98%,#b7b7b7 100%);
+	background: linear-gradient(to bottom,  #ededed 1%,#dddddd 4%,#c9c9c9 98%,#b7b7b7 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#b7b7b7',GradientType=0 );
+	color: #666;
+	font-weight: bold;
+	text-shadow: 1px 1px 1px #E0E0E0;
+	border-bottom-color: #b7b7b7;
+    border-top-color:#ededed; 
+    box-shadow: 2px 2px 7px #BBB;
+}
+.ui-bar-a,
+.ui-bar-a input,
+.ui-bar-a select,
+.ui-bar-a textarea,
+.ui-bar-a button {
+	font-family: "Droid Sans", Helvetica, Arial, sans-serif;
+}
+.ui-bar-a .ui-link-inherit {
+	color: #666 /*{a-bar-color}*/;
+}
+.ui-bar-a a.ui-link {
+	color: #33B5E5 /*{a-bar-link-color}*/;
+	font-weight: bold;
+}
+.ui-bar-a a.ui-link:visited {
+    color: #2991B8 /*{a-bar-link-visited}*/;
+}
+.ui-bar-a a.ui-link:hover {
+	color: #2991B8 /*{a-bar-link-hover}*/;
+}
+.ui-bar-a a.ui-link:active {
+	color: #2991B8 /*{a-bar-link-active}*/;
+}
+.ui-body-a,
+.ui-overlay-a {
+	background: 			#F3F3F3 /*{a-body-background-color}*/;
+	color: 					#3E3E3E /*{a-body-color}*/;
+	font-weight: normal;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #F3F3F3 /*{a-body-background-start}*/), to( #F7F7F7 /*{a-body-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #F3F3F3 /*{a-body-background-start}*/, #F7F7F7 /*{a-body-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #F3F3F3 /*{a-body-background-start}*/, #F7F7F7 /*{a-body-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #F3F3F3 /*{a-body-background-start}*/, #F7F7F7 /*{a-body-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #F3F3F3 /*{a-body-background-start}*/, #F7F7F7 /*{a-body-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #F3F3F3 /*{a-body-background-start}*/, #F7F7F7 /*{a-body-background-end}*/);	
+	font-size: 0.95em;
+}
+.ui-bar-a .ui-shadow,
+.ui-bar-b .ui-shadow ,
+.ui-bar-c .ui-shadow  {
+	-moz-box-shadow: 0px 1px 0 				rgba(255,255,255,.3);
+	-webkit-box-shadow: 0px 1px 0 			rgba(255,255,255,.3);
+	box-shadow: 0px 1px 0 					rgba(255,255,255,.3);
+}
+.ui-bar-b {
+	background: rgb(226,226,226);
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZTJlMmUyIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMjAlIiBzdG9wLWNvbG9yPSIjZDFkMWQxIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iODAlIiBzdG9wLWNvbG9yPSIjY2FjYWNhIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2FkYWRhZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+	background: -moz-linear-gradient(top,  rgba(226,226,226,1) 0, rgba(209,209,209,1) 20%, rgba(202,202,202,1) 80%, rgba(173,173,173,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0,rgba(226,226,226,1)), color-stop(20%,rgba(209,209,209,1)), color-stop(80%,rgba(202,202,202,1)), color-stop(100%,rgba(173,173,173,1)));
+	background: -webkit-linear-gradient(top,  rgba(226,226,226,1) 0,rgba(209,209,209,1) 20%,rgba(202,202,202,1) 80%,rgba(173,173,173,1) 100%);
+	background: -o-linear-gradient(top,  rgba(226,226,226,1) 0,rgba(209,209,209,1) 20%,rgba(202,202,202,1) 80%,rgba(173,173,173,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(226,226,226,1) 0,rgba(209,209,209,1) 20%,rgba(202,202,202,1) 80%,rgba(173,173,173,1) 100%);
+	background: linear-gradient(to bottom,  rgba(226,226,226,1) 0,rgba(209,209,209,1) 20%,rgba(202,202,202,1) 80%,rgba(173,173,173,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#adadad',GradientType=0 );
+	color: #666;
+	font-weight: bold;
+	text-shadow: none;
+}
+.ui-bar-b,
+.ui-bar-b input,
+.ui-bar-b select,
+.ui-bar-b textarea,
+.ui-bar-b button {
+	font-family: Helvetica, Arial, sans-serif /*{global-font-family}*/;
+}
+.ui-bar-b .ui-link-inherit {
+	color: 	#fff /*{b-bar-color}*/;
+}
+.ui-bar-b a.ui-link {
+	color: #ddf0f8 /*{b-bar-link-color}*/;
+	font-weight: bold;
+}
+.ui-bar-b a.ui-link:visited {
+    color: #ddf0f8 /*{b-bar-link-visited}*/;
+}
+.ui-bar-b a.ui-link:hover {
+	color: #ddf0f8 /*{b-bar-link-hover}*/;
+}
+.ui-bar-b a.ui-link:active {
+	color: #ddf0f8 /*{b-bar-link-active}*/;
+}
+@font-face {
+  font-family: 'Droid Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Droid Sans'), local('DroidSans'), url(http://themes.googleusercontent.com/static/fonts/droidsans/v3/s-BiyweUPV0v-yRb-cjciBsxEYwM7FgeyaSgU71cLG0.woff) format('woff');
+}
+@font-face {
+  font-family: 'Droid Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Droid Sans Bold'), local('DroidSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/droidsans/v3/EFpQQyG9GqCrobXxL-KRMQFhaRv2pGgT5Kf0An0s4MM.woff) format('woff');
+}
