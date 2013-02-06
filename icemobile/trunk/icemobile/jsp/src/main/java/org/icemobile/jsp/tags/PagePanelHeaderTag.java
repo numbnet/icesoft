@@ -23,6 +23,7 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.Tag;
 
 import org.icemobile.util.HTML;
+import org.icemobile.util.CSSUtils;
 
 
 /**
@@ -30,7 +31,7 @@ import org.icemobile.util.HTML;
  */
 public class PagePanelHeaderTag extends BaseBodyTag {
 
-    public static final String HEADER_CLASS = "mobi-pagePanel-header";
+    public static final String HEADER_CLASS = "mobi-pagePanel-header" + " " + CSSUtils.STYLECLASS_BAR_A;
     private static Logger LOG = Logger.getLogger(PagePanelHeaderTag.class.getName());
     public PagePanelTag mParent;
 

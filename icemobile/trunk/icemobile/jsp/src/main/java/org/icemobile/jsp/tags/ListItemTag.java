@@ -24,6 +24,7 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Logger;
+import org.icemobile.util.CSSUtils;
 
 /**
  *
@@ -45,7 +46,7 @@ public class ListItemTag extends TagSupport {
         String builtinStyle = OUTPUTLISTITEM_CLASS;
 
         if (isGroup()) {
-            builtinStyle = OUTPUTLISTGROUP_CLASS;
+            builtinStyle = OUTPUTLISTGROUP_CLASS + CSSUtils.STYLECLASS_BAR_B;
         }
         tag.append(" class=\"").append(builtinStyle);
         if (styleClass != null && !"".equals(styleClass)) {
