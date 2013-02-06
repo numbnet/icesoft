@@ -374,8 +374,10 @@
 	<includeBase3Resources dir="${theme.dir.path}/honeycomb" skin="honeycomb" />
 	<includeBase3Resources dir="${theme.dir.path}/ipad" skin="ipad" />
 	<includeBase3Resources dir="${theme.dir.path}/iphone" skin="iphone" />
+	<includeBase3Resources dir="${theme.dir.path}/android_light" skin="android_light" />
+	<includeBase3Resources dir="${theme.dir.path}/android_dark" skin="android_dark" />
 	<buildSimulatorSkin/>
-	
+
     <replaceregexp match="(\/\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="">
         <fileset dir="${build}/skins/in" includes="**/*.css"></fileset>
     </replaceregexp>
@@ -388,6 +390,8 @@
     <concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="archaic" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="simulator" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	<concatskin name="android_light" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	<concatskin name="android_dark" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
     
 	<!-- Copy all resources to the skins resource library -->
 	<copy todir="${resources}/${skins.lib}">
@@ -451,6 +455,8 @@
 	<compresscssmacro name="iphone" />
 	<compresscssmacro name="ipad" />
 	<compresscssmacro name="android" />
+	<compresscssmacro name="android_light" />
+	<compresscssmacro name="android_dark" />
 	<compresscssmacro name="honeycomb" />
 	<compresscssmacro name="bberry" />
 	<compresscssmacro name="archaic" />

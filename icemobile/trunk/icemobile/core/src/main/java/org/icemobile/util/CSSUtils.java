@@ -54,7 +54,7 @@ public class CSSUtils {
     public static final String STYLECLASS_BODY_A = "ui-body-a"; //default for body
 
     
-    public enum Theme{ IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, ARCHAIC;
+    public enum Theme{ IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, ARCHAIC, ANDROID_LIGHT, ANDROID_DARK;
         public String fileName(){
             return this.name().toLowerCase();
         }
