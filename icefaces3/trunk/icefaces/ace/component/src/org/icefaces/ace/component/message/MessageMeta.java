@@ -41,4 +41,11 @@ public class MessageMeta extends UIMessageMeta {
 
     @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS)
     private String forValue;
+
+    @Property(tlddoc = "CSS style(s) to be applied when this component is rendered.")
+    private String style;
+
+    @Property(tlddoc = "Space-separated list of CSS style class(es) to be applied when this element is rendered. " +
+            "This value must be passed through as the \"class\" attribute on generated markup.")
+    private String styleClass;
 }

@@ -39,6 +39,8 @@ public class MessagesRenderer extends Renderer {
         Messages messages = (Messages) component;
         String forId = messages.getFor();
         Iterator messageIter = Collections.EMPTY_LIST.iterator();
+        String style = messages.getStyle();
+        String styleClass = (styleClass = messages.getStyleClass()) == null ? "" : " " + styleClass;
 
         if (forId == null) {
             if (messages.isGlobalOnly()) {
@@ -54,7 +56,10 @@ public class MessagesRenderer extends Renderer {
         }
         writer.startElement("div", messages);
         writer.writeAttribute("id", messages.getClientId(), "id");
-        writer.writeAttribute("class", "ui-faces-messages ui-widget", null);
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        writer.writeAttribute("class", "ui-faces-messages ui-widget" + styleClass, null);
         while (messageIter.hasNext()) {
             FacesMessage facesMessage = (FacesMessage) messageIter.next();
             if (!facesMessage.isRendered() || messages.isRedisplay()) {
