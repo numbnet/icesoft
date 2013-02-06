@@ -24,14 +24,14 @@ import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.icemobile.util.HTML;
-
+import org.icemobile.util.CSSUtils;
 
 /**
  *
  */
 public class PagePanelFooterTag extends TagSupport {
 
-    public static final String FOOTER_CLASS = "mobi-pagePanel-footer";
+    public static final String FOOTER_CLASS = "mobi-pagePanel-footer" + " " + CSSUtils.STYLECLASS_BAR_A;;
 
     private static Logger LOG = Logger.getLogger(PagePanelFooterTag.class.getName());
     public PagePanelTag mParent;
