@@ -188,7 +188,7 @@
 
     var uniqueCounter = 0;
 
-    ice.ace.SubmitMonitor = function (cfg) {
+    ice.ace.SubmitMonitor = function (id, cfg) {
         var jqId = ice.ace.escapeClientId(cfg.id);
         var uniqueId = uniqueCounter++;
 
