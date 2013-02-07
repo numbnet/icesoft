@@ -38,7 +38,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -170,8 +170,11 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             if (mainServlet == null) {
                 Class mainServletClass = (Class) ExtensionRegistry.getBestExtension(servletContext, "org.icepush.MainServlet");
                 try {
-                    Constructor mainServletConstructor = mainServletClass.getConstructor(new Class[]{ServletContext.class});
-                    mainServlet = (MainServlet) mainServletConstructor.newInstance(servletContext);
+                    Method mainServletGet = mainServletClass
+                        .getMethod("getInstance",
+                            new Class[]{ServletContext.class});
+                    mainServlet = (MainServlet) mainServletGet
+                        .invoke(null, servletContext);
                 } catch (Exception e) {
                     log.log(Level.SEVERE, "Cannot instantiate extension org.icepush.MainServlet.", e);
                     throw new RuntimeException(e);
