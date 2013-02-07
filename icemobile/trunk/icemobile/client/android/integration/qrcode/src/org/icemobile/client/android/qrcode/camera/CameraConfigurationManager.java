@@ -23,6 +23,7 @@ import android.os.Build;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+import android.content.pm.PackageManager;
 
 import java.util.regex.Pattern;
 
@@ -183,7 +184,10 @@ final class CameraConfigurationManager {
       parameters.set("flash-value", 2);
     }
     // This is the standard setting to turn the flash off that all devices should honor.
-    parameters.set("flash-mode", "off");
+    if ( context.getPackageManager().hasSystemFeature(
+            PackageManager.FEATURE_CAMERA_FLASH) )  {
+        parameters.set("flash-mode", "off");
+    }
   }
 
   private void setZoom(Camera.Parameters parameters) {
