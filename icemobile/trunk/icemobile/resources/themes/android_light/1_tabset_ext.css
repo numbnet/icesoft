@@ -19,8 +19,6 @@
     width:100%;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
-    background-color: black;
-    color:#d3d3d3;
     line-height:39px;
     float:left;
     -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
@@ -37,11 +35,6 @@
 .mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul > li{
     border-bottom: 1px solid #A5A9B6;
 }
-.mobi-tabset > .mobi-tabset-tabs > ul > li.activeTab {
-    background: -moz-linear-gradient(top, #cccccc, #999999) repeat scroll 0 0 #999999 !important;
-    background-color: #999999;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999)) !important;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#cccccc', EndColorStr = '#999999');
-    color:white;
-    font-weight:bold;
+.mobi-tabset .ui-btn-active{
+    border-bottom-color: transparent;
 }

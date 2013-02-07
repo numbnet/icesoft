@@ -15,5 +15,10 @@
  */
 
 .mobi-fieldset-row {
-    border-bottom-color: #424142;
+    border-bottom-color: #F3F3F3;
+	background: #DDD;
+}
+
+.mobi-fieldset .mobi-fieldset-row.mobi-fieldset-row-group{
+	border-bottom: 2px solid #F3F3F3;
 }
