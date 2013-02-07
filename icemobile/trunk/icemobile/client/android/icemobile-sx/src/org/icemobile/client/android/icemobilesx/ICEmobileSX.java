@@ -450,6 +450,11 @@ Log.d(LOG_TAG, "dispatched microphone " + path);
             mARViewInterface
                 .arView(mCurrentId, packParams(params));
 Log.d(LOG_TAG, "dispatched augmented reality " + packParams(params));
+
+        } else if ("scan".equals(command))  {
+            mCaptureInterface
+                .scan(mCurrentId, packParams(params));
+Log.d(LOG_TAG, "dispatched qr scan " + packParams(params));
         } else if ("register".equals(command))  {
 Log.d(LOG_TAG, "dispatched register ");
             //if GCM registration does not occur in 3 seconds,
@@ -536,9 +541,11 @@ Log.e(LOG_TAG, "onActivityResult completed TAKE_VIDEO_CODE");
                     break;
                 case SCAN_CODE:
                     String scanResult = data.getStringExtra(Intents.Scan.RESULT);
-//                    utilInterface.loadURL(
-//                        "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId, '" +
-//                            scanResult + "');");
+
+                    encodedForm = "hidden-" + mCurrentId + "=" +
+                            URLEncoder.encode(scanResult);
+                    utilInterface.setUrl(mPOSTUri.toString());
+                    utilInterface.submitForm("", encodedForm, mBrowserReturn);
                     break;
                 case RECORD_CODE:
                     mAudioRecorder.gotAudio(data);

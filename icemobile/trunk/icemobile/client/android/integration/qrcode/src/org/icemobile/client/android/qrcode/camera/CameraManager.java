@@ -125,6 +125,9 @@ public final class CameraManager {
     if (camera == null) {
       camera = Camera.open();
       if (camera == null) {
+        camera = Camera.open(0);
+      }
+      if (camera == null) {
         throw new IOException();
       }
     }
