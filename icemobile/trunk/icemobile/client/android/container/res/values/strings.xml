@@ -24,6 +24,7 @@
     <string name="preferences">Preferences</string>
     <string name="history">History</string>
     <string name="stop">Stop</string>
+    <string name="clear_cookies">Clear Cookies</string>
     <string name="networkDialogTitle">Internet Unavailable</string>
     <string name="networkDialogMsg">Check your network settings</string>
     <string name="auth_title">Please Login</string>
