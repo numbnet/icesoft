@@ -53,6 +53,23 @@
             ele.className = " ";
         }
     }
+    
+    function setWidthStyle(root){
+        var nodes = root.getElementsByTagName('ul');
+        var ul = nodes[0];
+        var children = ul.getElementsByTagName('li');
+        var liLngth = children.length;
+        var containerWidth = root.clientWidth;
+        var width = Math.floor(containerWidth/liLngth);
+        var rem = 100 % liLngth;
+        for (var i = 0; i < liLngth; i++){
+            if (i < liLngth-1){
+               children[i].style.width = width+"px";
+            }else {
+                children[i].style.width = width+rem+"px";
+            }
+        }
+    } 
 
     function setTabActive(id, cls) {
         var curTab = document.getElementById(id);
@@ -71,9 +88,13 @@
         var tabContent = document.getElementById(clientId + "_tabContent");
         var classHid = "mobi-tabpage-hidden";
         var classVis = "mobi-tabpage";
-        var clsActiveTab = "activeTab";
+        var clsActiveTab = "activeTab ui-btn-active";
         var tabCtrl = clientId + "tab_";
         var tabIndex = cfgIn.tIndex;
+        var autoWidth = cfgIn.autoWidth;
+        if (autoWidth){
+            setWidthStyle(tabContainer);
+        }
         if (cfgIn.height) {
             tabContent.style.height = cfgIn.height;
         } else {

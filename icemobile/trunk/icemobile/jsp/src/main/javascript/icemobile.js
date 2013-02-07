@@ -463,13 +463,14 @@ ice.mobi.tabsetController = {
         var ul = nodes[0];
         var children = ul.getElementsByTagName('li');
         var liLngth = children.length;
-        var width = Math.floor(100/liLngth);
+        var containerWidth = root.clientWidth;
+        var width = Math.floor(containerWidth/liLngth);
         var rem = 100 % liLngth;
         for (var i = 0; i < liLngth; i++){
             if (i < liLngth-1){
-               children[i].style.width = width+"%";
+               children[i].style.width = width+"px";
             }else {
-                children[i].style.width = width+rem+"%";
+                children[i].style.width = width+rem+"px";
             }
         }
     } ,
