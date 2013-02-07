@@ -17,12 +17,15 @@
 package org.icefaces.ace.component.tabset;
 
 import javax.el.MethodExpression;
+
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import javax.faces.component.UIComponent;
 
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.meta.annotation.*;
+import org.icefaces.resources.ICEResourceLibrary;
 
 import java.util.List;
 
@@ -67,10 +70,11 @@ import java.util.List;
         "src would have been.<p>For more information, see the " +
         "<a href=\"http://wiki.icefaces.org/display/ICE/TabSet\">TabSet Wiki Documentation</a>."
 )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(library = "icefaces.ace", name = "util/combined.css"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-yui.js")
+    @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+    @ICEResourceDependency(name = "util/ace-yui.js")
 })
 @ClientBehaviorHolder(events = {
     @ClientEvent(name="clientSideTabChange",

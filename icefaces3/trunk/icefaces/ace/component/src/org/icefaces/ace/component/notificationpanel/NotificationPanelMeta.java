@@ -23,8 +23,10 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName = "notificationPanel",
@@ -39,10 +41,11 @@ import org.icefaces.resources.ICEResourceDependency;
                  "of JSF content can be placed inside notification panel. " +
                  "If position of panel is out of place, try putting it as last child of body." +
                  "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/NotificationPanel\">NotificationPanel Wiki Documentation</a>.")
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-		@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+		@ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+        @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+        @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="close", tlddoc="Fired when the panel is closed (default event).", defaultRender="@all", defaultExecute="@all"),

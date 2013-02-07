@@ -18,8 +18,10 @@ package org.icefaces.ace.component.accordion;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 import javax.el.MethodExpression;
 
@@ -37,10 +39,11 @@ import javax.el.MethodExpression;
                  "<a href=\"http://wiki.icefaces.org/display/ICE/Accordion\">Accordion Wiki Documentation</a>."
         )
 
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+	@ICEResourceDependency(name=ACEResourceNames.JQUERY_UI_CSS),
+	@ICEResourceDependency(name=ACEResourceNames.JQUERY_JS),
+	@ICEResourceDependency(name=ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="panechange",

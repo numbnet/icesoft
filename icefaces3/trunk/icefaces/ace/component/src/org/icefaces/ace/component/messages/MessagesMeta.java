@@ -19,6 +19,7 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIMessagesMeta;
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
@@ -36,9 +37,8 @@ import org.icefaces.resources.ICEResourceDependency;
                 "If redisplay is true, a message is always rendered; " +
                 "if redisplay is false, a message is rendered only if it was undisplayed before."
 )
-@ICEResourceDependencies({
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/combined.css")
-})
+@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY,
+                       name = ACEResourceNames.COMBINED_CSS)
 public class MessagesMeta extends UIMessagesMeta {
 
     @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS)

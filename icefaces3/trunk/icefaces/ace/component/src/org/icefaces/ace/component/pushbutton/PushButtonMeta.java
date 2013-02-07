@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.component.pushbutton;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
@@ -26,6 +27,7 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.resources.ICEResourceLibrary;
 
   @Component(
         tagName         = "pushButton",
@@ -41,10 +43,11 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	         "but without having to add extra attributes." +
              "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/PushButton\">PushButton Wiki Documentation</a>."
         )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-yui.js")
+    @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+    @ICEResourceDependency(name = "util/ace-yui.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="Fired when the button is clicked or pressed by any other means (default event).", tlddoc="Fired when the button is clicked or pressed by any other means (default event).", defaultRender="@all", defaultExecute="@all")

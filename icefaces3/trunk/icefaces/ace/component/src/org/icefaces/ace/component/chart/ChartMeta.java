@@ -19,9 +19,11 @@ package org.icefaces.ace.component.chart;
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.model.chart.ChartSeries;
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.BrowserType;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 import javax.el.MethodExpression;
 
@@ -38,11 +40,13 @@ import javax.el.MethodExpression;
                 "A List of ChartSeries subclasses define the data and its representation in the visualization." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Chart\">Chart Wiki Documentation</a>.</p>"
 )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-        @ICEResourceDependency(library = "icefaces.ace", name = "chart/excanvas.js", browser = BrowserType.IE8_OR_LESS),
-        @ICEResourceDependency(library = "icefaces.ace", name = "chart/ace-chart.js"),
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/combined.css")
+        @ICEResourceDependency(name = "util/ace-jquery.js"),
+        @ICEResourceDependency(name = "chart/excanvas.js",
+                               browser = BrowserType.IE8_OR_LESS),
+        @ICEResourceDependency(name = "chart/ace-chart.js"),
+        @ICEResourceDependency(name = "util/combined.css")
 })
 @ClientBehaviorHolder(events = {
     @ClientEvent(name="click", defaultRender = "@this", defaultExecute = "@this",

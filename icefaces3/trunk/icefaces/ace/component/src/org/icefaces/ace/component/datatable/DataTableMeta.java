@@ -20,8 +20,11 @@ import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
 import org.icefaces.ace.model.table.CellSelections;
 import org.icefaces.ace.model.table.RowStateMap;
+import org.icefaces.ace.resources.ACEResourceNames;
+
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 import javax.el.MethodExpression;
 import java.util.List;
@@ -43,10 +46,11 @@ import java.util.Map;
                 "and expandable subrows and subpanels." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/DataTable\">DataTable Wiki Documentation</a>.</p>"
 )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-		@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-        @ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-        @ICEResourceDependency(library="icefaces.ace", name="util/ace-datatable.js")
+        @ICEResourceDependency(name=ACEResourceNames.COMBINED_CSS),
+        @ICEResourceDependency(name=ACEResourceNames.JQUERY_JS),
+        @ICEResourceDependency(name="util/ace-datatable.js")
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name="page", javadoc="Fired when the page is changed on the DataTable.",

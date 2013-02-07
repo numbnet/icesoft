@@ -27,6 +27,7 @@ import org.icefaces.ace.meta.annotation.Facet;
 import org.icefaces.resources.ICEBrowserDependency;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -81,6 +82,7 @@ public class ComponentArtifact extends Artifact{
 
         writer.append("import org.icefaces.resources.ICEResourceDependencies;\n");
         writer.append("import org.icefaces.resources.ICEResourceDependency;\n\n");
+        writer.append("import org.icefaces.resources.ICEResourceLibrary;\n\n");
         writer.append("import org.icefaces.resources.ICEBrowserDependency;\n\n");
         writer.append("import org.icefaces.resources.BrowserType;\n\n");
 
@@ -91,6 +93,16 @@ public class ComponentArtifact extends Artifact{
         writer.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
 
         // copy @ResourceDependency annotations
+        if (clazz.isAnnotationPresent(ICEResourceLibrary.class)) {
+            ICEResourceLibrary lib = (ICEResourceLibrary)clazz.getAnnotation(ICEResourceLibrary.class);
+
+            writer.append("\n");
+            writer.append("@ICEResourceLibrary(\"");
+            writer.append(lib.value());
+            writer.append("\")");
+            writer.append("\n\n");
+        }
+
         if (clazz.isAnnotationPresent(ICEResourceDependencies.class)) {
             writer.append("\n");
             writer.append("@ICEResourceDependencies({\n");

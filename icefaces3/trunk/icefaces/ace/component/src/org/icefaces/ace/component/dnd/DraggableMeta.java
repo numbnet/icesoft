@@ -24,8 +24,11 @@ import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import javax.el.MethodExpression;
+
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
     tagName = "draggable",
@@ -44,9 +47,10 @@ import org.icefaces.resources.ICEResourceDependency;
 	@ClientEvent(name="start", javadoc="Fired when the target component starts to be dragged  (default event).", 
 	tlddoc="Fired when the target component starts to be dragged (default event).", defaultRender="@none", defaultExecute="@this")
 }, defaultEvent="start")
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+	@ICEResourceDependency(name=ACEResourceNames.JQUERY_JS),
+	@ICEResourceDependency(name=ACEResourceNames.COMPONENTS_JS)
 })
 public class DraggableMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "The JavaScript component instance variable name.")

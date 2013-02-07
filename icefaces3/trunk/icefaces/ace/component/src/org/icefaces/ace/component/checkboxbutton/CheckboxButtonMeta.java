@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.checkboxbutton;
 
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
@@ -26,6 +27,7 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName        = "checkboxButton",
@@ -41,9 +43,10 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		       "yes or no, on or off. The Themeroller check icon will be displayed by default when the checkbox is checked. Override the .ui-icon-check class to display a different image." +
                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/CheckboxButton\">CheckboxButton Wiki Documentation</a>."
         )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js"),
-    @ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
+    @ICEResourceDependency(name= ACEResourceNames.COMPONENTS_JS),
+    @ICEResourceDependency(name= ACEResourceNames.JQUERY_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="Fired when the button is clicked or pressed by any other means (default event).", tlddoc="Fired when the button is clicked or pressed by any other means (default event).", defaultRender="@all", defaultExecute="@all")

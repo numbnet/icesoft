@@ -20,8 +20,10 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName = "gMapAutocomplete",
@@ -38,11 +40,11 @@ import org.icefaces.resources.ICEResourceDependency;
                 "information page on it." +
                 " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
 )
-
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-        @ICEResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.css"),
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+        @ICEResourceDependency(name = ACEResourceNames.JQUERY_UI_CSS),
+        @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+        @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 
 public class GMapAutocompleteMeta extends UIPanelMeta {

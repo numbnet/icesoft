@@ -16,10 +16,7 @@
 
 package org.icefaces.impl.event;
 
-import org.icefaces.resources.ICEResourceDependencies;
-import org.icefaces.resources.ICEResourceDependency;
-import org.icefaces.resources.ICEResourceUtils;
-import org.icefaces.resources.ResourceInfo;
+import org.icefaces.resources.*;
 import org.icefaces.util.UserAgentInfo;
 
 import javax.faces.application.ResourceHandler;
@@ -40,10 +37,13 @@ public class RestoreResourceDependencies implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         final FacesContext facesContext = FacesContext.getCurrentInstance();
+        final UserAgentInfo uaInfo = new UserAgentInfo(FacesContext.getCurrentInstance()
+                                                                   .getExternalContext()
+                                                                   .getRequestHeaderMap()
+                                                                   .get("user-agent"));
         UIViewRoot viewRoot = facesContext.getViewRoot();
         VisitContext visitContext = VisitContext.createVisitContext(facesContext, null, HINTS);
-        final UserAgentInfo uaInfo = new UserAgentInfo(FacesContext.getCurrentInstance()
-                .getExternalContext().getRequestHeaderMap().get("user-agent"));
+
 
         viewRoot.visitTree(visitContext, new VisitCallback() {
             public VisitResult visit(VisitContext context, UIComponent target) {
@@ -51,15 +51,17 @@ public class RestoreResourceDependencies implements SystemEventListener {
                 Class<UIComponent> compClass = (Class<UIComponent>) target.getClass();
 
                 ICEResourceDependencies resourceDependencies = compClass.getAnnotation(ICEResourceDependencies.class);
+                ICEResourceDependency resourceDependency = compClass.getAnnotation(ICEResourceDependency.class);
+                ICEResourceLibrary library = compClass.getAnnotation(ICEResourceLibrary.class);
+
                 if (resourceDependencies != null) {
                     for (ICEResourceDependency resDep : resourceDependencies.value()) {
-                        ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resDep);
+                        ResourceInfo resInfo = ICEResourceUtils.getResourceInfos(uaInfo, resDep, library);
                         if (resInfo != null) addResourceDependency(facesContext, resInfo);
                     }
                 }
 
-                ICEResourceDependency resourceDependency = compClass.getAnnotation(ICEResourceDependency.class);
-                ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resourceDependency);
+                ResourceInfo resInfo = ICEResourceUtils.getResourceInfos(uaInfo, resourceDependency, library);
                 if (resInfo != null)
                     addResourceDependency(facesContext, resInfo);
 

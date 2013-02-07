@@ -18,8 +18,10 @@ package org.icefaces.ace.component.tooltip;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIOutputMeta;
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -36,11 +38,11 @@ import javax.el.ValueExpression;
 		tlddoc = "The Tooltip is a component that displays a tooltip with various events, effects and customization options." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Tooltip\">Tooltip Wiki Documentation</a>."
         )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/combined.css")
-//    @ResourceDependency(library="icefaces.ace", name="tooltip/jquery.qtip.debug-1.0.0-rc3.js"),
+     @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+     @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="display", javadoc="Fired before the tooltip is shown (default event).", tlddoc="Fired before the tooltip is shown (default event).", defaultRender="@all", defaultExecute="@all")

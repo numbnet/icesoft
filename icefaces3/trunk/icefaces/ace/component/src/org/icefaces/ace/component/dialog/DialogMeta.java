@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.component.dialog;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
@@ -25,6 +26,7 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName         = "dialog",
@@ -39,10 +41,11 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
                 " If position of dialog is out of place, try putting it as last child of body." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Dialog\">Dialog Wiki Documentation</a>."
         )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+	@ICEResourceDependency(name=ACEResourceNames.COMBINED_CSS),
+	@ICEResourceDependency(name=ACEResourceNames.JQUERY_JS),
+	@ICEResourceDependency(name=ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="close", javadoc="Fired when the panel is closed (default event).", tlddoc="Fired when the panel is closed (default event).", defaultRender="@all", defaultExecute="@all", argumentClass="org.icefaces.ace.event.CloseEvent")

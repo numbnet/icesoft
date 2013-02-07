@@ -20,8 +20,12 @@ import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
 
 import javax.el.MethodExpression;
+
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
+
 import java.util.Set;
 
 @Component(
@@ -41,10 +45,11 @@ import java.util.Set;
             "The components are associated with the iterative object via bindings of the 'var' property." +
             "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/List\">List Wiki Documentation</a>.</p>"
 )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-    @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-    @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+     @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+     @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name="select", defaultRender="@this", defaultExecute="@this",

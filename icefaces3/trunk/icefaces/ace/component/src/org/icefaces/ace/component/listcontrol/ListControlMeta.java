@@ -22,8 +22,10 @@ import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
     tagName = "listControl",
@@ -40,10 +42,11 @@ import org.icefaces.resources.ICEResourceDependency;
             "within a styled container, and connected via this control without configuration." +
             "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/List\">List Control Wiki Documentation</a>.</p>"
 )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-    @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-    @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+    @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+    @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 public class ListControlMeta extends UIComponentBaseMeta {
     @Property(tlddoc="Style class to apply to the container DIV element.",
