@@ -66,7 +66,7 @@ public class UtilInterface implements JavascriptInterface,
     private String userAgent;
     private Activity container;
     private final WebView view;
-    private LinkedList<HttpPost> postQueue;
+    private LinkedList<HttpPostTask> postQueue;
     private LinkedList<String> responseQueue;
     private static final int PROGRESS_INTERVAL = 10;  //Percent
     private static final int PROGRESS_MSG = 0;
@@ -104,6 +104,11 @@ public class UtilInterface implements JavascriptInterface,
     }
 
     public void submitForm(String actionUrl, String serializedForm) {
+        submitForm(actionUrl, serializedForm, null);
+    }
+
+    public void submitForm(String actionUrl, String serializedForm,
+            Runnable callback) {
 	//Log.e("ICEutil", "submitForm " + actionUrl);
 	boolean gotValue = true;
 	String[] result;
@@ -148,14 +153,14 @@ public class UtilInterface implements JavascriptInterface,
 	    postRequest.setHeader("Faces-Request", "partial/ajax");
 	    content.measureProgress(contentSize/(PROGRESS_INTERVAL+1));
 	    postRequest.setEntity(content);
-	    queueRequest(postRequest);
+	    queueRequest(postRequest, callback);
 	} catch (Throwable e) {
 	    Log.e("ICEutil", "Failed to submit form ", e);
 	}
     }
 
-    private void queueRequest(HttpPost postRequest) {
-	postQueue.add(postRequest);
+    private void queueRequest(HttpPost postRequest, Runnable callback) {
+	postQueue.add(new HttpPostTask(postRequest, callback));
 	//Log.e("ICEutil", "Request q=" + postQueue.size());
 	if (postQueue.size() == 1) {
 	    Thread thread = new Thread(this);
@@ -170,12 +175,16 @@ public class UtilInterface implements JavascriptInterface,
 	try {
 	    while (postQueue.size() > 0) {
 		sendProgress(0);
-		postRequest = postQueue.remove();
+		HttpPostTask postTask = postQueue.remove();
+		postRequest = postTask.httpPost;
 		HttpResponse res = httpClient.execute(postRequest);
 		sendProgress(100);
 		StringWriter writer = new StringWriter();
 		IOUtils.copy(res.getEntity().getContent(), writer);
 		setResult(writer.toString());
+        if (null != postTask.callback) {
+            postTask.callback.run();
+        }
 		handler.sendEmptyMessage(RESPONSE_MSG);
 	    }
 	} catch (Throwable e) {
@@ -406,4 +415,15 @@ public class UtilInterface implements JavascriptInterface,
 	    super.write(b);
 	}
     }
+}
+
+class HttpPostTask  {
+    HttpPost httpPost;
+    Runnable callback;
+
+    public HttpPostTask(HttpPost httpPost, Runnable callback)  {
+        this.httpPost = httpPost;
+        this.callback = callback;
+    }
+
 }

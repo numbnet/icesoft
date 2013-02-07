@@ -180,6 +180,7 @@ public class ICEmobileSX extends Activity
     private String mCurrentId;
     private String mCurrentjsessionid;
     private String mCurrentMediaFile;
+    private Runnable mBrowserReturn;
     private boolean doRegister = false;
 
 class TestButton extends Button {
@@ -243,6 +244,12 @@ class TestButton extends Button {
         super.onCreate(savedInstanceState);
         self = this;
 	pendingCloudPush = false;
+
+        mBrowserReturn = new Runnable()  {
+            public void run()  {
+                returnToBrowser();
+            }
+        };
 
         /* Bind to network connectivity monitoring service */
 	/*        Intent bindingIntent = new Intent(self, ConnectionChangeService.class);
@@ -469,9 +476,8 @@ Log.d(LOG_TAG, "dispatched register ");
 	}
 	Log.e(LOG_TAG, "POST to register will send " + encodedForm);
 	utilInterface.setUrl(postUriString);
-	utilInterface.submitForm("", encodedForm);
+	utilInterface.submitForm("", encodedForm, mBrowserReturn);
 	Log.e(LOG_TAG, "POST to register URL with jsessionid " + mCurrentjsessionid);
-	returnToBrowser();
     }
 
     public String packParams(Map params)  {
@@ -512,18 +518,16 @@ Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
                     encodedForm = encodeMedia(mCurrentId,
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
-                    utilInterface.submitForm("", encodedForm);
+                    utilInterface.submitForm("", encodedForm, mBrowserReturn);
 Log.e(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
-                    returnToBrowser();
                     break;
                 case TAKE_VIDEO_CODE:
                     mVideoHandler.gotVideo(data);
                     encodedForm = encodeMedia(mCurrentId,
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
-                    utilInterface.submitForm("", encodedForm);
+                    utilInterface.submitForm("", encodedForm, mBrowserReturn);
 Log.e(LOG_TAG, "onActivityResult completed TAKE_VIDEO_CODE");
-                    returnToBrowser();
                     break;
                 case HISTORY_CODE:
                     newURL = data.getStringExtra("url");
@@ -541,9 +545,8 @@ Log.e(LOG_TAG, "onActivityResult completed TAKE_VIDEO_CODE");
                     encodedForm = encodeMedia(mCurrentId,
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
-                    utilInterface.submitForm("", encodedForm);
+                    utilInterface.submitForm("", encodedForm, mBrowserReturn);
 Log.e(LOG_TAG, "onActivityResult completed RECORD_CODE");
-                    returnToBrowser();
                     break;
                 case ARVIEW_CODE:
 //		mARViewHandler.arViewComplete(data);
