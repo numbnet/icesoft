@@ -34,6 +34,8 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.content.DialogInterface;
 import android.webkit.HttpAuthHandler;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.view.ViewGroup;
 import android.os.Bundle;
 import android.content.res.Configuration;
@@ -350,6 +352,11 @@ public class ICEmobileContainer extends Activity
                 String[] historyList = (String[]) history.toArray(new String[history.size()]);
                 intent.putExtra("history", historyList);
                 startActivityForResult(intent, HISTORY_CODE);
+                return true;
+            case R.id.clear_cookies:
+		CookieSyncManager.createInstance(this);         
+		CookieManager cookieManager = CookieManager.getInstance();        
+		cookieManager.removeAllCookie();
                 return true;
             case R.id.stop:
                 if (mC2dmHandler != null) {
