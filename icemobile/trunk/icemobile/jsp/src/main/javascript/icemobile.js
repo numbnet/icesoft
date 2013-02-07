@@ -495,7 +495,8 @@ ice.mobi.tabsetController = {
         var tabIndex = cfgIn.tIndex;
         var autoWidth = cfgIn.autoWidth;
         if (autoWidth){
-            this.setWidthStyle(tabContainer);
+            var sws = this.setWidthStyle;
+            setTimeout(function(){ sws(tabContainer); }, 100)
         }
         if (cfgIn.height) {
             tabContainer.style.height = height;
