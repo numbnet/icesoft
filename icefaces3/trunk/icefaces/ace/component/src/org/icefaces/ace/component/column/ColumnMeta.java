@@ -35,10 +35,6 @@ import java.util.Comparator;
 		componentFamily = "org.icefaces.ace.component",
 		tlddoc = "<p>Component that represents a column in an ace:dataTable.</p>" +
                  "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Column\">Column Wiki Documentation</a>.</p>")
-@ICEResourceDependencies({
-
-})
-
 public class ColumnMeta extends UIColumnMeta {
 
     @Property(tlddoc = "Custom inline CSS styles to use for this component. These styles are generally applied to the root DOM element of the component. This is intended for per-component basic style customizations. Note that due to browser CSS precedence rules, CSS rendered on a DOM element will take precedence over the external stylesheets used to provide the ThemeRoller theme on this component. If the CSS properties applied with this attribute do not affect the DOM element you want to style, you may need to create a custom theme styleClass for the theme CSS class that targets the particular DOM elements you wish to customize.")

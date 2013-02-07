@@ -19,8 +19,10 @@ package org.icefaces.ace.component.textareaentry;
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName = "textAreaEntry",
@@ -36,10 +38,11 @@ import org.icefaces.resources.ICEResourceDependency;
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TextAreaEntry\">TextAreaEntry Wiki Documentation</a>."
 )
 
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/combined.css"),
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+        @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+        @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+        @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name = "blur", javadoc = "Fired when the text input field loses focus (default event).",

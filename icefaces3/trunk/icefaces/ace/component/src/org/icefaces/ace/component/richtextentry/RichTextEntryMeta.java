@@ -20,12 +20,14 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName = "richTextEntry",
@@ -40,10 +42,11 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/RichTextEntry\">RichTextEntry Wiki Documentation</a>."
 )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-        @ICEResourceDependency(library="icefaces.ace", name = "richtextentry/ckeditor/ckeditor.mapping.js"),
-        @ICEResourceDependency(library="icefaces.ace", name = "richtextentry/ckeditor/ckeditor.js"),
-		@ICEResourceDependency(library="icefaces.ace", name = "richtextentry/richtextentry.js")
+    @ICEResourceDependency(name = "richtextentry/ckeditor/ckeditor.mapping.js"),
+    @ICEResourceDependency(name = "richtextentry/ckeditor/ckeditor.js"),
+    @ICEResourceDependency(name = "richtextentry/richtextentry.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent( name="save",

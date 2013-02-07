@@ -37,9 +37,6 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/MenuItem\">MenuItem Wiki Documentation</a>."
 )
-@ICEResourceDependencies({
-
-})
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the menu item is clicked or selected by any other means.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")

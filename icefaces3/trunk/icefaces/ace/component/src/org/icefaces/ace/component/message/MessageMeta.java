@@ -19,6 +19,7 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIMessageMeta;
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
@@ -34,9 +35,8 @@ import org.icefaces.resources.ICEResourceDependency;
         tlddoc = "The message tag renders the first Faces message (if redisplay is true) or " +
                 "the first undisplayed Faces message (if redisplay is false) for a specific component."
 )
-@ICEResourceDependencies({
-        @ICEResourceDependency(library = "icefaces.ace", name = "util/combined.css")
-})
+@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY,
+                       name = ACEResourceNames.COMBINED_CSS)
 public class MessageMeta extends UIMessageMeta {
 
     @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS)

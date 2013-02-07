@@ -18,10 +18,7 @@ package org.icefaces.impl.event;
 
 import org.icefaces.impl.renderkit.DOMRenderKit;
 import org.icefaces.render.MandatoryResourceComponent;
-import org.icefaces.resources.ICEResourceDependencies;
-import org.icefaces.resources.ICEResourceDependency;
-import org.icefaces.resources.ICEResourceUtils;
-import org.icefaces.resources.ResourceInfo;
+import org.icefaces.resources.*;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.util.UserAgentInfo;
 
@@ -111,15 +108,18 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                     // each unique one, so they'll add the mandatory
                     // resources.
                     ICEResourceDependencies resourceDependencies = compClass.getAnnotation(ICEResourceDependencies.class);
+                    ICEResourceLibrary library = compClass.getAnnotation(ICEResourceLibrary.class);
+                    ICEResourceDependency resourceDependency = compClass.getAnnotation(ICEResourceDependency.class);
+
                     if (resourceDependencies != null) {
                         for (ICEResourceDependency resDep : resourceDependencies.value()) {
-                            ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resDep);
+                            ResourceInfo resInfo = ICEResourceUtils.getResourceInfos(uaInfo, resDep, library);
                             if (resInfo != null)
                                 addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo);
                         }
                     }
-                    ICEResourceDependency resourceDependency = compClass.getAnnotation(ICEResourceDependency.class);
-                    ResourceInfo resInfo = ICEResourceUtils.getBrowserSpecificInfo(uaInfo, resourceDependency);
+
+                    ResourceInfo resInfo = ICEResourceUtils.getResourceInfos(uaInfo, resourceDependency, library);
                     if (resInfo != null) {
                         addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo);
                     }

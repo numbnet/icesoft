@@ -21,8 +21,10 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName         = "printer",
@@ -37,9 +39,10 @@ import org.icefaces.resources.ICEResourceDependency;
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/Printer\">Printer Wiki Documentation</a>."
         )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+    @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="Fired when the parent component is clicked or activated via the keyboard (default event).", tlddoc="Fired when the parent component is clicked or activated via the keyboard (default event).", defaultRender="@all", defaultExecute="@all")

@@ -21,8 +21,10 @@ import org.icefaces.ace.meta.baseMeta.UIDataMeta;
 import org.icefaces.ace.model.tree.KeySegmentConverter;
 import org.icefaces.ace.model.tree.NodeStateCreationCallback;
 import org.icefaces.ace.model.tree.NodeStateMap;
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName = "tree",
@@ -37,10 +39,11 @@ import org.icefaces.resources.ICEResourceDependency;
                 "selection and expansion. Other features available include: user reordering of nodes, multiple selection " +
                 "and lazy node state initialization." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Tree\">Tree Wiki Documentation</a>.</p>")
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-        @ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-        @ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-        @ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+     @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+     @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name="expand",

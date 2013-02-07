@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.component.resizable;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
@@ -30,6 +31,7 @@ import org.icefaces.ace.event.ResizeEvent;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName         = "resizable",
@@ -43,10 +45,11 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		tlddoc = "The Resizable is a component that makes another component resizable." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Resizable\">Resizable Wiki Documentation</a>."
         )
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+    @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+    @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="resize", javadoc="Fired at the end of a resize operation (default event).", tlddoc="Fired at the end of a resize operation (default event).", defaultRender="@all", defaultExecute="@all")

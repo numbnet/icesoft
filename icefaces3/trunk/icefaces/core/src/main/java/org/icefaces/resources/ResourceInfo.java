@@ -12,14 +12,22 @@ public class ResourceInfo {
     public String target = "";
     public String name = "";
 
-    public ResourceInfo(ICEResourceDependency inputDep) {
-        library = inputDep.library();
+    public ResourceInfo(ICEResourceDependency inputDep, ICEResourceLibrary lib) {
+        if (lib != null && blank(inputDep.library()))
+            library = lib.value();
+        else
+            library = inputDep.library();
+
         target = inputDep.target();
         name = inputDep.name();
     }
 
-    public ResourceInfo(ICEBrowserDependency override) {
-        library = override.library();
+    public ResourceInfo(ICEBrowserDependency override, ICEResourceLibrary lib) {
+        if (lib != null && blank(override.library()))
+            library = lib.value();
+        else
+            library = override.library();
+
         target = override.target();
         name = override.name();
     }
@@ -47,4 +55,11 @@ public class ResourceInfo {
         result = 31 * result + name.hashCode();
         return result;
     }
+
+    private boolean blank(String s) {
+        if (s == null || s.equals("")) return true;
+        else return false;
+    }
+
+
 }

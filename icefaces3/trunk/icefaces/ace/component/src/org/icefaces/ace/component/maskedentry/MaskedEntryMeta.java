@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.component.maskedentry;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
@@ -26,6 +27,7 @@ import javax.faces.component.html.HtmlInputText;
 import org.icefaces.ace.meta.baseMeta.*;
 
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName         = "maskedEntry",
@@ -40,11 +42,11 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/MaskedEntry\">MaskedEntry Wiki Documentation</a>."
         )
-
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+    @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+    @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="valueChange", javadoc="Fired every time the value of the text input changes (default event).", 

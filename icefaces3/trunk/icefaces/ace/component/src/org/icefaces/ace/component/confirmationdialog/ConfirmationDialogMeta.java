@@ -16,12 +16,14 @@
 
 package org.icefaces.ace.component.confirmationdialog;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName         = "confirmationDialog",
@@ -36,11 +38,11 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
                 " If position of dialog is out of place, try putting it as last child of body." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ConfirmationDialog\">ConfirmationDialog Wiki Documentation</a>."
         )
-
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(library="icefaces.ace", name="util/combined.css"),
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ICEResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+	@ICEResourceDependency(name= ACEResourceNames.COMBINED_CSS),
+	@ICEResourceDependency(name= ACEResourceNames.JQUERY_JS),
+	@ICEResourceDependency(name= ACEResourceNames.COMPONENTS_JS)
 })
 
 public class ConfirmationDialogMeta extends UIPanelMeta {
