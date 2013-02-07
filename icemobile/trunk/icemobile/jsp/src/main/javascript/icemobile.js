@@ -524,7 +524,7 @@ ice.mobi.tabsetController = {
 
                 var currCtrl = myTabId + "tab_" + current;
                 var oldCtrl = document.getElementById(currCtrl);
-                ice.mobi.tabsetController.removeClass(oldCtrl, "activeTab");
+                ice.mobi.tabsetController.removeClass(oldCtrl, "activeTab ui-btn-active");
                 var hiddenVal = cfgIn.tIndex;
                 ice.mobi.tabsetController.updateHidden(myTabId, hiddenVal);
 
@@ -534,7 +534,7 @@ ice.mobi.tabsetController = {
                 parent.setAttribute("data-current", cfgIn.tIndex);
 
                 //remove class of activetabheader and hide old contents
-                el.setAttribute("class", "activeTab");
+                el.setAttribute("class", "activeTab ui-btn-active");
             },
 
 
@@ -1933,5 +1933,5 @@ if (window.addEventListener) {
         }
     }, false);
 
-}
+};
 

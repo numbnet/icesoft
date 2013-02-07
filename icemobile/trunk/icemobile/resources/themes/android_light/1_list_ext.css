@@ -15,14 +15,13 @@
  */
 
 .mobi-list-item a:active, .mobi-list-item a[selected] {
-    background-color: #082658 !important;
     -webkit-tap-highlight-color: #082658;
 }
 .mobi-list-item {
     border-bottom: 1px solid #C7C7C7;
     font-size: 0.9em;
     list-style: none;
-    padding: 10px;
+    padding: 12px;
 }
 .mobi-list > .mobi-list-item > .mobi-list-item-default > a {
     padding: 3px 18px;
