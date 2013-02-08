@@ -1578,19 +1578,19 @@ TR.updateThemeRoller = function( tab ) {
         });
     });
     
-    var f = $.farbtastic( "#colorpicker" );
+    //var f = $.farbtastic( "#colorpicker" ); mobi
     var p = $( "#colorpicker" ).css( "opacity", 1 );
     var selected;
     $tab.find( ".colorwell" )
     .each(function() {
-        f.linkTo( this );
+        //f.linkTo( this ); mobi
         $( this ).css( "opacity", 0.75 );
     })
     .focus(function() {
         if (selected) {
             $(selected).css( "opacity", 1 ).removeClass( "colorwell-selected" );
         }
-        f.linkTo(this);
+        //f.linkTo(this); mobi
         p.css("opacity", 1);
         $( selected = this ).css( "opacity", 1 ).addClass( "colorwell-selected" );
     });

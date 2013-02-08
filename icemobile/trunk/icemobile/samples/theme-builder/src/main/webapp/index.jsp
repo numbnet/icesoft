@@ -33,7 +33,7 @@
 
 	<link rel="stylesheet" type="text/css" href="css/tr.layout.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="css/jquery.ui.css" />
-	<link rel="stylesheet" type="text/css" href="css/farbtastic.css" />
+<!-- 	<link rel="stylesheet" type="text/css" href="css/farbtastic.css" /> -->
 	<link rel="stylesheet" type="text/css" href="css/tr.panel.css" />
 	<link rel="stylesheet" type="text/css" href="kuler/kuler.css" />
 
@@ -42,7 +42,7 @@
 	<script type="text/javascript" src="js/lib/jquery.ui.tabs.paging.js"></script>
 	<script type="text/javascript" src="js/lib/jquery.color.js"></script>
 	<script type="text/javascript" src="js/lib/json2.js"></script>
-	<script type="text/javascript" src="js/lib/farbtastic.js"></script>
+<!-- 	<script type="text/javascript" src="js/lib/farbtastic.js"></script> -->
 	<script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript" src="js/panel.js"></script>
 	<script type="text/javascript" src="js/ui.js"></script>
@@ -52,11 +52,11 @@
 </head>
 <body>
 	
-	<div id="load-mask">
+	<%--div id="load-mask">
 		<div id="load-screen">
 				<div id="load-spinner"></div>
 		</div>	
-	</div>
+	</div--%>
 	
 	
 	<div id="interface">
@@ -174,7 +174,7 @@
 		</div>
 		
 		<div id="toolbar">
-			<div id="tr-logo">ICEmobile Theme Builder</div>
+			<div id="tr-logo">ICEmobile Theme Builder <span style="font-family: Courier New; font-style:italic;">(Alpha)</span></div>
 			<div id="button-block-1">
 				
 				<div id="fix-buttons">
@@ -214,7 +214,9 @@
 			</div>
 		</div>
 		
-		<div id="colorpicker"></div>
+		<%--div id="colorpicker">
+            <input type="color" name="colorpicker"/>
+        </div--%>
 		
 		<div id="tr_panel">
 			<div id="tabs">
@@ -308,34 +310,75 @@
 					</div>
 					<div id="most-recent-colors">
 						<div class="picker">
-							<h2>Recent Colors</h2>
-							<div class="compact">
+							<h2>Recent Colors <span style="font-size: smaller; font-style: italic;">(Chrome required)</span></h2>
+							<%--div class="compact">
+                                <input type="color" name="colorpicker"/>
 								<a id="recent-color-picker" href="#">colors...</a>
-                <input type="text" class="colorwell-toggle" value="#FFFFFF" data-name="recent" style="display: none" />
-							</div>
+                                <input type="text" class="colorwell-toggle" value="#FFFFFF" data-name="recent" style="display: none" />
+							</div--%>
 						</div>
 						<div class="clear"></div>
 						<div class="colors">
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
-							<div class="color-drag disabled" style="background-color: #ddd"></div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
+							<div class="color-drag" style="background-color: #ddd">
+                                <input type="color" name="colorpicker"/>
+                            </div>
 						</div>
 					</div>
 				</div>
