@@ -225,8 +225,11 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
 
         if (this.behaviors)
             if (this.behaviors.move) {
+                var self = this;
+                this.behaviors.move.oncomplete = function() {
+                    self.clearState();
+                };
                 ice.ace.ab(this.behaviors.move);
-                this.clearState();
             }
     }
     // Migrating between lists handled by new item insertion handler, not this drop handler
@@ -386,16 +389,22 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                 else {
                     var deselection = jqLi.hasClass('ui-state-active');
 
-                    if (!(e.metaKey || e.ctrlKey) || self.cfg.selection == "single")
-                        self.deselectAll();
-
-                    if (deselection) {
-                        jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
-                        self.removeSelectedItem(jqLi);
-                    } else {
-                        jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
-                        self.addSelectedItem(jqLi);
+                    function deSelect() {
+                        if (deselection) {
+                            jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
+                            self.removeSelectedItem(jqLi);
+                        } else {
+                            jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
+                            self.addSelectedItem(jqLi);
+                        }
                     }
+
+                    if (!(e.metaKey || e.ctrlKey) || self.cfg.selection == "single") {
+                        self.deselectAll(null, deSelect);
+                    } else {
+                        deSelect();
+                    }
+
                 }
             }, timeout);
     } else {
@@ -444,8 +453,11 @@ ice.ace.List.prototype.addSelectedItem = function(item, inputIndex) {
 
         if (this.behaviors)
             if (this.behaviors.select) {
+                var self = this;
+                this.behaviors.select.oncomplete = function() {
+                    self.clearState();
+                };
                 ice.ace.ab(this.behaviors.select);
-                this.clearState();
             }
     }
 };
@@ -483,13 +495,16 @@ ice.ace.List.prototype.removeSelectedItem = function(item) {
 
         if (this.behaviors)
             if (this.behaviors.deselect) {
+                var self = this;
+                this.behaviors.deselect.oncomplete = function() {
+                    self.clearState();
+                };
                 ice.ace.ab(this.behaviors.deselect);
-                this.clearState();
             }
     }
 };
 
-ice.ace.List.prototype.deselectAll = function(except) {
+ice.ace.List.prototype.deselectAll = function(except, done) {
     var self = this,
         reorderings = this.read('reorderings'),
         selections = this.read('selections'),
@@ -516,11 +531,18 @@ ice.ace.List.prototype.deselectAll = function(except) {
     this.write('selections', selections);
     this.write('deselections', deselections);
 
-    if (this.behaviors && !isNaN(deselections.length) && deselections.length > 0)
+    if (this.behaviors && !isNaN(deselections.length) && deselections.length > 0) {
         if (this.behaviors.deselect) {
+            var s = this;
+            this.behaviors.deselect.oncomplete = function() {
+                s.clearState();
+                if (done) done();
+            };
             ice.ace.ab(this.behaviors.deselect);
-            this.clearState();
         }
+    } else {
+        if (done) done();
+    }
 }
 
 ice.ace.List.prototype.clearState = function() {
@@ -607,8 +629,11 @@ ice.ace.List.prototype.moveItems = function(dir) {
 
         if (this.behaviors)
             if (this.behaviors.move) {
+                var self = this;
+                this.behaviors.move.oncomplete = function() {
+                    self.clearState();
+                };
                 ice.ace.ab(this.behaviors.move);
-                this.clearState();
             }
     }
 };
