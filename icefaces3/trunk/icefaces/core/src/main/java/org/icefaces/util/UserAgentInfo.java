@@ -18,6 +18,8 @@ package org.icefaces.util;
 import org.icefaces.resources.BrowserType;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserAgentInfo implements Serializable{
     private String userAgentString;
@@ -62,6 +64,9 @@ public class UserAgentInfo implements Serializable{
     public static final String MOBILE_SAFARI = "mobile safari";
     public static final String PHONE_HTC_SENSATION = "sensation_4g";
     public static final String ANDROID_CONTAINER = "apache-httpclient";
+
+    public static final Pattern IE_VERSION_PATTERN =
+            Pattern.compile("msie ([0-9]*).0;");
 
 
     public UserAgentInfo(String userAgent) {
@@ -153,15 +158,20 @@ public class UserAgentInfo implements Serializable{
     public boolean isIE8(){
         return userAgentString.contains(MSIE8);
     }
-    private boolean isSafari() {
+
+    public boolean isIE9(){
+        return userAgentString.contains(MSIE9);
+    }
+
+    public boolean isSafari() {
         return userAgentString.contains(SAFARI) && !userAgentString.contains(MOBILE_SAFARI) && !userAgentString.contains(CHROME);
     }
 
-    private boolean isFirefox() {
+    public boolean isFirefox() {
         return userAgentString.contains(FIREFOX);  //To change body of created methods use File | Settings | File Templates.
     }
 
-    private boolean isChrome() {
+    public boolean isChrome() {
         return userAgentString.contains(CHROME) && !userAgentString.contains(CHROMEFRAME);
     }
 
@@ -179,5 +189,14 @@ public class UserAgentInfo implements Serializable{
         if (browserType == BrowserType.SAFARI) return isSafari();
 
         return false;
+    }
+
+    public int getIEVersion() {
+        try {
+            Matcher versionMatcher = IE_VERSION_PATTERN.matcher(userAgentString);
+            versionMatcher.find();
+            return Integer.parseInt(versionMatcher.group(1));
+        } catch (IllegalStateException e) {}
+        return -1;
     }
 }

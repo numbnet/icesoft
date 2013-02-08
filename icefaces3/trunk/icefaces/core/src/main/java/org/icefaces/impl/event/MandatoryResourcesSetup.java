@@ -20,7 +20,7 @@ import org.icefaces.impl.renderkit.DOMRenderKit;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.resources.*;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.util.UserAgentInfo;
+import org.icefaces.util.UserAgentContext;
 
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
@@ -88,8 +88,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
 
             //pad with spaces to allow contains checking
             String resourceConfigPad = " " + resourceConfig + " ";
-            UserAgentInfo uaInfo = new UserAgentInfo(FacesContext.getCurrentInstance()
-                    .getExternalContext().getRequestHeaderMap().get("user-agent"));
+            UserAgentContext uaContext = UserAgentContext.getInstance(context);
 
             for (MandatoryResourceComponent mrc : mandatoryResourceComponents) {
                 String compClassName = mrc.value();
@@ -113,13 +112,13 @@ public class MandatoryResourcesSetup implements SystemEventListener {
 
                     if (resourceDependencies != null) {
                         for (ICEResourceDependency resDep : resourceDependencies.value()) {
-                            ResourceInfo resInfo = ICEResourceUtils.getResourceInfos(uaInfo, resDep, library);
+                            ResourceInfo resInfo = ICEResourceUtils.getResourceInfo(uaContext, resDep, library);
                             if (resInfo != null)
                                 addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo);
                         }
                     }
 
-                    ResourceInfo resInfo = ICEResourceUtils.getResourceInfos(uaInfo, resourceDependency, library);
+                    ResourceInfo resInfo = ICEResourceUtils.getResourceInfo(uaContext, resourceDependency, library);
                     if (resInfo != null) {
                         addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resInfo);
                     }

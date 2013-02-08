@@ -1,6 +1,6 @@
 package org.icefaces.resources;
 
-import org.icefaces.util.UserAgentInfo;
+import org.icefaces.util.UserAgentContext;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,9 +12,9 @@ import org.icefaces.util.UserAgentInfo;
 public class ICEResourceUtils {
     public static final ResourceInfo BLANK_INFO = new ResourceInfo();
 
-    public static ResourceInfo getResourceInfos(UserAgentInfo uaInfo,
-                                                ICEResourceDependency inputDep,
-                                                ICEResourceLibrary library) {
+    public static ResourceInfo getResourceInfo(UserAgentContext uaContext,
+                                               ICEResourceDependency inputDep,
+                                               ICEResourceLibrary library) {
         ResourceInfo returnDep = null;
 
         if (inputDep != null) {
@@ -22,12 +22,12 @@ public class ICEResourceUtils {
                 returnDep = new ResourceInfo(inputDep, library);
 
                 for (ICEBrowserDependency override : inputDep.browserOverride()) {
-                    if (uaInfo.isBrowserType(override.browser())) {
+                    if (uaContext.isBrowserType(override.browser())) {
                         returnDep = new ResourceInfo(override, library);
                         break;
                     }
                 }
-            } else if (uaInfo.isBrowserType(inputDep.browser())) {
+            } else if (uaContext.isBrowserType(inputDep.browser())) {
                 returnDep = new ResourceInfo(inputDep, library);
             }
 
