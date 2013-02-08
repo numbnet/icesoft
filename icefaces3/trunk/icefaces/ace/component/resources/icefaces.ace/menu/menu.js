@@ -50,19 +50,37 @@ ice.ace.Menubar = function(id, cfg) {
 	var direction = this.cfg.direction;
 	var left = direction.search(/left/i);
 	var right = direction.search(/right/i);
-	if (left >= 0 && right >= 0) {
-		if (left < right) this.cfg.directionX = 'left';
-	} else if (left >= 0) this.cfg.directionX = 'left';
-	else if (right >= 0) this.cfg.directionX = 'right';
-	else this.cfg.directionX = 'auto';
+	var center = direction.search(/center/i);
+	if (left > -1) {
+		if ((right > -1 && right < left) || (center > -1 && center < left)) {}
+		else this.cfg.directionX = 'left';
+	}
+	if (right > -1) {
+		if ((left > -1 && left < right) || (center > -1 && center < right)) {}
+		else this.cfg.directionX = 'right';
+	}
+	if (center > -1) {
+		if ((left > -1 && left < center) || (right > -1 && right < center)) {}
+		else this.cfg.directionX = 'center';
+	}
+	if (!this.cfg.directionX) this.cfg.directionX = 'auto';
 
 	var up = direction.search(/up/i);
 	var down = direction.search(/down/i);
-	if (up >= 0 && down >= 0) {
-		if (up < down) this.cfg.directionY = 'up';
-	} else if (up >= 0) this.cfg.directionY = 'up';
-	else if (down >= 0) this.cfg.directionY = 'down';
-	else this.cfg.directionY = 'auto';
+	var middle = direction.search(/middle/i);
+	if (up > -1) {
+		if ((down > -1 && down < up) || (middle > -1 && middle < up)) {}
+		else this.cfg.directionY = 'up';
+	}
+	if (down > -1) {
+		if ((up > -1 && up < down) || (middle > -1 && middle < down)) {}
+		else this.cfg.directionY = 'down';
+	}
+	if (middle > -1) {
+		if ((up > -1 && up < middle) || (down > -1 && down < middle)) {}
+		else this.cfg.directionY = 'middle';
+	}
+	if (!this.cfg.directionY) this.cfg.directionY = 'auto';
 	
     this.cfg.position = {
             my: 'left top',
@@ -95,6 +113,13 @@ ice.ace.Menubar = function(id, cfg) {
 					_my = 'left ';
 					_at = 'right ';
 					_collision = 'none ';
+				} else if (_self.cfg.directionX == 'center') {
+					_myFirst = 'center ';
+					_atFirst = 'center ';
+					_collisionFirst = 'none ';
+					_my = 'left ';
+					_at = 'right ';
+					_collision = 'flip ';
 				} else {
 					_myFirst = 'left ';
 					_atFirst = 'left ';
@@ -115,6 +140,13 @@ ice.ace.Menubar = function(id, cfg) {
 					_collisionFirst += 'none';
 					_my += 'top';
 					_at += 'top';
+					_collision += 'none';
+				} else if (_self.cfg.directionY == 'middle') {
+					_myFirst += 'top';
+					_atFirst += 'bottom';
+					_collisionFirst += 'flip';
+					_my += 'center';
+					_at += 'center';
 					_collision += 'none';
 				} else {
 					_myFirst += 'top';
