@@ -17,7 +17,7 @@
 package org.icefaces.impl.event;
 
 import org.icefaces.resources.*;
-import org.icefaces.util.UserAgentInfo;
+import org.icefaces.util.UserAgentContext;
 
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
@@ -37,10 +37,7 @@ public class RestoreResourceDependencies implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         final FacesContext facesContext = FacesContext.getCurrentInstance();
-        final UserAgentInfo uaInfo = new UserAgentInfo(FacesContext.getCurrentInstance()
-                                                                   .getExternalContext()
-                                                                   .getRequestHeaderMap()
-                                                                   .get("user-agent"));
+        final UserAgentContext uaContext = UserAgentContext.getInstance(facesContext);
         UIViewRoot viewRoot = facesContext.getViewRoot();
         VisitContext visitContext = VisitContext.createVisitContext(facesContext, null, HINTS);
 
@@ -56,12 +53,12 @@ public class RestoreResourceDependencies implements SystemEventListener {
 
                 if (resourceDependencies != null) {
                     for (ICEResourceDependency resDep : resourceDependencies.value()) {
-                        ResourceInfo resInfo = ICEResourceUtils.getResourceInfos(uaInfo, resDep, library);
+                        ResourceInfo resInfo = ICEResourceUtils.getResourceInfo(uaContext, resDep, library);
                         if (resInfo != null) addResourceDependency(facesContext, resInfo);
                     }
                 }
 
-                ResourceInfo resInfo = ICEResourceUtils.getResourceInfos(uaInfo, resourceDependency, library);
+                ResourceInfo resInfo = ICEResourceUtils.getResourceInfo(uaContext, resourceDependency, library);
                 if (resInfo != null)
                     addResourceDependency(facesContext, resInfo);
 
