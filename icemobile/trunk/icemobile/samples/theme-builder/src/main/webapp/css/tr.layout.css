@@ -242,6 +242,14 @@ h2{
 	float: left;
 	border: 1px solid #777;
 }
+#most-recent-colors .color-drag, input[type="color"]{
+	width: 22px;
+	height: 18px;
+	border: none;
+}
+input[type="color"]{
+	-webkit-appearance: button-bevel;
+}
 
 .color-drag.separator{
 	margin-left: 15px;
@@ -254,7 +262,7 @@ h2{
 #most-recent-colors {
 	float: left;
 	height: 73px;
-	width: 150px;
+	width: 250px;
 	border-right: 1px solid #f2f2f2;
 	padding: 10px 20px;
 }
@@ -375,13 +383,13 @@ iframe{
 iframe body{
 	background: #fff;
 }
-
+/*
 #load-mask{
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#4d4d4d), to(#000000)); /* Saf4+, Chrome */
-	background-image: -webkit-linear-gradient(#4d4d4d, #000000); /* Chrome 10+, Saf5.1+ */
-	background-image:    -moz-linear-gradient(#4d4d4d, #000000); /* FF3.6 */
-	background-image:     -ms-linear-gradient(#4d4d4d, #000000); /* IE10 */
-	background-image:      -o-linear-gradient(#4d4d4d, #000000); /* Opera 11.10+ */
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#4d4d4d), to(#000000)); 
+	background-image: -webkit-linear-gradient(#4d4d4d, #000000); 
+	background-image:    -moz-linear-gradient(#4d4d4d, #000000); 
+	background-image:     -ms-linear-gradient(#4d4d4d, #000000);
+	background-image:      -o-linear-gradient(#4d4d4d, #000000);
 	background-image:         linear-gradient(#4d4d4d, #000000);
 	background-repeat: no-repeat;
 	background-color: #000000;
@@ -390,7 +398,6 @@ iframe body{
 	left: 0;
 	z-index: 1000;
 }
-
 #load-screen{
 	background-image: url(../images/loading_screen.png);
 	width: 428px;
@@ -401,7 +408,7 @@ iframe body{
 	left: 50%;
 	margin-top: -150px;
 	margin-left: -224px;
-}
+}*/
 
 #load-spinner{
 	width: 32px;
@@ -457,7 +464,7 @@ iframe body{
 #tr-logo {
 	background: url(../images/icemobile.png) no-repeat;
 	margin: 0px;
-	width: 313px;
+	width: 330px;
 	height: 43px;
 	float: left;
 	background-size: 40px;
