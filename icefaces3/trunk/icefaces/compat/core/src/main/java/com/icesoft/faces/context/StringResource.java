@@ -21,7 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
-public class StringResource implements Resource {
+public class StringResource implements Resource, java.io.Serializable {
+    private static final long serialVersionUID = 1204666667233178571L;
     private final Date lastModified = new Date();
     private String content;
     private String encoding;
