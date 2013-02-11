@@ -19,8 +19,8 @@ if (!ice.ace.DelegateTooltips) ice.ace.DelegateTooltips = {};
 /*
  *  Tooltip Widget
  */
-ice.ace.Tooltip = function(cfg) {
-    var callee = arguments.callee, id = cfg.id, prevTooltip = callee[id];
+ice.ace.Tooltip = function(id, cfg) {
+    var callee = arguments.callee, prevTooltip = callee[id];
     if (prevTooltip) {
          prevTooltip.jq.qtip("destroy");
     }
