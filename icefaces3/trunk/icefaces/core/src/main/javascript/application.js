@@ -38,29 +38,48 @@ if (!window.ice.icefaces) {
         //define primitive submit function to allow overriding it later in special environments
         namespace.submitFunction = jsf.ajax.request;
 
+        function detectByReference(ref) {
+            return function(o) {
+                return o == ref;
+            };
+        }
+
+        function removeCallbackCallback(callbackList, detector) {
+            return function removeCallback() {
+                var temp = reject(callbackList, detector);
+                empty(callbackList);
+                each(temp, curry(append, callbackList));
+            }
+        }
+
         var sessionExpiryListeners = [];
         namespace.onSessionExpiry = function(callback) {
             append(sessionExpiryListeners, callback);
+            return removeCallbackCallback(sessionExpiryListeners, detectByReference(callback));
         };
 
         var networkErrorListeners = [];
         namespace.onNetworkError = function(callback) {
             append(networkErrorListeners, callback);
+            return removeCallbackCallback(networkErrorListeners, detectByReference(callback));
         };
 
         var serverErrorListeners = [];
         namespace.onServerError = function(callback) {
             append(serverErrorListeners, callback);
+            return removeCallbackCallback(serverErrorListeners, detectByReference(callback));
         };
 
         var viewDisposedListeners = [];
         namespace.onViewDisposal = function(callback) {
             append(viewDisposedListeners, callback);
+            return removeCallbackCallback(viewDisposedListeners, detectByReference(callback));
         };
 
         var beforeSubmitListeners = [];
         namespace.onBeforeSubmit = function(callback) {
             append(beforeSubmitListeners, callback);
+            return removeCallbackCallback(beforeSubmitListeners, detectByReference(callback));
         };
         //alias for onBeforeSubmit
         //deprecated
@@ -69,6 +88,7 @@ if (!window.ice.icefaces) {
         var beforeUpdateListeners = [];
         namespace.onBeforeUpdate = function(callback) {
             append(beforeUpdateListeners, callback);
+            return removeCallbackCallback(beforeUpdateListeners, detectByReference(callback));
         };
         //alias for onBeforeUpdate
         //deprecated
@@ -77,11 +97,13 @@ if (!window.ice.icefaces) {
         var afterUpdateListeners = [];
         namespace.onAfterUpdate = function(callback) {
             append(afterUpdateListeners, callback);
+            return removeCallbackCallback(afterUpdateListeners, detectByReference(callback));
         };
 
         var elementRemoveListeners = [];
         namespace.onElementRemove = function(id, callback) {
             append(elementRemoveListeners, Cell(id, callback));
+            return removeCallbackCallback(elementRemoveListeners, detectByReference(callback));
         };
 
         var elementUpdateListeners = [];
@@ -107,6 +129,9 @@ if (!window.ice.icefaces) {
                 cursor = cursor.parentNode;
             }
             append(elementUpdateListeners, {identifier: id, handler: callback, ancestors: ('*' + ancestorIDs.join('*') + '*')});
+            return removeCallbackCallback(elementUpdateListeners, function(c) {
+                return id == c.id;
+            });
         };
 
         function configurationOf(element) {
