@@ -145,6 +145,7 @@ public class TooltipRenderer extends CoreRenderer {
           .beginFunction("ice.ace.create")
           .item("Tooltip")
           .beginArray()
+          .item(clientId)
 	      .beginMap()
           .entry("global", global)
           .entry("id", clientId)
