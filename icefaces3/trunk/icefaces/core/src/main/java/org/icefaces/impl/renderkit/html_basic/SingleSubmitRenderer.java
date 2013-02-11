@@ -31,20 +31,25 @@ public class SingleSubmitRenderer extends Renderer {
         UIComponent parent = component.getParent();
         String parentId = parent.getClientId();
         parent.getAttributes().put(SINGLE_SUBMIT_MARKER, SINGLE_SUBMIT_MARKER);
-        String submitOnBlur = "false";
-        if ( "true".equalsIgnoreCase( (String)
-                component.getAttributes().get("submitOnBlur")) )  {
-            submitOnBlur = "true";
+        boolean disable = false;
+        if ("true".equalsIgnoreCase((String) component.getAttributes().get("disabled")))  {
+            disable = true;
         }
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", component);
+        writer.startElement("span", component);
         writer.writeAttribute("id", component.getClientId(), "id");
         writer.startElement("script", component);
         writer.writeAttribute("type", "text/javascript", "type");
-        writer.writeText("ice.enableSingleSubmit('" + parentId + "'," +
-                submitOnBlur + ");", component, null);
+        if (disable) {
+            writer.writeText("ice.disableSingleSubmit('" + parentId + "');", component, null);
+        } else {
+            String submitOnBlur = "false";
+            if ( "true".equalsIgnoreCase((String) component.getAttributes().get("submitOnBlur")))  {
+                submitOnBlur = "true";
+            }
+            writer.writeText("ice.enableSingleSubmit('" + parentId + "'," + submitOnBlur + ");", component, null);
+        }
         writer.endElement("script");
-        writer.endElement("div");
+        writer.endElement("span");
     }
-
 }
