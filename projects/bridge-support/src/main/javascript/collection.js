@@ -134,6 +134,10 @@ var size = operator(function(items) {
     return items.length;
 });
 
+var empty = operator(function(items) {
+    items.length = 0;
+});
+
 var isEmpty = operator(function(items) {
     return items.length == 0;
 });
