@@ -26,7 +26,6 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
-import org.icefaces.ace.api.IceClientBehaviorHolder;
 import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
@@ -45,8 +44,9 @@ import org.icefaces.resources.ICEResourceLibrary;
         )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(name= ACEResourceNames.COMPONENTS_JS),
-    @ICEResourceDependency(name= ACEResourceNames.JQUERY_JS)
+    @ICEResourceDependency(name=ACEResourceNames.COMPONENTS_JS),
+    @ICEResourceDependency(name=ACEResourceNames.JQUERY_JS),
+    @ICEResourceDependency(name=ACEResourceNames.COMBINED_CSS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="Fired when the button is clicked or pressed by any other means (default event).", tlddoc="Fired when the button is clicked or pressed by any other means (default event).", defaultRender="@all", defaultExecute="@all")
