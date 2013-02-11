@@ -31,8 +31,6 @@ public class UserAgentContext {
     public enum OS{ WINDOWS, IOS, MAC, ANDROID, BLACKBERRY, LINUX }
     public enum FORM_FACTOR{ HANDHELD, TABLET, DESKTOP }
 
-    private UserAgentInfo uaInfo;
-
     private String userAgent;
     private boolean internetExplorer;
     private boolean internetExplorer7;
@@ -53,21 +51,21 @@ public class UserAgentContext {
     private UserAgentContext(String userAgent, Map<String, Object> sessionMap) {
         this.userAgent = userAgent;
 
-        uaInfo = new UserAgentInfo(userAgent);
+        UserAgentInfo uaInfo = new UserAgentInfo(userAgent);
 
-        detectOS();
-        detectFormFactor();
-        detectInternetExplorer();
-        detectFirefox();
-        detectSafari();
-        detectChrome();
-        detectIOS();
-        detectAndroid();
+        detectOS(uaInfo);
+        detectFormFactor(uaInfo);
+        detectInternetExplorer(uaInfo);
+        detectFirefox(uaInfo);
+        detectSafari(uaInfo);
+        detectChrome(uaInfo);
+        detectIOS(uaInfo);
+        detectAndroid(uaInfo);
 
         sessionMap.put(SESSION_KEY, this);
     }
 
-    private void detectOS() {
+    private void detectOS(UserAgentInfo uaInfo) {
         if (uaInfo.isIOS()) os = OS.IOS;
         else if (uaInfo.isAndroidOS()) os = OS.ANDROID;
         else if (uaInfo.isBlackberryOS()) os = OS.BLACKBERRY;
@@ -76,7 +74,7 @@ public class UserAgentContext {
         else os = OS.LINUX;
     }
 
-    private void detectFormFactor() {
+    private void detectFormFactor(UserAgentInfo uaInfo) {
         if (uaInfo.isTabletBrowser())
             formFactor = FORM_FACTOR.TABLET;
 
@@ -87,7 +85,7 @@ public class UserAgentContext {
             formFactor = FORM_FACTOR.DESKTOP;
     }
 
-    private void detectInternetExplorer() {
+    private void detectInternetExplorer(UserAgentInfo uaInfo) {
         int ieVersion = uaInfo.getIEVersion();
 
         if (ieVersion > 0) {
@@ -101,23 +99,23 @@ public class UserAgentContext {
         }
     }
 
-    private void detectFirefox() {
+    private void detectFirefox(UserAgentInfo uaInfo) {
         firefox = uaInfo.isFirefox();
     }
 
-    private void detectSafari() {
+    private void detectSafari(UserAgentInfo uaInfo) {
         safari = uaInfo.isSafari();
     }
 
-    private void detectChrome() {
+    private void detectChrome(UserAgentInfo uaInfo) {
         chrome = uaInfo.isChrome();
     }
 
-    private void detectAndroid() {
+    private void detectAndroid(UserAgentInfo uaInfo) {
         android = uaInfo.isAndroidOS();
     }
 
-    private void detectIOS() {
+    private void detectIOS(UserAgentInfo uaInfo) {
         ios = uaInfo.isIOS();
     }
 

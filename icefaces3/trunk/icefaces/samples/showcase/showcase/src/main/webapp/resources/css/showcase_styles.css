@@ -205,43 +205,6 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     width: auto;
 }
 
-/*BEGINING OF: ace:checkboxButton example styles*/
-
-/*the following style will make sure that a button is displayed properly in FF9. If style is ommited the right border of the check box will be hidden behind check image*/
-.ice-checkboxbutton .yui-button button, .ice-checkboxbutton .yui-button a {
-      font-size: 93%;
-      line-height: 2;
-      margin: 0 0.25em;
-      min-height: 2em;
-      padding: 0 2px;
-      width: 20px;
-}
-/*styles to apply custom images to different states of checkbox button*/
-.ice-checkboxbutton .ui-state-hover
-{
-   background: url("#{resource['css/images/checkGrey.png']}") no-repeat;
-    border: 0px;
-}
-
-.ice-checkboxbutton .ui-state-default{
-    background: url("#{resource['css/images/uncheck.png']}") no-repeat;
-    /* hack with borders to display checkbox properly in IE7. If border property is changed to: 0px and border-bottom is ommited the bottom border of the checkbox is never rendered in IE7; */
-    border: 0.5px;
-    border-bottom: 1.5px;
-    border-color: #000000;
-}
-
-.ice-checkboxbutton .ui-state-active {
-    background: url("#{resource['css/images/check.png']}") no-repeat;
-    border: 0px;
-}
-
-.ice-checkboxbutton .ui-state-active .ui-icon {
-    background: transparent;
-}
-
-/*END OF: ace:checkboxButton example styles*/
-
 .ice-linkbutton .yui-button a {
     border: 1px solid transparent;
 }
