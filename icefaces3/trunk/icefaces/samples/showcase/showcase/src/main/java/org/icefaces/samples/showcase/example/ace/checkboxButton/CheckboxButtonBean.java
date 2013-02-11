@@ -30,32 +30,32 @@ import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 
 @ComponentExample(
-        title = "example.ace.checkboxButton.title",
-        description = "example.ace.checkboxButton.description",
-        example = "/resources/examples/ace/checkboxButton/checkboxbutton.xhtml"
+    title = "example.ace.checkboxButton.title",
+    description = "example.ace.checkboxButton.description",
+    example = "/resources/examples/ace/checkboxButton/checkboxbutton.xhtml"
 )
 @ExampleResources(
-        resources ={
-            // xhtml
-            @ExampleResource(type = ResourceType.xhtml,
-                    title="checkboxbutton.xhtml",
-                    resource = "/resources/examples/ace/checkboxButton/checkboxbutton.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="CheckboxButtonBean.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/checkboxButton/CheckboxButtonBean.java")
-        }
+    resources ={
+        // xhtml
+        @ExampleResource(type = ResourceType.xhtml,
+                         title="checkboxbutton.xhtml",
+                         resource = "/resources/examples/ace/checkboxButton/checkboxbutton.xhtml"),
+        // Java Source
+        @ExampleResource(type = ResourceType.java,
+                         title="CheckboxButtonBean.java",
+                         resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/checkboxButton/CheckboxButtonBean.java")
+    }
 )
 
 @Menu(
-	title = "menu.ace.checkboxButton.subMenu.title",
-	menuLinks = 
-                {
-                    @MenuLink(title = "menu.ace.checkboxButton.subMenu.main", isDefault = true,
-                                     exampleBeanName = CheckboxButtonBean.BEAN_NAME)
-                }
+    title = "menu.ace.checkboxButton.subMenu.title",
+    menuLinks = {
+        @MenuLink(title = "menu.ace.checkboxButton.subMenu.main", isDefault = true,
+                  exampleBeanName = CheckboxButtonBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.checkboxButton.subMenu.custom",
+                  exampleBeanName = CheckboxButtonCustomBean.BEAN_NAME)
+    }
 )
-
 @ManagedBean(name= CheckboxButtonBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
 public class CheckboxButtonBean extends ComponentExampleImpl<CheckboxButtonBean> implements Serializable {

@@ -24,16 +24,41 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
     
-    <ui:param name="title" value="#{msgs[checkboxButton.title]}"/>
-    <ui:param name="description" value="#{msgs[checkboxButton.description]}"/>
-    <ui:param name="subMenuTitle" value="#{msgs[checkboxButton.subMenuTitle]}"/>
+    <ui:param name="title" value="#{msgs[checkboxButtonCustom.title]}"/>
+    <ui:param name="description" value="#{msgs[checkboxButtonCustom.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[checkboxButtonCustom.subMenuTitle]}"/>
+    <ui:param name="resourceValue" value="#{checkboxButtonCustom.exampleResource}"/>
     <ui:param name="subMenuLinks" value="#{checkboxButton.subMenuLinks}"/>
-    <ui:param name="resourceValue" value="#{checkboxButton.exampleResource}"/>
-    
+
     <ui:param name="wikiResources" value="#{checkboxButtonResources.wikiResources}"/>
     <ui:param name="tldResources" value="#{checkboxButtonResources.tldResources}"/>
 
     <ui:define name="example">
+        <style type="text/css">
+            .ice-checkboxbutton button {
+                height:24px;
+                width:24px;
+            }
+
+            .ice-checkboxbutton button.ui-state-hover {
+                background: url("#{resource['css/images/checkGrey.png']}") no-repeat;
+                border:none;
+            }
+
+            .ice-checkboxbutton button.ui-state-active {
+                background: url("#{resource['css/images/check.png']}") no-repeat;
+                border:none;
+            }
+
+            .ice-checkboxbutton span.ui-state-default {
+                background: url("#{resource['css/images/uncheck.png']}") no-repeat;
+            }
+
+            .ice-checkboxbutton .ui-state-active .ui-icon {
+                background: transparent;
+            }
+        </style>
+
         <h:form style="text-align: center">
             <ace:panel>
                 <ace:checkboxButton value="#{checkboxButton.selected}">

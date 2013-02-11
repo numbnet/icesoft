@@ -16,27 +16,11 @@
 
 
 .ice-checkboxbutton { display:inline; }
-.ice-checkboxbutton .yui-button{
-	margin:auto .25em;}
-	
-.ice-checkboxbutton .yui-button .first-child{
-	margin:0 -1px;
-    _margin: 0;
-	}
-	
-.ice-checkboxbutton .yui-button button,.ice-checkboxbutton .yui-button a{
-	padding:0 2px;
-	font-size:93%;
-	line-height:2;
-	*line-height:1.7;
-	min-height:2em;
-	*min-height:auto;
-	margin:auto .25em;
-	}
-	
-.ice-checkboxbutton .yui-button a{
-	*line-height:1.875;
-	*padding-bottom:1px;
-	}
 
-.ui-icon-unchecked { background-position: -160px 0; }
+.ice-checkboxbutton .yui-button > span > button {
+    border:none;
+}
+
+.ui-icon-unchecked {
+    background-position: -160px 0;
+}
