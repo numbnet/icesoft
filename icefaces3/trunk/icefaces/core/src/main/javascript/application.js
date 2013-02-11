@@ -651,7 +651,7 @@ if (!window.ice.icefaces) {
 
         namespace.enableSingleSubmit = function(id, useBlur) {
             var f = document.getElementById(id);
-
+            f.singleSubmit = 'enabled';
             function submitForm(ev) {
                 //need to investigate why $event did not provide type
                 var eType;
@@ -666,6 +666,16 @@ if (!window.ice.icefaces) {
                 }
                 var e = $event(ev, f);
                 var element = triggeredBy(e);
+
+                //traverse ancestors to check if single submit is disabled at element's position in DOM
+                var cursor = element;
+                while (cursor && !cursor.singleSubmit) {
+                    cursor = cursor.parentNode;
+                }
+                if (cursor.singleSubmit == 'disabled') {
+                    //single submit is disabled
+                    return;
+                }
 
                 var elementType = element.type;
                 if (!elementType) {
@@ -796,6 +806,11 @@ if (!window.ice.icefaces) {
                 f.attachEvent('onfocusout', cancelBubble);
                 f.attachEvent('onclick', cancelBubble);
             }
+        };
+
+        namespace.disableSingleSubmit = function(id) {
+            var element = lookupElementById(id);
+            element.singleSubmit = 'disabled';
         };
 
         namespace.calculateInitialParameters = function(id) {
