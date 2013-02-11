@@ -1,0 +1,159 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<head><title>(For validation only)</title></head>
+<body>
+
+<composite:interface
+        displayName="Mobile DataTable">
+
+    <composite:attribute name="value" required="true"/>
+
+</composite:interface>
+
+<composite:implementation>
+
+    <style type="text/css">
+        .mobi-tbl table, .mobi-tbl-headers table{
+            width: 100%;
+            border-spacing: 0;
+        }
+        .mobi-tbl thead{
+            border-bottom-style: solid;
+            border-bottom-width: 1px;
+            border-top-style: solid;
+            border-top-width: 1px;
+            font-size: 1.2em;
+            font-weight: bold;
+            height: 38px;
+            left: 0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            white-space: nowrap;
+            z-index: 500;
+            background: -moz-linear-gradient(top,#F4F5F7,#A8ACB9) repeat scroll 0 0 #A8ACB9;
+            background-image: -webkit-gradient(linear,0 0,0 100%,color-stop(0,#F4F5F7),color-stop(1,#A8ACB9));
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f4f5f7',EndColorStr = '#a8acb9');
+            -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7',EndColorStr='#a8acb9')";
+            border-top-color: white;
+            border-bottom-color: #7A8091;
+            color: #717880;
+            text-shadow: 0 1px 0 #D8DAE0;
+        }
+        .mobi-tbl tbody tr:nth-of-type(odd) { 
+          background: #868686; 
+        }
+        .mobi-tbl-master, .mobi-tbl-detail{ overflow-y: auto; -webkit-overflow-scrolling: touch;}
+        .mobi-tbl-detail{ padding: 5px 0}
+        .mobi-tbl-detail label{
+            font-weight: bold;
+            width: 30%;
+            display: inline-block;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .mobi-tbl-detail span{
+            width: 68%;
+            display: inline-block;
+        }
+        .mobi-tbl-master tr{ cursor: pointer }
+        .mobi-tbl-master tr:hover{
+            background-color: #11A1D9;
+        }
+        @media only screen and (max-width: 800px) {
+            table td:nth-child(7), table th:nth-child(7) {display: none;}
+        }
+         
+        @media only screen and (max-width: 640px) {
+            table td:nth-child(5), table th:nth-child(5),
+            table td:nth-child(6), table th:nth-child(6),
+            table td:nth-child(7), table th:nth-child(7) {display: none;}
+        }
+    </style>
+
+    <div id="#{cc.id}" class="mobi-tbl">
+    
+        <div class="mobi-tbl-detail">
+        </div>
+        <div class="mobi-tbl-headers">
+        </div>
+        <div class="mobi-tbl-master">
+            <h:dataTable id="tbl" value="#{cc.attrs.value}" var="row" styleClass="mobi-tbl">
+                <composite:insertChildren/>   
+            </h:dataTable>
+        </div>
+        
+    </div>
+    
+    <script>
+    //<![CDATA[
+    var headers = document.querySelectorAll("##{cc.id} th");
+    var rows = document.querySelectorAll("##{cc.id} tbody tr");
+    function setRowDetail(evt){
+        var detailRoot = document.querySelector("##{cc.id} .mobi-tbl-detail");
+        detailRoot.innerHTML = '';
+        var tr = findTr(evt.target);
+        for( var j = 0 ; j < headers.length ; j++ ){
+            var line = document.createElement("div");
+            line.innerHTML = "<label>"+headers[j].innerHTML+"</label>"
+                           + "<span>" + tr.children[j].innerHTML + "</span>";
+            detailRoot.appendChild(line);
+        }
+    }
+    function findTr(el){
+        if( el.nodeName === 'TR'){
+            return el;
+        }
+        return findTr(el.parentNode);
+    }
+    for( var i = 0 ; i < rows.length ; i++ ){
+        rows[i].addEventListener("click", setRowDetail, false);
+    }
+    
+    setTimeout(function(){
+      //move headers to middle region
+        var thead = document.querySelector("##{cc.id} thead");
+        var headerRegion = document.querySelector("##{cc.id} .mobi-tbl-headers");
+        var headerTbl = document.createElement("table");
+        var headerTblTHead = document.createElement("thead");
+        headerTblTHead.innerHTML = thead.innerHTML;
+        headerTbl.appendChild(headerTblTHead);
+        headerRegion.appendChild(headerTbl);
+        thead.innerHTML = '';
+        
+      //set height of container to be 100% of parent
+        var ctr = document.querySelector("##{cc.id}");
+        ctr.style.height = ctr.parentNode.clientHeight+"px";
+      //set height of master and detail regions
+        ctr.children[0].style.height = "20%";
+        ctr.children[1].style.height = "5%";
+        ctr.children[2].style.height = "75%";
+    },100);
+    
+    
+    //]]>
+    </script>
+
+</composite:implementation>
+</body>
+</html>
