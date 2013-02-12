@@ -18,7 +18,7 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.SelectMenus) ice.ace.SelectMenus = {};
 
-ice.ace.SelectMenu = function(id, updateId, rowClass, selectedRowClass, height, rows, behaviors) {
+ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, rows, behaviors) {
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.SelectMenus[this.id] && ice.ace.SelectMenus[this.id].initialized) isInitialized = true;
@@ -34,6 +34,7 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, selectedRowClass, height, 
 	this.element = $element.get(0);
 	this.element.id = this.id + "_input";
 	this.displayedValue = $element.find('span').get(0);
+	ice.ace.jq(this.displayedValue).css('width', $element.width() - 19);
 	var $input = this.root.find('input[name="'+this.id+'_input"]');
 	this.input = $input.get(0);
 	this.input.id = this.id + "_input";
@@ -41,7 +42,7 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, selectedRowClass, height, 
 	//$element.data("labelIsInField", this.cfg.labelIsInField);
 	
 	if (isInitialized) {
-		this.initialize(this.element, this.update, options, rowClass, selectedRowClass, behaviors);
+		this.initialize(this.element, this.update, options, rowClass, highlightedRowClass, selectedRowClass, behaviors);
 	} else {
 		var self = this;
 		$element.on('focus', function() {
@@ -52,7 +53,7 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, selectedRowClass, height, 
 			//	$element.data("labelIsInField", false);
 			//	self.cfg.labelIsInField = false;
 			//}
-			self.initialize(self.element, self.update, options, rowClass, selectedRowClass, behaviors); 
+			self.initialize(self.element, self.update, options, rowClass, highlightedRowClass, selectedRowClass, behaviors); 
 		});
 	}
 };
@@ -119,14 +120,16 @@ ice.ace.SelectMenu.cleanWhitespace = function(element) {
 
 ice.ace.SelectMenu.prototype = {
 
-    initialize: function(element, update, options, rowC, selectedRowC, behaviors) {
+    initialize: function(element, update, options, rowC, highlightedRowClass, selectedRowC, behaviors) {
         var self = this;
         this.hasFocus = false;
         this.changed = false;
         this.active = false;
         this.index = -1;
+		this.selectedIndex = -1;
         this.entryCount = 0;
         this.rowClass = rowC;
+		this.highlightedRowClass = highlightedRowClass;
         this.selectedRowClass = selectedRowC;
 
         if (this.setOptions)
@@ -134,7 +137,6 @@ ice.ace.SelectMenu.prototype = {
         else
             this.options = options || {};
 
-        this.options.tokens = this.options.tokens || [];
         this.options.onShow = this.options.onShow ||
             function(element, update) {
                 try {
@@ -149,14 +151,12 @@ ice.ace.SelectMenu.prototype = {
 			ice.ace.jq(update).fadeOut(150)
             };
 
-        if (typeof(this.options.tokens) == 'string')
-            this.options.tokens = new Array(this.options.tokens);
-
         this.observer = null;
         ice.ace.jq(this.update).hide();
 		//ice.ace.jq(this.element).data("labelIsInField", this.cfg.labelIsInField);
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
+		ice.ace.jq(this.element).on("click", function(e) { self.onElementClick.call(self, e); });
         var keyEvent = "keypress";
         if (ice.ace.SelectMenu.Browser.IE || ice.ace.SelectMenu.Browser.WebKit) {
             keyEvent = "keydown";
@@ -182,7 +182,7 @@ ice.ace.SelectMenu.prototype = {
 			}
 		}
 		
-		this.updateNOW(this.content);
+		//this.updateNOW(this.content);
 		
 		this.initialized = true;
     },
@@ -212,14 +212,14 @@ ice.ace.SelectMenu.prototype = {
 			if (this.direction == 'up' || autoUp) {
 				var updateHeight = jqUpdate.height();
 				updateHeight = updateHeight > this.height ? this.height : updateHeight;
-				jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: this.height, overflow: "auto" });
+				jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, maxHeight: this.height, overflow: "auto" });
 				var savedPos = element.style.position;
 				element.style.position = "relative";
 				update.style.left = element.offsetLeft + "px";
 				update.style.top = (element.offsetTop - updateHeight) + "px";
 				element.style.position = savedPos;
 			} else {
-				jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: this.height, overflow: "auto" });
+				jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, maxHeight: this.height, overflow: "auto" });
 				var savedPos = element.style.position;
 				element.style.position = "relative";
 				update.style.left = element.offsetLeft + "px";
@@ -288,10 +288,22 @@ ice.ace.SelectMenu.prototype = {
 					event.preventDefault();
                     return;
 				case ice.ace.SelectMenu.keys.KEY_UP:
+					this.index = this.selectedIndex;
+                    this.markPrevious();
+					this.selectEntry();// submit if ajax
+					event.stopPropagation();
+					event.preventDefault();
+                    return;
                 case ice.ace.SelectMenu.keys.KEY_DOWN:
-                    this.active = true;
-					this.updateNOW(this.content);
-					break;
+					this.index = this.selectedIndex;
+                    this.markNext();
+					this.selectEntry();// submit if ajax
+					event.stopPropagation();
+					event.preventDefault();
+                    return;
+                    //this.active = true;
+					//this.updateNOW(this.content);
+					//break;
             }
         }
 
@@ -406,29 +418,47 @@ ice.ace.SelectMenu.prototype = {
     },
 
     onFocus: function(event) {
-        var input = ice.ace.jq(this.element);
+        //var input = ice.ace.jq(this.element);
         //if (input.data("labelIsInField")) {
         //    input.val("");
         //    input.removeClass(this.cfg.inFieldLabelStyleClass);
         //    input.data("labelIsInField", false);
         //}
+		if (this.justSelectedItem) {
+			this.justSelectedItem = false;
+			return;
+		}
 		this.active = true;
 		this.updateNOW(this.content);
     },
+	
+	onElementClick: function(event) {
+			this.active = true;
+			this.updateNOW(this.content);
+	},
 
     render: function() {
         if (this.entryCount > 0) {
             for (var i = 0; i < this.entryCount; i++)
-                if (this.index == i) {
+				if (this.selectedIndex == i) {
                     ar = this.rowClass.split(" ");
+                    for (var ai = 0; ai < ar.length; ai++)
+                        ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]);
+                    ar = this.highlightedRowClass.split(" ");
                     for (var ai = 0; ai < ar.length; ai++)
                         ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]);
                     ar = this.selectedRowClass.split(" ");
                     for (var ai = 0; ai < ar.length; ai++)
+                        ice.ace.jq(this.getEntry(i)).addClass(ar[ai]);				
+				} else if (this.index == i) {
+                    ar = this.rowClass.split(" ");
+                    for (var ai = 0; ai < ar.length; ai++)
+                        ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]);
+                    ar = this.highlightedRowClass.split(" ");
+                    for (var ai = 0; ai < ar.length; ai++)
                         ice.ace.jq(this.getEntry(i)).addClass(ar[ai]);
-                }
-                else {
-                    ar = this.selectedRowClass.split(" ");
+                } else {
+                    ar = this.highlightedRowClass.split(" ");
                     for (var ai = 0; ai < ar.length; ai++)
                         ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]);
                     ar = this.rowClass.split(" ");
@@ -476,6 +506,7 @@ ice.ace.SelectMenu.prototype = {
         this.active = false;
         if (this.index >= 0) {
             idx = this.index;
+			this.selectedIndex = this.index;
             this.updateElement(this.getCurrentEntry());
             this.index = -1;
         }
@@ -495,18 +526,9 @@ ice.ace.SelectMenu.prototype = {
             value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(selectedElement, 'informal');
 	}
 
-        var lastTokenPos = this.findLastToken();
-        if (lastTokenPos != -1) {
-            var newValue = this.input.value.substr(0, lastTokenPos + 1);
-            var whitespace = this.input.value.substr(lastTokenPos + 1).match(/^\s+/);
-            if (whitespace)
-                newValue += whitespace[0];
-            this.input.value = newValue + value;
-			this.displayedValue.innerHTML = this.input.value;
-        } else {
-            this.input.value = value;
-			this.displayedValue.innerHTML = this.input.value;
-        }
+		this.input.value = value;
+		this.displayedValue.innerHTML = this.input.value;
+		this.justSelectedItem = true;
         this.element.focus();
 
         if (this.options.afterUpdateElement)
@@ -567,27 +589,6 @@ ice.ace.SelectMenu.prototype = {
         this.changed = false;
         this.startIndicator();
         this.getUpdatedChoices(false, undefined, -1);
-    },
-
-    getToken: function() {
-        var tokenPos = this.findLastToken();
-        if (tokenPos != -1)
-            var ret = this.input.value.substr(tokenPos + 1).replace(/^\s+/, '').replace(/\s+$/, '');
-        else
-            var ret = this.input.value;
-
-        return /\n/.test(ret) ? '' : ret;
-    },
-
-    findLastToken: function() {
-        var lastTokenPos = -1;
-
-        for (var i = 0; i < this.options.tokens.length; i++) {
-            var thisTokenPos = this.input.value.lastIndexOf(this.options.tokens[i]);
-            if (thisTokenPos > lastTokenPos)
-                lastTokenPos = thisTokenPos;
-        }
-        return lastTokenPos;
     },
 
     getUpdatedChoices: function(isHardSubmit, event, idx) {
