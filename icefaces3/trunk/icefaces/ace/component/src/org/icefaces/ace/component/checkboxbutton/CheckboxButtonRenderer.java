@@ -151,7 +151,7 @@ public class CheckboxButtonRenderer extends CoreRenderer {
                               CheckboxButton checkbox, String clientId, EventType type) throws IOException {
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         JSONBuilder jb = JSONBuilder.create();
-        jb.beginFunction("ice.ace.create")
+        jb.beginFunction("ice.ace.lazy")
           .item("checkboxbutton")
           .beginArray()
           .item(clientId)
