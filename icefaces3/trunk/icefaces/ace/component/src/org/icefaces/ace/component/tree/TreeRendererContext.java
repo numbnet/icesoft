@@ -20,6 +20,7 @@ import org.icefaces.ace.model.tree.LazyNodeDataModel;
 
 import javax.faces.application.ResourceHandler;
 import javax.faces.context.FacesContext;
+import java.lang.String;
 
 public class TreeRendererContext {
     private Tree tree;
@@ -31,8 +32,9 @@ public class TreeRendererContext {
     private TreeSelectionMode treeSelectionMode;
     private TreeExpansionMode treeExpansionMode;
     private String dotURL;
+    private String widgetVar;
 
-    public TreeRendererContext(Tree tree) {
+    public TreeRendererContext(Tree tree, String widgetVar) {
         this.tree = tree;
         expansion = tree.isExpansion();
         selection = tree.isSelection();
@@ -41,6 +43,7 @@ public class TreeRendererContext {
         treeSelectionMode = tree.getSelectionMode();
         treeExpansionMode = tree.getExpansionMode();
         lazy = tree.getValue() instanceof LazyNodeDataModel;
+        this.widgetVar = widgetVar;
 
         ResourceHandler rh = FacesContext.getCurrentInstance()
                 .getApplication().getResourceHandler();
@@ -86,5 +89,13 @@ public class TreeRendererContext {
 
     public boolean isReordering() {
         return reordering;
+    }
+
+    public String getWidgetVar() {
+        return widgetVar;
+    }
+
+    public void setWidgetVar(String widgetVar) {
+        this.widgetVar = widgetVar;
     }
 }
