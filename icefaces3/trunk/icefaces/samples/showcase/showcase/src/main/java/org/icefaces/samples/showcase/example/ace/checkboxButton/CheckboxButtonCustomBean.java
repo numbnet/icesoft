@@ -39,7 +39,7 @@ import java.io.Serializable;
         // xhtml
         @ExampleResource(type = ResourceType.xhtml,
                          title="checkboxbuttoncustom.xhtml",
-                         resource = "/resources/examples/ace/checkboxButton/checkboxcbuttoncustom.xhtml"),
+                         resource = "/resources/examples/ace/checkboxButton/checkboxbuttoncustom.xhtml"),
         // Java Source
         @ExampleResource(type = ResourceType.java,
                          title="CheckboxButtonCustomBean.java",
