@@ -18,10 +18,29 @@
 <head>
 	<title>ICEmobile Mediacast</title>
 	<mobi:deviceResource includePush="true"/>
-	<link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>"/>
-	<script type="text/javascript" src='<c:url value="/resources/javascript/jquery-1.8.1-min.js"/>'></script>
-    <script type="text/javascript" src='<c:url value="/resources/javascript/jquery-ui-1.8.23.custom.min.js"/>'></script>
-	<script type="text/javascript" src='<c:url value="/resources/javascript/mediacast.js"/>'></script>
+    <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>"/>
+    <c:set var="dojo" value="${param.js eq 'dojo'}"/>
+    <c:choose>
+        <c:when test="${dojo}">
+            <script>
+                dojoConfig= {
+                    has: {
+                        "dojo-firebug": true
+                    },
+                    parseOnLoad: false,
+                    async: true
+                };
+            </script>
+            <script type="text/javascript" src='<c:url value="/resources/javascript/dojo-release-1.8.3/dojo/dojo.js"/>'></script>
+            <script type="text/javascript" src='<c:url value="/resources/javascript/mediacast-dojo.js"/>'></script>
+        </c:when>
+        <c:otherwise>
+            <script type="text/javascript" src='<c:url value="/resources/javascript/jquery-1.8.1-min.js"/>'></script>
+            <script type="text/javascript" src='<c:url value="/resources/javascript/jquery-ui-1.8.23.custom.min.js"/>'></script>
+            <script type="text/javascript" src='<c:url value="/resources/javascript/mediacast-jquery.js"/>'></script>
+        </c:otherwise>
+    </c:choose>
+	
     <script type="text/javascript">
         <%
             String cloudPushId = Utils.getCloudPushId(request);

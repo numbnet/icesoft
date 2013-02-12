@@ -19,8 +19,6 @@
 	<property name="no-icefaces" value="no-icefaces" />
 	<property file="./build.properties" />
 	<property file="../build/build.properties" />
-	<property name="exploded.dir" value="build/dist/exploded" />
-	<property name="name" value="mvc-mediacast" />
 	<import file="../build/common.xml" />
 
 	<patternset id="lib.distribute.application.mobi" includes="${icepush.lib.name}.jar,${icemobile-jsp.lib.name}.jar">

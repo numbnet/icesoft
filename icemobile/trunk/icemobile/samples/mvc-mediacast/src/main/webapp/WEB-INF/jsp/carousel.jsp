@@ -32,13 +32,7 @@
         </form:form>
         <c:if test="${view eq 'tablet' }">
             <script type="text/javascript">
-            $('#recentMessagesCarousel').find("a").each(function(){
-            	$(this).click(function(){
-            		updateViewerPanel(this.getAttribute("data-id"));
-            	});
-            	$(this).attr("href","#");
-            });
-            
+            enhanceCarousel();
             </script>
         </c:if>
          <c:if test="${view ne 'tablet' }">

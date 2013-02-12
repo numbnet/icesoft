@@ -36,49 +36,47 @@
         
         <div id="msg" style="clear: both;margin:10px;font-size:12px;color:#326ADB;font-weight:bold">${msg}</div>
         
-        <c:if test="${sessionScope['sxRegistered'] or enhanced}">
-            <mobi:fieldsetGroup inset="true">
-                 <mobi:fieldsetRow>
-                    <c:if test="${!sxPhotoUploadReady}">
-                        <mobi:camera id="camera"/>
-                    </c:if>
-                    <c:if test="${!sxVideoUploadReady}">
-                        <mobi:camcorder id="camcorder"/>
-                    </c:if>
-                    <c:if test="${!sxAudioUploadReady}">
-                        <mobi:microphone id="microphone" buttonLabel="Audio"/>
-                    </c:if>
-                 </mobi:fieldsetRow>  
-                 <mobi:fieldsetRow>
-                     <c:if test="${!sessionScope['sxRegistered']}">
-                        <mobi:thumbnail for="camera"/>
-                    </c:if>
-                    <c:if test="${sxPhotoUploadReady and not empty sessionScope['sxPhotoUpload']}">
-                        <img src='resources/uploads/${sxThumbnail.name}'/>
-                    </c:if>
-                    <c:if test="${sxVideoUploadReady}">
-                        <img src='resources/images/movieIcon.png' style="height:85px;width:81px"/>
-                    </c:if>
-                    <c:if test="${sxAudioUploadReady}">
-                        <img src='resources/images/soundIcon.png' style="height:85px;width:81px"/>
-                    </c:if>
-                 </mobi:fieldsetRow>     
-                 <mobi:fieldsetRow>
-                     <mobi:inputText name="description" 
-                        styleClass="input"
-                        type="textarea"
-                        autoCorrect="off"
-                        placeholder="Description"/>
-                 </mobi:fieldsetRow>
-                 <mobi:fieldsetRow styleClass="mobi-center">
-                    <mobi:commandButton id="cancelBtn"
-                           value="Cancel" style="width:100px;margin-top:0;margin-bottom:0"
-                           />
-                    <mobi:commandButton value="Share" buttonType="important"
-                        style="float:none;width:100px;margin-top:0;margin-bottom:0;"/>
-                 </mobi:fieldsetRow>
-            </mobi:fieldsetGroup>
-        </c:if>
+        <mobi:fieldsetGroup inset="true">
+             <mobi:fieldsetRow>
+                <c:if test="${!sxPhotoUploadReady}">
+                    <mobi:camera id="camera"/>
+                </c:if>
+                <c:if test="${!sxVideoUploadReady}">
+                    <mobi:camcorder id="camcorder"/>
+                </c:if>
+                <c:if test="${!sxAudioUploadReady}">
+                    <mobi:microphone id="microphone" buttonLabel="Audio"/>
+                </c:if>
+             </mobi:fieldsetRow>  
+             <mobi:fieldsetRow>
+                 <c:if test="${!sessionScope['sxRegistered']}">
+                    <mobi:thumbnail for="camera"/>
+                </c:if>
+                <c:if test="${sxPhotoUploadReady and not empty sessionScope['sxPhotoUpload']}">
+                    <img src='resources/uploads/${sxThumbnail.name}'/>
+                </c:if>
+                <c:if test="${sxVideoUploadReady}">
+                    <img src='resources/images/movieIcon.png' style="height:85px;width:81px"/>
+                </c:if>
+                <c:if test="${sxAudioUploadReady}">
+                    <img src='resources/images/soundIcon.png' style="height:85px;width:81px"/>
+                </c:if>
+             </mobi:fieldsetRow>     
+             <mobi:fieldsetRow>
+                 <mobi:inputText name="description" 
+                    styleClass="input"
+                    type="textarea"
+                    autoCorrect="off"
+                    placeholder="Description"/>
+             </mobi:fieldsetRow>
+             <mobi:fieldsetRow styleClass="mobi-center">
+                <mobi:commandButton id="cancelBtn"
+                       value="Cancel" style="width:100px;margin-top:0;margin-bottom:0"
+                       />
+                <mobi:commandButton value="Share" buttonType="important"
+                    style="float:none;width:100px;margin-top:0;margin-bottom:0;"/>
+             </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
         <mobi:fieldsetGroup inset="true" style="padding:10px;">
             <mobi:fieldsetRow style="text-align:center;padding:0;">
             Learn more about ICEmobile video, audio, QR code, augmented reality
@@ -87,10 +85,8 @@
         </mobi:fieldsetGroup>
     </form:form>
     <script type="text/javascript">
-        enhanceForm("#uploadForm","#root");
-        $('#cancelBtn').click(function(e) {
-            $('#operation').val('cancel');
-        });
+        enhanceForm();
+        cancelBtnHandler();
         window.onhashchange = function()  {
             if ("#icemobilesx" === window.location.hash)  {
                 window.location.hash = "";

@@ -39,7 +39,9 @@ function enhanceGet(link){
         return false;
     });
 }
-function enhanceForm(theForm,updateTarget)  {
+function enhanceForm()  {
+    var theForm = $("#uploadForm");
+    var updateTarget = $("#root");
     //submitting the form will update 
     $(document).ready(function () {
         $(theForm).submit(function () {
@@ -96,7 +98,11 @@ function enhanceForm(theForm,updateTarget)  {
         });
     });
 }
-
+function cancelBtnHandler(){
+    $('#cancelBtn').click(function(e) {
+        $('#operation').val('cancel');
+    });
+}
 function updateViewerPanel(id,action){
     var url = 'viewer?id='+id+'&view=tablet';
     if( action ){
@@ -120,48 +126,6 @@ function updateViewerPanel(id,action){
             }
         }
     });
-}
-
-function resizeElementHeight(elementId) {
-    var is_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-    if( !is_firefox ){
-        var element = document.getElementById(elementId);
-        if( element ){
-            var height = 0;
-            var body = window.document.body;
-            if (window.innerHeight) {
-                height = window.innerHeight;
-            } else if (body.parentElement.clientHeight) {
-                height = body.parentElement.clientHeight;
-            } else if (body) {
-                if (body.clientHeight) {
-                    height = body.clientHeight;
-                }
-            }
-            element.style.height = ((height - element.offsetTop) + "px");       
-        }
-        
-    }
-}
-
-
-function addResizeAfterUpdatesListener(elementId){
-
-    // check caller to see if orientation changes are support and fall back
-    // to window resize events otherwise
-    var supportsOrientationChange = "onorientationchange" in window,
-        orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-    
-    var resizeHandler = function(updates) {
-        resizeElementHeight(elementId);
-    };
-
-    // resize height on first load
-    resizeElementHeight(elementId);
-
-    // apply resize on either orientation or window size change.
-    window.addEventListener(orientationEvent, resizeHandler);
-    
 }
 
 function getGalleryUpdate(){
@@ -253,6 +217,11 @@ function updateGalleryList(json){
     }
 }
 
-function isTextNode(node){
-    return /^\s*$/.test(node.nodeValue);
+function enhanceCarousel(){
+    $('#recentMessagesCarousel').find("a").each(function(){
+        $(this).click(function(){
+            updateViewerPanel(this.getAttribute("data-id"));
+        });
+        $(this).attr("href","#");
+    });
 }
