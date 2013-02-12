@@ -42,8 +42,8 @@ ice.ace.showWatermarks = function(){
     ice.ace.jq.watermark.showAll();
 };
 
-ice.ace.create = function(name, args) {
-    var clientId = args[0],
+ice.ace.lazy = function(name, args) {
+    var clientId = args[0], // lazy requires clientId is first arg
         jqId = ice.ace.escapeClientId(clientId),
         elem = ice.ace.jq(jqId),
         registerComponent = function(component) {
@@ -51,21 +51,28 @@ ice.ace.create = function(name, args) {
         };
 
     if (elem.attr('widget') == undefined) {
-        if (ice.ace.jq.isFunction(ice.ace[name])) {
-            var temp = function(){}, // constructor-less duplicate class
-                    inst, ret;
-            temp.prototype = ice.ace[name].prototype;
-            inst = new temp; // init constructor-less class
-            ret = ice.ace[name].apply(inst, args); // apply original constructor
-            ret = Object(ret) === ret ? ret : inst;
-            registerComponent(ret);
-            return ret;
-        }
-        else
-            throw 'Missing resources for "' + name + '" component. ' +
-                    'See "http://www.icesoft.org/wiki/display/ICE/mandatoryResourceConfiguration" ' +
-                    'for more details.';
+        var component = ice.ace.create(name, args);
+        registerComponent(component);
+        return component;
     }
+    else
+        return elem.attr('widget');
+}
+
+ice.ace.create = function(name, args) {
+    if (ice.ace.jq.isFunction(ice.ace[name])) {
+        var temp = function(){}, // constructor-less duplicate class
+                inst, ret;
+        temp.prototype = ice.ace[name].prototype;
+        inst = new temp; // init constructor-less class
+        ret = ice.ace[name].apply(inst, args); // apply original constructor
+        ret = Object(ret) === ret ? ret : inst;
+        return ret;
+    }
+    else
+        throw 'Missing resources for "' + name + '" component. ' +
+                'See "http://www.icesoft.org/wiki/display/ICE/mandatoryResourceConfiguration" ' +
+                'for more details.';
 };
 
 ice.ace.addSubmitParam = function(parent, name, value) {

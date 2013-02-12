@@ -320,6 +320,7 @@ public class ListRenderer extends CoreRenderer {
         String clientId = component.getClientId(context);
 
         writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_script", null);
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
 
