@@ -95,39 +95,36 @@ ice.ace.Tree.prototype.tearDownSelection = function() {
 };
 
 ice.ace.Tree.prototype.setupReordering = function () {
-    var self = this,
-        sortConfig = {
-            connectWith:this.sortableTarget,
+    var self = this;
 
-            receive:function (event, ui) {
-                // Prevent bugged double submit
-                if (!self.droppedItemSameParent(ui.item)) {
-                    var newParent = ice.ace.jq(this).closest('.if-node-cnt, .if-tree'),
-                    source = ice.ace.jq(ui.item),
-                    index = source.index();
-                    self.sendReorderingRequest(source, newParent, index);
-                }
-            },
-            update:function (event, ui) {
-                if (self.droppedItemSameParent(ui.item)) {
-                    var parent = ice.ace.jq(this).closest('.if-node-cnt, .if-tree'),
-                        source = ice.ace.jq(ui.item);
-                        index = source.index();
-                    self.sendReorderingRequest(source, parent, index, self.cfg.indexIds);
-                }
+    this.sortConfig = {
+        connectWith:this.sortableTarget,
+
+        receive:function (event, ui) {
+            // Prevent bugged double submit
+            if (!self.droppedItemSameParent(ui.item)) {
+                var newParent = ice.ace.jq(this).closest('.if-node-cnt, .if-tree'),
+                source = ice.ace.jq(ui.item),
+                index = source.index();
+                self.sendReorderingRequest(source, newParent, index);
             }
-        };
-
-    var refreshSortability = function() {
-        ice.ace.jq(this).sortable(sortConfig);
+        },
+        update:function (event, ui) {
+            if (self.droppedItemSameParent(ui.item)) {
+                var parent = ice.ace.jq(this).closest('.if-node-cnt, .if-tree'),
+                    source = ice.ace.jq(ui.item);
+                    index = source.index();
+                self.sendReorderingRequest(source, parent, index, self.cfg.indexIds);
+            }
+        }
     }
 
-    this.element
-        .on("dragenter", this.sortableTarget+':not(.ui-sortable)', refreshSortability)
-        .on("mouseenter", this.sortableTarget+':not(.ui-sortable)', refreshSortability);
-
-    this.element.find(this.sortableTarget).andSelf().sortable(sortConfig);
+    this.element.find(this.sortableTarget).andSelf().sortable(this.sortConfig);
 };
+
+ice.ace.Tree.prototype.refreshSort = function(e) {
+    this.element.find(this.sortableTarget+':not(.ui-sortable)').sortable(this.sortConfig);
+}
 
 ice.ace.Tree.prototype.reindexSiblings = function(source) {
     source.siblings().andSelf().each(function(i, val) {

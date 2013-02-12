@@ -26,6 +26,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.lang.String;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -74,7 +75,7 @@ public class TreeRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         Tree tree = (Tree) component;
-        TreeRendererContext renderContext = new TreeRendererContext(tree);
+        TreeRendererContext renderContext = new TreeRendererContext(tree, resolveWidgetVar(tree));
         ResponseWriter writer = facesContext.getResponseWriter();
 
         openContainerElement(writer, facesContext, renderContext);
@@ -122,7 +123,7 @@ public class TreeRenderer extends CoreRenderer {
         Tree tree = renderContext.getTree();
         KeySegmentConverter converter = tree.getKeyConverter();
         String clientId  = tree.getClientId(facesContext);
-        String widgetVar = resolveWidgetVar(tree);
+        String widgetVar = renderContext.getWidgetVar();
         boolean selection = renderContext.isSelection();
         boolean expansion = renderContext.isExpansion();
         boolean reordering = renderContext.isReordering();
@@ -186,6 +187,7 @@ public class TreeRenderer extends CoreRenderer {
         String nodeClass = NODE_CLASS;
         String nodeWrapperClass = NODE_WRAPPER_CLASS;
         String dotSource = renderContext.getDotURL();
+        String widgetVar = renderContext.getWidgetVar();
         boolean expanded = state.isExpanded();
         boolean isClientExpansion = renderContext.getExpansionMode().isClient();
 
@@ -251,6 +253,14 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement(HTML.TR_ELEM);
         // End node
         writer.endElement(HTML.TBODY_ELEM);
+
+        if (renderContext.isReordering()) {
+            writer.startElement(HTML.SCRIPT_ELEM, null);
+            writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+            writer.write("window['"+widgetVar+"'].refreshSort();");
+            writer.endElement(HTML.SCRIPT_ELEM);
+        }
+
         writer.endElement(HTML.TABLE_ELEM);
     }
 
