@@ -99,15 +99,16 @@ public class SelectMenuRenderer extends InputRenderer {
 		// root
         writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", selectMenu.getStyleClass(), null);
+		writer.writeAttribute("class", "ui-select" + selectMenu.getStyleClass(), null);
 
 		writer.startElement("span", null);
-		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default", null);
+		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value", null);
         writer.writeAttribute("style", "display: inline-block; width:100px; height:20px; padding-bottom: 2px;", null);
 		writer.writeAttribute("tabindex", "0", null);
 		
 		// text span
 		writer.startElement("span", null);
+		writer.writeAttribute("style", "display: inline-block; overflow: hidden;", null);
 		writer.endElement("span");
 		
 		// down arrow span
@@ -176,7 +177,7 @@ public class SelectMenuRenderer extends InputRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", divId, null);
-        writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all", null);
+        writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all ui-select-list", null);
         writer.writeAttribute("style", "display:none;z-index:500;", null);
         writer.endElement("div");
 
@@ -208,7 +209,8 @@ public class SelectMenuRenderer extends InputRenderer {
             .item(clientId)
             .item(divId)
             .item("ui-widget-content")
-            .item("ui-state-active")
+            .item("ui-state-hover")
+			.item("ui-state-active")
             .item(selectMenu.getHeight())
 			.item(selectMenu.getRows())
             .beginMap()
