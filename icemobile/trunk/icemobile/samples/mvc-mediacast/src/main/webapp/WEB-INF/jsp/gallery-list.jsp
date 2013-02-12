@@ -52,4 +52,4 @@
         </mobi:outputListItem>
     </c:forEach>
 </mobi:outputList>
-<push:register group="photos" callback="function(){getGalleryUpdate();}"/>
+<push:register group="photos" callback="function(){getGalleryUpdate();}"/> 
