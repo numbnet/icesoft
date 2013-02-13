@@ -42,14 +42,14 @@
                     <h:selectOneRadio id="effectIn" required="true" value="#{contextMenuEffect.effectName}">
                         <f:selectItems value="#{contextMenuEffect.availableEffects}"/>
                     </h:selectOneRadio>
-                    <h:message for="effectIn"/>
+                    <ace:message for="effectIn"/>
 
                     <h:outputLabel for="durationIn" value="Effect Duration (50-2000 milliseconds):"/>
                     <h:inputText id="durationIn" value="#{contextMenuEffect.effectDuration}"
                                  required="true" size="4" maxlength="4">
                          <f:validateLongRange minimum="50" maximum="2000"/>
                     </h:inputText>
-                    <h:message id="msg" for="durationIn"/>
+                    <ace:message id="msg" for="durationIn"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>

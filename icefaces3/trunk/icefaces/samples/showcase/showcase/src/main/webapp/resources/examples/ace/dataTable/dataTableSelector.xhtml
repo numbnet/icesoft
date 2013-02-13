@@ -42,15 +42,15 @@
                                   valueChangeListener="#{dataTableSelector.changedMode}">
                       <f:selectItems value="#{dataTableSelector.availableModes}"/>
                 </h:selectOneRadio>
-                <h:message id="modeInMsg" for="modeIn"/>
+                <ace:message id="modeInMsg" for="modeIn"/>
                 
                 <h:outputLabel for="clickIn" value="Double Click to Select:"/>
                 <h:selectBooleanCheckbox id="clickIn" value="#{dataTableSelector.dblClick}"/>
-                <h:message id="clickInMsg" for="clickIn"/>
+                <ace:message id="clickInMsg" for="clickIn"/>
                 
                 <h:outputLabel for="instantIn" value="Instant Status Update via Ajax:"/>
                 <h:selectBooleanCheckbox id="instantIn" value="#{dataTableSelector.instantUpdate}"/>
-                <h:message id="instantInMsg" for="instantIn"/>
+                <ace:message id="instantInMsg" for="instantIn"/>
             </h:panelGrid>
         </h:form>
         

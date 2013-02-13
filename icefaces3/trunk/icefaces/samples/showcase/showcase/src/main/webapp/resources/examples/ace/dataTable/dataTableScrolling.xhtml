@@ -38,7 +38,7 @@
             <h:panelGrid columns="3">
                 <h:outputLabel for="scrollingIn" value="Enable Scrolling:"/>
                 <h:selectBooleanCheckbox id="scrollingIn" value="#{dataTableScrolling.scrolling}"/>
-                <h:message id="scrollMsg" for="scrollingIn"/>
+                <ace:message id="scrollMsg" for="scrollingIn"/>
                 
                 <h:outputLabel for="heightIn" value="Table Height (in pixels):"/>
                 <h:inputText id="heightIn" value="#{dataTableScrolling.height}"
@@ -46,7 +46,7 @@
                              disabled="#{!dataTableScrolling.scrolling}">
                      <f:validateLongRange minimum="50" maximum="500"/>
                 </h:inputText>
-                <h:message id="heightMsg" for="heightIn"/>
+                <ace:message id="heightMsg" for="heightIn"/>
             </h:panelGrid>
         </h:form>
     

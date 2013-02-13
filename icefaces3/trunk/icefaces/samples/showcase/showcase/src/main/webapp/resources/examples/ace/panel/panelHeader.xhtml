@@ -39,23 +39,23 @@
             <h:panelGrid columns="3">
                 <h:outputLabel for="headerOn" value="Enable Header:"/>
                 <h:selectBooleanCheckbox id="headerOn" value="#{panelHeader.headerEnable}"/>
-                <h:message for="headerOn"/>
+                <ace:message for="headerOn"/>
                 
                 <h:outputLabel for="headerIn" value="Header Text:"/>
                 <h:inputText id="headerIn" value="#{panelHeader.headerText}"
                              required="true" maxlength="255"
                              disabled="#{!panelHeader.headerEnable}"/>
-                <h:message id="headerInMsg" for="headerIn"/>
+                <ace:message id="headerInMsg" for="headerIn"/>
                 
                 <h:outputLabel for="footerOn" value="Enable Footer:"/>
                 <h:selectBooleanCheckbox id="footerOn" value="#{panelHeader.footerEnable}"/>
-                <h:message for="footerOn"/>
+                <ace:message for="footerOn"/>
                 
                 <h:outputLabel for="footerIn" value="Footer Text:"/>
                 <h:inputText id="footerIn" value="#{panelHeader.footerText}"
                              required="true" maxlength="255"
                              disabled="#{!panelHeader.footerEnable}"/>
-                <h:message id="footerInMsg" for="footerIn"/>                
+                <ace:message id="footerInMsg" for="footerIn"/>                
             </h:panelGrid>
         </h:form>
     

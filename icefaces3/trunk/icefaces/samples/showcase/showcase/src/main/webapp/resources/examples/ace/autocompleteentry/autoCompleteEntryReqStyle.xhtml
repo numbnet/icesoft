@@ -48,7 +48,7 @@
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
-                        <h:message for="reqColor"/>
+                        <ace:message for="reqColor"/>
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <h:selectOneMenu id="optColor" value="#{autoCompleteEntryReqStyleBean.optColor}"
@@ -58,7 +58,7 @@
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
-                        <h:message for="optColor"/>
+                        <ace:message for="optColor"/>
                 </h:panelGrid>
             </ace:panel>
        </h:form>
@@ -79,7 +79,7 @@
                         <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
 						<ace:ajax event="blur" />
                     </ace:autoCompleteEntry>
-                    <h:message for="autoComplete1" />
+                    <ace:message for="autoComplete1" />
                     <ace:autoCompleteEntry id="autoComplete2"
                                          value="#{autoCompleteEntryReqStyleBean.selectedText2}"
                                          rows="10" width="300"
