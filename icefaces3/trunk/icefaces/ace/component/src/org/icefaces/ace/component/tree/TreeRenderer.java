@@ -188,6 +188,7 @@ public class TreeRenderer extends CoreRenderer {
         String nodeWrapperClass = NODE_WRAPPER_CLASS;
         String dotSource = renderContext.getDotURL();
         String widgetVar = renderContext.getWidgetVar();
+        String id = tree.getClientId(facesContext);
         boolean expanded = state.isExpanded();
         boolean isClientExpansion = renderContext.getExpansionMode().isClient();
 
@@ -199,7 +200,7 @@ public class TreeRenderer extends CoreRenderer {
 
         // Encode 'table' container
         writer.startElement(HTML.TABLE_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, tree.getClientId(facesContext), null);
+        writer.writeAttribute(HTML.ID_ATTR, id, null);
         writer.writeAttribute(HTML.CLASS_ATTR, NODE_CONTAINER_CLASS, null);
         writer.startElement(HTML.TBODY_ELEM, null);
 
@@ -257,7 +258,7 @@ public class TreeRenderer extends CoreRenderer {
         if (renderContext.isReordering()) {
             writer.startElement(HTML.SCRIPT_ELEM, null);
             writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-            writer.write("window['"+widgetVar+"'].refreshSort();");
+            writer.write("if (window['"+widgetVar+"']) "+widgetVar+".rs('"+id+"');");
             writer.endElement(HTML.SCRIPT_ELEM);
         }
 

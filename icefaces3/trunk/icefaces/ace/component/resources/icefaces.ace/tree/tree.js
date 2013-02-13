@@ -122,9 +122,11 @@ ice.ace.Tree.prototype.setupReordering = function () {
     this.element.find(this.sortableTarget).andSelf().sortable(this.sortConfig);
 };
 
-ice.ace.Tree.prototype.refreshSort = function(e) {
-    this.element.find(this.sortableTarget+':not(.ui-sortable)').sortable(this.sortConfig);
+ice.ace.Tree.prototype.refreshSort = function(id) {
+    ice.ace.jq(ice.ace.escapeClientId(id))
+        .closest(this.sortableTarget).not('.ui-sortable').sortable(this.sortConfig);
 }
+ice.ace.Tree.prototype.rs = ice.ace.Tree.prototype.refreshSort;
 
 ice.ace.Tree.prototype.reindexSiblings = function(source) {
     source.siblings().andSelf().each(function(i, val) {
