@@ -25,17 +25,17 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.logging.Logger;
 
 import org.icefaces.util.EnvUtils;
 
 /**
  * Consolidates the push functionality used by the FileEntry component, for
  * pushing the progress information to the browser.
- *
- * TODO: Use reflection
- * TODO: Handle portlets scenario
  */
 class PushUtils {
+    private static Logger log = Logger.getLogger(FileEntry.class.getName()+".push");
+
     static String PROGRESS_PREFIX =
             "org.icefaces.ace.component.fileentry.progress.";
     private static final String COMPONENT_ATTRIBUTE_PROGRESS_RESOURCE_PATH =
@@ -128,12 +128,17 @@ class PushUtils {
         final String attribKey = COMPONENT_ATTRIBUTE_PROGRESS_PUSH_ID +
                 comp.getClientId(context);
         String pushId = (String) comp.getAttributes().get(attribKey);
+        log.finer(
+            "PushUtils.getPushId()  attribKey: " + attribKey + "\n" +
+            "PushUtils.getPushId()     pushId: " + pushId);
         if (pushId == null) {
             pushId = createPushId();
+            log.finer("PushUtils.getPushId()      *shId: " + pushId);
             if (pushId != null) {
                 comp.getAttributes().put(attribKey, pushId);
 
                 String groupName = getPushGroupName(context, comp);
+                log.finer("PushUtils.getPushId()      group: " + groupName);
                 addPushGroupMember(groupName, pushId);
             }
         }
@@ -161,6 +166,7 @@ class PushUtils {
         if (groupName == null) {
             String identifier = FileEntry.getGloballyUniqueComponentIdentifier(
                     context, comp.getClientId(context));
+            log.finer("PushUtils.getPushGroupName()  groupName was null - identifier: " + identifier);
             groupName = PROGRESS_GROUP_NAME_PREFIX + identifier;
             comp.getAttributes().put(attribKey, groupName);
         }

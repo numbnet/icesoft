@@ -32,8 +32,11 @@ import javax.faces.component.UIForm;
 import java.util.Iterator;
 import java.util.Map;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class FileEntryFormSubmit implements SystemEventListener {
+    private static Logger log = Logger.getLogger(FileEntry.class.getName()+".script");
+
     static final String IFRAME_ID = "hiddenIframe";
     private static final String ID_SUFFIX = "_captureFileOnsubmit";
     private static final String AJAX_FORCED_VIEWS = 
@@ -46,12 +49,13 @@ public class FileEntryFormSubmit implements SystemEventListener {
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-//System.out.println("FileEntryFormSubmit.processEvent()  event: " + event);
         FacesContext context = FacesContext.getCurrentInstance();
-//System.out.println("FileEntryFormSubmit.processEvent()  phase: " + context.getCurrentPhaseId());
-
         UIForm form = (UIForm) event.getSource();
-//System.out.println("FileEntryFormSubmit.processEvent()  form.clientId: " + form.getClientId(context));
+        log.finer(
+            "FileEntryFormSubmit.processEvent()\n" +
+            "  event: " + event + "\n" +
+            "  phase: " + context.getCurrentPhaseId() + "\n" +
+            "  form.clientId: " + form.getClientId(context));
 
         if (!partialStateSaving)  {
             for (UIComponent child : form.getChildren())  {
@@ -65,10 +69,10 @@ public class FileEntryFormSubmit implements SystemEventListener {
         // See if there is at least one FileEntry component in the form,
         // which should alter the form submission method.
         if (!foundFileEntry(form)) {
-//System.out.println("FileEntryFormSubmit  !foundFileEntry");
+            log.finer("FileEntryFormSubmit  !foundFileEntry");
             return;
         }
-//System.out.println("FileEntryFormSubmit  foundFileEntry!");
+        log.finer("FileEntryFormSubmit  foundFileEntry!");
 
         forceAjaxOnView(context);
         form.getAttributes().put(FormSubmit.DISABLE_CAPTURE_SUBMIT, "true");
@@ -80,7 +84,7 @@ public class FileEntryFormSubmit implements SystemEventListener {
         UIOutput output = new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
                 String clientId = getClientId(context);
-//System.out.println("RENDER IFRAME  clientId: " + clientId);
+                log.finer("RENDER IFRAME  clientId: " + clientId);
                 ResponseWriter writer = context.getResponseWriter();
                 writer.startElement("iframe", this);
                 writer.writeAttribute("id", clientId, "clientId");

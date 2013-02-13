@@ -31,11 +31,10 @@ import java.text.MessageFormat;
  * Writer to add common javascript blurb to form as a &lt;script&gt; element
  */
 public class FormScriptWriter extends UIOutput {
+    private static Logger log = Logger.getLogger(FileEntry.class.getName()+".script");
 
     private String disablingAttribute;
     private String id;
-
-    private static final Logger Log = Logger.getLogger(FormScriptWriter.class.getName());
 
     /**
      * Write a snippet of un-escaped javascript. It is apparently unnecessary
@@ -68,7 +67,7 @@ public class FormScriptWriter extends UIOutput {
         String formClientId = form.getClientId(context);
         if (disablingAttribute != null && disablingAttribute.length() > 0) {
             if (form.getAttributes().get(disablingAttribute) != null) {
-//System.out.println("FormScriptWriter  "+disablingAttribute+"  " + formClientId);
+                log.finest("FormScriptWriter  "+disablingAttribute+"  " + formClientId);
                 return;
             }
         }
@@ -78,9 +77,11 @@ public class FormScriptWriter extends UIOutput {
         String progressPushId = "";
         if (PushUtils.isPushPresent()) {
             progressResourcePath = PushUtils.getProgressResourcePath(context, form);
-//System.out.println("FormScriptWriter  progressResourcePath: " + progressResourcePath);
             progressPushId = PushUtils.getPushId(context, form);
-//System.out.println("FormScriptWriter  progressPushId: " + progressPushId);
+            log.finest(
+                "FormScriptWriter\n" +
+                "  progressResourcePath: " + progressResourcePath + "\n" +
+                "  progressPushId: " + progressPushId);
         }
 
         String iframeClientIdSuffix =
@@ -89,7 +90,7 @@ public class FormScriptWriter extends UIOutput {
         String script = "ice.ace.fileentry.captureFormOnsubmit('" + formClientId +
                 "', '" + formClientId + iframeClientIdSuffix + "', '" +
                 progressPushId + "', '" + progressResourcePath + "');";
-//System.out.println("FormScriptWriter  script: " + script);
+        log.finer("FormScriptWriter  script: " + script);
 
         ScriptWriter.insertScript(context, this, script, getClientId(context));
     }

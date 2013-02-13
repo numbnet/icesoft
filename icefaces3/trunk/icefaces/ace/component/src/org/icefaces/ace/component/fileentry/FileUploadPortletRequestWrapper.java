@@ -81,7 +81,7 @@ public class FileUploadPortletRequestWrapper extends PortletRequestWrapper {
     }
 
     public String getContentType() {
-        return FileEntryPhaseListener.APPLICATION_FORM_URLENCODED;
+        return FileEntryResourceHandler.APPLICATION_FORM_URLENCODED;
     }
 
 }

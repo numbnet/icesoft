@@ -25,11 +25,14 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 /**
  * The fileEntry progress information is accessed via a dynamic resource
  */
 public class ProgressResource extends Resource implements Serializable {
+    private static Logger log = Logger.getLogger(FileEntry.class.getName()+".push");
+
     private String uniqueIdentifier;
     private String progressInfo;
     private int deltaGottenPushed;
@@ -55,27 +58,30 @@ public class ProgressResource extends Resource implements Serializable {
         responseHeaders.put("Pragma", "no-cache");//HTTP 1.0
         responseHeaders.put("Expires", "0");//prevents proxy caching
         
-//System.out.println("PR.getResponseHeaders()  responseHeaders: " + responseHeaders);
+        log.finest("PR.getResponseHeaders()  responseHeaders: " + responseHeaders);
         return responseHeaders;
     }
 
     public String getRequestPath() {
-//System.out.println("PR.getRequestPath()  " + PushUtils.PROGRESS_PREFIX + uniqueIdentifier);
+        log.finest("PR.getRequestPath()  " + PushUtils.PROGRESS_PREFIX + uniqueIdentifier);
         return PushUtils.PROGRESS_PREFIX + uniqueIdentifier;
     }
 
     public URL getURL() {
-//System.out.println("PR.getURL()");
+        log.finest("PR.getURL()");
         return null;
     }
 
     public boolean userAgentNeedsUpdate(FacesContext facesContext) {
-//System.out.println("PR.userAgentNeedsUpdate()");
+        log.finest("PR.userAgentNeedsUpdate()");
         return true;
     }
 
     public InputStream getInputStream() {
-//System.out.println("PR.getInputStream()  progressInfo: " + progressInfo);
+        log.fine(
+            "PR.getInputStream()\n" +
+            "  progressInfo: " + progressInfo + "\n" +
+            "  uniqueIdentifier: " + uniqueIdentifier);
         deltaGottenPushed--;
         if (progressInfo == null) {
             return null;
@@ -84,7 +90,7 @@ public class ProgressResource extends Resource implements Serializable {
             byte[] progressBytes = progressInfo.getBytes("UTF-8");
             return new ByteArrayInputStream(progressBytes);
         } catch(UnsupportedEncodingException e) {
-//System.out.println("PR.getInputStream()  UnsupportedEncodingException: " + e);
+            log.fine("PR.getInputStream()  UnsupportedEncodingException: " + e);
         }
         return null;
     }
