@@ -173,7 +173,6 @@ if (!window.ice.ace['DataTables']) {
     $.browser['os'] = OSDetect.OS;
 })(ice.ace.jq);
 
-
 // Constructor
 ice.ace.DataTable = function (id, cfg) {
     this.id = id;
@@ -192,20 +191,7 @@ ice.ace.DataTable = function (id, cfg) {
     this.scrollLeft = 0;
     this.scrollTop = 0;
     this.currentPinRegionOffset = 0;
-
-    this.sortColumnSelector = this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column';
-    this.sortControlSelector = this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column > span > span.ui-sortable-control';
-    this.sortUpSelector = this.sortControlSelector + ' a.ui-icon-triangle-1-n';
-    this.sortDownSelector = this.sortControlSelector + ' a.ui-icon-triangle-1-s';
-    this.rowSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
-    this.cellSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td';
-    this.scrollBodySelector = this.jqId + ' > div.ui-datatable-scrollable-body';
-    this.filterSelector = this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter';
-    this.panelExpansionSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
-    this.rowExpansionSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
-    // 'link' will be replaced with the style class of the element in question
-    this.cellEditorSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor link, ' +
-            this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div > div.ui-row-editor link';
+    this.element = ice.ace.jq(this.jqId);
 
     var oldInstance = ice.ace.DataTables[this.id];
     var rowEditors = this.getRowEditors();
@@ -281,23 +267,36 @@ ice.ace.DataTable = function (id, cfg) {
     }
 }
 
+// Selectors
+ice.ace.DataTable.prototype.sortColumnSelector = ' > div > table > thead > tr > th > div.ui-sortable-column';
+ice.ace.DataTable.prototype.sortControlSelector = ' > div > table > thead > tr > th > div.ui-sortable-column > span > span.ui-sortable-control';
+ice.ace.DataTable.prototype.sortUpSelector = ice.ace.DataTable.sortControlSelector + ' a.ui-icon-triangle-1-n';
+ice.ace.DataTable.prototype.sortDownSelector = ice.ace.DataTable.sortControlSelector + ' a.ui-icon-triangle-1-s';
+ice.ace.DataTable.prototype.rowSelector = ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
+ice.ace.DataTable.prototype.cellSelector = ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td';
+ice.ace.DataTable.prototype.scrollBodySelector = ' > div.ui-datatable-scrollable-body';
+ice.ace.DataTable.prototype.filterSelector = ' > div > table > thead > tr > th > div > input.ui-column-filter';
+ice.ace.DataTable.prototype.panelExpansionSelector = ' > div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
+ice.ace.DataTable.prototype.rowExpansionSelector = ' > div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
+// 'link' will be replaced with the style class of the element in question
+ice.ace.DataTable.prototype.cellEditorSelector = ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor link, ' +
+    ' > div > table > tbody.ui-datatable-data > tr > td > div > div.ui-row-editor link';
+
 
 /* ########################################################################
    ########################## Event Binding & Setup #######################
    ######################################################################## */
 ice.ace.DataTable.prototype.unload = function() {
-    var jqSelf = ice.ace.jq(this.jqId);
-
     // Cleanup sort events
-    ice.ace.jq(this.sortColumnSelector).unbind("click").unbind("mousemove").unbind("mouseleave");
+    this.element.find(this.sortColumnSelector).unbind("click").unbind("mousemove").unbind("mouseleave");
 
-    var sortControls = ice.ace.jq(this.sortControlSelector);
+    var sortControls = this.element.find(this.sortControlSelector);
     sortControls.unbind("click mousemove mouseleave");
-    jqSelf.off('keypress', this.sortUpSelector);
-    jqSelf.off('keypress', this.sortDownSelector);
+    this.element.off('keypress', this.sortUpSelector);
+    this.element.off('keypress', this.sortDownSelector);
 
     // Clear selection events
-    jqSelf.off('mouseenter click dblclick', this.cellSelector)
+    this.element.off('mouseenter click dblclick', this.cellSelector)
             .off('mouseenter click dblclick', this.rowSelector);
 
     ice.ace.jq(this.cellSelector).first()
@@ -306,26 +305,26 @@ ice.ace.DataTable.prototype.unload = function() {
 
     // Clear scrolling
     ice.ace.jq(window).unbind('resize', this.scrollableResizeCallback);
-    ice.ace.jq(this.scrollBodySelector).unbind('scroll')
+    this.element.find(this.scrollBodySelector).unbind('scroll')
 
     // Clear filter events
-    ice.ace.jq(this.filterSelector).unbind('keypress').off('keyup');
+    this.element.find(this.filterSelector).unbind('keypress').off('keyup');
 
     // Clear panel expansion events
-    jqSelf.off('keyup click', this.panelExpansionSelector);
+    this.element.off('keyup click', this.panelExpansionSelector);
 
     // Clear row expansion events
-    jqSelf.off('keyup click', this.rowExpansionSelector);
+    this.element.off('keyup click', this.rowExpansionSelector);
 
     // Clear cell editor events
     var icoSel = this.cellEditorSelector.replace(/link/g, 'a.ui-icon-pencil');
-    jqSelf.off('click keyup', icoSel);
+    this.element.off('click keyup', icoSel);
 
     icoSel = this.cellEditorSelector.replace(/link/g, 'a.ui-icon-check');
-    jqSelf.off('click keyup', icoSel);
+    this.element.off('click keyup', icoSel);
 
     icoSel = this.cellEditorSelector.replace(/link/g, 'a.ui-icon-close');
-    jqSelf.off('click keyup', icoSel);
+    this.element.off('click keyup', icoSel);
 
     this.getRowEditors().closest('tr')
             .find(' > div.ui-cell-editor > span > input')
@@ -342,14 +341,14 @@ ice.ace.DataTable.prototype.unload = function() {
 
 ice.ace.DataTable.prototype.setupFilterEvents = function () {
     var _self = this;
-    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.filterSelector).unbind('keypress').bind('keypress', function (event) {
+    if (this.cfg.filterEvent == "enter") this.element.find(this.filterSelector).unbind('keypress').bind('keypress', function (event) {
         event.stopPropagation();
         if (event.which == 13) {
             _self.filter(event);
             return false; // Don't run form level enter key handling
         }
     });
-    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.filterSelector).off('keyup').on('keyup', function (event) {
+    else if (this.cfg.filterEvent == "change") this.element.find(this.filterSelector).off('keyup').on('keyup', function (event) {
         var _event = event;
         if (event.which == 8 || event.which == 13 || event.which > 40) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
@@ -366,7 +365,7 @@ ice.ace.DataTable.prototype.setupPaginator = function () {
 }
 
 ice.ace.DataTable.prototype.restoreSortState = function(savedState) {
-    ice.ace.jq(this.sortColumnSelector + ' a.ui-icon').removeClass('ui-toggled').fadeTo(0,0.33);
+    this.element.find(this.sortColumnSelector + ' a.ui-icon').removeClass('ui-toggled').fadeTo(0,0.33);
 
     this.sortOrder = savedState[0];
 
@@ -386,7 +385,7 @@ ice.ace.DataTable.prototype.saveSortState = function() {
         sortState = [];
 
     if (this.sortOrder.length == 0) {
-        ice.ace.jq(this.sortControlSelector).each(function () {
+        this.element.find(this.sortControlSelector).each(function () {
             var $this = ice.ace.jq(this);
             if (ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-n')[0]) == 1 ||
                     ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-s')[0]) == 1)
@@ -505,7 +504,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
 
     // Bind clickable header events
     if (_self.cfg.clickableHeaderSorting) {
-        ice.ace.jq(this.sortColumnSelector)
+        this.element.find(this.sortColumnSelector)
             .unbind('click').bind("click", function (event) {
                 var target = ice.ace.jq(event.target);
 
@@ -575,7 +574,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
     }
 
     // Bind clickable control events
-    ice.ace.jq(this.sortControlSelector)
+    this.element.find(this.sortControlSelector)
         .unbind('click').bind("click", function (event, altY, altMeta) {
             var $this = ice.ace.jq(this),
                 topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
@@ -691,8 +690,8 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
         selector = this.isCellSelectionEnabled()
             ? this.cellSelector
             : this.rowSelector,
-        $target = ice.ace.jq(selector),
-        $dt = ice.ace.jq(this.jqId);
+        $target = this.element.find(selector),
+        $dt = this.element;
 
     $target.css('cursor', 'pointer');
 
@@ -794,7 +793,7 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
     this.resizeScrolling();
 
     // Persist scrolling position if one has been loaded from previous instance
-    var scrollBody = ice.ace.jq(this.scrollBodySelector);
+    var scrollBody = this.element.find(this.scrollBodySelector);
     if (this.scrollTop) scrollBody.scrollTop(this.scrollTop);
     if (this.scrollLeft) scrollBody.scrollLeft(this.scrollLeft);
 
@@ -899,7 +898,7 @@ ice.ace.DataTable.prototype.setupResizableColumns = function () {
 
 ice.ace.DataTable.prototype.resizeScrolling = function () {
     var startTime = new Date().getTime(),
-        scrollableTable = ice.ace.jq(this.jqId);
+        scrollableTable = this.element;
 
     // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
@@ -2511,7 +2510,7 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function (element) {
 }
 
 ice.ace.DataTable.prototype.getRowEditors = function () {
-    return ice.ace.jq(this.cellEditorSelector.replace(/link/g, ''));
+    return this.element.find(this.cellEditorSelector.replace(/link/g, ''));
 }
 
 ice.ace.DataTable.prototype.setupCellEditorEvents = function (rowEditors) {
