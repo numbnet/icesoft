@@ -35,6 +35,7 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selec
 	this.element.id = this.id + "_input";
 	this.displayedValue = $element.find('span').get(0);
 	ice.ace.jq(this.displayedValue).css('width', $element.width() - 19);
+	this.downArrowButton = $element.find('div').eq(0);;
 	var $input = this.root.find('input[name="'+this.id+'_input"]');
 	this.input = $input.get(0);
 	this.input.id = this.id + "_input";
@@ -140,6 +141,7 @@ ice.ace.SelectMenu.prototype = {
         this.options.onShow = this.options.onShow ||
             function(element, update) {
                 try {
+					self.downArrowButton.addClass('ui-state-hover');
 					self.calculateListPosition();
                     ice.ace.jq(update).fadeIn(150)
                 } catch(e) {
@@ -148,6 +150,7 @@ ice.ace.SelectMenu.prototype = {
             };
         this.options.onHide = this.options.onHide ||
             function(element, update) {
+			self.downArrowButton.removeClass('ui-state-hover');
 			ice.ace.jq(update).fadeOut(150)
             };
 
@@ -166,18 +169,11 @@ ice.ace.SelectMenu.prototype = {
 		// ajax behaviors
 		if (behaviors) {
 			if (behaviors.behaviors) {
-				if (behaviors.behaviors.submit) {
-					this.ajaxSubmit = behaviors.behaviors.submit;
-					this.ajaxSubmit.source = this.ajaxSubmit.source + "_input";
+				if (behaviors.behaviors.change) {
+					this.ajaxValueChange = behaviors.behaviors.change;
 				}
 				if (behaviors.behaviors.blur) {
 					this.ajaxBlur = behaviors.behaviors.blur;
-				}
-				if (behaviors.behaviors.textChange) {
-					this.ajaxTextChange = behaviors.behaviors.textChange;
-				}
-				if (behaviors.behaviors.change) {
-					this.ajaxValueChange = behaviors.behaviors.change;
 				}
 			}
 		}
@@ -262,6 +258,7 @@ ice.ace.SelectMenu.prototype = {
     },
 
     hide: function() {
+		this.active = false;
         this.stopIndicator();
         if (ice.ace.jq(this.update).css('display') != 'none') this.options.onHide(this.element, this.update);
         if (this.iefix) ice.ace.jq(this.iefix).hide();
@@ -313,9 +310,9 @@ ice.ace.SelectMenu.prototype = {
 					setFocus('');
 					return;
                 case ice.ace.SelectMenu.keys.KEY_RETURN:
-                    var idx = this.selectEntry();
-                    this.getUpdatedChoices(true, event, idx);
-                    this.hide();
+					var idx = this.selectEntry();
+					this.getUpdatedChoices(true, event, idx);
+					this.hide();
 					event.stopPropagation();
 					event.preventDefault();
                     return;
@@ -376,16 +373,23 @@ ice.ace.SelectMenu.prototype = {
     },
 
     onClick: function(event) {
-		var element = ice.ace.jq(event.currentTarget).closest('div').get(0);
+		var $element = ice.ace.jq(event.currentTarget).closest('div');
+		var element = $element.get(0);
         this.index = element.autocompleteIndex;
         var idx = element.autocompleteIndex;
-        this.selectEntry();
-        this.getUpdatedChoices(true, event, idx);
-        this.hide();
+		if (!$element.hasClass('ui-state-disabled')) {
+			this.selectEntry();
+			this.getUpdatedChoices(true, event, idx);
+			this.hide();
+		} else {
+			if (this.hideObserver) clearTimeout(this.hideObserver);
+			if (this.observer) clearTimeout(this.observer);
+			if (this.blurObserver) clearTimeout(this.blurObserver);
+		}
     },
 
     onBlur: function(event) {
-        var input = ice.ace.jq(this.element);
+        //var input = ice.ace.jq(this.element);
         //if (ice.ace.jq.trim(input.val()) == "" && this.cfg.inFieldLabel) {
         //    input.val(this.cfg.inFieldLabel);
         //    input.addClass(this.cfg.inFieldLabelStyleClass);
@@ -404,14 +408,13 @@ ice.ace.SelectMenu.prototype = {
         }
         // needed to make click events working
 		var self = this;
-        setTimeout(function () { self.hide(); }, 250);
+        this.hideObserver = setTimeout(function () { self.hide(); }, 250);
         this.hasFocus = false;
         this.active = false;
 		setFocus('');
 		if (this.ajaxBlur) {
 			if (this.blurObserver) clearTimeout(this.blurObserver);
 			this.ajaxBlur.params = this.ajaxBlur.params || {};
-			this.ajaxBlur.params[this.id + '_hardSubmit'] = true;
 			var self = this;
 			this.blurObserver = setTimeout(function() { ice.ace.ab(self.ajaxBlur); }, 200);
 		}
@@ -430,11 +433,17 @@ ice.ace.SelectMenu.prototype = {
 		}
 		this.active = true;
 		this.updateNOW(this.content);
+		var self = this;
+		this.justFocused = true;
+		this.focusObserver = setTimeout(function() { self.justFocused = false; }, 150);
     },
 	
 	onElementClick: function(event) {
-			this.active = true;
+		if (this.active && !this.justFocused) {
+			this.hide();
+		} else {
 			this.updateNOW(this.content);
+		}
 	},
 
     render: function() {
@@ -451,12 +460,14 @@ ice.ace.SelectMenu.prototype = {
                     for (var ai = 0; ai < ar.length; ai++)
                         ice.ace.jq(this.getEntry(i)).addClass(ar[ai]);				
 				} else if (this.index == i) {
-                    ar = this.rowClass.split(" ");
-                    for (var ai = 0; ai < ar.length; ai++)
-                        ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]);
-                    ar = this.highlightedRowClass.split(" ");
-                    for (var ai = 0; ai < ar.length; ai++)
-                        ice.ace.jq(this.getEntry(i)).addClass(ar[ai]);
+					if (!ice.ace.jq(this.getEntry(i)).hasClass('ui-state-disabled')) {
+						ar = this.rowClass.split(" ");
+						for (var ai = 0; ai < ar.length; ai++)
+							ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]);
+						ar = this.highlightedRowClass.split(" ");
+						for (var ai = 0; ai < ar.length; ai++)
+							ice.ace.jq(this.getEntry(i)).addClass(ar[ai]);
+					}
                 } else {
                     ar = this.highlightedRowClass.split(" ");
                     for (var ai = 0; ai < ar.length; ai++)
@@ -476,17 +487,39 @@ ice.ace.SelectMenu.prototype = {
     },
 
     markPrevious: function() {
-        if (this.index > 0) this.index--
-        else this.index = this.entryCount - 1;
+		// we skip disabled entries
+		var found = false;
+		var i = this.index;
+		while (true) {
+			if (i > 0) i--
+			else i = this.entryCount - 1;
+			var entry = this.getEntry(i);
+			if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
+				found = true;
+				break;
+			}
+			if (i == this.index) break; // we did one full loop already
+			if (this.index == -1 && i == 0) break; // special case
+		}
+		if (found) this.index = i;
     },
 
     markNext: function() {
-        if (this.index == -1) {
-            this.index++;
-            return;
-        }
-        if (this.index < this.entryCount - 1) this.index++
-        else this.index = 0;
+		// we skip disabled entries
+		var found = false;
+		var i = this.index;
+		while (true) {
+			if (i < this.entryCount - 1) i++;
+			else i = 0;
+			var entry = this.getEntry(i);
+			if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
+				found = true;
+				break;
+			}
+			if (i == this.index) break; // we did one full loop already
+			if (this.index == -1 && i == this.entryCount) break; // special case
+		}
+		if (found) this.index = i;
     },
 
     getEntry: function(index) {
@@ -598,35 +631,12 @@ ice.ace.SelectMenu.prototype = {
 
 		if (this.observer) clearTimeout(this.observer);
 		if (this.blurObserver) clearTimeout(this.blurObserver);
-		if (isHardSubmit) {
-			if (this.ajaxValueChange || this.ajaxSubmit) {
-				var ajaxCfg = {};
-				var options = {params: {}};
-				options.params[this.id + '_hardSubmit'] = true;
-				options.params['ice.event.keycode'] = event.keyCode;
-				if (this.ajaxValueChange) {
-					ice.ace.jq.extend(ajaxCfg, this.ajaxValueChange, options);
-				} else {
-					ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
-				}
-				ice.ace.ab(ajaxCfg);
-			} else {
-				ice.s(event, this.input);
-			}
-		} else {
-			if (this.ajaxTextChange || this.ajaxSubmit) {
-				var ajaxCfg = {};
-				var options = {params: {}};
-				options.params['ice.event.keycode'] = event.keyCode;
-				if (this.ajaxTextChange) {
-					ice.ace.jq.extend(ajaxCfg, this.ajaxTextChange, options);
-				} else {
-					ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
-				}
-				ice.ace.ab(ajaxCfg);
-			} else {
-				ice.s(event, this.input);
-			}
+		if (this.ajaxValueChange) {
+			var ajaxCfg = {};
+			var options = {params: {}};
+			options.params['ice.event.keycode'] = event.keyCode;
+			ice.ace.jq.extend(ajaxCfg, this.ajaxValueChange, options);
+			ice.ace.ab(ajaxCfg);
 		}
     },
 	

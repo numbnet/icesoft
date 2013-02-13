@@ -50,24 +50,15 @@ import java.util.List;
 	@ICEResourceDependency(library = "icefaces.ace", name = "selectmenu/selectmenu.js")
 })
 @ClientBehaviorHolder(events = {
-/* asdf */
-	@ClientEvent( name="submit",
-		javadoc="Fired any time the value of the text input field is submitted to the server, either by typing a character, clicking on an option from the list, selecting an option with the keyboard, or pressing enter on the text field. If there are also textChange and/or valueChange events registered for this component, this event will not fire in those cases, since the other events are more specific and have precedence.",
-		tlddoc="Fired any time the value of the text input field is submitted to the server, either by typing a character, clicking on an option from the list, selecting an option with the keyboard, or pressing enter on the text field. If there are also textChange and/or valueChange events registered for this component, this event will not fire in those cases, since the other events are more specific and have precedence.",
+	@ClientEvent( name="valueChange",
+		javadoc="Fired whenever the value of the component changes.",
+		tlddoc="Fired whenever the value of the component changes.",
 		defaultRender="@all", defaultExecute="@all" ),
 	@ClientEvent( name="blur",
-		javadoc="Fired any time the text input field loses focus.",
-		tlddoc="Fired any time the text input field loses focus.",
-		defaultRender="@all", defaultExecute="@all" ),
-	@ClientEvent( name="textChange",
-		javadoc="Fired any time the user adds or removes characters from the text field by typing or by pasting text.",
-		tlddoc="Fired any time the user adds or removes characters from the text field by typing or by pasting text.",
-		defaultRender="@all", defaultExecute="@all" ),
-	@ClientEvent( name="valueChange",
-		javadoc="Fired when the user gives a more definite input for this component either by clicking on an option from the list, or selecting an option with the keyboard, or pressing enter on the text field.",
-		tlddoc="Fired when the user gives a more definite input for this component either by clicking on an option from the list, or selecting an option with the keyboard, or pressing enter on the text field.",
+		javadoc="Fired any time the component loses focus.",
+		tlddoc="Fired any time the component loses focus.",
 		defaultRender="@all", defaultExecute="@all" )},
-	defaultEvent="submit" )
+	defaultEvent="valueChange" )
 public class SelectMenuMeta extends UISelectOneMeta {
 
     @Property(tlddoc = "Style class name of the container element.", defaultValue="")
@@ -92,9 +83,12 @@ public class SelectMenuMeta extends UISelectOneMeta {
     private List listValue;
 	
 	@Property(expression = Expression.VALUE_EXPRESSION,
-            tlddoc="ValueExpression that specifies the property of the data object to use for filtering values. " +
-			"This only applies when listvar is used and the rendering is done by means of a facet.")
-	private Object filterBy;
+            tlddoc="ValueExpression that specifies the property of the data object to use as the value of the item for this component if it gets selected. This only applies when listvar is used and the rendering is done by means of a facet.")
+	private Object itemValue;
+	
+	@Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="ValueExpression that specifies the property of the data object to use for checking whether the item should be disabled or not. It must evaluate to a boolean value. This only applies when listvar is used and the rendering is done by means of a facet. When using f:selectItem(s), the disabled property on that object/tag is used for the same effect.")
+	private Object itemDisabled;
 	
 	// disabled and readOnly
 
