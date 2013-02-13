@@ -682,7 +682,7 @@ ice.ace.DataTable.prototype.tearDownSelectionEvents = function () {
         ? this.cellSelector
         : this.rowSelector;
 
-    ice.ace.jq(selector).die('dblclick').die('click').die('mouseenter');
+    ice.ace.jq(selector).off('dblclick').off('click').off('mouseenter');
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function () {
