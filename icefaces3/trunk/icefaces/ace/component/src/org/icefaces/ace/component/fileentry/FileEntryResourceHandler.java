@@ -27,6 +27,7 @@ import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.context.ExternalContext;
+import javax.faces.context.ExternalContextWrapper;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -50,11 +51,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FileEntryResourceHandler extends ResourceHandlerWrapper {
-    private static Logger log = Logger.getLogger(FileEntryResourceHandler.class.getName());
+    private static Logger log = Logger.getLogger(FileEntry.class.getName()+".multipart");
     private ResourceHandler wrapped;
 
     public FileEntryResourceHandler(ResourceHandler wrapped)  {
         this.wrapped = wrapped;
+        log.fine("FileEntryResourceHandler  wrapped: " + wrapped);
     }
 
     public ResourceHandler getWrapped() {
@@ -65,9 +67,15 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
     public boolean isResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
         String reqContentType = externalContext.getRequestContentType();
-        
-        if ( (null == reqContentType) ||
-                !reqContentType.startsWith("multipart") )  {
+        boolean contentTypeNotMultipart = ( (null == reqContentType) ||
+                !reqContentType.startsWith("multipart") );
+        log.finest(
+            "FileEntryResourceHandler\n" +
+            "  requestContextPath: " + externalContext.getRequestContextPath() + "\n" +
+            "  requestPathInfo   : " + externalContext.getRequestPathInfo() + "\n" +
+            "  requestContentType: " + reqContentType + "\n" +
+            "  multipart         : " + (!contentTypeNotMultipart));
+        if (contentTypeNotMultipart)  {
             return wrapped.isResourceRequest(facesContext);
         }
 
@@ -75,6 +83,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         HttpServletRequest request = EnvUtils.getSafeRequest(facesContext);
         boolean isPortlet = EnvUtils.instanceofPortletRequest(requestObject);
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        log.finer("FileEntryResourceHandler  isMultipart: " + isMultipart + "  isPortlet: " + isPortlet);
 
         if (isMultipart) {
             final ServletFileUpload uploader = new ServletFileUpload();
@@ -101,6 +110,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                         } else {
                             value = Streams.asString(item.openStream());
                         }
+                        log.finer("FileEntryResourceHandler  Form field name: " + name + "  value: " + value);
                         
                         List<String> parameterList = parameterListMap.get(name);
                         if (parameterList == null) {
@@ -218,15 +228,16 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         File file = null;
         long fileSizeRead = 0L;
         FileEntryStatus status = FileEntryStatuses.UPLOADING;
-        
-//System.out.println("vvvvvvvvvvvvvvv");
+
+        log.fine("vvvvvvvvvvvvvvv");
         try {
             String name = item.getName();
             String fieldName = item.getFieldName();
             String contentType = item.getContentType();
-//System.out.println("File  name: " + name);
-//System.out.println("File  fieldName: " + fieldName);
-//System.out.println("File  contentType: " + contentType);
+            log.fine(
+                "File  name: " + name + "\n" +
+                "File  fieldName: " + fieldName + "\n" +
+                "File  contentType: " + contentType);
 
             // IE gives us the whole path on the client, but we just
             //  want the client end file name, not the path
@@ -234,7 +245,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
             if (name != null && name.length() > 0) {
                 fileName = trimInternetExplorerPath(name);
             }
-//System.out.println("File    IE adjusted fileName: " + fileName);
+            log.fine("File    IE adjusted fileName: " + fileName);
             
             // When no file name is given, that means the user did
             // not upload a file
@@ -243,14 +254,14 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                 config = FileEntry.retrieveConfigFromPreviousLifecycle(facesContext, identifier);
                 if (config != null) {
                     // config being null might be indicative of a non-ICEfaces' file upload component in the form
-    //System.out.println("File    config: " + config);
+                    log.fine("File    config: " + config);
 
                     results = clientId2Results.get(config.getClientId());
                     if (results == null) {
                         results = new FileEntryResults(config.isViaCallback());
                         clientId2Results.put(config.getClientId(), results);
                     }
-    //System.out.println("File    results: " + results);
+                    log.fine("File    results: " + results);
 
                     fileInfo = new FileEntryResults.FileInfo();
                     fileInfo.begin(fileName, contentType);
@@ -270,14 +281,15 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                             }
                         }
                     }
-    //System.out.println("File    callback: " + callback);
+                    log.fine("File    callback: " + callback);
 
                     long availableTotalSize = results.getAvailableTotalSize(config.getMaxTotalSize());
-    //System.out.println("File    availableTotalSize: " + availableTotalSize);
                     long availableFileSize = config.getMaxFileSize();
-    //System.out.println("File    availableFileSize: " + availableFileSize);
                     int maxFileCount = config.getMaxFileCount();
-    //System.out.println("File    maxFileCount: " + maxFileCount);
+                    log.finer(
+                        "File    availableTotalSize: " + availableTotalSize + "\n" +
+                        "File    availableFileSize: " + availableFileSize + "\n" +
+                        "File    maxFileCount: " + maxFileCount);
                     if (results.getFiles().size() >= maxFileCount) {
                         status = FileEntryStatuses.MAX_FILE_COUNT_EXCEEDED;
                         fileInfo.prefail(status);
@@ -310,7 +322,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                         else {
                             String folder = calculateFolder(facesContext, config);
                             file = makeFile(config, folder, fileName);
-    //System.out.println("File    file: " + file);
+                            log.fine("File    file: " + file);
                             output = new FileOutputStream(file);
                         }
 
@@ -349,9 +361,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                                     }
                                 }
                             }
-    //System.out.println("File    fileSizeRead: " + fileSizeRead);
-    //if (overQuota)
-    //  System.out.println("File    overQuota  status: " + status);
+                            log.fine("File    fileSizeRead: " + fileSizeRead);
                             if (status == FileEntryStatuses.UPLOADING) {
                                 status = FileEntryStatuses.SUCCESS;
                             }
@@ -369,14 +379,14 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                 }
             }
             else { // If no file name specified
-//System.out.println("File    UNSPECIFIED_NAME");
+                log.fine("File    UNSPECIFIED_NAME");
                 status = FileEntryStatuses.UNSPECIFIED_NAME;
                 InputStream in = item.openStream();
                 while (in.read(buffer) >= 0) {}
             }
         }
         catch(Exception e) {
-//System.out.println("File    Exception: " + e);
+            log.fine("File    Exception: " + e);
             if (status == FileEntryStatuses.UPLOADING ||
                     status == FileEntryStatuses.SUCCESS) {
                 status = FileEntryStatuses.INVALID;
@@ -387,14 +397,14 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         }
 
         if (file != null && !status.isSuccess()) {
-//System.out.println("File    Unsuccessful file being deleted");
+            log.fine("File    Unsuccessful file being deleted");
             file.delete();
             file = null;
         }
         
-//System.out.println("File    Ending  status: " + status);
+        log.fine("File    Ending  status: " + status);
         if (results != null && fileInfo != null) {
-//System.out.println("File    Have results and fileInfo to fill-in");
+            log.fine("File    Have results and fileInfo to fill-in");
             fileInfo.finish(file, fileSizeRead, status);
             results.addCompletedFile(fileInfo);
             if (callback != null) {
@@ -407,20 +417,20 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                             facesContext, config.getClientId(), e);
                 }
             }
-//System.out.println("File    Added completed file");
+            log.fine("File    Added completed file");
         }
-//System.out.println("^^^^^^^^^^^^^^^");
+        log.fine("^^^^^^^^^^^^^^^");
     }
 
     protected static FileEntryCallback evaluateCallback(
             FacesContext facesContext, FileEntryConfig config) {
         String callbackEL = config.getCallbackEL();
-//System.out.println("File    evaluateCallback()  callbackEL: " + callbackEL);
+        log.finer("File    evaluateCallback()  callbackEL: " + callbackEL);
         FileEntryCallback callback = null;
         try {
             callback = facesContext.getApplication().evaluateExpressionGet(
                     facesContext, callbackEL, FileEntryCallback.class);
-//System.out.println("File    evaluateCallback()  callback: " + callback);
+            log.finer("File    evaluateCallback()  callback: " + callback);
             if (callbackEL != null && callback == null &&
                     facesContext.isProjectStage(ProjectStage.Development)) {
                 log.warning("For the fileEntry component with the clientId " +
@@ -454,14 +464,14 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         // absolutePath takes precedence over relativePath
         if (config.getAbsolutePath() != null && config.getAbsolutePath().length() > 0) {
             folder = config.getAbsolutePath();
-//System.out.println("File    Using absolutePath: " + folder);
+            log.finer("File    Using absolutePath: " + folder);
         }
         else {
             folder = CoreUtils.getRealPath(facesContext, config.getRelativePath());
-//System.out.println("File    Using relativePath: " + folder);
+            log.finer("File    Using relativePath: " + folder);
         }
         if (folder == null) {
-//System.out.println("File    folder is null");
+            log.finer("File    folder is null");
             folder = "";
         }
 
@@ -473,7 +483,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                     folder = folder + FILE_SEPARATOR;
                 }
                 folder = folder + sessionId;
-//System.out.println("File    Using sessionSubdir: " + folder);
+                log.finer("File    Using sessionSubdir: " + folder);
             }
         }
         return folder;
@@ -488,11 +498,11 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
             folderFile.mkdirs();
         if (config.isUseOriginalFilename()) {
             file = new File(folderFile, fileName);
-//System.out.println("File    original  file: " + file);
+            log.finer("File    original  file: " + file);
         }
         else {
             file = File.createTempFile("ice_file_", null, folderFile);
-//System.out.println("File    sanitise  file: " + file);
+            log.finer("File    sanitise  file: " + file);
         }
         return file;
     }
@@ -534,11 +544,10 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         }
 
         public String getHeader(String name) {
-//System.out.println("getHeader()  " + name);
+            log.finest("getHeader()  " + name);
             if (name != null) {
                 if (name.equals(FACES_REQUEST)) {
-//System.out.println("getHeader()  FACES_REQUEST -> PARTIAL_AJAX");
-//Thread.dumpStack();
+                    log.finest("getHeader()  FACES_REQUEST -> PARTIAL_AJAX");
                     return PARTIAL_AJAX;
                 }
                 else if (name.equals(CONTENT_TYPE)) {
@@ -549,12 +558,12 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         }
 
         public java.util.Enumeration<String> getHeaders(java.lang.String name) {
-//System.out.println("getHeaders()  " + name);
+            log.finest("getHeaders()  " + name);
             if (name != null) {
                 if (name.equals(FACES_REQUEST)) {
                     Vector<String> list = new Vector<String>(1);
                     list.add(PARTIAL_AJAX);
-//System.out.println("getHeader()  FACES_REQUEST -> PARTIAL_AJAX");
+                    log.finest("getHeader()  FACES_REQUEST -> PARTIAL_AJAX");
                     return list.elements();
                 }
                 else if (name.equals(CONTENT_TYPE)) {

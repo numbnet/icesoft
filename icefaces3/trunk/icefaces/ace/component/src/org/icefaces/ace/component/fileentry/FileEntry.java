@@ -34,8 +34,11 @@ import javax.el.MethodExpression;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileEntry extends FileEntryBase {
+    private static Logger log = Logger.getLogger(FileEntry.class.getName());
     private static final String RESULTS_KEY = "org.icefaces.ace.component.fileEntry.results";
     private static final String EVENT_KEY = "org.icefaces.ace.component.fileEntry.events";
 
@@ -51,9 +54,8 @@ public class FileEntry extends FileEntryBase {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             if (facesContext.isProjectStage(ProjectStage.Development) ||
                 facesContext.isProjectStage(ProjectStage.UnitTest)) {
-                System.out.println("Problem setting results property on " +
-                    "FileEntry component: " + e);
-                e.printStackTrace();
+                log.log(Level.WARNING, "Problem setting results property on " +
+                    "FileEntry component", e);
             }
             throw e;
         }
@@ -135,7 +137,7 @@ public class FileEntry extends FileEntryBase {
             isRequired(),
             resPath,
             groupName);
-//System.out.println("FileEntry.storeConfigForNextLifecycle()  config: " + config);
+        log.finer("FileEntry.storeConfigForNextLifecycle()  config: " + config);
         Object sessionObj = facesContext.getExternalContext().getSession(false);
         if (sessionObj != null) {
             synchronized(sessionObj) {
@@ -205,7 +207,7 @@ public class FileEntry extends FileEntryBase {
      * Invoked by processDecodes(FacesContext) or processValidators(FacesContext)
      */
     protected void validateResults(FacesContext facesContext) {
-//System.out.println("FileEntry.validateResults()  clientId: " + getClientId(facesContext));
+        log.finer("FileEntry.validateResults()  clientId: " + getClientId(facesContext));
         // The current lifecycle results. If no files were uploaded
         // this lifecycle, then this is null. Different from getResults(),
         // which may be from a previous lifecycle.
@@ -216,7 +218,7 @@ public class FileEntry extends FileEntryBase {
         if (results != null) {
             for(FileEntryResults.FileInfo fi : results.getFiles()) {
                 if (!fi.isSaved()) {
-//System.out.println("FileEntry.validateResults()    FAILED  file: " + fi);
+                    log.finer("FileEntry.validateResults()    FAILED  file: " + fi);
                     failed = true;
                     break;
                 }
@@ -228,11 +230,11 @@ public class FileEntry extends FileEntryBase {
             String partialSubmitValue = facesContext.getExternalContext().
                     getRequestParameterMap().get("ice.submit.partial");
             boolean partialSubmit = "true".equals(partialSubmitValue);
-//System.out.println("FileEntry.validateResults()    partialSubmit: " + partialSubmit + "  required: " + isRequired());
+            log.finer("FileEntry.validateResults()    partialSubmit: " + partialSubmit + "  required: " + isRequired());
             if (!partialSubmit && isRequired()) {
                 addMessageFromRequired(facesContext);
                 failed = true;
-//System.out.println("FileEntry.validateResults()    FAILED  required");
+                log.finer("FileEntry.validateResults()    FAILED  required");
             }
         }
         if (failed) {
@@ -244,14 +246,16 @@ public class FileEntry extends FileEntryBase {
     protected void addMessagesFromResults(FacesContext facesContext) {
         String clientId = getClientId(facesContext);
         FileEntryResults results = getResults();
-//System.out.println("FileEntry.addMessagesFromResults  clientId: " + clientId + "  results: " + results);
+        log.finer("FileEntry.addMessagesFromResults  clientId: " + clientId + "  results: " + results);
         if (results != null) {
             ArrayList<FileEntryResults.FileInfo> files = results.getFiles();
             for (FileEntryResults.FileInfo fi : files) {
-//System.out.println("FileEntry.addMessagesFromResults    FileInfo: " + fi);
                 FileEntryStatus status = fi.getStatus();
                 FacesMessage fm = status.getFacesMessage(facesContext, this, fi);
-//System.out.println("FileEntry.addMessagesFromResults    FacesMessage: " + fm);
+                log.finer(
+                    "FileEntry.addMessagesFromResults\n" +
+                    "  FileInfo: " + fi + "\n" +
+                    "  FacesMessage: " + fm);
                 facesContext.addMessage(clientId, fm);
             }
         }
@@ -261,7 +265,7 @@ public class FileEntry extends FileEntryBase {
         String clientId = getClientId(facesContext);
         FacesMessage fm = FileEntryStatuses.REQUIRED.getFacesMessage(
                 facesContext, this, null);
-//System.out.println("FileEntry.addMessageFromRequired  clientId: " + clientId + "  FacesMessage: " + fm);
+        log.finer("FileEntry.addMessageFromRequired  clientId: " + clientId + "  FacesMessage: " + fm);
         facesContext.addMessage(clientId, fm);
 
     }
@@ -309,34 +313,34 @@ public class FileEntry extends FileEntryBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-//System.out.println("FileEntry.queueEvent  clientId: " + getClientId());
+        log.finer("FileEntry.queueEvent  clientId: " + getClientId());
         if (isImmediate()) {
             event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-//System.out.println("FileEntry.queueEvent    immediate == true  queuing event: " + event);
+            log.finer("FileEntry.queueEvent    immediate == true  queuing event: " + event);
             super.queueEvent(event);
         }
         else {
             event.setPhaseId(PhaseId.RENDER_RESPONSE);
-//System.out.println("FileEntry.queueEvent    immediate == false  storing event: " + event);
+            log.finer("FileEntry.queueEvent    immediate == false  storing event: " + event);
             storeEventForPreRender(event);
         }
     }
     
     @Override
     public void broadcast(FacesEvent event) {
-//System.out.println("FileEntry.broadcast  clientId: " + getClientId() + "  event: " + event + "  phaseId: " + event.getPhaseId());
+        log.finer("FileEntry.broadcast  clientId: " + getClientId() + "  event: " + event + "  phaseId: " + event.getPhaseId());
         if (event instanceof FileEntryEvent) {
             FileEntryEvent fee = (FileEntryEvent) event;
             FacesContext context = FacesContext.getCurrentInstance();
             try {
-//System.out.println("FileEntry.broadcast    invoke: " + fee.isInvoke());
+                log.finer("FileEntry.broadcast    invoke: " + fee.isInvoke());
                 if (fee.isInvoke()) {
                     MethodExpression listener = getFileEntryListener();
                     if (listener != null) {
                         ELContext elContext = context.getELContext();
                         try {
                             Object result = listener.invoke(elContext, new Object[] {event});
-//System.out.println("FileEntry.broadcast    result: " + result);
+                            log.finer("FileEntry.broadcast    result: " + result);
                             if (result != null) {
                                 String outcome = result.toString();
                                 context.getApplication().getNavigationHandler().handleNavigation(

@@ -22,11 +22,13 @@ import org.icefaces.ace.util.JSONBuilder;
 import javax.faces.context.FacesContext;
 import javax.faces.application.Resource;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * When the upload has progress, pushes the progress resource to the browser
  */
 public class ProgressListenerResourcePusher implements ProgressListener {
+    private static Logger log = Logger.getLogger(FileEntry.class.getName()+".push");
     final private static long MIN_INTERVAL = 2000L;
 
     private Map<String, FileEntryResults> clientId2Results;
@@ -64,11 +66,11 @@ public class ProgressListenerResourcePusher implements ProgressListener {
         if (pushResource == null || pushGroupName == null) {
             return false;
         }
-//System.out.println("tryPush()  percent: " + percent);
+        log.fine("tryPush()  percent: " + percent);
 
         //TODO Update resource contents
         int deltaGottenPushed = updateResourceContents(percent);
-//System.out.println("deltaGottenPushed: " + deltaGottenPushed + "  lastDeltaGottenPushed: " + lastDeltaGottenPushed);
+        log.finer("deltaGottenPushed: " + deltaGottenPushed + "  lastDeltaGottenPushed: " + lastDeltaGottenPushed);
         int localLastDeltaGottenPushed = lastDeltaGottenPushed;
         if (!force && deltaGottenPushed > 2 && deltaGottenPushed > localLastDeltaGottenPushed + 1) {
             lastDeltaGottenPushed = deltaGottenPushed;
@@ -78,7 +80,7 @@ public class ProgressListenerResourcePusher implements ProgressListener {
         //POLL: Comment this section
         PushUtils.push(pushGroupName);
 
-//System.out.println("tryPush()  Pushed progress update");
+        log.finer("tryPush()  Pushed progress update");
         return true;
     }
 
@@ -100,7 +102,6 @@ public class ProgressListenerResourcePusher implements ProgressListener {
     }
 
     private int updateResourceContents(long percent) {
-        //String contents = " " + Long.toString(percent) + "% ";
         JSONBuilder contents = JSONBuilder.create().beginMap();
         contents.entry("percent", percent);
         contents.beginArray("results");
@@ -109,7 +110,7 @@ public class ProgressListenerResourcePusher implements ProgressListener {
         }
         contents.endArray();
         contents.endMap();
-//System.out.println("updateResourceContents()  contents: " + contents.toString());
+        log.finer("updateResourceContents()  contents: " + contents.toString());
         return pushResource.updateProgressInfo(contents.toString());
     }
 }

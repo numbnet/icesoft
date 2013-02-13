@@ -33,7 +33,6 @@ import java.util.Iterator;
 @ApplicationScoped
 public class FileEntryLoader {
     public FileEntryLoader() {
-//System.out.println("FileEntryLoader");
         Application application =
             FacesContext.getCurrentInstance().getApplication();
         application.subscribeToEvent(PreRenderComponentEvent.class, null,
@@ -67,7 +66,6 @@ public class FileEntryLoader {
 
     public void setName(String n) {
         name = n;
-//System.out.println("FileEntryLoader.setName()  name: " + name);
     }
     
     public String getName() {

@@ -22,6 +22,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
  * FileEntryStatuses are the built-in statuses which correspond to the
@@ -123,7 +124,9 @@ public enum FileEntryStatuses implements FileEntryStatus {
         }
     };
     
-    
+
+    private static Logger log = Logger.getLogger(FileEntry.class.getName()+".statuses");
+
     private static final String MESSAGE_KEY_PREFIX =
         "org.icefaces.ace.component.fileEntry.";
     
@@ -140,14 +143,15 @@ public enum FileEntryStatuses implements FileEntryStatus {
 
     public FacesMessage getFacesMessage(FacesContext facesContext,
             UIComponent fileEntry, FileEntryResults.FileInfo fi) {
-//System.out.println("FileEntryStatuses.getFacesMessage()");
         FacesMessage.Severity sev = getSeverity();
-//System.out.println("FileEntryStatuses.getFacesMessage()  sev: " + sev);
         String messageId = MESSAGE_KEY_PREFIX + name();
-//System.out.println("FileEntryStatuses.getFacesMessage()  messageId: " + messageId);
         Object[] params = getParameters(facesContext, fileEntry, fi);
         FacesMessage fm = MessageUtils.getMessage(sev, messageId, true, params);
-//System.out.println("FileEntryStatuses.getFacesMessage()  fm: " + fm);
+        log.finer(
+            "FileEntryStatuses.getFacesMessage()\n" +
+            "  sev: " + sev + "\n" +
+            "  messageId: " + messageId + "\n" +
+            "  fm: " + fm);
         return fm;
     }
     

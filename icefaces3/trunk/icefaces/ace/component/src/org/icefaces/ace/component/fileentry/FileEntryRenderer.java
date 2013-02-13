@@ -26,9 +26,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @MandatoryResourceComponent(tagName="fileEntry", value="org.icefaces.ace.component.fileentry.FileEntry")
 public class FileEntryRenderer extends Renderer {
+    private static Logger log = Logger.getLogger(FileEntry.class.getName());
+    
     @Override
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -39,7 +42,7 @@ public class FileEntryRenderer extends Renderer {
 
         FileEntry fileEntry = (FileEntry) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
-//System.out.println("FileEntryRenderer.encode  clientId: " + clientId);
+        log.finer("FileEntryRenderer.encode  clientId: " + clientId);
         
         FileEntryConfig config = fileEntry.storeConfigForNextLifecycle(facesContext, clientId);
         
@@ -91,13 +94,15 @@ public class FileEntryRenderer extends Renderer {
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         FileEntry fileEntry = (FileEntry) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
-//System.out.println("FileEntryRenderer.decode  clientId: " + clientId);
+        log.finer("FileEntryRenderer.decode  clientId: " + clientId);
         FileEntryResults results = FileEntry.retrieveResultsFromEarlierInLifecycle(facesContext, clientId);
         // If no new files have been uploaded, leave the old upload results in-place.
         if (results != null || fileEntry.isRequired()) {
-//System.out.println("FileEntryRenderer.decode    results: " + results);
+            log.finer(
+                "FileEntryRenderer.decode\n" +
+                "  results ve: " + uiComponent.getValueExpression("results") + "\n" +
+                "  results   : " + results);
             fileEntry.setResults(results);
-//System.out.println("FileEntryRenderer.decode      results ve: " + uiComponent.getValueExpression("results"));
         }
 
         boolean filesUploadedThisLifecycle = (results != null);
