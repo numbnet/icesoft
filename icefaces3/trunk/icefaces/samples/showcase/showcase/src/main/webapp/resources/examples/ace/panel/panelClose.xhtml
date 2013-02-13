@@ -39,7 +39,7 @@
             <h:panelGrid columns="3">
                 <h:outputLabel for="closeIn" value="Closable?"/>
                 <h:selectBooleanCheckbox id="closeIn" value="#{panelClose.closable}"/>
-                <h:message for="closeIn"/>
+                <ace:message for="closeIn"/>
                 
                 <h:outputLabel for="closeSpeed" value="Close Speed (milliseconds):"/>
                 <h:inputText id="closeSpeed" value="#{panelClose.speed}"
@@ -47,7 +47,7 @@
                              disabled="#{!panelClose.closable}">
                      <f:validateLongRange minimum="100" maximum="5000"/>
                 </h:inputText>
-                <h:message id="closeSpeedMsg" for="closeSpeed"/>
+                <ace:message id="closeSpeedMsg" for="closeSpeed"/>
             </h:panelGrid>
         </h:form>
         

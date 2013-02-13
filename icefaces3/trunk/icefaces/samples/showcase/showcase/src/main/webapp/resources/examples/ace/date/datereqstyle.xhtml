@@ -65,7 +65,7 @@
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
-                        <h:message for="reqColor"/>
+                        <ace:message for="reqColor"/>
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <h:selectOneMenu id="optColor" value="#{dateReqStyle.optColor}"
@@ -75,7 +75,7 @@
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
-                        <h:message for="optColor"/>
+                        <ace:message for="optColor"/>
                 </h:panelGrid>
             </ace:panel>
        </h:form>
@@ -93,7 +93,7 @@
                                        requiredIndicator="(Required)"
                                        indicatorPosition="right"
                                        styleClass="#{dateReqStyle.reqColor}"/>
-                    <h:message id="calReqMsg" for="calReq"/>
+                    <ace:message id="calReqMsg" for="calReq"/>
                     
                     <ace:dateTimeEntry id="calOpt"
                                        value="#{dateReqStyle.selectedDate2}"
@@ -106,7 +106,7 @@
                                        optionalIndicator="(Optional)"
                                        indicatorPosition="right"
                                        styleClass="#{dateReqStyle.optColor}"/>
-                    <h:message id="calOptMsg" for="calOpt"/>
+                    <ace:message id="calOptMsg" for="calOpt"/>
                 </h:panelGrid>
                 <h:commandButton id="submit" value="Submit"/>
             </ace:panel>

@@ -46,7 +46,7 @@
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
-                        <h:message for="reqColor"/>
+                        <ace:message for="reqColor"/>
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <h:selectOneMenu id="optColor" value="#{textAreaEntryReqStyleBean.optColor}"
@@ -56,7 +56,7 @@
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
-                        <h:message for="optColor"/>
+                        <ace:message for="optColor"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>
@@ -74,8 +74,8 @@
 
                 </h:panelGrid>
                 <h:panelGrid width="100%">
-                    <h:message id="comment1Msg" for="comment1Input" errorClass="ui-state-error-text"/>
-                    <h:message id="comment2Msg" for="comment2Input" errorClass="ui-state-error-text"/>
+                    <ace:message id="comment1Msg" for="comment1Input"/>
+                    <ace:message id="comment2Msg" for="comment2Input"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>
