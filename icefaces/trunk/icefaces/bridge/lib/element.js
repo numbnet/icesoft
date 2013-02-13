@@ -43,7 +43,7 @@
         return container;
     };
 
-    var scriptElementMatcher = /<script[^>]*>([\S\s]*?)<\/script>/igm;
+    var scriptElementMatcher = /(<script[^>]*>)([\S\s]*?)(<\/script>)/igm;
 
     This.Update = Object.subclass({
         initialize: function(element) {
@@ -72,8 +72,8 @@
                 contentElement.firstChild.data.replace(/<\!\#cdata\#/g, '<![CDATA[').replace(/\#\#>/g, ']]>') : '';
             //collect scripts
             this.scripts = this.text.match(scriptElementMatcher);
-            //strip scripts
-            this.text = this.text.replace(scriptElementMatcher, '');
+            //strip scripts of their content
+            this.text = this.text.replace(scriptElementMatcher, '$1$3');
         },
 
         eachAttribute: function(iterator) {
