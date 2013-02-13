@@ -9561,6 +9561,8 @@
         },
 
         offsetParent: function() {
+            var rroot = /^(?:body|html)$/i;
+
             return this.map(function() {
                 // trap IE "Unspecified error." (ICE-7491)
                 var offsetParent;
