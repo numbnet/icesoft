@@ -114,7 +114,7 @@ public class SelectMenuRenderer extends InputRenderer {
 		// down arrow span
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-state-default ui-corner-all", null);
-		writer.writeAttribute("style", "float:right; width:17px; height:100%;", null);
+		writer.writeAttribute("style", "float:right; width:17px; height:100%; border-top:0; border-right:0; border-bottom:0;", null);
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
 		writer.endElement("div");
@@ -266,7 +266,8 @@ public class SelectMenuRenderer extends InputRenderer {
         if (selectMenu.getSelectFacet() != null) {
 
             UIComponent facet = selectMenu.getSelectFacet();
-			ValueExpression filterBy = selectMenu.getValueExpression("filterBy");
+			ValueExpression itemValue = selectMenu.getValueExpression("itemValue");
+			ValueExpression itemDisabled = selectMenu.getValueExpression("itemDisabled");
 			ELContext elContext = facesContext.getELContext();
 			String listVar = selectMenu.getListVar();
 
@@ -279,11 +280,17 @@ public class SelectMenuRenderer extends InputRenderer {
             while (matches.hasNext() && rowCounter < rows) {
 
 				requestMap.put(listVar, matches.next());
-				String value = (String) filterBy.getValue(elContext);
+				Object value = itemValue.getValue(elContext);
+				boolean disabled = false;
+				
+				try {
+					disabled = (Boolean) itemDisabled.getValue(elContext);
+				} catch (Exception e) {}
 			
 				rowCounter++;
 				writer.startElement("div", null);
 				writer.writeAttribute("style", "border: 0;", null);
+				if (disabled) writer.writeAttribute("class", "ui-state-disabled", null);
 				
 				// When HTML is display we still need a selected value. Hidding the value in a hidden span
 				// accomplishes this.
@@ -297,7 +304,7 @@ public class SelectMenuRenderer extends InputRenderer {
 				try {
 					itemLabel = (String) getConvertedValue(facesContext, selectMenu, value, true);
 				} catch (Exception e) {
-					itemLabel = value;
+					itemLabel = (String) value;
 				}
 				writer.writeText(itemLabel, null);
 				writer.endElement("span");
@@ -327,7 +334,11 @@ public class SelectMenuRenderer extends InputRenderer {
 							itemLabel = item.getValue().toString();
 						}
                     }
-                    sb.append("<div style=\"border: 0;\">").append(itemLabel).append("</div>");
+					if (item.isDisabled()) {
+						sb.append("<div style=\"border: 0;\" class=\"ui-state-disabled\">").append(itemLabel).append("</div>");
+					} else {
+						sb.append("<div style=\"border: 0;\">").append(itemLabel).append("</div>");
+					}
 					rowCounter++;
                 }
                 sb.append("</div>");
