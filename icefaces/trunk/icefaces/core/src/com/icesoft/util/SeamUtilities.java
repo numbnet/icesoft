@@ -83,7 +83,8 @@ public class SeamUtilities {
     // This is just convenience, to avoid rebuilding the String
     private static String conversationIdParameter;
     private static String conversationParentParameter = "parentConversationId";
-    
+    private static final String RVN = "rvn";
+
     // since seam1.3.0Alpha has api changes, detect which version we are using
     private static String seamVersion = "2.0.0.GA";
     
@@ -193,10 +194,10 @@ public class SeamUtilities {
 
         while(st.hasMoreTokens() ){
             token = st.nextToken();
-            if ( (token.indexOf(conversationIdParameter) == -1)  &&
-                 (token.indexOf(conversationParentParameter) == -1) &&
-                  token.indexOf("rvn") == -1 ) {
 
+            //Parameters like ICEfaces' "rvn" and Seam's "cid" are considered
+            //reserved and cannot be used as parameter names by the application
+            if ( !isReservedParameterName(token) ) {
                 tokenList.add( token );
             }
         }
@@ -247,6 +248,20 @@ public class SeamUtilities {
             log.error("Exception encoding seam conversationId: ", e);
         }
         return cleanedUrl;
+    }
+
+    private static boolean isReservedParameterName(String param){
+        if( param == null ){
+            return false;
+        }
+
+        String trimmedParam = param.trim();
+        if(trimmedParam.equals(conversationIdParameter) ||
+                trimmedParam.equals(conversationParentParameter) ||
+                trimmedParam.equals(RVN)){
+            return true;
+        }
+        return false;
     }
 
     /** 
