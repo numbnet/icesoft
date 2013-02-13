@@ -274,18 +274,20 @@ ice.ace.List.prototype.controlClickHandler = function(e) {
 
 ice.ace.List.prototype.setupSelection = function() {
     var self = this,
-        selector = this.jqId +  ' > ul > li';
+        selector = ' > ul > li';
 
     ice.ace.jq(this.element)
             .off('mouseenter mouseleave click', selector)
             .on('mouseenter', selector, this.itemEnter)
             .on('mouseleave', selector, this.itemLeave)
-            .on('click', selector, function(e) { self.itemClickHandler.call(self, e); });
+            .on('click', selector, function(e) {
+            self.itemClickHandler.call(self, e);
+        });
 };
 
 ice.ace.List.prototype.setupClickMigration = function() {
     var self = this,
-        selector = this.jqId +  ' > ul > li';
+        selector = ' > ul > li';
 
     ice.ace.jq(this.element)
             .off('dblclick', selector)
@@ -664,7 +666,8 @@ ice.ace.List.prototype.swapIdPrefix = function(from, to) {
 
 ice.ace.List.prototype.read = function(field) {
     var contents = this.element.children('input[name="'+this.jqId.substr(1)+'_'+field+'"]').attr('value');
-    if (contents != "") return JSON.parse(contents);
+    if ((contents != "") && (contents != undefined))
+        return JSON.parse(contents);
     else return [];
 };
 
