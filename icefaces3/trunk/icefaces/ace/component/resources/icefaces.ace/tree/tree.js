@@ -24,8 +24,8 @@ ice.ace.Tree = function (clientId, cfg) {
     // Selectors
     this.expansionButtonDeselector = this.jqId + " * .if-tree * .if-node-sw, noexp";
     this.selectionTargetDeselector = this.jqId + " * .if-tree * .if-node, noselect";
-    this.expansionButtonSelector = this.jqId + " .if-node-sw:not("+this.expansionButtonDeselector+")";
-    this.selectionTargetSelector = this.jqId + " .if-node:not("+this.selectionTargetDeselector+")";
+    this.expansionButtonSelector = ".if-node-sw:not("+this.expansionButtonDeselector+")";
+    this.selectionTargetSelector = ".if-node:not("+this.selectionTargetDeselector+")";
     this.nodeWrapperSelector = this.selectionTargetSelector + " > div.if-node-wrp";
     this.sortableTarget = '.if-node-sub';
 
@@ -355,7 +355,7 @@ ice.ace.Tree.prototype.sendNodeExpansionRequest = function(node) {
 
 ice.ace.Tree.prototype.deselectAll = function() {
     var self = this;
-    ice.ace.jq(this.nodeWrapperSelector+'.ui-state-active')
+    this.element.find(this.nodeWrapperSelector+'.ui-state-active')
             .each(function() {
         var wrap = ice.ace.jq(this),
             node = wrap.closest('.if-node-cnt'),
