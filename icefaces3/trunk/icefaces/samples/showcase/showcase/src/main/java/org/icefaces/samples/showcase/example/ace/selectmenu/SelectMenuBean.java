@@ -169,6 +169,7 @@ public class SelectMenuBean extends ComponentExampleImpl< SelectMenuBean > imple
 			if (cities != null) {
 				setCities(cities);
 				setDisplayCities(true);
+				setCity(null);
 				return;
 			}
 		}
