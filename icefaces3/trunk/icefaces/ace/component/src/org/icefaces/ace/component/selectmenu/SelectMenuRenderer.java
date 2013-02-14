@@ -53,7 +53,6 @@ public class SelectMenuRenderer extends InputRenderer {
         Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = selectMenu.getClientId(facesContext);
         String value = (String) requestMap.get(clientId + "_input");
-		String oldValue = (String) selectMenu.getValue();
 		
 		boolean isEventSource = false;
 		Object sourceId = requestMap.get("ice.event.captured");
@@ -103,7 +102,7 @@ public class SelectMenuRenderer extends InputRenderer {
 
 		writer.startElement("span", null);
 		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value", null);
-        writer.writeAttribute("style", "display: inline-block; width:100px; height:20px; padding-bottom: 2px;", null);
+        writer.writeAttribute("style", "display: inline-block; width:250px; height:20px; padding-bottom: 2px;", null);
 		writer.writeAttribute("tabindex", "0", null);
 		
 		// text span
@@ -235,16 +234,18 @@ public class SelectMenuRenderer extends InputRenderer {
         writer.endElement("script");
 
         // field update script
-        /*writer.startElement("span", null);
+		Object value = selectMenu.getValue();
+		if (value == null) value = "";
+        writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_fieldupdate", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.writeText("(function() {", null);
         writer.writeText("var instance = ice.ace.SelectMenus[\"" + clientId + "\"];", null);
-        writer.writeText("instance.updateField('" + escapeBackslashes(***) + "', " + focus + ");", null);
+        writer.writeText("instance.updateValue('" + escapeJavascriptString(value.toString()) + "');", null);
         writer.writeText("})();", null);
         writer.endElement("script");
-        writer.endElement("span");*/
+        writer.endElement("span");
     }
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -384,9 +385,9 @@ public class SelectMenuRenderer extends InputRenderer {
         return buffer.toString();
     }
 	
-	private static String escapeBackslashes(String str) {
+	private static String escapeJavascriptString(String str) {
 		if (str == null) return "";
-		return str.replace("\\", "\\\\");
+		return str.replace("\\", "\\\\").replace("\'","\\'");
 	}
 	
 	private String getTimestamp(FacesContext facesContext, SelectMenu selectMenu) {

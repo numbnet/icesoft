@@ -676,5 +676,9 @@ ice.ace.SelectMenu.prototype = {
 				if (focus) ice.ace.jq(ice.ace.escapeClientId(self.element.id)).focus(); 
 			}, 50);
 		}
-    }
+    },
+	
+	updateValue: function(value) {
+		this.displayedValue.innerHTML = value;
+	}
 }
