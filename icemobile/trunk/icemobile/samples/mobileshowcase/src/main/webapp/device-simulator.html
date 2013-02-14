@@ -18,16 +18,20 @@
             <nav>
                 <ul>
                     <li>
-                        <label for="slide1" class="icon iphone-portrait-icon"></label>
+                        <label id="iphone-portrait-label" 
+                            for="slide1" class="icon iphone-portrait-icon active"></label>
                     </li>
                     <li>
-                        <label for="slide2" class="icon iphone-landscape-icon"></label>
+                        <label id="iphone-landscape-label"
+                            for="slide2" class="icon iphone-landscape-icon"></label>
                     </li>
                     <li>
-                        <label for="slide3" class="icon ipad-portrait-icon"></label>
+                        <label id="ipad-portrait-label" 
+                            for="slide3" class="icon ipad-portrait-icon"></label>
                     </li>
                     <li>
-                        <label for="slide4" class="icon ipad-landscape-icon"></label>
+                        <label id="ipad-landscape-label" 
+                            for="slide4" class="icon ipad-landscape-icon"></label>
                     </li>
                 </ul>
             </nav>
@@ -140,25 +144,39 @@
     <script>
     function openIphonePortrait(){
         closeAllDevices();
-        document.getElementById('iphone-portrait').setAttribute('src','./showcase-small.jsf?theme=iphone')
+        document.getElementById('iphone-portrait').setAttribute('src','./showcase-small.jsf?theme=iphone');
+        if( document.documentElement.classList )
+            document.getElementById('iphone-portrait-label').classList.add('active');
     }
     function openIphoneLandscape(){
         closeAllDevices();
-        document.getElementById('iphone-landscape').setAttribute('src','./showcase-small.jsf?theme=iphone')
+        document.getElementById('iphone-landscape').setAttribute('src','./showcase-small.jsf?theme=iphone');
+        if( document.documentElement.classList )
+            document.getElementById('iphone-landscape-label').classList.add('active');
     }
     function openIpadPortrait(){
         closeAllDevices();
-        document.getElementById('ipad-portrait').setAttribute('src','./showcase-large.jsf?theme=ipad')
+        document.getElementById('ipad-portrait').setAttribute('src','./showcase-large.jsf?theme=ipad');
+        if( document.documentElement.classList )
+            document.getElementById('ipad-portrait-label').classList.add('active');
     }
     function openIpadLandscape(){
         closeAllDevices();
-        document.getElementById('ipad-landscape').setAttribute('src','./showcase-large.jsf?theme=ipad')
+        document.getElementById('ipad-landscape').setAttribute('src','./showcase-large.jsf?theme=ipad');
+        if( document.documentElement.classList )
+            document.getElementById('ipad-landscape-label').classList.add('active');
     }
     function closeAllDevices(){
         document.getElementById('iphone-portrait').setAttribute('src','about:blank');
         document.getElementById('iphone-landscape').setAttribute('src','about:blank');
         document.getElementById('ipad-portrait').setAttribute('src','about:blank');
         document.getElementById('ipad-landscape').setAttribute('src','about:blank');
+        if( document.documentElement.classList ){
+            document.getElementById('iphone-portrait-label').classList.remove('active');
+            document.getElementById('iphone-landscape-label').classList.remove('active');
+            document.getElementById('ipad-portrait-label').classList.remove('active');
+            document.getElementById('ipad-landscape-label').classList.remove('active');
+        }
         
     }
     </script>

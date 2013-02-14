@@ -76,16 +76,20 @@ a#viewAllDevices {
     header nav > ul > li {
         float: left;
         list-style: none outside none;
-        padding: 0 15px;
+        padding: 0 10px;
         position: relative;
         list-style: none outside none;
         line-height: 70px;
         height: 70px;
     }
-    
-    @media screen and (max-width: 1100px) {  
-        #header-container .logo{ display: none}
+    .info{
+        font-size: 12px;
+        float: left;
+        padding: 11px;
+        color: #EFEFEF;
+        max-width: 100px;
     }
+    
     
     #header-container h1{
         color: #E7E8E9;
@@ -94,6 +98,16 @@ a#viewAllDevices {
         font-size: 30px;
         text-shadow: 1px 1px 1px black;
         margin-left: 15px;
+        margin-right: 10px;
+    }
+    @media screen and (max-width: 1100px) {  
+        #header-container .logo{ display: none}
+        #header-container h1{ 
+            font-size: 20px;
+            max-width: 200px;
+            line-height: 20px;
+            margin: 10px;
+         }
     }
     @media screen and (max-width: 800px) {  
          #header-container h1{ 
@@ -113,7 +127,7 @@ a#viewAllDevices {
     .icemobile-icon img{
         height: 56px;vertical-align: middle;padding-left: 15px;
     }
-    @media screen and (max-width: 500px) {  
+    @media screen and (max-width: 600px) {  
         .icemobile-icon img{ 
             padding-left: 10px;
             height: 20px;
@@ -129,6 +143,24 @@ a#viewAllDevices {
          header nav > ul > li {
             padding: 0 3px;
          }
+         .info{
+              padding: 5px;
+              font-size:11px;
+              line-height:11px;
+              max-width: 62px;
+          }
+    }
+    @media screen and (max-width: 400px) {  
+        .info {
+             padding: 5px;
+             font-size: 10px;
+             line-height: 11px;
+             max-width: 320px;
+             margin-left: -220px;
+             z-index: 999;
+             margin-top: 85px;
+             position: absolute;
+        }
     }
     .icon{
         vertical-align: middle;
@@ -139,20 +171,32 @@ a#viewAllDevices {
         height: 40px;
         width: 20px;
     }
+    .iphone-portrait-icon.active{
+        background-image: url(css-images/iphone-portrait-icon-active.png);
+    }
     .iphone-landscape-icon{
         background-image: url(css-images/iphone-landscape-icon.png);
         height: 20px;
         width: 40px;
+    }
+    .iphone-landscape-icon.active{
+        background-image: url(css-images/iphone-landscape-icon-active.png);
     }
     .ipad-portrait-icon{
         background-image: url(css-images/ipad-portrait-icon.png);
         height: 60px;
         width: 48px;
     }
+    .ipad-portrait-icon.active{
+        background-image: url(css-images/ipad-portrait-icon-active.png);
+    }
     .ipad-landscape-icon{
         background-image: url(css-images/ipad-landscape-icon.png);
         height: 48px;
         width: 60px;
+    }
+    .ipad-landscape-icon.active{
+        background-image: url(css-images/ipad-landscape-icon-active.png);
     }
 
 /*
@@ -296,10 +340,4 @@ article img {
     -o-transition: all 0.5s ease-out;
     transition: all 0.5s ease-out;
 }
-.info{
-    font-size: 12px;
-    float: left;
-    padding: 11px;
-    color: #EFEFEF;
-    max-width: 100px;
-}
+
