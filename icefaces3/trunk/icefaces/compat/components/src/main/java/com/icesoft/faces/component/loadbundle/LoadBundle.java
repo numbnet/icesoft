@@ -35,17 +35,17 @@ import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.utils.MessageUtils;
 
-public class LoadBundle extends UIOutput implements Serializable{
+public class LoadBundle extends UIOutput implements Serializable {
     private static final long serialVersionUID = 1L;
     public static final String COMPONENT_TYPE = "com.icesoft.faces.LoadBundle";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.LoadBundle";
     private String basename;
     private String var;
     transient private Locale oldLocale;
-    transient private String oldBasename = new String();
+    transient private String oldBaseName = "";
     transient private ResourceBundle bundle;
-    private Map map;
-    
+    private Map map = new SerializableMap();
+
     public LoadBundle() {
         setRendererType(null);
     }
@@ -53,48 +53,27 @@ public class LoadBundle extends UIOutput implements Serializable{
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-    
+
     public String getComponentType() {
         return COMPONENT_TYPE;
     }
+
     public void decode(FacesContext context) {
-        context.getExternalContext().getRequestMap().put(getVar(), map); 
+        Map requestMap = context.getExternalContext().getRequestMap();
+        requestMap.put(var, map);
     }
-    
+
     public void encodeBegin(FacesContext context) throws IOException {
         setRendererType(null);
         super.encodeBegin(context);
-        String newBasename = getBasename();
-        Locale currentLocale = context.getViewRoot().getLocale();
-        boolean reloadRequired = !((oldLocale != null) && 
-                oldLocale.getLanguage().equals(currentLocale.getLanguage()))
-            || !oldBasename.equals(newBasename);
-        if (reloadRequired) {
-            bundle = ResourceBundle.getBundle(newBasename.trim(),
-                    currentLocale,
-                    MessageUtils.getClassLoader(this)); 
-            map = new SerializableMap();
-            context.getExternalContext().getRequestMap().put(getVar(), map); 
-        }
-        oldBasename = newBasename;
-        oldLocale = currentLocale;
+        updateBundle();
     }
 
-    //TODO: factor encodeBegin and getBundle accounting for side-effects
-    private ResourceBundle getBundle()  {
-        if (null != bundle)  {
-            return bundle;
+    private ResourceBundle getBundle() {
+        if (bundle == null) {
+            updateBundle();
         }
-        String newBasename = getBasename();
-        Locale currentLocale = getFacesContext().getViewRoot().getLocale();
-        boolean reloadRequired = !((oldLocale != null) && 
-                oldLocale.getLanguage().equals(currentLocale.getLanguage()))
-            || !oldBasename.equals(newBasename);
-        if (reloadRequired) {
-            bundle = ResourceBundle.getBundle(newBasename.trim(),
-                    currentLocale,
-                    MessageUtils.getClassLoader(this)); 
-        }
+
         return bundle;
     }
 
@@ -117,14 +96,15 @@ public class LoadBundle extends UIOutput implements Serializable{
     public void setVar(String var) {
         this.var = var;
     }
-    
+
     private transient Object values[];
+
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        if(values == null){
+        if (values == null) {
             values = new Object[4];
         }
         values[0] = super.saveState(context);
@@ -142,104 +122,117 @@ public class LoadBundle extends UIOutput implements Serializable{
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         basename = (String) values[1];
-        var = (String) values[2];    
+        var = (String) values[2];
         map = (Map) values[3];
-    }    
+    }
 
-    class SerializableMap implements Map, Serializable {
+    private void updateBundle() {
+        String newBaseName = getBasename();
+        Locale currentLocale = getFacesContext().getViewRoot().getLocale();
+        boolean reloadRequired =
+                oldLocale == null || !oldLocale.getLanguage().equals(currentLocale.getLanguage()) ||
+                        !oldBaseName.equals(newBaseName);
+        if (reloadRequired) {
+            bundle = ResourceBundle.getBundle(newBaseName.trim(), currentLocale, MessageUtils.getClassLoader(this));
+            oldBaseName = newBaseName;
+            oldLocale = currentLocale;
+        }
+    }
+
+    private class SerializableMap implements Map, Serializable {
         private static final long serialVersionUID = 1L;
 
-            public void clear() {
-                throw new UnsupportedOperationException();
-            }
-
-            public boolean containsKey(Object key) {
-                return (null == key)?  false : (null != getBundle().getObject(key.toString())) ;
-            }
-
-            public boolean containsValue(Object value) {
-                boolean found = false;
-                Object currentValue = null;
-                Enumeration keys = getBundle().getKeys();
-                while (keys.hasMoreElements()) {
-                    currentValue = getBundle().getObject((String) keys.nextElement());
-                    if ( (value == currentValue) ||
-                            ((null != currentValue) && currentValue.equals(value))) {
-                        found = true;
-                        break;
-                    }
-                }
-                return found;
-            }
-
-            public Set entrySet() {
-                HashMap entries = new HashMap();
-                Enumeration keys = getBundle().getKeys();
-                while (keys.hasMoreElements()) {
-                    Object key = keys.nextElement();
-                    Object value = getBundle().getObject((String)key);
-                    entries.put(key, value);
-                }
-                return entries.entrySet();
-            }
-
-            public Object get(Object key) {
-                if (null == key) return null;
-                Object result = null;
-                try {
-                    result = getBundle().getObject(key.toString());
-                } catch (MissingResourceException mre) {
-                    result = "???"+ key + "???";
-                }
-                return result;
-            }
-
-            public boolean isEmpty() {
-                return !getBundle().getKeys().hasMoreElements();
-            }
-
-            public Set keySet() {
-                Set keySet = new HashSet();
-                Enumeration keys = getBundle().getKeys();
-                while (keys.hasMoreElements()) {
-                    keySet.add(keys.nextElement());
-                }
-                return keySet;
-            }
-
-            public Object put(Object key, Object value) {
-                throw new UnsupportedOperationException();
-            }
-
-            public void putAll(Map t) {
-                throw new UnsupportedOperationException();                }
-
-            public Object remove(Object key) {
-                throw new UnsupportedOperationException();
-            }
-
-            public int size() {
-                int size = 0;
-                Enumeration keys = getBundle().getKeys();
-                while (keys.hasMoreElements()) {
-                    keys.nextElement();
-                    size++;
-                }
-                return size;
-            }
-
-            public Collection values() {
-                ArrayList values = new ArrayList();
-                Enumeration keys = getBundle().getKeys();
-                while(keys.hasMoreElements()) {
-                    values.add(getBundle().getObject((String)keys.nextElement()));
-                }
-                return values;
-            }
-            
-            public int hashCode() {
-                return getBundle().hashCode();
-            }
-            
+        public void clear() {
+            throw new UnsupportedOperationException();
         }
+
+        public boolean containsKey(Object key) {
+            return (null == key) ? false : (null != getBundle().getObject(key.toString()));
+        }
+
+        public boolean containsValue(Object value) {
+            boolean found = false;
+            Object currentValue = null;
+            Enumeration keys = getBundle().getKeys();
+            while (keys.hasMoreElements()) {
+                currentValue = getBundle().getObject((String) keys.nextElement());
+                if ((value == currentValue) ||
+                        ((null != currentValue) && currentValue.equals(value))) {
+                    found = true;
+                    break;
+                }
+            }
+            return found;
+        }
+
+        public Set entrySet() {
+            HashMap entries = new HashMap();
+            Enumeration keys = getBundle().getKeys();
+            while (keys.hasMoreElements()) {
+                Object key = keys.nextElement();
+                Object value = getBundle().getObject((String) key);
+                entries.put(key, value);
+            }
+            return entries.entrySet();
+        }
+
+        public Object get(Object key) {
+            if (null == key) return null;
+            Object result = null;
+            try {
+                result = getBundle().getObject(key.toString());
+            } catch (MissingResourceException mre) {
+                result = "???" + key + "???";
+            }
+            return result;
+        }
+
+        public boolean isEmpty() {
+            return !getBundle().getKeys().hasMoreElements();
+        }
+
+        public Set keySet() {
+            Set keySet = new HashSet();
+            Enumeration keys = getBundle().getKeys();
+            while (keys.hasMoreElements()) {
+                keySet.add(keys.nextElement());
+            }
+            return keySet;
+        }
+
+        public Object put(Object key, Object value) {
+            throw new UnsupportedOperationException();
+        }
+
+        public void putAll(Map t) {
+            throw new UnsupportedOperationException();
+        }
+
+        public Object remove(Object key) {
+            throw new UnsupportedOperationException();
+        }
+
+        public int size() {
+            int size = 0;
+            Enumeration keys = getBundle().getKeys();
+            while (keys.hasMoreElements()) {
+                keys.nextElement();
+                size++;
+            }
+            return size;
+        }
+
+        public Collection values() {
+            ArrayList values = new ArrayList();
+            Enumeration keys = getBundle().getKeys();
+            while (keys.hasMoreElements()) {
+                values.add(getBundle().getObject((String) keys.nextElement()));
+            }
+            return values;
+        }
+
+        public int hashCode() {
+            return getBundle().hashCode();
+        }
+    }
 }
