@@ -296,24 +296,10 @@ article img {
     -o-transition: all 0.5s ease-out;
     transition: all 0.5s ease-out;
 }
-
-
-#slide1:checked ~ #slides article:nth-child(1) .info,
-#slide2:checked ~ #slides article:nth-child(2) .info,
-#slide3:checked ~ #slides article:nth-child(3) .info,
-#slide4:checked ~ #slides article:nth-child(4) .info,
-#slide5:checked ~ #slides article:nth-child(5) .info {
-    opacity: 1;
-    -webkit-transition: all 1s ease-out 0.6s;
-    -moz-transition: all 1s ease-out 0.6s;
-    -o-transition: all 1s ease-out 0.6s;
-    transition: all 1s ease-out 0.6s;
+.info{
+    font-size: 12px;
+    float: left;
+    padding: 11px;
+    color: #EFEFEF;
+    max-width: 100px;
 }
-
-
-
-
-
-
-
-
