@@ -165,6 +165,7 @@ a#viewAllDevices {
     .icon{
         vertical-align: middle;
         display: inline-block;
+        cursor: pointer;
     }
     .iphone-portrait-icon{
         background-image: url(css-images/iphone-portrait-icon.png);
