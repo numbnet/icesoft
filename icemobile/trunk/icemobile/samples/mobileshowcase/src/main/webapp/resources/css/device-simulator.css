@@ -1,0 +1,319 @@
+body{margin: 0px}h1{font-size:138.5%}h2{font-size:123.1%}h3{font-size:108%}h1,h2,h3{margin:1em 0}h1,h2,h3,h4,h5,h6,strong,dt{font-weight:bold}optgroup{font-weight:normal}abbr,acronym{border-bottom:1px dotted #000;cursor:help}em{font-style:italic}del{text-decoration:line-through}blockquote,ul,ol,dl{margin:1em}ol,ul,dl{margin-left:2em}ol{list-style:decimal outside}ul{list-style:disc outside}dl dd{margin-left:1em}th,td{border:1px solid #000;padding:.5em}th{font-weight:bold;text-align:center}caption{margin-bottom:.5em;text-align:center}sup{vertical-align:super}sub{vertical-align:sub}p,fieldset,table,pre{margin-bottom:1em}button,input[type="checkbox"],input[type="radio"],input[type="reset"],input[type="submit"]{padding:1px}img{-ms-interpolation-mode:bicubic}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin-bottom: 60px;
+    line-height: 100%;
+    font-size: 14px;
+}
+
+img{
+    border: none;
+}
+a {
+    color: #666;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+a#viewAllDevices {
+    margin-top: 50px;
+    display: block;
+}
+
+
+    body, button, input, select, textarea {
+        font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #6D6E71;
+    }
+    body{
+        background-color: #222;
+    }
+    #header-container {
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: transparent;
+        background-image: url("css-images/device-simulator-header.png");
+        background-origin: padding-box;
+        background-position: 50% 0;
+        background-repeat: no-repeat;
+        background-size: 2079px 84px;
+        height: 84px;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 999;
+        
+    }
+    * {
+        -webkit-transition: all 0.5s ease-out;
+        -moz-transition: all 0.5s ease-out;
+        -o-transition: all 0.5s ease-out;
+        transition: all 0.5s ease-out;
+    }   
+    
+    #header-container .logo {
+        cursor: pointer;
+        display: block;
+        float: right;
+        margin: 7px 15px 0 10px;
+    }
+    
+    header nav {
+        float: left;
+        position: relative;
+        z-index: 999;
+    }
+    header nav ul{
+        margin: 0; padding: 0;
+    }
+    header nav > ul > li {
+        float: left;
+        list-style: none outside none;
+        padding: 0 15px;
+        position: relative;
+        list-style: none outside none;
+        line-height: 70px;
+        height: 70px;
+    }
+    
+    @media screen and (max-width: 1100px) {  
+        #header-container .logo{ display: none}
+    }
+    
+    #header-container h1{
+        color: #E7E8E9;
+        display: inline-block;
+        float: left;
+        font-size: 30px;
+        text-shadow: 1px 1px 1px black;
+        margin-left: 15px;
+    }
+    @media screen and (max-width: 800px) {  
+         #header-container h1{ 
+            font-size: 20px;
+            max-width: 160px;
+            line-height: 20px;
+            margin: 10px;
+         }
+         header nav > ul > li {
+            padding: 0 5px;
+         }
+    }
+    
+    .icemobile-icon{
+        float:left;height: 70px;line-height: 70px;
+    }
+    .icemobile-icon img{
+        height: 56px;vertical-align: middle;padding-left: 15px;
+    }
+    @media screen and (max-width: 500px) {  
+        .icemobile-icon img{ 
+            padding-left: 10px;
+            height: 20px;
+            vertical-align: top;
+            margin-top: 11px;
+         }
+         #header-container h1 {
+             font-size: 16px;
+             max-width: 75px;
+             line-height: 16px;
+             margin: 8px;
+         }
+         header nav > ul > li {
+            padding: 0 3px;
+         }
+    }
+    .icon{
+        vertical-align: middle;
+        display: inline-block;
+    }
+    .iphone-portrait-icon{
+        background-image: url(css-images/iphone-portrait-icon.png);
+        height: 40px;
+        width: 20px;
+    }
+    .iphone-landscape-icon{
+        background-image: url(css-images/iphone-landscape-icon.png);
+        height: 20px;
+        width: 40px;
+    }
+    .ipad-portrait-icon{
+        background-image: url(css-images/ipad-portrait-icon.png);
+        height: 60px;
+        width: 48px;
+    }
+    .ipad-landscape-icon{
+        background-image: url(css-images/ipad-landscape-icon.png);
+        height: 48px;
+        width: 60px;
+    }
+
+/*
+ * Devices styles start
+ */
+
+#devices {
+    text-align: center;
+}
+
+#devices .deviceWrap {
+    width: 100%;
+    background-position: top center;
+    background-repeat: no-repeat;
+    margin: 20px 0px 20px 0px;
+}
+
+#devices .device {
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+#devices .device .flashingTop,
+#devices .device .flashingBottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+
+#devices .device .flashingTop {
+    top: 0;
+    padding-top: 2px;
+}
+
+#devices .device .flashingBottom {
+    bottom: 0;
+}
+
+#devices iframe {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 1px solid #d1d1d1;
+}
+
+.iphone-portrait {
+    background-image: url(css-images/iphone-portrait.png);
+    padding: 115px 0 117px 0px;
+}
+
+.iphone-landscape {
+    background-image: url(css-images/iphone-landscape.png);
+    padding: 23px 0 24px 0px;
+}
+
+.iphone-5-portrait {
+    background-image: url(css-images/iphone-5-portrait.png);
+    padding: 103px 0 117px 0px;
+}
+
+.iphone-5-landscape {
+    background-image: url(css-images/iphone-5-landscape.png);
+    padding: 22px 0 24px 0px;
+}
+
+.ipad-portrait {
+    background-image: url(css-images/ipad-portrait.png);
+}
+
+.ipad-landscape {
+    background-image: url(css-images/ipad-landscape.png);
+    padding: 101px 0 103px 0;
+}
+
+
+/*
+ * Slider
+ */
+ 
+ input {
+    display: none;
+}
+#slide1:checked ~ #slides .inner { margin-left:0; }
+#slide2:checked ~ #slides .inner { margin-left:-100%; }
+#slide3:checked ~ #slides .inner { margin-left:-200%; }
+#slide4:checked ~ #slides .inner { margin-left:-300%; }
+#slide5:checked ~ #slides .inner { margin-left:-400%; }
+
+
+#overflow {
+    width: 100%;
+    overflow: hidden;
+}
+
+/*
+article img {
+    width: 100%;
+}*/
+
+#slides .inner {
+    width: 500%;
+    line-height: 0;
+}
+
+#slides article {
+    width: 20%;
+    float: left;
+}
+
+
+#slides {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 1%;
+}
+
+
+/* Animation */
+
+#slides .inner {
+    -webkit-transform: translateZ(0);
+    -webkit-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -moz-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -ms-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -o-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+        transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+
+    -webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -ms-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+        transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+}
+
+#slider {
+    -webkit-transform: translateZ(0);
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+}
+
+
+#slide1:checked ~ #slides article:nth-child(1) .info,
+#slide2:checked ~ #slides article:nth-child(2) .info,
+#slide3:checked ~ #slides article:nth-child(3) .info,
+#slide4:checked ~ #slides article:nth-child(4) .info,
+#slide5:checked ~ #slides article:nth-child(5) .info {
+    opacity: 1;
+    -webkit-transition: all 1s ease-out 0.6s;
+    -moz-transition: all 1s ease-out 0.6s;
+    -o-transition: all 1s ease-out 0.6s;
+    transition: all 1s ease-out 0.6s;
+}
+
+
+
+
+
+
+
+
