@@ -38,10 +38,16 @@
     </licenses>
 
     <distributionManagement>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>icefaces-snapshots</id>
+            <name>ICEsoft Maven Repository</name>
+            <url>svn:http://10.18.39.25:8888/svn/ossrepo/maven2/snapshots/</url>
+        </snapshotRepository>
         <repository>
-            <id>local-repo</id>
+            <id>icefaces-local</id>
             <name>Local filesystem repository for testing</name>
-            <url>${repository.url}</url>
+            <url>file://${user.home}/icefaces/local-test-repo</url>
         </repository>
     </distributionManagement>
 
@@ -59,8 +65,6 @@
     </modules>
 
     <properties>
-
-        <repository.url>file://${user.home}/icefaces/local-test-repo</repository.url>
 
         <maven.test.skip>true</maven.test.skip>
 
@@ -137,6 +141,19 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.2</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.7</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.google.code.maven-svn-wagon</groupId>
+                        <artifactId>maven-svn-wagon</artifactId>
+                        <version>1.4</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
