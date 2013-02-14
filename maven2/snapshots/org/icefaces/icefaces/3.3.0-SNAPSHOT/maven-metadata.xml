@@ -20,6 +20,12 @@
         <value>3.3.0-20130214.213053-1</value>
         <updated>20130214213053</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <classifier>javadoc</classifier>
+        <extension>jar</extension>
+        <value>3.3.0-20130214.213053-1</value>
+        <updated>20130214213053</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
