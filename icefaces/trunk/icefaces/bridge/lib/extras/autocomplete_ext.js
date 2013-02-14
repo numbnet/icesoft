@@ -75,7 +75,8 @@ Autocompleter.Base.prototype = {
         this.options.paramName = this.options.paramName || this.element.name;
         this.options.tokens = this.options.tokens || [];
         this.options.frequency = this.options.frequency || 0.4;
-        this.options.minChars = this.options.minChars || 1;
+		var minCharsType = typeof this.options.minChars;
+		if (minCharsType != "number") this.options.minChars = 0;
         this.options.onShow = this.options.onShow ||
                 function(element, update) {
                     // Based on code from MSDN
