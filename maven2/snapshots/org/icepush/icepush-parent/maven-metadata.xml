@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.icepush</groupId>
+  <artifactId>icepush-parent</artifactId>
+  <versioning>
+    <versions>
+      <version>3.3.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20130214232255</lastUpdated>
+  </versioning>
+</metadata>
