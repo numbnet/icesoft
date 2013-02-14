@@ -222,9 +222,11 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         String disabledClass = "ui-state-disabled";
         Boolean val = (Boolean)checkbox.getValue();
 
-        if (val) {
+        if (val != null && val) {
             buttonClasses += selectedClass + " ";
-        } else if (checkbox.isDisabled()) {
+        }
+
+        if (checkbox.isDisabled()) {
             buttonClasses += disabledClass + " ";
         }
 
@@ -239,7 +241,7 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         String unselectedStyle = "ui-icon-unchecked";
         Boolean val = (Boolean)checkbox.getValue();
 
-        if (val) {
+        if (val != null && val) {
             iconClass += " " + selectedStyle;
         } else {
             iconClass += " " + unselectedStyle;
