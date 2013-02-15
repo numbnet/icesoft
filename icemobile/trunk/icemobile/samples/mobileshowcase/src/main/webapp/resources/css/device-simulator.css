@@ -156,10 +156,11 @@ a#viewAllDevices {
              font-size: 10px;
              line-height: 11px;
              max-width: 320px;
-             margin-left: -220px;
+             margin-left: -243px;
              z-index: 999;
-             margin-top: 85px;
+             margin-top: 66px;
              position: absolute;
+             color: black;
         }
     }
     .icon{
@@ -204,40 +205,36 @@ a#viewAllDevices {
  * Devices styles start
  */
 
-#devices {
-    text-align: center;
-}
-
-#devices .deviceWrap {
+.deviceWrap {
     width: 100%;
     background-position: top center;
     background-repeat: no-repeat;
-    margin: 20px 0px 20px 0px;
+    margin: 40px 0px 20px 0px;
 }
 
-#devices .device {
+.device {
     margin: 0 auto;
     position: relative;
     overflow: hidden;
 }
 
-#devices .device .flashingTop,
-#devices .device .flashingBottom {
+.device .flashingTop,
+.device .flashingBottom {
     position: absolute;
     left: 0;
     width: 100%;
 }
 
-#devices .device .flashingTop {
+.device .flashingTop {
     top: 0;
     padding-top: 2px;
 }
 
-#devices .device .flashingBottom {
+.device .flashingBottom {
     bottom: 0;
 }
 
-#devices iframe {
+iframe {
     width: 100%;
     height: 100%;
     margin: 0;
@@ -248,24 +245,65 @@ a#viewAllDevices {
     background-image: url(css-images/iphone-portrait.png);
     padding: 115px 0 117px 0px;
 }
+.iphone-portrait .device{
+    width: 320px; height: 416px; padding-top: 20px;padding-bottom: 44px;
+}
+.iphone-landscape .device{
+    width: 480px; height: 268px; padding-top: 20px;padding-bottom: 32px;
+}
+.ipad-portrait .device{
+    width: 768px; height: 900px; padding-top: 236px;
+}
+.ipad-landscape .device{
+    width: 1024px; height: 647px; padding-top: 123px;
+}
+#iphone-portrait{ width: 336px }
+.mac #iphone-portrait{ width: 320px }
+#iphone-landscape{ width:496px }
+.mac #iphone-landscape{ width:480px }
+#ipad-portrait{width:785px}
+.mac #ipad-portrait{width:768px}
+#ipad-landscape{width:1041px}
+.mac #ipad-landscape{width:1024px}
+
+.device-type{
+    color: #FFF;
+    -ms-transform:rotate(-90deg); /* IE 9 */
+    -moz-transform:rotate(-90deg); /* Firefox */
+    -webkit-transform:rotate(-90deg); /* Safari and Chrome */
+    -o-transform:rotate(-90deg); /* Opera */
+    transform:rotate(-90deg);
+    position: absolute;
+    font-size: 32px;
+    display: block;
+    text-shadow: 0px 0px 15px #A4C9EB;
+}
+#iphone-portrait-device .device-type{
+    margin-left: 298px;
+    margin-top: 184px;
+}
+#iphone-landscape-device .device-type{
+    margin-left: 200px;
+    margin-top: 184px;
+}
+#slides .active .device-type{
+    -ms-transform:rotate(0deg); /* IE 9 */
+    -moz-transform:rotate(0deg); /* Firefox */
+    -webkit-transform:rotate(0deg); /* Safari and Chrome */
+    -o-transform:rotate(0deg); /* Opera */
+    transform:rotate(0deg);
+    margin-left: 15px;
+    margin-top: 18px;
+}
 
 .iphone-landscape {
     background-image: url(css-images/iphone-landscape.png);
     padding: 23px 0 24px 0px;
 }
 
-.iphone-5-portrait {
-    background-image: url(css-images/iphone-5-portrait.png);
-    padding: 103px 0 117px 0px;
-}
-
-.iphone-5-landscape {
-    background-image: url(css-images/iphone-5-landscape.png);
-    padding: 22px 0 24px 0px;
-}
-
 .ipad-portrait {
     background-image: url(css-images/ipad-portrait.png);
+    padding: 0 0 265px 0;
 }
 
 .ipad-landscape {
@@ -306,14 +344,6 @@ article img {
 #slides article {
     width: 20%;
     float: left;
-}
-
-
-#slides {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    padding: 1%;
 }
 
 
