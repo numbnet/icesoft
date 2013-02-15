@@ -254,7 +254,7 @@ public class ComponentArtifact extends Artifact{
         writer.append("\t\tPropertyKeys(String toString) { this.toString = toString; }\n");
         writer.append("\t\tPropertyKeys() { }\n");
         writer.append("\t\tpublic String toString() {\n");
-        writer.append("\t\t\treturn ((toString != null) ? toString : super.toString());\n");
+        writer.append("\t\t\treturn ((toString != null) ? toString : name());\n");
         writer.append("\t\t}\n\t}\n");
     }
 
@@ -345,7 +345,7 @@ public class ComponentArtifact extends Artifact{
         if (!prop.isDelegatingProperty) {
             writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
             writer.append(pseudoFieldName);
-            writer.append(".name() );");
+            writer.append(".toString() );");
 //			writer.append("\n\t\tMap clientValues = null;");
             writer.append("\n\t\tif (ve != null) {");
             writer.append("\n\t\t\t// map of style values per clientId");
@@ -370,7 +370,7 @@ public class ComponentArtifact extends Artifact{
             // Here,
 
             writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append( pseudoFieldName ).
-                    append(".name() + \"_defaultValues\";" );
+                    append(".toString() + \"_defaultValues\";" );
             writer.append("\n\t\t\t\tMap clientDefaults = (Map) sh.get(defaultKey);");
 
             writer.append("\n\t\t\t\tif (clientDefaults == null");
@@ -387,7 +387,7 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\t} else {");
             writer.append("\n\t\t\t\tString clientId = getClientId();");
             writer.append("\n\t\t\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
-                    append(".name() + \"_rowValues\"; ");
+                    append(".toString() + \"_rowValues\"; ");
             writer.append("\n\t\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
             writer.append("\n\t\t\t\tif (clientValues == null) {");
             writer.append("\n\t\t\t\t\tclientValues = new HashMap(); ");
@@ -467,7 +467,7 @@ public class ComponentArtifact extends Artifact{
             // Start of Value Expression code
             writer.append("\n\t\tValueExpression ve = getValueExpression( PropertyKeys.");
             writer.append( pseudoFieldName );
-            writer.append(".name() );");
+            writer.append(".toString() );");
 
             writer.append("\n\t\tif (ve != null) {" );
             // For primitives, don't overwrite a default value with a null value obtained from
@@ -485,7 +485,7 @@ public class ComponentArtifact extends Artifact{
             }
             writer.append("\n\t\t} else {");
             writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-            writer.append("\n\t\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
+            writer.append("\n\t\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".toString() + \"_rowValues\";");
             writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey);");
             writer.append("\n\t\t\tboolean mapNoValue = false;");
             // differentiate between the case where the map has clientId and it's value is null
@@ -502,7 +502,7 @@ public class ComponentArtifact extends Artifact{
 
 
             writer.append("\n\t\t\tif (mapNoValue || clientValues == null ) { ");
-            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_defaultValues\";");
+            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(pseudoFieldName).append(".toString() + \"_defaultValues\";");
             writer.append("\n\t\t\t\tMap defaultValues = (Map) sh.get(defaultKey); ");
             writer.append("\n\t\t\t\tif (defaultValues != null) { ");
             writer.append("\n\t\t\t\t\tif (defaultValues.containsKey(\"defValue\" )) {");
@@ -651,7 +651,7 @@ public class ComponentArtifact extends Artifact{
         writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
         writer.append("\n\t\tString clientId = getClientId();");
         writer.append("\n\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
-                append(".name() + \"_rowValues\"; ");
+                append(".toString() + \"_rowValues\"; ");
         writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey); ");
         writer.append("\n\t\tif (clientValues == null) {");
         writer.append("\n\t\t\tclientValues = new HashMap(); ");
@@ -714,7 +714,7 @@ public class ComponentArtifact extends Artifact{
         writer.append(";");
 
         writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
-        writer.append("\n\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
+        writer.append("\n\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".toString() + \"_rowValues\";");
         writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey);");
         writer.append("\n\t\tif (clientValues != null) { ");
 
