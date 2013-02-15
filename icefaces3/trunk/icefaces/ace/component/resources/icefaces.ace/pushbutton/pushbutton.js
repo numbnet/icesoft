@@ -29,12 +29,27 @@ ice.ace.pushbutton = function(clientId, cfg){
                 .on("mousedown", function() { self.changeStyleState('active'); })
                 .on("mouseup", function() { self.changeStyleState('hover'); })
                 .on("mouseenter",function() { self.changeStyleState('hover'); })
+                .on("focus",function() { self.changeStyleState('hover'); })
+                .on("blur",function() { self.changeStyleState('default'); })
                 .on("mouseleave",function() { self.changeStyleState('default'); })
     }
+
+    // lazy init occuring via kb focus, set focus style since
+    // our focus event won't be set up yet
+    if (document.activeElement == this.button[0])
+        self.changeStyleState('hover');
+
+    ice.onElementUpdate(this.id, function() {self.unload()});
 };
 
 // Selectors
 ice.ace.pushbutton.prototype.buttonSelector = " > span > span > button";
+
+ice.ace.pushbutton.prototype.unload = function() {
+    this.button.off("click mousedown mouseup mouseenter focus blur mosueleave");
+    this.button = undefined;
+    this.element = undefined;
+}
 
 ice.ace.pushbutton.prototype.onClick = function (e) {
     var options = {
