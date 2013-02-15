@@ -68,6 +68,7 @@ public class PushButtonRenderer extends CoreRenderer {
         String yuiBaseClass= "yui-button yui-push-button ui-button ui-widget ui-state-default";
         PushButton pushButton = (PushButton) uiComponent;
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        boolean disabled = pushButton.isDisabled();
         Integer tabindex = pushButton.getTabindex();
 
         if (ariaEnabled && tabindex == null) tabindex = 0;
@@ -76,7 +77,9 @@ public class PushButtonRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
-        encodeScript(facesContext, writer, pushButton, clientId, HTML.ONMOUSEOVER_ATTR);
+        if (!disabled) encodeScript(facesContext, writer, pushButton,
+                                    clientId, HTML.ONMOUSEOVER_ATTR);
+
         encodeRootStyle(writer, pushButton);
 
         // first span
@@ -93,10 +96,11 @@ public class PushButtonRenderer extends CoreRenderer {
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
-        encodeScript(facesContext, writer, pushButton, clientId, HTML.ONFOCUS_ATTR);
 
-        if (pushButton.isDisabled())
+        if (disabled)
             writer.writeAttribute(HTML.STYLE_CLASS_ATTR, "ui-state-disabled", null);
+        else
+            encodeScript(facesContext, writer, pushButton, clientId, HTML.ONFOCUS_ATTR);
 
         if (tabindex != null)
             writer.writeAttribute(HTML.TABINDEX_ATTR, tabindex, null);
@@ -173,9 +177,6 @@ public class PushButtonRenderer extends CoreRenderer {
                                       .beginArray()
                                       .item(clientId)
                                       .beginMap();
-
-        if (pushButton.isDisabled())
-            json.entry("disabled", true);
 
         if (hasListener(pushButton))
             json.entry("fullSubmit", true);

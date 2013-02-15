@@ -23,16 +23,14 @@ ice.ace.pushbutton = function(clientId, cfg){
     this.styleState = 'default';
     var self = this;
 
-    if (!this.cfg.disabled) {
-        this.button
-                .on("click", function() { self.onClick(); })
-                .on("mousedown", function() { self.changeStyleState('active'); })
-                .on("mouseup", function() { self.changeStyleState('hover'); })
-                .on("mouseenter",function() { self.changeStyleState('hover'); })
-                .on("focus",function() { self.changeStyleState('hover'); })
-                .on("blur",function() { self.changeStyleState('default'); })
-                .on("mouseleave",function() { self.changeStyleState('default'); })
-    }
+    this.button
+            .on("click", function() { self.onClick(); })
+            .on("mousedown", function() { self.changeStyleState('active'); })
+            .on("mouseup", function() { self.changeStyleState('hover'); })
+            .on("mouseenter",function() { self.changeStyleState('hover'); })
+            .on("focus",function() { self.changeStyleState('hover'); })
+            .on("blur",function() { self.changeStyleState('default'); })
+            .on("mouseleave",function() { self.changeStyleState('default'); })
 
     // lazy init occuring via kb focus, set focus style since
     // our focus event won't be set up yet
