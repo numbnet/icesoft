@@ -65,71 +65,57 @@
             <div id="overflow">
             
                 <div class="inner">
-                
-                    <article>
-                        <section id='devices'>
-                            <div class='deviceWrap iphone-portrait'>
-                                <div class='device' style='width: 320px; height: 416px; padding-top: 20px;padding-bottom: 44px;'>
-                                    <div class='flashingTop' style='height: 20px; width: 320px'>
-                                        <span class='time'></span>
-                                    </div>
-                                    <div class='flashingBottom' style='height: 44px'>
-                                    
-                                    </div>
-                                    <iframe src='./showcase-small.jsf?theme=iphone' id='iphone-portrait' 
-                                        style='width:336px'></iframe>
+                    <article id="iphone-portrait-device" class="active">
+                        <span class="device-type">iPhone Portrait Mode</span>
+                        <div class='deviceWrap iphone-portrait'>
+                            <div class='device'>
+                                <div class='flashingTop' style='height: 20px; width: 320px'>
+                                    <span class='time'></span>
                                 </div>
+                                <div class='flashingBottom' style='height: 44px'>
+                                
+                                </div>
+                                <iframe src='./showcase-small.jsf?theme=iphone' id='iphone-portrait'></iframe>
                             </div>
-                            
-                        </section>
+                        </div>
                     </article>
                     
-                    <article>
-                        <section id='devices'>
-                            <div class='deviceWrap iphone-landscape'>
-                                <div class='device' style='width: 480px; height: 268px; padding-top: 20px;padding-bottom: 32px;'>
-                                    <div class='flashingTop' style='height: 20px; width: 480px'>
-                                        <span class='time'></span>
-                                    </div>
-                                    <div class='flashingBottom' style='height: 32px'>
-                                    
-                                    </div>
-                                    <iframe src='about:blank' id='iphone-landscape' 
-                                        style='width:496px'></iframe>
+                    <article id="iphone-landscape-device">
+                        <span class="device-type">iPhone Landscape Mode</span>
+                        <div class='deviceWrap iphone-landscape'>
+                            <div class='device'>
+                                <div class='flashingTop' style='height: 20px; width: 480px'>
+                                    <span class='time'></span>
                                 </div>
-                            </div>
-                            
-                        </section>
-                    </article>
-                    <article>
-                        <section id='devices'>
-                            <div class='deviceWrap ipad-portrait'>
-                                <div class='device' style='width: 768px; height: 900px; padding-top: 124px;'>
-                                    <div class='flashingTop' style='height: 124px; width: 768px'>
-                                        <span class='time'></span>
-                                    </div>
-                                    <iframe src='about:blank' id='ipad-portrait' 
-                                        style='width:785px'></iframe>
+                                <div class='flashingBottom' style='height: 32px'>
+                                
                                 </div>
+                                <iframe src='about:blank' id='iphone-landscape'></iframe>
                             </div>
-                            
-                        </section>
+                        </div>
                     </article>
-                    <article>
-                        <section id='devices'>
-                            <div class='deviceWrap ipad-landscape'>
-                                <div class='device' style='width: 1024px; height: 645px; padding-top: 123px;'>
-                                    <div class='flashingTop' style='height: 123px; width: 1024px'>
-                                        <span class='time'></span>
-                                    </div>
-                                    <iframe src='about:blank' id='ipad-landscape'
-                                        style='width:1041px'></iframe>
+                    <article id="ipad-portrait-device">
+                        <span class="device-type">iPad Portrait Mode</span>
+                        <div class='deviceWrap ipad-portrait'>
+                            <div class='device'>
+                                <div class='flashingTop' style='height: 124px; width: 768px'>
+                                    <span class='time'></span>
                                 </div>
+                                <iframe src='about:blank' id='ipad-portrait' ></iframe>
                             </div>
-                            
-                        </section>
+                        </div>
                     </article>
-                    
+                    <article id="ipad-landscape-device">
+                        <span class="device-type">iPad Landscape Mode</span>
+                        <div class='deviceWrap ipad-landscape'>
+                            <div class='device'>
+                                <div class='flashingTop' style='height: 123px; width: 1024px'>
+                                    <span class='time'></span>
+                                </div>
+                                <iframe src='about:blank' id='ipad-landscape'></iframe>
+                            </div>
+                        </div>
+                    </article>
                     
                 </div> 
                 
@@ -145,26 +131,34 @@
     function openIphonePortrait(){
         closeAllDevices();
         document.getElementById('iphone-portrait').setAttribute('src','./showcase-small.jsf?theme=iphone');
-        if( document.documentElement.classList )
+        if( document.documentElement.classList ){
             document.getElementById('iphone-portrait-label').classList.add('active');
+            document.getElementById('iphone-portrait-device').classList.add('active');
+        }
     }
     function openIphoneLandscape(){
         closeAllDevices();
         document.getElementById('iphone-landscape').setAttribute('src','./showcase-small.jsf?theme=iphone');
-        if( document.documentElement.classList )
+        if( document.documentElement.classList ){
             document.getElementById('iphone-landscape-label').classList.add('active');
+            document.getElementById('iphone-landscape-device').classList.add('active');
+        }
     }
     function openIpadPortrait(){
         closeAllDevices();
         document.getElementById('ipad-portrait').setAttribute('src','./showcase-large.jsf?theme=ipad');
-        if( document.documentElement.classList )
+        if( document.documentElement.classList ){
             document.getElementById('ipad-portrait-label').classList.add('active');
+            document.getElementById('ipad-portrait-device').classList.add('active');
+        }
     }
     function openIpadLandscape(){
         closeAllDevices();
         document.getElementById('ipad-landscape').setAttribute('src','./showcase-large.jsf?theme=ipad');
-        if( document.documentElement.classList )
+        if( document.documentElement.classList ){
             document.getElementById('ipad-landscape-label').classList.add('active');
+            document.getElementById('ipad-landscape-device').classList.add('active');
+        }
     }
     function closeAllDevices(){
         document.getElementById('iphone-portrait').setAttribute('src','about:blank');
@@ -176,8 +170,15 @@
             document.getElementById('iphone-landscape-label').classList.remove('active');
             document.getElementById('ipad-portrait-label').classList.remove('active');
             document.getElementById('ipad-landscape-label').classList.remove('active');
+            document.getElementById('iphone-portrait-device').classList.remove('active');
+            document.getElementById('iphone-landscape-device').classList.remove('active');
+            document.getElementById('ipad-portrait-device').classList.remove('active');
+            document.getElementById('ipad-landscape-device').classList.remove('active');
         }
         
+    }
+    if (navigator.appVersion.indexOf("Mac")!=-1){
+        document.documentElement.className += " mac";
     }
     </script>
 
