@@ -102,6 +102,17 @@ public class EnvUtils {
     private static boolean isMyFaces = false;
     private static final String MYFACES_STATE_SAVING_MARKER = "~org.apache.myfaces.saveStateFieldMarker~";
 
+    //Use reflection to detect if Flow is available (JSF 2.2 implementations only)
+    private static Class FlowClass;
+
+    static {
+        try {
+            FlowClass = Class.forName("javax.faces.flow.Flow");
+        } catch (Throwable t) {
+            log.log(Level.FINE, "Flow classes not available: ", t);
+        }
+    }
+
     private static String stateMarker;
 
     //Use reflection to identify if the Portlet classes are available.
@@ -765,6 +776,15 @@ public class EnvUtils {
         testImpl();
         return isMyFaces;
     }
+
+    /**
+     * Determine whether the current JSF implementation is version 2.2
+     * @return true if JSF implementation is 2.2
+     */
+    public static boolean isJSF22() {
+        return FlowClass != null;
+    }
+
 
     private static void testImpl() {
         if (!isImplTested) {
