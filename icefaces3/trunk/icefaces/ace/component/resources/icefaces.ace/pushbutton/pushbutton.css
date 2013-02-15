@@ -20,26 +20,7 @@ Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 version: 2.6.0
 */
-
-.ice-pushbutton .yui-button{
-	margin:auto .25em;}
-	
-.ice-pushbutton .yui-button .first-child{
-	margin:0 -1px;
-    _margin: 0;
-	}
-	
-.ice-pushbutton .yui-button button,.ice-pushbutton .yui-button a{
-	padding:0 10px;
-	font-size:93%;
-	line-height:2;
-	*line-height:1.7;
-	min-height:2em;
-	*min-height:auto;
-	margin:auto .25em;
-	}
-		
-.ice-pushbutton .yui-button a{
-	*line-height:1.875;
-	*padding-bottom:1px;
-	}
+.ice-pushbutton .yui-button button {
+    padding:.25em 1em;
+    border:0;
+}

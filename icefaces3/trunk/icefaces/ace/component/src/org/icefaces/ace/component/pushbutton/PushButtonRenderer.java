@@ -17,13 +17,19 @@
 package org.icefaces.ace.component.pushbutton;
 
 import java.io.IOException;
+import java.lang.Integer;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
 import java.util.*;
+import javax.el.MethodExpression;
 import javax.faces.event.ActionEvent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionListener;
 import javax.faces.render.Renderer;
 
 
@@ -39,145 +45,163 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 @MandatoryResourceComponent(tagName="pushButton", value="org.icefaces.ace.component.pushbutton.PushButton")
 public class PushButtonRenderer extends CoreRenderer {
 
-    List <UIParameter> uiParamChildren;
-
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
     	Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-            PushButton pushButton = (PushButton) uiComponent;
-            String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
-            String clientId = pushButton.getClientId();
+        PushButton pushButton = (PushButton) uiComponent;
+        String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
+        String clientId = pushButton.getClientId();
   
-             if (clientId.equals(source)) { 
-                try {
-             	   if (!pushButton.isDisabled()){
-                        uiComponent.queueEvent(new ActionEvent (uiComponent));
+        if (clientId.equals(source)) {
+            try {
+               if (!pushButton.isDisabled()){
+                    uiComponent.queueEvent(new ActionEvent (uiComponent));
+               }
+            } catch (Exception e) {}
+        }
 
-             	   }
-                } catch (Exception e) {}
-             }
-			 
-			 decodeBehaviors(facesContext, pushButton);
+        decodeBehaviors(facesContext, pushButton);
     }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
+        String yuiBaseClass= "yui-button yui-push-button ui-button ui-widget ui-state-default";
         PushButton pushButton = (PushButton) uiComponent;
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        Integer tabindex = pushButton.getTabindex();
 
-          // capture any children UIParameter (f:param) parameters.
-        uiParamChildren = Utils.captureParameters( pushButton );
+        if (ariaEnabled && tabindex == null) tabindex = 0;
 
 		// root element
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        String styleClass = pushButton.getStyleClass();
-        String styleClassVal = "";
-        if (styleClass != null && styleClass.trim().length() > 0) {
-            styleClassVal = " " + styleClass;
-        }
-		writer.writeAttribute(HTML.CLASS_ATTR, "ice-pushbutton" + styleClassVal, null);
-        String style = pushButton.getStyle();
-        if (style != null && style.trim().length() > 0) {
-            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-        }
-        
+
+        encodeRootStyle(writer, pushButton);
+
+        // first span
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
-        String yuiBaseClass= "yui-button yui-push-button ui-button ui-widget ui-state-default";
 		writer.writeAttribute(HTML.CLASS_ATTR, yuiBaseClass, null);
-		// first child
+
+		// second span
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        if (ariaEnabled)
+            encodeAriaAttributes(writer, pushButton);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
-	 	writer.writeAttribute(HTML.ID_ATTR, clientId+"_s2", null);
-	 	
+
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-		
-		renderPassThruAttributes(facesContext, pushButton, HTML.BUTTON_ATTRS, new String[]{"style"});
+        writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
 
-        // ICE-6418 Write the id out to be the same as the eventual munged YUI id.
-		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
-        // ICE-6418 Don't define id's where unnecessary
-//		writer.writeAttribute(HTML.ID_ATTR, clientId+"_span-button", null);
-		writer.startElement(HTML.SPAN_ELEM, uiComponent);
-		Object oVal = pushButton.getValue();
-		if (null!=oVal) writer.writeText(String.valueOf(oVal), null);
-		else{
-            String label = pushButton.getLabel();
-            if (label != null) {
-                writer.writeText(label, null);
-            }
-		}
-		writer.endElement(HTML.SPAN_ELEM);
+        if (pushButton.isDisabled())
+            writer.writeAttribute(HTML.STYLE_CLASS_ATTR, "ui-state-disabled", null);
+
+        if (tabindex != null)
+            writer.writeAttribute(HTML.TABINDEX_ATTR, tabindex, null);
+
+        renderPassThruAttributes(facesContext, pushButton, HTML.BUTTON_ATTRS, new String[]{"style"});
+
+        // yet another span
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writeButtonValue(writer, pushButton);
+        writer.endElement(HTML.SPAN_ELEM);
+
+        writer.endElement(HTML.BUTTON_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
     }
-    
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
+
+    private void encodeAriaAttributes(ResponseWriter writer, PushButton pushButton) throws IOException {
+        Object value = pushButton.getValue();
+        Object label = pushButton.getLabel();
+        String valueString = value == null ? null : value.toString();
+        String labelString = label == null ? null : label.toString();
+
+        if (labelString == null) labelString = valueString;
+
+        writer.writeAttribute(HTML.ROLE_ATTR, "button", null);
+
+        if (labelString != null) {
+            writer.writeAttribute(HTML.ARIA_DESCRIBED_BY_ATTR, labelString, null);
+        } else {
+            writer.writeAttribute(HTML.ARIA_DESCRIBED_BY_ATTR, "description unavailable", null);
+        }
+
+        if (pushButton.isDisabled()) {
+            writer.writeAttribute(HTML.ARIA_DISABLED_ATTR, true, null);
+        }
+    }
+
+    private void writeButtonValue(ResponseWriter writer, PushButton pushButton) throws IOException {
+        Object buttonObject = null;
+        Object valueObject = pushButton.getValue();
+        String labelObject = pushButton.getLabel();
+
+        if (valueObject != null)
+            buttonObject = valueObject;
+        else if (labelObject != null)
+            buttonObject = labelObject;
+
+        if (buttonObject != null)
+            writer.write(buttonObject.toString());
+    }
+
+    private void encodeRootStyle(ResponseWriter writer, PushButton pushButton) throws IOException {
+        String rootStyle = "ice-pushbutton";
+        String styleClass = pushButton.getStyleClass();
+        String style = pushButton.getStyle();
+
+        if (styleClass != null)
+            rootStyle = " " + styleClass;
+
+        if (style != null)
+            writer.writeAttribute(HTML.STYLE_ATTR, style, null);
+
+        writer.writeAttribute(HTML.CLASS_ATTR, rootStyle, null);
+    }
+
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
 		PushButton pushButton = (PushButton) uiComponent;
-        writer.endElement(HTML.BUTTON_ELEM);
-		writer.endElement(HTML.SPAN_ELEM);
-		writer.endElement(HTML.SPAN_ELEM);
-		 
-		// js call using JSONBuilder utility ICE-5831 and ScriptWriter ICE-5830
-	    String ariaLabel = "";
-	    String yuiLabel="";
-	    String builder = "";
-	    //if there is a value, then it goes to yui-label property
-	    //otherwise, see if there is a label property.  If both exist then send 
-	    //separately.
-	    Object oVal=pushButton.getValue();
-	    if (null!=oVal) yuiLabel = String.valueOf(oVal);
-	    Object oLab=pushButton.getLabel();
-	    if (null!=oLab) ariaLabel=String.valueOf(oLab);
-	    if (yuiLabel.equals(""))yuiLabel=ariaLabel;
-	    if (ariaLabel.equals(""))ariaLabel=yuiLabel;
 
-        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
-        Integer tabindex = pushButton.getTabindex();
-        if (ariaEnabled && tabindex == null) tabindex = 0;
-
-        javax.el.MethodExpression actionExpression = pushButton.getActionExpression();
-        javax.faces.event.ActionListener[] actionListeners = pushButton.getActionListeners();
-
-        JSONBuilder jBuild = JSONBuilder.create().beginMap();
-        // need to worry if label isn't set?
-	    jBuild.
-	    entry("type", "button").
-        entry("disabled", pushButton.isDisabled());
-        if (tabindex != null) {
-            jBuild.entry("tabindex", tabindex);
-        }
-		encodeClientBehaviors(facesContext, pushButton, jBuild);
-        builder = jBuild.endMap().toString();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append( pushButton.getValue() ).
-                append(pushButton.getStyleClass()).
-                append(pushButton.getStyle());
-
-        jBuild = JSONBuilder.create().
-                                beginMap().
-                entry("fullSubmit", actionExpression != null || actionListeners.length > 0).
-                entry("ariaLabel", ariaLabel).
-                entry("hashCode",  sb.toString().hashCode()).
-                entry("ariaEnabled", ariaEnabled);
-
-        if (uiParamChildren != null) {
-            jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
-        }
-
-	    String params = "'" + clientId + "'," +
-        builder
-           + "," + jBuild.endMap().toString();
- //         System.out.println("params = " + params);	    
-
-        String finalScript = "ice.ace.pushbutton.updateProperties(" + params + ");";
-        ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
+        encodeScript(facesContext, pushButton, clientId);
             
         writer.endElement(HTML.DIV_ELEM);
+    }
+
+    private void encodeScript(FacesContext facesContext, PushButton pushButton, String clientId) throws IOException {;
+        List<UIParameter> uiParams = Utils.captureParameters(pushButton);
+        JSONBuilder json = JSONBuilder.create()
+                                      .beginFunction("ice.ace.create")
+                                      .item("pushbutton")
+                                      .beginArray()
+                                      .item(clientId)
+                                      .beginMap();
+
+        if (pushButton.isDisabled())
+            json.entry("disabled", true);
+
+        if (hasListener(pushButton))
+            json.entry("fullSubmit", true);
+
+        encodeClientBehaviors(facesContext, pushButton, json);
+
+        if (uiParams != null) {
+            json.beginMap("uiParams");
+            for (UIParameter p : uiParams)
+                json.entry(p.getName(), p.getValue().toString());
+            json.endMap();
+        }
+
+        json.endMap().endArray().endFunction();
+
+        ScriptWriter.insertScript(facesContext, pushButton, json.toString());
+    }
+
+    private boolean hasListener(PushButton pushButton) {
+        MethodExpression actionExpression = pushButton.getActionExpression();
+        ActionListener[] actionListeners = pushButton.getActionListeners();
+        return (actionExpression != null || actionListeners.length > 0);
     }
 }

@@ -205,14 +205,6 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     width: auto;
 }
 
-.ice-linkbutton .yui-button a {
-    border: 1px solid transparent;
-}
-
-.ice-pushbutton .yui-button button {
-    border: 1px solid transparent;
-}
-
 .newBid {
     background-color: yellow;
 }
