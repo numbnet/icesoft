@@ -186,6 +186,19 @@ public class MenuBarRenderer extends BaseMenuRenderer {
 		if(submenu.getChildCount() > 0 && !disabled) {
 			writer.startElement("ul", null);
 
+			Integer top = submenu.getPositionTop();
+			if (top != null) {
+				writer.writeAttribute("top", top.intValue(), null);
+			}
+			Integer left = submenu.getPositionLeft();
+			if (left != null) {
+				writer.writeAttribute("left", submenu.getPositionLeft(), null);
+			}
+			String relativeTo = submenu.getRelativeTo();
+			if (relativeTo != null) {
+				writer.writeAttribute("relativeto", relativeTo.toLowerCase(), null);
+			}
+
 			encodeMenuContent(context, submenu);
 
 			writer.endElement("ul");

@@ -46,4 +46,13 @@ public class SubmenuMeta extends UIComponentBaseMeta {
 	
     @Property(tlddoc = "Boolean value to disable/enable the submenu. The submenu label will still be shown but with different styling, and clicking or hovering on it will not display its children submenus and menu items.")
     private boolean disabled;
+	
+    @Property(tlddoc = "Specifies a 'top' position (in pixels) that will override the automatic positioning of the submenu. This value is relative to the 'top' position of the submenu label or of the menu bar (see 'relativeTo' attribute). A negative value means that this custom position is above the reference point, while and positive value means that this custom position is below.")
+    private Integer positionTop;
+	
+    @Property(tlddoc = "Specifies a 'left' position (in pixels) that will override the automatic positioning of the submenu. This value is relative to the 'left' position of the submenu label or of the menu bar (see 'relativeTo' attribute). A negative value means that this custom position is to the left the reference point, while and positive value means that this custom position is to the right.")
+    private Integer positionLeft;
+	
+    @Property(tlddoc = "Specifies whether the 'positionLeft' and 'positionRight' attributes are relative to the submenu label or the menu bar. It also affects centering when using the value 'center' in 'direction. Possible values are 'label' and 'menubar'. The default value is 'label'.")
+    private String relativeTo;
 }
