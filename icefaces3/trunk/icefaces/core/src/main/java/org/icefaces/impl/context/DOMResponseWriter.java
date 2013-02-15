@@ -98,6 +98,14 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         return contentType;
     }
 
+    public void writeDoctype(String doctype) throws IOException {
+        processXMLPreamble(doctype);
+    }
+
+    public void writePreamble(String preamble) throws IOException {
+        processXMLPreamble(preamble);
+    }
+
     public void write(char[] cbuf, int off, int len) throws IOException {
         if (suppressNextNode) {
             //a component is attempting to render outside its subtree
