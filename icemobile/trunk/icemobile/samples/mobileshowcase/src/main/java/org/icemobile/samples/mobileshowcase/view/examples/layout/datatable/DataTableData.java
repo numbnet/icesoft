@@ -29,7 +29,7 @@ public class DataTableData implements Serializable {
         //static data initialization
         static {
             DEFAULT_ROWS = 8;
-            DEFAULT_LIST_SIZE = 30;
+            DEFAULT_LIST_SIZE = 1000;
             CHASSIS_ALL = new String[] {"Motorcycle", "Subcompact", "Mid-Size", "Luxury",
                                                         "Station Wagon", "Pickup", "Van", "Bus", "Semi-Truck"};
         }

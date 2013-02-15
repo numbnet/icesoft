@@ -36,7 +36,7 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/layout/datatable-desc.xhtml",
-        examplePath = "/WEB-INF/includes/examples/layout/datatable-example.xhtml",
+        examplePath = "/WEB-INF/includes/examples/layout/datatable2-example.xhtml",
         resourcesPath = "/WEB-INF/includes/examples/example-resources.xhtml"
 )
 @ExampleResources(
@@ -44,7 +44,7 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
                         title = "datatable-example.xhtml",
-                        resource = "/WEB-INF/includes/examples/layout/datatable-example.xhtml"),
+                        resource = "/WEB-INF/includes/examples/layout/datatable2-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
                         title = "DataTableBean.java",
