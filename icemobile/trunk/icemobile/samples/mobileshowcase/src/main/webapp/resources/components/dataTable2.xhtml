@@ -159,9 +159,7 @@
         new Tablesort("#{cc.id}");
 
         //attach row listeners TODO use event delegation
-        for( rowIndex = 0 ; rowIndex < rowsElem.children.length ; rowIndex++ ){
-            rowsElem.children[rowIndex].addEventListener("click", setRowDetail, false);
-        }
+        rowsElem.addEventListener("click", setRowDetail, false);
         
         //match header and body column widths
         for (colIndex = 0; colIndex < headers.length; ++colIndex) {
@@ -179,15 +177,18 @@
     setTimeout(createDataTable, 100);
     
     function setRowDetail(evt){
-        var detailRoot = document.querySelector("##{cc.id} .mobi-tbl-detail");
-        detailRoot.innerHTML = '';
-        var tr = findTr(evt.target);
-        var headerCells = document.querySelectorAll("##{cc.id} thead th");
-        for( var colIndex = 0 ; colIndex < headerCells.length ; colIndex++ ){
-            var line = document.createElement("div");
-            line.innerHTML = "<label>"+headerCells[colIndex].innerHTML+"</label>"
-                           + "<span>" + tr.children[colIndex].innerHTML + "</span>";
-            detailRoot.appendChild(line);
+        if( evt.target && 
+           ( evt.target.nodeName != "TBODY" ) ){
+            var detailRoot = document.querySelector("##{cc.id} .mobi-tbl-detail");
+            detailRoot.innerHTML = '';
+            var tr = findTr(evt.target);
+            var headerCells = document.querySelectorAll("##{cc.id} thead th");
+            for( var colIndex = 0 ; colIndex < headerCells.length ; colIndex++ ){
+                var line = document.createElement("div");
+                line.innerHTML = "<label>"+headerCells[colIndex].innerHTML+"</label>"
+                               + "<span>" + tr.children[colIndex].innerHTML + "</span>";
+                detailRoot.appendChild(line);
+            }            
         }
     }
     function findTr(el){
