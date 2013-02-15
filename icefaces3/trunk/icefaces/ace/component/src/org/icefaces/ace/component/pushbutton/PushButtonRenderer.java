@@ -76,6 +76,7 @@ public class PushButtonRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
+        encodeScript(facesContext, writer, pushButton, clientId, HTML.ONMOUSEOVER_ATTR);
         encodeRootStyle(writer, pushButton);
 
         // first span
@@ -92,6 +93,7 @@ public class PushButtonRenderer extends CoreRenderer {
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
+        encodeScript(facesContext, writer, pushButton, clientId, HTML.ONFOCUS_ATTR);
 
         if (pushButton.isDisabled())
             writer.writeAttribute(HTML.STYLE_CLASS_ATTR, "ui-state-disabled", null);
@@ -103,12 +105,14 @@ public class PushButtonRenderer extends CoreRenderer {
 
         // yet another span
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writeButtonValue(writer, pushButton);
-        writer.endElement(HTML.SPAN_ELEM);
 
+        writeButtonValue(writer, pushButton);
+
+        writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.BUTTON_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
     }
 
     private void encodeAriaAttributes(ResponseWriter writer, PushButton pushButton) throws IOException {
@@ -160,20 +164,11 @@ public class PushButtonRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, rootStyle, null);
     }
 
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = uiComponent.getClientId(facesContext);
-		PushButton pushButton = (PushButton) uiComponent;
-
-        encodeScript(facesContext, pushButton, clientId);
-            
-        writer.endElement(HTML.DIV_ELEM);
-    }
-
-    private void encodeScript(FacesContext facesContext, PushButton pushButton, String clientId) throws IOException {;
+    private void encodeScript(FacesContext facesContext, ResponseWriter writer,
+                              PushButton pushButton, String clientId, String event) throws IOException {
         List<UIParameter> uiParams = Utils.captureParameters(pushButton);
         JSONBuilder json = JSONBuilder.create()
-                                      .beginFunction("ice.ace.create")
+                                      .beginFunction("ice.ace.lazy")
                                       .item("pushbutton")
                                       .beginArray()
                                       .item(clientId)
@@ -196,7 +191,7 @@ public class PushButtonRenderer extends CoreRenderer {
 
         json.endMap().endArray().endFunction();
 
-        ScriptWriter.insertScript(facesContext, pushButton, json.toString());
+        writer.writeAttribute(event, json.toString(), null);
     }
 
     private boolean hasListener(PushButton pushButton) {
