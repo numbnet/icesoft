@@ -256,6 +256,18 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "wijmo-wijmenu ui-menu-multicolumn", "class");
 		writer.writeAttribute("style", "width: " + totalWidth + "px;", "style");
+		Integer top = submenu.getPositionTop();
+		if (top != null) {
+			writer.writeAttribute("top", top.intValue(), null);
+		}
+		Integer left = submenu.getPositionLeft();
+		if (left != null) {
+			writer.writeAttribute("left", submenu.getPositionLeft(), null);
+		}
+		String relativeTo = submenu.getRelativeTo();
+		if (relativeTo != null) {
+			writer.writeAttribute("relativeto", relativeTo.toLowerCase(), null);
+		}
 			
 		for (MenuColumn menuColumn : menuColumns) {
 			if (menuColumn.isRendered()) {

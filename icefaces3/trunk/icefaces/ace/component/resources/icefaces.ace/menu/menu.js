@@ -166,8 +166,15 @@ ice.ace.Menubar = function(id, cfg) {
 					return ulParents.size() == 1;
 				};
 				
+				var relativeToMenubar = false;
+				if (_this.attr('relativeto')) {
+					if (_this.attr('relativeto') == 'menubar') {
+						relativeToMenubar = true;
+					}
+				}
 				_this.css('list-style-type', 'none');
-				var _item = _this.parents('li:first');
+				var _item = relativeToMenubar ? _self.jq.parent().parent() : _this.parents('li:first');
+				var _itemLabel = _this.parents('li:first');
 				var offset = _item.offset();
 				if (_self.cfg.directionX == 'auto') {
 					if (ice.ace.ContextMenu.shouldDisplayLeft(offset.left, _this.width(), _item.width())) {
@@ -183,7 +190,7 @@ ice.ace.Menubar = function(id, cfg) {
 						_collision += 'none'; _collisionFirst += 'none';
 					}
 				}
-				if (isFirstSubmenu(_item)) { // first submenu level
+				if (isFirstSubmenu(_itemLabel)) { // first submenu level
 					_this.position({
 						my: _myFirst,
 						at: _atFirst,
@@ -197,6 +204,28 @@ ice.ace.Menubar = function(id, cfg) {
 						of: _item.get(0),
 						collision: _collision
 					});
+				}
+				if (_this.attr('top')) {
+					if (relativeToMenubar) {
+						var menubarTop = _self.jq.parent().parent().offset().top;
+						var labelTop = _itemLabel.offset().top;
+						var adjustmentTop = menubarTop - labelTop;
+						var totalTop = parseInt(_this.attr('top')) + adjustmentTop;
+						_this.css('top', totalTop + 'px');					
+					} else {
+						_this.css('top', _this.attr('top') + 'px');
+					}
+				}
+				if (_this.attr('left')) {
+					if (relativeToMenubar) {
+						var menubarLeft = _self.jq.parent().parent().offset().left;
+						var labelLeft = _itemLabel.offset().left;
+						var adjustmentLeft = menubarLeft - labelLeft;
+						var totalLeft = parseInt(_this.attr('left')) + adjustmentLeft;
+						_this.css('left', totalLeft + 'px');
+					} else {
+						_this.css('left', _this.attr('left') + 'px');
+					}
 				}
 			}
             }
