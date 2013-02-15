@@ -63,11 +63,7 @@
         var width = Math.floor(containerWidth/liLngth);
         var rem = 100 % liLngth;
         for (var i = 0; i < liLngth; i++){
-            if (i < liLngth-1){
-               children[i].style.width = width+"px";
-            }else {
-                children[i].style.width = width+rem+"px";
-            }
+            children[i].style.width = width+"px";
         }
     } 
 
@@ -150,6 +146,10 @@
                 var oldCtrl = document.getElementById(tabCtrl + oldIdx);
                 if (oldCtrl) {
                     removeClass(oldCtrl, clsActiveTab);
+                }
+                var autoWidth = cfgUpd.autoWidth;
+                if (autoWidth){
+                    setWidthStyle(document.getElementById(clientId));
                 }
                 //check to see if pages have been added or removed
                 tabContent = document.getElementById(clientId + "_tabContent");
