@@ -18,14 +18,15 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <head><title>(For validation only)</title></head>
 <body>
 
 <composite:interface
         displayName="Mobile DataTable">
-
+    <composite:attribute name="headers" required="true"/>
     <composite:attribute name="value" required="true"/>
 
 </composite:interface>
@@ -64,6 +65,7 @@
           background: rgba(238, 238, 238, 0.5); 
         }
         .mobi-tbl-master, .mobi-tbl-detail{ overflow-y: auto; -webkit-overflow-scrolling: touch;}
+        .mobi-tbl-headers th{ cursor: pointer; text-align: left; }
         .mobi-tbl-detail{ padding: 5px 0}
         .mobi-tbl-detail label{
             font-weight: bold;
@@ -78,7 +80,7 @@
         }
         .mobi-tbl-master tr{ cursor: pointer }
         .mobi-tbl-master tr:hover{
-            background-color: #11A1D9;
+            background-color: rgba(17, 161, 217, 0.3) !important;
         }
         @media only screen and (max-width: 800px) {
             table td:nth-child(7), table th:nth-child(7) {display: none;}
@@ -94,29 +96,97 @@
     <div id="#{cc.id}" class="mobi-tbl">
     
         <div class="mobi-tbl-detail">
+            
         </div>
         <div class="mobi-tbl-headers">
+            <table>
+                <thead>
+                    <tr></tr>
+                </thead>
+            </table>
         </div>
         <div class="mobi-tbl-master">
-            <h:dataTable id="tbl" value="#{cc.attrs.value}" var="row" styleClass="mobi-tbl">
-                <composite:insertChildren/>   
-            </h:dataTable>
+            <table>
+                <tbody>
+                </tbody>
+            </table>
         </div>
         
+       
     </div>
-    
+    <script src="./resources/javascript/tablesort.js"/>
     <script>
-    //<![CDATA[
-    var headers = document.querySelectorAll("##{cc.id} th");
-    var rows = document.querySelectorAll("##{cc.id} tbody tr");
+    
+    var data = [<ui:repeat id="data" value="#{cc.attrs.value}" var="row" varStatus="varStatus">[<composite:insertChildren/>]#{!varStatus.last ? "," : ""}</ui:repeat>];
+    
+  //<![CDATA[
+    function createDataTable(){
+
+        //set height of container to be 100% of parent
+        var ctr = document.querySelector("##{cc.id}");
+        ctr.style.height = (window.innerHeight - ctr.parentNode.offsetTop) + "px";
+
+        var headers = [#{cc.attrs.headers}];
+        var headersElem = document.querySelector("##{cc.id} thead tr");
+        var rowsElem = document.querySelector("##{cc.id} tbody");
+        
+        //write headers
+        var rowIndex;
+        var colIndex;
+        for (colIndex = 0; colIndex < headers.length; ++colIndex) {
+            var th = document.createElement("th");
+            th.innerHTML = headers[colIndex];
+            headersElem.appendChild(th);
+        }
+        
+        //write body
+        for (rowIndex = 0; rowIndex < data.length; ++rowIndex) {
+            var tr = document.createElement("tr");
+            rowsElem.appendChild(tr);
+            for (colIndex = 0; colIndex < headers.length; ++colIndex) {
+                var td = document.createElement("td");
+                td.innerHTML = data[rowIndex][colIndex];
+                tr.appendChild(td);
+            }        
+        }
+        
+        
+        //set height of master and detail regions
+        ctr.children[0].style.height = "40%";
+        ctr.children[1].style.height = "8%";
+        ctr.children[2].style.height = "48%";
+        
+        new Tablesort("#{cc.id}");
+
+        //attach row listeners TODO use event delegation
+        for( rowIndex = 0 ; rowIndex < rowsElem.children.length ; rowIndex++ ){
+            rowsElem.children[rowIndex].addEventListener("click", setRowDetail, false);
+        }
+        
+        //match header and body column widths
+        for (colIndex = 0; colIndex < headers.length; ++colIndex) {
+            headersElem.children[colIndex].style.width = rowsElem.children[0].children[colIndex].clientWidth + 'px';
+        }
+        //if windows, add 16px padding on right side of last header column
+        if (navigator.appVersion.indexOf("Win")!=-1){
+            headersElem.children[headers.length-1].style.borderRight = "16px solid transparent";
+        }
+        
+        //set 1st row as initial detail
+        setRowDetail({target: document.querySelector("##{cc.id} tbody tr:first-child")});
+
+    }
+    setTimeout(createDataTable, 100);
+    
     function setRowDetail(evt){
         var detailRoot = document.querySelector("##{cc.id} .mobi-tbl-detail");
         detailRoot.innerHTML = '';
         var tr = findTr(evt.target);
-        for( var j = 0 ; j < headers.length ; j++ ){
+        var headerCells = document.querySelectorAll("##{cc.id} thead th");
+        for( var colIndex = 0 ; colIndex < headerCells.length ; colIndex++ ){
             var line = document.createElement("div");
-            line.innerHTML = "<label>"+headers[j].innerHTML+"</label>"
-                           + "<span>" + tr.children[j].innerHTML + "</span>";
+            line.innerHTML = "<label>"+headerCells[colIndex].innerHTML+"</label>"
+                           + "<span>" + tr.children[colIndex].innerHTML + "</span>";
             detailRoot.appendChild(line);
         }
     }
@@ -126,33 +196,6 @@
         }
         return findTr(el.parentNode);
     }
-    for( var i = 0 ; i < rows.length ; i++ ){
-        rows[i].addEventListener("click", setRowDetail, false);
-    }
-    
-    setTimeout(function(){
-      //move headers to middle region
-        var thead = document.querySelector("##{cc.id} thead");
-        var headerRegion = document.querySelector("##{cc.id} .mobi-tbl-headers");
-        var headerTbl = document.createElement("table");
-        var headerTblTHead = document.createElement("thead");
-        headerTblTHead.innerHTML = thead.innerHTML;
-        headerTbl.appendChild(headerTblTHead);
-        headerRegion.appendChild(headerTbl);
-        thead.innerHTML = '';
-        
-      //set height of container to be 100% of parent
-        var ctr = document.querySelector("##{cc.id}");
-        //ctr.style.height = ctr.parentNode.clientHeight+"px";
-      //set height of master and detail regions
-        ctr.children[0].style.height = "20%";
-        ctr.children[1].style.height = "5%";
-        ctr.children[2].style.height = "75%";
-        
-        //set 1st row as initial detail
-        setRowDetail({target: document.querySelector("##{cc.id} tbody tr:first-child")});
-    },100);
-    
     
     //]]>
     </script>
