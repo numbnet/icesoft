@@ -467,11 +467,7 @@ ice.mobi.tabsetController = {
         var width = Math.floor(containerWidth/liLngth);
         var rem = 100 % liLngth;
         for (var i = 0; i < liLngth; i++){
-            if (i < liLngth-1){
-               children[i].style.width = width+"px";
-            }else {
-                children[i].style.width = width+rem+"px";
-            }
+            children[i].style.width = width+"px";
         }
     } ,
     findAndSet: function (pool, searchToken, newClass) {
