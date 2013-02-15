@@ -14,127 +14,70 @@
  * governing permissions and limitations under the License.
  */
 
-ice.ace.pushbutton = {
-    initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-        //want the span id
-        var spanId = clientId + "_span";
-        YAHOO.log("clientId=" + clientId + " spanId=" + spanId);
-        //get the button html element
-        var buttonNode = document.getElementById(spanId);
+ice.ace.pushbutton = function(clientId, cfg){
+    this.cfg = cfg;
+    this.id = clientId;
+    this.jqId = ice.ace.escapeClientId(this.id);
+    this.element = ice.ace.jq(this.jqId);
+    this.button = ice.ace.jq(this.jqId).find(this.buttonSelector);
+    this.styleState = 'default';
+    var self = this;
 
-        var button = new YAHOO.widget.Button(spanId,
-            {tabindex: null, type: jsProps.type});
-
-        button.addStateCSSClasses = function(state) {
-
-            if (state == 'hover') {
-                ice.ace.jq(this._button).addClass('ui-state-hover');
-            } else if (state == 'active') {
-                ice.ace.jq(this._button).addClass('ui-state-active');
-            } else if (state == 'disabled') {
-                ice.ace.jq(this._button).addClass('ui-state-disabled ');
-            }
-        };
-
-        button.removeStateCSSClasses = function(state) {
-
-            if (state == 'hover') {
-                ice.ace.jq(this._button).removeClass('ui-state-hover');
-            } else if (state == 'active') {
-                ice.ace.jq(this._button).removeClass('ui-state-active');
-            } else if (state == 'disabled') {
-                ice.ace.jq(this._button).removeClass('ui-state-disabled ');
-            }
-        };
-
-        if (jsProps.label) {
-            button.set('label', jsProps.label);
-        }
-
-        if (jsProps.type) {
-            button.set('button', jsProps.type);
-        }
-
-
-        if (jsfProps.disabled) {
-            button.set("disabled", true);
-        } else {
-            button.set("disabled", false);
-        }
-
-        var params = function(parameter) {
-            var context = ice.ace.getJSContext(clientId);
-            var sJSFProps = context.getJSFProps();
-            var postParameters = sJSFProps.postParameters;
-            if (postParameters != null) {
-                var argCount = postParameters.length / 2;
-                for (var idx = 0; idx < argCount; idx ++) {
-                    parameter(postParameters[idx * 2], postParameters[(idx * 2) + 1]);
-                }
-            }
-        };
-
-
-        var onClick = function (e) {
-            YAHOO.log(" in onClick and e.target=" + e.target);
-            YAHOO.log("  buttonRoot=" + buttonRoot + "  buttonNode=" + buttonNode);
-            var divRoot = document.getElementById(clientId);
-            var context = ice.ace.getJSContext(clientId);
-            var behaviors = context.getJSProps().behaviors;
-            var fullSubmit = context.getJSFProps().fullSubmit;
-
-            if (behaviors && behaviors.activate) {
-                // Convert core style params into ace style params
-                var p = {};
-                params(function(name, value) {
-                    p[name] = value;
-                });
-                ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
-            } else if (fullSubmit) {
-                ice.s(e, divRoot, params);
-            } else {
-                ice.se(e, divRoot, params);
-            }
-        };
-
-        buttonRoot = document.getElementById(spanId);
-        if (jsfProps.ariaEnabled) {
-            //add roles and attributes to the YUI slider widget
-            buttonRoot.firstChild.setAttribute("role", "button");
-            if (jsfProps.ariaLabel) {
-                buttonRoot.firstChild.setAttribute("aria-describedby", jsfProps.ariaLabel);
-            } else {
-                buttonRoot.firstChild.setAttribute("aria-describedby", "button description unavailable");
-            }
-            if (jsfProps.disabled) {
-                buttonRoot.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
-            }
-        }
-
-        button.on("click", onClick);
-
-
-        bindYUI(button);
-    },
-
-    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
-    updateProperties:function(clientId, jsProps, jsfProps, events) {
-        var context = ice.ace.getJSContext(clientId);
-        if (context && context.isAttached()) {
-            var prevJSFProps = context.getJSFProps();
-            if (prevJSFProps.hashCode != jsfProps.hashCode) {
-                context.getComponent().destroy();
-                document.getElementById(clientId)['JSContext'] = null;
-                JSContext[clientId] = null;
-            }
-        }
-        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
-    },
-
-    //delegate call to ice.yui.getInstance(..) with the reference of this lib
-    getInstance:function(clientId, callback) {
-        ice.ace.getInstance(clientId, callback, this);
+    if (!this.cfg.disabled) {
+        this.button
+                .on("click", function() { self.onClick(); })
+                .on("mousedown", function() { self.changeStyleState('active'); })
+                .on("mouseup", function() { self.changeStyleState('hover'); })
+                .on("mouseenter",function() { self.changeStyleState('hover'); })
+                .on("mouseleave",function() { self.changeStyleState('default'); })
     }
+};
 
+// Selectors
+ice.ace.pushbutton.prototype.buttonSelector = " > span > span > button";
 
+ice.ace.pushbutton.prototype.onClick = function (e) {
+    var options = {
+        source:this.id,
+        render:"@all",
+        params:this.cfg.uiParams
+    },
+    singleOptions = {
+        execute:"@this"
+    },
+    fullOptions = {
+        execute:"@all"
+    };
+
+    if (this.cfg.fullSubmit)
+        ice.ace.jq(options).extend(fullOptions);
+    else
+        ice.ace.jq(options).extend(singleOptions);
+
+    if (this.cfg.behaviors && this.cfg.behaviors.activate) {
+        ice.ace.ab(ice.ace.extendAjaxArguments(this.cfg.behaviors.activate, options));
+    } else
+        ice.ace.ab(options);
+};
+
+ice.ace.pushbutton.prototype.changeStyleState = function(state) {
+    this.removeStyleState(this.styleState);
+    this.addStyleState(state);
+    this.styleState = state;
+}
+
+ice.ace.pushbutton.prototype.addStyleState = function(state) {
+    if (state == 'hover')
+        this.button.addClass('ui-state-hover');
+    else if (state == 'active')
+        this.button.addClass('ui-state-active');
+    else if (state == 'default') {};
+};
+
+ice.ace.pushbutton.prototype.removeStyleState = function(state) {
+    if (state == 'hover')
+        this.button.removeClass('ui-state-hover');
+    else if (state == 'active')
+        this.button.removeClass('ui-state-active');
+    else if (state == 'default') {};
 };
