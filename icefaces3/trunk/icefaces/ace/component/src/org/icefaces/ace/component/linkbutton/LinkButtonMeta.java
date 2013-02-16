@@ -46,7 +46,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 @ICEResourceDependencies({
      @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
      @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
-     @ICEResourceDependency(name = "util/ace-yui.js")
+     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="Fired when the button is clicked or pressed by any other means (default event).", tlddoc="Fired when the button is clicked or pressed by any other means (default event).", defaultRender="@all", defaultExecute="@all")
