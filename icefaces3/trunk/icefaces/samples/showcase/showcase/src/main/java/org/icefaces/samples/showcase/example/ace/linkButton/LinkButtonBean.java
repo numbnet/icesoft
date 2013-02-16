@@ -70,7 +70,7 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> impleme
     
     public LinkButtonBean() {
         super(LinkButtonBean.class);
-        staticNavigation  = "showcase.jsf?grp=aceMenu&exp=pushButton";
+        staticNavigation  = "showcase.jsf";
         currentImage = ImageSet.getNextImage(currentImage);
     }
     

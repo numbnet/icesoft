@@ -416,6 +416,7 @@ public static final String[] MESSAGE_PASSTHROUGH_ATTRIBUTES =
     public static final String ROLE_ATTR = "role";
     public static final String ARIA_DESCRIBED_BY_ATTR = "aria-describedby";
     public static final String ARIA_DISABLED_ATTR = "aria-disabled";
+    public static final String ARIA_LABELLED_BY_ATTR = "aria-labelledby";
 
     //HTML attributes values
     public static final String SCOPE_COLGROUP_VALUE = "colgroup";

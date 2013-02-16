@@ -14,154 +14,83 @@
  * governing permissions and limitations under the License.
  */
 
-ice.ace.linkButton = {
+// Constructor
+ice.ace.linkButton = function(clientId, cfg) {
+    var self = this;
+    this.id = clientId;
+    this.jqId = ice.ace.escapeClientId(clientId);
+    this.element = ice.ace.jq(this.jqId);
+    this.anchor = this.element.find(this.anchorSelector);
+    this.cfg = cfg;
+    this.styleState = 'default';
 
-    initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-        var spanId = clientId + "_span";
-        var oLinkButton = new YAHOO.widget.Button(spanId, { label: jsProps.label, tabindex: null }, {type: jsProps.type});
+    this.anchor.on('click', function() { self.onClick() })
+               .on('keypress', function(e) { self.onKeypress(e) })
+               .on("mousedown", function() { self.changeStyleState('active'); })
+               .on("mouseup", function() { self.changeStyleState('hover'); })
+               .on("mouseenter",function() { self.changeStyleState('hover'); })
+               .on("focus",function() { self.changeStyleState('hover'); })
+               .on("blur",function() { self.changeStyleState('default'); })
+               .on("mouseleave",function() { self.changeStyleState('default'); });
+};
 
-        oLinkButton.addStateCSSClasses = function(state) {
+ice.ace.linkButton.prototype.anchorSelector = ' > span > span > a';
 
-            if (state == 'hover') {
-                ice.ace.jq(this._button).addClass('ui-state-hover');
-            } else if (state == 'active') {
-                ice.ace.jq(this._button).addClass('ui-state-active');
-            } else if (state == 'disabled') {
-                ice.ace.jq(this._button).addClass('ui-state-disabled ');
-            }
-        };
-
-        oLinkButton.removeStateCSSClasses = function(state) {
-
-            if (state == 'hover') {
-                ice.ace.jq(this._button).removeClass('ui-state-hover');
-            } else if (state == 'active') {
-                ice.ace.jq(this._button).removeClass('ui-state-active');
-            } else if (state == 'disabled') {
-                ice.ace.jq(this._button).removeClass('ui-state-disabled ');
-            }
-        };
-
-        root = document.getElementById(spanId);
-
-        if (jsfProps.ariaEnabled) {
-            root.firstChild.setAttribute("role", jsfProps.doAction ? "button" : "link");
-            root.firstChild.setAttribute("aria-labelledby", jsProps.label);
-            if (jsfProps.disabled) {
-                root.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
-            }
-            // If there's no action listener, this is standard anchor behaviour
-            // otherwise it's got an actionListener/action attribute. Described by offers further description
-            if (!jsfProps.doAction) {
-                root.firstChild.setAttribute("aria-describedby", "Standard HTML anchor");
-            } else {
-                root.firstChild.setAttribute("aria-describedby", "JSF action event source");
-            }
-        }
-
-        bindYUI(oLinkButton);
+ice.ace.linkButton.prototype.onClick = function () {
+    var href = this.anchor.attr('href');
+    var hasHref = href != undefined;
+    var options = {
+        source: this.id,
+        render:"@all",
+        params:this.cfg.uiParams
     },
-
-    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
-    updateProperties:function(clientId, jsProps, jsfProps, events) {
-
-        var context = ice.ace.getJSContext(clientId);
-        if (context && context.isAttached()) {
-            var prevJSFProps = context.getJSFProps();
-            if (prevJSFProps.hashCode != jsfProps.hashCode) {
-                context.getComponent().destroy();
-                document.getElementById(clientId)['JSContext'] = null;
-                JSContext[clientId] = null;
-            }
-        }
-        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
+    singleOptions = {
+        execute:"@this"
     },
+    fullOptions = {
+        execute:"@all"
+    };
 
-    //delegate call to ice.yui.getInstance(..) with the reference of this lib
-    getInstance:function(clientId, callback) {
-        ice.ace.getInstance(clientId, callback, this);
-    },
-
-    // Click handler visible from Renderer code 
-    clickHandler : function (e, clientId) {
-        var JSContext = ice.ace.getJSContext(clientId);
-        var doAction = JSContext.getJSFProps().doAction;
-        //YAHOO.log("--> Button.doAction = " + doAction);
-
-        var divRoot = document.getElementById(clientId);
-
-        var postParameters = JSContext.getJSFProps().postParameters;
-        var params = function(parameter) {
-            if (postParameters != null) {
-                var argCount = postParameters.length / 2;
-                for (var idx = 0; idx < argCount; idx ++) {
-                    parameter(postParameters[idx * 2], postParameters[(idx * 2) + 1]);
-                }
-            }
-        };
-        var evTarget = e.target || e.srcElement;
-        if (evTarget.nodeType == 3) {
-            evTarget = evTarget.parentNode;
-        }
-        var hrefAttr = YAHOO.util.Dom.getAttribute(evTarget, "href");
-
-        var behaviors = JSContext.getJSProps().behaviors;
-        if (behaviors && behaviors.activate) {
-            // Convert core style params into ace style params
-            var p = {};
-            params(function(name, value) {
-                p[name] = value;
-            });
-            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
-        } else if (doAction) {
-            ice.s(e, divRoot, params);
-        } else if (!hrefAttr) {
-            ice.se(e, divRoot, params);
-        }
-
-        // If there are actionListeners or ace:ajax behaviours (even if disabled), prevent default behaviour
-        if (doAction || behaviors) {
-            return false;
-        }
-    },
-
-    // keyDown handler visible from Renderer code
-    keyDownHandler : function (e, clientId) {
-        if (e.keyCode != 13) {
-            return true;
-        }
-        var JSContext = ice.ace.getJSContext(clientId);
-        var doAction = JSContext.getJSFProps().doAction;
-        //YAHOO.log("--> Button.doAction = " + doAction);
-
-        var divRoot = document.getElementById(clientId);
-
-        var postParameters = JSContext.getJSFProps().postParameters;
-        var params = function(parameter) {
-            if (postParameters != null) {
-                var argCount = postParameters.length / 2;
-                for (var idx = 0; idx < argCount; idx ++) {
-                    parameter(postParameters[idx * 2], postParameters[(idx * 2) + 1]);
-                }
-            }
-        };
-        var behaviors = JSContext.getJSProps().behaviors;
-        if (behaviors && behaviors.activate) {
-            // Convert core style params into ace style params
-            var p = {};
-            params(function(name, value) {
-                p[name] = value;
-            });
-            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
-        } else if (doAction) {
-            ice.s(e, divRoot, params);
-        } else {
-            ice.se(e, divRoot, params);
-        }
-
-        // If there are actionListeners, don't do default behaviour
-        if (doAction) {
-            return false;
-        }
+    if (this.cfg.behaviors && this.cfg.behaviors.activate) {
+        ice.ace.ab(ice.ace.extendAjaxArguments(
+                this.cfg.behaviors.activate,
+                {params:this.cfg.uiParams}
+        ));
+    } else if (this.cfg.hasAction) {
+        ice.ace.jq(options).extend(fullOptions);
+        ice.ace.ab(options);
+    } else if (!hasHref) {
+        ice.ace.jq(options).extend(singleOptions);
+        ice.ace.ab(options);
     }
+
+    // Skip default anchor behavior if missing an href or if
+    // a listener/behavior is attached to the component
+    if (!hasHref || this.cfg.hasAction || this.cfg.behaviors)
+        return false;
+};
+
+ice.ace.linkButton.prototype.onKeypress = function (e) {
+    if (e.keyCode != 13)
+        return true;
+
+    this.onClick();
+};
+
+ice.ace.linkButton.prototype.changeStyleState = function(state) {
+    this.removeStyleState(this.styleState);
+    this.addStyleState(state);
+    this.styleState = state;
+}
+
+ice.ace.linkButton.prototype.addStyleState = function(state) {
+    if (state == 'hover') this.element.addClass('ui-state-hover');
+    else if (state == 'active') this.element.addClass('ui-state-active');
+    else if (state == 'default') {}
+};
+
+ice.ace.linkButton.prototype.removeStyleState = function(state) {
+    if (state == 'hover') this.element.removeClass('ui-state-hover');
+    else if (state == 'active') this.element.removeClass('ui-state-active');
+    else if (state == 'default') {}
 };

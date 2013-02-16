@@ -40,9 +40,6 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 
 @MandatoryResourceComponent(tagName="linkButton", value="org.icefaces.ace.component.linkbutton.LinkButton")
 public class LinkButtonRenderer extends CoreRenderer {
-
-    List <UIParameter> uiParamChildren;
-	
 	private static String[] excludedAttributes = {"onclick", "onkeydown", "hreflang", "href", "target", "style"};
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -63,140 +60,129 @@ public class LinkButtonRenderer extends CoreRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-
         LinkButton linkButton = (LinkButton) uiComponent;
+        ResponseWriter writer = facesContext.getResponseWriter();
 
-        // capture any children UIParameter (f:param) parameters.
-        uiParamChildren = Utils.captureParameters( linkButton );
+        List <UIParameter> uiParams = Utils.captureParameters(linkButton);
+        String clientId = uiComponent.getClientId(facesContext);
+        String value = (String)linkButton.getValue();
+        Integer tabindex = linkButton.getTabindex();
+        boolean disabled = linkButton.isDisabled();
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        boolean doAction = (linkButton.getActionListeners().length > 0 ||
+                (linkButton.getActionExpression() != null));
+
+        if (ariaEnabled && tabindex == null) tabindex = 0;
 
         writer.startElement(HTML.DIV_ELEM, uiComponent );
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        encodeRootStyle(linkButton, writer);
+
+        // first span
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+
+        String styleClass = "yui-button yui-link-button ui-button ui-widget";
+        if (disabled)
+            styleClass += " yui-button-disabled yui-link-button-disabled";
+        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+
+        // second span but "first-child"- ugh.
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
+        if (ariaEnabled) encodeAriaAttributes(writer, linkButton, doAction);
+
+        // button element
+        writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
+
+        if (tabindex != null)
+            writer.writeAttribute(HTML.TABINDEX_ATTR, tabindex, null);
+
+        renderPassThruAttributes(facesContext, linkButton, HTML.LINK_ATTRS, excludedAttributes);
+
+        if (!disabled) {
+            String target = linkButton.getTarget();
+            String hrefLang = linkButton.getHrefLang();
+            String href = linkButton.getHref();
+            String paramString = uiParams != null
+                    ? "?"+Utils.asParameterString(uiParams)
+                    : "";
+
+            if (href != null) {
+                href += paramString;
+                writer.writeAttribute(HTML.HREF_ATTR, href, null );
+            }
+
+            if (hrefLang != null) {
+                writer.writeAttribute(HTML.HREFLANG_ATTR, hrefLang , null );
+            }
+
+            if (target != null) {
+                writer.writeAttribute(HTML.TARGET_ATTR, target, null );
+            }
+        } else
+            writer.writeAttribute(HTML.STYLE_CLASS_ATTR, "ui-state-disabled", null);
+
+        writer.write(value);
+
+        writer.endElement(HTML.ANCHOR_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
+        if (!disabled) encodeScript(facesContext, linkButton, uiParams,
+                                    clientId, doAction);
+        writer.endElement(HTML.DIV_ELEM);
+    }
+
+    private void encodeAriaAttributes(ResponseWriter writer, LinkButton button, boolean doAction) throws IOException {
+        writer.writeAttribute(HTML.ROLE_ATTR, doAction ? "button" : "link", null);
+        writer.writeAttribute(HTML.ARIA_LABELLED_BY_ATTR, (String)button.getValue(), null);
+
+        if (button.isDisabled()) {
+            writer.writeAttribute(HTML.ARIA_DISABLED_ATTR, true, null);
+        }
+
+        if (doAction) {
+            writer.writeAttribute(HTML.ARIA_DESCRIBED_BY_ATTR, "JSF action event source", null);
+        } else {
+            writer.writeAttribute(HTML.ARIA_DESCRIBED_BY_ATTR, "Standard HTML anchor", null);
+        }
+
+    }
+
+    private void encodeRootStyle(LinkButton linkButton, ResponseWriter writer) throws IOException {
         String styleClass = linkButton.getStyleClass();
         String styleClassVal = "";
         if (styleClass != null && styleClass.trim().length() > 0) {
             styleClassVal = " " + styleClass;
         }
-		writer.writeAttribute(HTML.CLASS_ATTR, "ice-linkbutton" + styleClassVal, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ice-linkbutton" + styleClassVal, null);
         String style = linkButton.getStyle();
         if (style != null && style.trim().length() > 0) {
             writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
         }
-
-        //writer.startElement(HTML.INPUT_ELEM, uiComponent);
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
-        styleClass = "yui-button yui-link-button ui-button ui-widget";
-        boolean disabled = linkButton.isDisabled();
-        if (disabled) {
-            styleClass += " yui-button-disabled yui-link-button-disabled";
-        }
-        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-
-        // first child
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        styleClass = "first-child";
-        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-
-        if (disabled) {
-//            writer.write((String) linkButton.getValue());
-            return;
-        }
-
-        // button element
-        writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
-
-		renderPassThruAttributes(facesContext, linkButton, HTML.LINK_ATTRS, excludedAttributes);
-		
-		String userOnclick = (String) linkButton.getAttributes().get("onclick");
-		userOnclick = userOnclick == null ? "" : userOnclick + ";";
-        // Uncomment this for the so - called inline model onclick handler 
-        writer.writeAttribute(HTML.ONCLICK_ATTR, userOnclick +
-                              "return ice.ace.linkButton.clickHandler(event, '" + clientId + "' );",
-                              null);
-        String temp;
-        if ((temp = linkButton.getHref()) != null) {
-            if (uiParamChildren != null) {
-                temp += "?" + Utils.asParameterString( uiParamChildren );
-            }
-            writer.writeAttribute(HTML.HREF_ATTR, temp, null );
-        } else {
-			String userOnkeydown = (String) linkButton.getAttributes().get("onkeydown");
-			userOnkeydown = userOnkeydown == null ? "" : userOnkeydown + ";";
-            // if there's no href, install a default key handler to catch the enter key
-            writer.writeAttribute(HTML.ONKEYDOWN_ATTR, userOnkeydown +
-                              "return ice.ace.linkButton.keyDownHandler(event, '" + clientId + "' );",
-                              null);
-        } 
-
-        if ((temp  = linkButton.getHrefLang()) != null) {
-            writer.writeAttribute(HTML.HREFLANG_ATTR, temp , null );
-        }
-        if ((temp = linkButton.getTarget()) != null) {
-            writer.writeAttribute(HTML.TARGET_ATTR, temp, null );
-        } 
     }
 
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-
-        LinkButton linkButton = (LinkButton) uiComponent;
-        String value = (String) linkButton.getValue();
-        // put the value here to minimize impact in rendering
-        writer.writeText(value, null);
+    private void encodeScript(FacesContext facesContext, LinkButton linkButton, List<UIParameter> uiParams, String clientId, boolean doAction) throws IOException {
         boolean disabled = linkButton.isDisabled();
-        if (!disabled) {
-            writer.endElement(HTML.ANCHOR_ELEM);
-        }
-        writer.endElement(HTML.SPAN_ELEM);
-        writer.endElement(HTML.SPAN_ELEM);
 
-        // With Action or ActionListener attributes, don't act as a normal link
-        ActionListener[] al = linkButton.getActionListeners();
-        boolean doAction = (al.length > 0 || (linkButton.getActionExpression() != null));
+        JSONBuilder json = JSONBuilder.create()
+                                      .beginFunction("ice.ace.create")
+                                      .item("linkButton")
+                                      .beginArray()
+                                      .item(clientId)
+                                      .beginMap()
+                                      .entry("hasAction", doAction);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append( value ).
-                append(linkButton.getHref()).
-                append(linkButton.getHrefLang()).
-                append(linkButton.getStyleClass()).
-                append(linkButton.getStyle()).
-                append(linkButton.getTarget());
+        encodeClientBehaviors(facesContext, linkButton, json);
 
-        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
-        Integer tabindex = linkButton.getTabindex();
-        if (ariaEnabled && tabindex == null) tabindex = 0;
-
-        JSONBuilder jsonBuilder = JSONBuilder.create().beginMap();
-        jsonBuilder.entry("type", "link");
-        if (tabindex != null) {
-            jsonBuilder.entry("tabindex", tabindex);
-        }
-        jsonBuilder.entry("label", (String) linkButton.getValue());
-        jsonBuilder.entry("disabled", disabled);
-		encodeClientBehaviors(facesContext, linkButton, jsonBuilder);
-		String jsProps = jsonBuilder.endMap().toString();
-
-        JSONBuilder jBuild = JSONBuilder.create().
-                                beginMap().
-                                entry("doAction", doAction).
-                                entry("hashCode",  sb.toString().hashCode()).
-                                entry("ariaEnabled", ariaEnabled);
-        
-        if (doAction && uiParamChildren != null) {
-            jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
+        if (doAction && uiParams != null) {
+            json.beginMap("uiParams");
+            for (UIParameter param : uiParams)
+                json.entry(param.getName(), param.getValue().toString());
+            json.endMap();
         }
 
-        String params = "'" + clientId + "'," +
-                         jsProps
-                        + "," + jBuild.endMap().toString();
+        json.endMap().endArray().endFunction();
 
-        String finalScript = "ice.ace.linkButton.updateProperties(" + params + ");";
-        ScriptWriter.insertScript(facesContext, uiComponent, finalScript);
-        writer.endElement(HTML.DIV_ELEM);
+        ScriptWriter.insertScript(facesContext, linkButton, json.toString());
     }
 }
