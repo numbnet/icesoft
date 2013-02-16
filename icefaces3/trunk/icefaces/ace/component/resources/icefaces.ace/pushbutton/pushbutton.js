@@ -49,7 +49,7 @@ ice.ace.pushbutton.prototype.unload = function() {
     this.element = undefined;
 }
 
-ice.ace.pushbutton.prototype.onClick = function (e) {
+ice.ace.pushbutton.prototype.onClick = function () {
     var options = {
         source:this.id,
         render:"@all",

@@ -14,31 +14,13 @@
  * governing permissions and limitations under the License.
  */
 
-/*
-Copyright (c) 2008, Yahoo! Inc. All rights reserved.
-Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
-version: 2.6.0
-*/
-
-.ice-linkbutton .yui-button{
+.ice-linkbutton {
+    display:inline;
+    vertical-align: middle;
     border: 1px solid transparent;
-    margin:auto .25em;
-	}
-	
-.ice-linkbutton .yui-button .first-child{
-	border-width:0px;
-	margin:0 -1px;
-    _margin: 0;
-	}
-	
-.ice-linkbutton .yui-button button,.ice-linkbutton .yui-button a{
+    padding: .1em .2em;
+}
 
-	padding:0 10px;
-	line-height:2;
-	*line-height:1.7;
-	min-height:2em;
-	*min-height:auto;
-	margin:auto .25em;
-	
-	}
+.ice-linkbutton > span > span > a {
+    text-decoration: underline !important;
+}
