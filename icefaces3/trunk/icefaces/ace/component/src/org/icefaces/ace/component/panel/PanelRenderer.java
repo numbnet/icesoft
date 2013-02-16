@@ -27,6 +27,7 @@
 package org.icefaces.ace.component.panel;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -42,6 +43,7 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="panel", value="org.icefaces.ace.component.panel.Panel")
 public class PanelRenderer extends CoreRenderer {
+    private Map<String, Object> domUpdateMap = new HashMap<String, Object>();
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -66,6 +68,7 @@ public class PanelRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        domUpdateMap.clear();
         Panel panel = (Panel) component;
 
         encodeMarkup(facesContext, panel);
@@ -151,6 +154,10 @@ public class PanelRenderer extends CoreRenderer {
 		
 		encodeScript(context, panel);
 
+        writer.startElement("span", null);
+        writer.writeAttribute("data-hashcode", domUpdateMap.hashCode(), null);
+        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.endElement("span");
         writer.endElement("div");
     }
 
@@ -161,6 +168,7 @@ public class PanelRenderer extends CoreRenderer {
         String headerText = panel.getHeader();
         String clientId = panel.getClientId(context);
 
+        domUpdateMap.put("headerText", headerText);
         if(headerText == null && header == null) {
             return;
         }
