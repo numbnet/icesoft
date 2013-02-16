@@ -198,8 +198,6 @@
                 <file name="icefaces.ace/util/util.js"/>
                 <file name="icefaces.ace/util/component.js"/>
                 <file name="icefaces.ace/tabset/tabset.js"/>
-                <file name="icefaces.ace/linkbutton/linkbutton.js"/>
-                <file name="icefaces.ace/pushbutton/pushbutton.js"/>
             </filelist>
         </concat>
         <!-- ace-jquery.js -->
@@ -253,10 +251,12 @@
                 <file name="icefaces.ace/dialog/dialog.js"/>
                 <file name="icefaces.ace/dnd/dragdrop.js"/>
                 <file name="icefaces.ace/progressbar/progressbar.js"/>
+                <file name="icefaces.ace/pushbutton/pushbutton.js"/>
                 <file name="icefaces.ace/resizable/resizable.js"/>
                 <file name="icefaces.ace/sliderentry/slider.js"/>
                 <file name="icefaces.ace/confirmationdialog/confirmationdialog.js"/>
                 <file name="icefaces.ace/panel/panel.js"/>
+                <file name="icefaces.ace/linkbutton/linkbutton.js"/>
                 <file name="icefaces.ace/list/list.js"/>
                 <file name="icefaces.ace/listcontrol/listcontrol.js"/>
                 <file name="icefaces.ace/animation/animation.js"/>
