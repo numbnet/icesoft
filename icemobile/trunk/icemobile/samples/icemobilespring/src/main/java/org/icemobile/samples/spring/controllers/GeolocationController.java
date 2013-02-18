@@ -21,6 +21,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.icemobile.samples.spring.GeolocationBean;
+import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 /** Spring MVC Controller for the Geolocation example. */
 @Controller
 @SessionAttributes({ "geolocationBean" })
-public class GeolocationController extends BaseController {
+public class GeolocationController extends ICEmobileBaseController {
 
     /** Create the geolocationBean.
      *  @param request The servlet request

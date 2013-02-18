@@ -23,6 +23,7 @@ import org.icemobile.samples.spring.FlipSwitchBean;
 import org.icemobile.samples.spring.InputTextBean;
 import org.icemobile.samples.spring.ListBean;
 import org.icemobile.samples.spring.TabsetBean;
+import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,7 +36,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @Controller
 @SessionAttributes({"geolocationBean", "carouselBean"})
-public class EchoController extends BaseController{
+public class EchoController extends ICEmobileBaseController{
 
     @RequestMapping(value = "/menu")
     public void doMenuRequest() {

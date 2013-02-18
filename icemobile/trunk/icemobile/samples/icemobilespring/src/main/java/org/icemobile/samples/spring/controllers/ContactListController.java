@@ -19,19 +19,17 @@ package org.icemobile.samples.spring.controllers;
 import java.io.IOException;
 
 import org.icemobile.component.ContactDecoder;
-import org.icemobile.samples.spring.AjaxUtils;
 import org.icemobile.samples.spring.ContactBean;
+import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @SessionAttributes("contactBean")
-public class ContactListController extends BaseController {
+public class ContactListController extends ICEmobileBaseController {
     
     @ModelAttribute("contactBean")
     public ContactBean createBean() {

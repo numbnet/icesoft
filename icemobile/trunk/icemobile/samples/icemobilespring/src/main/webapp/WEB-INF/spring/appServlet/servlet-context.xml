@@ -36,7 +36,7 @@
     <resources mapping="/icemobile-resources/**" location="classpath:/META-INF/web-resources/"/>
 
     <beans:bean id="rangingResourceHandler"
-                class="org.icemobile.samples.spring.RangingResourceHttpRequestHandler"/>
+                class="org.icemobile.spring.handler.RangingResourceHttpRequestHandler"/>
 
     <beans:bean
             class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">

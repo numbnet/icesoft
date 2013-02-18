@@ -110,11 +110,4 @@ public class FileUploadUtils {
 
         return filename;
     }
-    
-    public static boolean saveSimulatedUploade(HttpServletRequest request){
-        boolean result = false;
-        
-        
-        return result;
-    }
 }
