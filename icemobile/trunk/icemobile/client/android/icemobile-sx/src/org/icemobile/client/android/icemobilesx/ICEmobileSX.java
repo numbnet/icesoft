@@ -129,6 +129,7 @@ public class ICEmobileSX extends Activity
     public static final int SCAN_CODE = 4;
     protected static final int RECORD_CODE = 5;
     protected static final int ARVIEW_CODE = 6;
+    protected static final int ARMVIEW_CODE = 7;
 
     public static final String SCAN_ID = "org.icemobile.id";
 
@@ -325,6 +326,9 @@ class TestButton extends Button {
         if (INCLUDE_ARVIEW && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
             includeARView();
         }
+        if (INCLUDE_ARVIEW ) {
+            includeARMarkers();
+        }
         if (INCLUDE_CAMERA) {
             includeCamera();
         }
@@ -447,9 +451,24 @@ Log.d(LOG_TAG, "dispatched camcorder " + path);
             mCurrentMediaFile = path;
 Log.d(LOG_TAG, "dispatched microphone " + path);
         } else if ("aug".equals(command))  {
-            mARViewInterface
-                .arView(mCurrentId, packParams(params));
+Log.e(LOG_TAG, "checking augmented reality view option " + params.get("v"));
+            if ("vuforia".equals(params.get("v")))  {
+//will need to implement wrappers to support container invocation
+Log.e(LOG_TAG, "using Class.forName to load AR Marker view");
+                try {
+                    Intent arIntent = new Intent(getApplicationContext(),
+                            Class.forName("com.qualcomm.QCARSamples.FrameMarkers.FrameMarkers"));
+                    arIntent.putExtra(mCurrentId, ARMVIEW_CODE);
+                    arIntent.putExtra("attributes", packParams(params));
+                    startActivityForResult(arIntent, ARMVIEW_CODE);
+                } catch (Exception e)  {
+Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
+                }
+            } else {
+                mARViewInterface
+                    .arView(mCurrentId, packParams(params));
 Log.d(LOG_TAG, "dispatched augmented reality " + packParams(params));
+            }
 
         } else if ("scan".equals(command))  {
             mCaptureInterface
@@ -558,6 +577,11 @@ Log.e(LOG_TAG, "onActivityResult completed RECORD_CODE");
                 case ARVIEW_CODE:
 //		mARViewHandler.arViewComplete(data);
 Log.e(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
+                    returnToBrowser();
+                    break;
+                case ARMVIEW_CODE:
+//		mARViewHandler.arViewComplete(data);
+Log.e(LOG_TAG, "completed AR Marker View");
                     returnToBrowser();
                     break;
             }
@@ -903,6 +927,11 @@ Log.e(LOG_TAG, "completionCallback completed fetchContacts");
         mARViewHandler = new ARViewHandler(this, mWebView, utilInterface, ARVIEW_CODE);
         mARViewInterface = new ARViewInterface(mARViewHandler);
 //        mWebView.addJavascriptInterface(mARViewInterface, "ARView");
+    }
+
+    private void includeARMarkers() {
+//        mARMarkersHandler = new ARMarkersHandler(this, mWebView, utilInterface, ARVIEW_CODE);
+//        mARMarkersInterface = new ARViewInterface(mARViewHandler);
     }
 
     private void includeQRCode() {
