@@ -46,7 +46,7 @@ public class ListItemTag extends TagSupport {
         String builtinStyle = OUTPUTLISTITEM_CLASS;
 
         if (isGroup()) {
-            builtinStyle = OUTPUTLISTGROUP_CLASS + CSSUtils.STYLECLASS_BAR_B;
+            builtinStyle = OUTPUTLISTGROUP_CLASS + " " + CSSUtils.STYLECLASS_BAR_B;
         }
         tag.append(" class=\"").append(builtinStyle);
         if (styleClass != null && !"".equals(styleClass)) {
