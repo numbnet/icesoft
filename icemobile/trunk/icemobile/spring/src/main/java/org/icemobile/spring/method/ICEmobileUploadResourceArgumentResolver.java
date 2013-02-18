@@ -33,12 +33,10 @@ public class ICEmobileUploadResourceArgumentResolver implements HandlerMethodArg
     
     private static final String STORE_KEY = "ICEMOBILE_UPLOAD_STORE";
          
-    @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(ICEmobileResourceUpload.class);
     }
  
-    @Override
     public Resource resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                     NativeWebRequest webRequest, WebDataBinderFactory binderFactory) 
                             throws Exception {
