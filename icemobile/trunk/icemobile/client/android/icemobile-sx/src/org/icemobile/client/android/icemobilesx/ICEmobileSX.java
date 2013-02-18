@@ -463,6 +463,7 @@ Log.e(LOG_TAG, "using Class.forName to load AR Marker view");
                     startActivityForResult(arIntent, ARMVIEW_CODE);
                 } catch (Exception e)  {
 Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
+                    returnToBrowser();
                 }
             } else {
                 mARViewInterface
