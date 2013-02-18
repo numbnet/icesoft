@@ -30,6 +30,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.samples.spring.ModelBean;
+import org.icemobile.spring.controller.ICEmobileBaseController;
 
 import java.io.IOException;
 import java.util.Map;
@@ -37,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @SessionAttributes({"cameraMessage", "cameraUpload", "cameraBean"})
-public class CameraController extends BaseController{
+public class CameraController extends ICEmobileBaseController{
     
     private static final Log log = LogFactory
             .getLog(CameraController.class);

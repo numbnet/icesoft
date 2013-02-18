@@ -16,38 +16,38 @@
 
 package org.icemobile.samples.spring.controllers;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.samples.spring.MediaSpotBean;
+import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.icemobile.util.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
 
 @Controller
 @SessionAttributes({"augmentedRealityMessage", "augmentedRealityUpload", "mediaspotBean"})
-public class MediaSpotController extends BaseController{
+public class MediaSpotController extends ICEmobileBaseController{
     HashMap<String,MediaSpotBean> messages = new HashMap<String,MediaSpotBean>();
     MediaSpotBean selectedMessage = null;
     static int THUMBSIZE = 128;

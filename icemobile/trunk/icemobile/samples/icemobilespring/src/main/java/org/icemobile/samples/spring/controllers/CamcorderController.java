@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.samples.spring.ModelBean;
+import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,14 +30,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @SessionAttributes({"camcorderBean","camcorderUploadReady","camcorderMessage","camcorderUpload"})
-public class CamcorderController extends BaseController{
+public class CamcorderController extends ICEmobileBaseController{
 
 	@ModelAttribute("camcorderBean")
 	public ModelBean createBean() {

@@ -16,17 +16,8 @@
 
 package org.icemobile.samples.spring.controllers;
 
-import org.icemobile.samples.spring.QRScanBean;
-import org.icemobile.zxing.qrcode.QRCodeWriter;
-import org.icemobile.zxing.common.BitMatrix;
-import org.icemobile.zxing.BarcodeFormat;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -34,12 +25,27 @@ import java.net.URLDecoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.icemobile.samples.spring.QRScanBean;
+import org.icemobile.spring.controller.ICEmobileBaseController;
+import org.icemobile.zxing.BarcodeFormat;
+import org.icemobile.zxing.common.BitMatrix;
+import org.icemobile.zxing.qrcode.QRCodeWriter;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
 /**
  * Session Controller for echoing simple input pages
  */
 @Controller
 @SessionAttributes("QRScanBean")
-public class EchoSessionController extends BaseController {
+public class EchoSessionController extends ICEmobileBaseController {
 
 private static Logger LOG = Logger.getLogger(EchoSessionController.class.getName());
 
