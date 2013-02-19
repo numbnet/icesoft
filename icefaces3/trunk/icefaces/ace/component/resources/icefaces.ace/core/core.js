@@ -75,6 +75,15 @@ ice.ace.create = function(name, args) {
                 'for more details.';
 };
 
+ice.ace.getEvent = function() {
+    var source = arguments.callee.caller;
+    while (source) {
+        source = source.caller;
+        if (source.arguments[0] instanceof Event)
+            return source.arguments[0];
+    }
+}
+
 ice.ace.addSubmitParam = function(parent, name, value) {
     ice.ace.jq(this.escapeClientId(parent)).append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\"/>");
     return this;

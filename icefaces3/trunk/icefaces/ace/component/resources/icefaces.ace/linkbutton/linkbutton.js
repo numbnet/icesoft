@@ -16,7 +16,8 @@
 
 // Constructor
 ice.ace.linkButton = function(clientId, cfg) {
-    var self = this;
+    var self = this,
+        event = ice.ace.getEvent();
     this.id = clientId;
     this.jqId = ice.ace.escapeClientId(clientId);
     this.element = ice.ace.jq(this.jqId);
@@ -32,6 +33,18 @@ ice.ace.linkButton = function(clientId, cfg) {
                .on("focus",function() { self.changeStyleState('hover'); })
                .on("blur",function() { self.changeStyleState('default'); })
                .on("mouseleave",function() { self.changeStyleState('default'); });
+
+    // lazy init occuring- our focus/hover event won't be set up yet
+    if (document.activeElement == this.anchor[0])
+        self.changeStyleState('hover');
+    else if (event.type == "mouseover")
+        self.changeStyleState('hover');
+
+    var unload = function() {
+        self.anchor.off('click keypress mousedown mouseup mouseenter focus blur mouseleave');
+    }
+
+    ice.onElementUpdate(clientId, unload);
 };
 
 ice.ace.linkButton.prototype.anchorSelector = ' > span > span > a';
