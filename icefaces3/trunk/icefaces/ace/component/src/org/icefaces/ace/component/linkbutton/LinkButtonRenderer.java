@@ -100,25 +100,9 @@ public class LinkButtonRenderer extends CoreRenderer {
         renderPassThruAttributes(facesContext, linkButton, HTML.LINK_ATTRS, excludedAttributes);
 
         if (!disabled) {
-            String target = linkButton.getTarget();
-            String hrefLang = linkButton.getHrefLang();
-            String href = linkButton.getHref();
-            String paramString = uiParams != null
-                    ? "?"+Utils.asParameterString(uiParams)
-                    : "";
-
-            if (href != null) {
-                href += paramString;
-                writer.writeAttribute(HTML.HREF_ATTR, href, null );
-            }
-
-            if (hrefLang != null) {
-                writer.writeAttribute(HTML.HREFLANG_ATTR, hrefLang , null );
-            }
-
-            if (target != null) {
-                writer.writeAttribute(HTML.TARGET_ATTR, target, null );
-            }
+            encodeScript(facesContext, writer, HTML.ONFOCUS_ATTR,
+                         linkButton, uiParams, clientId, doAction);
+            encodeHref(linkButton, writer, uiParams);
         } else
             writer.writeAttribute(HTML.STYLE_CLASS_ATTR, "ui-state-disabled", null);
 
@@ -127,9 +111,31 @@ public class LinkButtonRenderer extends CoreRenderer {
         writer.endElement(HTML.ANCHOR_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
-        if (!disabled) encodeScript(facesContext, linkButton, uiParams,
-                                    clientId, doAction);
+        if (!disabled) encodeScript(facesContext, writer, HTML.ONMOUSEOVER_ATTR,
+                                    linkButton, uiParams, clientId, doAction);
         writer.endElement(HTML.DIV_ELEM);
+    }
+
+    private void encodeHref(LinkButton linkButton, ResponseWriter writer, List<UIParameter> uiParams) throws IOException {
+        String target = linkButton.getTarget();
+        String hrefLang = linkButton.getHrefLang();
+        String href = linkButton.getHref();
+        String paramString = uiParams != null
+                ? "?"+ Utils.asParameterString(uiParams)
+                : "";
+
+        if (href != null) {
+            href += paramString;
+            writer.writeAttribute(HTML.HREF_ATTR, href, null );
+        }
+
+        if (hrefLang != null) {
+            writer.writeAttribute(HTML.HREFLANG_ATTR, hrefLang , null );
+        }
+
+        if (target != null) {
+            writer.writeAttribute(HTML.TARGET_ATTR, target, null );
+        }
     }
 
     private void encodeAriaAttributes(ResponseWriter writer, LinkButton button, boolean doAction) throws IOException {
@@ -161,11 +167,12 @@ public class LinkButtonRenderer extends CoreRenderer {
         }
     }
 
-    private void encodeScript(FacesContext facesContext, LinkButton linkButton, List<UIParameter> uiParams, String clientId, boolean doAction) throws IOException {
-        boolean disabled = linkButton.isDisabled();
-
+    private void encodeScript(FacesContext facesContext, ResponseWriter writer,
+                              String eventAttr, LinkButton linkButton,
+                              List<UIParameter> uiParams, String clientId,
+                              boolean doAction) throws IOException {
         JSONBuilder json = JSONBuilder.create()
-                                      .beginFunction("ice.ace.create")
+                                      .beginFunction("ice.ace.lazy")
                                       .item("linkButton")
                                       .beginArray()
                                       .item(clientId)
@@ -183,6 +190,6 @@ public class LinkButtonRenderer extends CoreRenderer {
 
         json.endMap().endArray().endFunction();
 
-        ScriptWriter.insertScript(facesContext, linkButton, json.toString());
+        writer.writeAttribute(eventAttr, json.toString(), null);
     }
 }

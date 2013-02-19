@@ -30,7 +30,8 @@ ice.ace.checkboxbutton = function(clientId, options) {
     // References
     this.button = ice.ace.jq(this.buttonSelector);
     this.icon = ice.ace.jq(this.iconSelector);
-    var self = this;
+    var self = this,
+        event = ice.ace.getEvent();
 
     // Event Binding
     ice.ace.jq(this.jqId)
@@ -43,9 +44,15 @@ ice.ace.checkboxbutton = function(clientId, options) {
     if (options.ariaEnabled)
         ice.ace.jq(this.jqId).on("keypress", function() { self.onAriaKeypress(); });
 
+    // lazy init occuring via kb focus, set focus style since
+    // our focus event won't be set up yet
+    if (document.activeElement == this.button[0])
+        this.addStateCSSClasses('hover');
+    else if (event.type == "mouseover")
+        this.addStateCSSClasses('hover');
+
     var unload = function() {
         // Unload WidgetVar
-
         // Unload events
         ice.ace.jq(self.jqId).off("click mouseenter mouseleave keypress");
     }
