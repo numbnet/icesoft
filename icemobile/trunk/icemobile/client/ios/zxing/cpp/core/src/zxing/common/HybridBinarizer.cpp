@@ -49,6 +49,8 @@ Ref<Binarizer> HybridBinarizer::createBinarizer(Ref<LuminanceSource> source) {
 }
 
 void HybridBinarizer::binarizeEntireImage() {
+    if (cached_row_num_ > 0)  {
+    }
   if (cached_matrix_ == NULL) {
     Ref<LuminanceSource> source = getLuminanceSource();
     if (source->getWidth() >= MINIMUM_DIMENSION && source->getHeight() >= MINIMUM_DIMENSION) {
