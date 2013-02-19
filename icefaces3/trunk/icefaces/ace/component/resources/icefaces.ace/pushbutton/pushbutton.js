@@ -45,8 +45,6 @@ ice.ace.pushbutton.prototype.buttonSelector = " > span > span > button";
 
 ice.ace.pushbutton.prototype.unload = function() {
     this.button.off("click mousedown mouseup mouseenter focus blur mouseleave");
-    this.button = undefined;
-    this.element = undefined;
 }
 
 ice.ace.pushbutton.prototype.onClick = function () {
