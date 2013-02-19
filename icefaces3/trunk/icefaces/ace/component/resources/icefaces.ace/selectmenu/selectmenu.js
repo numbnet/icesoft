@@ -18,12 +18,11 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.SelectMenus) ice.ace.SelectMenus = {};
 
-ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, rows, behaviors) {
+ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, behaviors) {
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.SelectMenus[this.id] && ice.ace.SelectMenus[this.id].initialized) isInitialized = true;
-	this.showingList = false;
-	if (isInitialized) this.showingList = ice.ace.SelectMenus[this.id].showingList;
+	if (isInitialized) this.selectedIndex = ice.ace.SelectMenus[this.id].selectedIndex;
 	ice.ace.SelectMenus[this.id] = this;
 	this.height = height == 0 ? 'auto' : height;
 	this.direction = 'down';
@@ -39,7 +38,9 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selec
 	var $input = this.root.find('input[name="'+this.id+'_input"]');
 	this.input = $input.get(0);
 	this.input.id = this.id + "_input";
-	this.update = ice.ace.jq(ice.ace.escapeClientId(updateId)).get(0);
+	var $update = ice.ace.jq(ice.ace.escapeClientId(updateId))
+	$update.css('width', $element.width());
+	this.update = $update.get(0);
 	//$element.data("labelIsInField", this.cfg.labelIsInField);
 	
 	if (isInitialized) {
@@ -127,7 +128,7 @@ ice.ace.SelectMenu.prototype = {
         this.changed = false;
         this.active = false;
         this.index = -1;
-		this.selectedIndex = -1;
+		if (!(typeof this.selectedIndex == 'number' && this.selectedIndex > -1)) this.selectedIndex = -1;
         this.entryCount = 0;
         this.rowClass = rowC;
 		this.highlightedRowClass = highlightedRowClass;
@@ -142,6 +143,7 @@ ice.ace.SelectMenu.prototype = {
             function(element, update) {
                 try {
 					self.downArrowButton.addClass('ui-state-hover');
+					self.updateSelectedIndex();
 					self.calculateListPosition();
                     ice.ace.jq(update).fadeIn(150)
                 } catch(e) {
@@ -262,7 +264,6 @@ ice.ace.SelectMenu.prototype = {
         this.stopIndicator();
         if (ice.ace.jq(this.update).css('display') != 'none') this.options.onHide(this.element, this.update);
         if (this.iefix) ice.ace.jq(this.iefix).hide();
-		this.showingList = false;
     },
 
     startIndicator: function() {
@@ -287,25 +288,50 @@ ice.ace.SelectMenu.prototype = {
 				case ice.ace.SelectMenu.keys.KEY_UP:
 					this.index = this.selectedIndex;
                     this.markPrevious();
-					this.selectEntry();// submit if ajax
+					this.selectEntry();
 					event.stopPropagation();
 					event.preventDefault();
                     return;
                 case ice.ace.SelectMenu.keys.KEY_DOWN:
 					this.index = this.selectedIndex;
                     this.markNext();
-					this.selectEntry();// submit if ajax
+					this.selectEntry();
 					event.stopPropagation();
 					event.preventDefault();
                     return;
-                    //this.active = true;
-					//this.updateNOW(this.content);
-					//break;
+				case ice.ace.SelectMenu.keys.KEY_HOME:
+                    this.markFirst();
+					this.selectEntry();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
+				case ice.ace.SelectMenu.keys.KEY_END:
+                    this.markLast();
+					this.selectEntry();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
+				case ice.ace.SelectMenu.keys.KEY_PAGEUP:
+                    this.markPageUp();
+                    this.selectEntry();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
+				case ice.ace.SelectMenu.keys.KEY_PAGEDOWN:
+                    this.markPageDown();
+                    this.selectEntry();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
+				default:
+					if (event.which > 0) this.markFirstMatch(event.which);
+                    this.selectEntry();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
             }
-        }
-
-        if (this.active) {
-            switch (event.keyCode) {
+        } else {
+			switch (event.keyCode) {
                 case ice.ace.SelectMenu.keys.KEY_TAB:
 					setFocus('');
 					return;
@@ -334,20 +360,38 @@ ice.ace.SelectMenu.prototype = {
 					event.stopPropagation();
 					event.preventDefault();
                     return;
+				case ice.ace.SelectMenu.keys.KEY_HOME:
+                    this.markFirst();
+                    this.render();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
+				case ice.ace.SelectMenu.keys.KEY_END:
+                    this.markLast();
+                    this.render();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
+				case ice.ace.SelectMenu.keys.KEY_PAGEUP:
+                    this.markPageUp();
+                    this.render();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
+				case ice.ace.SelectMenu.keys.KEY_PAGEDOWN:
+                    this.markPageDown();
+                    this.render();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
+				default:
+					if (event.which > 0) this.markFirstMatch(event.which);
+                    this.render();
+					event.stopPropagation();
+					event.preventDefault();
+					return;
             }
         }
-/*		
-		if (!this.isCharacterCode(event.keyCode)) return;
-
-        this.changed = true;
-        this.hasFocus = true;
-        this.index = -1;
-        this.skip_mouse_hover = true;
-        if (this.active) this.render();
-        if (this.observer) clearTimeout(this.observer);
-		var self = this;
-        this.observer = setTimeout(function() { self.onObserverEvent() }, this.delay);
-*/
     },
 
     activate: function() {
@@ -501,7 +545,10 @@ ice.ace.SelectMenu.prototype = {
 			if (i == this.index) break; // we did one full loop already
 			if (this.index == -1 && i == 0) break; // special case
 		}
-		if (found) this.index = i;
+		if (found) {
+			this.index = i;
+			this.scrollToMarkedItem();
+		}
     },
 
     markNext: function() {
@@ -519,8 +566,80 @@ ice.ace.SelectMenu.prototype = {
 			if (i == this.index) break; // we did one full loop already
 			if (this.index == -1 && i == this.entryCount) break; // special case
 		}
-		if (found) this.index = i;
+		if (found) {
+			this.index = i;
+			this.scrollToMarkedItem();
+		}
     },
+	
+	markFirst: function() {
+		this.index = -1;
+		this.markNext();
+	},
+	
+	markLast: function() {
+		this.index = this.entryCount;
+		this.markPrevious();
+	},
+	
+	markPageUp: function() {
+		var i = this.index - 9;
+		if (i < 0) {
+			this.markFirst();
+			return;
+		}
+		this.index = i;
+		this.markPrevious();
+	},
+	
+	markPageDown: function() {
+		var i = this.index + 9;
+		if (i >= this.entryCount) {
+			this.markLast();
+			return;
+		}
+		this.index = i;
+		this.markNext();
+	},
+	
+	markFirstMatch: function(charCode) {
+		var eventChar = String.fromCharCode(charCode).toLowerCase();
+		// we skip disabled entries
+		var found = false;
+		var i = this.index;
+		while (true) {
+			if (i < this.entryCount - 1) i++;
+			else i = 0;
+			var entry = this.getEntry(i);
+			if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
+				value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(entry, 'informal');
+				if (value) {
+					var firstChar = String.fromCharCode(value.charCodeAt(0)).toLowerCase();
+					if (eventChar == firstChar) {
+						found = true;
+						break;
+					}
+				}
+			}
+			if (i == this.index) break; // we did one full loop already
+			if (this.index == -1 && i == this.entryCount) break; // special case
+		}
+		if (found) {
+			this.index = i;
+			this.scrollToMarkedItem();
+		}	
+	},
+	
+	scrollToMarkedItem: function() {
+		if (this.active) {
+			var entry = this.getEntry(this.index);
+			if (entry) {
+				var itemTop = ice.ace.jq(entry).position().top;
+				var $update = ice.ace.jq(this.update);
+				$update.scrollTop($update.scrollTop() + itemTop);
+			}
+		}
+	},
 
     getEntry: function(index) {
         try {
@@ -559,8 +678,7 @@ ice.ace.SelectMenu.prototype = {
             value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(selectedElement, 'informal');
 	}
 
-		this.input.value = value;
-		this.displayedValue.innerHTML = this.input.value;
+		this.updateValue(value);
 		this.justSelectedItem = true;
         this.element.focus();
 
@@ -679,6 +797,30 @@ ice.ace.SelectMenu.prototype = {
     },
 	
 	updateValue: function(value) {
-		this.displayedValue.innerHTML = value;
+		if (value) {
+			this.input.value = value;
+			this.displayedValue.innerHTML = value.replace(/ /g, '&nbsp;');
+		} else {
+			this.input.value = '';
+			this.displayedValue.innerHTML = '&nbsp;';
+		}
+	},
+	
+	// update selected index if value was changed programmatically or was pre-selected
+	updateSelectedIndex: function() {
+		var currentEntry = this.getEntry(this.selectedIndex);
+		if ((currentEntry && (this.input.value != ice.ace.SelectMenu.collectTextNodesIgnoreClass(currentEntry, 'informal')))
+			|| (this.selectedIndex == -1 && this.input.value)) {
+			var found = false;
+			for (var i = 0; i < this.entryCount - 1; i++) {
+				var entry = this.getEntry(i);
+				if (entry && (this.input.value == ice.ace.SelectMenu.collectTextNodesIgnoreClass(entry, 'informal'))) {
+					found = true;
+					this.selectedIndex = i;
+					break;
+				}
+			}
+			if (!found) this.selectedIndex = -1;
+		}
 	}
 }
