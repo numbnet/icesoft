@@ -390,30 +390,33 @@ public class DataTableHeadRenderer {
         String panelJsId = CoreRenderer
                 .resolveWidgetVar(component.findTableConfigPanel(FacesContext.getCurrentInstance()));
 
-        String clientId = component
-                .findTableConfigPanel(FacesContext.getCurrentInstance()).getClientId();
+        TableConfigPanel configPanel = component.findTableConfigPanel(FacesContext.getCurrentInstance());
 
-        writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf-button", null);
-        writer.writeAttribute(HTML.STYLE_ELEM, (first) ? "left:0;" : "right:0;", null);
-        writer.startElement(HTML.ANCHOR_ELEM, null);
+        if (configPanel.isRendered()) {
+            String clientId = configPanel.getClientId();
 
-        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
-        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle(); ice.ace.jq(this).closest('a.ui-corner-all').toggleClass('ui-state-active');", null);
-        writer.writeAttribute( HTML.ID_ATTR, clientId +"_tableconf_launch", null);
-        writer.startElement(HTML.SPAN_ELEM, null);
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf-button", null);
+            writer.writeAttribute(HTML.STYLE_ELEM, (first) ? "left:0;" : "right:0;", null);
+            writer.startElement(HTML.ANCHOR_ELEM, null);
 
-        writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-gear", null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
+            writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+            writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle(); ice.ace.jq(this).closest('a.ui-corner-all').toggleClass('ui-state-active');", null);
+            writer.writeAttribute( HTML.ID_ATTR, clientId +"_tableconf_launch", null);
+            writer.startElement(HTML.SPAN_ELEM, null);
 
-        writer.endElement(HTML.SPAN_ELEM);
-        writer.endElement(HTML.ANCHOR_ELEM);
-        writer.endElement(HTML.SPAN_ELEM);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-gear", null);
 
-        writer.startElement(HTML.SCRIPT_ELEM, null);
-        writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-        writer.writeText("ice.ace.jq(function() {\n" + "\tice.ace.jq(ice.ace.escapeClientId('" + clientId + "_tableconf_launch')).hover(function(event){ice.ace.jq(event.currentTarget).toggleClass('ui-state-hover'); event.stopPropagation(); }).click(function(event){ice.ace.jq(event.currentTarget).toggleClass('ui-state-active'); var panel = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "')); if (panel.is(':not(:visible)')) " + panelJsId + ".submitTableConfig(event.currentTarget); else if (" + panelJsId + ".behaviors) if (" + panelJsId + ".behaviors.open) " + panelJsId + ".behaviors.open(); event.stopPropagation(); });\n" + "});", null);
-        writer.endElement(HTML.SCRIPT_ELEM);
+            writer.endElement(HTML.SPAN_ELEM);
+            writer.endElement(HTML.ANCHOR_ELEM);
+            writer.endElement(HTML.SPAN_ELEM);
+
+            writer.startElement(HTML.SCRIPT_ELEM, null);
+            writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+            writer.writeText("ice.ace.jq(function() {\n" + "\tice.ace.jq(ice.ace.escapeClientId('" + clientId + "_tableconf_launch')).hover(function(event){ice.ace.jq(event.currentTarget).toggleClass('ui-state-hover'); event.stopPropagation(); }).click(function(event){ice.ace.jq(event.currentTarget).toggleClass('ui-state-active'); var panel = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "')); if (panel.is(':not(:visible)')) " + panelJsId + ".submitTableConfig(event.currentTarget); else if (" + panelJsId + ".behaviors) if (" + panelJsId + ".behaviors.open) " + panelJsId + ".behaviors.open(); event.stopPropagation(); });\n" + "});", null);
+            writer.endElement(HTML.SCRIPT_ELEM);
+        }
     }
 
     /* Util Methods */
