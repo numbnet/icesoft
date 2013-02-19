@@ -50,6 +50,9 @@ public:
   }
 
   int getHeight() const {
+    int bleh = dataHeight_;
+    if (bleh > 0)  {
+    }
     return height_;
   }
 
