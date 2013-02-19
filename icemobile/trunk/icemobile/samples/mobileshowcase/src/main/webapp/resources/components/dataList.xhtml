@@ -38,7 +38,7 @@
             width: 100%;
             border-spacing: 0;
         }
-        .mobi-tbl thead{
+        .mobi-tbl-headers{
             border-bottom-style: solid;
             border-bottom-width: 1px;
             border-top-style: solid;
@@ -61,8 +61,27 @@
             color: #717880;
             text-shadow: 0 1px 0 #D8DAE0;
         }
-        .mobi-tbl tbody tr:nth-of-type(odd) { 
+        .mobi-tbl-master li:nth-of-type(odd) { 
           background: rgba(238, 238, 238, 0.5); 
+        }
+        .mobi-tbl-master ul{
+            margin: 0;
+            list-style: none outside none;
+            padding: 0;
+        }
+        .mobi-tbl-master li{
+            background-color: white;
+            border: 1px solid rgb(170, 170, 170);
+            padding: 4px 0 4px 5px;
+            margin: 0;
+            font-size: 17px;
+            font-weight: bold;
+            list-style: none;
+            line-height: 26px;
+            color: black;
+            text-shadow: 0 1px 0 white;
+            border-top: 1px solid rgb(211, 214, 219);
+            border-bottom: 1px solid rgb(181, 185, 192);
         }
         .mobi-tbl-master, .mobi-tbl-detail{ overflow-y: auto; -webkit-overflow-scrolling: touch;}
         .mobi-tbl-headers{ height: 25px; }
@@ -92,6 +111,7 @@
             table td:nth-child(6), table th:nth-child(6),
             table td:nth-child(7), table th:nth-child(7) {display: none;}
         }
+        .ui-hidden{ display: none }
     </style>
 
     <div id="#{cc.id}" class="mobi-tbl">
@@ -100,88 +120,62 @@
             
         </div>
         <div class="mobi-tbl-headers">
-            <table>
-                <thead>
-                    <tr></tr>
-                </thead>
-            </table>
+            #{cc.attrs.title}
         </div>
         <div class="mobi-tbl-master">
-            <table>
-                <tbody>
-                    <ui:repeat id="data" value="#{cc.attrs.value}" var="row" varStatus="varStatus"><tr><composite:insertChildren/></tr></ui:repeat>
-                </tbody>
-            </table>
+            <ul>
+                <ui:repeat id="data" value="#{cc.attrs.value}" var="row" varStatus="varStatus"><li><composite:insertChildren/></li></ui:repeat>
+            </ul>
         </div>
         
        
     </div>
-    <script src="./resources/javascript/tablesort.js"/>
+    
     <script>
   //<![CDATA[
-    function createDataTable(){
 
+    function createDataList(){
+        var headers = [#{cc.attrs.headers}];
+    
         //set height of container to be 100% of parent
         var ctr = document.querySelector("##{cc.id}");
         ctr.style.height = (window.innerHeight - ctr.parentNode.offsetTop) + "px";
-
-        var headers = [#{cc.attrs.headers}];
-        var headersElem = document.querySelector("##{cc.id} thead tr");
-        var rowsElem = document.querySelector("##{cc.id} tbody");
-        
-        //write headers
-        var rowIndex;
-        var colIndex;
-        for (colIndex = 0; colIndex < headers.length; ++colIndex) {
-            var th = document.createElement("th");
-            th.innerHTML = headers[colIndex];
-            headersElem.appendChild(th);
-        }
+    
+        var rowsElem = document.querySelector("##{cc.id} ul");
         
         //set height of master and detail regions
         ctr.children[0].style.height = "40%";
         ctr.children[2].style.height = "48%";
         
-        new Tablesort("#{cc.id}");
-
         //attach row listeners TODO use event delegation
         rowsElem.addEventListener("click", setRowDetail, false);
         
-        //match header and body column widths
-        for (colIndex = 0; colIndex < headers.length; ++colIndex) {
-            headersElem.children[colIndex].style.width = rowsElem.children[0].children[colIndex].clientWidth + 'px';
-        }
-        //if windows, add 16px padding on right side of last header column
-        if (navigator.appVersion.indexOf("Win")!=-1){
-            headersElem.children[headers.length-1].style.borderRight = "16px solid transparent";
-        }
-        
         //set 1st row as initial detail
-        setRowDetail({target: document.querySelector("##{cc.id} tbody tr:first-child")});
-
-    }
-    setTimeout(createDataTable, 100);
-    
-    function setRowDetail(evt){
-        if( evt.target && 
-           ( evt.target.nodeName != "TBODY" ) ){
-            var detailRoot = document.querySelector("##{cc.id} .mobi-tbl-detail");
-            detailRoot.innerHTML = '';
-            var tr = findTr(evt.target);
-            var headerCells = document.querySelectorAll("##{cc.id} thead th");
-            for( var colIndex = 0 ; colIndex < headerCells.length ; colIndex++ ){
-                var line = document.createElement("div");
-                line.innerHTML = "<label>"+headerCells[colIndex].innerHTML+"</label>"
-                               + "<span>" + tr.children[colIndex].innerHTML + "</span>";
-                detailRoot.appendChild(line);
-            }            
+        setRowDetail({target: document.querySelector("##{cc.id} ul li:first-child")});
+        
+        function setRowDetail(evt){
+            if( evt.target && 
+               ( evt.target.nodeName != "UL" ) ){
+                var detailRoot = document.querySelector("##{cc.id} .mobi-tbl-detail");
+                detailRoot.innerHTML = '';
+                var li = findLi(evt.target);
+                for( var colIndex = 0 ; colIndex < headers.length ; colIndex++ ){
+                    var line = document.createElement("div");
+                    line.innerHTML = "<label>"+headers[colIndex]+"</label>"
+                                   + "<span>" + li.children[0].children[colIndex].innerHTML + "</span>";
+                    detailRoot.appendChild(line);
+                }            
+            }
         }
     }
-    function findTr(el){
-        if( el.nodeName === 'TR'){
+    setTimeout(createDataList,100);
+    
+    
+    function findLi(el){
+        if( el.nodeName === 'LI'){
             return el;
         }
-        return findTr(el.parentNode);
+        return findLi(el.parentNode);
     }
     
     //]]>
