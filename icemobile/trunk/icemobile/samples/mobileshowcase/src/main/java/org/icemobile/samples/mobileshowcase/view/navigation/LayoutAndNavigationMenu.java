@@ -72,7 +72,10 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
                         examplePanelId = "dataTableJSON"),
                 @MenuLink(title = "menu.layout.datatable.dom.title",
                         exampleBeanName = DataTableDOMBean.BEAN_NAME,
-                        examplePanelId = "dataTableDOM")
+                        examplePanelId = "dataTableDOM"),
+                @MenuLink(title = "menu.layout.datalist.title",
+                        exampleBeanName = DataListBean.BEAN_NAME,
+                        examplePanelId = "dataList")
         
         })
 @ManagedBean(name = LayoutAndNavigationMenu.BEAN_NAME)
