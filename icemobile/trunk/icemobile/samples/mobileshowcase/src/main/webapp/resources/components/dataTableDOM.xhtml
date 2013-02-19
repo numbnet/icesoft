@@ -109,11 +109,7 @@
         <div class="mobi-tbl-master">
             <table>
                 <tbody>
-                    <ui:repeat id="data" value="#{cc.attrs.value}" var="row" varStatus="varStatus">
-                        <tr>
-                            <composite:insertChildren/>
-                        </tr>
-                    </ui:repeat>
+                    <ui:repeat id="data" value="#{cc.attrs.value}" var="row" varStatus="varStatus"><tr><composite:insertChildren/></tr></ui:repeat>
                 </tbody>
             </table>
         </div>
