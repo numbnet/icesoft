@@ -30,37 +30,37 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ResourceTyp
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 @Destination(
-        title = "example.layout.datatable.destination.title.short",
-        titleExt = "example.layout.datatable.destination.title.long",
-        titleBack = "example.layout.datatable.destination.title.back"
+        title = "example.layout.datatable.dom.destination.title.short",
+        titleExt = "example.layout.datatable.dom.destination.title.long",
+        titleBack = "example.layout.datatable.dom.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/layout/datatable-desc.xhtml",
-        examplePath = "/WEB-INF/includes/examples/layout/datatable2-example.xhtml",
+        examplePath = "/WEB-INF/includes/examples/layout/datatable-dom-example.xhtml",
         resourcesPath = "/WEB-INF/includes/examples/example-resources.xhtml"
 )
 @ExampleResources(
         resources = {
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title = "datatable-example.xhtml",
-                        resource = "/WEB-INF/includes/examples/layout/datatable2-example.xhtml"),
+                        title = "datatable-dom-example.xhtml",
+                        resource = "/WEB-INF/includes/examples/layout/datatable-dom-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title = "DataTableBean.java",
+                        title = "DataTableDOMBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/layout/datatable/DataTableBean.java")
+                                "/view/examples/layout/datatable/DataTableDOMBean.java")
         }
 )
-@ManagedBean(name = DataTableBean.BEAN_NAME)
+@ManagedBean(name = DataTableDOMBean.BEAN_NAME)
 @SessionScoped
-public class DataTableBean extends ExampleImpl<DataTableBean> implements
+public class DataTableDOMBean extends ExampleImpl<DataTableDOMBean> implements
     Serializable {
     
-    public static final String BEAN_NAME = "dataTableBean";
+    public static final String BEAN_NAME = "dataTableDOMBean";
     
-    public DataTableBean() {
-        super(DataTableBean.class);
+    public DataTableDOMBean() {
+        super(DataTableDOMBean.class);
         dataList = new ArrayList<Car>(DataTableData.getDefaultData());
     }
 

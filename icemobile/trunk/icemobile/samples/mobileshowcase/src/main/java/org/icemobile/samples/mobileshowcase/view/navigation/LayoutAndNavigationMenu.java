@@ -31,7 +31,7 @@ import org.icemobile.samples.mobileshowcase.view.examples.layout.panelPopup.Pane
 import org.icemobile.samples.mobileshowcase.view.examples.layout.panelconfirmation.PanelConfirmation;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.tabset.TabsetBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.theme.SkinBean;
-import org.icemobile.samples.mobileshowcase.view.examples.layout.datatable.DataTableBean;
+import org.icemobile.samples.mobileshowcase.view.examples.layout.datatable.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 
 /**
@@ -67,9 +67,12 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
                 @MenuLink(title = "menu.layout.tabset.title",
                         exampleBeanName = TabsetBean.BEAN_NAME,
                         examplePanelId = "tabset"),
-                @MenuLink(title = "menu.layout.datatable.title",
-                        exampleBeanName = DataTableBean.BEAN_NAME,
-                        examplePanelId = "dataTable")
+                @MenuLink(title = "menu.layout.datatable.json.title",
+                        exampleBeanName = DataTableJSONBean.BEAN_NAME,
+                        examplePanelId = "dataTableJSON"),
+                @MenuLink(title = "menu.layout.datatable.dom.title",
+                        exampleBeanName = DataTableDOMBean.BEAN_NAME,
+                        examplePanelId = "dataTableDOM")
         
         })
 @ManagedBean(name = LayoutAndNavigationMenu.BEAN_NAME)
