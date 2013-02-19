@@ -73,7 +73,7 @@ ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
  * Fires an ajax tabChangeEvent if a tabChangeListener is defined on server side
  */
 ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
-    var formId = formOf(this.jq.get(0)).id;
+    var formId = this.jq.get(0).closest('form').attr('id');
     var options = {
         source: this.id,
         execute: this.id,
