@@ -13,26 +13,14 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   -->
-
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:util="http://java.sun.com/jsf/composite/components">
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form id="frmDataTable">
-        <util:dataTable2 id="exDataTable" value="#{dataTableBean.dataList}"
-            headers="'ID','Name','Chassis','Weight','MPG','Accel'">
-            <util:column value="#{row.id}"/>
-            <util:column value="#{row.name}"/>
-            <util:column value="#{row.chassis}"/>
-            <util:column value="#{row.weight}lbs."/>
-            <util:column value="#{row.mpg}"/>
-            <util:column value="#{row.acceleration}" last="true"/>
-        </util:dataTable2>
-        
-    </h:form>
-
+    <util:exampleTabset exampleBean="#{dataTableJSONBean}"
+            autoWidth="#{viewSize ne 'large'}" />
 
 </ui:composition>
