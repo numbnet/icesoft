@@ -67,10 +67,7 @@ public class SelectMenuMeta extends UISelectOneMeta {
     @Property(tlddoc = "Style class name of the container element.", defaultValue="")
     private String styleClass;
 	
-    @Property(tlddoc = "The maximum number of possible options to show to the user.", defaultValue="10")
-    private int rows;
-	
-    @Property(tlddoc = "The width of the text input field, in pixels.", defaultValue="150")
+    @Property(tlddoc = "The width of the text input field, in pixels.", defaultValue="200")
     private int width;
 	
     @Property(tlddoc = "Maximum height in pixels of the list of possible matches (if 0, then the size is automatically adjusted to show all possible matches).")

@@ -98,16 +98,16 @@ public class SelectMenuRenderer extends InputRenderer {
 		// root
         writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", "ui-select" + selectMenu.getStyleClass(), null);
+		writer.writeAttribute("class", "ui-select " + selectMenu.getStyleClass(), null);
 
 		writer.startElement("span", null);
 		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value", null);
-        writer.writeAttribute("style", "display: inline-block; width:250px; height:20px; padding-bottom: 2px;", null);
+        writer.writeAttribute("style", "display: inline-block; width: " + width + "px;", null);
 		writer.writeAttribute("tabindex", "0", null);
 		
 		// text span
 		writer.startElement("span", null);
-		writer.writeAttribute("style", "display: inline-block; overflow: hidden;", null);
+		writer.writeAttribute("style", selectMenu.getStyle() + "; display: inline-block; overflow: hidden;", null);
 		writer.endElement("span");
 		
 		// down arrow span
@@ -211,7 +211,6 @@ public class SelectMenuRenderer extends InputRenderer {
             .item("ui-state-hover")
 			.item("ui-state-active")
             .item(selectMenu.getHeight())
-			.item(selectMenu.getRows())
             .beginMap()
             .entry("p", ""); // dummy property
             encodeClientBehaviors(facesContext, selectMenu, jb);
@@ -259,9 +258,6 @@ public class SelectMenuRenderer extends InputRenderer {
 		String clientId = selectMenu.getClientId(facesContext);
         selectMenu.populateItemList();
         Iterator matches = selectMenu.getItemListIterator();
-        int rows = selectMenu.getRows();
-        if (rows == 0) rows = Integer.MAX_VALUE;
-        int rowCounter = 0;
         writer.startElement("div", null);
 		writer.writeAttribute("id", clientId + "_update", null);
         if (selectMenu.getSelectFacet() != null) {
@@ -276,9 +272,9 @@ public class SelectMenuRenderer extends InputRenderer {
 			writer.writeAttribute("style", "display: none;", null);
 			writer.startElement("div", null);
             Map requestMap = facesContext.getExternalContext().getRequestMap();
-            //set index to 0, so child components can get client id from autoComplete component
+            //set index to 0, so child components can get client id from selectMenu component
             selectMenu.setIndex(0);
-            while (matches.hasNext() && rowCounter < rows) {
+            while (matches.hasNext()) {
 
 				requestMap.put(listVar, matches.next());
 				Object value = itemValue.getValue(elContext);
@@ -288,7 +284,6 @@ public class SelectMenuRenderer extends InputRenderer {
 					disabled = (Boolean) itemDisabled.getValue(elContext);
 				} catch (Exception e) {}
 			
-				rowCounter++;
 				writer.startElement("div", null);
 				writer.writeAttribute("style", "border: 0;", null);
 				if (disabled) writer.writeAttribute("class", "ui-state-disabled", null);
@@ -325,7 +320,7 @@ public class SelectMenuRenderer extends InputRenderer {
             if (matches.hasNext()) {
                 StringBuffer sb = new StringBuffer("<div>");
                 SelectItem item = null;
-                while (matches.hasNext() && rowCounter < rows) {
+                while (matches.hasNext()) {
                     item = (SelectItem) matches.next();
                     String itemLabel = item.getLabel();
                     if (itemLabel == null) {
@@ -340,7 +335,6 @@ public class SelectMenuRenderer extends InputRenderer {
 					} else {
 						sb.append("<div style=\"border: 0;\">").append(itemLabel).append("</div>");
 					}
-					rowCounter++;
                 }
                 sb.append("</div>");
                 String call = "ice.ace.SelectMenus[\"" + clientId + "\"]" +
@@ -388,17 +382,6 @@ public class SelectMenuRenderer extends InputRenderer {
 	private static String escapeJavascriptString(String str) {
 		if (str == null) return "";
 		return str.replace("\\", "\\\\").replace("\'","\\'");
-	}
-	
-	private String getTimestamp(FacesContext facesContext, SelectMenu selectMenu) {
-		Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
-		Object sourceId = requestMap.get("ice.event.captured");
-		String clientId = selectMenu.getClientId(facesContext);
-		String timestamp = "";
-		// only include a timestamp if the user pressed the up or down arrow keys to introduce a difference from previous dom
-		// so that the domdiff sends the call to update the list of options
-		timestamp = "" + System.currentTimeMillis();
-		return timestamp;
 	}
 	
     // taken from com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer
