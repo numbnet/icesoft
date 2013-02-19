@@ -205,6 +205,10 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         boolean isSortable = component.isColumnSortingConfigurable();
         boolean isReorderable = component.isColumnOrderingConfigurable();
         boolean isSingleSort = ((DataTable)component.getTargetedDatatable()).isSingleSort();
+        String handle = component.getHandle();
+
+        if (handle != null && handle.length() > 0)
+            handle = "handle: '"+handle+"', ";
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
@@ -220,7 +224,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
                         "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_close\"))" +
                         ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
                         ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).removeClass('ui-state-active');});\n" +
-                        "\t var cfg = {reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + ", tableId:'" + tableId + "'", null);
+                        "\t var cfg = {"+handle+"reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + ", tableId:'" + tableId + "'", null);
         encodeClientBehaviors(FacesContext.getCurrentInstance(), component);
         writer.writeText("};" +
                         "\t" + jsId + " = ice.ace.create('TableConf', ['" + clientId + "', cfg]);\n" +

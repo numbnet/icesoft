@@ -81,4 +81,7 @@ public class TableConfigPanelMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "Defines the column to render the 'launch' panel button in when using the 'in-col-left' or 'in-col-right' type options.")
     String inColumnId;
+
+    @Property(tlddoc = "Defines a CSS selector of a TableConfigPanel subregion used as the handle when dragging the panel.")
+    String handle;
 }

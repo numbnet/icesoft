@@ -26,7 +26,12 @@ ice.ace.TableConf = function (id, cfg) {
     this.cfg = cfg;
     this.sortOrder = [];
 
-    this.$this.draggable();
+    var dragConfig = {};
+
+    if (cfg.handle)
+        dragConfig.handle = cfg.handle;
+
+    this.$this.draggable(dragConfig);
 
     this.$this.css('top', this.$table.offset().top + 15);
 
