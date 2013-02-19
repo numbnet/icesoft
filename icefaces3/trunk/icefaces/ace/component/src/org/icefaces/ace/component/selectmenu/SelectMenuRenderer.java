@@ -83,27 +83,38 @@ public class SelectMenuRenderer extends InputRenderer {
         Object onchangeAppValue = uiComponent.getAttributes().get("onchange");
 
 		String inputClientId = clientId + "_input";
-/*
-        if (isValueBlank(text)) text = null;
-        String inputClientId = clientId + "_input";
+
+		String value = (String) selectMenu.getValue();		
+        if (isValueBlank(value)) value = null;
         boolean labelIsInField = false;
 
-        if (text == null && !isValueBlank(inFieldLabel) && !inputClientId.equals(iceFocus)) {
-            text = inFieldLabel;
+        if (value == null && !isValueBlank(inFieldLabel) && !inputClientId.equals(iceFocus)) {
             inFieldLabelStyleClass = " " + IN_FIELD_LABEL_STYLE_CLASS;
             labelIsInField = true;
         }
-*/
 
 		// root
         writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("class", "ui-select " + selectMenu.getStyleClass(), null);
 
+		writeLabelAndIndicatorBefore(labelAttributes);
+		
+		// value field
 		writer.startElement("span", null);
-		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value", null);
+		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value " + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass, null);
         writer.writeAttribute("style", "display: inline-block; width: " + width + "px;", null);
 		writer.writeAttribute("tabindex", "0", null);
+		if (ariaEnabled) {
+			writer.writeAttribute("role", "select", null);
+            final SelectMenu component = (SelectMenu) uiComponent;
+            Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+                put("required", component.isRequired());
+                //put("disabled", component.isDisabled());
+                put("invalid", !component.isValid());
+            }};
+            writeAriaAttributes(ariaAttributes, labelAttributes);
+        }
 		
 		// text span
 		writer.startElement("span", null);
@@ -120,27 +131,19 @@ public class SelectMenuRenderer extends InputRenderer {
 		writer.endElement("div");
 		
 		writer.endElement("span");
+		
+		writeLabelAndIndicatorAfter(labelAttributes);
 
 		writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
 		writer.writeAttribute("name", inputClientId, null);
 		writer.endElement("input");
-        //writeLabelAndIndicatorBefore(labelAttributes);
 
         // text field
 		/*
-		writer.startElement("input", null);
-        writer.writeAttribute("type", "text", null);
-		writer.writeAttribute("name", inputClientId, null);
-        if (ariaEnabled)
-            writer.writeAttribute("role", "textbox", null);
 
 		mousedownScript = mousedownScript == null ? "" : mousedownScript;
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
-		writer.writeAttribute("style", "width: " + width + "px;" + selectMenu.getStyle(), null);
-        writer.writeAttribute("class", "ui-inputfield ui-widget ui-state-default ui-corner-all"
-                + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass, null);
-		writer.writeAttribute("autocomplete", "off", null);
 
         if (onfocusAppValue != null)
             onfocusCombinedValue += onfocusAppValue.toString();
@@ -154,23 +157,7 @@ public class SelectMenuRenderer extends InputRenderer {
 
         if (onchangeAppValue != null)
             writer.writeAttribute("onchange", onchangeAppValue.toString(), null);
-
-		if (ariaEnabled) {
-            final SelectMenu component = (SelectMenu) uiComponent;
-            Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
-                put("autocomplete", "list");
-                put("readonly", component.isReadonly());
-                put("required", component.isRequired());
-                put("disabled", component.isDisabled());
-                put("invalid", !component.isValid());
-            }};
-            writeAriaAttributes(ariaAttributes, labelAttributes);
-        }
-
-        writer.endElement("input");
 		*/
-
-        //writeLabelAndIndicatorAfter(labelAttributes);
 
         String divId = clientId + AUTOCOMPLETE_DIV;
 
@@ -181,7 +168,7 @@ public class SelectMenuRenderer extends InputRenderer {
         writer.endElement("div");
 
         encodeScript(facesContext, writer, clientId, selectMenu,
-                paramMap, inFieldLabel, inputClientId, false/*labelIsInField*/);
+                paramMap, inFieldLabel, inputClientId, labelIsInField);
 
 		writer.endElement("div");
     }
@@ -214,15 +201,13 @@ public class SelectMenuRenderer extends InputRenderer {
             .beginMap()
             .entry("p", ""); // dummy property
             encodeClientBehaviors(facesContext, selectMenu, jb);
-
             jb.endMap();
-
-            /*jb.beginMap()
+			
+            jb.beginMap()
             .entryNonNullValue("inFieldLabel", inFieldLabel)
             .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS)
             .entry("labelIsInField", labelIsInField);
-
-            jb.endMap();*/
+            jb.endMap();
 
 			jb.endArray();
             jb.endFunction();
@@ -256,6 +241,7 @@ public class SelectMenuRenderer extends InputRenderer {
     public void populateList(FacesContext facesContext, SelectMenu selectMenu) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = selectMenu.getClientId(facesContext);
+		boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         selectMenu.populateItemList();
         Iterator matches = selectMenu.getItemListIterator();
         writer.startElement("div", null);
@@ -286,6 +272,7 @@ public class SelectMenuRenderer extends InputRenderer {
 			
 				writer.startElement("div", null);
 				writer.writeAttribute("style", "border: 0;", null);
+				if (ariaEnabled) writer.writeAttribute("role", "option", null);
 				if (disabled) writer.writeAttribute("class", "ui-state-disabled", null);
 				
 				// When HTML is display we still need a selected value. Hidding the value in a hidden span
@@ -320,6 +307,8 @@ public class SelectMenuRenderer extends InputRenderer {
             if (matches.hasNext()) {
                 StringBuffer sb = new StringBuffer("<div>");
                 SelectItem item = null;
+				String role = "";
+				if (ariaEnabled) role = " role=\"option\"";
                 while (matches.hasNext()) {
                     item = (SelectItem) matches.next();
                     String itemLabel = item.getLabel();
@@ -331,9 +320,9 @@ public class SelectMenuRenderer extends InputRenderer {
 						}
                     }
 					if (item.isDisabled()) {
-						sb.append("<div style=\"border: 0;\" class=\"ui-state-disabled\">").append(itemLabel).append("</div>");
+						sb.append("<div style=\"border: 0;\" class=\"ui-state-disabled\"" + role + ">").append(itemLabel).append("</div>");
 					} else {
-						sb.append("<div style=\"border: 0;\">").append(itemLabel).append("</div>");
+						sb.append("<div style=\"border: 0;\"" + role + ">").append(itemLabel).append("</div>");
 					}
                 }
                 sb.append("</div>");

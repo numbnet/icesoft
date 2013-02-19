@@ -97,6 +97,9 @@ public class SelectMenuMeta extends UISelectOneMeta {
 
     @Property(tlddoc = "Position of label relative to input field. Supported values are \"left/right/top/bottom/inField/none\". Default is \"none\".")
     private String labelPosition;
+	
+    @Property(tlddoc = "A localized user presentable name for this component.")
+    private String label;
 
     @Property(tlddoc = "Position of input-required or input-optional indicator relative to input field or label. " +
             "Supported values are \"left/right/top/bottom/labelLeft/labelRight/none\". " +
