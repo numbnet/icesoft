@@ -65,6 +65,7 @@
           background: rgba(238, 238, 238, 0.5); 
         }
         .mobi-tbl-master, .mobi-tbl-detail{ overflow-y: auto; -webkit-overflow-scrolling: touch;}
+        .mobi-tbl-headers{ height: 25px; }
         .mobi-tbl-headers th{ cursor: pointer; text-align: left; }
         .mobi-tbl-detail{ padding: 5px 0}
         .mobi-tbl-detail label{
@@ -145,7 +146,6 @@
         
         //set height of master and detail regions
         ctr.children[0].style.height = "40%";
-        ctr.children[1].style.height = "8%";
         ctr.children[2].style.height = "48%";
         
         new Tablesort("#{cc.id}");
