@@ -21,10 +21,23 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.PARAMETER)
+/**
+ * Annotation for configuring the ICEmobile Resource Upload store. 
+ * Scopes can be set for 'session' (default), or 'application'. 
+ * The bean attribute can alternately be set for a bean that
+ * implements ResourceStore
+ * 
+ * @see org.icemobile.application.ResourceStore
+ *
+ */
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ICEmobileResourceUpload {
+public @interface ICEmobileResourceStore {
     
-    String value() default "";
+    final String SESSION = "session";
+    
+    
+    String scope() default SESSION;
+    String bean() default "";
    
 }

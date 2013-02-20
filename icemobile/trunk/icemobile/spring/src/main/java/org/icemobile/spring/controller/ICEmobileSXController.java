@@ -48,6 +48,12 @@ import org.icemobile.util.SXUtils;
 @Controller
 public class ICEmobileSXController {
 
+    /**
+     * A request handler for a POST request from the ICEmobile SX 
+     * app, which will register SX for the current session. 
+     * @param request The servlet request
+     * @return a dummy response
+     */
     @ResponseBody
     @RequestMapping(value="/icemobile", method = RequestMethod.POST)
     public String postICEmobileSX(HttpServletRequest request)  {

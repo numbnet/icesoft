@@ -16,7 +16,6 @@
 package org.icemobile.spring.handler;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -25,19 +24,42 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.icemobile.application.FileResource;
-import org.icemobile.application.Resource;
+import org.icemobile.application.ResourceStore;
+import org.icemobile.util.Utils;
 
-public class ICEmobileSimulatorResourceUploadInterceptor 
-    extends ICEmobileResourceUploadInterceptor{
+/**
+ * This class can be used for ICEmobile simulator upload support. 
+ * The class will intercept all requests checking for simulator upload
+ * keys. If a simulator upload file key is found, the configured 
+ * ICEmobileResourceUploadStore will be populated with the simulated file.
+ * 
+ * To configure your application for simulator uploads, include the 
+ * following in your Spring configuration:
+ * 
+ * <interceptors>
+ *    <beans:bean class="org.icemobile.spring.handler.ICEmobileSimulatorResourceUploadInterceptor" />
+ * </interceptors>
+ *
+ */
+public class SimulatorResourceUploadInterceptor 
+    extends ResourceUploadInterceptor{
     
     private static final String SIMULATOR_RESOURCE_KEY = "sim-";
     
+    /**
+     * 
+     * @param request current HTTP request
+     * @param response current HTTP response
+     * @param handler chosen handler to execute, for type and/or instance evaluation
+     * @return <code>true</code> if the execution chain should proceed with the
+     * next interceptor or the handler itself. Else, DispatcherServlet assumes
+     * that this interceptor has already dealt with the response itself.
+     * @see    org.springframework.web.servlet.HandlerInterceptor 
+     * @throws Exception in case of errors
+     */
     public boolean preHandle(HttpServletRequest request, 
             HttpServletResponse response, Object handler)
         throws Exception {
-        
-        System.out.println("handler="+handler.getClass().getName());
         
         boolean simulatorEnabled = isSimulatorEnabled();
         
@@ -48,9 +70,7 @@ public class ICEmobileSimulatorResourceUploadInterceptor
  
     }
     
-    @Override
-    protected void processUploads(HttpServletRequest request, Object handler, 
-            Map<String,Resource> store){
+    protected void processUploads(HttpServletRequest request, ResourceStore store){
         Map<String,String[]> parameterMap = request.getParameterMap();
         Iterator<String> iter = parameterMap.keySet().iterator();
         while( iter.hasNext() ){
@@ -62,30 +82,13 @@ public class ICEmobileSimulatorResourceUploadInterceptor
                     File newFile = File.createTempFile("sim-", 
                             simulatedFile.substring(simulatedFile.length() - 3));
                     newFile.deleteOnExit();
-                    InputStream is = ICEmobileSimulatorResourceUploadInterceptor.class
+                    InputStream is = SimulatorResourceUploadInterceptor.class
                             .getClassLoader().getResourceAsStream(
                                 "META-INF/web-resources/org.icefaces.component.skins/simulator/" +
                                 simulatedFile );
-                    FileOutputStream fos = new FileOutputStream(newFile);
-                    byte[] buffer = new byte[1024];
-                    int len;
-                    while ((len = is.read(buffer)) != -1) {
-                        fos.write(buffer, 0, len);
-                    }
-                    fos.close();
-                    is.close();
-                    String contentType = null;
-                    if( simulatedFile.endsWith(".png")){
-                        contentType = "image/png";
-                    }
-                    else if( simulatedFile.endsWith(".mp4")){
-                        contentType = "video/mpeg";
-                    }
-                    else if( simulatedFile.endsWith(".mp3")){
-                        contentType = "audio/mp3";
-                    }
-                    FileResource resource = new FileResource(newFile, contentType);
-                    store.put(key, resource);
+                    String suffix = simulatedFile.substring(simulatedFile.lastIndexOf("."));
+                    String token = request.getSession().getId();
+                    store.handleInputStream(is, Utils.CONTENT_TYPE_BY_FILE_EXT.get(suffix), key, token);
                 } catch (IOException e) {
                    e.printStackTrace();
                 }
@@ -103,7 +106,9 @@ public class ICEmobileSimulatorResourceUploadInterceptor
     
     /*
      * Return true if the parameter value array contains a 
-     * simulator upload resource name
+     * simulator upload resource name.
+     * 
+     * @param parameterValues The incoming parameter value array to check.
      */
     private boolean parameterContainsSimulatorResource(String[] parameterValues){
         boolean result = false;

@@ -23,21 +23,44 @@ import org.icemobile.util.ClientDescriptor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+/**
+ * A base ICEmobile controller to populate some commonly used 
+ * model attributes for an ICEmobile page.
+ *
+ */
 public abstract class ICEmobileBaseController {
     
+    /**
+     * Add the attribute 'ajaxRequest' to the Model if the current request
+     * is an Ajax request. This attribute can be used on pages to modify
+     * the response for Ajax.
+     */
     @ModelAttribute
     public void ajaxAttribute(HttpServletRequest request, Model model) {
         model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
     }
     
+    /**
+     * Add the attribute 'viewSize' to the Model. 'small' for handheld
+     * devices and 'large' for tablets or desktops. The attribute can
+     * be used on pages to adapt content to type of device.
+     */
     @ModelAttribute
     public void viewSizeAttribute(HttpServletRequest request, Model model) {
-        model.addAttribute("viewSize", ClientDescriptor.getInstance(request).isHandheldBrowser() ? "small" : "large");
+        model.addAttribute("viewSize", 
+                ClientDescriptor.getInstance(request)
+                    .isHandheldBrowser() ? "small" : "large");
     }
     
+    /**
+     * Add the attribute 'sxRegistered' to the Model. The attribute can be
+     * used to detect if the ICEmobile SX app has been registered yet for 
+     * the session.
+     */
     @ModelAttribute
     public void sxRegistered(HttpServletRequest request, Model model){
-        model.addAttribute("sxRegistered", ClientDescriptor.getInstance(request).isSXRegistered());
+        model.addAttribute("sxRegistered", 
+                ClientDescriptor.getInstance(request).isSXRegistered());
     }
 
     
