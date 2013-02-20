@@ -158,8 +158,8 @@ public class CartesianSeries extends ChartSeries {
                     else
                         data.item(strVal);
                 }
-                else if (keyType == Date.class)
-                    data.item(((Date)key).getTime());
+                else if (valueType == Date.class)
+                    data.item(((Date)value).getTime());
 
                 data.endArray();
             }
