@@ -83,5 +83,5 @@ public class TableConfigPanelMeta extends UIComponentBaseMeta {
     String inColumnId;
 
     @Property(tlddoc = "Defines a CSS selector of a TableConfigPanel subregion used as the handle when dragging the panel.")
-    String handle;
+    String dragHandle;
 }

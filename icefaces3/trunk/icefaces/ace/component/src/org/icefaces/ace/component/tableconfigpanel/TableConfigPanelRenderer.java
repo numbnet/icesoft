@@ -205,7 +205,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         boolean isSortable = component.isColumnSortingConfigurable();
         boolean isReorderable = component.isColumnOrderingConfigurable();
         boolean isSingleSort = ((DataTable)component.getTargetedDatatable()).isSingleSort();
-        String handle = component.getHandle();
+        String handle = component.getDragHandle();
 
         if (handle != null && handle.length() > 0)
             handle = "handle: '"+handle+"', ";
