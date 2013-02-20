@@ -16,37 +16,41 @@
 
 package org.icemobile.samples.spring.controllers;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.icemobile.samples.spring.FileUploadUtils;
+import org.icemobile.application.Resource;
 import org.icemobile.samples.spring.ModelBean;
+import org.icemobile.spring.annotation.ICEmobileResource;
+import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.icemobile.spring.controller.ICEmobileBaseController;
-
-import java.io.IOException;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"cameraMessage", "cameraUpload", "cameraBean"})
-public class CameraController extends ICEmobileBaseController{
-    
-    private static final Log log = LogFactory
-            .getLog(CameraController.class);
+@SessionAttributes({ "cameraMessage", "cameraUpload", "cameraBean" })
+@ICEmobileResourceStore(bean="icemobileResourceStore")
+public class CameraController extends ICEmobileBaseController {
 
+    private static final Log LOG = LogFactory.getLog(CameraController.class);
+
+    @Autowired
+    private UploadDirectorySupport uploadDirSupport;
 
     @RequestMapping(value = "/camera", method = RequestMethod.GET)
-    public void get(HttpServletRequest request, ModelBean cameraBean, Model model) {
-        model.addAttribute("cameraBean",cameraBean);
+    public void get(HttpServletRequest request, ModelBean cameraBean,
+            Model model) {
+        model.addAttribute("cameraBean", cameraBean);
     }
 
     @ModelAttribute("cameraBean")
@@ -54,73 +58,100 @@ public class CameraController extends ICEmobileBaseController{
         return new ModelBean();
     }
 
-    @RequestMapping(value = "/camera", method = RequestMethod.POST, 
-            consumes = "application/x-www-form-urlencoded")
-    public void formPost(
-            HttpServletRequest request, 
-            ModelBean cameraBean,
-            Model model) {
-        model.addAttribute("cameraBean",cameraBean);
-    }
-
     @RequestMapping(value = "/camera", method = RequestMethod.POST)
-    public void post(
-            HttpServletRequest request, 
-            ModelBean cameraBean,
-            @RequestParam(value = "cam", required = false) MultipartFile file,
+    public void post(HttpServletRequest request, ModelBean cameraBean,
+            @ICEmobileResource("cam") Resource cameraUpload,
             Model model) {
-       if( file != null || request.getParameterMap().get("cam") != null ){
-            processUpload(request,cameraBean,file,model);
-        }
-        model.addAttribute("cameraBean",cameraBean);
-    }
+        
+        LOG.info("cameraUpload: " + cameraUpload);
 
-    public void processUpload(
-            HttpServletRequest request, 
-            ModelBean cameraBean,
-            MultipartFile file,
-            Model model) {
-        log.info("processUpload() "+ cameraBean);
-        String newFileName;
-        try {
-            newFileName = FileUploadUtils.saveImage(request, "cam", file, null);
-            model.addAttribute("cameraMessage", "Hello " + cameraBean.getName() 
-                    + ", your file was uploaded successfully.");
-            if (null != newFileName) {
-                model.addAttribute("cameraUpload", newFileName);
-            } 
-        } catch (IOException e) {
-            e.printStackTrace();
-            model.addAttribute("cameraMessage","There was an error uploading the image.");
+        if (cameraUpload != null) {
+            // if the uploaded file is not an image display an error
+            if (!cameraUpload.getContentType().startsWith("image")) {
+                model.addAttribute("cameraError",
+                        "Sorry " + cameraBean.getName()
+                                + ", only image uploads are allowed.");
+            } else {
+                // put the photo upload in the public media directory
+                try {
+                    /*
+                    String photoUrl = uploadDirSupport
+                            .addMediaToPublicDir(cameraUpload);
+                            */
+                    String photoUrl = "icemobile-store/"+ cameraUpload.getUuid();
+                    model.addAttribute("cameraUpload", photoUrl);
+
+                    // tell the user their photo has been uploaded
+                    model.addAttribute("cameraMessage",
+                            "Hello " + cameraBean.getName()
+                                    + ", your file was uploaded successfully.");
+                } catch (Exception e) {
+                    //there was some problem opening the uploaded file or 
+                    //creating a new one for the media dir
+                    model.addAttribute("cameraError",
+                            "Sorry " + cameraBean.getName()
+                                    + ", there was a problem saving the image file.");
+                }
+            }
         }
+        // always add the bean back to the model to save other form data
+        model.addAttribute("cameraBean", cameraBean);
     }
 
     @RequestMapping(value = "/jsoncam", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    CamUpdate jsonCamera(HttpServletRequest request, ModelBean modelBean,
-                         @RequestParam(value = "camera-file", required = false) MultipartFile file,
-                         @RequestParam(value = "cam", required = false) MultipartFile inputFile,
-                         Model model) throws IOException {
+    public @ResponseBody CamUpdate jsonCamera(
+            HttpServletRequest request,
+            ModelBean cameraBean,
+            @ICEmobileResource("cam") Resource cameraUpload,
+            Model model) throws IOException {
 
-        String newFileName = FileUploadUtils.saveImage(request, "cam", file, inputFile);
-        
-        Map additionalParams = modelBean.getAdditionalInfo();
-        String imcheck = " ";
-        String jqcheck = " ";
-        if (null != additionalParams)  {
-            if (additionalParams.keySet().contains("icemobile"))  {
-                imcheck = "*";
-            }
-            if (additionalParams.keySet().contains("jquery"))  {
-                jqcheck = "*";
+        if (cameraUpload != null) {
+            // if the uploaded file is not an image display an error
+            if (!cameraUpload.getContentType().startsWith("image")) {
+                model.addAttribute("cameraError",
+                        "Sorry " + cameraBean.getName()
+                                + ", only image uploads are allowed.");
+            } else {
+                // put the photo upload in the public media directory
+                try {
+                    String photoUrl = uploadDirSupport
+                            .addMediaToPublicDir(cameraUpload);
+                    model.addAttribute("cameraUpload", photoUrl);
+
+                    // tell the user their photo has been uploaded
+                    model.addAttribute("cameraMessage",
+                            "Hello " + cameraBean.getName()
+                                    + ", your file was uploaded successfully.");
+                    
+                    Map<String,String> additionalParams = cameraBean.getAdditionalInfo();
+                    String imcheck = " ";
+                    String jqcheck = " ";
+                    if (null != additionalParams) {
+                        if (additionalParams.keySet().contains("icemobile")) {
+                            imcheck = "*";
+                        }
+                        if (additionalParams.keySet().contains("jquery")) {
+                            jqcheck = "*";
+                        }
+                    }
+                    
+                    return new CamUpdate("Thanks for the photo, " + cameraBean.getName()
+                            + " and your interest in [" + imcheck + "] ICEmobile and ["
+                            + jqcheck + "] jquery.", request.getContextPath() + "/"
+                            + photoUrl);
+                } catch (IOException e) {
+                    //there was some problem opening the uploaded file or 
+                    //creating a new one for the media dir
+                    model.addAttribute("cameraError",
+                            "Sorry " + cameraBean.getName()
+                                    + ", there was a problem saving the image file.");
+                }
             }
         }
-
-        return new CamUpdate( "Thanks for the photo, " + modelBean.getName() +
-                " and your interest in [" + imcheck +
-                "] ICEmobile and [" + jqcheck + "] jquery.", 
-                request.getContextPath() + "/" + newFileName );
+        // always add the bean back to the model to save other form data
+        model.addAttribute("cameraBean", cameraBean);
+        
+        return null;
     }
 }
 

@@ -17,11 +17,9 @@
 package org.icemobile.samples.spring;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.FileChannel;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
