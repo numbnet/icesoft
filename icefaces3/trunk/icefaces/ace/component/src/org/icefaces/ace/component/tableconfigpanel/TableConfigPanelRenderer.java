@@ -21,6 +21,7 @@ import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.datatable.DataTableConstants;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
+import org.icefaces.ace.util.JSONBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -161,16 +162,13 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.STYLE_ATTR, "float:right;", null);
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
-
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all ui-tableconf-head-button", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle()", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_ok", null);
 
-
         writer.startElement(HTML.SPAN_ELEM, null);
-
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-check", null);
+
         writer.writeText("table", null);
 
         writer.endElement(HTML.SPAN_ELEM);
@@ -183,16 +181,13 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.STYLE_ATTR, "float:right;", null);
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
-
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all ui-tableconf-head-button", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle(); if (" + jsId + ".behavior) if (" + jsId + ".behavior.close) " + jsId + ".behavior.close();", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_close", null);
 
-
         writer.startElement(HTML.SPAN_ELEM, null);
-
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-close", null);
+
         writer.writeText("table", null);
 
         writer.endElement(HTML.SPAN_ELEM);
@@ -212,23 +207,32 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-        writer.writeText(
-                "ice.ace.jq(function () {\n" +
-                        "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_ok\"))" +
-                        ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
-                        ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).removeClass('ui-state-active');\n" +
-                        "var panel = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "'));\n" +
-                        "if (panel.is(':not(:visible)')) " + jsId + ".submitTableConfig(event.currentTarget);\n" +
-                        "}\n" +
-                        ");\n" +
-                        "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_close\"))" +
-                        ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
-                        ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).removeClass('ui-state-active');});\n" +
-                        "\t var cfg = {"+handle+"reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + ", tableId:'" + tableId + "'", null);
-        encodeClientBehaviors(FacesContext.getCurrentInstance(), component);
-        writer.writeText("};" +
-                        "\t" + jsId + " = ice.ace.create('TableConf', ['" + clientId + "', cfg]);\n" +
-                        "});", null);
+
+        JSONBuilder json = new JSONBuilder()
+                .initialiseVar(jsId).beginFunction("ice.ace.create")
+                .item("TableConf").beginArray().item(clientId)
+                .beginMap();
+
+        if (handle != null && handle.length() > 0)
+            json.entry("handle", handle);
+
+        if (isReorderable)
+            json.entry("reorderable", true);
+
+        if (isSortable)
+            json.entry("sortable", isSortable);
+
+        if (isSingleSort)
+            json.entry("singleSort", isSingleSort);
+
+        json.entry("tableId", tableId);
+
+        encodeClientBehaviors(FacesContext.getCurrentInstance(), component, json);
+
+        json.endMap().endArray().endFunction();
+
+        writer.write(json.toString());
+
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 

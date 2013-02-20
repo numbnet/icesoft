@@ -17,6 +17,41 @@
 if (!window.ice['ace']) {
     window.ice.ace = {};
 }
+ice.ace.TableConfLauncher = function(clientId, panelJsId) {
+    var panel = ice.ace.jq(ice.ace.escapeClientId(clientId)),
+        launcher = ice.ace.jq(ice.ace.escapeClientId(clientId + '_tableconf_launch'));
+
+    var activate = function(e) {
+        panel.toggle();
+        ice.ace.jq(e.currentTarget).toggleClass('ui-state-active');
+
+        if (panel.is(':not(:visible)'))
+            panelJsId.submitTableConfig(e.currentTarget);
+        else if (panelJsId.behaviors && panelJsId.behaviors.open)
+            panelJsId.behaviors.open();
+
+        e.stopPropagation();
+    }
+
+    var unload = function() {
+        launcher.off('click mouseenter mouseleave');
+    }
+
+    // Toggle active state when initialized via hover
+    launcher.toggleClass('ui-state-hover')
+        .hover(function(e) {
+            ice.ace.jq(e.currentTarget).toggleClass('ui-state-hover');
+            e.stopPropag1ation();
+        })
+        .click(function(e){
+            activate(e);
+        }).keyup(function(e) {
+            if (e.which == 13) activate(e);
+        });
+
+    ice.onElementUpdate(clientId + '_tableconf_launch', unload);
+}
+
 ice.ace.TableConf = function (id, cfg) {
     this.id = ice.ace.escapeClientId(id);
     this.tableId = ice.ace.escapeClientId(cfg.tableId);
@@ -31,6 +66,9 @@ ice.ace.TableConf = function (id, cfg) {
     if (cfg.handle)
         dragConfig.handle = cfg.handle;
 
+    this.setupOkButton();
+    this.setupCloseButton();
+
     this.$this.draggable(dragConfig);
 
     this.$this.css('top', this.$table.offset().top + 15);
@@ -44,14 +82,14 @@ ice.ace.TableConf = function (id, cfg) {
             return ui;
         };
 
-        this. $this.find('.ui-tableconf-body > table > tbody')
-                .sortable({
-                    axis:'y',
-                    containment:'parent',
-                    helper: fixHelper,
-                    items:'tr:not(.ui-disabled)',
-                    handle:'.ui-sortable-handle:not(.ui-disabled)'
-                });
+        this.$this.find('.ui-tableconf-body > table > tbody')
+             .sortable({
+                axis:'y',
+                containment:'parent',
+                helper: fixHelper,
+                items:'tr:not(.ui-disabled)',
+                handle:'.ui-sortable-handle:not(.ui-disabled)'
+              });
     }
 
     if (cfg.sortable) {
@@ -179,6 +217,40 @@ ice.ace.TableConf = function (id, cfg) {
                                 .trigger('click', [$currentTarget.offset().top + 6, event.metaKey]);
                 }}).not('.ui-toggled').fadeTo(0, 0.33);
     }
+}
+
+ice.ace.TableConf.prototype.setupOkButton = function() {
+    var self = this;
+    ice.ace.jq(this.id + "_tableconf_ok")
+            .hover(function (event) {
+                ice.ace.jq(event.currentTarget).toggleClass('ui-state-hover');
+            })
+            .click(function (event) {
+                ice.ace.jq(self.id + "_tableconf_launch").removeClass('ui-state-active');
+
+                self.$this.toggle();
+
+                var panel = ice.ace.jq(self.id);
+                if (panel.is(':not(:visible)'))
+                    self.submitTableConfig(event.currentTarget);
+            });
+}
+
+ice.ace.TableConf.prototype.setupCloseButton = function() {
+    var self = this;
+    ice.ace.jq(this.id + "_tableconf_close")
+            .hover(function (event) {
+                ice.ace.jq(event.currentTarget).toggleClass('ui-state-hover');
+            })
+            .click(function (event) {
+                ice.ace.jq(self.id + "_tableconf_launch")
+                        .removeClass('ui-state-active');
+
+                self.$this.toggle();
+
+                if (self.cfg.behavior && self.behavior.close)
+                    self.behavior.close();
+            });
 }
 
 ice.ace.TableConf.prototype.getSortAscending= function() {
