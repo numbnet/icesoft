@@ -21,12 +21,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+/**
+ * Method parameter annotation to mark an argument as an ICEmobile
+ * resource upload.  The value attribute should be set as the HTTP 'name' 
+ * attribute submitted for the resource.
+ *
+ */
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ICEmobileResourceUploadStore {
+public @interface ICEmobileResource {
     
-    final String SESSION = "SESSION";
-    
-    String store() default SESSION;
+    String value() default "";
    
 }

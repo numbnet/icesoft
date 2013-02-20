@@ -43,7 +43,7 @@ public class RangingResourceHttpRequestHandler extends ResourceHttpRequestHandle
     private static String CONTENT_RANGE = "Content-Range";
 
     @Autowired
-    private WebApplicationContext context;
+    protected WebApplicationContext context;
 
     @PostConstruct
     public void init()  {
@@ -51,14 +51,16 @@ public class RangingResourceHttpRequestHandler extends ResourceHttpRequestHandle
         locations.add(context.getResource("/resources/"));
         setLocations(locations);
     }
-
+    
     public void handleRequest(HttpServletRequest request, 
         HttpServletResponse response) throws ServletException, IOException  {
+        
+        boolean useRanges = false;
         String requestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
         String requestPath = requestURI.substring(contextPath.length());
 
-        boolean useRanges = false;
+        
         int rangeStart = 0;
         int rangeEnd = 0; 
 
@@ -87,22 +89,38 @@ public class RangingResourceHttpRequestHandler extends ResourceHttpRequestHandle
             response.setContentType( contentType );
         }
         response.setHeader("Accept-Ranges", "bytes");
-
-        Resource theResource = context.getResource(requestPath);
-        String contentLength = Long.toString(theResource.contentLength());
-        InputStream in = context.getResource(requestPath).getInputStream();
-        OutputStream out = response.getOutputStream();
-
-        if (useRanges)  {
-            response.setHeader(CONTENT_RANGE, 
-                    "bytes " + rangeStart + "-" + rangeEnd + "/" +
-                    contentLength );
-            response.setContentLength(1 + rangeEnd - rangeStart);
-            IOUtils.copyStream(in, out, rangeStart, rangeEnd);
-        } else {
-            IOUtils.copyStream(in, out);
+        Object[] inputStreamAndContentLength = 
+                getInputStreamAndContentLength(requestPath);
+        if( inputStreamAndContentLength != null ){
+            if( useRanges ){
+                response.setHeader(CONTENT_RANGE, 
+                        "bytes " + rangeStart + "-" + rangeEnd + "/" +
+                                inputStreamAndContentLength[1]);
+                response.setContentLength(1 + rangeEnd - rangeStart);
+            }
+            if (useRanges)  {
+                IOUtils.copyStream((InputStream)inputStreamAndContentLength[0], 
+                        response.getOutputStream(), rangeStart, rangeEnd);
+            } else {
+                IOUtils.copyStream((InputStream)inputStreamAndContentLength[0], 
+                        response.getOutputStream());
+            }
         }
-
+        else{
+            response.setStatus(404);
+            response.sendError(404);
+        }
+        
+    }
+    
+    protected Object[] getInputStreamAndContentLength(String requestPath)
+        throws IOException{
+        
+        Resource theResource = context.getResource(requestPath);
+        return new Object[]{
+                theResource.getInputStream(),
+                Long.valueOf(theResource.contentLength())
+            };
     }
 
 
