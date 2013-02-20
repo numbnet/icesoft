@@ -201,9 +201,8 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         boolean isReorderable = component.isColumnOrderingConfigurable();
         boolean isSingleSort = ((DataTable)component.getTargetedDatatable()).isSingleSort();
         String handle = component.getDragHandle();
-
-        if (handle != null && handle.length() > 0)
-            handle = "handle: '"+handle+"', ";
+        Integer left = component.getOffsetLeft();
+        Integer top = component.getOffsetTop();
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
@@ -224,6 +223,12 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         if (isSingleSort)
             json.entry("singleSort", isSingleSort);
+
+        if (left != null)
+            json.entry("left", left);
+
+        if (top != null)
+            json.entry("top", top);
 
         json.entry("tableId", tableId);
 

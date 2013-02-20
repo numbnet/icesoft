@@ -41,7 +41,7 @@ ice.ace.TableConfLauncher = function(clientId, panelJsId) {
     launcher.toggleClass('ui-state-hover')
         .hover(function(e) {
             ice.ace.jq(e.currentTarget).toggleClass('ui-state-hover');
-            e.stopPropag1ation();
+            e.stopPropagation();
         })
         .click(function(e){
             activate(e);
@@ -71,7 +71,14 @@ ice.ace.TableConf = function (id, cfg) {
 
     this.$this.draggable(dragConfig);
 
-    this.$this.css('top', this.$table.offset().top + 15);
+    var isTopSet = ice.ace.jq.isNumeric(this.cfg.top),
+        isLeftSet = ice.ace.jq.isNumeric(this.cfg.left);
+
+    if (isTopSet || isLeftSet) {
+        if (isTopSet) this.$this.css('top', this.cfg.top);
+        if (isLeftSet) this.$this.css('left', this.cfg.left);
+    }
+    else this.$this.css('top', this.$table.offset().top + 15);
 
     if (cfg.reorderable) {
         // Return a helper with preserved width of cells

@@ -84,4 +84,10 @@ public class TableConfigPanelMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "Defines a CSS selector of a TableConfigPanel subregion used as the handle when dragging the panel.")
     String dragHandle;
+
+    @Property(tlddoc = "Define the distance in pixels from left boundary of the CSS positioning bounding parent. If undefiend the panel is positioned offset slightly from the target DataTable.")
+    Integer offsetLeft;
+
+    @Property(tlddoc = "Define the distance in pixels from top boundary of the CSS positioning bounding parent. If undefiend the panel is positioned offset slightly from the target DataTable.")
+    Integer offsetTop;
 }
