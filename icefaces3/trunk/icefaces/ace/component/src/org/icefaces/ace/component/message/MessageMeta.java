@@ -18,9 +18,9 @@ package org.icefaces.ace.component.message;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Required;
 import org.icefaces.ace.meta.baseMeta.UIMessageMeta;
 import org.icefaces.ace.resources.ACEResourceNames;
-import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
 @Component(
@@ -33,13 +33,18 @@ import org.icefaces.resources.ICEResourceDependency;
         rendererType = "org.icefaces.ace.component.MessageRenderer",
         componentFamily = "org.icefaces.ace.Message",
         tlddoc = "The message tag renders the first Faces message (if redisplay is true) or " +
-                "the first undisplayed Faces message (if redisplay is false) for a specific component."
+                "the first undisplayed Faces message (if redisplay is false) for a specific component. " +
+                "Styling is done by predefined jQuery classes in theme stylesheets:<ul>" +
+                "<li>Info: ui-icon-notice w/ ui-state-highlight css</li>" +
+                "<li>Warn: ui-icon-info w/ ui-state-highlight css</li>" +
+                "<li>Error: ui-icon-alert w/ ui-state-error css</li>" +
+                "<li>Fatal: ui-icon-alert w/ ui-state-error css</li>" +
+                "</ul>"
 )
-@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY,
-                       name = ACEResourceNames.COMBINED_CSS)
+@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY, name = ACEResourceNames.COMBINED_CSS)
 public class MessageMeta extends UIMessageMeta {
 
-    @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS)
+    @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS, required = Required.yes)
     private String forValue;
 
     @Property(tlddoc = "CSS style(s) to be applied when this component is rendered.")

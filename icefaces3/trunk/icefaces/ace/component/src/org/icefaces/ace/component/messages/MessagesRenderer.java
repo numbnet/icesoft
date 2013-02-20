@@ -24,8 +24,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @MandatoryResourceComponent(tagName = "messages", value = "org.icefaces.ace.component.messages.Messages")
 public class MessagesRenderer extends Renderer {
@@ -33,16 +34,19 @@ public class MessagesRenderer extends Renderer {
     private static int iconIndex = -1;
     private static String[] icons = new String[]{"notice", "info", "alert", "alert"};
     private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
+    private String sourceClass = this.getClass().getName();
+    private Logger logger = Logger.getLogger(sourceClass);
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         Messages messages = (Messages) component;
         String forId = messages.getFor();
-        Iterator messageIter = Collections.EMPTY_LIST.iterator();
+        Iterator messageIter;
         String style = messages.getStyle();
         String styleClass = (styleClass = messages.getStyleClass()) == null ? "" : " " + styleClass;
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
+        String sourceMethod = "encodeEnd";
 
         if (forId == null) {
             if (messages.isGlobalOnly()) {
@@ -51,10 +55,13 @@ public class MessagesRenderer extends Renderer {
                 messageIter = context.getMessages();
             }
         } else {
-            UIComponent forComponent = messages.findComponent(forId);
-            if (forComponent != null) {
-                messageIter = context.getMessages(forComponent.getClientId(context));
+            forId = forId.trim();
+            UIComponent forComponent = forId.equals("") ? null : messages.findComponent(forId);
+            if (forComponent == null) {
+                logger.logp(Level.WARNING, sourceClass, sourceMethod, "'for' attribute value cannot be empty or non-existent id.");
+                return;
             }
+            messageIter = context.getMessages(forComponent.getClientId(context));
         }
         writer.startElement("div", messages);
         writer.writeAttribute("id", messages.getClientId(), "id");
