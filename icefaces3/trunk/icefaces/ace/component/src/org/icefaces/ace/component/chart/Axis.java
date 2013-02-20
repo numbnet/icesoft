@@ -120,8 +120,7 @@ public class Axis implements Serializable {
             encodeTicks(json);
 
         if (hasTickOptionsSet()) {
-            if (getType() != AxisType.DATE)
-                json.entry("tickRenderer", "ice.ace.jq.jqplot.CanvasAxisTickRenderer", true);
+            json.entry("tickRenderer", "ice.ace.jq.jqplot.CanvasAxisTickRenderer", true);
 
             encodeTickOptions(json);
         }
