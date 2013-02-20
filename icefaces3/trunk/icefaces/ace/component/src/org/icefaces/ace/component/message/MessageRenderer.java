@@ -24,8 +24,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @MandatoryResourceComponent(tagName = "message", value = "org.icefaces.ace.component.message.Message")
 public class MessageRenderer extends Renderer {
@@ -33,21 +34,25 @@ public class MessageRenderer extends Renderer {
     private static int iconIndex = -1;
     private static String[] icons = new String[]{"notice", "info", "alert", "alert"};
     private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
+    private String sourceClass = this.getClass().getName();
+    private Logger logger = Logger.getLogger(sourceClass);
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         Message message = (Message) component;
-        String forId = message.getFor();
-        Iterator messageIter = Collections.EMPTY_LIST.iterator();
+        String forId = (forId = message.getFor()) == null ? "" : forId.trim();
         String style = message.getStyle();
         String styleClass = "ui-faces-message" + ((styleClass = message.getStyleClass()) == null ? "" : " " + styleClass);
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
+        String sourceMethod = "encodeEnd";
 
-        UIComponent forComponent = forId == null ? null : message.findComponent(forId);
-        if (forComponent != null) {
-            messageIter = context.getMessages(forComponent.getClientId(context));
+        UIComponent forComponent = forId.equals("") ? null : message.findComponent(forId);
+        if (forComponent == null) {
+            logger.logp(Level.WARNING, sourceClass, sourceMethod, "'for' attribute value cannot be null or empty or non-existent id.");
+            return;
         }
+        Iterator messageIter = context.getMessages(forComponent.getClientId(context));
 
         writer.startElement("span", message);
         writer.writeAttribute("id", message.getClientId(), "id");

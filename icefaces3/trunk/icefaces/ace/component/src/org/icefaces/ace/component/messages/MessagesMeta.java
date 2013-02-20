@@ -20,7 +20,6 @@ import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIMessagesMeta;
 import org.icefaces.ace.resources.ACEResourceNames;
-import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 
 @Component(
@@ -35,10 +34,15 @@ import org.icefaces.resources.ICEResourceDependency;
         tlddoc = "The messages tag renders all Faces messages, all Faces messages for a specific component, " +
                 "or all Faces messages not associated with any component. " +
                 "If redisplay is true, a message is always rendered; " +
-                "if redisplay is false, a message is rendered only if it was undisplayed before."
+                "if redisplay is false, a message is rendered only if it was undisplayed before. " +
+                "Styling is done by predefined jQuery classes in theme stylesheets:<ul>" +
+                "<li>Info: ui-icon-notice w/ ui-state-highlight css</li>" +
+                "<li>Warn: ui-icon-info w/ ui-state-highlight css</li>" +
+                "<li>Error: ui-icon-alert w/ ui-state-error css</li>" +
+                "<li>Fatal: ui-icon-alert w/ ui-state-error css</li>" +
+                "</ul>"
 )
-@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY,
-                       name = ACEResourceNames.COMBINED_CSS)
+@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY, name = ACEResourceNames.COMBINED_CSS)
 public class MessagesMeta extends UIMessagesMeta {
 
     @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS)
