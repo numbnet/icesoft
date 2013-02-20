@@ -172,7 +172,7 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
         if (null != cfg){
             scriptSB.append(cfg);
         }
-        scriptSB.append(");").append("}, 1);");
+        scriptSB.append(");").append("}, 100);");
         writer.writeText(scriptSB.toString());
        // logger.info("writing script to page -"+scriptSB.toString());
         writer.endElement(SCRIPT_ELEM);

@@ -17,31 +17,12 @@ package org.icemobile.application;
 
 import java.io.InputStream;
 
-public interface Resource {
+import javax.servlet.http.HttpServletRequest;
+
+public interface ResourceAdapter<T extends Resource> {
     
-    public String getContentType();
-    public void setContentType(String contentType);
-    
-    public long getId();
-    public void setId(long id);
-    
-    public String getName();
-    public void setName(String name);
-    
-    public InputStream getInputStream();
-    public void setInputStream(InputStream stream);
-    
-    public String getToken();
-    public void setToken(String token);
-    
-    public String getUuid();
-    public void setUiid(String uuid);
-    
-    public long contentLength();
-    
-    public void delete();
-    
-    public void setStore(ResourceStore store);
+    T[] handleRequest(HttpServletRequest request);
+    T handleInputStream(InputStream is, String contentType);
     
 
 }

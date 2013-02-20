@@ -17,31 +17,20 @@ package org.icemobile.application;
 
 import java.io.InputStream;
 
-public interface Resource {
+import javax.servlet.http.HttpServletRequest;
+
+
+public interface ResourceStore<T extends Resource>{
     
-    public String getContentType();
-    public void setContentType(String contentType);
-    
-    public long getId();
-    public void setId(long id);
-    
-    public String getName();
-    public void setName(String name);
-    
-    public InputStream getInputStream();
-    public void setInputStream(InputStream stream);
-    
-    public String getToken();
-    public void setToken(String token);
-    
-    public String getUuid();
-    public void setUiid(String uuid);
-    
-    public long contentLength();
-    
-    public void delete();
-    
-    public void setStore(ResourceStore store);
+    public void remove(T resource);
+    public void remove(String token, String key);
+    public void add(T resource);
+    public void handleRequest(HttpServletRequest request, String token);
+    public void handleInputStream(InputStream is, String contentType, String name, String token);
+    public void clear();
+    public T get(String token, String key);
+    public T get(String uuid);
+    public void setRequestAdaptor(ResourceAdapter adapter);
     
 
 }
