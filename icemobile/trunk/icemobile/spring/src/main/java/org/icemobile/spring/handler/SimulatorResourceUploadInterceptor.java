@@ -37,7 +37,7 @@ import org.icemobile.util.Utils;
  * following in your Spring configuration:
  * 
  * <interceptors>
- *    <beans:bean class="org.icemobile.spring.handler.ICEmobileSimulatorResourceUploadInterceptor" />
+ *    <beans:bean class="org.icemobile.spring.handler.SimulatorResourceUploadInterceptor" />
  * </interceptors>
  *
  */
