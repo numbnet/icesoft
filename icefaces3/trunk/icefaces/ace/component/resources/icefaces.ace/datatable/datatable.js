@@ -350,7 +350,7 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
     });
     else if (this.cfg.filterEvent == "change") this.element.find(this.filterSelector).off('keyup').on('keyup', function (event) {
         var _event = event;
-        if (event.which == 8 || event.which == 13 || event.which > 40) {
+        if (event.which == 8 || event.which == 13 || event.which > 40 || event.isTrigger) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
             _self.delayedFilterCall = setTimeout(function () {
                 _self.filter(_event);
