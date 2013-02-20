@@ -65,11 +65,10 @@
 			</mobi:fieldsetRow>
 		</mobi:fieldsetGroup>
 	</c:if>
-	<s:bind path="*">
-		<c:if test="${status.error}">
-			<div id="message" class="error">Form has errors</div>
-		</c:if>
-	</s:bind>
+    
+    <c:if test="${not empty cameraError}">
+        <div id="message" class="error">${cameraError}</div>
+    </c:if>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow group="true">
