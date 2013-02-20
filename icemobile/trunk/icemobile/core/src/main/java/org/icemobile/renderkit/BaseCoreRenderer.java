@@ -95,4 +95,17 @@ public abstract class BaseCoreRenderer{
         }
         return false;
     }
+
+    protected boolean isStringAttributeEmpty(String inString){
+        if (inString==null){
+            return true;
+        }
+        if (inString.trim().equals("")) {
+            return true;
+        }
+        if (inString.length()<1){
+            return true;
+        }
+        return false;
+    }
 }

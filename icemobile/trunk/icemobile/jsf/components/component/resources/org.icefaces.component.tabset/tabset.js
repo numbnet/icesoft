@@ -96,7 +96,7 @@
         var disabled = cfgIn.disabled;
         var autoheight = cfgIn.autoheight || false;
         var cntr = 0;
-        if (height !== "-1") {
+        if (height !== -1) {
             tabContent.style.maxHeight = height;
             tabContent.style.height = height;
         } else if (autoheight == true){
@@ -160,7 +160,7 @@
                 tabIndex = cfgUpd.tIndex;
                 var newHt = cfgUpd.height || -1;
                 console.log("newHt="+newHt+" height="+height);
-                if (newHt !== "-1" && newHt !== height ){
+                if (newHt !== -1 && newHt !== height ){
                     tabContainer.style.maxHeight = newHt;
                     tabContainer.style.height = newHt;
                 }

@@ -158,7 +158,7 @@ public class TabSetCoreRenderer extends BaseCoreRenderer {
             cfg.append(", hash: ").append(tabset.getHashVal());
         }
         cfg.append(", disabled: ").append(tabset.isDisabled());
-        if (null!=height){
+        if (!this.isStringAttributeEmpty(height)){
             cfg.append(",height: '").append(height).append("'");
         } else  {
             cfg.append(", autoheight: ").append(tabset.isAutoHeight());

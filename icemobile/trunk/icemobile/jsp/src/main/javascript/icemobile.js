@@ -498,7 +498,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         var disabled = cfgIn.disabled;
         var autoheight = cfgIn.autoheight || false;
         var cntr = 0;
-        if (height !== "-1") {
+        if (height !== -1) {
             tabContent.style.maxHeight = height;
             tabContent.style.height = height;
         } else if (autoheight == true){
