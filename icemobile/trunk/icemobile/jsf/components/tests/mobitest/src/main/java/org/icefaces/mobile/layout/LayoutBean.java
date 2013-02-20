@@ -57,7 +57,8 @@ public class LayoutBean implements Serializable {
     private String style;
     private boolean scrollablePaneContent;
     private long timestamp;
-    private long headTimestamp; 
+    private long headTimestamp;
+    private String orientation="top";
 
 	public LayoutBean(){
         this.selectedPane = FIRSTPANE;
@@ -81,7 +82,6 @@ public class LayoutBean implements Serializable {
             "../../images/Joker.jpg", "joker", "Joker"));
         counter = eachContentPane.size();
         disabled = false;
-        this.fixedHeightString="120px";
         this.scrollablePaneContent = true;
     }
 
@@ -135,6 +135,14 @@ public class LayoutBean implements Serializable {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
     }
 
     public boolean isFixedHeight() {
