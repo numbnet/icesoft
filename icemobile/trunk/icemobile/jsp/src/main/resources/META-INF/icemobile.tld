@@ -1050,7 +1050,6 @@
              <rtexprvalue>true</rtexprvalue>
          </attribute>
      </tag>
-
     <tag>
         <description>A tag identifying the header portion of the Tabset
         </description>
@@ -1687,4 +1686,124 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <description>ICEmobile TabSet buffered version</description>
+        <display-name>tabSetController</display-name>
+        <name>tabSetControl</name>
+        <tag-class>org.icemobile.jsp.tags.layout.TabSetControlTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>Pagewide unique identifier.</description>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>User defined CSS class.</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Inline style definition.</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>Style attribute for tabs div</description>
+            <name>tabsStyle</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Style attribute for tab contents div</description>
+            <name>contentStyle</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>String name of selected Panel</description>
+            <name>selectedId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>Orientation of tabSet</description>
+            <name>orientation</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>When set to true (default),tabs are evenly spread out to 100% .
+            </description>
+            <name>autoWidth</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>When disabled is true, tab controls are not able to change tabPanes .
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>If height attribute is not used, this attribute may be used to calculate
+                the largest height of all tabPanes.
+            </description>
+            <name>autoHeight</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>Height is optional and must be valid css height for contents div</description>
+            <name>height</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+       <attribute>
+            <description> PagePanel is present with footer facet following this component
+            </description>
+            <name>hasParentFooter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+    </tag>
+   <tag>
+         <description>Tab Pane Tag.</description>
+         <display-name>ICEmobile TabPane</display-name>
+         <name>tabPane</name>
+         <tag-class>org.icemobile.jsp.tags.layout.TabPaneTag</tag-class>
+         <body-content>JSP</body-content>
+         <attribute>
+             <description>Pagewide unique identifier.</description>
+             <name>id</name>
+             <required>true</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
+             <description>A textual title appearing above the content
+             </description>
+             <name>title</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+  <!--       <attribute>
+             <description>Inline style definition.</description>
+             <name>style</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
+             <description>User defined CSS class.</description>
+             <name>styleClass</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute> -->
+     </tag>
 </taglib>

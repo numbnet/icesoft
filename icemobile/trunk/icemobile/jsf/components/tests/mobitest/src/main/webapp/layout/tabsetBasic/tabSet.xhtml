@@ -53,7 +53,10 @@
       <br />
      <h:form id="contentForm">
 
-       <mobi:tabSet id="test1" currentId="#{layoutBean.selectedPane}"
+       <mobi:tabSet id="test1" selectedId="#{layoutBean.selectedPane}"
+                    disabled="#{layoutBean.disabled}"
+                    orientation="#{layoutBean.orientation}"
+                    height="#{layoutBean.fixedHeightString}"
                     tabChangeListener="#{layoutBean.tabChangeListener}">
               <mobi:contentPane id="panel1" title="panel1" client="true">
                   <div id="inner1">
@@ -113,7 +116,50 @@
        </mobi:tabSet>
 
      </h:form>
+     <h:form id="outputfrm">
+       <div id="output" style="display:block;">
+          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
+       </div>
+      <div>
+         <h3>TabSet Settings</h3>
 
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="selectOr" value="Orientation:-"/>
+                <h:selectOneMenu id="selectOr"  value="#{layoutBean.orientation}">
+                    <f:selectItem itemValue="top" itemLabel="Top"/>
+                    <f:selectItem itemValue="bottom" itemLabel="Bottom" />
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:" />
+                <mobi:flipswitch id="disabled" value="#{layoutBean.disabled}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="style" value="Style:" style="width:50px"/>
+                <mobi:inputText id="style" value="#{layoutBean.style}"
+                    singleSubmit="true" placeholder="style"
+                    style="font-size:12px"/>
+            </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="styleClass" value="StyleClass:" style="width:50px"/>
+                <mobi:inputText id="styleClass" value="#{layoutBean.styleClass}"
+                    singleSubmit="true" placeholder="styleClass"
+                    style="font-size:12px"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="fixedHeight" value="Fixed Height:" style="width:50px"/>
+                <mobi:inputText id="fixedHeight" value="#{layoutBean.fixedHeightString}"
+                    singleSubmit="true" placeholder="Fixed height, eg '10em'"
+                    style="font-size:12px"/>
+                <mobi:commandButton value="Clear" actionListener="#{layoutBean.clearFixedHeight}"
+                                    singleSubmit="true"
+                    style="max-width:50px;min-width:50px;"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+      </div>
+     </h:form>
 
 </h:body>
 </html>

@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.tabset;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 import org.icefaces.mobi.utils.TLDConstants;
 
@@ -41,8 +42,9 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class TabSetMeta extends UIPanelMeta {
+
     @Property(tlddoc = "The id of the contentPane that is active.")
-    private String currentId;
+    private String selectedId;
 
     @Property(tlddoc = " The id of the child contentPane that will be selected by default.  " +
             "This is only used once on load, and currentId must be used after to dynamically change" +
@@ -52,18 +54,24 @@ public class TabSetMeta extends UIPanelMeta {
     @Property(tlddoc = "Inline style of the container element.")
     private String style;
 
+	@Property(tlddoc = "When \"true\", (default is false), the pane with highest known content is used to " +
+            "calculate the height. When client is false, this can only be calculated after all content panes have" +
+            "been selected for view.  Until then, it can only reflect the max height of the selected " +
+            "contentPanes.  If height attribute is used, this attribute cannot be true. ", defaultValue="false")
+	private boolean autoHeight;
+
     @Property(tlddoc = "Style class of the container element.")
     private String styleClass;
 
-    /*    @Property(tlddoc = "If true then all tabs except the active one will " +
-    "be disabled and can not be selected.")
- private boolean disabled; */
+    @Property(tlddoc = "If true then all tabs except the active one will " +
+        "be disabled and can not be selected.")
+    private boolean disabled;
 
     @Property(
-            tlddoc = "fixeHeight can be used to fix the height of the container. Must be valid height for element.style.height, " +
-                    "for example: 200px.  If this attribute it not used, a calculation will be made to fix the height of the" +
-                    " container to the largest height of its children")
-    private String fixedHeight;
+            tlddoc = "attribute height can be used to fix the height of the contents. Must be valid height for element.style.height, " +
+                    "for example: 200px.  If this attribute it not used, a calculation may be made to fix the height of the" +
+                    " container to the largest height of its children by use of autoHeight attribute")
+    private String height;
 
     @Property(tlddoc = "MethodExpression representing a method that will be " +
             "invoked when the selected TabPane has changed. The expression " +
@@ -77,28 +85,25 @@ public class TabSetMeta extends UIPanelMeta {
     private boolean immediate;
 
     @Property(defaultValue = "true",
-            tlddoc = TLDConstants.SINGLESUBMIT)
+            tlddoc = TLDConstants.SINGLESUBMIT+" currently may only be true.")
     private boolean singleSubmit;
 
-    @Property(defaultValue = "bottom",
+    @Property(defaultValue = "top",
             tlddoc = "This attribute sets the orientation of the tabset bar " +
-                    "to either bottom or top. Currently this attribute is applicable only " +
-                    "to small view. " +
-                    "The default value if not specified is bottom. ")
+                    "to either bottom or top. " +
+                    "The default value if not specified is top. ")
     private String orientation;
 
-    @Property(defaultValue = "false",
-            tlddoc = "Flag indicating that parent pagePanel is present with a footer.  This insures " +
-                    "that the tabset with bottom orientation will be displayed above the pagePanel footer.")
-    private boolean parentFooter;
+    @Field(defaultValue = "false")
+    private Boolean parentFooter;
 
-    @Property(defaultValue = "true",
-            tlddoc = "Flag indicating that parent pagePanel is present with a header.  This insures " +
-                    "that the tabset with top orientation will be displayed below the pagePanel header.")
-    private boolean parentHeader;
+    @Field(defaultValue = "true")
+    private Boolean parentHeader;
 
-    @Property(defaultValue = "true",
-            tlddoc = "Flag indicating that tabset render will apply an auto width calculation in order to" +
-                    "display each tab evenly spaced with in the confines of the parent container.")
+    @Property(defaultValue = "true")
     private boolean autoWidth;
+
+    @Field
+    private String hashVal;
+
 }
