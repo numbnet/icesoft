@@ -1,10 +1,12 @@
 package org.icefaces.util;
 
-import org.icefaces.resources.BrowserType;
+import java.io.Serializable;
+import java.util.Map;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.util.Map;
+
+import org.icefaces.resources.BrowserType;
 
 /**
  * Copyright 2010-2013 ICEsoft Technologies Canada Corp.
@@ -26,10 +28,11 @@ import java.util.Map;
  * Date: 2013-02-07
  * Time: 3:50 PM
  */
-public class UserAgentContext {
+public class UserAgentContext
+implements Serializable {
     private static final String SESSION_KEY = "userAgentContext";
-    public enum OS{ WINDOWS, IOS, MAC, ANDROID, BLACKBERRY, LINUX }
-    public enum FORM_FACTOR{ HANDHELD, TABLET, DESKTOP }
+    public static enum OS{ WINDOWS, IOS, MAC, ANDROID, BLACKBERRY, LINUX }
+    public static enum FORM_FACTOR{ HANDHELD, TABLET, DESKTOP }
 
     private String userAgent;
     private boolean internetExplorer;
