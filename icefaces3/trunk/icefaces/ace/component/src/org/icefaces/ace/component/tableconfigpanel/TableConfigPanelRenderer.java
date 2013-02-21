@@ -84,6 +84,12 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writeJavascript(writer, clientId, tableId, component);
 
         writer.endElement(HTML.DIV_ELEM);
+
+        if (component.isModal()) {
+            writer.startElement(HTML.DIV_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR,  "ui-tableconf-modal", null);
+            writer.endElement(HTML.DIV_ELEM);
+        }
     }
 
     private void writeColumnConfigRows(ResponseWriter writer, TableConfigPanel component, String tableId, List<Column> columns) throws IOException {
