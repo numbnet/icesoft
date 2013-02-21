@@ -16,6 +16,7 @@
 
 package org.icefaces.impl.context;
 
+import org.icefaces.impl.event.FixViewState;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.util.FocusController;
@@ -37,6 +38,7 @@ import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.StringCharacterIterator;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -244,6 +246,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
                 renderState();
                 renderExtensions();
+                renderFixViewState();
+                runScripts();
                 partialWriter.endDocument();
 
             } catch (IOException ex) {
@@ -539,6 +543,75 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         }
     }
 
+    /**
+     * In order to ensure that all the relevant forms of the current view have the correct ViewState,
+     * we evaluate a script that touches all the potentially modified forms.  The ViewState can't just
+     * be applied page-wide as portlets can have multiple views on the same page.  The forms are currently
+     * tracked and recorded in the FixViewState event listener and their ids are added to a list stored
+     * in the FacesContext attributes. Here we check to see if that list has anything in it and generated
+     * a script to be evaluated in the partial response.
+     *
+     * @throws IOException
+     */
+    private void renderFixViewState() throws IOException {
+
+        //See if any form ids were recorded that need their ViewState fixed
+        Map facesMap = facesContext.getAttributes();
+        ArrayList formIdList = (ArrayList)facesMap.get(FixViewState.FORM_LIST_KEY);
+        if( formIdList == null || formIdList.isEmpty() ){
+            //No need to do anything if there are no form ids recorded.
+            return;
+        }
+
+        String viewState = facesContext.getApplication().getStateManager().getViewState(facesContext);
+        String escapedViewState = escapeJSString(viewState);
+
+        //Build an array of the form ids to be passed into the appropriate client function
+        StringBuilder buff = new StringBuilder("var iceFormIdList=[");
+        for (int i = 0; i < formIdList.size(); i++) {
+            if( i > 0 ){
+                buff.append(", ");
+            }
+            String fullFormId = (String) formIdList.get(i);
+            buff.append("'").append(fullFormId).append("'");
+        }
+        buff.append("]; ice.fixViewStates(iceFormIdList,'").append(escapedViewState).append("');");
+        JavaScriptRunner.runScript(facesContext, buff.toString());
+
+    }
+
+    private static String escapeJSString(String text) {
+        final StringBuilder result = new StringBuilder();
+        StringCharacterIterator iterator = new StringCharacterIterator(text);
+        char character = iterator.current();
+        while (character != StringCharacterIterator.DONE) {
+            if (character == '\"') {
+                result.append("\\\"");
+            } else if (character == '\\') {
+                result.append("\\\\");
+            } else if (character == '/') {
+                result.append("\\/");
+            } else if (character == '\b') {
+                result.append("\\b");
+            } else if (character == '\f') {
+                result.append("\\f");
+            } else if (character == '\n') {
+                result.append("\\n");
+            } else if (character == '\r') {
+                result.append("\\r");
+            } else if (character == '\t') {
+                result.append("\\t");
+            } else {
+                //the char is not a special one
+                //add it to the result as is
+                result.append(character);
+            }
+            character = iterator.next();
+        }
+        return result.toString();
+    }
+
+
     private void renderState() throws IOException {
         // Get the view state and write it to the response..
         PartialResponseWriter writer = getPartialResponseWriter();
@@ -551,7 +624,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     protected void renderExtensions() {
         manageFocus();
-        runScripts();
     }
 
     private void manageFocus() {

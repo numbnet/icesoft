@@ -20,30 +20,46 @@ import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import java.io.IOException;
-import java.text.StringCharacterIterator;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.Map;
 
+/**
+ *  In order to ensure that all the forms in a view have the correct ViewState associated with them,
+ *  we listen for the PreRenderComponentEvent on forms and store the full client id of the component.
+ *  Later, we use that id to render out a set of scripts to be evaluated on the client that "fix" the
+ *  ViewState value of all the affected forms.  We need to do it this way because:
+ *
+ *   - Calling getViewState() in the middle of the render phase leads to problems with the components
+ *   - Both Mojarra and MyFaces have difficulty keeping the ViewState values consistent
+ *
+ *  This is particularly true in more complex scenarios. For example portlets which can have multiple
+ *  forms per view and multiple views per page.
+ */
 public class FixViewState implements SystemEventListener {
     private static final String ID_SUFFIX = "_fixviewstate";
-    private static final Random random = new Random();
+    public static final String FORM_LIST_KEY = "ice.faces.formList";
 
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
-        final UIForm form = (UIForm) ((ComponentSystemEvent) event).getComponent();
-        final String formClientID = form.getClientId();
-        final String formId = form.getId();
 
-        UIOutput output = new ScriptWriter(formClientID);
-        output.setTransient(true);
-        output.setId(formId + ID_SUFFIX);
-        form.getParent().getChildren().add(output);
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if(fc.isPostback()){
+
+            final UIForm form = (UIForm) ((ComponentSystemEvent) event).getComponent();
+            final String formClientID = form.getClientId();
+
+            Map facesMap = fc.getAttributes();
+            ArrayList formIdList =  (ArrayList)facesMap.get(FORM_LIST_KEY);
+            if( formIdList == null ){
+                formIdList = new ArrayList();
+                facesMap.put(FORM_LIST_KEY, formIdList);
+            }
+            formIdList.add(formClientID);
+        }
     }
 
     public boolean isListenerForSource(final Object source) {
@@ -62,63 +78,4 @@ public class FixViewState implements SystemEventListener {
             return false;
         }
     }
-
-    private static class ScriptWriter extends UIOutputWriter {
-        private String formClientID;
-
-        public ScriptWriter(String formClientID) {
-            this.formClientID = formClientID;
-        }
-
-        public void encode(ResponseWriter writer, FacesContext context) throws IOException {
-            String clientID = getClientId(context);
-            writer.startElement("span", this);
-            writer.writeAttribute("id", clientID, null);
-            if (context.isPostback()) {
-                writer.startElement("script", this);
-                writer.writeAttribute("type", "text/javascript", null);
-                String viewState = context.getApplication().getStateManager().getViewState(context);
-                writer.writeText("ice.fixViewState('" + formClientID + "', '" + escapeJSString(viewState) + "');", null);
-                //generate random text to force the DOM diffing to send view state fixing code for non-ICEfaces requests
-                //because the client side view state fixing is not executed
-                if (!context.getExternalContext().getRequestParameterMap().containsKey("ice.submit.type")) {
-                    writer.writeText("//" + random.nextLong(), null);
-                }
-                writer.endElement("script");
-            }
-            writer.endElement("span");
-        }
-    }
-
-    public static String escapeJSString(String text) {
-        final StringBuilder result = new StringBuilder();
-        StringCharacterIterator iterator = new StringCharacterIterator(text);
-        char character = iterator.current();
-        while (character != StringCharacterIterator.DONE) {
-            if (character == '\"') {
-                result.append("\\\"");
-            } else if (character == '\\') {
-                result.append("\\\\");
-            } else if (character == '/') {
-                result.append("\\/");
-            } else if (character == '\b') {
-                result.append("\\b");
-            } else if (character == '\f') {
-                result.append("\\f");
-            } else if (character == '\n') {
-                result.append("\\n");
-            } else if (character == '\r') {
-                result.append("\\r");
-            } else if (character == '\t') {
-                result.append("\\t");
-            } else {
-                //the char is not a special one
-                //add it to the result as is
-                result.append(character);
-            }
-            character = iterator.next();
-        }
-        return result.toString();
-    }
-
 }
