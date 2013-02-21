@@ -830,6 +830,12 @@ if (!window.ice.icefaces) {
             }
         }
 
+        namespace.fixViewStates = function(formIds, viewState) {
+            for( var i = 0; i < formIds.length; i++){
+                namespace.fixViewState(formIds[i],viewState);
+            }
+        }
+
         function isComponentRendered(form) {
             return lookupNamedInputElement(form, 'javax.faces.encodedURL') ||
                 lookupNamedInputElement(form, 'javax.faces.ViewState') ||
