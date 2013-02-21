@@ -19,11 +19,14 @@ if (!window.ice['ace']) {
 }
 ice.ace.TableConfLauncher = function(clientId, panelJsId) {
     var panel = ice.ace.jq(ice.ace.escapeClientId(clientId)),
-        launcher = ice.ace.jq(ice.ace.escapeClientId(clientId + '_tableconf_launch'));
+        launcher = ice.ace.jq(ice.ace.escapeClientId(clientId + '_tableconf_launch'))
+        modal = panel.next('.ui-tableconf-modal');
 
     var activate = function(e) {
         panel.toggle();
-        ice.ace.jq(e.currentTarget).toggleClass('ui-state-active');
+        modal.toggle();
+        ice.ace.jq(e.currentTarget).toggleClass('ui-state-active').removeClass('ui-state-hover');
+
 
         if (panel.is(':not(:visible)'))
             panelJsId.submitTableConfig(e.currentTarget);
@@ -39,9 +42,11 @@ ice.ace.TableConfLauncher = function(clientId, panelJsId) {
 
     // Toggle active state when initialized via hover
     launcher.toggleClass('ui-state-hover')
-        .hover(function(e) {
-            ice.ace.jq(e.currentTarget).toggleClass('ui-state-hover');
-            e.stopPropagation();
+        .mouseenter(function(e) {
+            ice.ace.jq(e.currentTarget).addClass('ui-state-hover');
+        })
+        .mouseleave(function(e) {
+            ice.ace.jq(e.currentTarget).removeClass('ui-state-hover');
         })
         .click(function(e){
             activate(e);
@@ -56,6 +61,7 @@ ice.ace.TableConf = function (id, cfg) {
     this.id = ice.ace.escapeClientId(id);
     this.tableId = ice.ace.escapeClientId(cfg.tableId);
     this.$this = ice.ace.jq(this.id);
+    this.modal =  this.$this.next('.ui-tableconf-modal');
     this.$table = ice.ace.jq(this.tableId);
     this.behaviors = cfg.behaviors;
     this.cfg = cfg;
@@ -236,6 +242,7 @@ ice.ace.TableConf.prototype.setupOkButton = function() {
                 ice.ace.jq(self.id + "_tableconf_launch").removeClass('ui-state-active');
 
                 self.$this.toggle();
+                self.modal.toggle();
 
                 var panel = ice.ace.jq(self.id);
                 if (panel.is(':not(:visible)'))
@@ -254,6 +261,7 @@ ice.ace.TableConf.prototype.setupCloseButton = function() {
                         .removeClass('ui-state-active');
 
                 self.$this.toggle();
+                self.modal.toggle();
 
                 if (self.cfg.behavior && self.behavior.close)
                     self.behavior.close();

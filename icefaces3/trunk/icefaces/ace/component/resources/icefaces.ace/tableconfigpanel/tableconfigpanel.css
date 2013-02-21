@@ -22,6 +22,19 @@
     z-index:5;
 }
 
+.ui-tableconf-modal {
+    height:100%;
+    width:100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 4;
+    background: #aaaaaa;
+    opacity: .3;
+    filter: Alpha(Opacity=30);
+}
+
 .ui-tableconf-header {
     padding: 4px;
     line-height:1.9;

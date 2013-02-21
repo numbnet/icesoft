@@ -34,16 +34,17 @@
 
     <ui:define name="example">
         <h:form id="carForm">
-            
             <ace:dataTable id="carTable"
                            value="#{dataTableConfigPanel.carsData}"
                            var="car"
                            rows="10">
                 <ace:tableConfigPanel id="tableConfig"
+                                      dragHandle=".ui-tableconf-header"
                                       columnNameConfigurable="true"
                                       columnVisibilityConfigurable="true"
                                       columnOrderingConfigurable="true"
                                       columnSortingConfigurable="true"
+                                      modal="true"
                                       type="last-col"/>
 
                         <ace:column id="id" headerText="ID">

@@ -90,4 +90,8 @@ public class TableConfigPanelMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "Define the distance in pixels from top boundary of the CSS positioning bounding parent. If undefiend the panel is positioned offset slightly from the target DataTable.")
     Integer offsetTop;
+
+    @Property(tlddoc = "Define if viewing this panel disables the rest of the application from input.",
+        defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    Boolean modal;
 }
