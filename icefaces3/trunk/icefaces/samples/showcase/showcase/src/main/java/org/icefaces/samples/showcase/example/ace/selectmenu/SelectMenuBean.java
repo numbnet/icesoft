@@ -49,7 +49,8 @@ import java.util.*;
 @Menu(
             title = "menu.ace.selectmenu.subMenu.title",
             menuLinks = {
-                @MenuLink(title = "menu.ace.selectmenu.subMenu.main", isDefault = true, exampleBeanName = SelectMenuBean.BEAN_NAME)
+                @MenuLink(title = "menu.ace.selectmenu.subMenu.main", isDefault = true, exampleBeanName = SelectMenuBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.selectmenu.subMenu.facet", exampleBeanName = SelectMenuFacetBean.BEAN_NAME)
             }
 )
 @ManagedBean(name= SelectMenuBean.BEAN_NAME)

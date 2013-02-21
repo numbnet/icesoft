@@ -59,12 +59,12 @@
 					<f:selectItem itemValue="Yukon" itemLabel="Yukon" />
 					<f:selectItem itemValue="Northwest Territories" itemLabel="Northwest Territories" />
 					<f:selectItem itemValue="Nunavut" itemLabel="Nunavut" />
-					<ace:ajax />
+					<ace:ajax execute="@this" render="@all" />
 				</ace:selectMenu>
 				<br />
 				<ace:selectMenu id="selectCity" value="#{selectMenuBean.city}" rendered="#{selectMenuBean.displayCities}">
-						<f:selectItems value="#{selectMenuBean.cities}" />
-						<ace:ajax />
+					<f:selectItems value="#{selectMenuBean.cities}" />
+					<ace:ajax execute="@this" render="@all" />
 				</ace:selectMenu>
 				</h:panelGroup>
 				<h:panelGroup>
