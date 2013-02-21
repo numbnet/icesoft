@@ -21,7 +21,8 @@
 	<property file="../build/build.properties" />
 	<import file="../build/common.xml" />
 
-	<patternset id="lib.distribute.application.mobi" includes="${icepush.lib.name}.jar,${icemobile-jsp.lib.name}.jar">
+	<patternset id="lib.distribute.application.mobi" includes="${icepush.lib.name}.jar,
+	                ${icemobile-jsp.lib.name}.jar, jstl-api-1.2.jar, jstl-impl-1.2.jar">
 	</patternset>
 	
 	<patternset id="lib.distribute.application.ext" includes="jaxb-api.jar,jaxb-impl.jar,activation.jar,jaxb1-impl.jar,jaxb-xjc.jar,jaxp-api-1.4.jar">
