@@ -41,14 +41,14 @@
                     <icecore:singleSubmit/>
                     <h:panelGrid id="configGrid" columns="2" styleClass="centeredPanelWithBorderSpacingAndLeftJustifiedText">
                         <h:outputLabel id="forLabel" for="forSelector" value="Region to listen to:" />
-                        <h:selectOneMenu id="forSelector" value="#{submitMonitor.forSelection}">
+                        <h:selectOneMenu id="forSelector" value="#{submitMonitor.forSelection}" valueChangeListener="#{submitMonitor.sleep}">
                             <f:selectItem itemValue=":demoForm:demoGroup" itemLabel="Demonstration Panel"/>
                             <f:selectItem itemValue=":configForm:configGrid :demoForm:demoGroup" itemLabel="Configuration and Demonstration Panels"/>
                             <f:selectItem itemValue="" itemLabel="Whole page"/>
                         </h:selectOneMenu>
 
                         <h:outputLabel id="blockLabel" for="blockSelector" value="What to block:" />
-                        <h:selectOneMenu id="blockSelector" value="#{submitMonitor.blockSelection}">
+                        <h:selectOneMenu id="blockSelector" value="#{submitMonitor.blockSelection}" valueChangeListener="#{submitMonitor.sleep}">
                             <f:selectItem itemValue="@none" itemLabel="Nothing"/>
                             <f:selectItem itemValue="@source" itemLabel="Only the submitting component"/>
                             <f:selectItem itemValue=":completeExample" itemLabel="Configuration and Demonstration Panels"/>
@@ -56,19 +56,19 @@
                         </h:selectOneMenu>
 
                         <h:outputLabel id="idleLabel" for="idleInput" value="Idle label:"/>
-                        <h:inputText id="idleInput" value="#{submitMonitor.idleLabel}"/>
+                        <h:inputText id="idleInput" value="#{submitMonitor.idleLabel}" valueChangeListener="#{submitMonitor.sleep}"/>
 
                         <h:outputLabel id="activeLabel" for="activeInput" value="Active label:"/>
-                        <h:inputText id="activeInput" value="#{submitMonitor.activeLabel}"/>
+                        <h:inputText id="activeInput" value="#{submitMonitor.activeLabel}" valueChangeListener="#{submitMonitor.sleep}"/>
 
                         <h:outputLabel id="serverErrorLabel" for="serverInput" value="Server error label:"/>
-                        <h:inputText id="serverInput" value="#{submitMonitor.serverErrorLabel}"/>
+                        <h:inputText id="serverInput" value="#{submitMonitor.serverErrorLabel}" valueChangeListener="#{submitMonitor.sleep}"/>
 
                         <h:outputLabel id="networkErrorLabel" for="networkInput" value="Network error label:"/>
-                        <h:inputText id="networkInput" value="#{submitMonitor.networkErrorLabel}"/>
+                        <h:inputText id="networkInput" value="#{submitMonitor.networkErrorLabel}" valueChangeListener="#{submitMonitor.sleep}"/>
 
                         <h:outputLabel id="sessionExpiredLabel" for="sessionInput" value="Session expired label:"/>
-                        <h:inputText id="sessionInput" value="#{submitMonitor.sessionExpiredLabel}"/>
+                        <h:inputText id="sessionInput" value="#{submitMonitor.sessionExpiredLabel}" valueChangeListener="#{submitMonitor.sleep}"/>
                     </h:panelGrid>
                 </h:form>
             </ace:panel>
