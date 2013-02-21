@@ -54,12 +54,7 @@ public class SelectMenuRenderer extends InputRenderer {
         String clientId = selectMenu.getClientId(facesContext);
         String value = (String) requestMap.get(clientId + "_input");
 		
-		boolean isEventSource = false;
-		Object sourceId = requestMap.get("ice.event.captured");
-        if (sourceId != null && (sourceId.toString().equals(clientId) || sourceId.toString().equals(clientId + "_input"))) {
-			isEventSource = true;
-        }
-        if (isEventSource) selectMenu.setSubmittedValue(value);
+		selectMenu.setSubmittedValue(value);
 		
 		decodeBehaviors(facesContext, selectMenu);
 	}

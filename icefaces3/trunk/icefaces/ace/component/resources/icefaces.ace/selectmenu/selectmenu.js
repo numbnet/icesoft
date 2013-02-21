@@ -18,7 +18,7 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.SelectMenus) ice.ace.SelectMenus = {};
 
-ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, behaviors, cfg) {document.title = '';
+ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, behaviors, cfg) {
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.SelectMenus[this.id] && ice.ace.SelectMenus[this.id].initialized) isInitialized = true;
@@ -491,7 +491,7 @@ ice.ace.SelectMenu.prototype = {
 		}
     },
 
-    onFocus: function(event) {document.title += '2';
+    onFocus: function(event) {
         var element = ice.ace.jq(this.element);
         if (element.data("labelIsInField")) {
 			this.displayedValue.innerHTML = '&nbsp;';
@@ -509,7 +509,7 @@ ice.ace.SelectMenu.prototype = {
 		this.focusObserver = setTimeout(function() { self.justFocused = false; }, 150);
     },
 	
-	onElementClick: function(event) {document.title += '1';
+	onElementClick: function(event) {
 		if (this.active && !this.justFocused) {
 			this.hide();
 		} else {
@@ -699,12 +699,7 @@ ice.ace.SelectMenu.prototype = {
             return;
         }
         var value = '';
-        if (this.options.select) {
-            var nodes = document.getElementsByClassName(this.options.select, selectedElement) || [];
-            if (nodes.length > 0) value = ice.ace.SelectMenu.collectTextNodes(nodes[0], this.options.select);
-        } else {
-            value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(selectedElement, 'informal');
-	}
+        value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(selectedElement, 'informal');
 
 		this.updateValue(value);
 		this.justSelectedItem = true;
