@@ -119,7 +119,7 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
             var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
 
             if (dateSelectBehavior) {
-                var inputID = input.$input[0].id;
+                var inputID = input[input.input ? "input" : "$input"][0].id;
                 dateSelectBehavior.oncomplete = function() {
                     var inputElement= document.getElementById(inputID);
                     ice.ace.jq(inputElement).unbind('focus', ice.ace.jq.datepicker._showDatepicker);
