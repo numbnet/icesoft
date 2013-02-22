@@ -284,8 +284,10 @@ public class SelectMenuRenderer extends InputRenderer {
 				} catch (Exception e) {
 					itemLabel = (String) value;
 				}
-				writer.writeText(itemLabel, null);
-				writer.endElement("span");
+                if (itemLabel != null) {
+                    writer.writeText(itemLabel, null);
+                }
+                writer.endElement("span");
 				selectMenu.resetId(facet);
 				writer.endElement("div");
 				
