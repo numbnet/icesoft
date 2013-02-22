@@ -339,8 +339,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 					} catch (Exception e) {
 						itemLabel = value;
 					}
-					writer.writeText(itemLabel, null);
-					writer.endElement("span");
+                    if (itemLabel != null) {
+                        writer.writeText(itemLabel, null);
+                    }
+                    writer.endElement("span");
 					autoCompleteEntry.resetId(facet);
 					writer.endElement("div");
 				}
@@ -425,8 +427,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				} catch (Exception e) {
 					itemLabel = value;
 				}
-				writer.writeText(itemLabel, null);
-				writer.endElement("span");
+                if (itemLabel != null) {
+                    writer.writeText(itemLabel, null);
+                }
+                writer.endElement("span");
 				autoCompleteEntry.resetId(facet);
 				writer.endElement("div");
 				

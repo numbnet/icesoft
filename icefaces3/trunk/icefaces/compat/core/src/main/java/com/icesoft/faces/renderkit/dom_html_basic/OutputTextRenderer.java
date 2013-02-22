@@ -77,7 +77,9 @@ public class OutputTextRenderer extends BaseRenderer{
             facesContext, uiComponent, rawValue);
         boolean valueTextRequiresEscape = DOMUtils.escapeIsRequired(uiComponent);
         if (valueTextRequiresEscape) {
-            writer.writeText( convertedValue, null);
+            if (convertedValue != null) {
+                writer.writeText( convertedValue, null);
+            }
         } else {
             writer.write(convertedValue);
         }
