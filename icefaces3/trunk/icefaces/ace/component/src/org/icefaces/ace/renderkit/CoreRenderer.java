@@ -28,6 +28,7 @@
 package org.icefaces.ace.renderkit;
 
 import org.icefaces.ace.util.Constants;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -190,6 +191,16 @@ public class CoreRenderer extends Renderer {
     	return clientId.replaceAll(":", "\\\\\\\\:");
     }
     
+
+    public String convertClientId(FacesContext context, String clientId) {
+        boolean compressID = EnvUtils.isCompressIDs(context);
+        if (!compressID)  {
+            return clientId;
+        }
+        long extendedHash = clientId.hashCode();
+        return Long.toString(extendedHash, 36);
+    }
+
     public boolean isValueEmpty(String value) {
 		if (value == null || "".equals(value))
 			return true;
