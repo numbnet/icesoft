@@ -34,8 +34,7 @@ public class MessageRenderer extends Renderer {
     private static int iconIndex = -1;
     private static String[] icons = new String[]{"notice", "info", "alert", "alert"};
     private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
-    private String sourceClass = this.getClass().getName();
-    private Logger logger = Logger.getLogger(sourceClass);
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 
@@ -49,7 +48,7 @@ public class MessageRenderer extends Renderer {
 
         UIComponent forComponent = forId.equals("") ? null : message.findComponent(forId);
         if (forComponent == null) {
-            logger.logp(Level.WARNING, sourceClass, sourceMethod, "'for' attribute value cannot be null or empty or non-existent id.");
+            logger.logp(Level.WARNING, logger.getName(), sourceMethod, "'for' attribute value cannot be null or empty or non-existent id.");
             return;
         }
         Iterator messageIter = context.getMessages(forComponent.getClientId(context));
