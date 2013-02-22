@@ -45,7 +45,13 @@ import org.icefaces.resources.ICEResourceDependency;
 @ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY, name = ACEResourceNames.COMBINED_CSS)
 public class MessagesMeta extends UIMessagesMeta {
 
-    @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS)
+    @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS,
+            tlddoc = "Identifier of the component for which to render error " +
+                    "messages. If this component is within the same NamingContainer " +
+                    "as the target component, this must be the component " +
+                    "identifier. Otherwise, it must be an absolute component " +
+                    "identifier (starting with \":\")." +
+                    " Leave out or use \"@all\" to output global messages.")
     private String forValue;
 
     @Property(tlddoc = "CSS style(s) to be applied when this component is rendered.")

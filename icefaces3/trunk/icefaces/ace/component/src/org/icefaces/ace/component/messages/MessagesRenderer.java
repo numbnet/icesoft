@@ -34,31 +34,25 @@ public class MessagesRenderer extends Renderer {
     private static int iconIndex = -1;
     private static String[] icons = new String[]{"notice", "info", "alert", "alert"};
     private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
-    private String sourceClass = this.getClass().getName();
-    private Logger logger = Logger.getLogger(sourceClass);
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         Messages messages = (Messages) component;
-        String forId = messages.getFor();
+        String forId = (forId = messages.getFor()) == null ? "@all" : forId.trim();
         Iterator messageIter;
         String style = messages.getStyle();
         String styleClass = (styleClass = messages.getStyleClass()) == null ? "" : " " + styleClass;
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
         String sourceMethod = "encodeEnd";
 
-        if (forId == null) {
-            if (messages.isGlobalOnly()) {
-                messageIter = context.getMessages(null);
-            } else {
-                messageIter = context.getMessages();
-            }
+        if (forId.equals("@all")) {
+            messageIter = messages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
         } else {
-            forId = forId.trim();
             UIComponent forComponent = forId.equals("") ? null : messages.findComponent(forId);
             if (forComponent == null) {
-                logger.logp(Level.WARNING, sourceClass, sourceMethod, "'for' attribute value cannot be empty or non-existent id.");
+                logger.logp(Level.WARNING, logger.getName(), sourceMethod, "'for' attribute value cannot be empty or non-existent id.");
                 return;
             }
             messageIter = context.getMessages(forComponent.getClientId(context));
