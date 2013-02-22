@@ -81,6 +81,7 @@ public class EnvUtils {
     public static String ARIA_ENABLED = "org.icefaces.aria.enabled";
     public static String BLOCK_UI_ON_SUBMIT = "org.icefaces.blockUIOnSubmit";
     public static String MESSAGE_PERSISTENCE = "org.icefaces.messagePersistence";
+    public static String COMPRESS_IDS = "org.icefaces.compressIDs";
 
     //Other parameters used internally by ICEfaces framework.
     public static final String HEAD_DETECTED = "org.icefaces.headDetected";
@@ -280,6 +281,23 @@ public class EnvUtils {
      */
     public static boolean isAutoRender(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).autoRender;
+    }
+
+    /**
+     * Returns the value of the context parameter org.icefaces.compressIDs.  The default value is false and indicates
+     * that IDs will not be compressed.  The context parameter is application-wide and works
+     * together with the compressIDs attribute of the ICEfaces configuration tag <ice:config> so that ID
+     * compression can be turned on and off selectively on a per page basis.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.compressIDs.  The default is false.
+     */
+    public static boolean isCompressIDs(FacesContext facesContext) {
+        Object compressIDs = getViewParam(facesContext, COMPRESS_IDS);
+        if (null == compressIDs) {
+            return EnvConfig.getEnvConfig(facesContext).compressIDs;
+        }
+        return (Boolean.TRUE.equals(compressIDs));
     }
 
     /**
@@ -989,6 +1007,7 @@ class EnvConfig {
     boolean blockUIOnSubmit;
     boolean compressDOM;
     boolean compressResources;
+    boolean compressIDs;
     String connectionLostRedirectURI;
     String diffConfig;
     boolean deltaSubmit;
@@ -1026,6 +1045,7 @@ class EnvConfig {
         blockUIOnSubmit = decodeBoolean(initMap, EnvUtils.BLOCK_UI_ON_SUBMIT, false, info);
         compressDOM = decodeBoolean(initMap, EnvUtils.COMPRESS_DOM, false, info);
         compressResources = decodeBoolean(initMap, EnvUtils.COMPRESS_RESOURCES, false, info);
+        compressIDs = decodeBoolean(initMap, EnvUtils.COMPRESS_IDS, false, info);
         connectionLostRedirectURI = decodeString(initMap, EnvUtils.CONNECTION_LOST_REDIRECT_URI, null, info);
         diffConfig = decodeString(initMap, EnvUtils.DIFF_CONFIG, null, info);
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
