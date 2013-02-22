@@ -21,10 +21,18 @@ import javax.faces.model.SelectItem;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
+import javax.faces.component.UISelectOne;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.FacesEvent;
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import java.util.*;
+
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class SelectMenu extends SelectMenuBase implements NamingContainer {
 
@@ -141,5 +149,145 @@ public class SelectMenu extends SelectMenuBase implements NamingContainer {
             }
         }
         return selectItems;
+    }
+	
+	@Override
+	protected void validateValue(FacesContext facesContext, Object submittedValue) {
+	
+		super.validateValue(facesContext, submittedValue);
+		
+		boolean found = false;
+		populateItemList();
+		Iterator matches = getItemListIterator();
+		if (getSelectFacet() != null) {
+			ValueExpression itemValue = getValueExpression("itemValue");
+			ValueExpression itemDisabled = getValueExpression("itemDisabled");
+			ELContext elContext = facesContext.getELContext();
+			String listVar = getListVar();
+            Map requestMap = facesContext.getExternalContext().getRequestMap();
+            while (matches.hasNext()) {
+
+				requestMap.put(listVar, matches.next());
+				Object value = itemValue.getValue(elContext);
+				boolean disabled = false;
+				
+				try {
+					disabled = (Boolean) itemDisabled.getValue(elContext);
+				} catch (Exception e) {}
+			
+				String convertedValue;
+				try {
+					convertedValue = (String) getRenderer(facesContext).getConvertedValue(facesContext, this, value);
+				} catch (Exception e) {
+					convertedValue = (String) value;
+				}
+				
+				requestMap.remove(listVar);
+				
+				if (!disabled && convertedValue != null && convertedValue.equals(submittedValue.toString())) {
+					found = true;
+					break;
+				}
+            }
+		} else {
+			SelectItem item = null;
+			while (matches.hasNext()) {
+				item = (SelectItem) matches.next();
+				Object value = item.getValue();
+				
+				String convertedValue;
+				try {
+					convertedValue = (String) getRenderer(facesContext).getConvertedValue(facesContext, this, value);
+				} catch (Exception e) {
+					convertedValue = (String) value;
+				}
+				
+				if (!item.isDisabled() && convertedValue != null && convertedValue.equals(submittedValue.toString())) {
+					found = true;
+					break;
+				}
+			}
+		}
+		
+		if (found) {
+			setValid(true);
+		} else { // flag as invalid and add error message
+			Locale locale = null;
+			// facesContext.getViewRoot() may not have been initialized at this point.
+			if (facesContext != null && facesContext.getViewRoot() != null) {
+				locale = facesContext.getViewRoot().getLocale();
+				if (locale == null) {
+					locale = Locale.getDefault();
+				}
+			} else {
+				locale = Locale.getDefault();
+			}
+			
+			String summary = null;
+			String detail = null;       
+			ResourceBundle bundle;
+			String bundleName;
+			String messageId = UISelectOne.INVALID_MESSAGE_ID;
+			Application app = facesContext.getApplication();
+			Class appClass = app.getClass();
+			
+			// see if we have a user-provided bundle
+			if (null != (bundleName = app.getMessageBundle())) {
+				if (null != 
+					(bundle = 
+						ResourceBundle.getBundle(bundleName, locale,
+						 getCurrentLoader(appClass)))) {
+					// see if we have a hit
+					try {
+						summary = bundle.getString(messageId);
+						detail = bundle.getString(messageId + "_detail");
+					}
+					catch (Exception e) {
+						// ignore
+					}
+				}
+			}
+
+			// we couldn't find a summary in the user-provided bundle
+			if (null == summary) {
+				// see if we have a summary in the app provided bundle
+				if (null != 
+					(bundle = 
+						ResourceBundle.getBundle(FacesMessage.FACES_MESSAGES, 
+							locale, getCurrentLoader(appClass)))) {
+					try {
+						summary = bundle.getString(messageId);
+						detail = bundle.getString(messageId + "_detail");
+					} catch (Exception e) {
+						// ignore
+					}
+				}
+			}
+			
+			// use default message
+			if (null == summary) {
+				summary = "{0}: INVALID: Selected value didn't match one of the options.";
+				detail = summary;
+			}
+			
+			String _label = getLabel();
+			if (_label != null && !"".equals(_label)) {
+				summary = summary.replace("{0}", _label);
+				if (detail != null) detail = detail.replace("{0}", _label);
+			}
+
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, detail);
+            facesContext.addMessage(getClientId(facesContext), message);
+            setValid(false);
+		}
+	}
+	
+    private static ClassLoader getCurrentLoader(Class fallbackClass) {
+        ClassLoader loader =
+            Thread.currentThread().getContextClassLoader();
+        if (loader == null) {
+            loader = fallbackClass.getClassLoader();
+        }
+        return loader;
     }
 }

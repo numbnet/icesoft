@@ -19,7 +19,7 @@ package org.icefaces.ace.component.selectmenu;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Field;
-import org.icefaces.ace.meta.baseMeta.UISelectOneMeta;
+import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
@@ -36,7 +36,7 @@ import java.util.List;
         tagName = "selectMenu",
         componentClass = "org.icefaces.ace.component.selectmenu.SelectMenu",
         generatedClass = "org.icefaces.ace.component.selectmenu.SelectMenuBase",
-        extendsClass = "javax.faces.component.UISelectOne",
+        extendsClass = "javax.faces.component.UIInput",
 		rendererClass   = "org.icefaces.ace.component.selectmenu.SelectMenuRenderer",
         componentFamily = "org.icefaces.ace.SelectMenu",
         componentType = "org.icefaces.ace.component.SelectMenu",
@@ -53,13 +53,13 @@ import java.util.List;
 	@ClientEvent( name="valueChange",
 		javadoc="Fired whenever the value of the component changes.",
 		tlddoc="Fired whenever the value of the component changes.",
-		defaultRender="@all", defaultExecute="@all" ),
+		defaultRender="@all", defaultExecute="@this" ),
 	@ClientEvent( name="blur",
 		javadoc="Fired any time the component loses focus.",
 		tlddoc="Fired any time the component loses focus.",
-		defaultRender="@all", defaultExecute="@all" )},
+		defaultRender="@all", defaultExecute="@this" )},
 	defaultEvent="valueChange" )
-public class SelectMenuMeta extends UISelectOneMeta {
+public class SelectMenuMeta extends UIInputMeta {
 
     @Property(tlddoc = "Style class name of the container element.", defaultValue="")
     private String style;

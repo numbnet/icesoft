@@ -280,7 +280,7 @@ public class SelectMenuRenderer extends InputRenderer {
 				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
 				String itemLabel;
 				try {
-					itemLabel = (String) getConvertedValue(facesContext, selectMenu, value, true);
+					itemLabel = (String) getConvertedValue(facesContext, selectMenu, value);
 				} catch (Exception e) {
 					itemLabel = (String) value;
 				}
@@ -309,7 +309,7 @@ public class SelectMenuRenderer extends InputRenderer {
                     String itemLabel = item.getLabel();
                     if (itemLabel == null) {
 						try {
-							itemLabel = (String) getConvertedValue(facesContext, selectMenu, item.getValue(), true);
+							itemLabel = (String) getConvertedValue(facesContext, selectMenu, item.getValue());
 						} catch (Exception e) {
 							itemLabel = item.getValue().toString();
 						}
@@ -389,10 +389,6 @@ public class SelectMenuRenderer extends InputRenderer {
 	
 	@Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		return getConvertedValue(context, component, submittedValue, false);
-	}
-	
-	private Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue, boolean force) throws ConverterException {
 		SelectMenu selectMenu = (SelectMenu) component;
 		String value = (String) submittedValue;
 		Converter converter = selectMenu.getConverter();
@@ -413,6 +409,6 @@ public class SelectMenuRenderer extends InputRenderer {
 				}
 			}
 		
-		return value;	
+		return value;
 	}
 }
