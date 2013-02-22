@@ -42,6 +42,8 @@ import java.io.IOException;
 public class SelectMenuRenderer extends InputRenderer {
 
     private static final String AUTOCOMPLETE_DIV = "_div";
+	private static final String LABEL_CLASS = "ui-select-item-label";
+	private static final String VALUE_CLASS = "ui-select-item-value";
 
     public boolean getRendersChildren() {
         return true;
@@ -211,6 +213,8 @@ public class SelectMenuRenderer extends InputRenderer {
 		//}
 
         writer.endElement("script");
+		
+		populateList(facesContext, selectMenu);
 
         // field update script
 		Object value = selectMenu.getValue();
@@ -228,9 +232,7 @@ public class SelectMenuRenderer extends InputRenderer {
     }
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        SelectMenu selectMenu = (SelectMenu) uiComponent;
-		String clientId = selectMenu.getClientId(facesContext);
-		populateList(facesContext, selectMenu);
+
     }
 
     public void populateList(FacesContext facesContext, SelectMenu selectMenu) throws IOException {
@@ -270,13 +272,12 @@ public class SelectMenuRenderer extends InputRenderer {
 				if (ariaEnabled) writer.writeAttribute("role", "option", null);
 				if (disabled) writer.writeAttribute("class", "ui-state-disabled", null);
 				
-				// When HTML is display we still need a selected value. Hidding the value in a hidden span
-				// accomplishes this.
 				writer.startElement("span", null); // span to display
-				writer.writeAttribute("class", "informal", null);
+				writer.writeAttribute("class", LABEL_CLASS, null);
 				encodeParentAndChildren(facesContext, facet);
 				writer.endElement("span");
-				writer.startElement("span", null); // span to select
+				writer.startElement("span", null); // value span
+				writer.writeAttribute("class", VALUE_CLASS, null);
 				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
 				String itemLabel;
 				try {
@@ -308,19 +309,30 @@ public class SelectMenuRenderer extends InputRenderer {
 				if (ariaEnabled) role = " role=\"option\"";
                 while (matches.hasNext()) {
                     item = (SelectItem) matches.next();
-                    String itemLabel = item.getLabel();
-                    if (itemLabel == null) {
-						try {
-							itemLabel = (String) getConvertedValue(facesContext, selectMenu, item.getValue());
-						} catch (Exception e) {
-							itemLabel = item.getValue().toString();
-						}
-                    }
-					if (item.isDisabled()) {
-						sb.append("<div style=\"border: 0;\" class=\"ui-state-disabled\"" + role + ">").append(itemLabel).append("</div>");
-					} else {
-						sb.append("<div style=\"border: 0;\"" + role + ">").append(itemLabel).append("</div>");
+                    Object value = item.getValue();
+					
+					String convertedValue;
+					try {
+						convertedValue = (String) getConvertedValue(facesContext, selectMenu, value);
+					} catch (Exception e) {
+						convertedValue = (String) value;
 					}
+					
+					String itemLabel = item.getLabel();
+                    if (itemLabel == null) itemLabel = convertedValue;
+					
+					if (item.isDisabled()) {
+						sb.append("<div style=\"border: 0;\" class=\"ui-state-disabled\"" + role + ">");
+					} else {
+						sb.append("<div style=\"border: 0;\"" + role + ">");
+					}
+					
+					// label span
+					sb.append("<span class=\"" + LABEL_CLASS + "\">").append(itemLabel).append("</span>");
+					// value span
+					sb.append("<span class=\"" + VALUE_CLASS + "\" style=\"visibility:hidden;display:none;\">").append(convertedValue).append("</span>");
+					
+					sb.append("</div>");
                 }
                 sb.append("</div>");
                 String call = "ice.ace.SelectMenus[\"" + clientId + "\"]" +

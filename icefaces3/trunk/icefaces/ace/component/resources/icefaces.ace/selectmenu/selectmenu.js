@@ -82,6 +82,10 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selec
 	}
 };
 
+ice.ace.SelectMenu.LABEL_CLASS = 'ui-select-item-label';
+ice.ace.SelectMenu.VALUE_CLASS = 'ui-select-item-value';
+ice.ace.SelectMenu.IGNORE_CLASS = 'ui-select-item-ignore';
+
 ice.ace.SelectMenu.keys = {
 KEY_BACKSPACE: 8,
 KEY_TAB:       9,
@@ -151,7 +155,6 @@ ice.ace.SelectMenu.prototype = {
         this.active = false;
         this.index = -1;
 		if (!(typeof this.selectedIndex == 'number' && this.selectedIndex > -1)) this.selectedIndex = -1;
-        this.entryCount = 0;
         this.rowClass = rowC;
 		this.highlightedRowClass = highlightedRowClass;
         this.selectedRowClass = selectedRowC;
@@ -165,7 +168,6 @@ ice.ace.SelectMenu.prototype = {
             function(element, update) {
                 try {
 					self.downArrowButton.addClass('ui-state-hover');
-					self.updateSelectedIndex();
 					self.calculateListPosition();
                     ice.ace.jq(update).fadeIn(150)
                 } catch(e) {
@@ -640,7 +642,7 @@ ice.ace.SelectMenu.prototype = {
 			else i = 0;
 			var entry = this.getEntry(i);
 			if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
-				value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(entry, 'informal');
+				value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(entry, ice.ace.SelectMenu.LABEL_CLASS);
 				if (value) {
 					var firstChar = String.fromCharCode(value.charCodeAt(0)).toLowerCase();
 					if (eventChar == firstChar) {
@@ -693,20 +695,13 @@ ice.ace.SelectMenu.prototype = {
         return idx;
     },
 
-    updateElement: function(selectedElement) {
-        if (this.options.updateElement) {
-            this.options.updateElement(selectedElement);
-            return;
-        }
+    updateElement: function(selectedEntry) {
         var value = '';
-        value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(selectedElement, 'informal');
+        value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(selectedEntry, ice.ace.SelectMenu.LABEL_CLASS);
 
 		this.updateValue(value);
 		this.justSelectedItem = true;
         this.element.focus();
-
-        if (this.options.afterUpdateElement)
-            this.options.afterUpdateElement(this.element, selectedElement);
     },
 
     updateChoices: function(choices) {
@@ -795,6 +790,10 @@ ice.ace.SelectMenu.prototype = {
 	
 	setContent: function(content) {
 		this.content = content;
+		this.update.innerHTML = this.content;
+		if (this.update.firstChild && this.update.firstChild.childNodes) {
+			this.entryCount = this.update.firstChild.childNodes.length;
+		}
 	},
 
     updateNOW: function(text) {
@@ -811,9 +810,19 @@ ice.ace.SelectMenu.prototype = {
 	updateValue: function(value) {
 		if (value) {
 			this.input.value = value;
-			this.displayedValue.innerHTML = this.replaceSpaces(value);
 		} else {
 			this.input.value = '';
+		}
+		this.updateSelectedIndex();
+		// update label
+		if (value) {
+			var currentEntry = this.getEntry(this.selectedIndex);
+			if (currentEntry) {
+				var labelSpan = ice.ace.jq(currentEntry).find('.'+ice.ace.SelectMenu.LABEL_CLASS).get(0);
+				var label = ice.ace.SelectMenu.collectTextNodesIgnoreClass(labelSpan, ice.ace.SelectMenu.IGNORE_CLASS);
+				this.displayedValue.innerHTML = this.replaceSpaces(label);
+			}
+		} else {
 			var element = ice.ace.jq(this.element);
 			if (this.cfg.inFieldLabel) {
 				this.displayedValue.innerHTML = this.replaceSpaces(this.cfg.inFieldLabel);
@@ -833,12 +842,12 @@ ice.ace.SelectMenu.prototype = {
 	// update selected index if value was changed programmatically or was pre-selected
 	updateSelectedIndex: function() {
 		var currentEntry = this.getEntry(this.selectedIndex);
-		if ((currentEntry && (this.input.value != ice.ace.SelectMenu.collectTextNodesIgnoreClass(currentEntry, 'informal')))
+		if ((currentEntry && (this.input.value != ice.ace.SelectMenu.collectTextNodesIgnoreClass(currentEntry, ice.ace.SelectMenu.LABEL_CLASS)))
 			|| (this.selectedIndex == -1 && this.input.value)) {
 			var found = false;
 			for (var i = 0; i < this.entryCount - 1; i++) {
 				var entry = this.getEntry(i);
-				if (entry && (this.input.value == ice.ace.SelectMenu.collectTextNodesIgnoreClass(entry, 'informal'))) {
+				if (entry && (this.input.value == ice.ace.SelectMenu.collectTextNodesIgnoreClass(entry, ice.ace.SelectMenu.LABEL_CLASS))) {
 					found = true;
 					this.selectedIndex = i;
 					break;
