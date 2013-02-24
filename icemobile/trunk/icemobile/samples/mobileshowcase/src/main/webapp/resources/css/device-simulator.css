@@ -31,7 +31,7 @@ a#viewAllDevices {
 
     body, button, input, select, textarea {
         font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        color: #6D6E71;
+        /*color: #6D6E71;*/
     }
     body{
         background-color: #222;
@@ -316,7 +316,7 @@ iframe {
  * Slider
  */
  
- input {
+#slider input {
     display: none;
 }
 #slide1:checked ~ #slides .inner { margin-left:0; }
@@ -370,5 +370,23 @@ article img {
     -moz-transition: all 0.5s ease-out;
     -o-transition: all 0.5s ease-out;
     transition: all 0.5s ease-out;
+}
+#scale{
+    position: absolute;
+    top: 130px;
+    left: 14px;
+    color: rgb(214, 214, 214);
+    z-index: 999;
+    padding: 6px 10px 10px;
+    background-color: rgb(102, 102, 102);
+    border-radius: 5px;
+}
+#scale span{
+    display: inline-block;
+    width: 200px;
+}
+#scale input[type='radio']{
+    background-color: #666;
+    -webkit-appearance: checkbox;
 }
 
