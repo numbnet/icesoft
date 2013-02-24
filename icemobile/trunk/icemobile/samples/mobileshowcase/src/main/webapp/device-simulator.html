@@ -48,6 +48,27 @@
         
     </div>
     
+    <div id="scale">
+        <div>
+            <label for="scaleDesktop">
+                <span>Scale to desktop resolution</span>
+                <input id="scaleDesktop" type="radio" 
+                name="scale" onchange="sizeToDesktop()"
+                checked/>
+            </label>
+            
+        </div>
+        <div>
+            
+            <label for="scaleDevice">
+                <span>Scale to device resolution</span>
+                <input id="scaleDevice" type="radio" 
+                    name="scale" onchange="sizeToDevice()"/>
+            </label>
+            
+        </div>
+    </div>
+    
     <article id="slider">
            
         <!-- Slider Setup -->
@@ -176,6 +197,24 @@
             document.getElementById('ipad-landscape-device').classList.remove('active');
         }
         
+    }
+    function sizeToDevice(){
+        var devices = document.querySelectorAll('.deviceWrap');
+        for( var i = 0 ; i < devices.length ; i++ ){
+            devices[i].style.webkitTransform = "scale(0.65)";
+            devices[i].style.transform = "scale(0.65)";
+            devices[i].style.webkitTransformOrigin = "50% 0px";
+            devices[i].style.transformOrigin = "50% 0px";
+        }
+    }
+    function sizeToDesktop(){
+        var devices = document.querySelectorAll('.deviceWrap');
+        for( var i = 0 ; i < devices.length ; i++ ){
+            devices[i].style.webkitTransform = "scale(1)";
+            devices[i].style.transform = "scale(1)";
+            devices[i].style.webkitTransformOrigin = "50% 0px";
+            devices[i].style.transformOrigin = "50% 0px";
+        }
     }
     if (navigator.appVersion.indexOf("Mac")!=-1){
         document.documentElement.className += " mac";
