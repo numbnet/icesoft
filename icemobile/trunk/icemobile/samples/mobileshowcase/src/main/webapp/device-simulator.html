@@ -151,7 +151,7 @@
     <script>
     function openIphonePortrait(){
         closeAllDevices();
-        document.getElementById('iphone-portrait').setAttribute('src','./showcase-small.jsf?theme=iphone');
+        document.getElementById('iphone-portrait').setAttribute('src','./showcase-small.jsf?theme=iphone&simulator=true');
         if( document.documentElement.classList ){
             document.getElementById('iphone-portrait-label').classList.add('active');
             document.getElementById('iphone-portrait-device').classList.add('active');
@@ -159,7 +159,7 @@
     }
     function openIphoneLandscape(){
         closeAllDevices();
-        document.getElementById('iphone-landscape').setAttribute('src','./showcase-small.jsf?theme=iphone');
+        document.getElementById('iphone-landscape').setAttribute('src','./showcase-small.jsf?theme=iphone&simulator=true');
         if( document.documentElement.classList ){
             document.getElementById('iphone-landscape-label').classList.add('active');
             document.getElementById('iphone-landscape-device').classList.add('active');
@@ -167,7 +167,7 @@
     }
     function openIpadPortrait(){
         closeAllDevices();
-        document.getElementById('ipad-portrait').setAttribute('src','./showcase-large.jsf?theme=ipad');
+        document.getElementById('ipad-portrait').setAttribute('src','./showcase-large.jsf?theme=ipad&simulator=true');
         if( document.documentElement.classList ){
             document.getElementById('ipad-portrait-label').classList.add('active');
             document.getElementById('ipad-portrait-device').classList.add('active');
@@ -175,7 +175,7 @@
     }
     function openIpadLandscape(){
         closeAllDevices();
-        document.getElementById('ipad-landscape').setAttribute('src','./showcase-large.jsf?theme=ipad');
+        document.getElementById('ipad-landscape').setAttribute('src','./showcase-large.jsf?theme=ipad&simulator=true');
         if( document.documentElement.classList ){
             document.getElementById('ipad-landscape-label').classList.add('active');
             document.getElementById('ipad-landscape-device').classList.add('active');
