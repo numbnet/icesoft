@@ -390,3 +390,6 @@ article img {
     -webkit-appearance: checkbox;
 }
 
+iframe .mobi-splitpane-scrollable::-webkit-scrollbar {
+    width: 0;
+}

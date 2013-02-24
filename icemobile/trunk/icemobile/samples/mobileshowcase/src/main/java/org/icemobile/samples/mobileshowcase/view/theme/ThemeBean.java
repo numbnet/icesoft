@@ -35,6 +35,7 @@ public class ThemeBean implements Serializable {
 
     // empty theme name will default to auto on the select menu
     private String currentTheme = "";
+    private boolean simulator = false;
 
     public String getCurrentTheme() {
         return currentTheme;
@@ -48,5 +49,13 @@ public class ThemeBean implements Serializable {
         return CSSUtils.deriveTheme(
                 (HttpServletRequest)FacesContext.getCurrentInstance()
                 .getExternalContext().getRequest()).fileName();
+    }
+
+    public boolean isSimulator() {
+        return simulator;
+    }
+
+    public void setSimulator(boolean simulator) {
+        this.simulator = simulator;
     }
 }
