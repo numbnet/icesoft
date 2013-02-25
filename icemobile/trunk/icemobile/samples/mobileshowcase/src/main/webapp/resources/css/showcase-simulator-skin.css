@@ -1,3 +1,6 @@
 #splitPane_left::-webkit-scrollbar {
     width: 0;
 }
+#splitPane_right{
+    overflow-y: scroll;
+}
