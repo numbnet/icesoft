@@ -23,8 +23,8 @@
       <snapshotVersion>
         <classifier>sources</classifier>
         <extension>jar</extension>
-        <value>3.3.0-20130222.224908-3</value>
-        <updated>20130222224908</updated>
+        <value>3.3.0-20130225.230056-4</value>
+        <updated>20130225230056</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>javadoc</classifier>
