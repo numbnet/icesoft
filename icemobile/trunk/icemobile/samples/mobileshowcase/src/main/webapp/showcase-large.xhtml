@@ -28,6 +28,11 @@
     <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
     <c:if test="#{themeBean.simulator}">
         <h:outputStylesheet library="css" name="showcase-simulator-skin.css" media="screen"/>
+        <script type="text/javascript">
+        if (navigator.appVersion.indexOf("Mac")!=-1){
+            document.documentElement.className += " mac";
+        }
+        </script>
     </c:if>
     <c:if test="#{navigationModel.selectedPanel eq 'gmap'}">
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>

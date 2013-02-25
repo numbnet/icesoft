@@ -242,20 +242,20 @@ iframe {
 }
 
 .iphone-portrait {
-    background-image: url(css-images/iphone-portrait.png);
+    background-image: url(css-images/iphone3-portrait.png);
     padding: 115px 0 117px 0px;
 }
 .iphone-portrait .device{
-    width: 320px; height: 416px; padding-top: 20px;padding-bottom: 44px;
+    width: 320px; height: 456px; padding-top: 20px;padding-bottom: 44px;
 }
 .iphone-landscape .device{
-    width: 480px; height: 268px; padding-top: 20px;padding-bottom: 32px;
+    width: 480px; height: 299px; padding-top: 28px;padding-bottom: 32px;
 }
 .ipad-portrait .device{
-    width: 768px; height: 900px; padding-top: 236px;
+    width: 768px; height: 945px; padding-top: 198px;
 }
 .ipad-landscape .device{
-    width: 1024px; height: 647px; padding-top: 123px;
+    width: 1024px; height: 669px; padding-top: 96px;
 }
 #iphone-portrait{ width: 336px }
 .mac #iphone-portrait{ width: 320px }
@@ -297,18 +297,18 @@ iframe {
 }
 
 .iphone-landscape {
-    background-image: url(css-images/iphone-landscape.png);
+    background-image: url(css-images/iphone3-landscape.png);
     padding: 23px 0 24px 0px;
 }
 
 .ipad-portrait {
-    background-image: url(css-images/ipad-portrait.png);
+    background-image: url(css-images/ipad2-portrait.png);
     padding: 0 0 265px 0;
 }
 
 .ipad-landscape {
-    background-image: url(css-images/ipad-landscape.png);
-    padding: 101px 0 103px 0;
+    background-image: url(css-images/ipad2-landscape.png);
+    padding: 101px 4px 103px 0;
 }
 
 
