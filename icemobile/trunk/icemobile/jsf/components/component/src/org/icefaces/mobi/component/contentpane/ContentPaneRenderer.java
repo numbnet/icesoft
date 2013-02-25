@@ -27,6 +27,7 @@ import org.icefaces.mobi.api.ContentPaneController;
 import org.icefaces.mobi.component.accordion.Accordion;
 import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icefaces.mobi.component.tabset.TabSet;
+import org.icemobile.component.ITabPane;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
@@ -131,9 +132,9 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         ContentPane pane= (ContentPane)uiComponent;
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrapper", HTML.ID_ATTR);
-        String pageClass = TabSet.TABSET_HIDDEN_PAGECLASS.toString();
+        String pageClass = ITabPane.TABSET_HIDDEN_PAGECLASS.toString();
         if (iAmSelected(facesContext, uiComponent)){
-            pageClass = TabSet.TABSET_ACTIVE_CONTENT_CLASS;
+            pageClass = ITabPane.TABSET_ACTIVE_CONTENT_CLASS;
         }
         writer.writeAttribute("class", pageClass, "class");
          /* write out root tag.  For current incarnation html5 semantic markup is ignored */
