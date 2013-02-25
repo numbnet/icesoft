@@ -33,10 +33,11 @@ public class SingleExpressionComparator implements Comparator {
 	}
 	
 	public int compare(Object obj1, Object obj2) {
-	
 		try {
 			FacesContext context = FacesContext.getCurrentInstance();
             ELContext elContext = context.getELContext();
+            boolean hasComparator = criteria.getComparator() != null;
+            int result;
 
             context.getExternalContext().getRequestMap().put(rowVar, obj1);
             Object value1 = criteria.getExpression().getValue(elContext);
@@ -46,15 +47,18 @@ public class SingleExpressionComparator implements Comparator {
 
             context.getExternalContext().getRequestMap().remove(rowVar);
 
-			//Empty check
-			if(value1 == null)
-				return 1;
-			else if(value2 == null)
-				return -1;
-
-			int result = (criteria.getComparator() == null)
-                    ? ((Comparable) value1).compareTo(value2)
-                    : criteria.getComparator().compare(value1, value2);
+            if (hasComparator) {
+                result = criteria.getComparator().compare(value1, value2);
+            } else {
+                if (value1 == null) {
+                    if (value2 == null) result = 0;
+                    else result = 1;
+                }
+                else if (value2 == null)
+                    result = -1;
+                else
+                    result = ((Comparable) value1).compareTo(value2);
+            }
 			
 			return criteria.isAscending() ? result : -1 * result;
 			
