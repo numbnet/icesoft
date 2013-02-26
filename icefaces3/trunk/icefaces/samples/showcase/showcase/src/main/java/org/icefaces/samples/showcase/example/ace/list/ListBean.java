@@ -58,6 +58,8 @@ import java.util.List;
                     exampleBeanName = ListSelectionBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.list.subMenu.selectionAjax",
                     exampleBeanName = ListSelectionAjaxBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.list.subMenu.selectionMini",
+                      exampleBeanName = ListSelectionMiniBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.list.subMenu.reordering",
                     exampleBeanName = ListReorderBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.list.subMenu.reorderingAjax",

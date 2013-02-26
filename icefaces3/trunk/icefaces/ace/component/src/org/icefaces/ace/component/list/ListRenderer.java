@@ -25,10 +25,13 @@ import org.icefaces.render.MandatoryResourceComponent;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.UISelectItem;
+import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,6 +41,7 @@ public class ListRenderer extends CoreRenderer {
     public static final String controlsContainerStyleClass = "if-list-ctrls";
     public static final String pointerStyleClass = "if-pntr";
     public static final String bodyStyleClass = "if-list-body";
+    public static final String miniClass = "if-mini";
     public static final String itemStyleClass = "if-list-item ui-state-default";
     public static final String selectedItemStyleClass = "ui-state-active";
     public static final String controlsItemStyleClass = "if-list-ctrl";
@@ -96,8 +100,12 @@ public class ListRenderer extends CoreRenderer {
         String clientId = component.getClientId(context);
         String styleClass = list.getStyleClass();
         String style = list.getStyle();
+        Boolean mini = list.isCompact();
+
+        list.getDataModel(); // DataModel init determines if some features are available
 
         styleClass = styleClass == null ? containerStyleClass : styleClass + " " + containerStyleClass;
+        if (mini) styleClass += " " + miniClass;
 
         writer.startElement(HTML.DIV_ELEM, component);
         writer.writeAttribute(HTML.ID_ATTR, clientId, "clientId");
@@ -196,7 +204,10 @@ public class ListRenderer extends CoreRenderer {
         String bodyHeight = list.getHeight();
         String styleClass = list.getBodyClass();
 
-        styleClass = styleClass == null ? bodyStyleClass : styleClass + " " + bodyStyleClass;
+        styleClass = styleClass == null
+                ? bodyStyleClass
+                : styleClass + " " + bodyStyleClass;
+
         if (dropGroup != null) styleClass += " dg-" + dropGroup;
 
         writer.startElement(HTML.UL_ELEM, null);
@@ -216,7 +227,7 @@ public class ListRenderer extends CoreRenderer {
     }
 
     private void encodeChildren(FacesContext context, ResponseWriter writer, ACEList list) throws IOException {
-        final Set<Object> selections = list.getSelections();
+        final Collection<Object> selections = list.isSelectItemModel() ? (Collection)list.getValue() : list.getSelections();
         String style = list.getItemStyle();
         String styleClass = list.getItemClass();
         String selectionMode = list.getSelectionMode();
@@ -234,11 +245,15 @@ public class ListRenderer extends CoreRenderer {
             selectItems = list.getRowData() instanceof SelectItem;
 
         while (list.isRowAvailable()) {
-            final Object obj = list.getRowData();
-            final Boolean selected = selections.contains(obj);
+            final Object val = selectItems
+                    ? ((SelectItem)list.getRowData()).getValue()
+                    : list.getRowData();
+
+            final boolean selected = selections == null ? false
+                    : selections.contains(val);
 
             if (selectItems)
-                encodeStringChild(context, writer, list, (SelectItem)obj,
+                encodeStringChild(context, writer, list, (SelectItem)list.getRowData(),
                         selected ? styleClass + " " + selectedItemStyleClass : styleClass,
                         style);
             else
@@ -273,7 +288,9 @@ public class ListRenderer extends CoreRenderer {
 
         // List has implicit UIColumn child to wrap composite children
         for (UIComponent component : list.getChildren()) {
-            component.encodeAll(context);
+            if (!(component instanceof UISelectItem ||
+                    component instanceof UISelectItems))
+                component.encodeAll(context);
         }
         writer.endElement(HTML.LI_ELEM);
     }
@@ -328,6 +345,7 @@ public class ListRenderer extends CoreRenderer {
         styleClass = styleClass == null ? placeholderStyleClass : styleClass + " " + placeholderStyleClass;
         String selectionMode = component.getSelectionMode();
         String dropGroup = component.getDropGroup();
+        boolean selectItemModel = component.isSelectItemModel();
 
         JSONBuilder cfgBuilder = JSONBuilder.create().initialiseVar(widgetVar)
                 .beginFunction("ice.ace.create").item("List").beginArray()
@@ -339,15 +357,23 @@ public class ListRenderer extends CoreRenderer {
         if (component.isPlaceholder())
             cfgBuilder.entry("placeholder", styleClass);
 
-        if (dropGroup != null)
-            cfgBuilder.entry("connectWith", ".dg-"+dropGroup);
-
         if ("single".equals(selectionMode) || "multiple".equals(selectionMode))
             cfgBuilder.entry("selection", selectionMode);
 
-        if (component.isDragging()) cfgBuilder.entry("dragging", true);
-        if (component.isControlsEnabled()) cfgBuilder.entry("controls", true);
-        if (component.isDoubleClickMigration()) cfgBuilder.entry("dblclk_migrate", true);
+        // Select item model doesn't allow reordering or migration
+        if (!selectItemModel) {
+            if (dropGroup != null)
+                cfgBuilder.entry("connectWith", ".dg-"+dropGroup);
+
+            if (component.isDragging())
+                cfgBuilder.entry("dragging", true);
+
+            if (component.isControlsEnabled())
+                cfgBuilder.entry("controls", true);
+
+            if (component.isDoubleClickMigration())
+                cfgBuilder.entry("dblclk_migrate", true);
+        }
 
         encodeClientBehaviors(context, component, cfgBuilder);
 

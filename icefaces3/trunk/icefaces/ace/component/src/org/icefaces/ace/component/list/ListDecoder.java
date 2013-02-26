@@ -26,6 +26,7 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import java.util.*;
 
 public class ListDecoder {
@@ -39,17 +40,22 @@ public class ListDecoder {
     public ListDecoder processSelections(String raw) throws JSONException {
         if (raw == null || raw.length() == 0) return this;
 
+        final boolean selectItems = list.isSelectItemModel();
         final JSONArray array = new JSONArray(raw);
-        final Set<Object> selections = list.getSelections();
-        final Set<Object> newSelections = new HashSet<Object>();
+        final Collection<Object> selections = selectItems ? (Collection)list.getValue() : list.getSelections();
+        final Collection<Object> newSelections = new ArrayList<Object>();
 
         for (int i = 0; i < array.length(); i++) {
             final int index = array.getInt(i);
             list.setRowIndex(index);
-            newSelections.add(list.getRowData());
+
+            if (selectItems)
+                newSelections.add(((SelectItem)list.getRowData()).getValue());
+            else
+                newSelections.add(list.getRowData());
         }
 
-        list.queueEvent(new ListSelectEvent(list, newSelections));
+        list.queueEvent(new ListSelectEvent(list, new HashSet<Object>(newSelections)));
 
         selections.addAll(newSelections);
 
@@ -62,12 +68,17 @@ public class ListDecoder {
         if (raw == null || raw.length() == 0) return this;
 
         final JSONArray array = new JSONArray(raw);
-        final Set<Object> selections = list.getSelections();
+        final boolean selectItems = list.isSelectItemModel();
+        final Collection<Object> selections = selectItems ? (Collection)list.getValue() : list.getSelections();
 
         for (int i = 0; i < array.length(); i++) {
             int index = array.getInt(i);
             list.setRowIndex(index);
-            selections.remove(list.getRowData());
+
+            if (selectItems)
+                selections.remove(((SelectItem)list.getRowData()).getValue());
+            else
+                selections.remove(list.getRowData());
         }
 
         list.setRowIndex(-1);
@@ -76,7 +87,7 @@ public class ListDecoder {
     }
 
     public ListDecoder processReorderings(String raw) throws JSONException {
-        if (raw == null || raw.length() == 0) return this;
+        if (list.isSelectItemModel() || raw == null || raw.length() == 0) return this;
 
         JSONArray array = new JSONArray(raw);
         Object value = list.getValue();
@@ -96,7 +107,8 @@ public class ListDecoder {
     }
 
     public ListDecoder attachEmigrants(FacesContext context, String destListId) throws JSONException {
-        if (destListId == null || destListId.length() == 0) return this;
+        if (list.isSelectItemModel() || destListId == null || destListId.length() == 0)
+            return this;
 
         // Init list to be attached to dest list and carry our records for detaching later
         emigrants = new ArrayList<ImmigrationRecord>();
@@ -165,7 +177,8 @@ public class ListDecoder {
     }
 
     public ListDecoder removeEmigrants(FacesContext context, String destListId) {
-        if (destListId == null || destListId.length() == 0) return this;
+        if (list.isSelectItemModel() || destListId == null || destListId.length() == 0)
+            return this;
 
         // We'll have either created or fetched the records of our moves in the
         // attach emigrants phase.
@@ -185,7 +198,8 @@ public class ListDecoder {
     }
 
     public ListDecoder fetchImmigrants(FacesContext context, String raw) throws JSONException {
-        if (raw == null || raw.length() == 0) return this;
+        if (list.isSelectItemModel() || raw == null || raw.length() == 0)
+            return this;
 
         // List has already had immigrants attached by source,
         // and doesn't need to parse immigrants itself
@@ -277,6 +291,8 @@ public class ListDecoder {
     }
 
     public ListDecoder insertImmigrants() {
+        if (list.isSelectItemModel()) return this;
+
         Object value = list.getValue();
         List collection = null;
         Set<Object> selected = list.getSelections();
