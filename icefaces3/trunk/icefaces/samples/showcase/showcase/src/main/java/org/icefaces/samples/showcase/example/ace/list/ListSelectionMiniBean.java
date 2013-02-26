@@ -28,45 +28,35 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @ComponentExample(
     parent = ListBean.BEAN_NAME,
-    title = "example.ace.list.selectionAjax.title",
-    description = "example.ace.list.selectionAjax.description",
-    example = "/resources/examples/ace/list/listSelectionAjax.xhtml"
+    title = "example.ace.list.selectionMini.title",
+    description = "example.ace.list.selectionMini.description",
+    example = "/resources/examples/ace/list/listSelectionMini.xhtml"
 )
 @ExampleResources(
     resources ={
         // xhtml
         @ExampleResource(type = ResourceType.xhtml,
-                title="ListSelectionAjax.xhtml",
+                title="ListSelectionMini.xhtml",
                 resource = "/resources/examples/ace/"+
-                        "list/listSelectionAjax.xhtml"),
+                        "list/listSelectionMini.xhtml"),
         // Java Source
         @ExampleResource(type = ResourceType.java,
-                title="ListSelectionAjaxBean.java",
+                title="ListSelectionMiniBean.java",
                 resource = "/WEB-INF/classes/org/icefaces/samples/"+
-                        "showcase/example/ace/list/ListSelectionAjaxBean.java")
+                        "showcase/example/ace/list/ListSelectionMiniBean.java")
     }
 )
-@ManagedBean(name= ListSelectionAjaxBean.BEAN_NAME)
+@ManagedBean(name= ListSelectionMiniBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class ListSelectionAjaxBean extends ComponentExampleImpl<ListSelectionAjaxBean> {
-    public static final String BEAN_NAME = "listSelectionAjaxBean";
-    
-    private List<SelectItem> ajaxStringList = new ArrayList<SelectItem>() {{
-        for (String s : DataTableData.CHASSIS_ALL) {
-            add(new SelectItem(s));
-        }
-    }};
-    private Set<Object> ajaxSelections;
-    private boolean multiSelect = true;
-    
-    public ListSelectionAjaxBean() {
-        super(ListSelectionAjaxBean.class);
+public class ListSelectionMiniBean extends ComponentExampleImpl<ListSelectionMiniBean> {
+    public static final String BEAN_NAME = "listSelectionMiniBean";
+
+    public ListSelectionMiniBean() {
+        super(ListSelectionMiniBean.class);
     }
 
     @PostConstruct
@@ -74,34 +64,27 @@ public class ListSelectionAjaxBean extends ComponentExampleImpl<ListSelectionAja
         super.initMetaData();
     }
 
-    public List<SelectItem> getAjaxStringList() {
-        return ajaxStringList;
+
+
+    private List<SelectItem> selections = new ArrayList<SelectItem>();
+    private Map<String, Car> selectItemMap = new HashMap<String, Car>() {{
+        for (Car c : DataTableData.getDefaultData().subList(0,10))
+            put(c.getName(), c);
+    }};
+
+    public Map<String, Car> getSelectItemMap() {
+        return selectItemMap;
     }
 
-    public void setAjaxStringList(List<SelectItem> ajaxStringList) {
-        this.ajaxStringList = ajaxStringList;
+    public void setSelectItemMap(Map<String, Car> selectItemMap) {
+        this.selectItemMap = selectItemMap;
     }
 
-    public Set<Object> getAjaxSelections() {
-        return ajaxSelections;
-    }
-    
-    public List<Object> getAjaxSelectionList() {
-        if (ajaxSelections != null) {
-            return new ArrayList<Object>(ajaxSelections);
-        }
-        return null;
+    public List<SelectItem> getSelections() {
+        return selections;
     }
 
-    public void setAjaxSelections(Set<Object> ajaxSelections) {
-        this.ajaxSelections = ajaxSelections;
-    }
-    
-    public boolean getMultiSelect() {
-        return multiSelect;
-    }
-    
-    public void setMultiSelect(boolean multiSelect) {
-        this.multiSelect = multiSelect;
+    public void setSelections(List<SelectItem> selections) {
+        this.selections = selections;
     }
 }

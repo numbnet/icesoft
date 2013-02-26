@@ -74,3 +74,18 @@
     padding-left: 1em;
     padding-right: 1em;
 }
+
+/* Miniturized style */
+.if-list.if-mini.ui-widget {
+    font-size:8pt;
+    display:inline-block;
+    overflow-x:auto;
+    height:10em;
+}
+
+.if-list.if-mini.ui-widget .if-list-item {
+    margin:0 2px 2px 2px;
+    padding:0;
+    padding-left:0.5em;
+}
+/********************/

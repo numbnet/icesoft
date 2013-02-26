@@ -39,9 +39,10 @@ import java.util.Set;
     componentFamily = "org.icefaces.ace.List",
     tlddoc = "Renders an Array or List of objects as a styled HTML UL element. Supports dual & multi" +
             "list configurations, reordering, item drag/drop, selection & block style layout.  The component " +
-            "strives to be exceptionally easy to style and adjust layout.The List can optionally " +
-            "take SelectItem objects to use their String value representations as list item contents; or " +
-            "the ace:list tag defines child components that are iteratively rendered for each object." +
+            "strives to be exceptionally easy to style and adjust layout.The ace:list value attribute" +
+            "may take a List of SelectItem objects to use their String label representations " +
+            "as list item contents, can take SelectItems as a model via f:selectItem(s) children, or " +
+            "value defines a List of arbitrary objects to be represented by iterative renderings of our child components." +
             "The components are associated with the iterative object via bindings of the 'var' property." +
             "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/List\">List Wiki Documentation</a>.</p>"
 )
@@ -52,18 +53,18 @@ import java.util.Set;
      @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
-        @ClientEvent(name="select", defaultRender="@this", defaultExecute="@this",
-                javadoc="Fired when an item is clicked & selected in the List.",
-                tlddoc ="Fired when an item is clicked & selected in the List."),
-        @ClientEvent(name="deselect", defaultRender="@this", defaultExecute="@this",
-                javadoc="Fired when an item is clicked & deselected in the List.",
-                tlddoc ="Fired when an item is clicked & deselected in the List."),
-        @ClientEvent(name="move", defaultRender="@this", defaultExecute="@this",
-                javadoc="Fired when an item is moved within the List.",
-                tlddoc ="Fired when an item is moved within the List."),
-        @ClientEvent(name="migrate", defaultRender="@all", defaultExecute="@all",
-                javadoc="Fired when an item is migrated to this List.",
-                tlddoc ="Fired when an item is migrated to this List.")
+    @ClientEvent(name="select", defaultRender="@this", defaultExecute="@this",
+            javadoc="Fired when an item is clicked & selected in the List.",
+            tlddoc ="Fired when an item is clicked & selected in the List."),
+    @ClientEvent(name="deselect", defaultRender="@this", defaultExecute="@this",
+            javadoc="Fired when an item is clicked & deselected in the List.",
+            tlddoc ="Fired when an item is clicked & deselected in the List."),
+    @ClientEvent(name="move", defaultRender="@this", defaultExecute="@this",
+            javadoc="Fired when an item is moved within the List.",
+            tlddoc ="Fired when an item is moved within the List."),
+    @ClientEvent(name="migrate", defaultRender="@all", defaultExecute="@all",
+            javadoc="Fired when an item is migrated to this List.",
+            tlddoc ="Fired when an item is migrated to this List.")
     },
     defaultEvent = "select"
 )
@@ -114,12 +115,12 @@ public class ListMeta extends UIDataMeta {
             defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean placeholder;
 
-    @Property(tlddoc = "Enable the dragging of list items in this list.",
+    @Property(tlddoc = "Enable the dragging of list items in this list. Note this attribute has no effect when an f:selectItem(s) model is used.",
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean dragging;
 
     @Property(tlddoc = "Enables inter-list dragging and dropping; an identifier" +
-            " used to link this region and others for bi-directional dropping.")
+            " used to link this region and others for bi-directional dropping. Note this attribute has no effect when an f:selectItem(s) model is used.")
     private String dropGroup;
 
 
@@ -135,11 +136,14 @@ public class ListMeta extends UIDataMeta {
     @Property(tlddoc = "Enable single item migration to the next list in the first matching " +
             "ListControl via item double clicks; with reverse migation via shift double clicks. " +
             "If used in a dual list configuration the reverse migration is implied for the second " +
-            "list, and holding the shift key isn't required.",
+            "list, and holding the shift key isn't required. Note this attribute has no effect when an f:selectItem(s) model is used.",
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean doubleClickMigration;
 
-    @Property(tlddoc = "Defines the set of Objects from the source List that are selected.")
+    @Property(tlddoc = "Defines the set of Objects from the source List that are selected. " +
+            "Note that when f:selectItem(s) children are used as the model to this ace:list " +
+            "that selections are instead added to the Collection bound to the value attribute, " +
+            "to more closely emulate the h:selectManyListbox component.")
     private Set<Object> selections;
 
     @Property(expression = Expression.METHOD_EXPRESSION,
@@ -192,4 +196,12 @@ public class ListMeta extends UIDataMeta {
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String bottomButtonClass;
 
+    @Property(tlddoc = "Enables an alternate style on the table that uses greatly " +
+            "reduced padding and a 8 point default font.",
+            defaultValue = "false",
+            defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean compact;
+
+    @Field
+    Boolean selectItemModel = false;
 }
