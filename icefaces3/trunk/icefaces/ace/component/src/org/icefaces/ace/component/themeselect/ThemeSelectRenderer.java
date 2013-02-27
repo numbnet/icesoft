@@ -85,7 +85,8 @@ public class ThemeSelectRenderer extends Renderer {
             url = urls.nextElement();
 //            System.out.println("url = " + url);
             if (matcher.reset(url.toString()).matches()) {
-                theme = matcher.group("jarName");
+//                theme = matcher.group("jarName");
+                theme = matcher.group(1);
                 System.out.println("theme = " + theme);
                 resource = resourceHandler.createResource("theme.css", "ace-" + theme);
                 if (resource != null) {
