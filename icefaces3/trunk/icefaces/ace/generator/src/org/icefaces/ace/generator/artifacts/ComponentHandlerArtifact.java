@@ -37,7 +37,7 @@ public class ComponentHandlerArtifact extends Artifact{
 	@Override
 	public void build() {
         Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
-        if (!"".equals(component.handlerClass())) return;
+        if(Utility.isManualHandlerClass(component)) return;
         if (!getComponentContext().isHasMethodExpression()) return;
         startComponentClass(getComponentContext().getActiveClass(), component);
         addRules(getComponentContext().getPropertyFieldsForComponentClassAsList());
@@ -49,45 +49,24 @@ public class ComponentHandlerArtifact extends Artifact{
         //initialize
         generatedComponentHandlerClass = new StringBuilder();
         
-        int classIndicator = Utility.getClassName(component).lastIndexOf(".");
         generatedComponentHandlerClass.append("package ");
-        generatedComponentHandlerClass.append(Utility.getClassName(component).substring(0, classIndicator));
+        generatedComponentHandlerClass.append(Utility.getPackageNameOfClass(Utility.getGeneratedClassName(component)));
         generatedComponentHandlerClass.append(";\n\n");
         generatedComponentHandlerClass.append("import javax.faces.view.facelets.ComponentHandler;\n");
         generatedComponentHandlerClass.append("import javax.faces.view.facelets.ComponentConfig;\n");
         generatedComponentHandlerClass.append("import javax.faces.view.facelets.MetaRuleset;\n");
-
-        /*
-        //The MethodRule class is specific to the JSF implementation in use so we check to see
-        //which version, Mojarra or MyFaces is available, to determine which we should be importing.
-        try {
-            Class.forName("com.sun.faces.facelets.tag.MethodRule");
-            generatedComponentHandlerClass.append("import com.sun.faces.facelets.tag.MethodRule;\n\n");
-            System.out.println("Mojarra version of MethodRule found");
-        } catch (ClassNotFoundException e1) {
-            try {
-                Class.forName("org.apache.myfaces.view.facelets.tag.MethodRule");
-                generatedComponentHandlerClass.append("import org.apache.myfaces.view.facelets.tag.MethodRule;\n\n");
-                System.out.println("MyFaces version of MethodRule found");
-            } catch (ClassNotFoundException e2) {
-                System.out.println("cannot find a valid (Mojarra or MyFaces) MethodRule class " + e2);
-            }
-        }
-        */
         generatedComponentHandlerClass.append("import org.icefaces.facelets.tag.icefaces.core.MethodRule;\n\n");
-
         generatedComponentHandlerClass.append("import java.util.EventObject;\n");
         generatedComponentHandlerClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
         
-        
         generatedComponentHandlerClass.append("public class ");
-        generatedComponentHandlerClass.append(clazz.getSimpleName());
-        generatedComponentHandlerClass.append("Handler extends ComponentHandler");
+        generatedComponentHandlerClass.append(Utility.getSimpleNameOfClass(Utility.getHandlerClassName(component)));
+        generatedComponentHandlerClass.append(" extends ComponentHandler");
         generatedComponentHandlerClass.append("{\n\n");
         
         generatedComponentHandlerClass.append("\n\tpublic ");
-        generatedComponentHandlerClass.append(clazz.getSimpleName());   
-        generatedComponentHandlerClass.append("Handler(ComponentConfig componentConfig) {\n");
+        generatedComponentHandlerClass.append(Utility.getSimpleNameOfClass(Utility.getHandlerClassName(component)));
+        generatedComponentHandlerClass.append("(ComponentConfig componentConfig) {\n");
         generatedComponentHandlerClass.append("\t\tsuper(componentConfig);\n");
         generatedComponentHandlerClass.append("\t}\n\n\n");
     }
@@ -101,9 +80,8 @@ public class ComponentHandlerArtifact extends Artifact{
 
     private void createJavaFile() {
         Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
-        String componentClass = Utility.getClassName(component);
-        String fileName = getComponentContext().getActiveClass().getSimpleName() + "Handler.java";
-        String pack = getComponentContext().getActiveClass().getPackage().getName();
+        String fileName = Utility.getSimpleNameOfClass(Utility.getHandlerClassName(component)) + ".java";
+        String pack = Utility.getPackageNameOfClass(Utility.getHandlerClassName(component));
         String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
         System.out.println("_________________________________________________________________________");
         System.out.println("File name "+ fileName);

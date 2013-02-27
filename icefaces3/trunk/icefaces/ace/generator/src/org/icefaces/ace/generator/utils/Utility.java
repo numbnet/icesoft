@@ -25,7 +25,7 @@ import org.icefaces.ace.meta.annotation.TagHandlerType;
 public class Utility {
     public static String getComponentType(Component component) {
         String componentType = component.componentType();
-        if ("".equals(componentType)) {
+        if (Component.EMPTY.equals(componentType)) {
             try {
                 Class extended = Class.forName(component.extendsClass());
                 Field comp_type = extended.getField("COMPONENT_TYPE");
@@ -40,7 +40,7 @@ public class Utility {
     
     public static String getFamily(Component component) {
         String componentFamily = component.componentFamily();
-        if ("".equals(componentFamily)) {
+        if (Component.EMPTY.equals(componentFamily)) {
             try {
                 Class extended = Class.forName(component.extendsClass());
                 Field comp_family = extended.getField("COMPONENT_FAMILY");
@@ -53,35 +53,63 @@ public class Utility {
         return componentFamily;
     }    
     
-    public static String getClassName(Component component) {
+    public static String getGeneratedClassName(Component component) {
         String generatedClass = component.generatedClass();
-        if (generatedClass.equals("")) {
+        if (generatedClass.equals(Component.EMPTY)) {
             generatedClass = component.componentClass();
         } 
         return generatedClass;
     }
 	
-    public static String getClassName(TagHandler tagHandler) {
+    public static String getGeneratedClassName(TagHandler tagHandler) {
         String generatedClass = tagHandler.generatedClass();
-        if (generatedClass.equals("")) {
+        if (generatedClass.equals(TagHandler.EMPTY)) {
             generatedClass = tagHandler.tagHandlerClass();
         } 
         return generatedClass;
     }
+
+    public static String getRendererClassName(Component component) {
+        String rendererClass = component.rendererClass();
+        if (rendererClass.equals(Component.EMPTY)) {
+            rendererClass = component.componentClass()+ "Renderer";
+        }
+        return rendererClass;
+    }
     
     public static String getTagClassName(Component component) {
-        return component.componentClass();
-    }    
-	
-	public static String getTagHandlerExtendsClass(TagHandler tagHandler) {
+        String tagClass = component.tagClass();
+        if (tagClass.equals(Component.EMPTY)) {
+            tagClass = component.componentClass()+ "Tag";
+        }
+        return tagClass;
+    }
+
+    public static String getHandlerClassName(Component component) {
+        String handlerClass = component.handlerClass();
+        if (handlerClass.equals(Component.EMPTY)) {
+            handlerClass = component.componentClass()+ "Handler";
+        }
+        return handlerClass;
+    }
+
+    public static boolean isManualTagClass(Component component) {
+        return !Component.EMPTY.equals(component.tagClass());
+    }
+
+    public static boolean isManualHandlerClass(Component component) {
+        return !Component.EMPTY.equals(component.handlerClass());
+    }
+
+	public static String getTagHandlerExtendsClassName(TagHandler tagHandler) {
 		String extendsClass = tagHandler.extendsClass();
-		if (extendsClass.equals("")) {
-			extendsClass = getDefaultTagHandlerExtendsClass(tagHandler.tagHandlerType());
+		if (extendsClass.equals(TagHandler.EMPTY)) {
+			extendsClass = getDefaultTagHandlerExtendsClassName(tagHandler.tagHandlerType());
 		}
 		return extendsClass;
 	}
 	
-	public static String getDefaultTagHandlerExtendsClass(TagHandlerType type) {
+	public static String getDefaultTagHandlerExtendsClassName(TagHandlerType type) {
 	
 		String classPackage = "javax.faces.view.facelets.";
 		switch(type) {
@@ -138,5 +166,15 @@ public class Utility {
             return propertyValues.name;
         }
         return field.getName();
+    }
+
+    public static String getSimpleNameOfClass(String className) {
+        int classIndicator = className.lastIndexOf(".");
+        return className.substring(classIndicator+1);
+    }
+
+    public static String getPackageNameOfClass(String className) {
+        int classIndicator = className.lastIndexOf(".");
+        return className.substring(0, classIndicator);
     }
 }

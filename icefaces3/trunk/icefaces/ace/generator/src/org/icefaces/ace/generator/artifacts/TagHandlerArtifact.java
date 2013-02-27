@@ -27,7 +27,6 @@ import org.icefaces.ace.generator.utils.Utility;
 import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.meta.annotation.TagHandler;
 import org.icefaces.ace.meta.annotation.TagHandlerType;
-import org.icefaces.ace.meta.annotation.Expression;
 
 public class TagHandlerArtifact extends Artifact{
     private StringBuilder generatedTagHandlerClass;
@@ -51,7 +50,7 @@ public class TagHandlerArtifact extends Artifact{
         //initialize
         generatedTagHandlerClass = new StringBuilder();
         
-		String className = Utility.getClassName(tagHandler);
+		String className = Utility.getGeneratedClassName(tagHandler);
         int classIndicator = className.lastIndexOf(".");
         generatedTagHandlerClass.append("package ");
         generatedTagHandlerClass.append(className.substring(0, classIndicator));
@@ -71,7 +70,7 @@ public class TagHandlerArtifact extends Artifact{
         generatedTagHandlerClass.append("public class ");
         generatedTagHandlerClass.append(className.substring(classIndicator+1));
         generatedTagHandlerClass.append(" extends ");
-		generatedTagHandlerClass.append(Utility.getTagHandlerExtendsClass(tagHandler));
+		generatedTagHandlerClass.append(Utility.getTagHandlerExtendsClassName(tagHandler));
         generatedTagHandlerClass.append(" {\n");
 
         if (!tagHandler.behaviorId().equals(TagHandler.EMPTY)) {
@@ -122,7 +121,7 @@ public class TagHandlerArtifact extends Artifact{
 
     private void createJavaFile() {
         TagHandler tagHandler = (TagHandler) getTagHandlerContext().getActiveClass().getAnnotation(TagHandler.class);
-		String className = Utility.getClassName(tagHandler);
+		String className = Utility.getGeneratedClassName(tagHandler);
 		int classNameIndex = className.lastIndexOf(".");
         String fileName = className.substring(classNameIndex+1) + ".java";
 		String pack = className.substring(0, classNameIndex);;

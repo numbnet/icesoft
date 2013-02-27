@@ -40,13 +40,13 @@ import java.lang.annotation.Target;
 public @interface Component {
   final String EMPTY = "";
   /**
-   * Name of tag. Its a mandatory field.
+   * Name of tag. It's a mandatory field.
    * @return defined tag name. 
    */
   String tagName();
   
   /**
-   * Class that has to be extended by the generated component. Its a mandatory field.
+   * Class that has to be extended by the generated component. It's a mandatory field.
    * @return fully qualified name of the class has to be extended.
    */
   String extendsClass();
@@ -54,21 +54,24 @@ public @interface Component {
   /**
    * fully qualified name of the class of the Renderer, use by the target component. 
    * (This class has to be created by developer)
+   * If not specified, will default to the componentClass+"Renderer"
    * @return fully qualified name of the Renderer class.
    */
   String rendererClass()default EMPTY;
   
   /**
-   * fully qualified name for the component class to be generated. Its a mandatory field.
+   * fully qualified name for the component class. It's a mandatory field.
    * @return fully qualified name of the component class.
    */
   String componentClass();
   
   /**
-   * by default generated classes are leaf classes, so you can't override any behaviour. 
-   * If you want to hand code the leaf class and extend the generated one then you can 
-   * use this attribute in conjunction with componentClass attribute. For example:
-   * HandCodedClass --> GeneratedClass --> UIComponent
+   * By default, generated classes are leaf classes, so you can't override any
+   * behaviour. If you want to hand code the component class, and have it
+   * extend the generated one then you can use this attribute in conjunction
+   * with componentClass attribute. So, if generatedClass is specified:
+   * (manual) componentClass extends generatedClass extends extendsClass.
+   * Otherwise: (generated) componentClass extends extendsClass.
    * @return fully qualified name of the generated class.
    */
   String generatedClass()default EMPTY;
@@ -90,7 +93,15 @@ public @interface Component {
    * @return component family.
    */
   String componentFamily() default EMPTY;
-  
+
+  /**
+   * JSP tag class. Default is to automatically generate it, naming it componentClass+"Tag".
+   * Alternatively, this can be set if developer wants to use its own tag
+   * class, instead of generating one.
+   * @return JSP tag class, when not generating one.
+   */
+  String tagClass() default EMPTY;
+
   /**
    * defines a base tag class that can be extended by the generated tag class. default is 
    * "javax.faces.webapp.UIComponentELTag".
@@ -99,10 +110,11 @@ public @interface Component {
   String baseTagClass() default "javax.faces.webapp.UIComponentELTag";
   
   /**
-   * Facelets handler class. Default is to automatically determine if one needs
-   * to be generated, and if so use it. Can be set if developer wants to use
-   * its own handler class.
-   * @return facelets handler class.
+   * Facelets handler class. Default is to automatically determine if one is
+   * needed, and if so generate it, naming it componentClass+"Handler".
+   * Alternatively, this can be set if developer wants to use its own handler
+   * class, instead of generating one.
+   * @return facelets handler class, when not generating one.
    */
   String handlerClass() default EMPTY;
   

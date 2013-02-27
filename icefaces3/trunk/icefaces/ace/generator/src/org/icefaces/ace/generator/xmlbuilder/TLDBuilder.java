@@ -52,8 +52,6 @@ public class TLDBuilder extends XMLBuilder{
     }
 
     public void addTagInfo(Class clazz, Component component) {
-        String tagName = component.componentClass().substring((component.componentClass().lastIndexOf('.')+1));
-        
         Element root = (Element)getDocument().getDocumentElement();
         tag = getDocument().createElement("tag");        
         root.appendChild(tag);
@@ -68,8 +66,6 @@ public class TLDBuilder extends XMLBuilder{
     }
 	
     public void addTagInfo(Class clazz, TagHandler tagHandler) {
-        //String tagName = component.componentClass().substring((component.componentClass().lastIndexOf('.')+1));
-        
         Element root = (Element)getDocument().getDocumentElement();
         tag = getDocument().createElement("tag");        
         root.appendChild(tag);

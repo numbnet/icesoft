@@ -60,11 +60,10 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!"".equals(component.handlerClass())) {
-            addNode(component_element, "handler-class", component.handlerClass());
-        }
-        else if (GeneratorContext.getInstance().getActiveMetaContext().isHasMethodExpression()) {
-            addNode(component_element, "handler-class", clazz.getName()+ "Handler");
+        // If using a specified manual handler class, or a generated one, reference it
+        if (Utility.isManualHandlerClass(component) ||
+            GeneratorContext.getInstance().getActiveMetaContext().isHasMethodExpression()) {
+            addNode(component_element, "handler-class", Utility.getHandlerClassName(component));
         }
     }
 	
