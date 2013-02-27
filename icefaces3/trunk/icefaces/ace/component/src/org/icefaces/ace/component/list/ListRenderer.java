@@ -245,7 +245,7 @@ public class ListRenderer extends CoreRenderer {
         while (list.isRowAvailable()) {
             String itemStyleClass = new String(styleClass);
             SelectItem item = selectItems ? (SelectItem)list.getRowData() : null;
-            Object val = selectItems ? item.getValue() : list.getRowData();
+            Object val = selectItems && list.isSelectItemModel() ? item.getValue() : list.getRowData();
 
             boolean selected = selections == null ? false : selections.contains(val);
             boolean disabled = selectItems ? item.isDisabled() : false;
