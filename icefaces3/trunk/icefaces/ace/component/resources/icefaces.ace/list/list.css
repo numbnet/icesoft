@@ -33,6 +33,11 @@
     padding-right: 1em;
 }
 
+.if-list .if-list-item.disabled {
+    cursor: default;
+    background: #dfdfdf;
+}
+
 .if-list .if-list-item.if-pntr {
     cursor:pointer;
 }

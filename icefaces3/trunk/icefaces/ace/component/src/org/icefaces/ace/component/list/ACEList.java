@@ -103,17 +103,16 @@ public class ACEList extends ListBase {
         return selectItems.size() == 0 ? null : selectItems;
     }
 
-    private SelectItem processUISelectItem(ELContext elContext, UISelectItem c) {
+    private SelectItem processUISelectItem(ELContext elContext, UISelectItem itemComponent) {
         ValueExpression itemExpression = null;
         SelectItem selectItem = null;
-        UISelectItem itemComponent = c;
 
         if (itemComponent.getValue() instanceof SelectItem)
             selectItem = (SelectItem) itemComponent.getValue();
         else if ((itemExpression = itemComponent.getValueExpression("value")) != null &&
                 itemExpression.getType(elContext).equals(SelectItem.class)) {
             selectItem = (SelectItem)itemExpression.getValue(elContext);
-        } else if (itemComponent.getItemLabel() != null || itemComponent.getItemValue() != null) {
+        } else if (itemComponent.getItemLabel() != null) {
             selectItem = new SelectItem(
                     itemComponent.getItemValue(),
                     itemComponent.getItemLabel(),

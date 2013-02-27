@@ -44,6 +44,7 @@ public class ListRenderer extends CoreRenderer {
     public static final String miniClass = "if-mini";
     public static final String itemStyleClass = "if-list-item ui-state-default";
     public static final String selectedItemStyleClass = "ui-state-active";
+    public static final String disabledItemStyleClass = "disabled";
     public static final String controlsItemStyleClass = "if-list-ctrl";
     public static final String controlsItemSpacerClass = "if-list-ctrl-spcr";
     public static final String headerStyleClass = "if-list-head ui-widget-header";
@@ -231,12 +232,9 @@ public class ListRenderer extends CoreRenderer {
         String style = list.getItemStyle();
         String styleClass = list.getItemClass();
         String selectionMode = list.getSelectionMode();
+        boolean pointerTable = ("single".equals(selectionMode) || "multiple".equals(selectionMode)) || list.isDragging();
 
         styleClass = styleClass == null ? itemStyleClass : styleClass + " " + itemStyleClass;
-        styleClass = ("single".equals(selectionMode) || "multiple".equals(selectionMode))
-                        || list.isDragging()
-                            ? styleClass + " " + pointerStyleClass
-                            : styleClass;
 
         list.setRowIndex(0);
 
@@ -245,21 +243,21 @@ public class ListRenderer extends CoreRenderer {
             selectItems = list.getRowData() instanceof SelectItem;
 
         while (list.isRowAvailable()) {
-            final Object val = selectItems
-                    ? ((SelectItem)list.getRowData()).getValue()
-                    : list.getRowData();
+            String itemStyleClass = new String(styleClass);
+            SelectItem item = selectItems ? (SelectItem)list.getRowData() : null;
+            Object val = selectItems ? item.getValue() : list.getRowData();
 
-            final boolean selected = selections == null ? false
-                    : selections.contains(val);
+            boolean selected = selections == null ? false : selections.contains(val);
+            boolean disabled = selectItems ? item.isDisabled() : false;
+
+            if (selected) itemStyleClass = itemStyleClass + " " + selectedItemStyleClass;
+            if (disabled) itemStyleClass = itemStyleClass + " " + disabledItemStyleClass;
+            else if (pointerTable) itemStyleClass = itemStyleClass + " " + pointerStyleClass;
 
             if (selectItems)
-                encodeStringChild(context, writer, list, (SelectItem)list.getRowData(),
-                        selected ? styleClass + " " + selectedItemStyleClass : styleClass,
-                        style);
+                encodeStringChild(context, writer, list, item, itemStyleClass, style);
             else
-                encodeCompositeChild(context, writer, list,
-                        selected ? styleClass + " " + selectedItemStyleClass : styleClass,
-                        style);
+                encodeCompositeChild(context, writer, list, itemStyleClass, style);
 
             list.setRowIndex(list.getRowIndex()+1);
         }

@@ -274,14 +274,14 @@ ice.ace.List.prototype.controlClickHandler = function(e) {
 
 ice.ace.List.prototype.setupSelection = function() {
     var self = this,
-        selector = ' > ul > li';
+        selector = ' > ul > li:not(.disabled)';
 
     ice.ace.jq(this.element)
             .off('mouseenter mouseleave click', selector)
             .on('mouseenter', selector, this.itemEnter)
             .on('mouseleave', selector, this.itemLeave)
             .on('click', selector, function(e) {
-            self.itemClickHandler.call(self, e);
+                self.itemClickHandler.call(self, e);
         });
 };
 
