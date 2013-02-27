@@ -79,7 +79,6 @@ public class PanelSeriesRenderer extends DomBasicRenderer {
                 while (childs.hasNext()) {
                     UIComponent nextChild = (UIComponent) childs.next();
                     if (nextChild.isRendered()) {
-                        domContext.setCursorParent(root);
                         encodeParentAndChildren(facesContext, nextChild);
                     }
                 }
