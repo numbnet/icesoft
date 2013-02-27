@@ -181,7 +181,10 @@ public class CartesianSeries extends ChartSeries {
             Axis[] yAxes = chart.getYAxes();
             Integer yAxisIndex = getYAxis();
 
-            if (yAxisIndex < 2) axis = yAxes[0];
+            // If series is not explicitly plotted against an axis
+            // plot it against the first axis
+            if (yAxisIndex == null || yAxisIndex < 2)
+                axis = yAxes[0];
             else axis = yAxes[yAxisIndex-1];
         }
 
@@ -204,7 +207,10 @@ public class CartesianSeries extends ChartSeries {
             Axis[] yAxes = chart.getYAxes();
             Integer yAxisIndex = getYAxis();
 
-            if (yAxisIndex < 2) axis = yAxes[0];
+            // If series is not explicitly plotted against an axis
+            // plot it against the first axis
+            if (yAxisIndex == null || yAxisIndex < 2)
+                axis = yAxes[0];
             else axis = yAxes[yAxisIndex-1];
         }
 
