@@ -94,16 +94,16 @@ public class TabSetMeta extends UIPanelMeta {
                     "The default value if not specified is top. ")
     private String orientation;
 
-    @Field(defaultValue = "false")
-    private Boolean parentFooter;
-
-    @Field(defaultValue = "true")
-    private Boolean parentHeader;
-
     @Property(defaultValue = "true")
     private boolean autoWidth;
 
     @Field
     private String hashVal;
+
+    @Field(defaultValue = "false")
+    private Boolean parentFooter;
+
+    @Field(defaultValue = "true")
+    private Boolean parentHeader;
 
 }

@@ -17,7 +17,7 @@
 package org.icemobile.component;
 
 public interface ITabPane extends IMobiComponent{
-    public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs");
+    public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs ui-bar-b");
     public static final String TABSET_SPAN_CLASS = "mobitab";
     public static final String TABSET_HIDDEN_PAGECLASS = "mobi-tabpage-hidden";
     public static final String TABSET_ACTIVE_CONTENT_CLASS= "mobi-tabpage";

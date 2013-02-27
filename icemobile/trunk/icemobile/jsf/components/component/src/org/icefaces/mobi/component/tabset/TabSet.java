@@ -42,8 +42,8 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
     private static Logger logger = Logger.getLogger(TabSet.class.getName());
 
     private boolean isTop = false;
-    private int index;
     public static enum orientation {top, bottom}
+    private int index = 0;
 
     public enum OrientationType {
         top, bottom;
@@ -94,6 +94,7 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
         }
         this.index = tabIndex;
         // store the id and index of the selected pane
+    //    logger.info("Storing new index="+tabIndex+" id="+currentId);
         return new IdIndex(currentId, tabIndex);
     }
 
@@ -192,6 +193,10 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
         return MobiJSFUtils.getClientDescriptor();
     }
 
+    public int getIndex() {
+        return this.index;
+    }
+
     public String getJavascriptFileRequestPath() {
         String jsFname = JS_NAME;
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -212,8 +217,5 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
         InlineScriptEventListener.setScriptLoaded(FacesContext.getCurrentInstance(), ITabSet.JS_NAME);
     }
 
-    public int getIndex(){
-        return this.index;
-    }
 
 }

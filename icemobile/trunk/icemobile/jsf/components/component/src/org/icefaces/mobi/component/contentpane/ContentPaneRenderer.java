@@ -111,8 +111,10 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         if (parent instanceof ContentPaneController){
             ContentPaneController paneController = (ContentPaneController)parent;
             selectedId = paneController.getSelectedId();
-          //  logger.info("iAmSelected()  id: " + uiComponent.getId() + "  selectedId: " + selectedId);
+        //    logger.info("iAmSelected()  id: " + uiComponent.getId() + "  selectedId: " + selectedId);
             if (null == selectedId){
+                UIComponent pComp = (UIComponent)parent;
+               // logger.info("Parent controller of contentPane must have value for selectedId="+pComp.getClientId());
                 return false;
             }
         }
@@ -133,6 +135,8 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrapper", HTML.ID_ATTR);
         String pageClass = ITabPane.TABSET_HIDDEN_PAGECLASS.toString();
+        boolean selected = iAmSelected(facesContext, uiComponent);
+    //    logger.info(" pane with id="+clientId+" selected="+selected);
         if (iAmSelected(facesContext, uiComponent)){
             pageClass = ITabPane.TABSET_ACTIVE_CONTENT_CLASS;
         }
