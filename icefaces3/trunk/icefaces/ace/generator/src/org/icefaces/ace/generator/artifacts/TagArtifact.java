@@ -43,10 +43,9 @@ public class TagArtifact extends Artifact{
 	private void startComponentClass(Component component) {
 		generatedTagClass = new StringBuilder();
 		generatedTagProperties = new HashMap<String, Field>();
-		int classIndicator = Utility.getTagClassName(component).lastIndexOf(".");
 
 		generatedTagClass.append("package ");
-		generatedTagClass.append(Utility.getTagClassName(component).substring(0, classIndicator));
+		generatedTagClass.append(Utility.getPackageNameOfClass(Utility.getTagClassName(component)));
 		generatedTagClass.append(";\n\n");
 
 		generatedTagClass.append("import java.io.IOException;\n");
@@ -64,8 +63,10 @@ public class TagArtifact extends Artifact{
 		generatedTagClass.append("import javax.servlet.jsp.JspException;\n\n");  
 		generatedTagClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");        
 		generatedTagClass.append("public class ");
-		generatedTagClass.append(Utility.getTagClassName(component).substring(classIndicator+1));
-		generatedTagClass.append("Tag extends UIComponentELTag {\n");
+		generatedTagClass.append(Utility.getSimpleNameOfClass(Utility.getTagClassName(component)));
+		generatedTagClass.append(" extends ");
+        generatedTagClass.append(component.baseTagClass());
+        generatedTagClass.append(" {\n");
 		generatedTagClass.append("\tpublic String getRendererType() {\n\t\treturn ");
 		String rendererType = null;
 		if (!"".equals(component.rendererType())) {
@@ -90,9 +91,9 @@ public class TagArtifact extends Artifact{
 
 	private void createJavaFile() {
 		Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
-		String componentClass = Utility.getTagClassName(component);
-		String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + "Tag.java";
-		String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
+		String tagClass = Utility.getTagClassName(component);
+		String fileName = Utility.getSimpleNameOfClass(tagClass) + ".java";
+		String pack = Utility.getPackageNameOfClass(tagClass);
 		String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
 		// comment out this so UICommand classes will compile **TEMPORARY
 		FileWriter.write("support", path, fileName, generatedTagClass);        
@@ -101,7 +102,7 @@ public class TagArtifact extends Artifact{
 	private void addProperties(Class clazz, Component component) {
 		GeneratorContext.getInstance().getTldBuilder().addTagInfo(clazz, component);
 		addSetters();
-		addSetProperties(Utility.getClassName(component));
+		addSetProperties(Utility.getGeneratedClassName(component));
 	}
 
 	private void updateFields(Class clazz) {
@@ -237,6 +238,7 @@ public class TagArtifact extends Artifact{
 
 	public void build() {
 		Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
+        if(Utility.isManualTagClass(component)) return;
 		startComponentClass(component);
 		addProperties(getComponentContext().getActiveClass(), component);  
 		endComponentClass();        

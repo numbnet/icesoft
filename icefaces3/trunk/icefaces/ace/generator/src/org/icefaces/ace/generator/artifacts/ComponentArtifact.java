@@ -57,10 +57,8 @@ public class ComponentArtifact extends Artifact{
         GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(clazz, component);
         GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(clazz, component);
 
-        int classIndicator =  Utility.getClassName(component).lastIndexOf(".");
-
         writer.append("package ");
-        writer.append(Utility.getClassName(component).substring(0, classIndicator));
+        writer.append(Utility.getPackageNameOfClass(Utility.getGeneratedClassName(component)));
         writer.append(";\n\n");
         writer.append("import java.io.IOException;\n");
         writer.append("import java.util.List;\n");
@@ -133,16 +131,17 @@ public class ComponentArtifact extends Artifact{
         }
 
         writer.append("public class ");
-        writer.append(Utility.getClassName(component).substring(classIndicator+1));
+        writer.append(Utility.getSimpleNameOfClass(Utility.getGeneratedClassName(component)));
         writer.append(" extends ");
         writer.append(component.extendsClass());
-        String interfaceNames = "";
+        StringBuilder interfaceNames = new StringBuilder();
         for (Behavior behavior: getComponentContext().getBehaviors()) {
-            interfaceNames+=behavior.getInterfaceName()+",";
+            if (interfaceNames.length() > 0) interfaceNames.append(',');
+            interfaceNames.append(behavior.getInterfaceName());
         }
-        if (!"".equals(interfaceNames)) {
+        if (interfaceNames.length() > 0) {
             writer.append(" implements ");
-            writer.append(interfaceNames.subSequence(0, interfaceNames.length()-1));
+            writer.append(interfaceNames.toString());
         }
 
         writer.append("{\n");
@@ -156,7 +155,7 @@ public class ComponentArtifact extends Artifact{
         writer.append("\n\tpublic static final String RENDERER_TYPE = "+ rendererType + ";\n");
 
         writer.append("\n\tpublic ");
-        writer.append(Utility.getClassName(component).substring(classIndicator+1));
+        writer.append(Utility.getSimpleNameOfClass(Utility.getGeneratedClassName(component)));
         writer.append("() {\n\t\tsuper();\n\t\tsetRendererType(RENDERER_TYPE);\n\t}\n");
 
         writer.append("\n\tpublic String getFamily() {\n\t\treturn \"");
@@ -200,10 +199,10 @@ public class ComponentArtifact extends Artifact{
     private void createJavaFile() {
         System.out.println("____________________________Creating component class_________________________");
         Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
-        String componentClass =Utility.getClassName(component);
-        String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + ".java";
+        String componentClass =Utility.getGeneratedClassName(component);
+        String fileName = Utility.getSimpleNameOfClass(componentClass) + ".java";
         System.out.println("____FileName "+ fileName);
-        String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
+        String pack = Utility.getPackageNameOfClass(componentClass);
         System.out.println("____package "+ pack);
         String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
         System.out.println("____path "+ path);

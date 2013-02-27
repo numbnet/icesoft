@@ -71,10 +71,7 @@ public class FacesConfigBuilder extends XMLBuilder{
 
             Text comp_family_text = getDocument().createTextNode(componentFamily);
             
-            String rendererClass = component.rendererClass();
-            if (rendererClass.equals(component.EMPTY)) {
-                rendererClass = component.componentClass()+ "Renderer";
-            }
+            String rendererClass = Utility.getRendererClassName(component);
             Text rendererClassText = getDocument().createTextNode(rendererClass);
             
             Element render_kit = (Element) getDocument().getElementsByTagName("render-kit").item(0);
