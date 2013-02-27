@@ -106,7 +106,7 @@
             }
         }
         setTabActive(tabCtrl + tabIndex, clsActiveTab);
-
+        updateHidden(clientId, tabIndex);
         var origcontents = tabContent.children;
         var length = origcontents.length;
         var newPage = origcontents[tabIndex];
@@ -164,9 +164,6 @@
                     tabContainer.style.maxHeight = newHt;
                     tabContainer.style.height = newHt;
                 }
-            /*    if (oldIdx == tabIndex){
-                    return;
-                } */
                 var oldCtrl = document.getElementById(tabCtrl + oldIdx);
                 if (oldCtrl) {
                     removeClass(oldCtrl, clsActiveTab);

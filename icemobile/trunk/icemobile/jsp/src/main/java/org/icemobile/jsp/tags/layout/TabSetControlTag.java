@@ -170,7 +170,7 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
     private String height;
     private int numberChildren;
     private String orientation;
-
+    private String defaultId;
 
     public int getNumberChildren() {
         return numberChildren;
@@ -248,7 +248,22 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
     }
 
     public String getSelectedId() {
+        if (this.selectedId==null & this.defaultId!=null){
+            return this.defaultId;
+        }
         return this.selectedId;
+    }
+
+    /**
+     defaultId is not implemented in jsp but is used in jsf
+     for composite component of jsf tabset
+     */
+    public String getDefaultId() {
+        return this.defaultId;
+    }
+
+    public void setDefaultId(String defId) {
+        this.defaultId= defId;
     }
 
     /**

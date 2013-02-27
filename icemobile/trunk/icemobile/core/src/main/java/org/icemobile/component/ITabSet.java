@@ -55,4 +55,6 @@ public interface ITabSet extends IMobiComponent{
     public void setParentHeaderFooter();
     public boolean isSingleSubmit();
     public boolean isAutoHeight();
+    public String getDefaultId();
+    public void setDefaultId(String defId);
 }

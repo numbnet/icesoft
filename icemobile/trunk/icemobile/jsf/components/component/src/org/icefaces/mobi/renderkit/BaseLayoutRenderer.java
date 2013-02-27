@@ -68,6 +68,25 @@ public class BaseLayoutRenderer extends CoreRenderer {
         writer.endElement("input");
         writer.endElement("span");
     }
+
+    /**
+     * used by content pane controllers...implement ContentPaneController
+     * @param context
+     * @param uiComponent
+     * @throws IOException
+     */
+    protected void encodeHidden(FacesContext context, UIComponent uiComponent, String value) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = uiComponent.getClientId(context);
+        writer.startElement("span", uiComponent);
+        writer.startElement("input", uiComponent);
+        writer.writeAttribute("type", "hidden", "type");
+        writer.writeAttribute("id", clientId+"_hidden", "id");
+        writer.writeAttribute("name", clientId+"_hidden", "name");
+        writer.writeAttribute("value", value, "value");
+        writer.endElement("input");
+        writer.endElement("span");
+    }
     protected String getResourceURL(FacesContext facesContext, String value) {
         if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
             return value;

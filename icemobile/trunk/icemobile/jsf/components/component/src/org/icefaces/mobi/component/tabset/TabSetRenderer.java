@@ -50,10 +50,11 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         String indexStr = params.get(clientId + "_hidden");
         // with some panes having client cacheType, the oldIndex on server
         // may not match that of the client, so decode the last
+  //      logger.info("indexStr="+indexStr);
         if (null != indexStr) {
             try {
                  String submittedStr = indexStr;
-              //   logger.info("submitted string="+submittedStr);
+        //         logger.info("submitted string="+submittedStr);
                  int ind = indexStr.indexOf(",");
                  if (ind > -1){
                      String [] split = indexStr.split(",");
@@ -88,13 +89,10 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         String clientId = tabset.getClientId();
         IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         TabSetCoreRenderer renderer = new TabSetCoreRenderer();
-   //     writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-        /* write out root tag.  For current incarnation html5 semantic markup is ignored */
-  /*      writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        // apply default style class
-        StringBuilder styleClass = new StringBuilder(TabSet.TABSET_CONTAINER_CLASS);
-        // apply orientation style for bottom or to tab placement */
+        if (tabset.getSelectedId()==null && tabset.getDefaultId()!=null){
+             tabset.setSelectedId(tabset.getDefaultId());
+          //  logger.info("SET selectedId to default id="+tabset.getSelectedId());
+        }
         String orientation = tabset.getOrientation();
         boolean top = tabset.setIsTop(orientation);
         /* need to also see if pagePanel footer or header is present */
@@ -189,7 +187,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         TabSetCoreRenderer renderer = new TabSetCoreRenderer();
         ITabSet tabSet = (ITabSet) uiComponent;
-        encodeHidden(facesContext, uiComponent);
+        encodeHidden(facesContext, uiComponent, String.valueOf(tabSet.getIndex()));
         writer.endElement(HTML.DIV_ELEM);  //end of content div
         boolean parentFooter = tabSet.isParentFooter();
         String orientation = tabSet.getOrientation();
