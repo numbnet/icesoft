@@ -128,12 +128,15 @@ public class LoadBundle extends UIOutput implements Serializable {
 
     private void updateBundle() {
         String newBaseName = getBasename();
-        Locale currentLocale = getFacesContext().getViewRoot().getLocale();
+        FacesContext context = getFacesContext();
+        Locale currentLocale = context.getViewRoot().getLocale();
         boolean reloadRequired =
                 oldLocale == null || !oldLocale.getLanguage().equals(currentLocale.getLanguage()) ||
                         !oldBaseName.equals(newBaseName);
         if (reloadRequired) {
             bundle = ResourceBundle.getBundle(newBaseName.trim(), currentLocale, MessageUtils.getClassLoader(this));
+            map = new SerializableMap();
+            context.getExternalContext().getRequestMap().put(getVar(), map);
             oldBaseName = newBaseName;
             oldLocale = currentLocale;
         }
