@@ -67,6 +67,7 @@ public class ListSelectionMiniBean extends ComponentExampleImpl<ListSelectionMin
 
 
     private List<SelectItem> selections = new ArrayList<SelectItem>();
+    private Car selectItemObject = DataTableData.getDefaultData().subList(11,12).get(0);
     private Map<String, Car> selectItemMap = new HashMap<String, Car>() {{
         for (Car c : DataTableData.getDefaultData().subList(0,10))
             put(c.getName(), c);
@@ -86,5 +87,13 @@ public class ListSelectionMiniBean extends ComponentExampleImpl<ListSelectionMin
 
     public void setSelections(List<SelectItem> selections) {
         this.selections = selections;
+    }
+
+    public Car getSelectItemObject() {
+        return selectItemObject;
+    }
+
+    public void setSelectItemObject(Car selectItemObject) {
+        this.selectItemObject = selectItemObject;
     }
 }

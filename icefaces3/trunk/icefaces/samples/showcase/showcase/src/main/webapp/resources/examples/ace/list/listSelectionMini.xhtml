@@ -57,24 +57,30 @@
                       value="#{backing.selections}">
                 <ace:ajax event="select" render="@form" />
                 <ace:ajax event="deselect" render="@form" />
+                <f:selectItem itemValue="#{backing.selectItemObject}"
+                              itemLabel="#{backing.selectItemObject.name}"
+                              itemDisabled="true"/>
+
                 <f:selectItems value="#{backing.selectItemMap}" />
             </ace:list>
 
-            <h:panelGroup rendered="#{not empty backing.selections}"
-                          styleClass="outPane"
-                          style="vertical-align: middle">
-                <ui:repeat value="#{backing.selections}" var="car">
-                    <h:panelGroup styleClass="iblock">
-                        <h:panelGrid columns="2">
-                            <f:facet name="header">
-                                <h:outputText value="#{car.name}" /><hr/>
-                            </f:facet>
-                            Chassis: <h:outputText value="#{car.chassis}" />
-                            Weight: <h:outputText value="#{car.weight}" />
-                            Accel: <h:outputText value="#{car.acceleration}" />
-                        </h:panelGrid>
-                    </h:panelGroup>
-                </ui:repeat>
+            <h:panelGroup>
+                <h:panelGroup rendered="#{not empty backing.selections}"
+                              styleClass="outPane"
+                              style="vertical-align: middle">
+                    <ui:repeat value="#{backing.selections}" var="car">
+                        <h:panelGroup styleClass="iblock">
+                            <h:panelGrid columns="2">
+                                <f:facet name="header">
+                                    <h:outputText value="#{car.name}" /><hr/>
+                                </f:facet>
+                                Chassis: <h:outputText value="#{car.chassis}" />
+                                Weight: <h:outputText value="#{car.weight}" />
+                                Accel: <h:outputText value="#{car.acceleration}" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </ui:repeat>
+                </h:panelGroup>
             </h:panelGroup>
         </h:form>
     </ui:define>
