@@ -164,9 +164,9 @@
                     tabContainer.style.maxHeight = newHt;
                     tabContainer.style.height = newHt;
                 }
-                if (oldIdx == tabIndex){
+            /*    if (oldIdx == tabIndex){
                     return;
-                }
+                } */
                 var oldCtrl = document.getElementById(tabCtrl + oldIdx);
                 if (oldCtrl) {
                     removeClass(oldCtrl, clsActiveTab);
