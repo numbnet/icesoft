@@ -147,7 +147,7 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
     static class ExpandedPredicate implements Predicate, Serializable {
         public boolean evaluate(Object o) {
             if (o instanceof Entry)
-                if (((NodeState)((Entry)o).getValue()).isSelected()) return true;
+                if (((NodeState)((Entry)o).getValue()).isExpanded()) return true;
             return false;
         }
     }
