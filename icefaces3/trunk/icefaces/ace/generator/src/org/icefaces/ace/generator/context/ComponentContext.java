@@ -52,20 +52,13 @@ public class ComponentContext extends MetaContext {
 
 	public ComponentContext(Class clazz) {
 		super(clazz);
-    	processAnnotation(clazz, true);
-    	
+    }
+
+    @Override
+    protected void setupArtifacts() {
 		artifacts.put(ComponentArtifact.class.getSimpleName(), new ComponentArtifact(this));
 		artifacts.put(TagArtifact.class.getSimpleName(), new TagArtifact(this));
 		artifacts.put(ComponentHandlerArtifact.class.getName(), new ComponentHandlerArtifact(this));
-
-    	for (Behavior behavior: GeneratorContext.getInstance().getBehaviors()) {
-    		if (behavior.hasBehavior(clazz)) {
-    			System.out.println("Behavior found ");
-    			//attach behavior to the component context
-    			getBehaviors().add(behavior);
-    			behavior.addProperties(this);
-    		}
-    	}
 	}
 
     @Override
@@ -74,15 +67,15 @@ public class ComponentContext extends MetaContext {
     }
 
     @Override
-    protected void processAnnotation(Class clazz, boolean isBaseClass) {
-        super.processAnnotation(clazz, isBaseClass);
+    protected void processAnnotation(Class clazz) {
+        super.processAnnotation(clazz);
         processFacets(clazz);
+        processBehaviors(clazz);
     }
 
     @Override
-    protected boolean processPotentiallyIrrelevantField(
-            Class clazz, HashSet<Field> localFieldsSet, Field field) {
-        boolean relevant = super.processPotentiallyIrrelevantField(clazz, localFieldsSet, field);
+    protected boolean processPotentiallyIrrelevantField(Class clazz, Field field) {
+        boolean relevant = super.processPotentiallyIrrelevantField(clazz,  field);
         if (!relevant) {
             if (field.isAnnotationPresent(org.icefaces.ace.meta.annotation.Field.class)) {
                 internalFieldsForComponentClass.put(field.getName(), field);
@@ -93,9 +86,7 @@ public class ComponentContext extends MetaContext {
     }
 
     @Override
-    protected void furtherProcessProperty(
-            Class clazz, HashSet<Field> localFieldsSet, Field field,
-            PropertyValues propertyValues) {
+    protected void furtherProcessProperty(Class clazz, PropertyValues propertyValues) {
         if (propertyValues.isGeneratingProperty()) {
             if (propertyValues.expression == Expression.METHOD_EXPRESSION) {
                 generateHandler = true;
@@ -104,18 +95,25 @@ public class ComponentContext extends MetaContext {
     }
 
     private void processFacets(Class clazz){
-        Class[] classes = clazz.getDeclaredClasses();
-        for (int i=0; i < classes.length; i++) {
-            if (classes[i].isAnnotationPresent(Facets.class)) {
-                Field[] fields = classes[i].getDeclaredFields();
-                for (int f=0; f < fields.length; f++) {
-                    Field field = fields[f];
+        for (Class declaredClass : clazz.getDeclaredClasses()) {
+            if (declaredClass.isAnnotationPresent(Facets.class)) {
+                for (Field field : declaredClass.getDeclaredFields()) {
                     if (field.isAnnotationPresent(Facet.class)) {
                         fieldsForFacet.put(field.getName(), field);
-//                        System.out.println("Facet property"+ fields[f].getName());
                     }
                 }
             }
         }
-    } 
+    }
+
+    private void processBehaviors(Class clazz) {
+        for (Behavior behavior: GeneratorContext.getInstance().getBehaviors()) {
+            if (behavior.hasBehavior(clazz)) {
+                System.out.println("Behavior found ");
+                //attach behavior to the component context
+                getBehaviors().add(behavior);
+                behavior.addProperties(this);
+            }
+        }
+    }
 }

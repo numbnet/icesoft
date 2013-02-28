@@ -22,10 +22,12 @@ import org.icefaces.ace.meta.annotation.JSP;
 public class JSPContext extends MetaContext {
 	public JSPContext(Class clazz) {
 		super(clazz);
-    	processAnnotation(clazz, true);
-
-        artifacts.put(JSPBaseTagArtifact.class.getSimpleName(), new JSPBaseTagArtifact(this));
 	}
+
+    @Override
+    protected void setupArtifacts() {
+        artifacts.put(JSPBaseTagArtifact.class.getSimpleName(), new JSPBaseTagArtifact(this));
+    }
 
     @Override
     protected boolean isRelevantClass(Class clazz) {

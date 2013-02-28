@@ -22,10 +22,12 @@ import org.icefaces.ace.meta.annotation.TagHandler;
 public class TagHandlerContext extends MetaContext {
 	public TagHandlerContext(Class clazz) {
 		super(clazz);
-    	processAnnotation(clazz, true);
-    	
-		artifacts.put(TagHandlerArtifact.class.getName(), new TagHandlerArtifact(this));
 	}
+
+    @Override
+    protected void setupArtifacts() {
+        artifacts.put(TagHandlerArtifact.class.getName(), new TagHandlerArtifact(this));
+    }
 
     @Override
     protected boolean isRelevantClass(Class clazz) {

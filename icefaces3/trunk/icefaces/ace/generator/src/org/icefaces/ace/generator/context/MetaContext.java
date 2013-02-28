@@ -97,62 +97,41 @@ public abstract class MetaContext {
 	}
 
 	public MetaContext(Class clazz) {
-		GeneratorContext.getInstance().setActiveMetaContext(this);
 		setActiveClass(clazz);
 	}
 
-    protected void processAnnotation(Class clazz, boolean isBaseClass) {
-        if (isRelevantClass(clazz)) {
-			// original fields
-			Field[] localFields = clazz.getDeclaredFields();
-			HashSet<Field> localFieldsSet = new HashSet<Field>();
-
-            for (int i=0; i < localFields.length; i++) {
-				localFieldsSet.add(localFields[i]);
-            }
-
-			// disinherit properties
-			//String[] disinheritProperties = component.disinheritProperties();
-			//HashSet<String> disinheritPropertiesSet = new HashSet<String>();
-
-            //for (int i=0; i < disinheritProperties.length; i++) {
-			//	disinheritPropertiesSet.add(disinheritProperties[i]);
-            //}
-
-            //get all properties which are defined on the annotated component itself.
-
-			Field[] fields = getDeclaredFields(clazz);
-            for (int i=0; i<fields.length; i++) {
-                Field field = fields[i];
-				// this functionality is suspended for now
-				//if (disinheritPropertiesSet.contains(field.getName())) { // skip property if it's in disinheritProperties list
-				//	continue;
-				//}
-
-                processPotentiallyIrrelevantField(clazz, localFieldsSet, field);
-            }
+    public void process() {
+        if (isRelevantClass(getActiveClass())) {
+            GeneratorContext.getInstance().setActiveMetaContext(this);
+            processAnnotation(getActiveClass());
+            setupArtifacts();
+            build();
         }
     }
 
-    protected boolean processPotentiallyIrrelevantField(
-            Class clazz, HashSet<Field> localFieldsSet, Field field) {
+    protected void processAnnotation(Class clazz) {
+        for (Field field : getDeclaredFields(clazz)) {
+            processPotentiallyIrrelevantField(clazz, field);
+        }
+    }
+
+    protected boolean processPotentiallyIrrelevantField(Class clazz, Field field) {
         if(field.isAnnotationPresent(Property.class)){
             // collect @Property values from top to bottom
             PropertyValues propertyValues = collectPropertyValues(field.getName(), clazz);
             // if values end up being UNSET, then set them to default
             propertyValues.setDefaultValues();
             propertyValuesMap.put(field, propertyValues);
-            furtherProcessProperty(clazz, localFieldsSet, field, propertyValues);
+            furtherProcessProperty(clazz, propertyValues);
             return true;
         }
         return false;
     }
 
     abstract protected boolean isRelevantClass(Class clazz);
+    abstract protected void setupArtifacts();
 
-    protected void furtherProcessProperty(
-            Class clazz, HashSet<Field> localFieldsSet, Field field,
-            PropertyValues propertyValues) {
+    protected void furtherProcessProperty(Class clazz, PropertyValues propertyValues) {
     }
 	
 	protected static PropertyValues collectPropertyValues(String fieldName, Class clazz) {
@@ -187,38 +166,24 @@ public abstract class MetaContext {
 	}
 	
 	protected static Field[] getDeclaredFields(Class clazz) {
-		return getDeclaredFields(clazz, new HashMap<String, Field>());
+        HashMap<String, Field> fields = new HashMap<String, Field>();
+		getDeclaredFields(clazz, fields);
+        return fields.values().toArray(new Field[fields.size()]);
 	}
 	
 	// collect all declared fields of a class and all its ancestor classes
-	protected static Field[] getDeclaredFields(Class clazz, Map<String, Field> fields) {
-		
-		if (fields == null) {
-			fields = new HashMap<String, Field>();
-		}
-		
+	private static void getDeclaredFields(Class clazz, Map<String, Field> fields) {
+        if (clazz == null) return;
 		// add fields to map
-		Field[] localFields = clazz.getDeclaredFields();
-		for (int i = 0; i < localFields.length; i++) {
-			if (!fields.containsKey(localFields[i].getName())) {
-				fields.put(localFields[i].getName(), localFields[i]);
+		for (Field localField : clazz.getDeclaredFields()) {
+			if (!fields.containsKey(localField.getName())) {
+				fields.put(localField.getName(), localField);
 			}
 		}
-	
-		Class superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			return getDeclaredFields(superClass, fields);
-		} else {
-			Object[] values = fields.values().toArray();
-			Field[] result = new Field[values.length];
-			for (int i = 0; i < values.length; i++) {
-				result[i] = (Field) values[i];
-			}
-			return result;
-		}
+        getDeclaredFields(clazz.getSuperclass(), fields);
 	}
 
-    public void build() {
+    protected void build() {
         Iterator<Artifact> artifacts = getArtifacts();
         while (artifacts.hasNext()) {
             artifacts.next().build();
