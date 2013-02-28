@@ -956,10 +956,9 @@ if (!window.ice.icefaces) {
                             }
                         }
 
-                        return updated;
-                    } else {
-                        //confirm callback removal since the corresponding element is gone
                         return true;
+                    } else {
+                        return false;
                     }
                 });
             }
