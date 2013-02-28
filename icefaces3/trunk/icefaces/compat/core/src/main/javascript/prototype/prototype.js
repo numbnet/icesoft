@@ -5885,7 +5885,7 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
         fire:          fire,
         observe:       observe,
         stopObserving: stopObserving,
-        on:            on
+        prototype_on:            on
     });
 
     Element.addMethods({
@@ -5895,7 +5895,7 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
 
         stopObserving: stopObserving,
 
-        on:            on
+        prototype_on:            on
     });
 
     Object.extend(document, {
@@ -5905,7 +5905,7 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
 
         stopObserving: stopObserving.methodize(),
 
-        on:            on.methodize(),
+        prototype_on:            on.methodize(),
 
         loaded:        false
     });
