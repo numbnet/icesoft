@@ -16,12 +16,6 @@
 
 package org.icefaces.ace.generator.artifacts;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-
 import org.icefaces.ace.generator.context.ComponentContext;
 import org.icefaces.ace.generator.context.GeneratorContext;
 import org.icefaces.ace.generator.utils.FileWriter;
@@ -30,11 +24,9 @@ import org.icefaces.ace.generator.utils.Utility;
 import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Expression;
-import org.icefaces.ace.meta.annotation.Property;
 
 public class TagArtifact extends Artifact{
 	private StringBuilder generatedTagClass;
-	private Map<String, Field> generatedTagProperties;
 
 	public TagArtifact(ComponentContext componentContext) {
 		super(componentContext);
@@ -42,7 +34,6 @@ public class TagArtifact extends Artifact{
 
 	private void startComponentClass(Component component) {
 		generatedTagClass = new StringBuilder();
-		generatedTagProperties = new HashMap<String, Field>();
 
 		generatedTagClass.append("package ");
 		generatedTagClass.append(Utility.getPackageNameOfClass(Utility.getTagClassName(component)));
@@ -86,17 +77,14 @@ public class TagArtifact extends Artifact{
 		addRelease();
 		generatedTagClass.append("\n}");
 		createJavaFile();
-
 	}
 
 	private void createJavaFile() {
-		Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
+		Component component = (Component) getMetaContext().getActiveClass().getAnnotation(Component.class);
 		String tagClass = Utility.getTagClassName(component);
 		String fileName = Utility.getSimpleNameOfClass(tagClass) + ".java";
-		String pack = Utility.getPackageNameOfClass(tagClass);
-		String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
-		// comment out this so UICommand classes will compile **TEMPORARY
-		FileWriter.write("/generated/support/", path, fileName, generatedTagClass);        
+        String path = Utility.getPackagePathOfClass(tagClass);
+		FileWriter.write("/generated/support/", path, fileName, generatedTagClass);
 	}
 
 	private void addProperties(Class clazz, Component component) {
@@ -105,23 +93,9 @@ public class TagArtifact extends Artifact{
 		addSetProperties(Utility.getGeneratedClassName(component));
 	}
 
-	private void updateFields(Class clazz) {
-		Field[] fields = clazz.getDeclaredFields();
-		for (int i=0; i<fields.length; i++) {
-			Field field = fields[i];
-			boolean addToTagClass = false;
-			addToTagClass = field.isAnnotationPresent(Property.class);
-
-			if(addToTagClass ){
-				if (!generatedTagProperties.containsKey(field.getName()))
-					generatedTagProperties.put(field.getName(), field);
-			}
-		}  
-	}
-
 	private void addSetters() {
 		//set
-		for(PropertyValues prop : getComponentContext().getPropertyValuesSorted()) {
+		for(PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
 			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(prop);
 
 			String type = (prop.expression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression ";
@@ -154,7 +128,7 @@ public class TagArtifact extends Artifact{
 		generatedTagClass.append("\tpublic void release() {\n");
 		generatedTagClass.append("\t\tsuper.release();\n");        
 
-		for(PropertyValues prop : getComponentContext().getPropertyValuesSorted()) {
+		for(PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
 			generatedTagClass.append("\t\t");
 			generatedTagClass.append(prop.getJavaVariableName());
 			generatedTagClass.append(" = null;\n"); 
@@ -183,7 +157,7 @@ public class TagArtifact extends Artifact{
 		generatedTagClass.append(componentClass);
 		generatedTagClass.append("\");\n");
 		generatedTagClass.append("\t\t}\n");        
-		for(PropertyValues property : getComponentContext().getPropertyValuesSorted()) {
+		for(PropertyValues property : getMetaContext().getPropertyValuesSorted()) {
             String propertyName = property.resolvePropertyName();
             String varName = property.getJavaVariableName();
 			generatedTagClass.append("\t\tif (");
@@ -201,7 +175,7 @@ public class TagArtifact extends Artifact{
                 // addValueChangeListener, but any component not inheriting it,
                 // and just implementing it's own MethodExpression property
                 // named valueChangeListener should just use setValueChangeListener
-                !getComponentContext().isValueChangeListenerGenerated()) {
+                !getMetaContext().isGeneratingPropertyByName("valueChangeListener")) {
 				generatedTagClass.append("_component.addValueChangeListener(new MethodExpressionValueChangeListener(valueChangeListener)");
             } else if (property.expression == Expression.METHOD_EXPRESSION &&
                 "validator".equals(propertyName)) {
@@ -230,10 +204,10 @@ public class TagArtifact extends Artifact{
 	}
 
 	public void build() {
-		Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
+		Component component = (Component) getMetaContext().getActiveClass().getAnnotation(Component.class);
         if(Utility.isManualTagClass(component)) return;
 		startComponentClass(component);
-		addProperties(getComponentContext().getActiveClass(), component);  
+		addProperties(getMetaContext().getActiveClass(), component);
 		endComponentClass();        
 	}
 }

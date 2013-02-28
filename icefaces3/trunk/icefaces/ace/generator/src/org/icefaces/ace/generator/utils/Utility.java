@@ -19,6 +19,7 @@ package org.icefaces.ace.generator.utils;
 import java.lang.reflect.Field;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.JSP;
 import org.icefaces.ace.meta.annotation.TagHandler;
 import org.icefaces.ace.meta.annotation.TagHandlerType;
 
@@ -76,7 +77,35 @@ public class Utility {
         }
         return rendererClass;
     }
-    
+
+    public static String getTagName(Class metaClass, JSP jsp) {
+        String tagName = jsp.tagName();
+        if (tagName.equals(JSP.EMPTY)) {
+            /*
+            StringBuilder sb = new StringBuilder(metaClass.getSimpleName());
+            final String META = "Meta";
+            if (META.contentEquals(sb.subSequence(sb.length()-META.length(), sb.length()))) { //sb.endsWith(META)
+                sb.delete(sb.length()-META.length(), sb.length());
+            }
+            if (sb.length() >= 1) {
+                sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
+            }
+            tagName = sb.toString();
+            */
+        }
+        return tagName;
+    }
+
+    public static String getTagClassName(Class metaClass, JSP jsp) {
+        String tagClass = jsp.tagClass();
+        if (tagClass.equals(JSP.EMPTY)) {
+            /*
+            tagClass = jsp.componentClass()+ "Tag";
+            */
+        }
+        return tagClass;
+    }
+
     public static String getTagClassName(Component component) {
         String tagClass = component.tagClass();
         if (tagClass.equals(Component.EMPTY)) {
@@ -168,7 +197,16 @@ public class Utility {
 
     public static String getPackageNameOfClass(String className) {
         int classIndicator = className.lastIndexOf(".");
-        return className.substring(0, classIndicator);
+        if (classIndicator >= 0) {
+            return className.substring(0, classIndicator);
+        }
+        return "";
+    }
+
+    public static String getPackagePathOfClass(String className) {
+        String pack = getPackageNameOfClass(className);
+        String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
+        return path;
     }
 
     public static String getArrayAwareType(Field field) {

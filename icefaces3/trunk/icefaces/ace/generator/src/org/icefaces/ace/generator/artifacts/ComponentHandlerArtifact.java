@@ -29,20 +29,25 @@ import org.icefaces.ace.meta.annotation.Expression;
 
 public class ComponentHandlerArtifact extends Artifact{
     private StringBuilder generatedComponentHandlerClass;
+    private ComponentContext componentContext;
 
 	public ComponentHandlerArtifact(ComponentContext componentContext) {
 		super(componentContext);
+        this.componentContext = componentContext;
 	}
+
+    private ComponentContext getComponentContext() {
+        return componentContext;
+    }
 
 	@Override
 	public void build() {
-        Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
+        Component component = (Component) getMetaContext().getActiveClass().getAnnotation(Component.class);
         if(Utility.isManualHandlerClass(component)) return;
         if (!getComponentContext().isGenerateHandler()) return;
-        startComponentClass(getComponentContext().getActiveClass(), component);
-        addRules(getComponentContext().getGeneratingPropertyValuesSorted());
+        startComponentClass(getMetaContext().getActiveClass(), component);
+        addRules(getMetaContext().getGeneratingPropertyValuesSorted());
         endComponentClass();
-		
 	}
     
     private void startComponentClass(Class clazz, Component component) {
@@ -79,10 +84,9 @@ public class ComponentHandlerArtifact extends Artifact{
     }
 
     private void createJavaFile() {
-        Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
+        Component component = (Component) getMetaContext().getActiveClass().getAnnotation(Component.class);
         String fileName = Utility.getSimpleNameOfClass(Utility.getHandlerClassName(component)) + ".java";
-        String pack = Utility.getPackageNameOfClass(Utility.getHandlerClassName(component));
-        String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
+        String path = Utility.getPackagePathOfClass(Utility.getHandlerClassName(component));
         System.out.println("_________________________________________________________________________");
         System.out.println("File name "+ fileName);
         System.out.println("path  "+ path);        

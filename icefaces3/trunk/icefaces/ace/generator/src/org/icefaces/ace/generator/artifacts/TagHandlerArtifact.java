@@ -36,8 +36,8 @@ public class TagHandlerArtifact extends Artifact{
 
 	@Override
 	public void build() {
-        TagHandler tagHandler = (TagHandler) getTagHandlerContext().getActiveClass().getAnnotation(TagHandler.class);
-        startTagHandlerClass(getTagHandlerContext().getActiveClass(), tagHandler);
+        TagHandler tagHandler = (TagHandler) getMetaContext().getActiveClass().getAnnotation(TagHandler.class);
+        startTagHandlerClass(getMetaContext().getActiveClass(), tagHandler);
 		addApplyMethod(tagHandler);
         endTagHandlerClass();
 		
@@ -78,7 +78,7 @@ public class TagHandlerArtifact extends Artifact{
             generatedTagHandlerClass.append("\";\n");
         }
 
-        ArrayList<PropertyValues> allProperties = getTagHandlerContext().getPropertyValuesSorted();
+        ArrayList<PropertyValues> allProperties = getMetaContext().getPropertyValuesSorted();
 		for(PropertyValues prop : allProperties) {
 			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(prop);
 			GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(prop);
@@ -114,7 +114,7 @@ public class TagHandlerArtifact extends Artifact{
     }
 
     private void createJavaFile() {
-        TagHandler tagHandler = (TagHandler) getTagHandlerContext().getActiveClass().getAnnotation(TagHandler.class);
+        TagHandler tagHandler = (TagHandler) getMetaContext().getActiveClass().getAnnotation(TagHandler.class);
 		String className = Utility.getGeneratedClassName(tagHandler);
 		int classNameIndex = className.lastIndexOf(".");
         String fileName = className.substring(classNameIndex+1) + ".java";
