@@ -147,17 +147,14 @@ public class GeneratorContext{
 	}
     
     public void processMetaContexts(Class clazz) {
-        if (clazz.isAnnotationPresent(JSP.class)) {
-            MetaContext jc = new JSPContext(clazz);
-            jc.build();
-        }
-        if (clazz.isAnnotationPresent(Component.class)) {
-            MetaContext cc = new ComponentContext(clazz);
-            cc.build();
-        } else if (clazz.isAnnotationPresent(TagHandler.class)) {
-            MetaContext thc = new TagHandlerContext(clazz);
-            thc.build();
-        }
+        MetaContext jc = new JSPContext(clazz);
+        jc.process();
+        
+        MetaContext cc = new ComponentContext(clazz);
+        cc.process();
+
+        MetaContext thc = new TagHandlerContext(clazz);
+        thc.process();
     }
 	
 	public void setActiveMetaContext(MetaContext activeMetaContext) {
