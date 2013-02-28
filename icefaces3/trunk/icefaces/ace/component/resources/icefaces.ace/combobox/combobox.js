@@ -197,37 +197,7 @@ ice.ace.ComboBox.prototype = {
 		}
 		
 		// prepare data model for autocomplete functionality
-		if (this.clientSideModeCfg) {
-			var model = [];
-			var markup = [];
-			var n = this.entryCount;
-			var i;
-			for (i = 0; i < n; i++) {
-				var entry = this.getEntry(i);
-				if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
-					var value = ice.ace.ComboBox.collectTextNodesIgnoreClass(entry, ice.ace.ComboBox.LABEL_CLASS);
-					model.push(value);
-					markup.push(entry.cloneNode(true));
-				} else {
-					model.push(null);
-					markup.push('<div />');
-				}
-			}
-			this.clientSideModeCfg.model = model;
-			this.clientSideModeCfg.markup = markup;
-		}
-		/*if (this.clientSideModeCfg) {
-			var model = [];
-			var $root = ice.ace.jq(ice.ace.escapeClientId(this.id + '_update')).children('div:first');
-			this.clientSideModeCfg.data = $root.children();
-			if ($root.hasClass('facet')) {
-				this.clientSideModeCfg.data.children('span.label').each(function(i,e){model.push(e.innerHTML)});
-			} else {
-				this.clientSideModeCfg.data.each(function(i,e){model.push(e.innerHTML)});
-			}
-			this.clientSideModeCfg.model = model;
-			//$root.detach();
-		}*/
+		this.setContent(ice.ace.jq(ice.ace.escapeClientId(this.id + '_update')).get(0).firstChild.innerHTML);
 		
 		this.initialized = true;
     },
@@ -332,20 +302,16 @@ ice.ace.ComboBox.prototype = {
 					event.preventDefault();
                     return;
 				case ice.ace.ComboBox.keys.KEY_UP:
-					this.index = this.selectedIndex;
-                    this.markPrevious();
-					this.selectEntry();
 					event.stopPropagation();
 					event.preventDefault();
                     return;
                 case ice.ace.ComboBox.keys.KEY_DOWN:
-					this.index = this.selectedIndex;
-                    this.markNext();
-					this.selectEntry();
 					event.stopPropagation();
 					event.preventDefault();
                     return;
 				default:
+					var self = this;
+					setTimeout(function(){self.clientSideModeUpdate();},50);
 					return;
             }
         } else {
@@ -378,6 +344,8 @@ ice.ace.ComboBox.prototype = {
 					event.preventDefault();
                     return;
 				default:
+					var self = this;
+					setTimeout(function(){self.clientSideModeUpdate();},50);
 					return;
             }
         }
@@ -488,12 +456,13 @@ ice.ace.ComboBox.prototype = {
 		} else {
 			if (this.hideObserver) clearTimeout(this.hideObserver);
 			this.justSelectedItem = true;
-			this.updateNOW(this.content);
+			this.clientSideModeUpdate(this.noFilter);
 		}
 	},
 
     render: function() {
         if (this.entryCount > 0) {
+			this.updateSelectedIndex();
             for (var i = 0; i < this.entryCount; i++)
 				if (this.selectedIndex == i) {
                     ar = this.rowClass.split(" ");
@@ -687,31 +656,32 @@ ice.ace.ComboBox.prototype = {
 		}
     },
 	
-	clientSideModeUpdate: function() {
+	clientSideModeUpdate: function(filter) {
 		
 		var model = this.clientSideModeCfg.model;
-		var length = this.clientSideModeCfg.model.length;
+		var length = model.length;
 		var caseSensitive = this.clientSideModeCfg.caseSensitive;
 		var rows = this.clientSideModeCfg.rows;
 		var value = this.element.value;
 		if (!caseSensitive) value = value.toLowerCase();
-		var filter;
-		switch (this.clientSideModeCfg.filterMatchMode) {
-			case 'contains':
-			filter = this.containsFilter;
-			break;
-			case 'exact':
-			filter = this.exactFilter;
-			break;
-			case 'startsWith':
-			filter = this.startsWithFilter;
-			break;
-			case 'endsWith':
-			filter = this.endsWithFilter;
-			break;
-			default:
-			filter = this.noFilter;
-			break;
+		if (!filter) { 
+			switch (this.clientSideModeCfg.filterMatchMode) {
+				case 'contains':
+				filter = this.containsFilter;
+				break;
+				case 'exact':
+				filter = this.exactFilter;
+				break;
+				case 'startsWith':
+				filter = this.startsWithFilter;
+				break;
+				case 'endsWith':
+				filter = this.endsWithFilter;
+				break;
+				default:
+				filter = this.noFilter;
+				break;
+			}
 		}
 		
 		var rowCount = 0;
@@ -720,7 +690,7 @@ ice.ace.ComboBox.prototype = {
 			var item = caseSensitive ? model[i] : model[i].toLowerCase();
 			if (filter(item, value)) {
 				rowCount++;
-				result.append(ice.ace.jq(this.content).children().get(i).cloneNode(true));
+				result.append(this.$content.get(i).cloneNode(true));
 			}
 			if (rowCount >= rows) break;
 		}
@@ -757,9 +727,24 @@ ice.ace.ComboBox.prototype = {
 	
 	setContent: function(content) {
 		this.content = content;
-		this.update.innerHTML = this.content;
-		if (this.update.firstChild && this.update.firstChild.childNodes) {
-			this.entryCount = this.update.firstChild.childNodes.length;
+		this.$content = ice.ace.jq(this.content).children();
+		this.entryCount = this.$content.size();
+		
+		if (this.clientSideModeCfg) {
+			var model = [];
+			var markup = [];
+			var n = this.entryCount;
+			var i;
+			for (i = 0; i < n; i++) {
+				var entry = this.$content.get(i);
+				if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
+					var value = ice.ace.ComboBox.collectTextNodesIgnoreClass(entry, ice.ace.ComboBox.LABEL_CLASS);
+					model.push(value);
+				} else {
+					model.push(null);
+				}
+			}
+			this.clientSideModeCfg.model = model;
 		}
 	},
 
@@ -778,18 +763,6 @@ ice.ace.ComboBox.prototype = {
 		if (value) {
 			this.element.value = value;
 		} else {
-			this.element.value = '';
-		}
-		this.updateSelectedIndex();
-		// update label
-		if (value) {
-			var currentEntry = this.getEntry(this.selectedIndex);
-			if (currentEntry) {
-				var labelSpan = ice.ace.jq(currentEntry).find('.'+ice.ace.ComboBox.LABEL_CLASS).get(0);
-				var label = ice.ace.ComboBox.collectTextNodesIgnoreClass(labelSpan, ice.ace.ComboBox.IGNORE_CLASS);
-				this.element.value = label;
-			}
-		} else {
 			var element = ice.ace.jq(this.element);
 			if (this.cfg.inFieldLabel) {
 				this.element.value = this.cfg.inFieldLabel;
@@ -804,6 +777,10 @@ ice.ace.ComboBox.prototype = {
 	// update selected index if value was changed programmatically or was pre-selected
 	updateSelectedIndex: function() {
 		var currentEntry = this.getEntry(this.selectedIndex);
+		if (!currentEntry) {
+			this.selectedIndex = -1;
+			return;
+		}
 		if ((currentEntry && (this.element.value != ice.ace.ComboBox.collectTextNodesIgnoreClass(currentEntry, ice.ace.ComboBox.LABEL_CLASS)))
 			|| (this.selectedIndex == -1 && this.element.value)) {
 			var found = false;

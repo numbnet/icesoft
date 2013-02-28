@@ -309,10 +309,10 @@ public class ComboBoxRenderer extends InputRenderer {
 			writer.endElement("div");
 		} else {
 			if (matches.hasNext()) {
-				StringBuffer sb = new StringBuffer("<div>");
+				writer.startElement("div", null);
+				writer.writeAttribute("style", "display: none;", null);
+				writer.startElement("div", null);
 				SelectItem item = null;
-				String role = "";
-				if (ariaEnabled) role = " role=\"option\"";
 				while (matches.hasNext()) {
 					item = (SelectItem) matches.next();
 					Object value = item.getValue();
@@ -327,23 +327,32 @@ public class ComboBoxRenderer extends InputRenderer {
 					String itemLabel = item.getLabel();
 					if (itemLabel == null) itemLabel = convertedValue;
 					
+					writer.startElement("div", null);
+					writer.writeAttribute("style", "border: 0;", null);
 					if (item.isDisabled()) {
-						sb.append("<div style=\"border: 0;\" class=\"ui-state-disabled\"" + role + ">");
-					} else {
-						sb.append("<div style=\"border: 0;\"" + role + ">");
+						writer.writeAttribute("class", "ui-state-disabled", null);
 					}
+					if (ariaEnabled) writer.writeAttribute("role", "option", null);
 					
 					// label span
-					sb.append("<span class=\"" + LABEL_CLASS + "\">").append(itemLabel).append("</span>");
+					writer.startElement("span", null);
+					writer.writeAttribute("class", LABEL_CLASS, null);
+					writer.writeText(itemLabel, null);
+					writer.endElement("span");
 					// value span
-					sb.append("<span class=\"" + VALUE_CLASS + "\" style=\"visibility:hidden;display:none;\">").append(convertedValue).append("</span>");
+					writer.startElement("span", null);
+					writer.writeAttribute("class", VALUE_CLASS, null);
+					writer.writeAttribute("style", "visibility:hidden;display:none;", null);
+					writer.writeText(convertedValue, null);
+					writer.endElement("span");
 					
-					sb.append("</div>");
+					writer.endElement("div");
 				}
-				sb.append("</div>");
-				String call = "ice.ace.ComboBoxes[\"" + clientId + "\"]" +
-						".setContent('" + escapeSingleQuote(sb.toString()) + "');";
+				writer.endElement("div");
+				String call = "ice.ace.ComboBoxes[\"" + clientId +
+					"\"].setContent(ice.ace.jq(ice.ace.escapeClientId('" + clientId + "_update')).get(0).firstChild.innerHTML);";
 				encodeDynamicScript(facesContext, comboBox, call);
+				writer.endElement("div");
 			}
 		}
 		writer.endElement("div");
