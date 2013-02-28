@@ -28,6 +28,11 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.util.*;
 
+import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
+import javax.faces.validator.ValidatorException;
+import javax.faces.application.FacesMessage;
+
 @ComponentExample(
 		parent = ComboBoxBean.BEAN_NAME,
         title = "example.ace.combobox.facet.title",
@@ -110,4 +115,17 @@ public class ComboBoxFacetBean extends ComponentExampleImpl< ComboBoxFacetBean >
     public List<Color> getTextColors() { return textColors; }
 
     public List<Color> getBackgroundColors() { return backgroundColors; }
+	
+	private String errorSummary = "Color code must be in the format '#xxx' or '#xxxxxx', where 'x' is a hexadecimal digit.";	
+	public void colorValidator(FacesContext context, UIComponent component, Object value) {
+		if (value != null) {
+			String color = value.toString();
+			if ("".equals(color.trim())) return;
+			
+			if (!color.trim().matches("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")) {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorSummary, errorSummary);
+				throw new ValidatorException(message);
+			}
+		}
+	}
 }
