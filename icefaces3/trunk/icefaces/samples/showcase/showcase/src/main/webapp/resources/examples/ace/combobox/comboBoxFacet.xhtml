@@ -45,7 +45,7 @@
             <ace:panel id="facetPanel">
 			<h:panelGrid columns="2" class="grid">
 				<h:panelGroup>
-				<ace:comboBox id="selectTextColor" value="#{comboBoxFacetBean.textColor}" listVar="color" listValue="#{comboBoxFacetBean.textColors}" itemValue="#{color.hexValue}" label="Select text color: " labelPosition="top">
+				<ace:comboBox id="selectTextColor" value="#{comboBoxFacetBean.textColor}" listVar="color" listValue="#{comboBoxFacetBean.textColors}" itemValue="#{color.hexValue}" label="Select a color or enter a color code for the text: " labelPosition="top" validator="#{comboBoxFacetBean.colorValidator}">
 					<f:facet name="row">
                         <h:panelGrid columns="3" width="100%" columnClasses="col50,col25,col25">
                             <h:outputText value="#{color.name}" />
@@ -55,8 +55,9 @@
 					</f:facet>
 					<ace:ajax execute="@this" render="@all" />
 				</ace:comboBox>
+				<h:message for="selectTextColor" />
 				<br />
-				<ace:comboBox id="selectBackgroundColor" value="#{comboBoxFacetBean.backgroundColor}" listVar="color" listValue="#{comboBoxFacetBean.backgroundColors}" itemValue="#{color.hexValue}" label="Select background color: " labelPosition="top">
+				<ace:comboBox id="selectBackgroundColor" value="#{comboBoxFacetBean.backgroundColor}" listVar="color" listValue="#{comboBoxFacetBean.backgroundColors}" itemValue="#{color.hexValue}" label="Select a color or enter a color code for the background: " labelPosition="top" validator="#{comboBoxFacetBean.colorValidator}">
 					<f:facet name="row">
                         <h:panelGrid columns="3" width="100%" columnClasses="col50,col25,col25">
                             <h:outputText value="#{color.name}" />
@@ -66,6 +67,7 @@
 					</f:facet>
 					<ace:ajax execute="@this" render="@all" />
 				</ace:comboBox>
+				<h:message for="selectBackgroundColor" />
 				</h:panelGroup>
 				<h:panelGroup>
 					<h:outputText value="ICEfaces" style="margin-left:20px;padding:10px; font-size:3em; color: #{comboBoxFacetBean.textColor} ; background-color: #{comboBoxFacetBean.backgroundColor} ;" />
