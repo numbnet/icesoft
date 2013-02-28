@@ -22,10 +22,12 @@ import java.net.URLEncoder;
 import java.net.URLDecoder;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.widget.LinearLayout;
-import android.widget.Button;
-import android.widget.TextView;
-import android.view.ViewGroup;
+//import android.widget.Button;
+//import android.widget.TextView;
+//import android.view.ViewGroup;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.content.Context;
@@ -98,7 +100,6 @@ public class ICEmobileSX extends Activity
     private ARViewInterface mARViewInterface;
     private Activity self;
     private boolean pendingCloudPush;
-    private TextView mDebugTextView;
     private Uri mReturnUri;
     private Uri mPOSTUri;
     private String mCurrentId;
@@ -106,21 +107,6 @@ public class ICEmobileSX extends Activity
     private String mCurrentMediaFile;
     private Runnable mBrowserReturn;
     private boolean doRegister = false;
-
-class ReturnButton extends Button {
-
-    OnClickListener clicker = new OnClickListener() {
-        public void onClick(View v) {
-            returnToBrowser();
-        }
-    };
-
-    public ReturnButton(Context ctx) {
-        super(ctx);
-        setText("Back to Browser");
-        setOnClickListener(clicker);
-    }
-}
 
     public void returnToBrowser()  {
         if (null == mReturnUri)  {
@@ -168,15 +154,11 @@ class ReturnButton extends Button {
         };
 
         LinearLayout ll = new LinearLayout(this);
-        ReturnButton returnButton = new ReturnButton(this);
-        ll.addView(returnButton,
-            new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                0));
-        mDebugTextView = new TextView(this);
         setContentView(ll);
 
+	getWindow().setBackgroundDrawableResource(R.drawable.background);
+
+	ProgressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
         includeUtil();
         if (INCLUDE_QRCODE) {
             includeQRCode();
@@ -212,7 +194,6 @@ class ReturnButton extends Button {
 
     private void handleIntent (Intent intent) {
         Uri uri = intent.getData();
-        mDebugTextView.setText(String.valueOf(uri));
 	Log.d(LOG_TAG, "URL launched " + uri);
 	Map commandParts = new HashMap();
 	Map commandParams = new HashMap();
@@ -359,6 +340,7 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
 
         String encodedForm = null;
 
+	Log.d(LOG_TAG, "onActivityResult: request = " + requestCode + ", result = " + resultCode);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TAKE_PHOTO_CODE:
@@ -404,7 +386,9 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
                     returnToBrowser();
                     break;
             }
-        }
+        } else {
+	    returnToBrowser();
+	}
     }
 
     @Override
