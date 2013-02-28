@@ -21,6 +21,7 @@ import org.icefaces.samples.showcase.example.ace.animation.AnimationBean;
 import org.icefaces.samples.showcase.example.ace.autocompleteentry.AutoCompleteEntryBean;
 import org.icefaces.samples.showcase.example.ace.chart.ChartBean;
 import org.icefaces.samples.showcase.example.ace.checkboxButton.CheckboxButtonBean;
+import org.icefaces.samples.showcase.example.ace.combobox.ComboBoxBean;
 import org.icefaces.samples.showcase.example.ace.confirmationdialog.ConfirmationDialogBean;
 import org.icefaces.samples.showcase.example.ace.contextMenu.ContextMenuBean;
 import org.icefaces.samples.showcase.example.ace.dataExporter.DataExporterBean;
@@ -69,6 +70,7 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.ace.animation.title", exampleBeanName = AnimationBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.autocompleteentry.title", exampleBeanName = AutoCompleteEntryBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.checkboxButton.title", exampleBeanName = CheckboxButtonBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.combobox.title", exampleBeanName = ComboBoxBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.confirmationdialog.title", exampleBeanName = ConfirmationDialogBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.contextMenu.title", exampleBeanName = ContextMenuBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.chart.title", exampleBeanName = ChartBean.BEAN_NAME),
