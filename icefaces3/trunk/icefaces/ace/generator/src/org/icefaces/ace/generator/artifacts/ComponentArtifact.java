@@ -39,20 +39,24 @@ import java.util.logging.Logger;
 public class ComponentArtifact extends Artifact{
 
     private StringBuilder writer = new StringBuilder();
-
-    private List<PropertyValues> generatedComponentProperties;
     private final static Logger Log = Logger.getLogger(ComponentArtifact.class.getName());
+    private ComponentContext componentContext;
 
     public ComponentArtifact(ComponentContext componentContext) {
         super(componentContext);
+        this.componentContext = componentContext;
     }
 
-    private void startComponentClass(Class clazz, Component component) {
+    private ComponentContext getComponentContext() {
+        return componentContext;
+    }
+
+    private void startComponentClass(ComponentContext compCtx, Class clazz, Component component) {
         //initialize
         // add entry to faces-config
         GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(clazz, component);
         GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(
-            clazz, component, getComponentContext().isGenerateHandler());
+            clazz, component, compCtx.isGenerateHandler());
 
         writer.append("package ");
         writer.append(Utility.getPackageNameOfClass(Utility.getGeneratedClassName(component)));
@@ -82,7 +86,7 @@ public class ComponentArtifact extends Artifact{
         writer.append("import org.icefaces.resources.BrowserType;\n\n");
 
 
-        for (Behavior behavior: getComponentContext().getBehaviors()) {
+        for (Behavior behavior: compCtx.getBehaviors()) {
             behavior.addImportsToComponent(writer);
         }
         writer.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
@@ -132,7 +136,7 @@ public class ComponentArtifact extends Artifact{
         writer.append(" extends ");
         writer.append(component.extendsClass());
         StringBuilder interfaceNames = new StringBuilder();
-        for (Behavior behavior: getComponentContext().getBehaviors()) {
+        for (Behavior behavior: compCtx.getBehaviors()) {
             if (interfaceNames.length() > 0) interfaceNames.append(',');
             interfaceNames.append(behavior.getInterfaceName());
         }
@@ -184,8 +188,8 @@ public class ComponentArtifact extends Artifact{
     }
 
 
-    private void endComponentClass() {
-        for (Behavior behavior: getComponentContext().getBehaviors()) {
+    private void endComponentClass(ComponentContext compCtx) {
+        for (Behavior behavior: compCtx.getBehaviors()) {
             behavior.addCodeToComponent(writer);
         }
         writer.append("\n}");
@@ -195,34 +199,31 @@ public class ComponentArtifact extends Artifact{
 
     private void createJavaFile() {
         System.out.println("____________________________Creating component class_________________________");
-        Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
+        Component component = (Component) getMetaContext().getActiveClass().getAnnotation(Component.class);
         String componentClass =Utility.getGeneratedClassName(component);
         String fileName = Utility.getSimpleNameOfClass(componentClass) + ".java";
         System.out.println("____FileName "+ fileName);
         String pack = Utility.getPackageNameOfClass(componentClass);
         System.out.println("____package "+ pack);
-        String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
+        String path = Utility.getPackagePathOfClass(componentClass);
         System.out.println("____path "+ path);
         FileWriter.write("/generated/base/", path, fileName, writer);
         System.out.println("____________________________Creating component class ends_________________________");
     }
 
 
-    private void addProperties(ArrayList<PropertyValues> generatedProperties) {
-        // All the other generator code just gets the reference, but this one
-        // seems to want its own copy, likely just as an optimisation
-        generatedComponentProperties = (ArrayList<PropertyValues>) generatedProperties.clone();
-        addPropertyEnum();
-        addGetterSetter();
+    private void addProperties(ComponentContext compCtx, ArrayList<PropertyValues> generatedProperties) {
+        addPropertyEnum(compCtx, generatedProperties);
+        addGetterSetter(compCtx, generatedProperties);
     }
 
-    private void addPropertyEnum() {
+    private void addPropertyEnum(ComponentContext compCtx, ArrayList<PropertyValues> generatedProperties) {
 
         writer.append("\n\tprotected enum PropertyKeys {\n");
-        for (Behavior behavior: getComponentContext().getBehaviors()) {
+        for (Behavior behavior: compCtx.getBehaviors()) {
             behavior.addPropertiesEnumToComponent(writer);
         }
-        for(PropertyValues propertyValues : generatedComponentProperties) {
+        for(PropertyValues propertyValues : generatedProperties) {
             String propertyName = propertyValues.resolvePropertyName();
             System.out.println("Processing property " + propertyName );
 
@@ -239,7 +240,7 @@ public class ComponentArtifact extends Artifact{
                 writer.append(",\n");
             }
         }
-        Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
+        Iterator<Field> fields = compCtx.getInternalFieldsForComponentClass().values().iterator();
         while (fields.hasNext()) {
             Field field = fields.next();
             writer.append("\t\t");
@@ -255,16 +256,16 @@ public class ComponentArtifact extends Artifact{
         writer.append("\t\t}\n\t}\n");
     }
 
-    private void addGetterSetter() {
-        for (Behavior behavior: getComponentContext().getBehaviors()) {
+    private void addGetterSetter(ComponentContext compCtx, ArrayList<PropertyValues> generatedProperties) {
+        for (Behavior behavior: compCtx.getBehaviors()) {
             behavior.addGetterSetter(this, writer);
         }
-        for (PropertyValues prop : generatedComponentProperties) {
+        for (PropertyValues prop : generatedProperties) {
             addGetterSetter(prop);
         }
         //since generatedComponentProperties doesn't include inherited properties,
         //here all of the PropertyValues are used. This part may need re-factor-ed later.
-        for(PropertyValues prop : getComponentContext().getPropertyValuesSorted()) {
+        for (PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
             GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(prop);
         }
     }
@@ -524,8 +525,8 @@ public class ComponentArtifact extends Artifact{
 
 
 
-    private void addFacet(Class clazz, Component component) {
-        Iterator<Field> iterator = getComponentContext().getFieldsForFacet().values().iterator();
+    private void addFacet(ComponentContext compCtx, Class clazz, Component component) {
+        Iterator<Field> iterator = compCtx.getFieldsForFacet().values().iterator();
         while (iterator.hasNext()) {
             Field field = iterator.next();
             Facet facet = (Facet)field.getAnnotation(Facet.class);
@@ -691,8 +692,8 @@ public class ComponentArtifact extends Artifact{
     }
 
 
-    private void addInternalFields() {
-        Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
+    private void addInternalFields(ComponentContext compCtx) {
+        Iterator<Field> fields = compCtx.getInternalFieldsForComponentClass().values().iterator();
         while (fields.hasNext()) {
             Field field = fields.next();
             org.icefaces.ace.meta.annotation.Field fieldAnnotation = (org.icefaces.ace.meta.annotation.Field)field.getAnnotation(org.icefaces.ace.meta.annotation.Field.class);
@@ -736,14 +737,16 @@ public class ComponentArtifact extends Artifact{
     }
 
     public void build() {
-        Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
-        startComponentClass(getComponentContext().getActiveClass(), component);
-        addProperties(getComponentContext().getGeneratingPropertyValuesSorted());
-        addFacet(getComponentContext().getActiveClass(), component);
-        addInternalFields();
+        ComponentContext compCtx = getComponentContext();
+
+        Component component = (Component) getMetaContext().getActiveClass().getAnnotation(Component.class);
+        startComponentClass(compCtx, getMetaContext().getActiveClass(), component);
+        addProperties(compCtx, getMetaContext().getGeneratingPropertyValuesSorted());
+        addFacet(compCtx, getMetaContext().getActiveClass(), component);
+        addInternalFields(compCtx);
         isDisconnected();
         handleAttribute();
-        endComponentClass();
+        endComponentClass(compCtx);
     }
 }
 

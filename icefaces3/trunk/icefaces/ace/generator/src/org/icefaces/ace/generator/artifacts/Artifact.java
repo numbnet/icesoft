@@ -16,28 +16,20 @@
 
 package org.icefaces.ace.generator.artifacts;
 
+import org.icefaces.ace.generator.context.MetaContext;
 import org.icefaces.ace.generator.context.TagHandlerContext;
 import org.icefaces.ace.generator.context.ComponentContext;
 
 public abstract class Artifact {
-	private TagHandlerContext tagHandlerContext;
-    private ComponentContext componentContext;
+    private MetaContext metaContext;
 
-    public Artifact(TagHandlerContext tagHandlerContext) {
-        this.tagHandlerContext = tagHandlerContext;
+    public Artifact(MetaContext metaContext) {
+        this.metaContext = metaContext;
     }
 
-    public Artifact(ComponentContext componentContext) {
-        this.componentContext = componentContext;
+    public MetaContext getMetaContext() {
+        return metaContext;
     }
-
-	public TagHandlerContext getTagHandlerContext() {
-		return tagHandlerContext;
-	}
-
-	public ComponentContext getComponentContext() {
-		return componentContext;
-	}
 
 	public String getName() {
 		return this.getClass().getSimpleName();

@@ -66,6 +66,16 @@ public abstract class MetaContext {
         });
     }
 
+    public boolean isGeneratingPropertyByName(String name) {
+        for(PropertyValues prop : getPropertyValuesMap().values()) {
+            if (prop.isGeneratingProperty() &&
+                prop.resolvePropertyName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 	public boolean isGenerateHandler() {
 		return generateHandler;
 	}

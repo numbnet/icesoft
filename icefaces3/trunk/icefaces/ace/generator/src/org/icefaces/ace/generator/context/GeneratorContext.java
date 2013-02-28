@@ -148,6 +148,8 @@ public class GeneratorContext{
     
     public void processMetaContexts(Class clazz) {
         if (clazz.isAnnotationPresent(JSP.class)) {
+            MetaContext jc = new JSPContext(clazz);
+            jc.build();
         }
         if (clazz.isAnnotationPresent(Component.class)) {
             MetaContext cc = new ComponentContext(clazz);

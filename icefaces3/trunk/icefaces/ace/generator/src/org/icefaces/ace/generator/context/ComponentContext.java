@@ -103,16 +103,6 @@ public class ComponentContext extends MetaContext {
         }
     }
 
-    public boolean isValueChangeListenerGenerated() {
-        for(PropertyValues prop : getPropertyValuesMap().values()) {
-            if (prop.isGeneratingProperty() &&
-                prop.resolvePropertyName().equals("valueChangeListener")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void processFacets(Class clazz){
         Class[] classes = clazz.getDeclaredClasses();
         for (int i=0; i < classes.length; i++) {
