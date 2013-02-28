@@ -154,6 +154,7 @@ public class ICEmobileSX extends Activity
         };
 
         LinearLayout ll = new LinearLayout(this);
+	this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(ll);
 
 	getWindow().setBackgroundDrawableResource(R.drawable.background);
