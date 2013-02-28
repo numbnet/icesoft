@@ -49,8 +49,17 @@ import org.icefaces.resources.ICEResourceLibrary;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="toggle", javadoc="Fired when the toggle button is activated to expand or compress the panel (default event).",
-	tlddoc="Fired when the toggle button is activated to expand or collapse the panel (default event).", defaultRender="@all", defaultExecute="@all", argumentClass="org.icefaces.ace.event.ToggleEvent"),
-	@ClientEvent(name="close", javadoc="Fired when the close button is activated to remove the panel from view.", tlddoc="Fired when the close button is activated to remove the panel from view.", defaultRender="@all", defaultExecute="@all", argumentClass="org.icefaces.ace.event.CloseEvent")
+	    tlddoc="Fired when the toggle button is activated to expand or collapse the panel (default event).",
+        defaultRender="@all",
+        defaultExecute="@this",
+        argumentClass="org.icefaces.ace.event.ToggleEvent"),
+
+    @ClientEvent(name="close",
+        javadoc="Fired when the close button is activated to remove the panel from view.",
+        tlddoc="Fired when the close button is activated to remove the panel from view.",
+        defaultRender="@all",
+        defaultExecute="@this",
+        argumentClass="org.icefaces.ace.event.CloseEvent")
 }, defaultEvent="toggle")
 
 public class PanelMeta extends UIPanelMeta {
