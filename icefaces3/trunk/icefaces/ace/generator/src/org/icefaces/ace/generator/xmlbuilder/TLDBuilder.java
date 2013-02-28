@@ -79,10 +79,7 @@ public class TLDBuilder extends XMLBuilder{
         addNode(tag, "body-content", "JSP");
     }
     
-    public void addAttributeInfo(Field field) {
-		MetaContext metaContext = GeneratorContext.getInstance().getActiveMetaContext();
-		PropertyValues propertyValues = metaContext.getPropertyValuesMap().get(field);
-		
+    public void addAttributeInfo(PropertyValues propertyValues) {
         Element attribute = getDocument().createElement("attribute");
         tag.appendChild(attribute);
         Element description = getDocument().createElement("description");
@@ -101,7 +98,7 @@ public class TLDBuilder extends XMLBuilder{
             meaningfulDes = true;
         }
 
-        String propertyName = Utility.resolvePropertyName(field, propertyValues);
+        String propertyName = propertyValues.resolvePropertyName();
 
         CDATASection descriptionCDATA = getDocument().createCDATASection(des);
         description.appendChild(descriptionCDATA);
@@ -110,11 +107,7 @@ public class TLDBuilder extends XMLBuilder{
         addNode(attribute, "required", String.valueOf(propertyValues.required));
         addNode(attribute, "rtexprvalue", "false");
 
-        if (field.getType().isArray())
-            addNode(attribute, "type", field.getType().getComponentType().getName()+"[]");
-        else
-            addNode(attribute, "type", field.getType().getName());
-
+        addNode(attribute, "type", propertyValues.getArrayAwareType());
     }       
 	
 	private String getClientEventsTlddoc(Class clazz) {

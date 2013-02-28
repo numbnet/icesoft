@@ -16,11 +16,7 @@
 
 package org.icefaces.ace.generator.context;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -34,6 +30,7 @@ import org.icefaces.ace.generator.xmlbuilder.FacesConfigBuilder;
 import org.icefaces.ace.generator.xmlbuilder.TLDBuilder;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.JSP;
 import org.icefaces.ace.meta.annotation.TagHandler;
 
 public class GeneratorContext{
@@ -148,16 +145,18 @@ public class GeneratorContext{
 	public MetaContext getActiveMetaContext() {
 		return activeMetaContext;
 	}
-
-	public MetaContext createMetaContext(Class clazz) {
-		if (clazz.isAnnotationPresent(Component.class)) {
-			return new ComponentContext(clazz);
-		} else if (clazz.isAnnotationPresent(TagHandler.class)) {
-			return new TagHandlerContext(clazz);
-		} else {
-			return null;
-		}
-	}
+    
+    public void processMetaContexts(Class clazz) {
+        if (clazz.isAnnotationPresent(JSP.class)) {
+        }
+        if (clazz.isAnnotationPresent(Component.class)) {
+            MetaContext cc = new ComponentContext(clazz);
+            cc.build();
+        } else if (clazz.isAnnotationPresent(TagHandler.class)) {
+            MetaContext thc = new TagHandlerContext(clazz);
+            thc.build();
+        }
+    }
 	
 	public void setActiveMetaContext(MetaContext activeMetaContext) {
 		this.activeMetaContext = activeMetaContext;

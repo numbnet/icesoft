@@ -46,7 +46,7 @@ public @interface Component {
   String tagName();
   
   /**
-   * Class that has to be extended by the generated component. It's a mandatory field.
+   * Class that is to be extended by the generated component. It's a mandatory field.
    * @return fully qualified name of the class has to be extended.
    */
   String extendsClass();
@@ -119,14 +119,15 @@ public @interface Component {
   String handlerClass() default EMPTY;
   
   /**
-   * javadocs for the component class. Goes into the component class.
-   * @return javadocs for the component class.
+   * javadoc for the component class. Goes into the generated component class.
+   * If not specified, defaults to being the same as tlddoc.
+   * @return javadoc for the generated component class.
    */
   String javadoc() default EMPTY;
   
   /**
-   * tld docs for the component class. Goes into the Tld documents.
-   * @return component doc for tld.
+   * tld doc for the component class. Goes into the Tld documentation.
+   * @return component documentation for tld.
    */
   String tlddoc() default EMPTY; 
   

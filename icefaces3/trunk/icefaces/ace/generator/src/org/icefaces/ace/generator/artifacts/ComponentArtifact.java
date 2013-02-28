@@ -40,22 +40,19 @@ public class ComponentArtifact extends Artifact{
 
     private StringBuilder writer = new StringBuilder();
 
-    private List<Field> generatedComponentProperties = new ArrayList<Field>();
+    private List<PropertyValues> generatedComponentProperties;
     private final static Logger Log = Logger.getLogger(ComponentArtifact.class.getName());
 
     public ComponentArtifact(ComponentContext componentContext) {
         super(componentContext);
     }
 
-    public List<Field> getGeneratedComponentProperties() {
-        return generatedComponentProperties;
-    }
-
     private void startComponentClass(Class clazz, Component component) {
         //initialize
         // add entry to faces-config
         GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(clazz, component);
-        GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(clazz, component);
+        GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(
+            clazz, component, getComponentContext().isGenerateHandler());
 
         writer.append("package ");
         writer.append(Utility.getPackageNameOfClass(Utility.getGeneratedClassName(component)));
@@ -206,13 +203,15 @@ public class ComponentArtifact extends Artifact{
         System.out.println("____package "+ pack);
         String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
         System.out.println("____path "+ path);
-        FileWriter.write("base", path, fileName, writer);
+        FileWriter.write("/generated/base/", path, fileName, writer);
         System.out.println("____________________________Creating component class ends_________________________");
     }
 
 
-    private void addProperties(List<Field> properties) {
-        generatedComponentProperties.addAll(properties);
+    private void addProperties(ArrayList<PropertyValues> generatedProperties) {
+        // All the other generator code just gets the reference, but this one
+        // seems to want its own copy, likely just as an optimisation
+        generatedComponentProperties = (ArrayList<PropertyValues>) generatedProperties.clone();
         addPropertyEnum();
         addGetterSetter();
     }
@@ -223,21 +222,20 @@ public class ComponentArtifact extends Artifact{
         for (Behavior behavior: getComponentContext().getBehaviors()) {
             behavior.addPropertiesEnumToComponent(writer);
         }
-        String propertyName;
-        Map<Field, PropertyValues> propertyValuesMap = getComponentContext().getPropertyValuesMap();
-        for (int i = 0; i < generatedComponentProperties.size(); i++){
-            PropertyValues propertyValues = propertyValuesMap.get(generatedComponentProperties.get(i));
-
-            if (!"null".equalsIgnoreCase( propertyName = propertyValues.name))  {
-                propertyName += "Val(\"" + propertyName + "\")";
-            } else {
-                propertyName = generatedComponentProperties.get(i).getName();
-            }
+        for(PropertyValues propertyValues : generatedComponentProperties) {
+            String propertyName = propertyValues.resolvePropertyName();
             System.out.println("Processing property " + propertyName );
 
-            if (!propertyValues.isDelegatingProperty) {
+            if (!propertyValues.isDelegatingProperty()) {
+                String varName = propertyValues.getJavaVariableName();
+                String propKey;
+                if (!propertyName.equals(varName))  {
+                    propKey = varName + "(\"" + propertyName + "\")";
+                } else {
+                    propKey = propertyName;
+                }
                 writer.append("\t\t");
-                writer.append( propertyName );
+                writer.append( propKey );
                 writer.append(",\n");
             }
         }
@@ -261,95 +259,79 @@ public class ComponentArtifact extends Artifact{
         for (Behavior behavior: getComponentContext().getBehaviors()) {
             behavior.addGetterSetter(this, writer);
         }
-        for (int i = 0; i < generatedComponentProperties.size(); i++) {
-            Field field = generatedComponentProperties.get(i);
-            addGetterSetter(field);
+        for (PropertyValues prop : generatedComponentProperties) {
+            addGetterSetter(prop);
         }
         //since generatedComponentProperties doesn't include inherited properties,
-        //here FieldsForTagClass is used. This part may need re-factor-ed later.
-        Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
-        while (iterator.hasNext()){
-            Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
-            GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(field);
+        //here all of the PropertyValues are used. This part may need re-factor-ed later.
+        for(PropertyValues prop : getComponentContext().getPropertyValuesSorted()) {
+            GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(prop);
         }
-
     }
 
     /**
-     * Add a getter/setter for the property for a given field. This method writes the
+     * Add a getter/setter for the property. This method writes the
      * getters to return a Wrapper class for most primitive types, the exceptions being
      * if the method name has a signature from EditableValueHolder that can't be changed.
-     * @param field
+     * @param prop
      */
-    public void addGetterSetter(Field field) {
-        PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
-
-        boolean isBoolean = field.getType().getName().endsWith("boolean")||
-                field.getType().getName().endsWith("Boolean");
-
-
+    public void addGetterSetter(PropertyValues prop) {
         // primitive properties are supported (ones with values
         // even if no default is specified in the Meta). Wrapper properties
         // (null default and settable values) are also supported
         // There are four property names which must be forced to be primitive                                L
-        // or else the generated signiture clashes with the property names in
+        // or else the generated signature clashes with the property names in
         // EditableValueHolder
-        boolean isPrimitive = field.getType().isPrimitive() ||
-                GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
+        String propertyName = prop.resolvePropertyName();
+        String varName = prop.getJavaVariableName();
+        boolean isPrimitive = prop.field.getType().isPrimitive() ||
+                              GeneratorContext.SpecialReturnSignatures.containsKey(propertyName);
 
-        boolean isArray = field.getType().isArray();
-
-        String returnAndArgumentType = isArray ? field.getType().getComponentType().getName() + "[]"
-                                               : field.getType().getName();
-
+        String returnAndArgumentType = prop.getArrayAwareType();
 
         // If primitive property, get the primitive return type
         // otherwise leave it as is.
         if (isPrimitive) {
-            if (GeneratorContext.WrapperTypes.containsKey( field.getType().getName() )) {
-                returnAndArgumentType = GeneratorContext.WrapperTypes.get( field.getType().getName() );
+            String fieldTypeName = prop.field.getType().getName();
+            if (GeneratorContext.WrapperTypes.containsKey(fieldTypeName)) {
+                returnAndArgumentType = GeneratorContext.WrapperTypes.get(fieldTypeName);
             }
         }
 
-        String methodName;
+        boolean isBoolean = prop.field.getType().equals(Boolean.class) ||
+                            prop.field.getType().equals(Boolean.TYPE);
+
         // The publicly exposed property name. Will differ from the field name
         // if the field name is a java keyword
-        String pseudoFieldName;
-        String camlCaseMethodName;
-        if (!"null".equals(prop.name) ) {
-            methodName = prop.name;
-            pseudoFieldName = methodName + "Val";
-        } else {
-            methodName = field.getName();
-            pseudoFieldName = methodName;
-        }
-        camlCaseMethodName = methodName.substring(0,1).toUpperCase() + methodName.substring(1);
+        String camlCaseMethodName = propertyName.substring(0,1).toUpperCase() + propertyName.substring(1);
+        String setMethodName = "set" + camlCaseMethodName;
+        String getMethodName = (isBoolean ? "is" : "get") + camlCaseMethodName;
 
         //-------------------------------------
         // writing Setter
         //-------------------------------------
 
-        addJavaDoc(pseudoFieldName, true, prop.javadocSet);
-        writer.append("\tpublic void set");
-        writer.append(camlCaseMethodName);
+        addJavaDoc(propertyName, true, prop.javadocSet);
+        writer.append("\tpublic void ");
+        writer.append(setMethodName);
 
         // Allow java autoconversion to deal with most of the conversion between
         // primitive types and Wrapper classes
         writer.append("(");
         writer.append( returnAndArgumentType );
         writer.append(" ");
-        writer.append(field.getName());
+        writer.append(varName);
         writer.append(") {");
 
-        if (!prop.isDelegatingProperty) {
+        if (!prop.isDelegatingProperty()) {
             writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
-            writer.append(pseudoFieldName);
+            writer.append(varName);
             writer.append(".toString() );");
 //			writer.append("\n\t\tMap clientValues = null;");
             writer.append("\n\t\tif (ve != null) {");
             writer.append("\n\t\t\t// map of style values per clientId");
             writer.append("\n\t\t\tve.setValue(getFacesContext().getELContext(), ");
-            writer.append( field.getName() );
+            writer.append(varName);
             writer.append(" );");
 
             writer.append("\n\t\t} else { ");
@@ -368,36 +350,36 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\tif (isDisconnected(this))  {");
             // Here,
 
-            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append( pseudoFieldName ).
+            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(varName).
                     append(".toString() + \"_defaultValues\";" );
             writer.append("\n\t\t\t\tMap clientDefaults = (Map) sh.get(defaultKey);");
 
             writer.append("\n\t\t\t\tif (clientDefaults == null");
             if (!isPrimitive) {
-                writer.append(" && ").append(field.getName().toString()).append(" != null");
+                writer.append(" && ").append(varName).append(" != null");
             }
             writer.append(") { ");
             writer.append("\n\t\t\t\t\tclientDefaults = new HashMap(); ");
-            writer.append("\n\t\t\t\t\tclientDefaults.put(\"defValue\"," ).append( field.getName().toString() ).append(");");
+            writer.append("\n\t\t\t\t\tclientDefaults.put(\"defValue\"," ).append(varName).append(");");
             writer.append("\n\t\t\t\t\tsh.put(defaultKey, clientDefaults); ");
             writer.append("\n\t\t\t\t} ");
 
 
             writer.append("\n\t\t\t} else {");
             writer.append("\n\t\t\t\tString clientId = getClientId();");
-            writer.append("\n\t\t\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
+            writer.append("\n\t\t\t\tString valuesKey = PropertyKeys.").append(varName).
                     append(".toString() + \"_rowValues\"; ");
             writer.append("\n\t\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
             writer.append("\n\t\t\t\tif (clientValues == null) {");
             writer.append("\n\t\t\t\t\tclientValues = new HashMap(); ");
             writer.append("\n\t\t\t\t}");
             if (isPrimitive) {
-                writer.append("\n\t\t\t\tclientValues.put(clientId, " ).append( field.getName().toString()).append(");");
+                writer.append("\n\t\t\t\tclientValues.put(clientId, " ).append(varName).append(");");
             } else {
-                writer.append("\n\t\t\t\tif (").append(field.getName().toString()).append(" == null) {");
+                writer.append("\n\t\t\t\tif (").append(varName).append(" == null) {");
                 writer.append("\n\t\t\t\t\tclientValues.remove(clientId);");
                 writer.append("\n\t\t\t\t} else {");
-                writer.append("\n\t\t\t\t\tclientValues.put(clientId, " ).append( field.getName().toString()).append(");");
+                writer.append("\n\t\t\t\t\tclientValues.put(clientId, " ).append(varName).append(");");
                 writer.append("\n\t\t\t\t}");
             }
 
@@ -410,7 +392,7 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\t}" );
             writer.append("\n\t\t}" );
         } else {
-            writer.append("\n\t\tsuper.set" + methodName + "(" + field.getName() + ");");
+            writer.append("\n\t\tsuper." + setMethodName + "(" + varName + ");");
         }
         writer.append("\n\t}\n" );
 
@@ -418,7 +400,7 @@ public class ComponentArtifact extends Artifact{
         //getter
         //-----------------
 
-        addJavaDoc(pseudoFieldName, false, prop.javadocGet);
+        addJavaDoc(propertyName, false, prop.javadocGet);
 
         // Internal value representation is always Wrapper type
         String internalType = returnAndArgumentType;
@@ -430,15 +412,10 @@ public class ComponentArtifact extends Artifact{
         writer.append( returnAndArgumentType );
         writer.append(" ");
 
-        if (isBoolean) {
-            writer.append("is");
-        } else {
-            writer.append("get");
-        }
-        writer.append(camlCaseMethodName);
+        writer.append(getMethodName);
         writer.append("() {");
 
-        if (!prop.isDelegatingProperty) {
+        if (!prop.isDelegatingProperty()) {
             // start of the code
             writer.append("\n\t\t").append(internalType).append(" retVal = ");
 
@@ -446,11 +423,11 @@ public class ComponentArtifact extends Artifact{
             // be handled for various cases. primitives must have a default of some kind
             // and Strings have to return null (not "null") to work.
             String defaultValue = prop.defaultValue;
-            Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
+            Log.fine("Evaluating field name: " + varName + ", isPRIMITIVE " +
                     isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
             if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
-                defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
+                defaultValue = GeneratorContext.PrimitiveDefaults.get( prop.field.getType().toString().trim() );
             }
 
             boolean needsQuotes = ((internalType.indexOf("String") > -1) || (internalType.indexOf("Object") > -1));
@@ -465,7 +442,7 @@ public class ComponentArtifact extends Artifact{
 
             // Start of Value Expression code
             writer.append("\n\t\tValueExpression ve = getValueExpression( PropertyKeys.");
-            writer.append( pseudoFieldName );
+            writer.append(varName);
             writer.append(".toString() );");
 
             writer.append("\n\t\tif (ve != null) {" );
@@ -484,7 +461,7 @@ public class ComponentArtifact extends Artifact{
             }
             writer.append("\n\t\t} else {");
             writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-            writer.append("\n\t\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".toString() + \"_rowValues\";");
+            writer.append("\n\t\t\tString valuesKey = PropertyKeys.").append(varName).append(".toString() + \"_rowValues\";");
             writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey);");
             writer.append("\n\t\t\tboolean mapNoValue = false;");
             // differentiate between the case where the map has clientId and it's value is null
@@ -501,7 +478,7 @@ public class ComponentArtifact extends Artifact{
 
 
             writer.append("\n\t\t\tif (mapNoValue || clientValues == null ) { ");
-            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(pseudoFieldName).append(".toString() + \"_defaultValues\";");
+            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(varName).append(".toString() + \"_defaultValues\";");
             writer.append("\n\t\t\t\tMap defaultValues = (Map) sh.get(defaultKey); ");
             writer.append("\n\t\t\t\tif (defaultValues != null) { ");
             writer.append("\n\t\t\t\t\tif (defaultValues.containsKey(\"defValue\" )) {");
@@ -513,12 +490,7 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\treturn retVal;");
         } else {
             writer.append("\n\t\treturn super.");
-            if (isBoolean) {
-                writer.append("is");
-            } else {
-                writer.append("get");
-            }
-            writer.append(methodName + "();");
+            writer.append(getMethodName + "();");
         }
         writer.append("\n\t}\n");
     }
@@ -595,49 +567,44 @@ public class ComponentArtifact extends Artifact{
     }
 
     public void addFieldGetterSetter(Field field, org.icefaces.ace.meta.annotation.Field fieldAnnotation) {
-
-        boolean isBoolean = field.getType().getName().endsWith("boolean")||
-                field.getType().getName().endsWith("Boolean");
-
-
         // primitive properties are supported (ones with values
         // even if no default is specified in the Meta). Wrapper properties
         // (null defaul`t and settable values) are also supported
         // There are four property names which must be forced to be primitive                                L
         // or else the generated signiture clashes with the property names in
         // EditableValueHolder
+        String propertyName = field.getName();
+        String varName = propertyName;
         boolean isPrimitive = field.getType().isPrimitive() ||
-                GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
+                              GeneratorContext.SpecialReturnSignatures.containsKey(propertyName);
 
-        boolean isArray = field.getType().isArray();
-
-        String returnAndArgumentType = isArray ? field.getType().getComponentType().getName()  + "[]"
-                                               : field.getType().getName();
+        String returnAndArgumentType = Utility.getArrayAwareType(field);
 
         // If primitive property, get the primitive return type
         // otherwise leave it as is.
         if (isPrimitive) {
-            if (GeneratorContext.WrapperTypes.containsKey( field.getType().getName() )) {
-                returnAndArgumentType = GeneratorContext.WrapperTypes.get( field.getType().getName() );
+            String fieldTypeName = field.getType().getName();
+            if (GeneratorContext.WrapperTypes.containsKey(fieldTypeName)) {
+                returnAndArgumentType = GeneratorContext.WrapperTypes.get(fieldTypeName);
             }
         }
 
-        String methodName;
+        boolean isBoolean = field.getType().equals(Boolean.class) ||
+                            field.getType().equals(Boolean.TYPE);
+
         // The publicly exposed property name. Will differ from the field name
         // if the field name is a java keyword
-        String pseudoFieldName;
-        String camlCaseMethodName;
-        methodName = field.getName();
-        pseudoFieldName = methodName;
-        camlCaseMethodName = methodName.substring(0,1).toUpperCase() + methodName.substring(1);
+        String camlCaseMethodName = propertyName.substring(0,1).toUpperCase() + propertyName.substring(1);
+        String setMethodName = "set" + camlCaseMethodName;
+        String getMethodName = (isBoolean ? "is" : "get") + camlCaseMethodName;
 
         //-------------------------------------
         // writing Setter
         //-------------------------------------
 
-        addJavaDoc(pseudoFieldName, true, fieldAnnotation.javadoc());
-        writer.append("\tpublic void set");
-        writer.append(camlCaseMethodName);
+        addJavaDoc(propertyName, true, fieldAnnotation.javadoc());
+        writer.append("\tpublic void ");
+        writer.append(setMethodName);
 
         // Allow java autoconversion to deal with most of the conversion between
         // primitive types and Wrapper classes
@@ -649,13 +616,13 @@ public class ComponentArtifact extends Artifact{
 
         writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
         writer.append("\n\t\tString clientId = getClientId();");
-        writer.append("\n\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
+        writer.append("\n\t\tString valuesKey = PropertyKeys.").append(varName).
                 append(".toString() + \"_rowValues\"; ");
         writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey); ");
         writer.append("\n\t\tif (clientValues == null) {");
         writer.append("\n\t\t\tclientValues = new HashMap(); ");
         writer.append("\n\t\t}");
-        writer.append("\n\t\tif (" + field.getName().toString() + " != null) clientValues.put(clientId, " + field.getName().toString() + ");");
+        writer.append("\n\t\tif (" + varName + " != null) clientValues.put(clientId, " + varName + ");");
         writer.append("\n\t\telse clientValues.remove(clientId);");
 
         writer.append("\n\t\t//Always re-add the delta values to the map. JSF merges the values into the main map" );
@@ -669,7 +636,7 @@ public class ComponentArtifact extends Artifact{
         //getter
         //-----------------
 
-        addJavaDoc(pseudoFieldName, false, fieldAnnotation.javadoc());
+        addJavaDoc(propertyName, false, fieldAnnotation.javadoc());
         // Internal value representation is always Wrapper type
         String internalType = returnAndArgumentType;
         if (GeneratorContext.InvWrapperTypes.containsKey( returnAndArgumentType ) ) {
@@ -680,12 +647,7 @@ public class ComponentArtifact extends Artifact{
         writer.append( returnAndArgumentType );
         writer.append(" ");
 
-        if (isBoolean) {
-            writer.append("is");
-        } else {
-            writer.append("get");
-        }
-        writer.append(camlCaseMethodName);
+        writer.append(getMethodName);
         writer.append("() {");
 
         // start of the code
@@ -713,7 +675,7 @@ public class ComponentArtifact extends Artifact{
         writer.append(";");
 
         writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
-        writer.append("\n\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".toString() + \"_rowValues\";");
+        writer.append("\n\t\tString valuesKey = PropertyKeys.").append(varName).append(".toString() + \"_rowValues\";");
         writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey);");
         writer.append("\n\t\tif (clientValues != null) { ");
 
@@ -736,91 +698,6 @@ public class ComponentArtifact extends Artifact{
             org.icefaces.ace.meta.annotation.Field fieldAnnotation = (org.icefaces.ace.meta.annotation.Field)field.getAnnotation(org.icefaces.ace.meta.annotation.Field.class);
             addFieldGetterSetter(field, fieldAnnotation);
         }
-/*
-		Map<String, Field> nonTransientProperties = new HashMap<String, Field>();
-		//write properties
-		Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
-		while (fields.hasNext()) {
-			Field field = fields.next();
-			org.icefaces.ace.meta.annotation.Field fieldAnnotation = (org.icefaces.ace.meta.annotation.Field)field.getAnnotation(org.icefaces.ace.meta.annotation.Field.class);
-
-			writer.append("\tprotected ");
-			writer.append(field.getType().getName());
-			writer.append(" ");
-			writer.append(field.getName());
-			String defaultValue = fieldAnnotation.defaultValue();
-			boolean defaultValueIsStringLiteral = fieldAnnotation.defaultValueIsStringLiteral();
-			if (!fieldAnnotation.isTransient()) {
-				nonTransientProperties.put(field.getName(), field);
-			}
-			if (!"null".equals(defaultValue)) {
-				writer.append(" = ");
-				if (field.getType().getName().endsWith("String") &&
-						defaultValueIsStringLiteral) {
-					writer.append("\"");
-					writer.append(defaultValue);
-					writer.append("\"");
-				} else {
-					writer.append(defaultValue);
-				}
-			}
-			writer.append(";\n");
-
-		}
-
-
-		//write saveState
-		fields = nonTransientProperties.values().iterator();
-		writer.append("\n\tprivate Object[] values;\n");
-		writer.append("\n\tpublic Object saveState(FacesContext context) {\n");
-		writer.append("\t\tif (context == null) {\n");
-		writer.append("\t\t\tthrow new NullPointerException();\n\t\t}");
-		writer.append("\n\t\tif (values == null) {\n");
-		writer.append("\t\t\tvalues = new Object[");
-		writer.append(getComponentContext().getInternalFieldsForComponentClass().values().size()+1);
-		writer.append("];\n\t\t}\n");
-		writer.append("\t\tvalues[0] = super.saveState(context);\n");
-
-
-		int i=1;
-		while (fields.hasNext()) {
-			Field field = fields.next();
-			writer.append("\t\tvalues[");
-			writer.append(i++);
-			writer.append("] = ");
-			writer.append(field.getName());
-			writer.append(";\n");
-		}
-		writer.append("\t\treturn (values);\n");
-		writer.append("\t}\n");
-
-
-
-		//writer restoreState
-		fields = nonTransientProperties.values().iterator();
-		writer.append("\n\tpublic void restoreState(FacesContext context, Object state) {\n");
-		writer.append("\t\tif (context == null) {\n");
-		writer.append("\t\t\tthrow new NullPointerException();\n\t\t}");
-		writer.append("\n\t\tif (state == null) {\n");
-		writer.append("\t\t\treturn;\n\t\t}\n");
-		writer.append("\t\tvalues = (Object[]) state;\n");
-		writer.append("\t\tsuper.restoreState(context, values[0]);\n");
-
-
-		i=1;
-		while (fields.hasNext()) {
-			Field field = fields.next();
-			writer.append("\t\t");
-			writer.append(field.getName());
-			writer.append(" = ");
-			writer.append("(");
-			writer.append(field.getType().getName());
-			writer.append(") values[");
-			writer.append(i++);
-			writer.append("];\n");
-		}
-		writer.append("\t}\n");
-*/
     }
 
     private void isDisconnected() {
@@ -861,15 +738,12 @@ public class ComponentArtifact extends Artifact{
     public void build() {
         Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
         startComponentClass(getComponentContext().getActiveClass(), component);
-        addProperties(getComponentContext().getPropertyFieldsForComponentClassAsList());
+        addProperties(getComponentContext().getGeneratingPropertyValuesSorted());
         addFacet(getComponentContext().getActiveClass(), component);
         addInternalFields();
         isDisconnected();
         handleAttribute();
         endComponentClass();
     }
-
-
-
 }
 

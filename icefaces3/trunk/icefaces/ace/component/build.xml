@@ -450,6 +450,8 @@
                       value="${faces-config.host}"/>
             <property name="generator.taglib.merge"
                       value="${taglib.merge}"/>
+            <property name="generator.build.dir"
+                      value="${build}"/>
         </ant>
     </target>
 

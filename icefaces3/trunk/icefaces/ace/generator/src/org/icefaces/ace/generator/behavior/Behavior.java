@@ -17,34 +17,33 @@
 package org.icefaces.ace.generator.behavior;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.ArrayList;
 
+import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.generator.artifacts.ComponentArtifact;
 import org.icefaces.ace.generator.context.ComponentContext;
 
 
 public abstract class Behavior {
-	private Map<String, Field> properties = new HashMap<String, Field>();
-	
+    private ArrayList<PropertyValues> properties;
+
 	public Behavior(Class clazz) {
+        properties = new ArrayList<PropertyValues>();
 		for (Field field: clazz.getDeclaredFields()) {
 			if (field.isAnnotationPresent(Property.class)) {
-				getProperties().put(field.getName(), field);
+                Property property = field.getAnnotation(Property.class);
+                PropertyValues prop = new PropertyValues();
+                prop.importProperty(field, property, true);
+                properties.add(prop);
 			}
 		}
 	}
 	
-	public Map<String, Field> getProperties() {
+	public ArrayList<PropertyValues> getProperties() {
 		return properties;
 	}
 
-	public void setProperties(Map<String, Field> properties) {
-		this.properties = properties;
-	}
-	
 	public boolean hasInterface() {
 		return false;
 	}
@@ -71,9 +70,8 @@ public abstract class Behavior {
 	}
 	
 	public void addGetterSetter(ComponentArtifact artifact, StringBuilder output) {
-		Iterator<Field> fields = getProperties().values().iterator();
-		while (fields.hasNext()) {
-			artifact.addGetterSetter(fields.next());
+		for(PropertyValues prop : getProperties()) {
+			artifact.addGetterSetter(prop);
 		}
 	}	
 }

@@ -161,13 +161,6 @@ public class Utility {
 		}
 	}
 
-    public static String resolvePropertyName(Field field, PropertyValues propertyValues) {
-        if (propertyValues.name != null && !propertyValues.name.equals("null")) {
-            return propertyValues.name;
-        }
-        return field.getName();
-    }
-
     public static String getSimpleNameOfClass(String className) {
         int classIndicator = className.lastIndexOf(".");
         return className.substring(classIndicator+1);
@@ -176,5 +169,11 @@ public class Utility {
     public static String getPackageNameOfClass(String className) {
         int classIndicator = className.lastIndexOf(".");
         return className.substring(0, classIndicator);
+    }
+
+    public static String getArrayAwareType(Field field) {
+        boolean isArray = field.getType().isArray();
+        return isArray ? field.getType().getComponentType().getName() + "[]"
+                       : field.getType().getName();
     }
 }

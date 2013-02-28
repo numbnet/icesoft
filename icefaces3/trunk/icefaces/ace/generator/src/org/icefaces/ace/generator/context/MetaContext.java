@@ -17,21 +17,10 @@
 package org.icefaces.ace.generator.context;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 
 import org.icefaces.ace.generator.artifacts.Artifact;
-import org.icefaces.ace.generator.artifacts.ComponentArtifact;
-import org.icefaces.ace.generator.artifacts.ComponentHandlerArtifact;
-import org.icefaces.ace.generator.artifacts.TagArtifact;
-import org.icefaces.ace.generator.artifacts.TagHandlerArtifact;
-import org.icefaces.ace.generator.behavior.Behavior;
 import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.meta.annotation.*;
 
@@ -40,18 +29,45 @@ public abstract class MetaContext {
     protected Class activeClass;
 	protected Map<Field, PropertyValues> propertyValuesMap = new HashMap<Field, PropertyValues>();
 
-	protected boolean hasMethodExpression;
+	protected boolean generateHandler;
 	
     public Map<Field, PropertyValues> getPropertyValuesMap() {
 		return propertyValuesMap;
 	}
 
-	public boolean isHasMethodExpression() {
-		return hasMethodExpression;
-	}
+    /**
+     * List of all PropertyValues, alphabetically sorted by resolved property name
+     */
+    public ArrayList<PropertyValues> getPropertyValuesSorted() {
+        ArrayList<PropertyValues> list = Collections.list(Collections.enumeration(propertyValuesMap.values()));
+        sortByResolvedPropertyName(list);
+        return list;
+    }
 
-	public void setHasMethodExpression(boolean hasMethodExpression) {
-		this.hasMethodExpression = hasMethodExpression;
+    /**
+     * List only of the PropertyValues that we're generating, alphabetically sorted by resolved property name
+     */
+    public ArrayList<PropertyValues> getGeneratingPropertyValuesSorted() {
+        ArrayList<PropertyValues> list = new ArrayList<PropertyValues>(propertyValuesMap.size()+1);
+        for(PropertyValues prop : propertyValuesMap.values()) {
+            if (prop.isGeneratingProperty()) {
+                list.add(prop);
+            }
+        }
+        sortByResolvedPropertyName(list);
+        return list;
+    }
+
+    private static void sortByResolvedPropertyName(List<PropertyValues> list) {
+        Collections.sort(list, new Comparator<PropertyValues>() {
+            public int compare(PropertyValues propertyValues, PropertyValues propertyValues1) {
+                return propertyValues.resolvePropertyName().compareTo(propertyValues1.resolvePropertyName());
+            }
+        });
+    }
+
+	public boolean isGenerateHandler() {
+		return generateHandler;
 	}
 
 	public Artifact getArtifact(Class<? extends Artifact> artifact ) {
@@ -74,105 +90,90 @@ public abstract class MetaContext {
 		GeneratorContext.getInstance().setActiveMetaContext(this);
 		setActiveClass(clazz);
 	}
+
+    protected void processAnnotation(Class clazz, boolean isBaseClass) {
+        if (isRelevantClass(clazz)) {
+			// original fields
+			Field[] localFields = clazz.getDeclaredFields();
+			HashSet<Field> localFieldsSet = new HashSet<Field>();
+
+            for (int i=0; i < localFields.length; i++) {
+				localFieldsSet.add(localFields[i]);
+            }
+
+			// disinherit properties
+			//String[] disinheritProperties = component.disinheritProperties();
+			//HashSet<String> disinheritPropertiesSet = new HashSet<String>();
+
+            //for (int i=0; i < disinheritProperties.length; i++) {
+			//	disinheritPropertiesSet.add(disinheritProperties[i]);
+            //}
+
+            //get all properties which are defined on the annotated component itself.
+
+			Field[] fields = getDeclaredFields(clazz);
+            for (int i=0; i<fields.length; i++) {
+                Field field = fields[i];
+				// this functionality is suspended for now
+				//if (disinheritPropertiesSet.contains(field.getName())) { // skip property if it's in disinheritProperties list
+				//	continue;
+				//}
+
+                processPotentiallyIrrelevantField(clazz, localFieldsSet, field);
+            }
+        }
+    }
+
+    protected boolean processPotentiallyIrrelevantField(
+            Class clazz, HashSet<Field> localFieldsSet, Field field) {
+        if(field.isAnnotationPresent(Property.class)){
+            // collect @Property values from top to bottom
+            PropertyValues propertyValues = collectPropertyValues(field.getName(), clazz);
+            // if values end up being UNSET, then set them to default
+            propertyValues.setDefaultValues();
+            propertyValuesMap.put(field, propertyValues);
+            furtherProcessProperty(clazz, localFieldsSet, field, propertyValues);
+            return true;
+        }
+        return false;
+    }
+
+    abstract protected boolean isRelevantClass(Class clazz);
+
+    protected void furtherProcessProperty(
+            Class clazz, HashSet<Field> localFieldsSet, Field field,
+            PropertyValues propertyValues) {
+    }
 	
 	protected static PropertyValues collectPropertyValues(String fieldName, Class clazz) {
 		return collectPropertyValues(fieldName, clazz, new PropertyValues(), true);
 	}
 	
-	protected static PropertyValues collectPropertyValues(String fieldName, Class clazz, PropertyValues propertyValues, boolean isBaseClass) {
-		Class superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			boolean inherit = true;
-			try {
-				// if isBaseClass check for implementation()... otherwise, always go up
-				if (isBaseClass) {
-					Field field = clazz.getDeclaredField(fieldName);
-					if (field.isAnnotationPresent(Property.class)) {
-						Property property = (Property) field.getAnnotation(Property.class);
-						inherit = property.implementation() != Implementation.GENERATE;
-					}
-				}
-			} catch (NoSuchFieldException e) {
-				// do nothing
-			}
-			
-			if (inherit) {
-				collectPropertyValues(fieldName, superClass, propertyValues, false);
-			}
-		}
-		try {
-			Field field = clazz.getDeclaredField(fieldName);
-			if (field.isAnnotationPresent(Property.class)) {
-				if (!isBaseClass) {
-					propertyValues.overrides = true;
-				}
-				Property property = (Property) field.getAnnotation(Property.class);
-				if (property.expression() != Expression.UNSET) {
-					propertyValues.expression = property.expression();
-				}
-				if (!property.methodExpressionArgument().equals(Property.Null)) {
-					propertyValues.methodExpressionArgument = property.methodExpressionArgument();
-				}
-				if (!property.defaultValue().equals(Property.Null)) {
-					propertyValues.defaultValue = property.defaultValue();
-				}
-				if (property.defaultValueType() != DefaultValueType.UNSET) {
-					propertyValues.defaultValueType = property.defaultValueType();
-				}
-				if (!property.tlddoc().equals(Property.Null)) {
-					propertyValues.tlddoc = property.tlddoc();
-				}
-				if (!property.javadocGet().equals(Property.Null)) {
-					propertyValues.javadocGet = property.javadocGet();
-				}
-				if (!property.javadocSet().equals(Property.Null)) {
-					propertyValues.javadocSet = property.javadocSet();
-				}
-				if (property.required() != Required.UNSET) {
-					propertyValues.required = property.required();
-				}
-				if (property.implementation() != Implementation.UNSET) {
-					propertyValues.implementation = property.implementation();
-				}
-                if (!property.name().equals(Property.Null)) {
-                    propertyValues.name = property.name();
-                } 
-			}
-		} catch (NoSuchFieldException e) {
-			// do nothing
-		}
+	protected static PropertyValues collectPropertyValues(String fieldName,
+            Class clazz, PropertyValues propertyValues, boolean isEndClass) {
+        Field field = null;
+        Property property = null;
+        try {
+            field = clazz.getDeclaredField(fieldName);
+            if (field.isAnnotationPresent(Property.class)) {
+                property = field.getAnnotation(Property.class);
+            }
+        } catch (NoSuchFieldException e) {}
+
+        Class superClass = clazz.getSuperclass();
+        if (superClass != null) {
+            // if isEndClass check for implementation()... otherwise, always go up
+            // UNSET or EXISTS_IN_SUPERCLASS will inherit, GENERATE won't
+            if (!isEndClass || field == null || property == null || property.implementation() != Implementation.GENERATE) {
+                collectPropertyValues(fieldName, superClass, propertyValues, false);
+            }
+        }
+
+        if (field != null && property != null) {
+            propertyValues.importProperty(field, property, isEndClass);
+        }
+        
 		return propertyValues;
-	}
-	
-	protected static void setDefaultValues(PropertyValues propertyValues) {
-	
-		if (propertyValues.expression == Expression.UNSET) {
-			propertyValues.expression = Expression.DEFAULT;
-		}
-		if (propertyValues.methodExpressionArgument.equals(Property.Null)) {
-			propertyValues.methodExpressionArgument = "";
-		}
-		if (propertyValues.defaultValue.equals(Property.Null)) {
-			propertyValues.defaultValue = "null";
-		}
-		if (propertyValues.defaultValueType == DefaultValueType.UNSET) {
-			propertyValues.defaultValueType = DefaultValueType.DEFAULT;
-		}
-		if (propertyValues.tlddoc.equals(Property.Null)) {
-			propertyValues.tlddoc = "";
-		}
-		if (propertyValues.javadocGet.equals(Property.Null)) {
-			propertyValues.javadocGet = propertyValues.tlddoc;
-		}
-		if (propertyValues.javadocSet.equals(Property.Null)) {
-			propertyValues.javadocSet = propertyValues.tlddoc;
-		}
-		if (propertyValues.required == Required.UNSET) {
-			propertyValues.required = Required.DEFAULT;
-		}
-		if (propertyValues.implementation == Implementation.UNSET) {
-			propertyValues.implementation = Implementation.DEFAULT;
-		}
 	}
 	
 	protected static Field[] getDeclaredFields(Class clazz) {
@@ -206,4 +207,11 @@ public abstract class MetaContext {
 			return result;
 		}
 	}
+
+    public void build() {
+        Iterator<Artifact> artifacts = getArtifacts();
+        while (artifacts.hasNext()) {
+            artifacts.next().build();
+        }
+    }
 }

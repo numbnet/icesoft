@@ -16,8 +16,7 @@
 
 package org.icefaces.ace.generator.artifacts;
 
-import java.lang.reflect.Field;
-import java.util.List;
+import java.util.ArrayList;
 
 import org.icefaces.ace.generator.context.TagHandlerContext;
 import org.icefaces.ace.generator.context.GeneratorContext;
@@ -78,15 +77,13 @@ public class TagHandlerArtifact extends Artifact{
             generatedTagHandlerClass.append(tagHandler.behaviorId());
             generatedTagHandlerClass.append("\";\n");
         }
-        
-		List<Field> fields = getTagHandlerContext().getPropertyFieldsForTagHandlerClassAsList();
-        for (int i = 0; i < fields.size(); i++) {
-            Field field = fields.get(i);
-			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field);
-			GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(field);
-			PropertyValues prop = getTagHandlerContext().getPropertyValuesMap().get(field);
+
+        ArrayList<PropertyValues> allProperties = getTagHandlerContext().getPropertyValuesSorted();
+		for(PropertyValues prop : allProperties) {
+			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(prop);
+			GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(prop);
 			generatedTagHandlerClass.append("\n\tprotected final TagAttribute ");
-			generatedTagHandlerClass.append(field.getName());
+			generatedTagHandlerClass.append(prop.getJavaVariableName());
 			generatedTagHandlerClass.append(";");
         }
         generatedTagHandlerClass.append("\n");
@@ -98,14 +95,11 @@ public class TagHandlerArtifact extends Artifact{
 		generatedTagHandlerClass.append(" config) {\n");
         generatedTagHandlerClass.append("\t\tsuper(config);\n");
 		
-        for (int i = 0; i < fields.size(); i++) {
-            Field field = fields.get(i);
-			PropertyValues prop = getTagHandlerContext().getPropertyValuesMap().get(field);
-			
+        for(PropertyValues prop : allProperties) {
 			generatedTagHandlerClass.append("\t\t");
-			generatedTagHandlerClass.append(field.getName());
+			generatedTagHandlerClass.append(prop.getJavaVariableName());
 			generatedTagHandlerClass.append(" = this.getAttribute(\"");
-			generatedTagHandlerClass.append(field.getName());
+			generatedTagHandlerClass.append(prop.resolvePropertyName());
 			generatedTagHandlerClass.append("\");\n");
         }
 		
@@ -129,7 +123,7 @@ public class TagHandlerArtifact extends Artifact{
         System.out.println("_________________________________________________________________________");
         System.out.println("File name "+ fileName);
         System.out.println("path  "+ path);        
-        FileWriter.write("base", path, fileName, generatedTagHandlerClass);        
+        FileWriter.write("/generated/base/", path, fileName, generatedTagHandlerClass);        
     }
 	
 	/**
