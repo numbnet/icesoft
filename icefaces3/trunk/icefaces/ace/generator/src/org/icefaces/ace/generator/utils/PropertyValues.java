@@ -36,9 +36,146 @@ public class PropertyValues {
 
 	public Implementation implementation = Implementation.UNSET;
 
-	// flag to indicate that the property in question was first defined in a superclass
-	public boolean overrides = false;
-	
-	// flag to indicate that only delegating getter and setter methods should be generated and no state staving code
-	public boolean isDelegatingProperty = false;
+    /**
+     * The field of the bottom most subclass, likely from the Meta class itself
+     */
+    public java.lang.reflect.Field field;
+
+	/**
+     * Property was first defined in a superclass
+     */
+	public boolean definedInSuperClass = false;
+
+    /**
+     * Property was defined (only or also) in the ending Meta class
+     */
+    public boolean definedInEndClass = false;
+
+    public boolean modifiesDefaultValueOrMethodExpression = false;
+
+    public boolean modifiesJavadoc = false;
+
+    /**
+     * If property doesn't exist in ancestor classes or if any of the key
+     * fields were modified, then add to component class
+     */
+    public boolean isGeneratingProperty() {
+        return (implementation != Implementation.EXISTS_IN_SUPERCLASS) &&
+               (definedInEndClass || modifiesDefaultValueOrMethodExpression || modifiesJavadoc);
+    }
+
+    /**
+     * If only javadocGet or javadocSet were specified, then simply create
+     * delegating getter/setter and do not generate state saving code
+     */
+	public boolean isDelegatingProperty() {
+        return (modifiesDefaultValueOrMethodExpression == false && modifiesJavadoc == true);
+    }
+
+    public String resolvePropertyName() {
+        if (name != null && !name.equals(Property.Null) && !name.equals("null")) {
+            return name;
+        }
+        return field.getName();
+    }
+
+    public String getJavaVariableName() {
+        return field.getName();
+    }
+
+    public String getArrayAwareType() {
+        return Utility.getArrayAwareType(field);
+    }
+
+    /**
+     * Called in sequence from the most super class until the end sub class,
+     * this imports the values from a Property annotation, so that later
+     * values take precedence.
+     */
+    public void importProperty(java.lang.reflect.Field field, Property property, boolean isEndClass) {
+        if (property.expression() != Expression.UNSET) {
+            expression = property.expression();
+        }
+        if (!property.methodExpressionArgument().equals(Property.Null)) {
+            methodExpressionArgument = property.methodExpressionArgument();
+        }
+        if (!property.defaultValue().equals(Property.Null)) {
+            defaultValue = property.defaultValue();
+        }
+        if (property.defaultValueType() != DefaultValueType.UNSET) {
+            defaultValueType = property.defaultValueType();
+        }
+        if (!property.tlddoc().equals(Property.Null)) {
+            tlddoc = property.tlddoc();
+        }
+        if (!property.javadocGet().equals(Property.Null)) {
+            javadocGet = property.javadocGet();
+        }
+        if (!property.javadocSet().equals(Property.Null)) {
+            javadocSet = property.javadocSet();
+        }
+        if (property.required() != Required.UNSET) {
+            required = property.required();
+        }
+        if (property.implementation() != Implementation.UNSET) {
+            implementation = property.implementation();
+        }
+        if (!property.name().equals(Property.Null)) {
+            name = property.name();
+        }
+
+        this.field = field;
+
+        if (isEndClass) {
+            definedInEndClass = true;
+        } else {
+            definedInSuperClass = true;
+        }
+
+        // If we've defined something that we want to generate
+        // Not just when isEndClass, since we might want our inherited properties
+        // to still generate ACE style getters and setters, instead of using the given ones
+        if (implementation != Implementation.EXISTS_IN_SUPERCLASS) {
+            if (property.expression() != Expression.UNSET ||
+                !property.methodExpressionArgument().equals(Property.Null) ||
+                !property.defaultValue().equals(Property.Null) ||
+                property.defaultValueType() != DefaultValueType.UNSET) {
+                modifiesDefaultValueOrMethodExpression = true;
+            }
+            if (!property.javadocGet().equals(Property.Null) ||
+                !property.javadocSet().equals(Property.Null)) {
+                modifiesJavadoc = true;
+            }
+        }
+    }
+
+    public void setDefaultValues() {
+        if (expression == Expression.UNSET) {
+            expression = Expression.DEFAULT;
+        }
+        if (methodExpressionArgument.equals(Property.Null)) {
+            methodExpressionArgument = "";
+        }
+        if (defaultValue.equals(Property.Null)) {
+            defaultValue = "null";
+        }
+        if (defaultValueType == DefaultValueType.UNSET) {
+            defaultValueType = DefaultValueType.DEFAULT;
+        }
+        if (tlddoc.equals(Property.Null)) {
+            tlddoc = "";
+        }
+        if (javadocGet.equals(Property.Null)) {
+            javadocGet = tlddoc;
+        }
+        if (javadocSet.equals(Property.Null)) {
+            javadocSet = tlddoc;
+        }
+        if (required == Required.UNSET) {
+            required = Required.DEFAULT;
+        }
+        if (implementation == Implementation.UNSET) {
+            implementation = Implementation.DEFAULT;
+        }
+    }
 }

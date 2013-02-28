@@ -39,16 +39,15 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.JSP;
 import org.icefaces.ace.meta.annotation.TagHandler;
 import org.w3c.dom.Document;
 
 public class FileWriter {
     public static void write(String base, String path, String fileName, StringBuilder contents) {
         Writer writer = null;
-        try
-        {
-            String workingDir = URLDecoder.decode(
-                getWorkingFolder() + "../../component/build/generated/" + base + "/");
+        try {
+            String workingDir = URLDecoder.decode(getBuildFolder() + base);
             File folder = new File(workingDir+ path);
             if (!folder.exists()) {
                 folder.mkdirs();
@@ -58,29 +57,31 @@ public class FileWriter {
 
             writer = new BufferedWriter(new java.io.FileWriter(file));
             writer.write(contents.toString());
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally
-        {
-            try
-            {
-               if (writer != null)
-                {
+        } finally {
+            try {
+                if (writer != null) {
                     writer.close();
                 }
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
     }
-    
-    public static String getWorkingFolder() {
+
+    public static String getBuildFolder() {
+        String ret = System.getProperty("generator.build.dir");
+//System.out.println("getBuildFolder  property: " + ret);
+        if (ret == null) {
+            ret = getWorkingFolder() + "../../component/build/";
+        }
+        return ret;
+    }
+
+    private static String getWorkingFolder() {
         try {
             ClassLoader classLoader = Thread.currentThread()
             .getContextClassLoader();
@@ -100,8 +101,8 @@ public class FileWriter {
         try {
             // Prepare the DOM document for writing
             Source source = new DOMSource(doc);
-            File folder = new File(URLDecoder.decode(getWorkingFolder()+
-                "../../component/build/exploded/META-INF/"));
+            File folder = new File(URLDecoder.decode(getBuildFolder()+
+                "/exploded/META-INF/"));
             
             if (!folder.exists()) {
                 folder.mkdirs();
@@ -149,7 +150,7 @@ public class FileWriter {
     }    
     
     public static List<Class> getAnnotatedCompsList() {
-        File file = new File(URLDecoder.decode(FileWriter.getWorkingFolder()+"../../component/build/meta"));
+        File file = new File(URLDecoder.decode(getBuildFolder()+"/meta"));
 
         URLClassLoader clazzLoader = null;
         try {
@@ -160,7 +161,7 @@ public class FileWriter {
         }    
         List<Class> componentsList = new ArrayList<Class>();
         processRequest(file, file.getPath(), componentsList, clazzLoader);
-       return componentsList; 
+        return componentsList;
     }
     
     public static void processRequest(File file, String pathPrefix, List<Class> componentsList, URLClassLoader loader) {
@@ -178,7 +179,9 @@ public class FileWriter {
         
                      try {                    
                         Class c = loader.loadClass(path);
-                        if (c.isAnnotationPresent(Component.class) || c.isAnnotationPresent(TagHandler.class)) {
+                        if (c.isAnnotationPresent(Component.class) ||
+                            c.isAnnotationPresent(TagHandler.class) ||
+                            c.isAnnotationPresent(JSP.class)) {
                             System.out.println("Meta class found = "+ path);
                             componentsList.add(c);
                         }

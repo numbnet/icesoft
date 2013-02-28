@@ -38,9 +38,9 @@ public class ComponentHandlerArtifact extends Artifact{
 	public void build() {
         Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
         if(Utility.isManualHandlerClass(component)) return;
-        if (!getComponentContext().isHasMethodExpression()) return;
+        if (!getComponentContext().isGenerateHandler()) return;
         startComponentClass(getComponentContext().getActiveClass(), component);
-        addRules(getComponentContext().getPropertyFieldsForComponentClassAsList());
+        addRules(getComponentContext().getGeneratingPropertyValuesSorted());
         endComponentClass();
 		
 	}
@@ -86,19 +86,16 @@ public class ComponentHandlerArtifact extends Artifact{
         System.out.println("_________________________________________________________________________");
         System.out.println("File name "+ fileName);
         System.out.println("path  "+ path);        
-        FileWriter.write("support", path, fileName, generatedComponentHandlerClass);        
+        FileWriter.write("/generated/support/", path, fileName, generatedComponentHandlerClass);        
     }
 
-    private void addRules(List<Field> fields) {
+    private void addRules(List<PropertyValues> generatingProperties) {
         generatedComponentHandlerClass.append("\tprotected MetaRuleset createMetaRuleset(Class type) {\n");  
         generatedComponentHandlerClass.append("\t\tMetaRuleset metaRuleset = super.createMetaRuleset(type);\n");  
-        for (int i = 0; i < fields.size(); i++) {
-            Field field = fields.get(i);
-			PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
-			
+        for (PropertyValues prop : generatingProperties) {
             if (prop.expression == Expression.METHOD_EXPRESSION) {
                 generatedComponentHandlerClass.append("\t\tmetaRuleset.addRule( new MethodRule(\"");
-                generatedComponentHandlerClass.append(field.getName());
+                generatedComponentHandlerClass.append(prop.resolvePropertyName());
                 generatedComponentHandlerClass.append("\", null, new Class[");
                 if (prop.methodExpressionArgument.length() > 0) {
                     generatedComponentHandlerClass.append("] {");

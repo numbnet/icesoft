@@ -16,11 +16,9 @@
 
 package org.icefaces.ace.generator.behavior;
 
-import java.lang.reflect.Field;
-import java.util.Iterator;
-
 import javax.el.MethodExpression;
 
+import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.meta.annotation.ActionSource;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
@@ -98,16 +96,12 @@ public class ActionSourceBehavior extends Behavior{
 		
 	}
 
-
-	
 	public void addPropertiesEnumToComponent(StringBuilder output) {
-		Iterator<Field> fields = getProperties().values().iterator();
-		while (fields.hasNext()) {
-			output.append("\t\t");     
-			output.append(fields.next().getName()); 
+		for(PropertyValues prop : getProperties()) {
+			output.append("\t\t");
+			output.append(prop.getJavaVariableName()); 
 			output.append(",\n"); 
 		}
-		
 	}
 	
 	public boolean hasBehavior(Class clazz) {

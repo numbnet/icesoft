@@ -96,7 +96,7 @@ public class TagArtifact extends Artifact{
 		String pack = Utility.getPackageNameOfClass(tagClass);
 		String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
 		// comment out this so UICommand classes will compile **TEMPORARY
-		FileWriter.write("support", path, fileName, generatedTagClass);        
+		FileWriter.write("/generated/support/", path, fileName, generatedTagClass);        
 	}
 
 	private void addProperties(Class clazz, Component component) {
@@ -121,33 +121,30 @@ public class TagArtifact extends Artifact{
 
 	private void addSetters() {
 		//set
-		Iterator<String> iterator = getComponentContext().getFieldNamesForTagClass();
-		while (iterator.hasNext()){
-			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
-			PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
-			
-			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field);
+		for(PropertyValues prop : getComponentContext().getPropertyValuesSorted()) {
+			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(prop);
 
 			String type = (prop.expression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression ";
 
             // propertyName can be a reserved Java keyword like "for", so use
             // is to build the getter/setter method name, but not alone
-            String propertyName = Utility.resolvePropertyName(field, prop);
+            String propertyName = prop.resolvePropertyName();
+            String varName = prop.getJavaVariableName();
 
 			generatedTagClass.append("\tprivate ");
 			generatedTagClass.append(type);
-			generatedTagClass.append(field.getName());
+			generatedTagClass.append(varName);
 			generatedTagClass.append(";\n\tpublic void set");
 			generatedTagClass.append(propertyName.substring(0,1).toUpperCase());
 			generatedTagClass.append(propertyName.substring(1));
 			generatedTagClass.append("(");
 			generatedTagClass.append(type);
-			generatedTagClass.append(field.getName());
+			generatedTagClass.append(varName);
 			generatedTagClass.append(") {\n");
 			generatedTagClass.append("\t\tthis."); 
-			generatedTagClass.append(field.getName());
+			generatedTagClass.append(varName);
 			generatedTagClass.append(" = "); 
-			generatedTagClass.append(field.getName()); 
+			generatedTagClass.append(varName);
 			generatedTagClass.append(";\n\t}\n");
 		}
 	}
@@ -157,11 +154,9 @@ public class TagArtifact extends Artifact{
 		generatedTagClass.append("\tpublic void release() {\n");
 		generatedTagClass.append("\t\tsuper.release();\n");        
 
-		Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
-		while (iterator.hasNext()){
-			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
-			generatedTagClass.append("\t\t"); 
-			generatedTagClass.append(field.getName()); 
+		for(PropertyValues prop : getComponentContext().getPropertyValuesSorted()) {
+			generatedTagClass.append("\t\t");
+			generatedTagClass.append(prop.getJavaVariableName());
 			generatedTagClass.append(" = null;\n"); 
 		}
 		generatedTagClass.append("\t}");        
@@ -188,13 +183,11 @@ public class TagArtifact extends Artifact{
 		generatedTagClass.append(componentClass);
 		generatedTagClass.append("\");\n");
 		generatedTagClass.append("\t\t}\n");        
-		Iterator<String> iterator = getComponentContext().getFieldNamesForTagClass();
-		while (iterator.hasNext()){
-			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
-            PropertyValues property = getComponentContext().getPropertyValuesMap().get(field);
-            String propertyName = Utility.resolvePropertyName(field, property);
+		for(PropertyValues property : getComponentContext().getPropertyValuesSorted()) {
+            String propertyName = property.resolvePropertyName();
+            String varName = property.getJavaVariableName();
 			generatedTagClass.append("\t\tif (");
-			generatedTagClass.append(field.getName()); 
+			generatedTagClass.append(varName);
 			generatedTagClass.append(" != null) {\n\t\t\t");
 			if (property.expression == Expression.METHOD_EXPRESSION &&
                 "actionListener".equals(propertyName)) {
@@ -208,7 +201,7 @@ public class TagArtifact extends Artifact{
                 // addValueChangeListener, but any component not inheriting it,
                 // and just implementing it's own MethodExpression property
                 // named valueChangeListener should just use setValueChangeListener
-                !getComponentContext().getFieldsForComponentClass().containsKey("valueChangeListener")) {
+                !getComponentContext().isValueChangeListenerGenerated()) {
 				generatedTagClass.append("_component.addValueChangeListener(new MethodExpressionValueChangeListener(valueChangeListener)");
             } else if (property.expression == Expression.METHOD_EXPRESSION &&
                 "validator".equals(propertyName)) {
@@ -228,7 +221,7 @@ public class TagArtifact extends Artifact{
 					generatedTagClass.append(propertyName);
 					generatedTagClass.append("\", ");
 				}
-				generatedTagClass.append(field.getName());  
+				generatedTagClass.append(varName);  
 			}
 			generatedTagClass.append(");\n");    
 			generatedTagClass.append("\t\t}\n");              

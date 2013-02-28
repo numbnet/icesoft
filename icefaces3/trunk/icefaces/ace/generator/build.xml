@@ -57,6 +57,8 @@
                      value="${generator.tld.doc.display.name}"/>
         <sysproperty key="generator.tld.doc.version"
                      value="${generator.tld.doc.version}"/>
+        <sysproperty key="generator.build.dir"
+                     value="${generator.build.dir}"/>
     </java>
 
     <!--<java classname="org.icefaces.ace.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >-->
@@ -66,9 +68,9 @@
     <!--</java> -->
 
     <java classname="org.icefaces.ace.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >
-      <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" />
+      <arg value="${generator.build.dir}/exploded/META-INF/icefaces.taglib.xml" />
       <arg value="${generator.taglib.merge}" />
-      <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" />
+      <arg value="${generator.build.dir}/exploded/META-INF/icefaces.taglib.xml" />
     </java>
 
     <java classname="org.icefaces.ace.generator.xmlbuilder.FacesConfigMerge"

@@ -43,7 +43,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         addNode(root, "namespace", GeneratorContext.namespace);
     }
 
-    public void addTagInfo(Class clazz, Component component) {
+    public void addTagInfo(Class clazz, Component component, boolean generateHandler) {
         
         Element root = (Element)getDocument().getDocumentElement();
         tag = getDocument().createElement("tag");        
@@ -61,8 +61,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
             e.printStackTrace();
         }
         // If using a specified manual handler class, or a generated one, reference it
-        if (Utility.isManualHandlerClass(component) ||
-            GeneratorContext.getInstance().getActiveMetaContext().isHasMethodExpression()) {
+        if (Utility.isManualHandlerClass(component) || generateHandler) {
             addNode(component_element, "handler-class", Utility.getHandlerClassName(component));
         }
     }
@@ -88,10 +87,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         addNode(behavior, "handler-class", tagHandler.tagHandlerClass());
     }
     
-    public void addAttributeInfo(Field field) {
-		MetaContext metaContext = GeneratorContext.getInstance().getActiveMetaContext();
-		PropertyValues propertyValues = metaContext.getPropertyValuesMap().get(field);
-		
+    public void addAttributeInfo(PropertyValues propertyValues) {
         Element attribute = getDocument().createElement("attribute");
         tag.appendChild(attribute);
   
@@ -100,7 +96,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         	addNode(attribute, "description", des);
         }
 
-        String propertyName = Utility.resolvePropertyName(field, propertyValues);
+        String propertyName = propertyValues.resolvePropertyName();
 		addNode(attribute, "name", propertyName);
         
         String required = "false";
@@ -109,17 +105,15 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         }
         addNode(attribute, "required",required);
 
-        boolean isPrimitive = field.getType().isPrimitive() ||
-                              GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
+        boolean isPrimitive = propertyValues.field.getType().isPrimitive() ||
+                              GeneratorContext.SpecialReturnSignatures.containsKey(propertyName);
 
-        boolean isArray = field.getType().isArray();
-
-        String returnAndArgumentType = isArray ? field.getType().getComponentType().getName() + "[]"
-                                               : field.getType().getName();
+        String returnAndArgumentType = propertyValues.getArrayAwareType();
 
         if (isPrimitive) {
-            if (GeneratorContext.WrapperTypes.containsKey( field.getType().getName() )) {
-                returnAndArgumentType = GeneratorContext.WrapperTypes.get( field.getType().getName() );
+            String fieldTypeName = propertyValues.field.getType().getName();
+            if (GeneratorContext.WrapperTypes.containsKey(fieldTypeName)) {
+                returnAndArgumentType = GeneratorContext.WrapperTypes.get(fieldTypeName);
             }
         }
         addNode(attribute, "type", returnAndArgumentType);            

@@ -34,11 +34,7 @@ public class Generator {
 		GeneratorContext.namespace = args[1];
 		GeneratorContext generatorContext = GeneratorContext.getInstance();
 		for (Class clazz: generatorContext.getComponents()) {
-			MetaContext metaContext = generatorContext.createMetaContext(clazz);
-		    Iterator<Artifact> artifacts = metaContext.getArtifacts();
-			while (artifacts.hasNext()) {
-				artifacts.next().build();
-		    }
+			generatorContext.processMetaContexts(clazz);
 		}
 		generatorContext.release();		
 	}
