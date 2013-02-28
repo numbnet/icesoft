@@ -8219,7 +8219,7 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
                 fire:          fire,
                 observe:       observe,
                 stopObserving: stopObserving,
-                on:            on
+                prototype_on:            on
             });
 
     Element.addMethods({
@@ -8284,7 +8284,7 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
                  *  Element.on(@element, eventName[, selector], callback) -> Element
                  *  See [[Event.on]].
                  **/
-                on:            on
+                prototype_on:            on
             });
 
     /** section: DOM
@@ -8354,7 +8354,7 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
                  *
                  *  See [[Event.on]].
                  **/
-                on:            on.methodize(),
+                prototype_on:            on.methodize(),
 
                 /**
                  *  document.loaded -> Boolean
