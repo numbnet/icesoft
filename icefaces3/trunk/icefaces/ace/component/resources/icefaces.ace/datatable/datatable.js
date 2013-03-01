@@ -308,7 +308,7 @@ ice.ace.DataTable.prototype.unload = function() {
     this.element.find(this.scrollBodySelector).unbind('scroll')
 
     // Clear filter events
-    this.element.find(this.filterSelector).unbind('keypress').off('keyup');
+    this.element.off('keyup keypress', this.filterSelector);
 
     // Clear panel expansion events
     this.element.off('keyup click', this.panelExpansionSelector);
@@ -341,22 +341,27 @@ ice.ace.DataTable.prototype.unload = function() {
 
 ice.ace.DataTable.prototype.setupFilterEvents = function () {
     var _self = this;
-    if (this.cfg.filterEvent == "enter") this.element.find(this.filterSelector).unbind('keypress').bind('keypress', function (event) {
-        event.stopPropagation();
-        if (event.which == 13) {
-            _self.filter(event);
-            return false; // Don't run form level enter key handling
-        }
-    });
-    else if (this.cfg.filterEvent == "change") this.element.find(this.filterSelector).off('keyup').on('keyup', function (event) {
-        var _event = event;
-        if (event.which == 8 || event.which == 13 || event.which > 40 || event.isTrigger) {
-            if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
-            _self.delayedFilterCall = setTimeout(function () {
-                _self.filter(_event);
-            }, 400);
-        }
-    });
+    if (this.cfg.filterEvent == "enter")
+        this.element.on('keypress', this.filterSelector, function (event) {
+            event.stopPropagation();
+            if (event.which == 13) {
+                _self.filter(event);
+                return false; // Don't run form level enter key handling
+            }
+        });
+
+    else if (this.cfg.filterEvent == "change")
+        this.element.on('keyup', this.filterSelector, function (event) {
+            var _event = event;
+            if (event.which == 8 || event.which == 13 || event.which > 40 || event.isTrigger) {
+                if (_self.delayedFilterCall)
+                    clearTimeout(_self.delayedFilterCall);
+
+                _self.delayedFilterCall = setTimeout(function () {
+                    _self.filter(_event);
+                }, 400);
+            }
+        });
 }
 
 ice.ace.DataTable.prototype.setupPaginator = function () {
