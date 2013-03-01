@@ -16,6 +16,7 @@
 
 package com.icesoft.faces.component.selectinputtext;
 
+import com.icesoft.faces.component.ext.KeyEvent;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
@@ -180,7 +181,11 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                     log.debug(
                             "SelectInputText:encodeChildren(): component's value have been changed, start populating list : ");
                 }
-                populateList(facesContext, component);
+				Map requestParemeterMap =  facesContext.getExternalContext().getRequestParameterMap();
+				KeyEvent keyEvent = new KeyEvent(component, requestParemeterMap);
+				if (keyEvent.getKeyCode() != KeyEvent.CARRIAGE_RETURN) {
+					populateList(facesContext, component);
+				}
                 component.setChangedComponentId(null);
             }
         }
