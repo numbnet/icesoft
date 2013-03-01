@@ -61,13 +61,22 @@ ice.ace.lazy = function(name, args) {
 
 ice.ace.create = function(name, args) {
     if (ice.ace.jq.isFunction(ice.ace[name])) {
-        var temp = function(){}, // constructor-less duplicate class
+        // Use ECMAScript 5 to construct if available
+        if (typeof Object.create == 'function') {
+            var o = Object.create(ice.ace[name].prototype);
+            ice.ace[name].apply(o, args);
+
+            return o;
+        } else {
+            var temp = function(){}, // constructor-less duplicate class
                 inst, ret;
-        temp.prototype = ice.ace[name].prototype;
-        inst = new temp; // init constructor-less class
-        ret = ice.ace[name].apply(inst, args); // apply original constructor
-        ret = Object(ret) === ret ? ret : inst;
-        return ret;
+
+            temp.prototype = ice.ace[name].prototype;
+            inst = new temp; // init constructor-less class
+            ret = ice.ace[name].apply(inst, args); // apply original constructor
+            ret = Object(ret) === ret ? ret : inst;
+            return ret;
+        }
     }
     else
         throw 'Missing resources for "' + name + '" component. ' +
