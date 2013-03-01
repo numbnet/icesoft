@@ -862,7 +862,9 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
 
 ice.ace.DataTable.prototype.setupResizableColumns = function () {
     //Add resizers
-    ice.ace.jq(this.jqId + ' thead :not(th:last)').children('.ui-header-column').append('<div class="ui-column-resizer"></div>');
+    ice.ace.jq(this.jqId + ' > div > table > thead th:not(th:last)')
+            .children('.ui-header-column')
+            .append('<div class="ui-column-resizer"></div>');
 
     //Setup resizing
     this.columnWidthsCookie = this.id + '_columnWidths',
