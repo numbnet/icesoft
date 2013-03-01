@@ -301,7 +301,6 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.STYLE_ELEM, style, null);
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-        writer.writeAttribute(HTML.ID_ATTR, tableId +"_tableconf_close", null);
 
         writer.startElement(HTML.SPAN_ELEM, null);
 
