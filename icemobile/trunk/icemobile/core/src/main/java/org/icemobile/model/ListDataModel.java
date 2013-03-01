@@ -158,7 +158,7 @@ public class ListDataModel<E> extends DataModel<E> {
     	    return;
     	}
     	DataModelListener [] listeners = getDataModelListeners();
-        if ((old != index) && (listeners != null)) {
+        if ((old != index) && (listeners != null) && (listeners.length > 0)) {
             Object rowData = null;
             if (isRowAvailable()) {
                 rowData = getRowData();
