@@ -447,12 +447,43 @@ if (window.addEventListener) {
 
     window.addEventListener("pagehide", function () {
         if (ice.push) {
+            ice.log.debug(ice.log, 'PAUSING from pagehide');
             ice.push.connection.pauseConnection();
         }
     }, false);
 
     window.addEventListener("pageshow", function () {
         if (ice.push) {
+            ice.log.debug(ice.log, 'RESUMING from pageshow');
+            ice.push.connection.resumeConnection();
+        }
+    }, false);
+
+    document.addEventListener("webkitvisibilitychange", function () {
+	if (document.webkitHidden) {
+            if (ice.push) {
+		ice.log.debug(ice.log, 'PAUSING from visibility change');
+		ice.push.connection.pauseConnection();
+            }
+	} 
+	else {
+            if (ice.push) {
+		ice.log.debug(ice.log, 'RESUMING from visibility change');
+		ice.push.connection.resumeConnection();
+            }
+	}
+    }, false);
+
+    window.addEventListener("blur", function () {
+        if (ice.push) {
+            ice.log.debug(ice.log, 'PAUSING from blur');
+            ice.push.connection.pauseConnection();
+        }
+    }, false);
+
+    window.addEventListener("focus", function () {
+        if (ice.push) {
+            ice.log.debug(ice.log, 'RESUMING from focus');
             ice.push.connection.resumeConnection();
         }
     }, false);
