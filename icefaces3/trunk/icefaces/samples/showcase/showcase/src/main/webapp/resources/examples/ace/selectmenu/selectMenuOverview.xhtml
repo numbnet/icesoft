@@ -45,7 +45,7 @@
             <ace:panel id="panel">
 			<h:panelGrid columns="2" class="grid">
 				<h:panelGroup>
-				<ace:selectMenu id="selectProvince" value="#{selectMenuBean.province}" valueChangeListener="#{selectMenuBean.provinceChange}">
+				<ace:selectMenu id="selectProvince" value="#{selectMenuBean.province}" valueChangeListener="#{selectMenuBean.provinceChange}" label="Select province: " labelPosition="top">
 					<f:selectItem itemValue="British Columbia" itemLabel="British Columbia" />
 					<f:selectItem itemValue="Alberta" itemLabel="Alberta" />
 					<f:selectItem itemValue="Saskatchewan" itemLabel="Saskatchewan" />
@@ -62,7 +62,7 @@
 					<ace:ajax execute="@this" render="@all" />
 				</ace:selectMenu>
 				<br />
-				<ace:selectMenu id="selectCity" value="#{selectMenuBean.city}" rendered="#{selectMenuBean.displayCities}">
+				<ace:selectMenu id="selectCity" value="#{selectMenuBean.city}" rendered="#{selectMenuBean.displayCities}" label="Select city: " labelPosition="top">
 					<f:selectItems value="#{selectMenuBean.cities}" />
 					<ace:ajax execute="@this" render="@all" />
 				</ace:selectMenu>
