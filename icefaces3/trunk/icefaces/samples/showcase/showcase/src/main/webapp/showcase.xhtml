@@ -131,6 +131,7 @@
                     ~ navigationModel.currentComponentGroup.menuLinks - is an array with links to all showcases in a suite
             -->
             <h:form id="frm">
+                <h:outputText value="Theme: "/><ace:themeSelect/>
             <ul>
             <ui:repeat id="menuLinks" var="menuLink"
                        value="#{navigationModel.currentComponentGroup.menuLinks}">

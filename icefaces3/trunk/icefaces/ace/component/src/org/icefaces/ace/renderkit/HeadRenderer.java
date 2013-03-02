@@ -142,10 +142,10 @@ public class HeadRenderer extends Renderer implements ComponentSystemEventListen
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         //Theme
         FacesContext context = FacesContext.getCurrentInstance();
-        String theme = null;
+        String theme = (String) context.getExternalContext().getSessionMap().get(Constants.THEME_PARAM);
         String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
 
-        if (themeParamValue != null) {
+        if (theme == null && themeParamValue != null) {
             ELContext elContext = context.getELContext();
             ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
             ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);

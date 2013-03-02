@@ -31,7 +31,8 @@ import org.icefaces.resources.ICEResourceLibrary;
         componentType = "org.icefaces.ace.component.ThemeSelect",
         rendererType = "org.icefaces.ace.component.ThemeSelectRenderer",
         componentFamily = "org.icefaces.ace.ThemeSelect",
-        tlddoc = ""
+        tlddoc = "The themeSelect component can be used to dynamically change the current ACE ThemeRoller theme in the application. " +
+                "See <a href=\"http://www.icesoft.org/wiki/display/ICE/ace.theme\">Wiki Documentation</a> for more details on themes."
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({

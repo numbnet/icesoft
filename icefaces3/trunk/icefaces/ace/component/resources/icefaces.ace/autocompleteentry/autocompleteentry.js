@@ -858,4 +858,4 @@ ice.ace.Autocompleter.prototype = {
 			setTimeout(function() { if (focus) ice.ace.jq(ice.ace.escapeClientId(element.id)).focus(); }, 50);
 		}
 	}
-}
+};
