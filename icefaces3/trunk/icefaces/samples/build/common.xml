@@ -206,6 +206,10 @@
                 <include name="icefaces-ee-ext.jar"/>
             </lib>
             
+            <lib dir="../../ace/themes">
+                <include name="*.jar"/>
+            </lib>
+            
             <classes dir="${classes.dir}"/>
         </war>
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
