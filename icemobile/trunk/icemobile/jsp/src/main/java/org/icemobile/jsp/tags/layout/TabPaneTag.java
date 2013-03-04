@@ -116,7 +116,7 @@ public class TabPaneTag extends BodyTagSupport implements ITabPane {
         //   LOG.info("in try doAfterBody");
            if (body!=null){
                StringBuilder sb = new StringBuilder(body.getString());
-          //     LOG.info(" content of body="+sb.toString());
+               System.out.println(" content of body="+sb.toString());
                mParent.addContents(getClientId(), sb);
            }
            bodyContent.clear();
