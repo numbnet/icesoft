@@ -62,7 +62,7 @@ public class MediaController implements Serializable {
     private MediaStore mediaStore;
     
     @ManagedProperty(value="#{mediaHelper}")
-	private MediaHelper mediaHelper;
+	private static MediaHelper mediaHelper;
 
 	@ManagedProperty(value="#{mediaView}")
 	private MediaView mediaView;
@@ -85,7 +85,7 @@ public class MediaController implements Serializable {
 		processUpload(uploadModel, mediaStore);
 	}
 	
-	public void processUpload(UploadModel model, MediaStore store){
+	public static void processUpload(UploadModel model, MediaStore store){
 		if( LOGGER.isLoggable(Level.FINER)){
 			LOGGER.finer("processUpload()");
 		}
@@ -142,7 +142,7 @@ public class MediaController implements Serializable {
         uploadsCompleted(uploadModel, mediaStore);
     }
 
-	public void uploadsCompleted(UploadModel model, MediaStore store) {
+	public static void uploadsCompleted(UploadModel model, MediaStore store) {
 		LOGGER.finer("uploadsCompleted()");
 		MediaMessage msg = model.getCurrentMediaMessage();
 		if (msg.isHasMedia()) {
