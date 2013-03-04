@@ -15,6 +15,7 @@
  */
 package org.icemobile.component;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -145,14 +146,18 @@ public interface IDataTable extends IMobiComponent{
      * will render the DataTable with client-side functionality.
      * @return true if the DataTable is in client-side mode
      */
-    public boolean isClient();
+    public boolean isClientSide();
     
     /**
      * Set the client-side mode setting. The client-side mode 
      * will render the DataTable with client-side functionality.
      * @param client true if the DataTable should render in client-side mode
      */
-    public void setClient(boolean client);
+    public void setClientSide(boolean client);
 
+    /**
+     * Render the detail view for the DataTable
+     */
+    public void renderDetailView() throws IOException;
 
 }

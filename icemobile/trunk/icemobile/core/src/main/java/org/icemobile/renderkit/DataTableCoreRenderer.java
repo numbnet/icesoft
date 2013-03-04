@@ -21,6 +21,7 @@ import static org.icemobile.util.HTML.ID_ATTR;
 import static org.icemobile.util.HTML.SCRIPT_ELEM;
 import static org.icemobile.util.HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT;
 import static org.icemobile.util.HTML.SPAN_ELEM;
+import static org.icemobile.util.HTML.STYLE_ELEM;
 import static org.icemobile.util.HTML.TABLE_ELEM;
 import static org.icemobile.util.HTML.TBODY_ELEM;
 import static org.icemobile.util.HTML.TD_ELEM;
@@ -31,6 +32,7 @@ import static org.icemobile.util.HTML.TR_ELEM;
 import static org.icemobile.util.HTML.TYPE_ATTR;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -164,6 +166,18 @@ public class DataTableCoreRenderer  extends BaseCoreRenderer{
             styleClass += " mobi-tbl-hor";
         }
         writer.writeAttribute(CLASS_ATTR, styleClass);
+        writer.startElement(DIV_ELEM, dataTable);
+        writer.writeAttribute(CLASS_ATTR, "mobi-tbl-detail-render");
+        writer.endElement(DIV_ELEM);
+        if( dataTable.isClientSide() ){
+            writer.startElement(DIV_ELEM, dataTable);
+            writer.writeAttribute(CLASS_ATTR, "mobi-tbl-detail-template");
+            dataTable.renderDetailView();
+            writer.endElement(DIV_ELEM);
+        }
+        else{
+            dataTable.renderDetailView();
+        }
         writer.endElement(DIV_ELEM);
     }
     
@@ -203,9 +217,31 @@ public class DataTableCoreRenderer  extends BaseCoreRenderer{
         writer.writeAttribute(ID_ATTR, dataTable.getClientId() + "_js");
         writer.startElement(SCRIPT_ELEM);
         writer.writeAttribute(TYPE_ATTR, SCRIPT_TYPE_TEXT_JAVASCRIPT);
-        writer.write("ice.mobi.dataTable.initClient('"
-                + dataTable.getClientId() 
-                + "', { orientation: '" + calculateOrientation(dataTable) + "'});");
+        
+        //get the property names from the columns
+        String properties = "{";
+        List<IColumn> columns = dataTable.getColumns();
+        boolean hasProperties = false;
+        for( IColumn column : columns ){
+            if( column.getProperty() != null && column.getProperty().length() > 0 ){
+                properties += "" + column.getProperty() + ":" + 
+                        dataTable.getColumns().indexOf(column) + ",";
+                hasProperties = true;
+            }
+        }
+        if( hasProperties ){
+            properties = properties.substring(0,properties.length()-1) + "}";
+        }
+        
+        String js = "ice.mobi.dataTable.initClient('"
+                + dataTable.getClientId() + "', { " +
+                "orientation: '" + calculateOrientation(dataTable) + "'," +
+                "clientSide: " + dataTable.isClientSide() + "";
+        if( hasProperties ){
+            js += ",properties: " + properties;
+        }
+        js += "});";
+        writer.writeText(js);
         writer.endElement(SCRIPT_ELEM);
         writer.endElement(SPAN_ELEM);
     }
@@ -236,6 +272,30 @@ public class DataTableCoreRenderer  extends BaseCoreRenderer{
                 writer.endElement(THEAD_ELEM);
             writer.endElement(TABLE_ELEM);
         writer.endElement(DIV_ELEM);
+    }
+    
+    public void renderResponsiveColumnStyles(IDataTable dataTable, IResponseWriter writer)
+        throws IOException{
+        List<IColumn> columns = dataTable.getColumns();
+        List<IColumn> responsiveColumns = new ArrayList<IColumn>();
+        for( IColumn column : columns ){
+            if( column.getMinDeviceWidth() != null && column.getMinDeviceWidth().length() > 0 ){
+                responsiveColumns.add(column);
+            }
+        }
+        
+        if( responsiveColumns.size() > 0 ){
+            writer.startElement(STYLE_ELEM, dataTable);
+            for( IColumn column : responsiveColumns ){
+                int columnIndex = dataTable.getColumns().indexOf(column) + 1; //CSS nth-child is 1-based
+                writer.writeText("@media only screen and (max-width: " 
+                        + column.getMinDeviceWidth() + "){ .mobi-tbl-master table td:nth-child(" 
+                        + columnIndex + "), .mobi-tbl-master table th:nth-child(" + columnIndex 
+                        + ") {display:none;}}");
+            }
+            writer.endElement(STYLE_ELEM);
+        }
+       
     }
     
 

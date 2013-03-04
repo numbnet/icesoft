@@ -51,22 +51,52 @@ public interface IColumn {
     public void setValue(String value);
     
     /**
-     * Set the minimum client width that the column will display for. 
+     * Set the minimum device width that the column will display for. 
      * This allows the column to be hidden for smaller views, while
      * still allowing the column information to be available in the
      * Detail Section.
-     * @param clientWidth the minimum client width for the column to display, eg '480px'
+     * @param deviceWidth the minimum client width for the column to display, eg '480px'
      */
-    public void setMinClientWidth(String clientWidth);
+    public void setMinDeviceWidth(String deviceWidth);
     
     /**
-     * Get the minimum client width that the column will display for. 
+     * Get the minimum device resolution width that the column will display for. 
      * This allows the column to be hidden for smaller views, while
      * still allowing the column information to be available in the
      * Detail Section.
-     * @return the minimum client width for the column to display, eg '480px'
+     * @return the minimum device width for the column to display, eg '480px'
      */
-    public String getMinClientWidth();
+    public String getMinDeviceWidth();
+    
+    /**
+     * Get the setting for optimizeExpression, which, when true, will cause
+     * the DataTable to cache the ValueExpression Method bindings for for
+     * higher performance.
+     */
+    public boolean isOptimizeExpression();
+    
+    /**
+     * Set the setting for optimizeExpression, which, when true, will cause
+     * the DataTable to cache the ValueExpression Method bindings for
+     * higher performance.
+     */
+    public void setOptimizeExpression(boolean optimize);
+    
+    /**
+     * Get the property name for the column, to be used with the detail
+     * template for clientSide mode. The property can be used inside the 
+     * detail section with clientSide expressions, eg {{myPropertyName}}
+     * @return The property name string. 
+     */
+    public String getProperty();
+    
+    /**
+     * Set the property name for the column, to be used with the detail
+     * template for clientSide mode. The property can be used inside the 
+     * detail section with clientSide expressions, eg {{myPropertyName}}
+     * @param property The property name string. 
+     */
+    public void setProperty(String property);
      
 
 }
