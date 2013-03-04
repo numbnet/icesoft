@@ -88,12 +88,10 @@ public class UploadServlet extends HttpServlet {
                     uploadModel.setAudioUploadMap(uploadAttributes);
                     uploadModel.setSelectedMediaInput(
                             getAppropriateMediaType(partType));
-                    MediaController mediaController = (MediaController)
-                        servletContext.getAttribute(MediaController.BEAN_NAME);
                     MediaStore mediaStore = (MediaStore)
                         servletContext.getAttribute(MediaStore.BEAN_NAME);
-                    mediaController.processUpload(uploadModel, mediaStore);
-                    mediaController.uploadsCompleted(uploadModel, mediaStore);
+                    MediaController.processUpload(uploadModel, mediaStore);
+                    MediaController.uploadsCompleted(uploadModel, mediaStore);
                 }
             }
         } catch (Exception e) {
