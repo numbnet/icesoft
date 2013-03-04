@@ -37,7 +37,7 @@ ice.ace.List = function(id, cfg) {
     this.appStartHandler = this.cfg.start;
     cfg.start = function(event, ui) {
         var placeholder = ice.ace.jq(event.currentTarget).find('.if-list-plhld'),
-            li = ice.ace.jq(event.srcElement).closest('li'),
+            li = ice.ace.jq(event.originalEvent.target).closest('li'),
             width = li.width(),
             height = li.height();
 
@@ -175,10 +175,12 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
     var item = ui.item,
         self = this;
 
-    setTimeout(function () {
-        var ie = ice.ace.jq.browser.msie && (ice.ace.jq.browser.version == 8 || ice.ace.jq.browser.version == 7);
-        if (!ie && !ui.item.is(':hover')) self.itemLeave({currentTarget : item});
-    }, 100);
+    if (!(ice.ace.jq.browser.chrome || ice.ace.jq.browser.safari)) {
+        setTimeout(function () {
+            var ie = ice.ace.jq.browser.msie && (ice.ace.jq.browser.version == 8 || ice.ace.jq.browser.version == 7);
+            if (!ice.ace.util.isMouseOver(item, event)) self.itemLeave({currentTarget : item});
+        }, 100);
+    }
 
     /*
         For an odd reason jq.closest() returns no results incorrectly here for some IDs.
