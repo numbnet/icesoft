@@ -63,7 +63,7 @@ public class ResponseWriterWrapper implements IResponseWriter{
     }
 
     public void closeOffTag() throws IOException {
-        //not necessary in jsp content        
+        //not necessary in jsf content        
     }
 
 }
