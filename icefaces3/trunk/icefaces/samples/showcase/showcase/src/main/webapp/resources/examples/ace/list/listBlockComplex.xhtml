@@ -44,26 +44,25 @@
                         font-size:85% !important;
                         width:48%;
                     }
-                    *+html .blockList .if-list-item {
-                        /* IE7 inline block hack */
-                        display:inline;
-                    }
                     .blockList .if-list-item {
                         display:inline-block;
+
+                        /* IE7 inline block hack */
+                        *display:inline;
+                        zoom:1;
+
                         border:1px solid black;
                         margin: .5em;
                     }
-                    *+html .blockList .if-list-plhld {
-                        /* IE7 inline block hack */
-                        display:inline;
-                    }
-                    /* drag placeholder style */
+                        /* drag placeholder style */
                     .blockList .if-list-plhld {
                         display:inline-block;
-                        width:100px;
-                        height:130px;
+
+                        /* IE7 inline block hack */
+                        *display:inline;
+                        zoom:1;
+
                         border:1px solid black;
-                        margin: .5em;
                     }
                 </style>
 
