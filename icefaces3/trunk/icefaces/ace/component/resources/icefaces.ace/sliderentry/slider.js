@@ -48,7 +48,7 @@ ice.ace.Slider = function(id, cfg) {
 	} else {
 		this.jq.slider(this.cfg);
 	}
-	var handle = ice.ace.jq(ice.ace.escapeClientId(this.id) + " > a");
+	var handle = ice.ace.jq(ice.ace.escapeClientId(this.id) + " .ui-slider-handle");
 	if (this.cfg.tabindex) handle.attr('tabindex', this.cfg.tabindex);
 
     //Slide handler
