@@ -66,9 +66,10 @@ public class DataTableFootRenderer {
             }
         } else {
             writer.startElement(HTML.TR_ELEM, null);
-            for (Column column : columns) {
-                encodeColumnFooter(context, table, columns, column, false);
-            }
+            for (Column column : columns)
+                if (column.isRendered())
+                    encodeColumnFooter(context, table, columns, column, false);
+
             writer.endElement(HTML.TR_ELEM);
         }
         writer.endElement(HTML.TFOOT_ELEM);
