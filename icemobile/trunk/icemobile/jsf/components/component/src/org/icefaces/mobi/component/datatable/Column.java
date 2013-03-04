@@ -45,7 +45,6 @@ public class Column extends ColumnBase implements IColumn{
      * 
      * @see org.icemobile.component.IColumn#getValueFromCachedExpression()
      */
-    @Override
     public String getValueFromCachedExpression() {
         if( ve == null ){
             ve = getValueExpression("value");
