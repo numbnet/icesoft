@@ -26,25 +26,21 @@ public class MockResponseWriter implements IResponseWriter{
     private Stack<String> elementStack = new Stack<String>();
     private boolean lastElementClosed = true;
 
-    @Override
     public void writeAttribute(String name, Object value) throws IOException {
         str.append(" " + name + "='" + value + "'");
         
     }
 
-    @Override
     public void writeAttribute(String name, boolean value) throws IOException {
         str.append(" " + name + "='" + value + "'");
         
     }
 
-    @Override
     public void writeAttribute(String name, int value) throws IOException {
         str.append(" " + name + "='" + value + "'");
         
     }
 
-    @Override
     public void startElement(String name, Object component) throws IOException {
         if( !elementStack.isEmpty() && !lastElementClosed){
             str.append(">");
@@ -56,7 +52,6 @@ public class MockResponseWriter implements IResponseWriter{
         
     }
 
-    @Override
     public void startElement(String name) throws IOException {
         if( !elementStack.isEmpty() && !lastElementClosed){
             str.append(">");
@@ -68,7 +63,6 @@ public class MockResponseWriter implements IResponseWriter{
         
     }
 
-    @Override
     public void endElement(String name) throws IOException {
         String element = elementStack.pop();
         
@@ -86,7 +80,6 @@ public class MockResponseWriter implements IResponseWriter{
         
     }
 
-    @Override
     public void writeText(String text) throws IOException {
         if( !lastElementClosed ){
             str.append(">");
@@ -96,7 +89,6 @@ public class MockResponseWriter implements IResponseWriter{
         
     }
 
-    @Override
     public void write(String input) throws IOException {
         if( !lastElementClosed ){
             str.append(">");
@@ -106,7 +98,6 @@ public class MockResponseWriter implements IResponseWriter{
         
     }
 
-    @Override
     public void closeOffTag() throws IOException {
         str.append(">");
         lastElementClosed = true;
