@@ -16,37 +16,40 @@
 
 package org.icemobile.samples.mobileshowcase.view.examples.device.reality;
 
-import org.icemobile.samples.mobileshowcase.util.FacesUtils;
-import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
-import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
-import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
-import org.icefaces.application.ResourceRegistry;
-import org.icefaces.mobi.utils.MobiJSFUtils;
-
-import javax.annotation.PreDestroy;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.application.Resource;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.event.ActionEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.annotation.PreDestroy;
+import javax.faces.application.Resource;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.imageio.ImageIO;
+
+import org.icefaces.application.ResourceRegistry;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
+import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination;
+import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Example;
+import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ExampleResource;
+import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ExampleResources;
+import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ResourceType;
+import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 
 @Destination(
