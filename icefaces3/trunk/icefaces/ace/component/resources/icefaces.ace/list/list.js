@@ -393,7 +393,7 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                 else {
                     var deselection = jqLi.hasClass('ui-state-active');
 
-                    function deSelect() {
+                    function modifyState() {
                         if (deselection) {
                             jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
                             self.removeSelectedItem(jqLi);
@@ -403,10 +403,12 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                         }
                     }
 
+                    // If this is single selection or no ctrl key is depressed
+                    // deselect all before modifying selection
                     if (!(e.metaKey || e.ctrlKey) || self.cfg.selection == "single") {
-                        self.deselectAll(null, deSelect);
+                        self.deselectAll(null, modifyState);
                     } else {
-                        deSelect();
+                        modifyState();
                     }
 
                 }
@@ -535,15 +537,13 @@ ice.ace.List.prototype.deselectAll = function(except, done) {
     this.write('selections', selections);
     this.write('deselections', deselections);
 
-    if (this.behaviors && !isNaN(deselections.length) && deselections.length > 0) {
-        if (this.behaviors.deselect) {
-            var s = this;
-            this.behaviors.deselect.oncomplete = function() {
-                s.clearState();
-                if (done) done();
-            };
-            ice.ace.ab(this.behaviors.deselect);
-        }
+    if (this.behaviors && this.behaviors.deselect && !isNaN(deselections.length) && deselections.length > 0) {
+        var s = this;
+        this.behaviors.deselect.oncomplete = function() {
+            s.clearState();
+            if (done) done();
+        };
+        ice.ace.ab(this.behaviors.deselect);
     } else {
         if (done) done();
     }
