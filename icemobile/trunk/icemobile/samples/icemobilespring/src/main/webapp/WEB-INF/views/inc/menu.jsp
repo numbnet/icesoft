@@ -34,6 +34,7 @@
     <mobi:outputListItem><a href="<c:url value="/flipswitch"/>">Flip Switch</a></mobi:outputListItem>
     <mobi:outputListItem><a href="<c:url value="/geolocation"/>">Geolocation</a></mobi:outputListItem>
     <mobi:outputListItem><a href="<c:url value="/inputtext"/>">HTML5 Input</a></mobi:outputListItem>
+    <mobi:outputListItem><a href="<c:url value="/datatable"/>">Data Table</a></mobi:outputListItem>
     
     <mobi:outputListItem group="true">Native Integration</mobi:outputListItem>
     <mobi:outputListItem><a href="<c:url value="/mediaspot"/>">Augmented Reality</a></mobi:outputListItem>
