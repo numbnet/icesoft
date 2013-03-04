@@ -45,7 +45,6 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
     private static final Logger log = Logger.getLogger(WindowScopeManager.class.getName());
     private static final String seed = Integer.toString(new Random().nextInt(1000), 36);
     private static SharedMapLookupStrategy sharedMapLookupStrategy;
-    private static ScopeMap UnusedScopeMap;
 
     static {
         try {
@@ -156,17 +155,11 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                     }
 
                     //unknown window scope, corresponding ScopeMap might have been erased when not used (no beans stored in it)
-                    //use No-Op ScopeMap to avoid throwing exceptions
-                    UnusedScopeMap = UnusedScopeMap == null ? new ScopeMap(context) : UnusedScopeMap;
-                    id = UnusedScopeMap.getId();
-                    //put something into the map to avoid beeing discarded
-                    if (UnusedScopeMap.isEmpty()) {
-                        UnusedScopeMap.put("dummy-bean", new Serializable() {
-                        });
-                    }
-                    UnusedScopeMap.activate(state);
-                    associateWindowID(id, requestMap);
-                    return id;
+                    //most probably a postback received after the server or application was restarted
+                    ScopeMap scopeMap = new ScopeMap(context);
+                    scopeMap.activate(state);
+                    associateWindowID(scopeMap.id, requestMap);
+                    return scopeMap.id;
                 }
             }
         }
