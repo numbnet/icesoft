@@ -130,7 +130,7 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
         return path;
     }
 
-    private static class SessionBasedResourceDispatcher implements Serializable {
+    private static class SessionBasedResourceDispatcher {
         private HashMap mappings = new HashMap();
 
         public void handleResourceRequest(FacesContext facesContext) throws IOException {
