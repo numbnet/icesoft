@@ -16,7 +16,7 @@
 package org.icefaces.ace.component.themeselect;
 
 import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.baseMeta.UISelectOneMeta;
+import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
@@ -27,7 +27,7 @@ import org.icefaces.resources.ICEResourceLibrary;
         componentClass = "org.icefaces.ace.component.themeselect.ThemeSelect",
         rendererClass = "org.icefaces.ace.component.themeselect.ThemeSelectRenderer",
         generatedClass = "org.icefaces.ace.component.themeselect.ThemeSelectBase",
-        extendsClass = "javax.faces.component.UISelectOne",
+        extendsClass = "javax.faces.component.UIInput",
         componentType = "org.icefaces.ace.component.ThemeSelect",
         rendererType = "org.icefaces.ace.component.ThemeSelectRenderer",
         componentFamily = "org.icefaces.ace.ThemeSelect",
@@ -40,5 +40,5 @@ import org.icefaces.resources.ICEResourceLibrary;
         @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
         @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
-public class ThemeSelectMeta extends UISelectOneMeta {
+public class ThemeSelectMeta extends UIInputMeta {
 }
