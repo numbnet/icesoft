@@ -84,6 +84,12 @@ public class ACEList extends ListBase {
     }
 
     @Override
+    public void setRowIndex(int i) {
+        if (i < 0) model = null;
+        super.setRowIndex(i);
+    }
+
+    @Override
     protected void setDataModel(DataModel newModel) {
         model = newModel;
     }
