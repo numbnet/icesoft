@@ -17,6 +17,7 @@
 package org.icemobile.jsp.tags;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,8 @@ import org.icemobile.util.ClientDescriptor;
 
 public abstract class BaseBodyTag extends BodyTagSupport implements IMobiComponent{
     
+    private static Logger LOG = Logger.getLogger(BaseBodyTag.class.getName());
+    
     protected String id;
     protected boolean disabled;
     protected String style;
@@ -41,23 +44,27 @@ public abstract class BaseBodyTag extends BodyTagSupport implements IMobiCompone
      * Subclasses must set renderer on Tag before calling
      */
     protected int _doStartTag() throws JspException {
+        LOG.warning("start");
         
         try {
             writer = new TagWriter(pageContext);
             renderer.encodeBegin(this, writer, true);
-            writer.closeOffTag();
+            //writer.closeOffTag();
         }catch (IOException e) {
             throw new JspException(e);
         }
+        LOG.warning("end");
         return EVAL_BODY_INCLUDE;
     }
     
     public int doEndTag() throws JspException{
+        LOG.warning("start");
         try {
             renderer.encodeEnd(this, writer, true);
         }catch (IOException e) {
             throw new JspException(e);
         }
+        LOG.warning("end");
         return EVAL_PAGE;
     }
     
