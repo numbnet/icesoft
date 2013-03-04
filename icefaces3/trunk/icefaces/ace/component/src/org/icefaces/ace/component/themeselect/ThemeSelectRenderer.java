@@ -174,4 +174,14 @@ public class ThemeSelectRenderer extends Renderer {
         }
         return theme;
     }
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        super.decode(context, component);
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String submittedValue = requestParameterMap.get("select_" + component.getClientId(context));
+        if (submittedValue != null) {
+            ((ThemeSelect) component).setSubmittedValue(submittedValue);
+        }
+    }
 }

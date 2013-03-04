@@ -13,15 +13,10 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-(function ($, undefined) { ice.ace.ThemeSelect = {
+(function ($, undefined) {
 
-singleEntry: function (clientId) {
-    $(function () {
-        ice.ace.ThemeSelect.init(clientId);
-    });
-},
-
-init: function (clientId) {
+var ThemeSelect = ice.ace.ThemeSelect = function (clientId) {
+    this.clientId = clientId;
     this.escSelId = ice.ace.escapeClientId("select_" + clientId);
 
     $(this.escSelId).change(function (event) {
@@ -40,11 +35,24 @@ init: function (clientId) {
             }
         }
     ).change();
-    ice.onElementUpdate(clientId, this.destroy);
-},
+};
 
-destroy: function () {
+ThemeSelect.prototype.destroy = function () {
+    var instances = this.constructor.instances;
     $(this.escSelId).off("change");
-}
+    instances[this.clientId] = null;
+    delete instances[this.clientId];
+};
 
-} })(ice.ace.jq);
+ThemeSelect.instances = {};
+
+ThemeSelect.singleEntry = function (clientId) {
+    $(function () {
+        var instance = ThemeSelect.instances[clientId] = new ThemeSelect(clientId);
+        ice.onElementUpdate(clientId, function () {
+            instance.destroy();
+        });
+    });
+};
+
+})(ice.ace.jq);

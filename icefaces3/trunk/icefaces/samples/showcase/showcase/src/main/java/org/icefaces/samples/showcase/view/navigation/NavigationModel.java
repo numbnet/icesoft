@@ -55,6 +55,8 @@ public class NavigationModel implements Serializable {
     private boolean renderAsExample = true;
     //saves selected tab number between redirects (if selected tab number is not saved, accordion menu will reset itself to the default index of 0)
     private int activePaneIndex = DEFAULT_MENU_TAB_INDEX;
+
+    private String theme = "sunny";
     
     public NavigationModel() {
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -135,5 +137,13 @@ public class NavigationModel implements Serializable {
 
     public void setActivePaneIndex(int activePaneIndex) {
         this.activePaneIndex = activePaneIndex;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 }
