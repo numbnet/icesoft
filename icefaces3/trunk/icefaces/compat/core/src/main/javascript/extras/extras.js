@@ -4676,6 +4676,27 @@ Ice.Menu = {
         Ice.Menu.hideAll();
         submenu = $(submenu);
         if (submenu) {
+			var offsetParent = Element.getOffsetParent(submenu);
+			if (offsetParent != $$('body')[0]) {
+				var offset = Element.cumulativeOffset(offsetParent);
+
+				showX -= offset[0];
+				showY -= offset[1];
+
+				if (showX + submenu.getWidth() > offsetParent.getWidth()) {
+					showX -= (showX + submenu.getWidth() - offsetParent.getWidth() + 26); // dont forget the scroll bars width
+				}
+
+				if (showY + submenu.getHeight() > offsetParent.getHeight()) { 
+					showY -= (showY + submenu.getHeight() - offsetParent.getHeight() + 26); // dont forget the scroll bars height
+				}
+
+				showX += offsetParent.scrollLeft;
+				showY += offsetParent.scrollTop;
+
+				submenu.style.zIndex = 1100;
+			}
+			
             Ice.Menu.showMenuWithId(submenu);
             var styleLeft = showX + "px";
             submenu.style.left = styleLeft;
