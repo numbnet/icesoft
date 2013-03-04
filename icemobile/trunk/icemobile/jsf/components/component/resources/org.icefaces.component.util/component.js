@@ -794,15 +794,8 @@ ice.mobi.geolocation = {
             var horizontal = (orientation == 'right' || orientation == 'left');
             
             //set height of master and detail regions
-            var detailElem, masterElem;
-            if( orientation == 'top' || orientation == 'left'){
-                detailElem = ctr.children[1];
-                masterElem = ctr.children[2];
-            }
-            else {
-                detailElem = ctr.children[2];
-                masterElem = ctr.children[1];
-            } 
+            var detailElem = document.querySelector('.mobi-tbl-detail');
+            var masterElem = document.querySelector('.mobi-tbl-master');
             
             if( horizontal ){
                 detailElem.style.height = masterElem.style.height = '100%';
