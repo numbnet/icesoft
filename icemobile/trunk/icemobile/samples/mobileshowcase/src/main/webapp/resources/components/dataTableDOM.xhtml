@@ -80,9 +80,6 @@
             display: inline-block;
         }
         .mobi-tbl-master tr{ cursor: pointer }
-        .mobi-tbl-master tr:hover{
-            background-color: rgba(17, 161, 217, 0.3) !important;
-        }
         @media only screen and (max-width: 800px) {
             table td:nth-child(7), table th:nth-child(7) {display: none;}
         }
@@ -142,10 +139,10 @@
         ctr.children[0].style.height = "40%";
         ctr.children[2].style.height = "48%";
         
-        new Tablesort("#{cc.id}");
+        //new Tablesort("#{cc.id}");
 
         //attach row listeners TODO use event delegation
-        rowsElem.addEventListener("click", setRowDetail, false);
+        //rowsElem.addEventListener("click", setRowDetail, false);
         
         //match header and body column widths
         for (colIndex = 0; colIndex < headers.length; ++colIndex) {
@@ -160,7 +157,7 @@
         setRowDetail({target: document.querySelector("##{cc.id} tbody tr:first-child")});
 
     }
-    setTimeout(createDataTable, 100);
+    setTimeout(createDataTable, 10);
     
     function setRowDetail(evt){
         if( evt.target && 
