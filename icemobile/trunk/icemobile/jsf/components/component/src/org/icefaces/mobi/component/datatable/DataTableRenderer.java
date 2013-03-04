@@ -104,8 +104,6 @@ public class DataTableRenderer extends Renderer{
                         
         renderer.renderJavaScript(dataTable, writer);        
         renderer.renderRootEnd(dataTable, writer);  
-        
-        System.out.println(writer.toString());
     }
     
     @Override
