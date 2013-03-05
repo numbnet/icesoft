@@ -1065,6 +1065,7 @@ function QTip(target, options, id, attr)
 			else if($.isFunction(opts.effect)) {
 				tooltip.stop(1, 1);
 				opts.effect.call(tooltip, self);
+				if ($.browser.msie && $.browser.version < 8) self.reposition(event, arguments[2]); // ICE-8974
 				tooltip.queue('fx', function(n){ after(); n(); });
 			}
 
