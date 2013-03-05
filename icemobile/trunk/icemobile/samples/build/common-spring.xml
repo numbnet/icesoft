@@ -54,11 +54,8 @@
         
 	</patternset>
 	
-	<patternset id="pattern.distribute.samples">
-        <include name="mail.jar"/>
-     </patternset>
-
     <target name="compile" depends="pre.compile">
+    
     	<available property="isJDK16" classname="java.util.ServiceLoader"/> 
                 
         <javac srcdir="${java.dir}"
