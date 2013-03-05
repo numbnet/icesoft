@@ -22,7 +22,8 @@
         <include name="${icemobile-jsp.lib.name}.jar"/>
         <include name="${icepush.lib.name}.jar"    unless="no-icepush"/>
         <include name="${icemobile-spring.lib.name}.jar"/>
-        <include name="jstl-1.2.jar"/>
+        <include name="jstl-api-1.2.jar"/>
+        <include name="el-api-2.2.1-b03.jar"/>
         <include name="commons-logging.jar"/>
         <include name="javax.servlet-api.jar"/>
         <include name="javax.annotation.jar"/>
