@@ -118,13 +118,13 @@
         <delete dir="${dist.dir}"/>
         <delete dir="${docs.jsf.dir}"/>
         <ice:subant target="clean">
-            <filelist dir="." files="jsf, jsp, samples"/>
+            <filelist dir="." files="jsf, jsp, spring, samples"/>
         </ice:subant>
     </target>
 
     <target name="clean.bin">
         <ice:subant target="clean">
-            <filelist dir="." files="jsf, jsp, samples"/>
+            <filelist dir="." files="jsf, jsp, spring, samples"/>
         </ice:subant>
     </target>
 
@@ -147,6 +147,7 @@
                     <exclude name="client/"/>
                     <exclude name="jsf/"/>
                     <exclude name="jsp/"/>
+                	<exclude name="spring/"/>
                     <exclude name="lib/generator/"/>
                     <!-- trim component build script for binary bundle -->
                     <exclude name="build.xml" />
