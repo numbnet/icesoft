@@ -40,6 +40,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * <p>
@@ -61,6 +62,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             ExtendedAttributeConstants.getAttributes(
                     ExtendedAttributeConstants.ICE_PANELPOPUP,
                     new String[][]{PASSTHRU_EXCLUDE, PASSTHRU_JS_EVENTS});
+    private static final Random RANDOM = new Random();
 
 
     /*
@@ -244,7 +246,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             StringBuffer dropCall = new StringBuffer();
             String call = addJavascriptCalls(uiComponent, "DRAG", handleId,
                     facesContext, dropCall);
-            scriptTextNode.appendData("; " + call);
+            scriptTextNode.appendData("; " + call + (" //" + RANDOM.nextLong()));
             if (panelPopup.isClientOnly()) {
                 //the "submit" method in the dragdrop_custom.js would check for this
                 //element inside the panelPopup and will not fire submit if found
