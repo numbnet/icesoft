@@ -25,6 +25,7 @@
         <include name="jstl-1.2.jar"/>
         <include name="commons-logging.jar"/>
         <include name="javax.servlet-api.jar"/>
+        <include name="javax.annotation.jar"/>
         <include name="org.springframework.beans-3.1.1.RELEASE.jar"/>
         <include name="org.springframework.context-3.1.1.RELEASE.jar"/>
         <include name="org.springframework.context.support-3.1.1.RELEASE.jar"/>
