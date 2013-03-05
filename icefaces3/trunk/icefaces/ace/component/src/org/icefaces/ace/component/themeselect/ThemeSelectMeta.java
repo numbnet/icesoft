@@ -15,6 +15,8 @@
  */
 package org.icefaces.ace.component.themeselect;
 
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import org.icefaces.ace.resources.ACEResourceNames;
@@ -40,5 +42,10 @@ import org.icefaces.resources.ICEResourceLibrary;
         @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
         @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
+@ClientBehaviorHolder(events = {
+        @ClientEvent(name = "valueChange", javadoc = "Fired whenever the value of the component changes (default event).",
+                tlddoc = "Fired whenever the value of the component changes (default event).", defaultRender = "@this", defaultExecute = "@this"),
+}, defaultEvent = "valueChange")
+
 public class ThemeSelectMeta extends UIInputMeta {
 }
