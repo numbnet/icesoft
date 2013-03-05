@@ -101,7 +101,7 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
 	private String styleClass;
 	
 	@Property( 
-		tlddoc="Defines whether or not the slider control will use an animated transition to move to a new location on the slider rail.",
+		tlddoc="Defines whether or not the slider control will use an animated transition to move to a new location when the user clicks outside handle on the slider rail.",
 		defaultValue="true" )
 	private boolean animate;
 	
