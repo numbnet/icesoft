@@ -919,6 +919,31 @@ Ice.modal = {
             setFocus('');
         }
 
+        if (Ice.modal.rollbacks) {
+            Ice.modal.enableOutsideCallbacks(Ice.modal.rollbacks);
+        }
+        Ice.modal.rollbacks = Ice.modal.disableOutsideCallbacks(modal);
+
+
+        var iframes = document.body.getElementsByTagName('iframe');
+        for (var i = 0, l = iframes.length; i < l; i++) {
+            var f = iframes[i];
+            if (!childOfTarget(f)) {
+                var iframeDocument = f.contentDocument || f.contentWindow.document;
+                var iframeWindow = f.contentWindow;
+                //cancel only the events that are not triggered within this iframe
+                function bubbleEvent(event) {
+                    var triggeringElement = (event && event.target) || (iframeWindow.event && iframeWindow.event.srcElement);
+                    return triggeringElement && iframeDocument == triggeringElement.ownerDocument;
+                }
+
+                disableElementCallbacks(iframeWindow, bubbleEvent);
+                disableElementCallbacks(iframeDocument, bubbleEvent);
+            }
+        }
+    },
+
+    disableOutsideCallbacks: function(modal) {
         function none() {
             return false;
         }
@@ -934,7 +959,7 @@ Ice.modal = {
             return false;
         }
 
-        function disableCallbacks(e, cancelEvent) {
+        function disableElementCallbacks(e, cancelEvent) {
             var onkeypress = e.onkeypress;
             var onkeyup = e.onkeyup;
             var onkeydown = e.onkeydown;
@@ -957,37 +982,27 @@ Ice.modal = {
         }
 
         //disable event handlers only once (in case multiple modal popups are rendered)
-        if (!Ice.modal.rollbacks) {
-            var rollbacks = Ice.modal.rollbacks = [];
+        var rollbacks = [];
 
-            ['input', 'select', 'textarea', 'button', 'a'].each(function(type) {
-                var elements = document.body.getElementsByTagName(type);
-                for (var i = 0, l = elements.length; i < l; i++) {
-                    var e = elements[i];
-                    if (!childOfTarget(e)) {
-                        rollbacks.push(disableCallbacks(e, none));
-                    }
-                }
-            });
-
-            var iframes = document.body.getElementsByTagName('iframe');
-            for (var i = 0, l = iframes.length; i < l; i++) {
-                var f = iframes[i];
-                if (!childOfTarget(f)) {
-                    var iframeDocument = f.contentDocument || f.contentWindow.document;
-                    var iframeWindow = f.contentWindow;
-                    //cancel only the events that are not triggered within this iframe
-                    function bubbleEvent(event) {
-                        var triggeringElement = (event && event.target) || (iframeWindow.event && iframeWindow.event.srcElement);
-                        return triggeringElement && iframeDocument == triggeringElement.ownerDocument;
-                    }
-
-                    disableCallbacks(iframeWindow, bubbleEvent);
-                    disableCallbacks(iframeDocument, bubbleEvent);
+        ['input', 'select', 'textarea', 'button', 'a'].each(function(type) {
+            var elements = document.body.getElementsByTagName(type);
+            for (var i = 0, l = elements.length; i < l; i++) {
+                var e = elements[i];
+                if (!childOfTarget(e)) {
+                    rollbacks.push(disableElementCallbacks(e, none));
                 }
             }
-        }
+        });
+
+        return rollbacks;
     },
+
+    enableOutsideCallbacks: function(rollbacks) {
+        rollbacks.each(function(f) {
+            f.call();
+        });
+    },
+
     stop:function(target) {
         if (Ice.modal.running.include(target)) {
             var iframe = document.getElementById('iceModalFrame' + target);
@@ -1020,18 +1035,20 @@ Ice.modal = {
                 Ice.modal.trigger = '';
             }
 
-            //restore event handlers only when all modal popups are gone
-            if (Ice.modal.running.length == 0 && Ice.modal.rollbacks) {
-                try {
-                    Ice.modal.rollbacks.each(function(f) {
-                        f.call();
-                    });
-                } finally {
-                    Ice.modal.rollbacks = null;
-                }
+            if (Ice.modal.rollbacks) {
+                Ice.modal.enableOutsideCallbacks(Ice.modal.rollbacks);
+            }
+
+            var runningPopups = Ice.modal.running.length;
+            if (runningPopups > 0) {
+                var previousModal = document.getElementById(Ice.modal.running[runningPopups - 1]);
+                Ice.modal.rollbacks = Ice.modal.disableOutsideCallbacks(previousModal);
+            } else {
+                Ice.modal.rollbacks = null;
             }
         }
     },
+
     enableDisableTabindex: function(target, enable) {
         var targetElement = null;
         if (target) {
