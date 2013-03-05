@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS uploads (
 	resource BLOB,
     content_type VARCHAR(60),
     token VARCHAR(60),
-    uuid VARCHAR(36)
+    uuid VARCHAR(36),
+    last_updated BIGINT
 );

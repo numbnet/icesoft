@@ -44,9 +44,6 @@ public class CameraController extends ICEmobileBaseController {
 
     private static final Log LOG = LogFactory.getLog(CameraController.class);
 
-    @Autowired
-    private UploadDirectorySupport uploadDirSupport;
-
     @RequestMapping(value = "/camera", method = RequestMethod.GET)
     public void get(HttpServletRequest request, ModelBean cameraBean,
             Model model) {
@@ -72,12 +69,7 @@ public class CameraController extends ICEmobileBaseController {
                         "Sorry " + cameraBean.getName()
                                 + ", only image uploads are allowed.");
             } else {
-                // put the photo upload in the public media directory
                 try {
-                    /*
-                    String photoUrl = uploadDirSupport
-                            .addMediaToPublicDir(cameraUpload);
-                            */
                     String photoUrl = "icemobile-store/"+ cameraUpload.getUuid();
                     model.addAttribute("cameraUpload", photoUrl);
 
@@ -112,41 +104,38 @@ public class CameraController extends ICEmobileBaseController {
                         "Sorry " + cameraBean.getName()
                                 + ", only image uploads are allowed.");
             } else {
-                // put the photo upload in the public media directory
-                try {
-                    String photoUrl = uploadDirSupport
-                            .addMediaToPublicDir(cameraUpload);
-                    model.addAttribute("cameraUpload", photoUrl);
 
-                    // tell the user their photo has been uploaded
-                    model.addAttribute("cameraMessage",
-                            "Hello " + cameraBean.getName()
-                                    + ", your file was uploaded successfully.");
-                    
-                    Map<String,String> additionalParams = cameraBean.getAdditionalInfo();
-                    String imcheck = " ";
-                    String jqcheck = " ";
-                    if (null != additionalParams) {
-                        if (additionalParams.keySet().contains("icemobile")) {
-                            imcheck = "*";
-                        }
-                        if (additionalParams.keySet().contains("jquery")) {
-                            jqcheck = "*";
-                        }
+                String photoUrl = "icemobile-store/"+ cameraUpload.getUuid();
+                model.addAttribute("cameraUpload", photoUrl);
+
+                // tell the user their photo has been uploaded
+                model.addAttribute("cameraMessage",
+                        "Hello " + cameraBean.getName()
+                                + ", your file was uploaded successfully.");
+                
+                Map<String,String> additionalParams = cameraBean.getAdditionalInfo();
+                String imcheck = " ";
+                String jqcheck = " ";
+                if (null != additionalParams) {
+                    if (additionalParams.keySet().contains("icemobile")) {
+                        imcheck = "*";
                     }
-                    
-                    return new CamUpdate("Thanks for the photo, " + cameraBean.getName()
-                            + " and your interest in [" + imcheck + "] ICEmobile and ["
-                            + jqcheck + "] jquery.", request.getContextPath() + "/"
-                            + photoUrl);
-                } catch (IOException e) {
-                    //there was some problem opening the uploaded file or 
-                    //creating a new one for the media dir
-                    model.addAttribute("cameraError",
-                            "Sorry " + cameraBean.getName()
-                                    + ", there was a problem saving the image file.");
+                    if (additionalParams.keySet().contains("jquery")) {
+                        jqcheck = "*";
+                    }
                 }
+                
+                return new CamUpdate("Thanks for the photo, " + cameraBean.getName()
+                        + " and your interest in [" + imcheck + "] ICEmobile and ["
+                        + jqcheck + "] jquery.", request.getContextPath() + "/"
+                        + photoUrl);
             }
+        } 
+        else{
+          //there was some problem with the upload
+            model.addAttribute("cameraError",
+                    "Sorry " + cameraBean.getName()
+                            + ", there was a problem saving the image file.");
         }
         // always add the bean back to the model to save other form data
         model.addAttribute("cameraBean", cameraBean);
