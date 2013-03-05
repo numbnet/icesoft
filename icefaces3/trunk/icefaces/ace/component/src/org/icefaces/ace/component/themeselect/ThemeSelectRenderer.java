@@ -15,7 +15,9 @@
  */
 package org.icefaces.ace.component.themeselect;
 
+import org.icefaces.ace.renderkit.InputRenderer;
 import org.icefaces.ace.util.Constants;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.el.ELContext;
@@ -26,10 +28,8 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.TreeMap;
@@ -37,9 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @MandatoryResourceComponent(tagName = "themeSelect", value = "org.icefaces.ace.component.themeselect.ThemeSelect")
-public class ThemeSelectRenderer extends Renderer {
-
-    private static String THEME_LIST = Constants.THEME_PARAM + ".list";
+public class ThemeSelectRenderer extends InputRenderer {
 
     private FacesContext context;
     private ResponseWriter writer;
@@ -74,7 +72,7 @@ public class ThemeSelectRenderer extends Renderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-helper-hidden", null);
-        writer.write(String.valueOf(new Date().getTime()));
+        writer.write(Integer.toString(selectedTheme.hashCode()) + Integer.toString(themeList.hashCode()));
         writer.endElement("span");
 
         writer.endElement("span");
@@ -108,14 +106,18 @@ public class ThemeSelectRenderer extends Renderer {
     }
 
     private void renderScript() throws IOException {
+        JSONBuilder jb = JSONBuilder.create();
+        encodeClientBehaviors(context, component, jb);
+
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
-        writer.write("ice.ace.ThemeSelect.singleEntry(\"" + clientId + "\");");
+        writer.write("ice.ace.ThemeSelect.singleEntry(\"" + clientId + "\",{" + jb + "});");
         writer.endElement("script");
     }
 
     private void getThemeList() throws IOException {
         Map<String, Object> appMap = context.getExternalContext().getApplicationMap();
+        String THEME_LIST = Constants.THEME_PARAM + ".list";
         themeList = (Map<String, String>) appMap.get(THEME_LIST);
         if (themeList != null) {
             return;
@@ -183,5 +185,6 @@ public class ThemeSelectRenderer extends Renderer {
         if (submittedValue != null) {
             ((ThemeSelect) component).setSubmittedValue(submittedValue);
         }
+        decodeBehaviors(context, component);
     }
 }

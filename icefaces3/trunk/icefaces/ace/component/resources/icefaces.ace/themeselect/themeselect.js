@@ -15,11 +15,11 @@
  */
 (function ($, undefined) {
 
-var ThemeSelect = ice.ace.ThemeSelect = function (clientId) {
+var ThemeSelect = ice.ace.ThemeSelect = function (clientId, cfg) {
     this.clientId = clientId;
-    this.escSelId = ice.ace.escapeClientId("select_" + clientId);
+    this.$sel = $(ice.ace.escapeClientId("select_" + clientId));
 
-    $(this.escSelId).change(function (event) {
+    this.$sel.change(function (event) {
             var styleSheet, option, href;
             option = $(this).children("option:selected");
             if (option.length > 0) {
@@ -35,20 +35,23 @@ var ThemeSelect = ice.ace.ThemeSelect = function (clientId) {
             }
         }
     ).change();
+    if (cfg.behaviors) {
+        ice.ace.attachBehaviors(this.$sel, cfg.behaviors);
+    }
 };
 
 ThemeSelect.prototype.destroy = function () {
     var instances = this.constructor.instances;
-    $(this.escSelId).off("change");
+    this.$sel.off("change");
     instances[this.clientId] = null;
     delete instances[this.clientId];
 };
 
 ThemeSelect.instances = {};
 
-ThemeSelect.singleEntry = function (clientId) {
+ThemeSelect.singleEntry = function (clientId, cfg) {
     $(function () {
-        var instance = ThemeSelect.instances[clientId] = new ThemeSelect(clientId);
+        var instance = ThemeSelect.instances[clientId] = new ThemeSelect(clientId, cfg);
         ice.onElementUpdate(clientId, function () {
             instance.destroy();
         });
