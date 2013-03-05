@@ -1,13 +1,10 @@
 package org.icemobile.spring.handler.support;
 
 import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
@@ -19,15 +16,14 @@ import org.icemobile.application.Resource;
 import org.icemobile.application.ResourceAdapter;
 import org.icemobile.application.ResourceStore;
 import org.icemobile.spring.handler.ByteArrayResourceAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.support.AbstractLobCreatingPreparedStatementCallback;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
-import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.jdbc.support.lob.LobCreator;
+import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -62,7 +58,7 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
 		resource.setId(newKey.longValue());
 		LOG.info("added " + resource);
 		this.jdbcTemplate.execute(
-		        "INSERT INTO " + tableName + " (resource, content_type, name, token, uuid) VALUES (?, ?, ?, ?, ?)",
+		        "INSERT INTO " + tableName + " (resource, content_type, name, token, uuid, last_updated) VALUES (?, ?, ?, ?, ?, ?)",
 		        new AbstractLobCreatingPreparedStatementCallback(lobHandler) {                         
 		            protected void setValues(PreparedStatement ps, LobCreator lobCreator) 
 		                throws SQLException {
@@ -71,6 +67,7 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
 		              ps.setString(3, resource.getName());
 		              ps.setString(4, resource.getToken());
 		              ps.setString(5, resource.getUuid());
+		              ps.setLong(6, System.currentTimeMillis());
 		            }
 		        });
 	}
@@ -106,7 +103,9 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
 			.addValue("resource", resource.getBytes())
 			.addValue("content_type", resource.getContentType())
 			.addValue("name", resource.getName())
-			.addValue("token", resource.getToken());
+			.addValue("token", resource.getToken())
+			.addValue("uuid", resource.getUuid())
+			.addValue("last_updated", resource.getLastUpdated());
 	}
 
     /**
@@ -142,7 +141,7 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
         
         List<ByteArrayResource> resources = this.jdbcTemplate
                 .query(
-                        "SELECT id, resource, content_type, name, token, uuid FROM " + tableName +
+                        "SELECT id, resource, content_type, name, token, uuid, last_updated FROM " + tableName +
                        " WHERE token = ? AND name = ? ORDER BY id DESC",
                 		new RowMapper<ByteArrayResource>() {
                             public ByteArrayResource mapRow(ResultSet rs, int row) throws SQLException {
@@ -154,6 +153,7 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
                                 resource.setStore(store);
                                 resource.setToken(rs.getString("token"));
                                 resource.setUiid(rs.getString("uuid"));
+                                resource.setLastUpdated(rs.getLong("last_updated"));
                                 return resource;
                             }},
                             token, name);
@@ -239,7 +239,8 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
      *     resource BLOB,
      *     content_type VARCHAR(60),
      *     token VARCHAR(60),
-     *     uuid VARCHAR(32)
+     *     uuid VARCHAR(32),
+     *     last_updated BIGINT
      * );
      * </pre>
      * 
@@ -262,7 +263,7 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
         
         List<ByteArrayResource> resources = this.jdbcTemplate
                 .query(
-                        "SELECT id, resource, content_type, name, token, uuid FROM " + tableName +
+                        "SELECT id, resource, content_type, name, token, uuid, last_updated FROM " + tableName +
                        " WHERE uuid = ?  ORDER BY id DESC",
                         new RowMapper<ByteArrayResource>() {
                             public ByteArrayResource mapRow(ResultSet rs, int row) throws SQLException {
@@ -274,6 +275,7 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
                                 resource.setStore(store);
                                 resource.setToken(rs.getString("token"));
                                 resource.setUiid(rs.getString("uuid"));
+                                resource.setLastUpdated(rs.getLong("last_updated"));
                                 return resource;
                             }},
                             uuid);
