@@ -15,6 +15,8 @@
  */
 package org.icemobile.application;
 
+import java.util.Date;
+
 
 public abstract class AbstractResource implements Resource{
 
@@ -23,6 +25,7 @@ public abstract class AbstractResource implements Resource{
     protected String token;
     protected String name;
     protected String uuid;
+    protected long lastUpdated;
     
     /**
      * Get the content type for the resource.
@@ -111,6 +114,24 @@ public abstract class AbstractResource implements Resource{
      */
     public void setUiid(String uuid) {
         this.uuid = uuid;
+    }
+    
+    /**
+     * Get the lastUpdated time (milliseconds since midnight, January 1, 1970 UTC)
+     * 
+     * @return the time the resource was last updated
+     */
+    public long getLastUpdated(){
+        return lastUpdated;
+    }
+    
+    /**
+     * Set the lastUpdated time (milliseconds since midnight, January 1, 1970 UTC)
+     * 
+     * @param time the time the resource was last updated
+     */
+    public void setLastUpdated(long time){
+        this.lastUpdated = time;
     }
 
 
