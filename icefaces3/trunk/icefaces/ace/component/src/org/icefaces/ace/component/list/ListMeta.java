@@ -201,7 +201,4 @@ public class ListMeta extends UIDataMeta {
             defaultValue = "false",
             defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean compact;
-
-    @Field
-    Boolean selectItemModel = false;
 }

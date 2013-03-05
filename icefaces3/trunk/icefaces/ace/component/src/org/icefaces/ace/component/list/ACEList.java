@@ -44,6 +44,7 @@ public class ACEList extends ListBase {
     }
 
     DataModel model;
+    boolean selectItemModel = false;
 
     @Override
     protected DataModel getDataModel() {
@@ -234,4 +235,11 @@ public class ACEList extends ListBase {
         this.immigrants = immigrants;
     }
 
+    public boolean isSelectItemModel() {
+        return selectItemModel;
+    }
+
+    public void setSelectItemModel(boolean isSelect) {
+        selectItemModel = isSelect;
+    }
 }
