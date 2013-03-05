@@ -16,12 +16,8 @@
 
 <project name="icemobile-jsp" default="web-profile">
 
-	<property name="no-icefaces" value="no-icefaces"/>
-    <property file="./build.properties"/>
+	<property file="./build.properties"/>
     <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
-
-    <patternset id="lib.distribute.application.mobi" includes="icemobile-jsp.jar, jstl-api-1.2.jar, jstl-impl-1.2.jar">
-    </patternset>
+    <import file="../build/common-jsp.xml"/>
 
 </project>

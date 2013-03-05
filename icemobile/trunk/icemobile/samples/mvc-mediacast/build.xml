@@ -16,24 +16,8 @@
 
 <project name="mvc-mediacast" default="web-profile">
 
-	<property name="no-icefaces" value="no-icefaces" />
 	<property file="./build.properties" />
 	<property file="../build/build.properties" />
-	<import file="../build/common.xml" />
-
-	<patternset id="lib.distribute.application.mobi" includes="${icepush.lib.name}.jar,
-	                ${icemobile-jsp.lib.name}.jar, jstl-api-1.2.jar, jstl-impl-1.2.jar">
-	</patternset>
-	
-	<patternset id="lib.distribute.application.ext" includes="jaxb-api.jar,jaxb-impl.jar,activation.jar,jaxb1-impl.jar,jaxb-xjc.jar,jaxp-api-1.4.jar">
-        <exclude name="jaxb-api.jar" if="isJDK16" />
-        <exclude name="jaxb-impl.jar" if="isJDK16" />
-		<exclude name="activation.jar" if="isJDK16" />
-		<exclude name="jaxb1-impl.jar" if="isJDK16" />
-		<exclude name="jaxb-xjc.jar" if="isJDK16" />
-		<exclude name="jaxp-api-1.4.jar" if="isJDK16" />
-    </patternset>
-
-
+	<import file="../build/common-spring.xml" />
 
 </project>

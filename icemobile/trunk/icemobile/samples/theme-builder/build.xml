@@ -16,13 +16,7 @@
 
 <project name="theme-builder" default="web-profile">
 
-	<property name="no-icefaces" value="no-icefaces"/>
-    <property file="./build.properties"/>
+	<property file="./build.properties"/>
     <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
-	<property name="name" value="theme-builder" />
-
-    <patternset id="lib.distribute.application.mobi" includes="icemobile-jsp.jar">
-    </patternset>
-
+    <import file="../build/common-jsp.xml"/>
 </project>
