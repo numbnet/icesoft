@@ -26,7 +26,6 @@
     <property name="compile.debug" value="true"/>
 
     <property name="lib.icemobile.dir" location="../../lib"/>
-    <property name="lib.samples.dir" location="../lib"/>
     <property name="lib.application.dir" location="./src/main/webapp/WEB-INF/lib"/>
 
     <property name="java.dir" location="./src/main/java"/>

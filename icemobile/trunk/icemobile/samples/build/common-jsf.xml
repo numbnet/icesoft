@@ -81,9 +81,6 @@
             <lib dir="${lib.icemobile.dir}">
                 <patternset refid="pattern.distribute.mobi.jsf"/>
             </lib>
-            <lib dir="${lib.samples.dir}">
-            	<patternset refid="pattern.distribute.sample.mobi.jsf"/>
-            </lib>
             <lib dir="${lib.application.dir}">
             	<patternset refid="pattern.all"/>
             </lib>
