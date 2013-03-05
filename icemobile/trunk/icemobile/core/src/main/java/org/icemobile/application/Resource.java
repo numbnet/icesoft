@@ -37,6 +37,9 @@ public interface Resource {
     public String getUuid();
     public void setUiid(String uuid);
     
+    public long getLastUpdated();
+    public void setLastUpdated(long date);
+    
     public long contentLength();
     
     public void delete();
