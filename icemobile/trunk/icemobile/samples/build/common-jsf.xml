@@ -28,6 +28,10 @@
     	<include name="${icefaces-mobi.lib.name}.jar" />
     </patternset>
 
+    <patternset id="pattern.distribute.aws">
+        <include name="*.jar" if="aws"/>
+    </patternset>
+
     <target name="compile" depends="pre.compile">
     	<available property="isJDK16" classname="java.util.ServiceLoader"/> 
     	        
@@ -77,6 +81,9 @@
     		
             <lib dir="${lib.icemobile.dir}">
                 <patternset refid="pattern.distribute.jsf"/>
+            </lib>
+            <lib dir="${lib.icemobile.dir}/aws" >
+                <patternset refid="pattern.distribute.aws"/>
             </lib>
             <lib dir="${lib.application.dir}">
             	<patternset refid="pattern.all"/>
