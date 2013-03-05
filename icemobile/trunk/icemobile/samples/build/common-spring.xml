@@ -26,6 +26,7 @@
         <include name="el-api-2.2.1-b03.jar"/>
         <include name="commons-logging.jar"/>
         <include name="javax.servlet-api.jar"/>
+        <include name="javax.servlet.jar"/>
         <include name="javax.annotation.jar"/>
         <include name="org.springframework.beans-3.1.1.RELEASE.jar"/>
         <include name="org.springframework.context-3.1.1.RELEASE.jar"/>
