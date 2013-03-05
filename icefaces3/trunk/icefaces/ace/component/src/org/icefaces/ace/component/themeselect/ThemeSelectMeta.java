@@ -44,7 +44,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name = "valueChange", javadoc = "Fired whenever the value of the component changes (default event).",
-                tlddoc = "Fired whenever the value of the component changes (default event).", defaultRender = "@this", defaultExecute = "@this"),
+                tlddoc = "Fired whenever the value of the component changes (default event).", defaultRender = "@this", defaultExecute = "@this")
 }, defaultEvent = "valueChange")
 
 public class ThemeSelectMeta extends UIInputMeta {
