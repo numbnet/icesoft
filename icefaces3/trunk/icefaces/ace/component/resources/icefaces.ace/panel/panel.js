@@ -136,3 +136,11 @@ ice.ace.Panel.prototype.setupTriggerVisuals = function(trigger) {
     trigger.mouseover(function() {ice.ace.jq(this).addClass('ui-state-hover');})
             .mouseout(function() {ice.ace.jq(this).removeClass('ui-state-hover');});
 }
+
+ice.ace.Panel.disableInputs = function(id) {
+	ice.ace.jq(ice.ace.escapeClientId(id)).find('input, select, label, textarea').attr('disabled', 'disabled');
+};
+
+ice.ace.Panel.enableInputs = function(id) {
+	ice.ace.jq(ice.ace.escapeClientId(id)).find('input, select, label, textarea').removeAttr('disabled');
+};

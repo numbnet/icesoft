@@ -22,6 +22,7 @@ import org.icefaces.resources.ICEResourceDependency;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
@@ -96,5 +97,10 @@ public class PanelMeta extends UIPanelMeta {
 	
 	@Property(tlddoc="Boolean value that specifies whether the panel is visible.", defaultValue="true")
 	private boolean visible;
-    
+
+	@Property(tlddoc="Boolean value that specifies whether all input elements inside this panel should be disabled or not. This doesn't affect the children components' internal state; this simply disables all input elements in the client side, in order to avoid submitting their values in requests to the server. (Note: some components might not look different to the user when disabled via this option, but their values will not be submitted to the server nonetheless.)", defaultValue="false")
+	private boolean disableInputs;    
+	
+	@Field
+	private Boolean previousDisableInputs;
 }
