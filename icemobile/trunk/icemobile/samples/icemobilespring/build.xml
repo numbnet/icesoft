@@ -16,17 +16,8 @@
 
 <project name="icemobilespring" default="web-profile">
 
-    <property name="no-icefaces" value="no-icefaces"/>
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
-    <property name="name" value="icemobilespring" />
-    <property name="spring" value="true"/>
-
-    <patternset id="lib.distribute.application.mobi"
-                includes="${icepush.lib.name}.jar,${icemobile-jsp.lib.name}.jar,
-                ${icemobile-spring.lib.name}.jar, mail.jar,
-                jstl-api-1.2.jar, jstl-impl-1.2.jar">
-    </patternset>
-
+    <import file="../build/common-spring.xml"/>
+ 
 </project>
