@@ -64,12 +64,12 @@
                     }
                 </style>
 
-                <ace:list value="#{backing.stringList}"
+                <ace:list id="simpleBlockList" value="#{backing.stringList}"
                           bodyClass="blockList" />
 
                 <hr style="margin:.7em .6em;"/>
 
-                <ace:list value="#{backing.carList}"
+                <ace:list id="firstCarList" value="#{backing.carList}"
                           var="car"
                           bodyClass="blockList"
                           dropGroup="blockGroup">
