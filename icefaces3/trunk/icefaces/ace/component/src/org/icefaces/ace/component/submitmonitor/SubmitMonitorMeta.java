@@ -121,19 +121,19 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
 
     @Facets
     class FacetsMeta {
-        @Facet
+        @Facet(tlddoc = "Allows rendering of nested components as label for idle state.")
         UIComponent idle;
 
-        @Facet
+        @Facet(tlddoc = "Allows rendering of nested components as label for active state.")
         UIComponent active;
 
-        @Facet
+        @Facet(tlddoc = "Allows rendering of nested components as label for serverError state.")
         UIComponent serverError;
 
-        @Facet
+        @Facet(tlddoc = "Allows rendering of nested components as label for networkError state.")
         UIComponent networkError;
 
-        @Facet
+        @Facet(tlddoc = "Allows rendering of nested components as label for sessionExpired state.")
         UIComponent sessionExpired;
     }
 }
