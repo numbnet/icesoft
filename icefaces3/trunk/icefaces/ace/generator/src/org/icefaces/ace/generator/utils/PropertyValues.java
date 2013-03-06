@@ -177,5 +177,12 @@ public class PropertyValues {
         if (implementation == Implementation.UNSET) {
             implementation = Implementation.DEFAULT;
         }
+
+        // ICE-6209 Append the default value to the description, if present
+        if (! "null".equals(defaultValue) && ! "".equals(defaultValue)) {
+            String defaultValDesc = "Default = '" + defaultValue + "'.";
+            tlddoc = tlddoc + (tlddoc.length() > 0 ? " " : "") + defaultValDesc;
+            javadocGet = javadocGet + (javadocGet.length() > 0 ? " " : "") + defaultValDesc;
+        }
     }
 }

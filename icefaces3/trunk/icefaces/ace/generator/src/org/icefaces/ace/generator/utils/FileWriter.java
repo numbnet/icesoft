@@ -97,18 +97,18 @@ public class FileWriter {
     
     }
     
-    public static void writeXML(Document doc, String filename, Properties properties) {
+    public static void writeXML(Document doc, String folder, String filename, Properties properties) {
         try {
             // Prepare the DOM document for writing
             Source source = new DOMSource(doc);
-            File folder = new File(URLDecoder.decode(getBuildFolder()+
-                "/exploded/META-INF/"));
+            File fullFolder = new File(URLDecoder.decode(getBuildFolder()+
+                "/"+folder+"/META-INF/"));
             
-            if (!folder.exists()) {
-                folder.mkdirs();
+            if (!fullFolder.exists()) {
+                fullFolder.mkdirs();
             }
             // Prepare the output file
-            File file = new File(folder, filename);
+            File file = new File(fullFolder, filename);
             Result result = new StreamResult(file);
     
             // Write the DOM document to the file

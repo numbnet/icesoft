@@ -28,12 +28,17 @@ public abstract class MetaContext {
     protected Map<String, Artifact> artifacts = new HashMap<String, Artifact>();
     protected Class activeClass;
 	protected Map<Field, PropertyValues> propertyValuesMap = new HashMap<Field, PropertyValues>();
+    protected Map<String, Field> internalFieldsForComponentClass = new HashMap<String, Field>();
 
 	protected boolean generateHandler;
 	
     public Map<Field, PropertyValues> getPropertyValuesMap() {
 		return propertyValuesMap;
 	}
+
+    public Map<String, Field> getInternalFieldsForComponentClass() {
+        return internalFieldsForComponentClass;
+    }
 
     /**
      * List of all PropertyValues, alphabetically sorted by resolved property name
@@ -64,6 +69,19 @@ public abstract class MetaContext {
                 return propertyValues.resolvePropertyName().compareTo(propertyValues1.resolvePropertyName());
             }
         });
+    }
+
+    /**
+     * List of all internal fields, alphabetically sorted by name
+     */
+    public ArrayList<Field> getInternalFieldsSorted() {
+        ArrayList<Field> list = Collections.list(Collections.enumeration(internalFieldsForComponentClass.values()));
+        Collections.sort(list, new Comparator<Field>() {
+            public int compare(Field field1, Field field2) {
+                return field1.getName().compareTo(field2.getName());
+            }
+        });
+        return list;
     }
 
     public boolean isGeneratingPropertyByName(String name) {
@@ -123,6 +141,9 @@ public abstract class MetaContext {
             propertyValues.setDefaultValues();
             propertyValuesMap.put(field, propertyValues);
             furtherProcessProperty(clazz, propertyValues);
+            return true;
+        } else if (field.isAnnotationPresent(org.icefaces.ace.meta.annotation.Field.class)) {
+            internalFieldsForComponentClass.put(field.getName(), field);
             return true;
         }
         return false;

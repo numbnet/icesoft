@@ -19,12 +19,7 @@ package org.icefaces.ace.generator.xmlbuilder;
 import java.lang.reflect.Field;
 
 import org.icefaces.ace.generator.utils.Utility;
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.TagHandler;
-import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
-import org.icefaces.ace.meta.annotation.ClientEvent;
-import org.icefaces.ace.meta.annotation.Facet;
-import org.icefaces.ace.meta.annotation.Facets;
+import org.icefaces.ace.meta.annotation.*;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Element;
 
@@ -51,6 +46,19 @@ public class TLDBuilder extends XMLBuilder{
         addNode(root, "uri", GeneratorContext.namespace);
     }
 
+    public void addTagInfo(Class clazz, JSP jsp) {
+        Element root = (Element)getDocument().getDocumentElement();
+        tag = getDocument().createElement("tag");
+        root.appendChild(tag);
+        Element description = getDocument().createElement("description");
+        CDATASection descriptionCDATA = getDocument().createCDATASection( jsp.tlddoc() );
+        description.appendChild(descriptionCDATA);
+        tag.appendChild(description);
+        addNode(tag, "name", Utility.getTagName(clazz, jsp));
+        addNode(tag, "tag-class", Utility.getTagClassName(clazz, jsp));
+        addNode(tag, "body-content", "JSP");
+    }
+
     public void addTagInfo(Class clazz, Component component) {
         Element root = (Element)getDocument().getDocumentElement();
         tag = getDocument().createElement("tag");        
@@ -60,9 +68,8 @@ public class TLDBuilder extends XMLBuilder{
         description.appendChild(descriptionCDATA);
         tag.appendChild(description);
         addNode(tag, "name", component.tagName());
-        addNode(tag, "tag-class", component.componentClass()+"Tag");
+        addNode(tag, "tag-class", Utility.getTagClassName(component));
         addNode(tag, "body-content", "JSP");
-//
     }
 	
     public void addTagInfo(Class clazz, TagHandler tagHandler) {
@@ -74,7 +81,7 @@ public class TLDBuilder extends XMLBuilder{
         description.appendChild(descriptionCDATA);
         tag.appendChild(description);
         addNode(tag, "name", tagHandler.tagName());
-        //addNode(tag, "tag-class", component.componentClass()+"Tag");
+        //addNode(tag, "tag-class", Utility.getTagClassName(component));
 		addNode(tag, "tag-class", "");
         addNode(tag, "body-content", "JSP");
     }
@@ -82,31 +89,20 @@ public class TLDBuilder extends XMLBuilder{
     public void addAttributeInfo(PropertyValues propertyValues) {
         Element attribute = getDocument().createElement("attribute");
         tag.appendChild(attribute);
+
         Element description = getDocument().createElement("description");
         String des = propertyValues.tlddoc;
-        boolean meaningfulDes = true;
-        if ("null".endsWith(des)) {
+        if (des == null || "null".equals(des) || "".equals(des)) {
         	des = "&nbsp;";
-            meaningfulDes = false;
-        } 
-
-        // ICE-6209 Append the default value to the description, if present
-        String defaultVal = propertyValues.defaultValue;
-        if (! "null".endsWith(defaultVal)) {
-        	des += (meaningfulDes) ? " Default = '" : "Default = '";
-            des += defaultVal + "'.";
-            meaningfulDes = true;
         }
-
-        String propertyName = propertyValues.resolvePropertyName();
-
         CDATASection descriptionCDATA = getDocument().createCDATASection(des);
         description.appendChild(descriptionCDATA);
         attribute.appendChild(description);
+
+        String propertyName = propertyValues.resolvePropertyName();
         addNode(attribute, "name", propertyName);
         addNode(attribute, "required", String.valueOf(propertyValues.required));
         addNode(attribute, "rtexprvalue", "false");
-
         addNode(attribute, "type", propertyValues.getArrayAwareType());
     }       
 	

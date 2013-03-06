@@ -17,6 +17,7 @@
 package org.icefaces.ace.generator.context;
 
 import org.icefaces.ace.generator.artifacts.JSPBaseTagArtifact;
+import org.icefaces.ace.generator.artifacts.JSPInterfaceArtifact;
 import org.icefaces.ace.meta.annotation.JSP;
 
 public class JSPContext extends MetaContext {
@@ -27,6 +28,7 @@ public class JSPContext extends MetaContext {
     @Override
     protected void setupArtifacts() {
         artifacts.put(JSPBaseTagArtifact.class.getSimpleName(), new JSPBaseTagArtifact(this));
+        artifacts.put(JSPInterfaceArtifact.class.getSimpleName(), new JSPInterfaceArtifact(this));
     }
 
     @Override

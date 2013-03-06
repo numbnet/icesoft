@@ -40,12 +40,24 @@ public class TagHandlerArtifact extends Artifact{
         startTagHandlerClass(getMetaContext().getActiveClass(), tagHandler);
 		addApplyMethod(tagHandler);
         endTagHandlerClass();
-		
+
+        GeneratorContext.getInstance().getFacesConfigBuilder().addTagHandlerEntry(tagHandler);
+
+        GeneratorContext.getInstance().getJsfTldBuilder().addTagInfo(getMetaContext().getActiveClass(), tagHandler);
+
+        if (tagHandler.tagHandlerType() == TagHandlerType.BEHAVIOR_HANDLER) {
+            GeneratorContext.getInstance().getFaceletTagLibBuilder().addBehaviorInfo(tagHandler);
+        } else {
+            GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(tagHandler);
+        }
+        
+		for(PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
+			GeneratorContext.getInstance().getJsfTldBuilder().addAttributeInfo(prop);
+			GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(prop);
+        }
 	}
     
     private void startTagHandlerClass(Class clazz, TagHandler tagHandler) {
-	
-		GeneratorContext.getInstance().getFacesConfigBuilder().addTagHandlerEntry(tagHandler);
         //initialize
         generatedTagHandlerClass = new StringBuilder();
         
@@ -56,16 +68,9 @@ public class TagHandlerArtifact extends Artifact{
         generatedTagHandlerClass.append(";\n\n");
 		generatedTagHandlerClass.append("import javax.faces.view.facelets.TagAttribute;\n");
 
-		GeneratorContext.getInstance().getTldBuilder().addTagInfo(clazz, tagHandler);
-		
-		if (tagHandler.tagHandlerType() == TagHandlerType.BEHAVIOR_HANDLER) {
-			GeneratorContext.getInstance().getFaceletTagLibBuilder().addBehaviorInfo(tagHandler);
-		} else {
-			GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(tagHandler);
-		}
-		
         generatedTagHandlerClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
-                
+        generatedTagHandlerClass.append(Utility.getJavaDocComment(tagHandler.javadoc(), tagHandler.tlddoc()));
+
         generatedTagHandlerClass.append("public class ");
         generatedTagHandlerClass.append(className.substring(classIndicator+1));
         generatedTagHandlerClass.append(" extends ");
@@ -80,8 +85,6 @@ public class TagHandlerArtifact extends Artifact{
 
         ArrayList<PropertyValues> allProperties = getMetaContext().getPropertyValuesSorted();
 		for(PropertyValues prop : allProperties) {
-			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(prop);
-			GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(prop);
 			generatedTagHandlerClass.append("\n\tprotected final TagAttribute ");
 			generatedTagHandlerClass.append(prop.getJavaVariableName());
 			generatedTagHandlerClass.append(";");

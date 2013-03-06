@@ -52,7 +52,7 @@ public class TagArtifact extends Artifact{
 		generatedTagClass.append("import javax.faces.validator.*;\n");
 		generatedTagClass.append("import javax.faces.webapp.*;\n");
 		generatedTagClass.append("import javax.servlet.jsp.JspException;\n\n");  
-		generatedTagClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");        
+		generatedTagClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
 		generatedTagClass.append("public class ");
 		generatedTagClass.append(Utility.getSimpleNameOfClass(Utility.getTagClassName(component)));
 		generatedTagClass.append(" extends ");
@@ -88,7 +88,6 @@ public class TagArtifact extends Artifact{
 	}
 
 	private void addProperties(Class clazz, Component component) {
-		GeneratorContext.getInstance().getTldBuilder().addTagInfo(clazz, component);
 		addSetters();
 		addSetProperties(Utility.getGeneratedClassName(component));
 	}
@@ -96,8 +95,6 @@ public class TagArtifact extends Artifact{
 	private void addSetters() {
 		//set
 		for(PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
-			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(prop);
-
 			String type = (prop.expression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression ";
 
             // propertyName can be a reserved Java keyword like "for", so use
@@ -208,6 +205,6 @@ public class TagArtifact extends Artifact{
         if(Utility.isManualTagClass(component)) return;
 		startComponentClass(component);
 		addProperties(getMetaContext().getActiveClass(), component);
-		endComponentClass();        
+		endComponentClass();
 	}
 }

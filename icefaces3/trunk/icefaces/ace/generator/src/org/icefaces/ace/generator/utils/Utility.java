@@ -18,10 +18,8 @@ package org.icefaces.ace.generator.utils;
 
 import java.lang.reflect.Field;
 
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.JSP;
-import org.icefaces.ace.meta.annotation.TagHandler;
-import org.icefaces.ace.meta.annotation.TagHandlerType;
+import org.icefaces.ace.generator.context.GeneratorContext;
+import org.icefaces.ace.meta.annotation.*;
 
 public class Utility {
     public static String getComponentType(Component component) {
@@ -76,34 +74,6 @@ public class Utility {
             rendererClass = component.componentClass()+ "Renderer";
         }
         return rendererClass;
-    }
-
-    public static String getTagName(Class metaClass, JSP jsp) {
-        String tagName = jsp.tagName();
-        if (tagName.equals(JSP.EMPTY)) {
-            /*
-            StringBuilder sb = new StringBuilder(metaClass.getSimpleName());
-            final String META = "Meta";
-            if (META.contentEquals(sb.subSequence(sb.length()-META.length(), sb.length()))) { //sb.endsWith(META)
-                sb.delete(sb.length()-META.length(), sb.length());
-            }
-            if (sb.length() >= 1) {
-                sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
-            }
-            tagName = sb.toString();
-            */
-        }
-        return tagName;
-    }
-
-    public static String getTagClassName(Class metaClass, JSP jsp) {
-        String tagClass = jsp.tagClass();
-        if (tagClass.equals(JSP.EMPTY)) {
-            /*
-            tagClass = jsp.componentClass()+ "Tag";
-            */
-        }
-        return tagClass;
     }
 
     public static String getTagClassName(Component component) {
@@ -190,6 +160,127 @@ public class Utility {
 		}
 	}
 
+    /**
+     * @see org.icefaces.ace.meta.annotation.JSP#tagName()
+     * @return JSP.tagName(), or if not specified, then Meta class' simple
+     * name, removing "Meta" suffix, using camel case.
+     * Eg: MyCompMeta -> myComp
+     */
+    public static String getTagName(Class metaClass, JSP jsp) {
+        String tagName = jsp.tagName();
+        if (tagName.equals(JSP.EMPTY)) {
+            StringBuilder sb = removeSuffix(new StringBuilder(metaClass.getSimpleName()), "Meta");
+            if (sb.length() >= 1) {
+                sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
+            }
+            tagName = sb.toString();
+        }
+        return tagName;
+    }
+
+    /**
+     * @see org.icefaces.ace.meta.annotation.JSP#tagClass()
+     * @return JSP.tagClass(), or if not specified, then Meta class' name
+     * removing "Meta" suffix, adding "Tag" suffix.
+     * Eg: org.mypackage.MyCompMeta -> org.mypackage.MyCompTag
+     */
+    public static String getTagClassName(Class metaClass, JSP jsp) {
+        return getSpecifiedOrAlternate(jsp.tagClass(), JSP.EMPTY,
+            metaClass.getName(), "Meta", "", "Tag");
+    }
+
+    /**
+     * @see org.icefaces.ace.meta.annotation.JSP#generatedTagClass()
+     * @return JSP.generatedTagClass(), or if not specified, then Meta class'
+     * name removing "Meta" suffix, adding "BaseTag" suffix.
+     * Eg: org.mypackage.MyCompMeta -> org.mypackage.MyCompBaseTag
+     */
+    public static String getGeneratedTagClassName(Class metaClass, JSP jsp) {
+        return getSpecifiedOrAlternate(jsp.generatedTagClass(), JSP.EMPTY,
+            metaClass.getName(), "Meta", "", "BaseTag");
+    }
+
+    /**
+     * @see org.icefaces.ace.meta.annotation.JSP#generatedInterfaceClass()
+     * @return JSP.generatedInterfaceClass(), or if not specified, then Meta
+     * class' name removing "Meta" suffix, adding "I" prefix to simple name part.
+     * Eg: org.mypackage.MyCompMeta -> org.mypackage.IMyComp
+     */
+    public static String getGeneratedInterfaceClassName(Class metaClass, JSP jsp) {
+        return getSpecifiedOrAlternate(jsp.generatedInterfaceClass(), JSP.EMPTY,
+            metaClass.getName(), "Meta", "I", "");
+    }
+
+    /**
+     * @see org.icefaces.ace.meta.annotation.JSP#generatedTagExtendsClass()
+     * @see org.icefaces.ace.meta.annotation.JSPBaseMeta#tagClass()
+     * @return JSP.generatedTagExtendsClass(), or if not specified, then see if
+     * the Meta class' superclass has a @JSPBaseMeta annotation, and use its
+     * tagClass, otherwise fallback to javax.servlet.jsp.tagext.TagSupport.
+     */
+    public static String getGeneratedTagExtendsClassName(
+            Class metaClass, JSP jsp) {
+        String generatedTagExtendsClass = jsp.generatedTagExtendsClass();
+        if (generatedTagExtendsClass.equals(JSP.EMPTY)) {
+            Class superClass = metaClass.getSuperclass();
+            if (superClass.isAnnotationPresent(JSPBaseMeta.class)) {
+                JSPBaseMeta jspBaseMeta = (JSPBaseMeta)
+                    superClass.getAnnotation(JSPBaseMeta.class);
+                generatedTagExtendsClass = jspBaseMeta.tagClass();
+            } else {
+                generatedTagExtendsClass = "javax.servlet.jsp.tagext.TagSupport";
+            }
+        }
+        return generatedTagExtendsClass;
+    }
+
+    /**
+     * @see org.icefaces.ace.meta.annotation.JSP#generatedInterfaceExtendsClass()
+     * @see org.icefaces.ace.meta.annotation.JSPBaseMeta#interfaceClass()
+     * @return JSP.generatedInterfaceExtendsClass(), or if not specified, then see if
+     * the Meta class' superclass has a @JSPBaseMeta annotation, and use its
+     * interfaceClass. Can be null or an empty String.
+     */
+    public static String getGeneratedInterfaceExtendsClassName(
+            Class metaClass, JSP jsp) {
+        String generatedInterfaceExtendsClass = jsp.generatedInterfaceExtendsClass();
+        if (generatedInterfaceExtendsClass.equals(JSP.EMPTY)) {
+            Class superClass = metaClass.getSuperclass();
+            if (superClass.isAnnotationPresent(JSPBaseMeta.class)) {
+                JSPBaseMeta jspBaseMeta = (JSPBaseMeta)
+                    superClass.getAnnotation(JSPBaseMeta.class);
+                generatedInterfaceExtendsClass = jspBaseMeta.interfaceClass();
+            }
+        }
+        return generatedInterfaceExtendsClass;
+    }
+    
+    protected static String getSpecifiedOrAlternate(String specified,
+            String unspecified, String alternate, String removeSuffix,
+            String insertSimpleNamePrefix, String addSuffix) {
+        if (specified.equals(unspecified)) {
+            StringBuilder sb = removeSuffix(new StringBuilder(alternate),
+                removeSuffix).append(addSuffix);
+            if (insertSimpleNamePrefix != null &&
+                insertSimpleNamePrefix.length() > 0) {
+                int index = sb.lastIndexOf(".");
+                if (index >= 0) {
+                    sb.insert(index+1, insertSimpleNamePrefix);
+                }
+            }
+            specified = sb.toString();
+        }
+        return specified;
+    }
+
+    public static StringBuilder removeSuffix(StringBuilder sb, String suffix) {
+        // if (sb.endsWith(suffix)) then remove it
+        if (suffix.contentEquals(sb.subSequence(sb.length()-suffix.length(), sb.length()))) {
+            sb.delete(sb.length()-suffix.length(), sb.length());
+        }
+        return sb;
+    }
+
     public static String getSimpleNameOfClass(String className) {
         int classIndicator = className.lastIndexOf(".");
         return className.substring(classIndicator+1);
@@ -209,9 +300,76 @@ public class Utility {
         return path;
     }
 
+    public static String getGeneratedType(PropertyValues prop) {
+        String propertyName = prop.resolvePropertyName();
+        return getGeneratedType(propertyName, prop.field);
+    }
+
+    public static String getGeneratedType(String propertyName, Field field) {
+        boolean isPrimitive = field.getType().isPrimitive() ||
+                              GeneratorContext.SpecialReturnSignatures.containsKey(propertyName);
+
+        String returnAndArgumentType = getArrayAwareType(field);
+
+        // If primitive property, get the primitive return type
+        // otherwise leave it as is.
+        if (isPrimitive) {
+            String fieldTypeName = field.getType().getName();
+            if (GeneratorContext.WrapperTypes.containsKey(fieldTypeName)) {
+                returnAndArgumentType = GeneratorContext.WrapperTypes.get(fieldTypeName);
+            }
+        }
+        return returnAndArgumentType;
+    }
+
     public static String getArrayAwareType(Field field) {
         boolean isArray = field.getType().isArray();
         return isArray ? field.getType().getComponentType().getName() + "[]"
                        : field.getType().getName();
+    }
+
+    public static String getJavaDocComment(String propertyName, boolean isSetter, String doc) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n\t/**\n");
+        if (isSetter) {
+            sb.append("\t * <p>Set the value of the <code>");
+        } else {
+            sb.append("\t * <p>Return the value of the <code>");
+        }
+        sb.append(propertyName);
+        sb.append("</code> property.</p>");
+        if (doc != null && !"".equals(doc)) {
+            sb.append("\n\t * <p>Contents: ");
+            appendJavaDocLines(sb, doc, true);
+        }
+        sb.append("\n\t */\n");
+        return sb.toString();
+    }
+
+    public static String getJavaDocComment(String usePrimarily, String defaultToOtherwise) {
+        StringBuilder sb = new StringBuilder();
+        String doc = (usePrimarily != null && !usePrimarily.equals("null") &&
+            usePrimarily.length() > 0) ? usePrimarily : defaultToOtherwise;
+        if (doc != null && !"".equals(doc)) {
+            sb.append("\n/**");
+            appendJavaDocLines(sb, doc, false);
+            sb.append("\n */\n");
+        }
+        return sb.toString();
+    }
+
+    public static void appendJavaDocLines(StringBuilder sb, String doc, boolean isForProperty) {
+        String[] lines = doc.split("\n");
+        for (int j=0; j < lines.length; j++){
+            if (isForProperty && j>0) {
+                sb.append("\n\t * ");
+            } else if (!isForProperty) {
+                sb.append("\n * ");
+            }
+            sb.append(lines[j]);
+            if (isForProperty && j == (lines.length-1)) {
+                sb.append("</p>");
+            }
+        }
     }
 }
