@@ -117,6 +117,7 @@
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
         <delete dir="${docs.jsf.dir}"/>
+    	<delete dir="${docs.jsp.dir}"/>
         <ice:subant target="clean">
             <filelist dir="." files="jsf, jsp, spring, samples"/>
         </ice:subant>
