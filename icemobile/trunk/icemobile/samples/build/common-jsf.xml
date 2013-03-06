@@ -28,10 +28,6 @@
     	<include name="${icefaces-mobi.lib.name}.jar" />
     </patternset>
 
-    <patternset id="pattern.distribute.aws">
-        <include name="*.jar" if="aws"/>
-    </patternset>
-
     <target name="compile" depends="pre.compile">
     	<available property="isJDK16" classname="java.util.ServiceLoader"/> 
     	        
@@ -77,16 +73,17 @@
     	<war basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war"
              webxml="${web.dir}/WEB-INF/web.xml">
-    		
+
             <lib dir="${lib.icemobile.dir}">
                 <patternset refid="pattern.distribute.jsf"/>
             </lib>
-            <lib dir="${lib.icemobile.dir}/aws" >
-                <patternset refid="pattern.distribute.aws"/>
-            </lib>
+
             <lib dir="${lib.application.dir}">
             	<patternset refid="pattern.all"/>
             </lib>
+
+            <!-- Extra 3rd party libraries are added depending on properties being set. -->
+            <resources refid="extra.libs"/>
 
             <!-- Add the icefaces-ee-ext.jar only if it exists.  There are
                  two possible locations depending on the EE distribution

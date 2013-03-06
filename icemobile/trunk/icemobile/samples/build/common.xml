@@ -35,10 +35,35 @@
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
-    
+
     <patternset id="pattern.all">
         <include name="*.jar"/>
     </patternset>
+
+    <!-- Extra libs are added to sample .wars based on setting
+         a property for the dependencies in question.-->
+    <resources id="extra.libs">
+
+        <mappedresources>
+
+            <!-- For each 3rd party set of libs just add the appropriate
+                 include statement and property to this fileset-->
+            <fileset dir="${lib.icemobile.dir}" includes="" erroronmissingdir="false">
+                <include name="aws/*.jar" if="aws"/>
+                <include name="twilio/*.jar" if="twilio"/>
+            </fileset>
+
+            <!-- The chain of mappers...
+                   1) strips all directory entries from each file's path
+                   2) "repaths" each resource so they end up in the WEB-INF/lib of the .war file
+            -->
+            <chainedmapper>
+                <mapper type="flatten"/>
+                <mapper type="glob" from="*.jar" to="WEB-INF/lib/*.jar"/>
+            </chainedmapper>
+        </mappedresources>
+
+    </resources>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
