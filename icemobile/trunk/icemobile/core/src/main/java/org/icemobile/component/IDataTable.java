@@ -159,5 +159,10 @@ public interface IDataTable extends IMobiComponent{
      * Render the detail view for the DataTable
      */
     public void renderDetailView() throws IOException;
+    
+    /**
+     * Return the base id
+     */
+    public String getId();
 
 }

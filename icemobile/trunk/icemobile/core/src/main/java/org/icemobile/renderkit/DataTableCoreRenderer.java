@@ -55,7 +55,7 @@ public class DataTableCoreRenderer  extends BaseCoreRenderer{
         throws IOException{
         writer.startElement(DIV_ELEM);
         writer.writeAttribute(ID_ATTR, dataTable.getClientId());
-        writer.writeAttribute(CLASS_ATTR, "mobi-tbl");
+        writer.writeAttribute(CLASS_ATTR, "mobi-tbl " + dataTable.getId());
     }
     
     /**
@@ -289,7 +289,7 @@ public class DataTableCoreRenderer  extends BaseCoreRenderer{
             for( IColumn column : responsiveColumns ){
                 int columnIndex = dataTable.getColumns().indexOf(column) + 1; //CSS nth-child is 1-based
                 writer.writeText("@media only screen and (max-width: " 
-                        + column.getMinDeviceWidth() + "){ .mobi-tbl-master table td:nth-child(" 
+                        + column.getMinDeviceWidth() + "){ .mobi-tbl." + dataTable.getId() + " .mobi-tbl-master table td:nth-child(" 
                         + columnIndex + "), .mobi-tbl-master table th:nth-child(" + columnIndex 
                         + ") {display:none;}}");
             }
