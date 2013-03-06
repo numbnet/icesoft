@@ -246,11 +246,6 @@ ice.ace.DataTable = function (id, cfg) {
             this.reorderEnd = 0;
             this.setupReorderableColumns();
         }
-
-        if (this.cfg.pinning) {
-            this.pinningHolder = this.jqId + '_pinning';
-            this.initializePinningState();
-        }
     } else
         this.setupDisabledStyling();
 
@@ -789,10 +784,6 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
         delayedCleanUpResizeToken,
         delayedCleanUpResize = function () {
             _self.resizeScrolling();
-
-            if (_self.cfg.pinning) {
-                _self.initializePinningState();
-            }
         };
 
     this.resizeScrolling();
@@ -1207,6 +1198,11 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
         if (window.console && this.cfg.devMode) {
             console.log("ace:dataTable - ID: " + this.id + " - resizeScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
+        }
+
+        if (this.cfg.pinning) {
+            this.pinningHolder = this.jqId + '_pinning';
+            this.initializePinningState();
         }
     }
 }
@@ -1851,7 +1847,6 @@ ice.ace.DataTable.prototype.paginate = function (newState) {
     var _self = this;
     options.onsuccess = function (responseXML) {
         if (_self.cfg.scrollable) _self.resizeScrolling();
-        if (_self.cfg.pinning) _self.initializePinningState();
 
         return false;
     };
@@ -1903,7 +1898,6 @@ ice.ace.DataTable.prototype.sort = function (headerCells, savedState) {
             _self.restoreSortState(savedState);
 
         if (_self.cfg.scrollable) _self.resizeScrolling();
-        if (_self.cfg.pinning) _self.initializePinningState();
         _self.setupSortEvents();
         return false;
     };
@@ -2079,8 +2073,6 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
         options.onsuccess = function (responseXML) {
             if (_self.cfg.scrollable && (ice.ace.jq.inArray("0", _self.selection) > -1 || ice.ace.jq.inArray("0", _self.deselection) > -1 || (firstRowSelected && _self.isSingleSelection())))
                 _self.resizeScrolling();
-
-            if (_self.cfg.pinning) _self.initializePinningState();
         };
 
 
@@ -2493,7 +2485,6 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function (element) {
 
         if (!_self.args.validationFailed) {
             if (_self.cfg.scrollable) _self.resizeScrolling();
-            if (_self.cfg.pinning) _self.initializePinningState();
         }
         return false;
     };
