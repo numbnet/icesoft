@@ -230,6 +230,7 @@ public class UploadModel implements Serializable {
     	this.uploadFeedbackMessage = null;
     	this.videoFile = null;
     	this.selectedMediaInput = null;
+    	this.url = null;
     }
 
 	public String getUrl() {
