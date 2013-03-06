@@ -128,11 +128,11 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
         //callbacks
         if(ajaxBehavior.getOnStart() != null)
-            jb.entry("onstart", "function(xhr){" + ajaxBehavior.getOnStart() + ";}", true);
+            jb.entry("onstart", "function(cfg){" + ajaxBehavior.getOnStart() + ";}", true);
         if(ajaxBehavior.getOnError() != null)
             jb.entry("onerror", "function(xhr, status, error){" + ajaxBehavior.getOnError() + ";}", true);
         if(ajaxBehavior.getOnSuccess() != null)
-            jb.entry("onsuccess", "function(data, status, xhr, args){" + ajaxBehavior.getOnSuccess() + ";}", true);
+            jb.entry("onsuccess", "function(data, status, xhr){" + ajaxBehavior.getOnSuccess() + ";}", true);
         if(ajaxBehavior.getOnComplete() != null)
             jb.entry("oncomplete", "function(xhr, status, args){" + ajaxBehavior.getOnComplete() + ";}", true);
 

@@ -49,16 +49,16 @@ public class AjaxBehaviorHandlerMeta {
 	@Property(required=Required.no, tlddoc="Component(s) to render in the ajax rquest. The format is the same as that of the f:ajax tag.")
 	private String render;
 	
-	@Property(required=Required.no, tlddoc="Javascript handler to execute before ajax request is begins. The function has to return 'true' to continue with the ajax request; if 'false' or nothing is returned, the ajax request will be aborted.")
+	@Property(required=Required.no, tlddoc="Javascript handler to execute before the ajax request begins. It is passed the 'cfg' agrgument, containing the ajax request configuration to be modified before the request is sent. The function has to return 'true' to continue with the ajax request; if 'false' or nothing is returned, the ajax request will be aborted.")
 	private String onStart;
 	
-	@Property(required=Required.no, tlddoc="Javascript handler to execute when ajax request is completed.")
+	@Property(required=Required.no, tlddoc="Javascript handler to execute when the ajax request is completed. It is passed the 'args' argument, containing ACE callback parameters such as 'validationFailed'.")
 	private String onComplete;
 	
-	@Property(required=Required.no, tlddoc="Javascript handler to execute when ajax request succeeds.")
+	@Property(required=Required.no, tlddoc="Javascript handler to execute when the ajax request succeeds. It is passed the 'data' argument, containing the XML content of the entire JSF response.")
 	private String onSuccess;
 	
-	@Property(required=Required.no, tlddoc="Javascript handler to execute when ajax request fails.")
+	@Property(required=Required.no, tlddoc="Javascript handler to execute when the ajax request fails. It is passed the 'status' and 'error' arguments, containing the returned server status code and error message, respectively.")
 	private String onError;
 	
 	@Property(required=Required.no, tlddoc="Disables ajax behavior.")

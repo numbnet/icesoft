@@ -330,7 +330,7 @@ ice.ace.AjaxUtils = {
 
 ice.ace.AjaxRequest = function(cfg) {
     // If start events return false, cancel request
-    if(cfg.onstart && !cfg.onstart.call(this))
+    if(cfg.onstart && !cfg.onstart.call(this, cfg))
        return;
 
     // Find the source DOM element
