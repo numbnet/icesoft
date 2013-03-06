@@ -28,7 +28,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
-import org.apache.commons.lang3.StringUtils;
 import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
@@ -146,8 +145,8 @@ public class MediaController implements Serializable {
 		LOGGER.finer("uploadsCompleted()");
 		MediaMessage msg = model.getCurrentMediaMessage();
 		if (msg.isHasMedia()) {
-			if( StringUtils.isNotEmpty(model.getTags())){
-				msg.getTags().addAll(Arrays.asList(StringUtils.split(model.getTags())));
+			if( model.getTags() != null && model.getTags().length() > 0){
+			    msg.getTags().addAll(Arrays.asList(model.getTags().split(",")));
 			}
 			
 			//set stock icons for small and medium if no photo is included
@@ -159,7 +158,7 @@ public class MediaController implements Serializable {
 				}
 			}
 			
-			if( StringUtils.isEmpty(msg.getTitle())){
+			if( msg.getTitle() != null && msg.getTitle().length() > 0 ){
 				msg.setTitle(Utils.getHttpDateFormat().format(new Date()));
 			}
 			
