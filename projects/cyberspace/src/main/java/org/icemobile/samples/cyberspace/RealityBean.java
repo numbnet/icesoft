@@ -42,13 +42,10 @@ import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
 
 import org.icefaces.application.ResourceRegistry;
-import org.icefaces.mobi.utils.MobiJSFUtils;
-
 
 @ManagedBean(name = RealityBean.BEAN_NAME)
 @SessionScoped
-public class RealityBean extends ExampleImpl<RealityBean> implements
-        Serializable {
+public class RealityBean implements Serializable {
 
     private static final Logger logger =
             Logger.getLogger(RealityBean.class.toString());
@@ -69,7 +66,6 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     private String label;
     private double latitude = 0.0;
     private double longitude = 0.0;
-    HashMap<String,RealityMessage> messages = new HashMap();
     static int THUMBSIZE = 128;
     HashMap<String,HashMap> allMarkers = new HashMap();;
     List<HashMap> markerList;
@@ -80,7 +76,6 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     private String uploadMessage;
 
     public RealityBean() {
-        super(RealityBean.class);
         markerList = new ArrayList();
 
         HashMap marker = new HashMap();
@@ -110,40 +105,6 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
 
     }
 
-    public void processUploadedImage(ActionEvent event) {
-        outputResource = null;
-        if (cameraImage != null &&
-                cameraImage.get("contentType") != null &&
-                ((String)cameraImage.get("contentType")).startsWith("image")) {
-            // clean up previously upload file
-            if (cameraFile != null){
-                disposeResources();
-            }
-            cameraFile = (File)cameraImage.get(FILE_KEY);
-            if (cameraFile != null) {
-                // copy the bytes into the resource object.
-                try {
-                    scaleImage(cameraFile);
-                    outputResource = DeviceInput.createResourceObject(
-                        cameraFile, UUID.randomUUID().toString(),
-                        (String) cameraImage.get(CONTENT_TYPE_KEY));
-                    resourcePath = ResourceRegistry
-                            .addSessionResource(outputResource);
-                } catch (IOException ex) {
-                    logger.warning("Error setting up video resource object");
-                }
-                RealityMessage message = new RealityMessage();
-                message.setTitle(label);
-                message.setLocation(latitude, longitude);
-                message.setFileName(resourcePath);
-                messages.put(label, message);
-                uploadMessage = "Locations marked: " + messages.size();
-            }
-        } else  {
-            // create error message for users.
-            uploadMessage = "The image upload failed.";
-        }
-    }
 
     @PreDestroy
     public void disposeResources(){
@@ -217,22 +178,6 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         markerList.set(1, marker);
     }
 
-    public String getSelection()  {
-        return selection;
-    }
-
-    public void setSelection(String selection)  {
-        RealityMessage msg = messages.get(selection);
-		if( msg != null ){
-			this.selection = selection;
-			imagePath = msg.getFileName();
-		}  
-    }
-
-    public Collection getMessages()  {
-        return messages.values();
-    }
-
     public List getMarkers()  {
         return markerList;
     }
@@ -299,9 +244,5 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         fs.close();
     }
     
-    public boolean isIos(){
-        return MobiJSFUtils.getClientDescriptor().isIOS();
-    }
-
 }
 
