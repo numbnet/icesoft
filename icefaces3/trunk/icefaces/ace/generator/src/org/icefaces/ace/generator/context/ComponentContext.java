@@ -17,13 +17,7 @@
 package org.icefaces.ace.generator.context;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 
 import org.icefaces.ace.generator.artifacts.ComponentArtifact;
@@ -34,16 +28,11 @@ import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.meta.annotation.*;
 
 public class ComponentContext extends MetaContext {
-    private Map<String, Field> internalFieldsForComponentClass = new HashMap<String, Field>();
-    private Map<String, Field> fieldsForFacet = new HashMap<String, Field>();    
+    private Map<String, Field> fieldsForFacet = new HashMap<String, Field>();
     private List<Behavior> behaviors = new ArrayList<Behavior>();
     
     public List<Behavior> getBehaviors() {
 		return behaviors;
-	}
-
-	public Map<String, Field> getInternalFieldsForComponentClass() {
-		return internalFieldsForComponentClass;
 	}
 
 	public Map<String, Field> getFieldsForFacet() {
@@ -74,18 +63,6 @@ public class ComponentContext extends MetaContext {
     }
 
     @Override
-    protected boolean processPotentiallyIrrelevantField(Class clazz, Field field) {
-        boolean relevant = super.processPotentiallyIrrelevantField(clazz,  field);
-        if (!relevant) {
-            if (field.isAnnotationPresent(org.icefaces.ace.meta.annotation.Field.class)) {
-                internalFieldsForComponentClass.put(field.getName(), field);
-                relevant = true;
-            }
-        }
-        return relevant;
-    }
-
-    @Override
     protected void furtherProcessProperty(Class clazz, PropertyValues propertyValues) {
         if (propertyValues.isGeneratingProperty()) {
             if (propertyValues.expression == Expression.METHOD_EXPRESSION) {
@@ -111,8 +88,8 @@ public class ComponentContext extends MetaContext {
             if (behavior.hasBehavior(clazz)) {
                 System.out.println("Behavior found ");
                 //attach behavior to the component context
-                getBehaviors().add(behavior);
-                behavior.addProperties(this);
+                getBehaviors().add(behavior); // ComponentArtifact uses this List
+                behavior.addProperties(this); // This does nothing
             }
         }
     }

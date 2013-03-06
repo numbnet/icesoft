@@ -33,6 +33,7 @@ import org.w3c.dom.Text;
 public abstract class XMLBuilder {
     private Document document;
     private DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    private String folder = "exploded";
     private String fileName;
     Properties properties = new Properties();
     public XMLBuilder(String fileName) {
@@ -53,16 +54,20 @@ public abstract class XMLBuilder {
         this.document = document;
     }
 
+    public String getFolder() {
+        return folder;
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
+
     public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-    
     public void write() {
-        FileWriter.writeXML(getDocument(), getFileName(), getProperties());
+        FileWriter.writeXML(getDocument(), getFolder(), getFileName(), getProperties());
     }
 
     public Properties getProperties() {

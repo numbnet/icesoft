@@ -37,8 +37,9 @@ public class GeneratorContext{
 	private static GeneratorContext generatorContext = null;
     public static final Map<String,String> WrapperTypes= new HashMap<String, String>();
     public static final Map<String,String> InvWrapperTypes= new HashMap<String, String>();
-	private TLDBuilder tldBuilder = new TLDBuilder();
-    private FacesConfigBuilder facesConfigBuilder = new FacesConfigBuilder(); 
+	private TLDBuilder jsfTLDBuilder = new TLDBuilder();
+    private TLDBuilder jspTLDBuilder = new TLDBuilder();
+    private FacesConfigBuilder facesConfigBuilder = new FacesConfigBuilder();
     private FaceletTagLibBuilder faceletTagLibBuilder = new FaceletTagLibBuilder();
 	private List<Class> components;
     private MetaContext activeMetaContext;
@@ -116,14 +117,15 @@ public class GeneratorContext{
 		getBehaviors().add(new ActionSourceBehavior());
 		getBehaviors().add(new ClientBehaviorHolder());
 		components = FileWriter.getAnnotatedCompsList();
+        jspTLDBuilder.setFolder("exploded-jsp");
 	}
 	
-    public TLDBuilder getTldBuilder() {
-		return tldBuilder;
+    public TLDBuilder getJsfTldBuilder() {
+		return jsfTLDBuilder;
 	}
 
-	public void setTldBuilder(TLDBuilder tldBuilder) {
-		this.tldBuilder = tldBuilder;
+    public TLDBuilder getJspTldBuilder() {
+		return jspTLDBuilder;
 	}
 
 	public FacesConfigBuilder getFacesConfigBuilder() {
@@ -173,7 +175,8 @@ public class GeneratorContext{
     }
 	
     public void release() {
-        getTldBuilder().write();
+        getJsfTldBuilder().write();
+        getJspTldBuilder().write();
         getFacesConfigBuilder().write();
         getFaceletTagLibBuilder().write();
     }    

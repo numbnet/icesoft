@@ -22,11 +22,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used to generate pure JSP (non-JSF) Tag file, TLD, TLDDOC, Javadoc.
- * Specify this annotation on Meta classes, optionally along-side any
- * \@Component annotation. Use the @Property annotation on the Meta
- * class' fields, and discern between properties that are only for
- * JSP or only for JSF via the @Only annotation.
+ * Used to generate pure JSP (non-JSF) Tag file, interface, TLD, TLDDOC,
+ * Javadoc. Specify this annotation on Meta classes, optionally along-side any
+ * Component annotation. Use the Property annotation on the Meta class'
+ * fields, and discern between properties that are only for JSP or only for
+ * JSF via the Only annotation. Have a JSP annotated Meta class extend a
+ * JSPBaseMeta annotated baseMeta class to use it's defaults for the JSP's
+ * generateInterfaceExtendsClass and generateTagExtendsClass fields.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -37,36 +39,78 @@ public @interface JSP {
      * Name of tag. If not specified, then it defaults to the Meta class'
      * simple name, without the "Meta" suffix, using camel case.
      * Eg: MyCompMeta -> myComp
+     * 
      * @return defined tag name.
      */
     String tagName() default EMPTY;
 
     /**
-     * fully qualified name for the tag class. If not specified, then it
-     * defaults to the Meta class' full name, without the "Meta" suffix,
-     * but with a "Tag" suffix added.
+     * Fully qualified name for the tag class. This is the manually coded Tag
+     * class that will be referenced in the TLD, that would extend the
+     * generated tag class, and add any necessary manual code, or simply remain
+     * empty.
+     *
+     * If not specified, then it defaults to the Meta class' full name,
+     * without the "Meta" suffix, but with a "Tag" suffix added.
      * Eg: org.mypackage.MyCompMeta -> org.mypackage.MyCompTag
+     *
      * @return fully qualified name of the tag class.
      */
     String tagClass() default EMPTY;
 
     /**
-     * By default, generated classes are leaf classes, so you can't override any
-     * behaviour. If you want to hand code the tag class, and have it
-     * extend the generated one then you can use this attribute in conjunction
-     * with tagClass attribute. So, if generatedClass is specified:
-     * (manual) tagClass extends generatedClass extends extendsClass.
-     * Eg: org.mypackage.MyCompBaseTag
-     * Otherwise: (generated) tagClass extends extendsClass.
-     * @return fully qualified name of the generated class.
+     * Fully qualified name for the generated tag class. This will contain the
+     * generated fields, getter and setter methods, and release method. The
+     * tag class will extend it, and it will extend generateTagExtendsClass.
+     *
+     * If not specified, then it defaults to the Meta class' full name,
+     * without the "Meta" suffix, but with a "BaseTag" suffix added.
+     * Eg: org.mypackage.MyCompMeta -> org.mypackage.MyCompBaseTag
+     *
+     * @return fully qualified name of the generated base tag class.
      */
-    String generatedClass() default EMPTY;
+    String generatedTagClass() default EMPTY;
 
     /**
-     * Class that is to be extended by the generated tag. It's a mandatory field.
-     * @return fully qualified name of the class has to be extended.
+     * Fully qualified name of the class that the generated tag class will extend.
+     *
+     * If not specified, but the Meta class extends a @JSPBaseMeta annotated
+     * baseMeta class, then the @JSPBaseMeta tagClass will be used. Otherwise,
+     * "javax.servlet.jsp.tagext.TagSupport" will be used.
+     *
+     * @return fully qualified name of the class that the generated base tag
+     * will extended.
      */
-    String extendsClass();
+    String generatedTagExtendsClass() default EMPTY;
+
+    /**
+     * Fully qualified class name for the generated interface. This will be
+     * an interface for the getter and setter methods corresponding to the
+     * generated properties. While the generated base tag class will only
+     * contain common and @Only(JSP) properties, the interface will contain
+     * getter and setter methods for the union of all of the properties,
+     * including @Only(JSF) ones.
+     *
+     * If not specified, then it defaults to the Meta class' full name,
+     * without the "Meta" suffix, but with an "I" prefix added.
+     * Eg: org.mypackage.MyCompMeta -> org.mypackage.IMyComp
+     *
+     * @return fully qualified class name of the generated interface.
+     */
+    String generatedInterfaceClass() default EMPTY;
+
+    /**
+     * Fully qualified class name of the interface that the generated interface
+     * will extend.
+     *
+     * If not specified, but the Meta class extends a @JSPBaseMeta annotated
+     * baseMeta class, then the @JSPBaseMeta interfaceClass will be used.
+     * Otherwise, the generated interface will not extend anything.
+     *
+     * @return fully qualified class name of the interface that the generated
+     * interface will extended.
+     */
+    String generatedInterfaceExtendsClass() default EMPTY;
 
     /**
      * tld doc for the tag class. Goes into the Tld documentation.
@@ -77,7 +121,7 @@ public @interface JSP {
     /**
      * javadoc for the tag class. Goes into the generated tag class.
      * If not specified, defaults to being the same as tlddoc.
-     * @return javadoc for the generated tag class.
+     * @return javadoc for the generated base tag class.
      */
     String javadoc() default EMPTY;
 }

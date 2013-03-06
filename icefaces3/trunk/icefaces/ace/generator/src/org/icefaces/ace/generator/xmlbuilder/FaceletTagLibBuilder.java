@@ -105,17 +105,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         }
         addNode(attribute, "required",required);
 
-        boolean isPrimitive = propertyValues.field.getType().isPrimitive() ||
-                              GeneratorContext.SpecialReturnSignatures.containsKey(propertyName);
-
-        String returnAndArgumentType = propertyValues.getArrayAwareType();
-
-        if (isPrimitive) {
-            String fieldTypeName = propertyValues.field.getType().getName();
-            if (GeneratorContext.WrapperTypes.containsKey(fieldTypeName)) {
-                returnAndArgumentType = GeneratorContext.WrapperTypes.get(fieldTypeName);
-            }
-        }
+        String returnAndArgumentType = Utility.getGeneratedType(propertyValues);
         addNode(attribute, "type", returnAndArgumentType);            
     }    
 }

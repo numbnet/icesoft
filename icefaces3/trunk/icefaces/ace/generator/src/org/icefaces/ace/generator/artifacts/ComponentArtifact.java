@@ -53,11 +53,6 @@ public class ComponentArtifact extends Artifact{
 
     private void startComponentClass(ComponentContext compCtx, Class clazz, Component component) {
         //initialize
-        // add entry to faces-config
-        GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(clazz, component);
-        GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(
-            clazz, component, compCtx.isGenerateHandler());
-
         writer.append("package ");
         writer.append(Utility.getPackageNameOfClass(Utility.getGeneratedClassName(component)));
         writer.append(";\n\n");
@@ -90,20 +85,18 @@ public class ComponentArtifact extends Artifact{
             behavior.addImportsToComponent(writer);
         }
         writer.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
+        writer.append(Utility.getJavaDocComment(component.javadoc(), component.tlddoc()));
 
         // copy @ResourceDependency annotations
         if (clazz.isAnnotationPresent(ICEResourceLibrary.class)) {
             ICEResourceLibrary lib = (ICEResourceLibrary)clazz.getAnnotation(ICEResourceLibrary.class);
 
-            writer.append("\n");
             writer.append("@ICEResourceLibrary(\"");
             writer.append(lib.value());
-            writer.append("\")");
-            writer.append("\n\n");
+            writer.append("\")\n");
         }
 
         if (clazz.isAnnotationPresent(ICEResourceDependencies.class)) {
-            writer.append("\n");
             writer.append("@ICEResourceDependencies({\n");
 
             ICEResourceDependencies rd = (ICEResourceDependencies) clazz.getAnnotation(ICEResourceDependencies.class);
@@ -124,11 +117,10 @@ public class ComponentArtifact extends Artifact{
                 writer.append("\n");
             }
 
-            writer.append("})");
-            writer.append("\n\n");
+            writer.append("})\n");
         } else if (clazz.isAnnotationPresent(ICEResourceDependency.class)) {
             ICEResourceDependency rd = (ICEResourceDependency) clazz.getAnnotation(ICEResourceDependency.class);
-            writer.append("@ICEResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n\n");
+            writer.append("@ICEResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n");
         }
 
         writer.append("public class ");
@@ -240,9 +232,7 @@ public class ComponentArtifact extends Artifact{
                 writer.append(",\n");
             }
         }
-        Iterator<Field> fields = compCtx.getInternalFieldsForComponentClass().values().iterator();
-        while (fields.hasNext()) {
-            Field field = fields.next();
+        for (Field field : compCtx.getInternalFieldsSorted()) {
             writer.append("\t\t");
             writer.append( field.getName() );
             writer.append(",\n");
@@ -262,11 +252,6 @@ public class ComponentArtifact extends Artifact{
         }
         for (PropertyValues prop : generatedProperties) {
             addGetterSetter(prop);
-        }
-        //since generatedComponentProperties doesn't include inherited properties,
-        //here all of the PropertyValues are used. This part may need re-factor-ed later.
-        for (PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
-            GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(prop);
         }
     }
 
@@ -288,16 +273,7 @@ public class ComponentArtifact extends Artifact{
         boolean isPrimitive = prop.field.getType().isPrimitive() ||
                               GeneratorContext.SpecialReturnSignatures.containsKey(propertyName);
 
-        String returnAndArgumentType = prop.getArrayAwareType();
-
-        // If primitive property, get the primitive return type
-        // otherwise leave it as is.
-        if (isPrimitive) {
-            String fieldTypeName = prop.field.getType().getName();
-            if (GeneratorContext.WrapperTypes.containsKey(fieldTypeName)) {
-                returnAndArgumentType = GeneratorContext.WrapperTypes.get(fieldTypeName);
-            }
-        }
+        String returnAndArgumentType = Utility.getGeneratedType(prop);
 
         boolean isBoolean = prop.field.getType().equals(Boolean.class) ||
                             prop.field.getType().equals(Boolean.TYPE);
@@ -496,34 +472,9 @@ public class ComponentArtifact extends Artifact{
         writer.append("\n\t}\n");
     }
 
-
     private void addJavaDoc(String name, boolean isSetter, String doc) {
-        writer.append("\n\t/**\n");
-        if (isSetter) {
-            writer.append("\t * <p>Set the value of the <code>");
-        } else {
-            writer.append("\t * <p>Return the value of the <code>");
-        }
-        writer.append(name);
-        writer.append("</code> property.</p>");
-        if (doc != null && !"".equals(doc)) {
-            String[] lines = doc.split("\n");
-            writer.append("\n\t * <p>Contents: ");
-
-            for (int j=0; j < lines.length; j++){
-                if (j>0) {
-                    writer.append("\n\t * ");
-                }
-                writer.append(lines[j]);
-                if (j == (lines.length-1)) {
-                    writer.append("</p>");
-                }
-            }
-        }
-        writer.append("\n\t */\n");
+        writer.append(Utility.getJavaDocComment(name, isSetter, doc));
     }
-
-
 
     private void addFacet(ComponentContext compCtx, Class clazz, Component component) {
         Iterator<Field> iterator = compCtx.getFieldsForFacet().values().iterator();
@@ -579,16 +530,7 @@ public class ComponentArtifact extends Artifact{
         boolean isPrimitive = field.getType().isPrimitive() ||
                               GeneratorContext.SpecialReturnSignatures.containsKey(propertyName);
 
-        String returnAndArgumentType = Utility.getArrayAwareType(field);
-
-        // If primitive property, get the primitive return type
-        // otherwise leave it as is.
-        if (isPrimitive) {
-            String fieldTypeName = field.getType().getName();
-            if (GeneratorContext.WrapperTypes.containsKey(fieldTypeName)) {
-                returnAndArgumentType = GeneratorContext.WrapperTypes.get(fieldTypeName);
-            }
-        }
+        String returnAndArgumentType = Utility.getGeneratedType(propertyName, field);
 
         boolean isBoolean = field.getType().equals(Boolean.class) ||
                             field.getType().equals(Boolean.TYPE);
@@ -658,7 +600,7 @@ public class ComponentArtifact extends Artifact{
         // be handled for various cases. primitives must have a default of some kind
         // and Strings have to return null (not "null") to work.
         String defaultValue = fieldAnnotation.defaultValue();
-        Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
+        Log.fine("Evaluating field name: " + field.getName().trim() + ", isPRIMITIVE " +
                 isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
         if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
@@ -693,10 +635,10 @@ public class ComponentArtifact extends Artifact{
 
 
     private void addInternalFields(ComponentContext compCtx) {
-        Iterator<Field> fields = compCtx.getInternalFieldsForComponentClass().values().iterator();
-        while (fields.hasNext()) {
-            Field field = fields.next();
-            org.icefaces.ace.meta.annotation.Field fieldAnnotation = (org.icefaces.ace.meta.annotation.Field)field.getAnnotation(org.icefaces.ace.meta.annotation.Field.class);
+        for (Field field : compCtx.getInternalFieldsSorted()) {
+            org.icefaces.ace.meta.annotation.Field fieldAnnotation =
+                (org.icefaces.ace.meta.annotation.Field)
+                    field.getAnnotation(org.icefaces.ace.meta.annotation.Field.class);
             addFieldGetterSetter(field, fieldAnnotation);
         }
     }
@@ -747,6 +689,21 @@ public class ComponentArtifact extends Artifact{
         isDisconnected();
         handleAttribute();
         endComponentClass(compCtx);
+
+        // add entry to faces-config
+        GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(getMetaContext().getActiveClass(), component);
+
+        GeneratorContext.getInstance().getJsfTldBuilder().addTagInfo(
+            getMetaContext().getActiveClass(), component);
+
+        GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(
+            getMetaContext().getActiveClass(), component, compCtx.isGenerateHandler());
+        //since generatedComponentProperties doesn't include inherited properties,
+        //here all of the PropertyValues are used. This part may need re-factor-ed later.
+        for (PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
+            GeneratorContext.getInstance().getJsfTldBuilder().addAttributeInfo(prop);
+            GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(prop);
+        }
     }
 }
 

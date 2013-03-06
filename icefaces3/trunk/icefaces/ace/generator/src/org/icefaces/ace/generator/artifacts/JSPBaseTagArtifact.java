@@ -18,179 +18,196 @@ package org.icefaces.ace.generator.artifacts;
 
 import org.icefaces.ace.generator.context.GeneratorContext;
 import org.icefaces.ace.generator.context.JSPContext;
-import org.icefaces.ace.generator.context.MetaContext;
 import org.icefaces.ace.generator.utils.FileWriter;
 import org.icefaces.ace.generator.utils.Utility;
 
 import org.icefaces.ace.generator.utils.PropertyValues;
-import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.JSP;
 
-public class JSPBaseTagArtifact extends Artifact{
+import java.lang.reflect.Field;
+import java.util.List;
+
+public class JSPBaseTagArtifact extends Artifact {
 	private StringBuilder generatedTagClass;
 
 	public JSPBaseTagArtifact(JSPContext metaContext) {
 		super(metaContext);
 	}
 
-	private void startComponentClass(JSP jsp) {
+	private void startBaseTagClass(JSP jsp) {
 		generatedTagClass = new StringBuilder();
-        String tagClassName = Utility.getTagClassName(getMetaContext().getActiveClass(), jsp);
+
+        Class metaClass = getMetaContext().getActiveClass();
+        String generatedTagClassName = Utility.getGeneratedTagClassName(
+            metaClass, jsp);
+        String generatedTagExtendsClassName =
+            Utility.getGeneratedTagExtendsClassName(metaClass, jsp);
+        String interfaceClassName = Utility.getGeneratedInterfaceClassName(
+            metaClass, jsp);
 
 		generatedTagClass.append("package ");
-		generatedTagClass.append(Utility.getPackageNameOfClass(tagClassName));
+		generatedTagClass.append(Utility.getPackageNameOfClass(generatedTagClassName));
 		generatedTagClass.append(";\n\n");
 
-		generatedTagClass.append("import java.io.IOException;\n");
-		generatedTagClass.append("import javax.el.*;\n");
-		generatedTagClass.append("import javax.servlet.jsp.JspException;\n\n");
+////		generatedTagClass.append("import javax.servlet.jsp.JspException;\n\n");
+        generatedTagClass.append("import ").append(generatedTagExtendsClassName).append(";\n");
+        generatedTagClass.append("import ").append(interfaceClassName).append(";\n");
 		generatedTagClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
+        generatedTagClass.append(Utility.getJavaDocComment(jsp.javadoc(), jsp.tlddoc()));
 		generatedTagClass.append("public class ");
-		generatedTagClass.append(Utility.getSimpleNameOfClass(tagClassName));
+		generatedTagClass.append(Utility.getSimpleNameOfClass(generatedTagClassName));
 		generatedTagClass.append(" extends ");
-        generatedTagClass.append(jsp.extendsClass());
+        generatedTagClass.append(Utility.getSimpleNameOfClass(generatedTagExtendsClassName));
+        generatedTagClass.append(" implements ");
+        generatedTagClass.append(Utility.getSimpleNameOfClass(interfaceClassName));
         generatedTagClass.append(" {\n");
 	}
 
-	private void endComponentClass(JSP jsp) {
-		addDoTags("Start");
-		addDoTags("End");
+	private void endBaseTagClass(JSP jsp) {
 		addRelease();
-		generatedTagClass.append("\n}");
-		createJavaFile(jsp);
+		generatedTagClass.append("}\n");
 	}
 
 	private void createJavaFile(JSP jsp) {
-		String tagClass = Utility.getTagClassName(getMetaContext().getActiveClass(), jsp);
-		String fileName = Utility.getSimpleNameOfClass(tagClass) + ".java";
-        String path = Utility.getPackagePathOfClass(tagClass);
+		String generatedTagClassName = Utility.getGeneratedTagClassName(getMetaContext().getActiveClass(), jsp);
+		String fileName = Utility.getSimpleNameOfClass(generatedTagClassName) + ".java";
+        String path = Utility.getPackagePathOfClass(generatedTagClassName);
 		FileWriter.write("/generated-jsp/base/", path, fileName, generatedTagClass);        
 	}
 
 	private void addProperties(Class clazz, JSP jsp) {
-		////TODO GeneratorContext.getInstance().getTldBuilder().addTagInfo(clazz, component);
-		addSetters();
-		//TODO addSetProperties(Utility.getGeneratedClassName(component));
+        addPropertyDeclarations();
+        addFieldDeclarations();
+		addPropertyGetterSetters();
+        addFieldGetterSetters();
 	}
 
-	private void addSetters() {
-		//set
-		for(PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
-			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(prop);
+    private void addPropertyDeclarations() {
+        List<PropertyValues> generatingProps = getMetaContext().getGeneratingPropertyValuesSorted();
+        if (generatingProps.size() > 0) {
+            generatedTagClass.append("\t// Properties\n");
+        }
+        for(PropertyValues prop : generatingProps) {
+            String returnAndArgumentType = Utility.getGeneratedType(prop);
+            generatedTagClass.append("\tprotected ");
+            generatedTagClass.append(returnAndArgumentType);
+            generatedTagClass.append(' ');
+            generatedTagClass.append(prop.getJavaVariableName());
+            generatedTagClass.append(";\n");
+        }
+    }
 
-			String type = (prop.expression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression ";
+    private void addFieldDeclarations() {
+        List<Field> internalFields = getMetaContext().getInternalFieldsSorted();
+        if (internalFields.size() > 0) {
+            generatedTagClass.append("\n\t// Fields\n");
+        }
+        for(Field field : internalFields) {
+            // private String propName;
+            String returnAndArgumentType = Utility.getGeneratedType(field.getName(), field);
+            generatedTagClass.append("\tprotected ");
+            generatedTagClass.append(returnAndArgumentType);
+            generatedTagClass.append(' ');
+            generatedTagClass.append(field.getName());
+            generatedTagClass.append(";\n");
+        }
+    }
 
+	private void addPropertyGetterSetters() {
+		for(PropertyValues prop : getMetaContext().getGeneratingPropertyValuesSorted()) {
             // propertyName can be a reserved Java keyword like "for", so use
             // is to build the getter/setter method name, but not alone
             String propertyName = prop.resolvePropertyName();
-            String varName = prop.getJavaVariableName();
-
-			generatedTagClass.append("\tprivate ");
-			generatedTagClass.append(type);
-			generatedTagClass.append(varName);
-			generatedTagClass.append(";\n\tpublic void set");
-			generatedTagClass.append(propertyName.substring(0,1).toUpperCase());
-			generatedTagClass.append(propertyName.substring(1));
-			generatedTagClass.append("(");
-			generatedTagClass.append(type);
-			generatedTagClass.append(varName);
-			generatedTagClass.append(") {\n");
-			generatedTagClass.append("\t\tthis.");
-			generatedTagClass.append(varName);
-			generatedTagClass.append(" = ");
-			generatedTagClass.append(varName);
-			generatedTagClass.append(";\n\t}\n");
+            addSetterGetter(propertyName, prop.getJavaVariableName(),
+                prop.field, prop.javadocSet, prop.javadocGet);
 		}
 	}
+
+    private void addFieldGetterSetters() {
+        for (Field field : getMetaContext().getInternalFieldsSorted()) {
+            org.icefaces.ace.meta.annotation.Field fieldAnnot =
+                (org.icefaces.ace.meta.annotation.Field) field.getAnnotation(
+                    org.icefaces.ace.meta.annotation.Field.class);
+            addSetterGetter(field.getName(), field.getName(), field,
+                fieldAnnot.javadoc(), fieldAnnot.javadoc());
+        }
+    }
+
+    private void addSetterGetter(String propertyName, String varName, Field field, String setDoc, String getDoc) {
+        String returnAndArgumentType = Utility.getGeneratedType(propertyName, field);
+
+        boolean isBoolean = field.getType().equals(Boolean.class) ||
+                            field.getType().equals(Boolean.TYPE);
+
+        // The publicly exposed property name. Will differ from the field name
+        // if the field name is a java keyword
+        String camelCaseMethodName = propertyName.substring(0,1).toUpperCase() + propertyName.substring(1);
+        String setMethodName = "set" + camelCaseMethodName;
+        String getMethodName = (isBoolean ? "is" : "get") + camelCaseMethodName;
+
+        generatedTagClass.append(Utility.getJavaDocComment(propertyName, true, setDoc));
+        generatedTagClass.append("\tpublic void ");
+        generatedTagClass.append(setMethodName);
+        generatedTagClass.append("(");
+        generatedTagClass.append(returnAndArgumentType);
+        generatedTagClass.append(" ");
+        generatedTagClass.append(varName);
+        generatedTagClass.append(") {\n");
+        generatedTagClass.append("\t\tthis.");
+        generatedTagClass.append(varName);
+        generatedTagClass.append(" = ");
+        generatedTagClass.append(varName);
+        generatedTagClass.append(";\n\t}\n");
+
+        generatedTagClass.append(Utility.getJavaDocComment(propertyName, false, getDoc));
+        generatedTagClass.append("\tpublic ");
+        generatedTagClass.append(returnAndArgumentType);
+        generatedTagClass.append(" ");
+        generatedTagClass.append(getMethodName);
+        generatedTagClass.append("() {\n");
+        generatedTagClass.append("\t\treturn this.");
+        generatedTagClass.append(varName);
+        generatedTagClass.append(";\n\t}\n");
+    }
 
 	private void addRelease() {
-		generatedTagClass.append("\t/**\n\t * <p>Release any allocated tag handler attributes.</p>\n \t */\n");
-		generatedTagClass.append("\tpublic void release() {\n");
+		generatedTagClass.append("\n\tpublic void release() {\n");
 		generatedTagClass.append("\t\tsuper.release();\n");
 
-		for(PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
-			generatedTagClass.append("\t\t");
-			generatedTagClass.append(prop.getJavaVariableName());
-			generatedTagClass.append(" = null;\n");
+		for(PropertyValues prop : getMetaContext().getGeneratingPropertyValuesSorted()) {
+            boolean isPrimitive = prop.field.getType().isPrimitive() ||
+                GeneratorContext.SpecialReturnSignatures.containsKey(
+                    prop.resolvePropertyName());
+            if (!isPrimitive) {
+                generatedTagClass.append("\t\t");
+                generatedTagClass.append(prop.getJavaVariableName());
+                generatedTagClass.append(" = null;\n");
+            }
 		}
-		generatedTagClass.append("\t}");
-	}
-
-	private void addDoTags(String tagName) {
-		generatedTagClass.append("\n\tpublic int do");
-		generatedTagClass.append(tagName);
-		generatedTagClass.append("Tag() throws JspException {\n");
-		generatedTagClass.append("\t\ttry {\n\t\t\treturn super.do");
-		generatedTagClass.append(tagName);
-		generatedTagClass.append("Tag();\n");
-		generatedTagClass.append("\t\t} catch (Exception e) {\n\t\t\tThrowable root = e;\t\t\t\n\t\t\twhile (root.getCause() != null) {\n");
-		generatedTagClass.append("\t\t\t\troot = root.getCause();\n\t\t\t}\n\t\t\tthrow new JspException(root);\n\t\t}\n\t}\n") ;
-	}
-
-	private void addSetProperties(String componentClass) {
-		generatedTagClass.append("\n\tprotected void setProperties(UIComponent component) {\n\t\tsuper.setProperties(component);\n\t\t");
-		generatedTagClass.append(componentClass);
-		generatedTagClass.append(" _component = null;\n\t\ttry {\n\t\t\t_component = (");
-		generatedTagClass.append(componentClass);
-		generatedTagClass.append(") component;\n\t\t} catch (ClassCastException cce) {");
-		generatedTagClass.append("\n\t\t\tthrow new IllegalStateException(\"Component \" + component.toString() + \" not expected type.  Expected:");
-		generatedTagClass.append(componentClass);
-		generatedTagClass.append("\");\n");
-		generatedTagClass.append("\t\t}\n");
-		for(PropertyValues property : getMetaContext().getPropertyValuesSorted()) {
-            String propertyName = property.resolvePropertyName();
-            String varName = property.getJavaVariableName();
-			generatedTagClass.append("\t\tif (");
-			generatedTagClass.append(varName);
-			generatedTagClass.append(" != null) {\n\t\t\t");
-			if (property.expression == Expression.METHOD_EXPRESSION &&
-                "actionListener".equals(propertyName)) {
-				generatedTagClass.append("_component.addActionListener(new MethodExpressionActionListener(actionListener)");
-			} else if (property.expression == Expression.METHOD_EXPRESSION &&
-                "action".equals(propertyName)) {
-				generatedTagClass.append("_component.setActionExpression(action");
-            } else if (property.expression == Expression.METHOD_EXPRESSION &&
-                "valueChangeListener".equals(propertyName) &&
-                // Any UIInput inherits valueChangeListener, so should use
-                // addValueChangeListener, but any component not inheriting it,
-                // and just implementing it's own MethodExpression property
-                // named valueChangeListener should just use setValueChangeListener
-                !getMetaContext().isGeneratingPropertyByName("valueChangeListener")) {
-				generatedTagClass.append("_component.addValueChangeListener(new MethodExpressionValueChangeListener(valueChangeListener)");
-            } else if (property.expression == Expression.METHOD_EXPRESSION &&
-                "validator".equals(propertyName)) {
-				generatedTagClass.append("_component.addValidator(new MethodExpressionValidator(valueChangeListener)");
-			} else {
-				generatedTagClass.append("_component.set");
-
-				if (property.expression == Expression.METHOD_EXPRESSION) {
-					generatedTagClass.append(propertyName.substring(0,1).toUpperCase());
-					generatedTagClass.append(propertyName.substring(1));
-				} else {
-					generatedTagClass.append("ValueExpression");
-				}
-				generatedTagClass.append("(");
-				if (property.expression == Expression.VALUE_EXPRESSION) {
-					generatedTagClass.append("\"");
-					generatedTagClass.append(propertyName);
-					generatedTagClass.append("\", ");
-				}
-				generatedTagClass.append(varName);
-			}
-			generatedTagClass.append(");\n");
-			generatedTagClass.append("\t\t}\n");
-		}
+        for(Field field : getMetaContext().getInternalFieldsSorted()) {
+            boolean isPrimitive = field.getType().isPrimitive() ||
+                GeneratorContext.SpecialReturnSignatures.containsKey(
+                    field.getName());
+            if (!isPrimitive) {
+                generatedTagClass.append("\t\t");
+                generatedTagClass.append(field.getName());
+                generatedTagClass.append(" = null;\n");
+            }
+        }
 		generatedTagClass.append("\t}\n");
 	}
 
 	public void build() {
-        //generatedTagClass = new StringBuilder();
-        //createJavaFile((JSP) getMetaContext().getActiveClass().getAnnotation(JSP.class));
-        
-        if (true) return; //TODO Enable when works
 		JSP jsp = (JSP) getMetaContext().getActiveClass().getAnnotation(JSP.class);
-		startComponentClass(jsp);
+		startBaseTagClass(jsp);
 		addProperties(getMetaContext().getActiveClass(), jsp);
-		endComponentClass(jsp);
+		endBaseTagClass(jsp);
+        createJavaFile(jsp);
+
+        GeneratorContext.getInstance().getJspTldBuilder().addTagInfo(
+            getMetaContext().getActiveClass(), jsp);
+        for(PropertyValues prop : getMetaContext().getPropertyValuesSorted()) {
+            GeneratorContext.getInstance().getJspTldBuilder().addAttributeInfo(prop);
+        }
 	}
 }
