@@ -89,7 +89,7 @@ public class OutputResourceBean implements Serializable {
 
 class MyResource implements Resource, Serializable {
     private String resourceName;
-    private InputStream inputStream;
+    private byte[] content;
     private final Date lastModified;
 
     public MyResource(ExternalContext ec, String resourceName) {
@@ -108,16 +108,14 @@ class MyResource implements Resource, Serializable {
      * com.icesoft.faces.context.FileResource, com.icesoft.faces.context.JarResource.
      */
     public InputStream open() throws IOException {
-        if (inputStream == null) {
+        if (content == null) {
             FacesContext fc = FacesContext.getCurrentInstance();
             ExternalContext ec = fc.getExternalContext();
             InputStream stream = ec.getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName);
-            byte[] byteArray = OutputResourceBean.toByteArray(stream);
-            inputStream = new ByteArrayInputStream(byteArray);
-        } else {
-            inputStream.reset();
+            content = OutputResourceBean.toByteArray(stream);
         }
-        return inputStream;
+
+        return new ByteArrayInputStream(content);
     }
 
     public String calculateDigest() {
