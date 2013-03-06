@@ -81,7 +81,7 @@ public class TabPaneMeta extends UIComponentBaseMeta {
     
     @Facets
     class FacetsMeta{
-        @Facet
+        @Facet(tlddoc = "Allows rendering of nested components as tab label.")
         UIComponent label;          
     }    
 }

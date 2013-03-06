@@ -31,7 +31,7 @@ public class UIColumnMeta extends UIComponentBaseMeta {
          * The header facet is used for putting a component at the top of the 
          * column, above the row data.
          */
-        @Facet
+        @Facet(tlddoc = "Allows rendering of nested components as table column header.")
         //TODO ICE-6110
         UIComponent header;
         
@@ -39,7 +39,7 @@ public class UIColumnMeta extends UIComponentBaseMeta {
          * The footer facet is used for putting a component at the bottom of 
          * the column, below the row data.
          */
-        @Facet //TODO ICE-6110
+        @Facet(tlddoc = "Allows rendering of nested components as table column footer.") //TODO ICE-6110
         UIComponent footer;    
     }
 }
