@@ -422,17 +422,17 @@ if (!window.ice.icefaces) {
         }
 
         //define function to be wired as error callback into JSF bridge
-        function submitErrorBroadcaster(perRequestNetworkErrorListeners, perRequestServerErrorListeners) {
+        function submitErrorBroadcaster(perRequestNetworkErrorListeners, perRequestServerErrorListeners, sessionExpiredListener) {
             perRequestNetworkErrorListeners = perRequestNetworkErrorListeners || [];
             perRequestServerErrorListeners = perRequestServerErrorListeners || [];
             return function(e) {
                 if (e.status == 'serverError') {
                     var xmlContent = e.responseXML;
-                    if (containsXMLData(xmlContent)) {
+                    if (containsXMLData(xmlContent) && sessionExpiredListener) {
                         var errorName = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
                         if (errorName && contains(errorName, 'org.icefaces.application.SessionExpiredException')) {
                             info(logger, 'received session expired message');
-                            sessionExpired();
+                            sessionExpiredListener();
                             return;
                         }
                     }
@@ -451,7 +451,7 @@ if (!window.ice.icefaces) {
 
         //setup page scoped submit event broadcasters
         jsf.ajax.addOnEvent(submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners));
-        jsf.ajax.addOnError(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners));
+        jsf.ajax.addOnError(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners, sessionExpired));
 
         //setup submit error logging
         function logReceivedUpdates(e) {
