@@ -17,6 +17,16 @@
 <project name="common-jsp">
 	
 	<import file="common.xml"/>
+	
+	<patternset id="pattern.compile.icemobile.jsp">
+        <include name="${icemobile-jsp.lib.name}.jar"/>
+        <include name="jstl-api-1.2.jar"/>
+        <include name="javax.servlet-api.jar"/>
+		<include name="javax.servlet-jsp.jar"/>
+		<include name="javax.annotation.jar"/>
+		<include name="el-api-2.2.1-b03.jar"/>
+        <include name="mail.jar"/>
+    </patternset>
 
     <patternset id="pattern.distribute.icemobile.jsp">
         <include name="${icemobile-jsp.lib.name}.jar"/>
@@ -37,7 +47,7 @@
 
             <classpath>
                 <fileset dir="${lib.icemobile.dir}">
-                    <patternset refid="pattern.all"/>
+                    <patternset refid="pattern.compile.icemobile.jsp"/>
                 </fileset>
                 <fileset dir="${lib.application.dir}" >
                     <patternset refid="pattern.all"/>
