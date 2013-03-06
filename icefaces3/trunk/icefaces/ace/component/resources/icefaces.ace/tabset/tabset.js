@@ -427,6 +427,7 @@ ice.ace.tabset = {
            }
        }
 
+       setTimeout(function() {
        ice.ace.getInstance(clientId, function(yuiComp) {
            var newDisabledTabs = jsfProps['disabledTabs'];
            var tabs = yuiComp.get('tabs');
@@ -434,6 +435,7 @@ ice.ace.tabset = {
                tabs[i].set('disabled', ice.ace.jq.inArray(i, newDisabledTabs) > -1);
            }
        }, lib, jsProps, jsfProps);
+       }, 1);
 
        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, lib);
 
