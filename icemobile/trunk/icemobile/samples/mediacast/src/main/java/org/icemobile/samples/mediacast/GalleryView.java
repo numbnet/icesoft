@@ -31,8 +31,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
-import org.apache.commons.lang3.StringUtils;
-
 @ManagedBean
 @SessionScoped
 public class GalleryView implements Serializable {
@@ -41,7 +39,6 @@ public class GalleryView implements Serializable {
 	private MediaStore mediaStore;
 	
 	private List<String> filters = new ArrayList<String>();
-	private String filterString;
 	
 	private List<MediaMessage> filteredMessages = new ArrayList<MediaMessage>();
 	private int filteredMessagesCount = 0;
@@ -59,15 +56,6 @@ public class GalleryView implements Serializable {
 	
 	public void setMediaStore(MediaStore store){
 		this.mediaStore = store;
-	}
-	
-	public String getFilterString(){
-		return filterString;
-	}
-	
-	public void setFilterString(String filterString){
-		this.filterString = filterString;
-		filters = Arrays.asList(StringUtils.split(filterString));
 	}
 	
 	private void filterMessages(){
