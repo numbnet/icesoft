@@ -588,7 +588,6 @@ if (!window.ice.icefaces) {
                         }
                     }
                     if (isEnterKey(e)) {
-                        try {
                         //traverse ancestors to check if submit on enter is disabled at element's position in DOM
                         var cursor = element;
                         while (cursor && !cursor.submitOnEnter) {
@@ -600,9 +599,6 @@ if (!window.ice.icefaces) {
                         } else {
                             submit(ev || window.event, element);
                             return false;
-                        }
-                        } catch (ex) {
-                            console.error(ex);
                         }
                     }
                     return true;
