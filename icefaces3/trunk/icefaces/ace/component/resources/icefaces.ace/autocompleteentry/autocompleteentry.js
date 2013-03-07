@@ -310,7 +310,7 @@ ice.ace.Autocompleter.prototype = {
 						event.preventDefault();
 						return false;
 					}
-                    this.getUpdatedChoices(true, event, -1);
+                    this.getUpdatedChoices(true, event, -1, 'textFieldEnter');
 					event.stopPropagation();
 					event.preventDefault();
                     return;
@@ -708,7 +708,7 @@ ice.ace.Autocompleter.prototype = {
         return lastTokenPos;
     },
 
-    getUpdatedChoices: function(isHardSubmit, event, idx) {
+    getUpdatedChoices: function(isHardSubmit, event, idx, trigger) {
 		if (this.element.value.length < this.minChars) return; // this.hide()
         if (!event) {
             event = new Object();
@@ -729,6 +729,7 @@ ice.ace.Autocompleter.prototype = {
 				} else {
 					ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
 				}
+				ajaxCfg.trigger = trigger;
 				ice.ace.ab(ajaxCfg);
 			} else if (!this.clientSideModeCfg) {
 				ice.s(event, this.element);
