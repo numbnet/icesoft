@@ -21,6 +21,8 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import org.icefaces.application.ResourceRegistry;
 
@@ -52,6 +56,7 @@ public class RealityBean implements Serializable {
 
     public static final String BEAN_NAME = "realityBean";
 
+    static String TEMP_DIR = "javax.servlet.context.tmpdir";
     public static final String FILE_KEY = "file";
     public static final String RELATIVE_PATH_KEY = "relativePath";
     public static final String CONTENT_TYPE_KEY = "contentType";
@@ -102,7 +107,6 @@ public class RealityBean implements Serializable {
 
         markerList.set(0, allMarkers.get(selectedModel1));
         markerList.set(1, allMarkers.get(selectedModel2));
-
     }
 
 
@@ -112,6 +116,56 @@ public class RealityBean implements Serializable {
             boolean success = cameraFile.delete();
             if (!success && logger.isLoggable(Level.FINE)){
                 logger.fine("Could not dispose of media file" + cameraFile.getAbsolutePath());
+            }
+        }
+    }
+
+    public String submit()  {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        System.out.println("Request " + request);
+        try {
+            for (Part part : request.getParts())  {
+            
+                System.out.println("Request " + part.getName() + " " + part.getContentType() + " " + part.getSize());
+                if ( "application/octet-stream".equals(part.getContentType()) )  {
+                    File partFile = writePart(facesContext, part);
+                    File newFile = getTempFile(facesContext);
+                    Format3dTransformer.simplifyMesh(partFile, newFile);
+System.out.println("Simplified mesh " + newFile.getAbsolutePath());
+                }
+            }
+        } catch (Exception e)  {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    File writePart(FacesContext facesContext, Part part) 
+            throws IOException {
+        File tempFile = getTempFile(facesContext);
+        FileOutputStream tempStream = new FileOutputStream(tempFile);
+
+        InputStream partStream = part.getInputStream();
+        copyStream(partStream, tempStream);
+
+        return tempFile;
+    }
+
+    File getTempFile(FacesContext facesContext) throws IOException {
+        File tempDir = (File) ( facesContext.getExternalContext()
+                .getApplicationMap().get(TEMP_DIR) );
+        File tempFile = File.createTempFile("ice", ".tmp", tempDir);
+        return tempFile;
+    }
+
+    public static void copyStream(InputStream in, OutputStream out) throws IOException {
+        byte[] buf = new byte[1000];
+        int l = 1;
+        while (l > 0) {
+            l = in.read(buf);
+            if (l > 0) {
+                out.write(buf, 0, l);
             }
         }
     }
@@ -156,6 +210,14 @@ public class RealityBean implements Serializable {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public void setSelection(String selection)  {
+        this.selection = selection;
+    }
+
+    public String getSelection()  {
+        return selection;
     }
 
     public String getSelectedModel1() {
