@@ -265,4 +265,23 @@ of "FacesEvent" would work.
         </attribute>
     </tag>
 
+    <tag>
+        <tag-name>submitOnEnter</tag-name>
+        <description>
+            This tag enables form submission when enter key is pressed.
+        </description>
+        <component>
+            <component-type>javax.faces.Output</component-type>
+            <renderer-type>org.icefaces.submitOnEnter</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                Perform submit on enter when enabled set to true
+            </description>
+            <name>enabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
+
 </facelet-taglib>

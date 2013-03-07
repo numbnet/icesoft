@@ -586,12 +586,26 @@ if (!window.ice.icefaces) {
                             submit(ev || window.event, element);
                             return false;
                         }
-                        if (isEnterKey(e)) {
+                    }
+                    if (isEnterKey(e)) {
+                        try {
+                        //traverse ancestors to check if submit on enter is disabled at element's position in DOM
+                        var cursor = element;
+                        while (cursor && !cursor.submitOnEnter) {
+                            cursor = cursor.parentNode;
+                        }
+                        if (cursor && cursor.submitOnEnter == 'disabled') {
+                            //cancel submit on enter
+                            return false;
+                        } else {
                             submit(ev || window.event, element);
                             return false;
                         }
-                        return true;
+                        } catch (ex) {
+                            console.error(ex);
+                        }
                     }
+                    return true;
                 }
             };
         };
