@@ -44,6 +44,24 @@
          a property for the dependencies in question.-->
     <resources id="extra.libs">
 
+        <mappedresources>
+
+            <!-- For each 3rd party set of libs just add the appropriate
+                 include statement and property to this fileset-->
+            <fileset dir="${lib.icemobile.dir}" includes="" erroronmissingdir="false">
+                <include name="aws/*.jar" if="aws"/>
+                <include name="twilio/*.jar" if="twilio"/>
+            </fileset>
+
+            <!-- The chain of mappers...
+                   1) strips all directory entries from each file's path
+                   2) "repaths" each resource so they end up in the WEB-INF/lib of the .war file
+            -->
+            <chainedmapper>
+                <mapper type="flatten"/>
+                <mapper type="glob" from="*.jar" to="WEB-INF/lib/*.jar"/>
+            </chainedmapper>
+        </mappedresources>
 
     </resources>
 
