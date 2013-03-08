@@ -32,6 +32,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.beans.Beans;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.faces.application.Resource;
 
 /**
  * Created by IntelliJ IDEA. User: rmayhew Date: May 30, 2006 Time: 3:59:37 PM
@@ -59,6 +62,8 @@ public class OutputStyleRenderer extends DomBasicRenderer {
     private static final int OPERA = 6;
     private static final int OPERA_MOBILE = 7;
     private static final int IE_8 = 8;
+
+    String[] extensions = {"", IE_EXTENTION, SAFARI_EXTENTION, DT_EXTENTION, IE_7_EXTENTION, SAFARI_MOBILE_EXTENTION, OPERA_EXTENTION, OPERA_MOBILE_EXTENTION, IE_8_EXTENSION};
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -116,9 +121,19 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                                     href + "]");
                         }
                     } else {
-                        throw new RuntimeException(
-                                "OutputStyle file attribute must end in .css. " +
-                                "Current Value is [" + href + "]");
+                        Matcher matcher = Pattern.compile(".*javax\\.faces\\.resource/((.*)\\.css)(\\..*)?\\?ln=([^&]*)(&.*|$)").matcher(href);
+                        if (matcher.matches()) {
+                            Element ieStyleEle = buildCssElement(domContext);
+                            String extension = browserType >= 0 && browserType < extensions.length ? extensions[browserType] : IE_EXTENTION;
+                            ieStyleEle.setAttribute(HTML.TITLE_ATTR, extension);
+                            String hrefURL = new StringBuffer(matcher.group(0)).insert(matcher.end(2), extension).toString();
+                            ieStyleEle.setAttribute(HTML.HREF_ATTR, hrefURL);
+                            String resourceName = new StringBuffer(matcher.group(1)).insert(matcher.end(2) - matcher.start(2), extension).toString();
+                            Resource resource = facesContext.getApplication().getResourceHandler().createResource(resourceName, matcher.group(4));
+                            if (resource != null) {
+                                styleEle.getParentNode().appendChild(ieStyleEle);
+                            }
+                        }
                     }
                 }
 
