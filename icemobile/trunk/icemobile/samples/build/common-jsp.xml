@@ -20,7 +20,7 @@
 	
 	<patternset id="pattern.compile.icemobile.jsp">
         <include name="${icemobile-jsp.lib.name}.jar"/>
-        <include name="jstl-api-1.2.jar"/>
+        <include name="jstl-1.2.jar"/>
         <include name="javax.servlet-api.jar"/>
 		<include name="javax.servlet-jsp.jar"/>
 		<include name="javax.annotation.jar"/>
@@ -30,8 +30,7 @@
 
     <patternset id="pattern.distribute.icemobile.jsp">
         <include name="${icemobile-jsp.lib.name}.jar"/>
-        <include name="jstl-api-1.2.jar"/>
-        <include name="jstl-impl-1.2.jar"/>
+        <include name="jstl-1.2.jar"/>
     	<include name="mail.jar"/>
 	</patternset>
 

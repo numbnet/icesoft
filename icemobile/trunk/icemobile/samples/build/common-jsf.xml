@@ -22,8 +22,7 @@
         <include name="${icepush.lib.name}.jar"        unless="no-icepush"/>
     	<include name="${icefaces.lib.name}.jar" />
     	<include name="javax.faces.jar"/>
-    	<include name="jstl-api-1.2.jar"/>
-        <include name="jstl-impl-1.2.jar"/>
+    	<include name="jstl-1.2.jar"/>
         <include name="mail.jar"/>
     	<include name="${icefaces-mobi.lib.name}.jar" />
     </patternset>
@@ -43,7 +42,7 @@
             <classpath>
                 <fileset dir="${lib.icemobile.dir}">
                     <include name="javax.annotation.jar"/>
-                    <include name="jstl-api-1.2.jar"/>
+                    <include name="jstl-1.2.jar"/>
                     <include name="el-api-2.2.1-b03.jar"/>
                     <include name="javax.faces.jar"/>
                     <include name="javax.servlet-api.jar"/>
