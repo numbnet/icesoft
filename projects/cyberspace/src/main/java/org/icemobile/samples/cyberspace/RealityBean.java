@@ -73,10 +73,13 @@ public class RealityBean implements Serializable {
     private double latitude = 0.0;
     private double longitude = 0.0;
     static int THUMBSIZE = 128;
-    HashMap<String,HashMap> allMarkers = new HashMap();;
+    HashMap<String,HashMap> markerIndex = new HashMap();;
     List<HashMap> markerList;
-    private String selectedModel1;
-    private String selectedModel2;
+    List<HashMap> selectedMarkers;
+    private String selectedModel1 = "ICEmobile";
+    private String selectedModel2 = "ICEfaces";
+    private String selectedModel3 = "Puzzle1";
+    private String selectedModel4 = "Puzzle2";
 
     // upload error message
     private String uploadMessage;
@@ -85,31 +88,39 @@ public class RealityBean implements Serializable {
         markerList = new ArrayList();
 
         HashMap marker = new HashMap();
-        marker.put("label", "puz1");
+        marker.put("label", "Puzzle1");
         marker.put("model", getContextURL() + 
                 "/resources/3d/puz1.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
-        marker.put("label", "puz2");
+        marker.put("label", "Puzzle2");
         marker.put("model", getContextURL() +
                 "/resources/3d/puz2.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
-        marker.put("label", "icemobile");
+        marker.put("label", "ICEmobile");
         marker.put("model", getContextURL() +
                 "/resources/3d/icemobile.obj" );
         markerList.add(marker);
-System.out.println("before iteration marketList " + markerList);
+
+        marker = new HashMap();
+        marker.put("label", "ICEfaces");
+        marker.put("model", getContextURL() +
+                "/resources/3d/icefaces.obj" );
+        markerList.add(marker);
 
         for (HashMap theMarker : markerList)  {
-            allMarkers.put((String) theMarker.get("label"), theMarker);
+            markerIndex.put((String) theMarker.get("label"), theMarker);
         }
 
-//        markerList.set(0, allMarkers.get(selectedModel1));
-//        markerList.set(1, allMarkers.get(selectedModel2));
-System.out.println("Constructed marketList " + markerList);
+        selectedMarkers = new ArrayList();
+        selectedMarkers.add(markerIndex.get(selectedModel1));
+        selectedMarkers.add(markerIndex.get(selectedModel2));
+        selectedMarkers.add(markerIndex.get(selectedModel3));
+        selectedMarkers.add(markerIndex.get(selectedModel4));
+System.out.println("Constructed markerList " + markerList);
     }
 
 
@@ -143,7 +154,7 @@ System.out.println("stored model " + label + " " + newFile);
         marker.put("model", getContextURL() +
                 "/resources/3d/" + newFileName );
         markerList.add(marker);
-        allMarkers.put(label, marker);
+        markerIndex.put(label, marker);
         label = "";
 //            for (Part part : request.getParts())  {
 //            
@@ -251,8 +262,8 @@ System.out.println("stored model " + label + " " + newFile);
 
     public void setSelectedModel1(String selectedModel) {
         this.selectedModel1 = selectedModel;
-//        HashMap marker = allMarkers.get(selectedModel);
-//        markerList.set(0, marker);
+        HashMap marker = markerIndex.get(selectedModel);
+        selectedMarkers.set(0, marker);
     }
 
     public String getSelectedModel2() {
@@ -261,13 +272,36 @@ System.out.println("stored model " + label + " " + newFile);
 
     public void setSelectedModel2(String selectedModel) {
         this.selectedModel2 = selectedModel;
-//        HashMap marker = allMarkers.get(selectedModel);
-//        markerList.set(1, marker);
+        HashMap marker = markerIndex.get(selectedModel);
+        selectedMarkers.set(1, marker);
+    }
+
+    public String getSelectedModel3() {
+        return selectedModel3;
+    }
+
+    public void setSelectedModel3(String selectedModel) {
+        this.selectedModel3 = selectedModel;
+        HashMap marker = markerIndex.get(selectedModel);
+        selectedMarkers.set(2, marker);
+    }
+
+    public String getSelectedModel4() {
+        return selectedModel4;
+    }
+
+    public void setSelectedModel4(String selectedModel) {
+        this.selectedModel4 = selectedModel;
+        HashMap marker = markerIndex.get(selectedModel);
+        selectedMarkers.set(3, marker);
     }
 
     public List getMarkers()  {
-System.out.println("marker list " + markerList);
         return markerList;
+    }
+
+    public List getSelectedMarkers()  {
+        return selectedMarkers;
     }
 
     public String getBaseURL()  {
