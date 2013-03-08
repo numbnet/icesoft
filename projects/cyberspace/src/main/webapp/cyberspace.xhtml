@@ -43,6 +43,18 @@
                         itemValue="#{marker.label}" itemLabel="#{marker.label}"/>
                     <f:ajax execute="@this" render="@all"/>
                 </h:selectOneMenu>
+                 <h:selectOneMenu id="dynamicMarker3"
+                        value="#{realityBean.selectedModel3}">
+                    <f:selectItems value="#{realityBean.markers}" var="marker"
+                        itemValue="#{marker.label}" itemLabel="#{marker.label}"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+                 <h:selectOneMenu id="dynamicMarker4"
+                        value="#{realityBean.selectedModel4}">
+                    <f:selectItems value="#{realityBean.markers}" var="marker"
+                        itemValue="#{marker.label}" itemLabel="#{marker.label}"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
            </mobi:fieldsetRow>
             <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:augmentedReality  buttonLabel="3D Augmented Reality"
@@ -50,7 +62,7 @@
                     value="#{realityBean.selection}"
                     disabled="#{not realityBean.ios}">
                     <mobi:augmentedRealityMarkers
-                        value="#{realityBean.markers}" var="marker"
+                        value="#{realityBean.selectedMarkers}" var="marker"
                         markerLabel="#{marker.label}"
                         markerModel="#{marker.model}" />
                 </mobi:augmentedReality>
