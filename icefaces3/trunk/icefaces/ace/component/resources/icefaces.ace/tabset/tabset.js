@@ -81,15 +81,31 @@ ice.ace.tabset = {
                     // When using caching, event.oldValue is undefined in this function
                     // thus we use a reference to the old tab cached during the standard contentTransition.
                     for (var i = 0; i < cachedOldTabs.length; i++) {
+                        var flipDisabled = cachedOldTabs[i].get('active') &&
+                                cachedOldTabs[i].get('disabled');
+                        if (flipDisabled) {
+                            cachedOldTabs[i].set('disabled', false);
+                        }
                         cachedOldTabs[i].set('contentVisible', false);
                         cachedOldTabs[i].set('active', false);
+                        if (flipDisabled) {
+                            cachedOldTabs[i].set('disabled', true);
+                        }
                     }
                     cachedOldTabs = [];
                 }
 
                 if (event.newValue) {
+                    var flipDisabled = !event.newValue.get('active') &&
+                            event.newValue.get('disabled');
+                    if (flipDisabled) {
+                        event.newValue.set('disabled', false);
+                    }
                     event.newValue.set('contentVisible', true);
                     event.newValue.set('active', true);
+                    if (flipDisabled) {
+                        event.newValue.set('disabled', true);
+                    }
                 }
 
                 try {
@@ -427,7 +443,6 @@ ice.ace.tabset = {
            }
        }
 
-       setTimeout(function() {
        ice.ace.getInstance(clientId, function(yuiComp) {
            var newDisabledTabs = jsfProps['disabledTabs'];
            var tabs = yuiComp.get('tabs');
@@ -435,7 +450,6 @@ ice.ace.tabset = {
                tabs[i].set('disabled', ice.ace.jq.inArray(i, newDisabledTabs) > -1);
            }
        }, lib, jsProps, jsfProps);
-       }, 1);
 
        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, lib);
 
