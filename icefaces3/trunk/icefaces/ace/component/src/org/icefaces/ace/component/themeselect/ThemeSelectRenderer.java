@@ -58,13 +58,13 @@ public class ThemeSelectRenderer extends InputRenderer {
         clientId = component.getClientId(context);
         String selectId = "select_" + clientId;
 
-        writer.startElement("span", component);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
 
         writer.startElement("select", component);
         writer.writeAttribute("id", selectId, "id");
         writer.writeAttribute("name", selectId, "id");
-        writer.writeAttribute("class", "ui-state-highlight", null);
+        writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default" + getStateStyleClasses(this.component), null);
         renderOptions();
         writer.endElement("select");
 
@@ -75,7 +75,7 @@ public class ThemeSelectRenderer extends InputRenderer {
         writer.write(Integer.toString(selectedTheme.hashCode()) + Integer.toString(themeList.hashCode()));
         writer.endElement("span");
 
-        writer.endElement("span");
+        writer.endElement("div");
     }
 
     private void renderOptions() throws IOException {
