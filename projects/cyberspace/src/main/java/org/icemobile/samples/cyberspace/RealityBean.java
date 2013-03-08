@@ -38,6 +38,7 @@ import javax.annotation.PreDestroy;
 import javax.faces.application.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -48,7 +49,7 @@ import javax.servlet.http.Part;
 import org.icefaces.application.ResourceRegistry;
 
 @ManagedBean(name = RealityBean.BEAN_NAME)
-@SessionScoped
+@ApplicationScoped
 public class RealityBean implements Serializable {
 
     private static final Logger logger =
@@ -74,8 +75,8 @@ public class RealityBean implements Serializable {
     static int THUMBSIZE = 128;
     HashMap<String,HashMap> allMarkers = new HashMap();;
     List<HashMap> markerList;
-    private String selectedModel1 = "icemobile";
-    private String selectedModel2 = "icemobile";
+    private String selectedModel1;
+    private String selectedModel2;
 
     // upload error message
     private String uploadMessage;
@@ -100,13 +101,15 @@ public class RealityBean implements Serializable {
         marker.put("model", getContextURL() +
                 "/resources/3d/icemobile.obj" );
         markerList.add(marker);
+System.out.println("before iteration marketList " + markerList);
 
         for (HashMap theMarker : markerList)  {
             allMarkers.put((String) theMarker.get("label"), theMarker);
         }
 
-        markerList.set(0, allMarkers.get(selectedModel1));
-        markerList.set(1, allMarkers.get(selectedModel2));
+//        markerList.set(0, allMarkers.get(selectedModel1));
+//        markerList.set(1, allMarkers.get(selectedModel2));
+System.out.println("Constructed marketList " + markerList);
     }
 
 
@@ -120,21 +123,38 @@ public class RealityBean implements Serializable {
         }
     }
 
-    public String submit()  {
+    public String upload()  {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        System.out.println("Request " + request);
         try {
-            for (Part part : request.getParts())  {
-            
-                System.out.println("Request " + part.getName() + " " + part.getContentType() + " " + part.getSize());
-                if ( "application/octet-stream".equals(part.getContentType()) )  {
-                    File partFile = writePart(facesContext, part);
-                    File newFile = getTempFile(facesContext);
-                    Format3dTransformer.simplifyMesh(partFile, newFile);
-System.out.println("Simplified mesh " + newFile.getAbsolutePath());
-                }
-            }
+            Part objPart = request.getPart("objfile");
+            File partFile = writePart(facesContext, objPart);
+            File newFile = getTempFile(facesContext, ".obj");
+            Format3dTransformer.simplifyMesh(partFile, newFile);
+            String dirPath = facesContext.getExternalContext()
+                            .getRealPath("/resources/3d") + "/";
+            String newFileName = newFile.getName();
+            String newPath = dirPath + newFileName;
+            newFile.renameTo(new File(newPath));
+
+System.out.println("stored model " + label + " " + newFile);
+        HashMap marker = new HashMap();
+        marker.put("label", label);
+        marker.put("model", getContextURL() +
+                "/resources/3d/" + newFileName );
+        markerList.add(marker);
+        allMarkers.put(label, marker);
+        label = "";
+//            for (Part part : request.getParts())  {
+//            
+//                System.out.println("Request " + part.getName() + " " + part.getContentType() + " " + part.getSize());
+//                if ( "application/octet-stream".equals(part.getContentType()) )  {
+//                    File partFile = writePart(facesContext, part);
+//                    File newFile = getTempFile(facesContext);
+//                    Format3dTransformer.simplifyMesh(partFile, newFile);
+//System.out.println("Simplified mesh " + newFile.getAbsolutePath());
+//                }
+//            }
         } catch (Exception e)  {
             e.printStackTrace();
         }
@@ -152,11 +172,16 @@ System.out.println("Simplified mesh " + newFile.getAbsolutePath());
         return tempFile;
     }
 
-    File getTempFile(FacesContext facesContext) throws IOException {
+    File getTempFile(FacesContext facesContext, String extension)
+            throws IOException {
         File tempDir = (File) ( facesContext.getExternalContext()
                 .getApplicationMap().get(TEMP_DIR) );
-        File tempFile = File.createTempFile("ice", ".tmp", tempDir);
+        File tempFile = File.createTempFile("ice", extension, tempDir);
         return tempFile;
+    }
+
+    File getTempFile(FacesContext facesContext) throws IOException {
+        return getTempFile(facesContext, ".tmp");
     }
 
     public static void copyStream(InputStream in, OutputStream out) throws IOException {
@@ -226,8 +251,8 @@ System.out.println("Simplified mesh " + newFile.getAbsolutePath());
 
     public void setSelectedModel1(String selectedModel) {
         this.selectedModel1 = selectedModel;
-        HashMap marker = allMarkers.get(selectedModel);
-        markerList.set(0, marker);
+//        HashMap marker = allMarkers.get(selectedModel);
+//        markerList.set(0, marker);
     }
 
     public String getSelectedModel2() {
@@ -236,11 +261,12 @@ System.out.println("Simplified mesh " + newFile.getAbsolutePath());
 
     public void setSelectedModel2(String selectedModel) {
         this.selectedModel2 = selectedModel;
-        HashMap marker = allMarkers.get(selectedModel);
-        markerList.set(1, marker);
+//        HashMap marker = allMarkers.get(selectedModel);
+//        markerList.set(1, marker);
     }
 
     public List getMarkers()  {
+System.out.println("marker list " + markerList);
         return markerList;
     }
 

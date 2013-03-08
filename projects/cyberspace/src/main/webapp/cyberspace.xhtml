@@ -26,9 +26,6 @@
 </h:head>
 <h:body>
     <h:form >
-
-        <h:commandButton value="Submit" action="#{realityBean.submit}" />
-        <input name="stuff" type="file" />
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow >
                 <p>Select your desired 3D models:</p>
@@ -36,22 +33,14 @@
             <mobi:fieldsetRow styleClass="mobi-center">
                 <h:selectOneMenu id="dynamicMarker1"
                         value="#{realityBean.selectedModel1}">
-                    <f:selectItem itemLabel="ICEmobile Logo"
-                            itemValue="icemobile"/>
-                    <f:selectItem itemLabel="Puzzle Block 1"
-                            itemValue="puz1"/>
-                    <f:selectItem itemLabel="Puzzle Block 2"
-                            itemValue="puz2"/>
+                    <f:selectItems value="#{realityBean.markers}" var="marker"
+                        itemValue="#{marker.label}" itemLabel="#{marker.label}"/>
                     <f:ajax execute="@this" render="@all"/>
                 </h:selectOneMenu>
                  <h:selectOneMenu id="dynamicMarker2"
                         value="#{realityBean.selectedModel2}">
-                    <f:selectItem itemLabel="ICEmobile Logo"
-                            itemValue="icemobile"/>
-                    <f:selectItem itemLabel="Puzzle Block 1"
-                            itemValue="puz1"/>
-                    <f:selectItem itemLabel="Puzzle Block 2"
-                            itemValue="puz2"/>
+                    <f:selectItems value="#{realityBean.markers}" var="marker"
+                        itemValue="#{marker.label}" itemLabel="#{marker.label}"/>
                     <f:ajax execute="@this" render="@all"/>
                 </h:selectOneMenu>
            </mobi:fieldsetRow>
@@ -70,5 +59,22 @@
         </mobi:fieldsetGroup>
 
     </h:form>
+    <h:form >
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow >
+                Upload a new 3D model in .obj format:
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow >
+        Name: <mobi:inputText placeHolder="Name" value="#{realityBean.label}" />
+        <input name="objfile" type="file" />
+
+        <h:commandButton value="Upload" action="#{realityBean.upload}" />
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <mobi:getEnhanced />
+        </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
+
 </h:body>
 </html>
