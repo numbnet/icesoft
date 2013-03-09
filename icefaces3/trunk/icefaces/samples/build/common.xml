@@ -206,7 +206,7 @@
                 <include name="icefaces-ee-ext.jar"/>
             </lib>
             
-            <lib dir="../../ace/themes">
+            <lib dir="${icefaces.base.dir}/samples/ace/themes">
                 <include name="*.jar"/>
             </lib>
             
