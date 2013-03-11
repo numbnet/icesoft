@@ -928,7 +928,7 @@ Ice.modal = {
         var iframes = document.body.getElementsByTagName('iframe');
         for (var i = 0, l = iframes.length; i < l; i++) {
             var f = iframes[i];
-            if (!childOfTarget(f)) {
+            if (!Ice.modal.isPopupContent(modal, f)) {
                 var iframeDocument = f.contentDocument || f.contentWindow.document;
                 var iframeWindow = f.contentWindow;
                 //cancel only the events that are not triggered within this iframe
@@ -937,50 +937,50 @@ Ice.modal = {
                     return triggeringElement && iframeDocument == triggeringElement.ownerDocument;
                 }
 
-                disableElementCallbacks(iframeWindow, bubbleEvent);
-                disableElementCallbacks(iframeDocument, bubbleEvent);
+                Ice.modal.disableElementCallbacks(iframeWindow, bubbleEvent);
+                Ice.modal.disableElementCallbacks(iframeDocument, bubbleEvent);
             }
         }
     },
 
-    disableOutsideCallbacks: function(modal) {
-        function none() {
-            return false;
-        }
-
-        function childOfTarget(e) {
-            while (e.parentNode) {
-                var parent = e.parentNode;
-                if (parent == modal) {
-                    return true;
-                }
-                e = parent;
+    isPopupContent: function(modal, e) {
+        while (e.parentNode) {
+            var parent = e.parentNode;
+            if (parent == modal) {
+                return true;
             }
-            return false;
+            e = parent;
         }
+        return false;
+    },
 
-        function disableElementCallbacks(e, cancelEvent) {
-            var onkeypress = e.onkeypress;
-            var onkeyup = e.onkeyup;
-            var onkeydown = e.onkeydown;
-            var onclick = e.onclick;
-            e.onkeypress = cancelEvent;
-            e.onkeyup = cancelEvent;
-            e.onkeydown = cancelEvent;
-            e.onclick = cancelEvent;
+    disableElementCallbacks: function(e, cancelEvent) {
+        var onkeypress = e.onkeypress;
+        var onkeyup = e.onkeyup;
+        var onkeydown = e.onkeydown;
+        var onclick = e.onclick;
+        e.onkeypress = cancelEvent;
+        e.onkeyup = cancelEvent;
+        e.onkeydown = cancelEvent;
+        e.onclick = cancelEvent;
 
-            return function() {
-                try {
-                    e.onkeypress = onkeypress;
-                    e.onkeyup = onkeyup;
-                    e.onkeydown = onkeydown;
-                    e.onclick = onclick;
-                } catch (ex) {
-                    logger.error('failed to restore callbacks on ' + e, ex);
-                }
-            };
-        }
+        return function() {
+            try {
+                e.onkeypress = onkeypress;
+                e.onkeyup = onkeyup;
+                e.onkeydown = onkeydown;
+                e.onclick = onclick;
+            } catch (ex) {
+                logger.error('failed to restore callbacks on ' + e, ex);
+            }
+        };
+    },
 
+    none: function() {
+        return false;
+    },
+
+    disableOutsideCallbacks: function(modal) {
         //disable event handlers only once (in case multiple modal popups are rendered)
         var rollbacks = [];
 
@@ -988,8 +988,8 @@ Ice.modal = {
             var elements = document.body.getElementsByTagName(type);
             for (var i = 0, l = elements.length; i < l; i++) {
                 var e = elements[i];
-                if (!childOfTarget(e)) {
-                    rollbacks.push(disableElementCallbacks(e, none));
+                if (!Ice.modal.isPopupContent(modal, e)) {
+                    rollbacks.push(Ice.modal.disableElementCallbacks(e, Ice.modal.none));
                 }
             }
         });
