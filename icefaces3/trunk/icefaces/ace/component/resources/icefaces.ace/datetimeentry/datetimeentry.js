@@ -143,7 +143,7 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
 
 ice.ace.Calendar.prototype.configureTimePicker = function() {
     var pattern = this.cfg.dateFormat,
-    timeSeparatorIndex = pattern.indexOf('h');
+    timeSeparatorIndex = pattern.toLowerCase().indexOf('h');
     
     this.cfg.dateFormat = pattern.substring(0, timeSeparatorIndex - 1);
     this.cfg.timeFormat = pattern.substring(timeSeparatorIndex, pattern.length);
@@ -157,11 +157,11 @@ ice.ace.Calendar.prototype.configureTimePicker = function() {
     if(this.cfg.timeFormat.indexOf('TT') != -1) {
         this.cfg.ampm = true;
     }
-}
+};
 
 ice.ace.Calendar.prototype.hasTimePicker = function() {
-    return this.cfg.dateFormat.indexOf('h') != -1;
-}
+    return this.cfg.dateFormat.toLowerCase().indexOf('h') != -1;
+};
 
 ice.ace.Calendar.prototype.setDate = function(date) {
     this.jq.datetimepicker('setDate', date);
