@@ -71,6 +71,8 @@
         var curTab = document.getElementById(id);
         if (curTab) {
             curTab.setAttribute("class", cls);
+        }  else {
+            console.log("PROBLEM SETTING ATIVE TAB FOR id="+id);
         }
     }
 
@@ -81,7 +83,8 @@
     function TabSet(clientId, cfgIn) {
         // setup tabContainer
         var tabContainer = document.getElementById(clientId);
-        var tabContent = document.getElementById(clientId + "_tabContent");
+        var contentId = clientId+"_tabContent";
+        var tabContent = document.getElementById(contentId);
         var classHid = "mobi-tabpage-hidden";
         var classVis = "mobi-tabpage";
         var clsActiveTab = "activeTab ui-btn-active";
@@ -107,88 +110,93 @@
         }
         setTabActive(tabCtrl + tabIndex, clsActiveTab);
         updateHidden(clientId, tabIndex);
-        var origcontents = tabContent.children;
-        var length = origcontents.length;
-        var newPage = origcontents[tabIndex];
+        var contents = tabContent.childNodes;
+        var length = contents.length;
+        var newPage = contents[tabIndex];
         newPage.className = classVis;
         for (i = 0; i < length; i++) {
             if (i != tabIndex) {
-                origcontents[i].className = classHid;
+               contents[i].className = classHid;
             }
         }
 
         return {
-            showContent: function(el, cfgIn) {
-                if (cfgIn.tIndex == tabIndex || disabled == true) {
+            showContent: function(clientId, el, cfgIn) {
+                if ( disabled == true) {
                     return;
                 }
+                if (!contentId){
+                    contentId = clientId+"_tabContent";
+                }
+                tabContent = document.getElementById(contentId);
+                contents = tabContent.childNodes;
                 var parent = el.parentNode;
                 if (!parent) {
                     parent = el.parentElement;
                 }
-                var current = tabIndex;
-                var contents = tabContent.children;
-                var oldPage = contents[current];
+                var old = tabIndex;
+                var oldPage = contents[old];
                 oldPage.className = classHid;
-                var currCtrl = tabCtrl + current;
+                var currCtrl = tabCtrl + old;
                 var oldCtrl = document.getElementById(currCtrl);
                 removeClass(oldCtrl, clsActiveTab);
                 var isClient = cfgIn.client || false;
-                var currIndex = cfgIn.tIndex;
+                tabIndex = cfgIn.tIndex;
+             //   console.log("SHOWCONTENT tabIndex="+tabIndex+" old="+old);
+                if (lastServerIndex==tabIndex){
+                    cntr= cntr + 1;
+                } else {
+                    cntr = 0;
+                    lastServerIndex = tabIndex;
+                }
+                var submitted = tabIndex +","+cntr;
+                  //  console.log(" submitted="+submitted);
+                updateHidden(clientId, submitted);
+                contents[old].setAttribute("class", classHid);
                 if (!isClient) {
-                    if (lastServerIndex==currIndex){
-                        cntr= cntr + 1;
-                    } else {
-                        cntr = 0;
-                        lastServerIndex = currIndex;
-                    }
-                    var submitted = currIndex +","+cntr;
-                    console.log(" submitted="+submitted);
-                    updateHidden(clientId, submitted);
-                    contents[cfgIn.tIndex].className = classHid;
                     ice.se(null, clientId);
                 } else {
-                    tabIndex = cfgIn.tIndex || 0;
-                    var newPage = contents[tabIndex];
-                    newPage.className = classVis;
+                    contents[tabIndex].setAttribute("class", classVis);
                 }
-                //remove class of activetabheader and hide old contents
                 el.setAttribute("class", clsActiveTab);
+             //   console.log("end of SHOW CONTENTS:-") ;
             },
             updateProperties: function (clientId, cfgUpd) {
-                var oldIdx = tabIndex;
-                tabIndex = cfgUpd.tIndex;
                 var newHt = cfgUpd.height || -1;
-                console.log("newHt="+newHt+" height="+height);
                 if (newHt !== -1 && newHt !== height ){
                     tabContainer.style.maxHeight = newHt;
                     tabContainer.style.height = newHt;
-                }
-                var oldCtrl = document.getElementById(tabCtrl + oldIdx);
-                if (oldCtrl) {
-                    removeClass(oldCtrl, clsActiveTab);
                 }
                 var autoWidth = cfgUpd.autoWidth;
                 if (autoWidth){
                     setWidthStyle(document.getElementById(clientId));
                 }
+                var oldIdx = tabIndex;
+                tabIndex = cfgUpd.tIndex;
+            //    console.log ('UPDATEPROPS>>>> old ='+oldIdx+" UPDATED TabINDEX="+tabIndex);
+                var oldCtrl = document.getElementById(tabCtrl + oldIdx);
+                if (oldCtrl) {
+                    removeClass(oldCtrl, clsActiveTab);
+                }
                 //check to see if pages have been added or removed
-                var contents = tabContent.children;
-                var tabsId = clientId + "_tabs";
-                setTabActive(tabCtrl + tabIndex, clsActiveTab);
-                var tabElem = document.getElementById(tabsId);
-                if (tabElem) {
-                    if (oldIdx != tabIndex) {
-                        contents[oldIdx].className = classHid; //need in case change is from server
+                if (!contentId){
+                    contentId = clientId+"_tabContent";
+                }
+                tabContent = document.getElementById(contentId);
+                contents = tabContent.childNodes;
+                var newCtrl = tabCtrl+tabIndex;
+                setTabActive(newCtrl, clsActiveTab);
+                if (oldIdx != tabIndex){
+                    var oId = document.getElementById(panes[oldIdx]);
+                    if (oId){
+                        oId.setAttribute("class", classHid);
                     }
-                    contents[tabIndex].className = classVis;
-                    if (cfgUpd.height) {
-                        var height = cfgUpd.height;
-                        if (height != tabContent.style.height) {
-                            tabContainer.style.height = height;
-                        }
+                    var nId = document.getElementById(panes[tabIndex]);
+                    if (nId){
+                        nId.setAttribute("class", classVis);
                     }
                 }
+              //  console.log("end of UPDATE PROPS:-") ;
             },
             setDisabled: function(disabledIn){
                 disabled = disabledIn;
@@ -208,7 +216,7 @@
         },
         showContent: function(clientId, el, cfgIn) {
             if (this.tabsets[clientId]) {
-                this.tabsets[clientId].showContent(el, cfgIn);
+                this.tabsets[clientId].showContent(clientId, el, cfgIn);
             }
         }
     }
