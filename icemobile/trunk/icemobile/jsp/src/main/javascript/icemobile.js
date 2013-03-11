@@ -2001,5 +2001,15 @@ if (window.addEventListener) {
         }
     }, false);
 
+    window.addEventListener("hashchange", function () {
+        if ("#icemobilesx" !== window.location.hash)  {
+            return;
+        }
+        setTimeout( function(){
+            var loc = window.location;
+            history.pushState("", document.title, loc.pathname + loc.search);
+        }, 1);
+    }, false);
+
 };
 
