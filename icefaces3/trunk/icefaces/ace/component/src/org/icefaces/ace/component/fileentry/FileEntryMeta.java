@@ -242,4 +242,8 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         "showing a faces message, when the component has become invalid, " +
         "due to no files being uploaded")
     private String requiredMessage;
+
+    @Property(tlddoc = "The size attribute is used to specify how many characters wide the file selection will display." +
+            " Default: no size attribute will be rendered; determined by browser.")
+    private int size;
 }
