@@ -73,7 +73,7 @@
 	            	 <include name="${icefaces-mobi.lib.name}.jar"/>
                     <include name="${icepush.lib.name}.jar"/>
                     <include name="mobi.jar"/>
-                    <include name="jstl-1.1.2.jar"/>
+                    <include name="jstl-1.2.jar"/>
 	        </lib>
 	         <classes dir="${classes.dir}"/>
         </war>
@@ -90,7 +90,7 @@
                     <include name="${icepush.lib.name}.jar"/>
                     <include name="mobi.jar"/>
                     <include name="mail.jar"/>
-                    <include name="jstl-1.1.2.jar"/>
+                    <include name="jstl-1.2.jar"/>
 	            </lib>
 	     
 	            <classes dir="${classes.dir}"/>
