@@ -73,6 +73,10 @@ public class FileEntryRenderer extends Renderer {
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, "tabindex");
         }
+        int size = fileEntry.getSize();
+        if (size > 0) {
+            writer.writeAttribute("size", size, "size");
+        }
         writer.endElement("input");
         writer.endElement("div");
 
