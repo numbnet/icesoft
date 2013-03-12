@@ -38,12 +38,12 @@
 	<h3>QR Code Scanner</h3>
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<label>Scan QR code:</label>
+			<label  style="width:80px">Scan QR code:</label>
 			<mobi:scan id="scanOne" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow styleClass="qr">
 			<label>Scanned:</label>
-			<div>${QRScanBean.scanOne}</div>
+			<div style="overflow:hidden;max-width:${viewSize eq 'small' ? '190px' : '400px'};display:inline-block;text-overflow:ellipsis">${QRScanBean.scanOne}</div>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -60,7 +60,7 @@
 				name="plaintextOne" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow styleClass="qr">
-			<label>QR Code:</label>
+			<label style="width:80px">QR Code:</label>
 			<div>
 				<mobi:qrcode value="${QRScanBean.plaintextOne}" />
 			</div>
