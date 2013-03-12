@@ -75,6 +75,13 @@ ice.ace.Dialog = function(id, cfg) {
 
     //Remove scripts to prevent duplicate widget issues
     this.jq.find("script").remove();
+	
+	if (this.cfg.relativeTo) {
+		var relativeToElement = ice.ace.jq(ice.ace.escapeClientId(this.cfg.relativeTo)).get(0);
+		if (relativeToElement != null) {
+			this.cfg.position = {my: this.cfg.dialogPosition, at: this.cfg.relativePosition, of: relativeToElement, collision: 'none'};
+		}
+	}
 
     //Create the dialog
     this.cfg.autoOpen = false;

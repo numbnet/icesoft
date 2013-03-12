@@ -95,7 +95,7 @@ public class DialogMeta extends UIPanelMeta {
 	@Property(tlddoc="Effect to use when hiding the dialog. Possible values are 'blind', 'clip', 'drop', 'explode, 'fade', 'fold', 'puff', 'slide', 'scale', 'bounce', 'highlight', and 'shake' (Some effects are not supported in IE browsers, see wiki page for more information).")
 	private String hideEffect;
 	
-	@Property(tlddoc="Specifies where the dialog should be displayed. Possible values: \n1) a single string representing position within viewport: 'center', 'left', 'right', 'top', 'bottom'.\n2) an array containing an x,y coordinate pair in pixel offset from left, top corner of viewport (e.g. [350,100])\n3) an array containing x,y position string values (e.g. ['right','top'] for top right corner).")
+	@Property(tlddoc="Specifies where the dialog should be displayed relative to the viewport. Possible values: \n1) a single string representing position within viewport: 'center', 'left', 'right', 'top', 'bottom'.\n2) an array containing an x,y coordinate pair in pixel offset from left, top corner of viewport (e.g. [350,100])\n3) an array containing x,y position string values (e.g. ['right','top'] for top right corner).")
 	private String position;
 	
 	@Property(tlddoc="Boolean value that Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.", defaultValue="true")
@@ -110,9 +110,15 @@ public class DialogMeta extends UIPanelMeta {
 	@Property(tlddoc="Javascript code to be executed when hiding the dialog")
 	private String onHide;
 	
-//	@Property(tlddoc="Boolean value that specifies whether the dialog should be appended to the page body (default false)", defaultValue="false")
-//	private boolean appendToBody;
-	
 	@Property(tlddoc="Boolean value that specifies whether the dialog should have a header (default true)", defaultValue="true")
 	private boolean showHeader;
+
+	@Property(tlddoc="Id of the component to position the dialog against. Setting this id will override the 'position' attribute, using 'dialogPosition' and 'relativePosition' instead.")
+	private String relativeTo;
+	
+	@Property(tlddoc="The side of the dialog to position in relation to the target component. The format is \"<horizontal value> <vertical value>\". Possible horizontal values are \"left\", \"right\" and \"center\". Possible vertical values are \"top\", \"center\", and \"bottom\". Example: \"left top\" or \"center center\".", defaultValue="center")
+	private String dialogPosition;
+	
+	@Property(tlddoc="The side of the target component to position the dialog against. The format is \"<horizontal value> <vertical value>\". Possible horizontal values are \"left\", \"right\" and \"center\". Possible vertical values are \"top\", \"center\", and \"bottom\". Example: \"left top\" or \"center center\".", defaultValue="center")
+	private String relativePosition;
 }
