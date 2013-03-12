@@ -19,9 +19,9 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-
+<h:form>
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="intro">
             <figure>
                 <h:graphicImage style="width:125px;height:125px;"
                         library="images" name="qrcode.png"/>
@@ -33,13 +33,11 @@
             </header>
 
             <mobi:smallView>
-                <h:form>
-                    <h:commandLink action="#{navigationModel.goToMenu}" 
-                        styleClass="examplesLink">View the examples</h:commandLink>
-                </h:form>
+                <h:commandLink action="#{navigationModel.goToMenu}" 
+                    styleClass="examplesLink">View the examples</h:commandLink>
             </mobi:smallView>
             
-            <p>A showcase of the ICEmobile-Faces Component Suite where you can experience all
+            <p class="first-para">A showcase of the ICEmobile-Faces Component Suite where you can experience all
                 the ICEmobile components in action. Each component includes a working example,
                 descriptions on how to use it, and source code resources. This demo is
                 optimized for mobile, but can be viewed using any browser. The ICEmobile
@@ -61,6 +59,6 @@
 
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
-
+</h:form>
 
 </ui:composition>
