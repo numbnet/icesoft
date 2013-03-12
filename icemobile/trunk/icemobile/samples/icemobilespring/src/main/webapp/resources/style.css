@@ -151,15 +151,16 @@ html.ipad #menuLink{
 #splash header{ 
     text-align: center;
     width: 100%;
-    text-shadow: 2px 2px 3px #DEC6F3;
+    text-shadow: 2px 2px 3px #EEE;
 }
 html.honeycomb #splash header,
 html.android #splash header{
-    text-shadow: 2px 2px 3px #502874;
+    text-shadow: 2px 2px 3px #333;
 }
 #splash p{
+    font-size: 12px;
     margin: 0 0 1em 0;
-    line-height: 1.5em;
+    line-height: 1.6em;
 }
 #splash p:last-child{
     margin-bottom:0;
@@ -173,16 +174,6 @@ html.android #splash figure{
 html.ipad #splash fieldset, html.honeycomb #splash fieldset{ 
     padding: 20px;
 }
-html.ipad #splash header, html.honeycomb #splash header,
-html.ipad #splash figure, html.honeycomb #splash figure{ 
-    margin-left:auto;
-    margin-top:auto;
-    margin-right:auto;
-    text-align: left;
-    display:inline-block;
-    width:auto;
-    vertical-align:top;
-}
 #splash header, #splash figure{
     margin-bottom: 1em;
 }
@@ -192,6 +183,35 @@ html.ipad #splash figure, html.honeycomb #splash figure{
     margin-left:20px;
     width:auto;
 }
+@media screen and (min-width: 445px) {  
+    #splash .intro{ position: relative; padding-left: 125px; }
+    #splash figure{ position: absolute; left: 10px }
+    #splash figure, #splash header { 
+        width: auto; display: inline-block !important;
+        vertical-align: top;
+        margin: 0;
+    } 
+    #splash header { 
+        margin-top: -9px;
+        text-align: left;
+        margin-right: 0;
+        margin-left: 32px;
+    }
+    #splash figure img{ -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(white)); }
+    #splash .first-para{ 
+        display: inline-block;
+        margin-top: 0;
+        border-top: 1px solid #AAA;
+        margin-left: 38px;
+        padding-top: 5px;
+        min-height: 100px;
+    }
+    #splash header h3, #splash header h4, #splash header h5 {
+        margin-left: 5px;
+    }
+    .examplesLink{ float: right; margin-top: 59px !important; position: absolute; right: 20px; }
+}
+
 html.ipad #splash > h3, html.iphone #splash > h3,
 html.ipad #splash > h4, html.iphone #splash > h4,
 html.ipad #splash > h5, html.iphone #splash > h5{ 
@@ -390,6 +410,22 @@ html.honeycomb .back{
     margin: 0 auto;
     width:50%;
 }
+html.android .examplesLink{
+    color: #6595F9;
+    text-decoration: none;
+    margin: 10px 0;
+    display: inline-block;
+    font-weight: bold;
+}
+html.iphone .examplesLink{
+    color: rgb(65, 115, 170);
+    text-decoration: none;
+    margin: 10px 0;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 12px;
+}
+
 .qr{
     display:block !important;
     text-align:left;

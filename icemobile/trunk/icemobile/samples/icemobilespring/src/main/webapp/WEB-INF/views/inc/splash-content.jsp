@@ -21,7 +21,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <div id="splash">
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="intro">
             <figure>
                 <img
                         style="width:125px;height:125px;"
@@ -34,13 +34,13 @@
             </header>
             
             <mobi:smallView>
-                <a href="<c:url value="/menu"/>" id="menuLink2" style="margin:10px auto; display:block;">View the examples</a>
+                <a href="<c:url value="/menu"/>" id="menuLink2" class="examplesLink">View the examples</a>
                 <script type="text/javascript">
                     MvcUtil.enhanceLink(document.getElementById('menuLink2'),"body");
                 </script>
             </mobi:smallView>
     
-            <p>A show case of the ICEmobile-JSP Suite where you can experience all
+            <p class="first-para">A show case of the ICEmobile-JSP Suite where you can experience all
                 the ICEmobile tags in action. Each tag includes a working example,
                 descriptions on how to use it, and source code resources. This demo is
                 optimized for mobile, but can be viewed using any browser. The ICEmobile
