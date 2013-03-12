@@ -31,11 +31,14 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.FacesException;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
+
+import java.util.List;
 
 @MandatoryResourceComponent(tagName="dialog", value="org.icefaces.ace.component.dialog.Dialog")
 public class DialogRenderer extends CoreRenderer {
@@ -85,6 +88,9 @@ public class DialogRenderer extends CoreRenderer {
         String hideEffect = dialog.getHideEffect();
         String headerText = dialog.getHeader();
         String position = dialog.getPosition();
+		String dialogPosition = dialog.getDialogPosition();
+		String relativePosition = dialog.getRelativePosition();
+		String relativeTo = dialog.getRelativeTo();
         int width = dialog.getWidth();
         int height = dialog.getHeight();
         int zIndex = dialog.getZindex();
@@ -116,6 +122,19 @@ public class DialogRenderer extends CoreRenderer {
                 jb.entry("position", position);
             }
         }
+		if (relativeTo != null) { // overrides position attribute above
+			UIComponent relativeToComponent = dialog.findComponent(relativeTo);
+			if(relativeToComponent == null) {
+				relativeToComponent = findComponentCustom(context.getViewRoot(), relativeTo);
+			}
+			if(relativeToComponent != null) {
+				jb.entry("relativeTo", relativeToComponent.getClientId(context));
+				jb.entry("dialogPosition", dialogPosition);
+				jb.entry("relativePosition", relativePosition);
+			} else {
+				throw new FacesException("ace:dialog - Cannot find component \"" + relativeTo + "\" in view.");
+			}
+		}
 
         jb.entryNonNullValue("title", headerText);
 		jb.entry("ariaEnabled", ariaEnabled);
@@ -156,4 +175,16 @@ public class DialogRenderer extends CoreRenderer {
     public boolean getRendersChildren() {
         return true;
     }
+	
+	private UIComponent findComponentCustom(UIComponent base, String id) {
+
+		if (base.getId() != null && base.getId().equals(id)) return base;
+		List<UIComponent> children = base.getChildren();
+		UIComponent result = null;
+		for (UIComponent child : children) {
+			result = findComponentCustom(child, id);
+			if (result != null) break;
+		}
+		return result;
+	}
 }
