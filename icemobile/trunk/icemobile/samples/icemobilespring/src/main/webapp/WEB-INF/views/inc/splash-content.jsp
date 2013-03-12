@@ -29,7 +29,7 @@
             </figure>
             <header>
                 <h3>ICEmobile Showcase</h3>
-                <h4>ICEmobile 1.2</h4>
+                <h4>ICEmobile 1.3</h4>
                 <h5>ICEsoft Technologies Inc.</h5>
             </header>
             
