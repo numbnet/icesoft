@@ -128,8 +128,8 @@
                 if (!contentId){
                     contentId = clientId+"_tabContent";
                 }
-                tabContent = document.getElementById(contentId);
-                contents = tabContent.childNodes;
+         //       tabContent = document.getElementById(contentId);
+                contents = this.getContents(clientId);
                 var parent = el.parentNode;
                 if (!parent) {
                     parent = el.parentElement;
@@ -182,24 +182,23 @@
                 if (!contentId){
                     contentId = clientId+"_tabContent";
                 }
-                tabContent = document.getElementById(contentId);
-                contents = tabContent.childNodes;
+           //     tabContent = document.getElementById(contentId);
+                contents = this.getContents(clientId);
                 var newCtrl = tabCtrl+tabIndex;
                 setTabActive(newCtrl, clsActiveTab);
                 if (oldIdx != tabIndex){
-                    var oId = document.getElementById(panes[oldIdx]);
-                    if (oId){
-                        oId.setAttribute("class", classHid);
-                    }
-                    var nId = document.getElementById(panes[tabIndex]);
-                    if (nId){
-                        nId.setAttribute("class", classVis);
-                    }
+                    contents[oldIdx].setAttribute("class", classHid);
+                    contents[tabIndex].setAttribute("class", classVis);
                 }
               //  console.log("end of UPDATE PROPS:-") ;
             },
             setDisabled: function(disabledIn){
                 disabled = disabledIn;
+            },
+            getContents: function(clientId){
+                contentId = clientId+"_tabContent";
+                tabContent = document.getElementById(contentId);
+                return tabContent.childNodes;
             }
         }
     }
