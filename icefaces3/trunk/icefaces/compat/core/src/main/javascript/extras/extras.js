@@ -1590,17 +1590,38 @@ Draggable.prototype.updateDrag = function(F, G) {
     iceEv = new Ice.DndEvent();
     iceEv.drag = this;
     if (this.dragGhost == true) {
-        var A = parseInt(this.element.offsetHeight);
-        var C = parseInt(Element.getStyle(this.element, "top").split("px")[0]);
-        if (Prototype.Browser.IE) {
-            C = this.element.cumulativeOffset().top;
-        }
-        var B = Event.pointerY(F);
-        var E = A + C;
-        var D = (B > C && B < E);
-        if (!D) {
-            this.element.style.top = B + "px";
-        }
+		var offsetParent = Element.getOffsetParent(this._ghost);
+		if (offsetParent != $$('body')[0]) {
+			var offset = Element.cumulativeOffset(offsetParent);
+
+			var showY = G[1];
+			
+			showY -= offset[1];
+
+			if (showY + this._ghost.getHeight() > offsetParent.getHeight()) { 
+				showY -= (showY + this._ghost.getHeight() - offsetParent.getHeight() + 26);
+			}
+
+			showY += offsetParent.scrollTop;
+
+			var adjustment = Prototype.Browser.IE ? 25 : 0;
+			showY -= adjustment;
+			
+			var styleTop = showY + "px";
+			this._ghost.style.top = styleTop;
+		} else {
+			var A = parseInt(this.element.offsetHeight);
+			var C = parseInt(Element.getStyle(this.element, "top").split("px")[0]);
+			if (Prototype.Browser.IE) {
+				C = this.element.cumulativeOffset().top;
+			}
+			var B = Event.pointerY(F);
+			var E = A + C;
+			var D = (B > C && B < E);
+			if (!D) {
+				this.element.style.top = B + "px";
+			}
+		}
     }
     if (this.hoveringDrop && !ad) {
         iceEv.eventType = Ice.DnD.HOVER_END;
