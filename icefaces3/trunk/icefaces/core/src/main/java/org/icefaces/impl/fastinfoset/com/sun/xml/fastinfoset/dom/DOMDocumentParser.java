@@ -785,7 +785,9 @@ public class DOMDocumentParser extends Decoder {
                     name.namespaceName,
                     name.qName,
                     name.localName);
-            
+
+            boolean isId = "id".equals(name.qName);
+
             // [normalized value] of AII
             
             b = read();
@@ -945,6 +947,10 @@ public class DOMDocumentParser extends Decoder {
                     throw new IOException(CommonResourceBundle.getInstance().getString("message.decodingAIIValue"));
             }
             
+            if (isId)  {
+                _currentElement.setIdAttributeNode(a, true);
+            }
+
         } while (!_terminate);
         
         // Reset duplication attribute verfifier
