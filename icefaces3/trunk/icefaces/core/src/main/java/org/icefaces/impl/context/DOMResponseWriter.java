@@ -16,8 +16,8 @@
 
 package org.icefaces.impl.context;
 
-import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
-import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
+import org.icefaces.impl.fastinfoset.com.sun.xml.fastinfoset.dom.DOMDocumentParser;
+import org.icefaces.impl.fastinfoset.com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Attr;
