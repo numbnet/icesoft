@@ -94,20 +94,31 @@ public class SelectMenuRenderer extends InputRenderer {
         writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("class", "ui-select " + selectMenu.getStyleClass(), null);
+		String dir = selectMenu.getDir();
+		if (dir != null) writer.writeAttribute("dir", dir, null);
+		String lang = selectMenu.getLang();
+		if (lang != null) writer.writeAttribute("lang", lang, null);
+		String title = selectMenu.getTitle();
+		if (title != null) writer.writeAttribute("title", title, null);
 
 		writeLabelAndIndicatorBefore(labelAttributes);
 		
 		// value field
 		writer.startElement("span", null);
-		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value " + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass, null);
+		boolean disabled = selectMenu.isDisabled();
+		String disabledClass = "";
+		if (disabled) disabledClass = " ui-state-default ";
+		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value " + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass + disabledClass, null);
         writer.writeAttribute("style", "display: inline-block; width: " + width + "px;", null);
-		writer.writeAttribute("tabindex", "0", null);
+		String tabindex = selectMenu.getTabindex();
+		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+		else writer.writeAttribute("tabindex", "0", null);
 		if (ariaEnabled) {
 			writer.writeAttribute("role", "select", null);
             final SelectMenu component = (SelectMenu) uiComponent;
             Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
                 put("required", component.isRequired());
-                //put("disabled", component.isDisabled());
+                put("disabled", component.isDisabled());
                 put("invalid", !component.isValid());
             }};
             writeAriaAttributes(ariaAttributes, labelAttributes);
@@ -136,26 +147,6 @@ public class SelectMenuRenderer extends InputRenderer {
 		writer.writeAttribute("name", inputClientId, null);
 		writer.endElement("input");
 
-        // text field
-		/*
-
-		mousedownScript = mousedownScript == null ? "" : mousedownScript;
-		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
-
-        if (onfocusAppValue != null)
-            onfocusCombinedValue += onfocusAppValue.toString();
-
-        writer.writeAttribute("onfocus", onfocusCombinedValue, null);
-
-        if (onblurAppValue != null)
-            onblurCombinedValue += onblurAppValue.toString();
-
-        writer.writeAttribute("onblur", onblurCombinedValue, null);
-
-        if (onchangeAppValue != null)
-            writer.writeAttribute("onchange", onchangeAppValue.toString(), null);
-		*/
-
         String divId = clientId + AUTOCOMPLETE_DIV;
 
         writer.startElement("div", null);
@@ -174,15 +165,12 @@ public class SelectMenuRenderer extends InputRenderer {
         String divId = clientId + AUTOCOMPLETE_DIV;
         Object sourceId = paramMap.get("ice.event.captured");
         boolean isEventSource = sourceId != null && sourceId.toString().equals(inputClientId);
-        //Object event = paramMap.get("javax.faces.behavior.event");
-        //boolean isBlurEvent = 
-        //boolean focus = isEventSource && !isBlurEvent;
 
         // script
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        //if (!selectMenu.isDisabled() && !selectMenu.isReadonly()) {
+        if (!selectMenu.isDisabled() && !selectMenu.isReadonly()) {
 			JSONBuilder jb = JSONBuilder.create();
 
             jb.beginFunction("ice.ace.create")
@@ -210,7 +198,7 @@ public class SelectMenuRenderer extends InputRenderer {
             jb.endFunction();
 
             writer.writeText(jb.toString(), null);
-		//}
+		}
 
         writer.endElement("script");
 		
