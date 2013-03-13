@@ -21,6 +21,7 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.HtmlInputTextMeta;
 import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
@@ -121,6 +122,9 @@ public class ComboBoxMeta extends HtmlInputTextMeta {
             "Supported values are \"left/right/top/bottom/labelLeft/labelRight/none\". " +
             "Default is \"labelRight\" if labelPosition is \"inField\", \"right\" otherwise.")
     private String indicatorPosition;
+	
+	@Property(tlddoc = "Not supported. Use 'width' instead.", implementation=Implementation.EXISTS_IN_SUPERCLASS)
+	private int size;	
 	
     @Field()
     private List itemList;
