@@ -168,6 +168,10 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 }};
                 writeAriaAttributes(ariaAttributes, labelAttributes);
             }
+            int maxlength = dateTimeEntry.getMaxlength();
+            if (maxlength > 0) {
+                writer.writeAttribute("maxlength", maxlength, "maxlength");
+            }
         }
 
         writer.endElement("input");
