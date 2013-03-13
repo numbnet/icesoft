@@ -97,7 +97,20 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 			ariaAttributes.put("invalid", !simpleSelectOneMenu.isValid());
             writeAriaAttributes(ariaAttributes, labelAttributes);
         }
-		if (simpleSelectOneMenu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+		String accesskey = simpleSelectOneMenu.getAccesskey();
+		if (accesskey != null) writer.writeAttribute("accesskey", accesskey, null);
+		String dir = simpleSelectOneMenu.getDir();
+		if (dir != null) writer.writeAttribute("dir", dir, null);
+		boolean disabled = simpleSelectOneMenu.isDisabled();
+		if (disabled) writer.writeAttribute("disabled", "disabled", null);
+		String lang = simpleSelectOneMenu.getLang();
+		if (lang != null) writer.writeAttribute("lang", lang, null);
+		boolean readonly = simpleSelectOneMenu.isReadonly();
+		if (readonly) writer.writeAttribute("readonly", "readonly", null);
+		String tabindex = simpleSelectOneMenu.getTabindex();
+		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+		String title = simpleSelectOneMenu.getTitle();
+		if (title != null) writer.writeAttribute("title", title, null);
 		
 		populateList(facesContext, simpleSelectOneMenu);
 		

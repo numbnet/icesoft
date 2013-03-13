@@ -36,6 +36,13 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 	$element.css('width', $box.width() - 19);
 	var $downArrowButton = $box.find('div');
 	this.downArrowButton = $downArrowButton.eq(0);
+	if (ice.ace.jq.browser.msie) {// ie7 fix
+		if (ice.ace.jq.browser.version < 8) {
+			if (navigator.userAgent.indexOf("Trident/5") < 0) {
+				$downArrowButton.css('height', '').css('position', 'absolute');
+			}
+		}
+	}
 	var $update = ice.ace.jq(ice.ace.escapeClientId(updateId))
 	$update.css('width', $box.width());
 	this.update = $update.get(0);
