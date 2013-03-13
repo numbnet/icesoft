@@ -61,19 +61,13 @@
                      value="${generator.build.dir}"/>
     </java>
 
-    <!--<java classname="org.icefaces.ace.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >-->
-      <!--<arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> -->
-      <!--<arg value="../../compat/core/build/resources/META-INF/icefaces.taglib.xml" />-->
-      <!--<arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> -->
-    <!--</java> -->
-
-    <java classname="org.icefaces.ace.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >
+    <java classname="org.icefaces.ace.generator.merge.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >
       <arg value="${generator.build.dir}/exploded/META-INF/icefaces.taglib.xml" />
       <arg value="${generator.taglib.merge}" />
       <arg value="${generator.build.dir}/exploded/META-INF/icefaces.taglib.xml" />
     </java>
 
-    <java classname="org.icefaces.ace.generator.xmlbuilder.FacesConfigMerge"
+    <java classname="org.icefaces.ace.generator.merge.FacesConfigMerge"
           classpathref="compile.run.classpath" fork="true"
           classpath="${build}">
         <arg path="${generator.faces-config.host}"/>
