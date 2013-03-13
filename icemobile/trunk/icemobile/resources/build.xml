@@ -16,11 +16,14 @@
 
 <project name="icemobile-comp-common">
 
-    <path id="jruby">
+    <path id="jruby.js.classpath">
         <fileset file="lib/jruby-complete-1.7.2.jar"/>
+    	<fileset file="lib/bsf-2.4.0.jar" />
+    	<fileset file="lib/js-1.6R7.jar" />
+    	<fileset file="lib/commons-logging-1.1.1.jar" />
     </path>
-
-    <macrodef name="gen.tld.doc">
+	
+	<macrodef name="gen.tld.doc">
         <attribute name="tld.file"/>
         <sequential>
             <delete dir="${tld.doc}"/>
@@ -123,7 +126,7 @@
     	<copy.theme.resources build.dir="${themes.build.dir}" name="simulator"/>
     	
     	
-        <script language="ruby" classpathref="jruby">
+        <script language="ruby" classpathref="jruby.js.classpath">
 <![CDATA[
     puts Dir.pwd
     require './resources/lib/sass-3.2.5/lib/sass'
