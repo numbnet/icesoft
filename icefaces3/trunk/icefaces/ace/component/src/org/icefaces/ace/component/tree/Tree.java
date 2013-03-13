@@ -91,7 +91,7 @@ public class Tree<N> extends TreeBase implements Serializable {
     /**
      * Insert a node as a child of the current node.
      * @param node the node to be inserted
-     * @param keySegment the key segment to uniquely identify the node among siblings
+     * @param index where to insert the node
      */
     public void insertNode(N node, int index) {
         if (model == null) getDataModel();
