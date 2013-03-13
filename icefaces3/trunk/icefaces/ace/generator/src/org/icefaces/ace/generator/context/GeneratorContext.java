@@ -118,6 +118,7 @@ public class GeneratorContext{
 		getBehaviors().add(new ClientBehaviorHolder());
 		components = FileWriter.getAnnotatedCompsList();
         jspTLDBuilder.setFolder("exploded-jsp");
+        jspTLDBuilder.includeFileContents(System.getProperty("generator.jsp.tld.merge"));
 	}
 	
     public TLDBuilder getJsfTldBuilder() {
