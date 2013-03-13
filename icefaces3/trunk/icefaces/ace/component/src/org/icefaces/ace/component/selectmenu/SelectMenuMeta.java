@@ -87,8 +87,6 @@ public class SelectMenuMeta extends UIInputMeta {
             tlddoc="ValueExpression that specifies the property of the data object to use for checking whether the item should be disabled or not. It must evaluate to a boolean value. This only applies when listvar is used and the rendering is done by means of a facet. When using f:selectItem(s), the disabled property on that object/tag is used for the same effect.")
 	private Object itemDisabled;
 	
-	// disabled and readOnly
-
     @Property(tlddoc = "Indicator indicating that the user is required to provide a submitted value for this input component.")
     private String requiredIndicator;
 
@@ -105,6 +103,24 @@ public class SelectMenuMeta extends UIInputMeta {
             "Supported values are \"left/right/top/bottom/labelLeft/labelRight/none\". " +
             "Default is \"labelRight\" if labelPosition is \"inField\", \"right\" otherwise.")
     private String indicatorPosition;
+	
+	@Property(tlddoc = "Flag indicating that this element must never receive focus or be included in a subsequent submit. A value of false causes no attribute to be rendered, while a value of true causes the attribute to be rendered as disabled=\"disabled\".", defaultValue="false")
+	private boolean disabled;
+	
+	@Property(tlddoc = "Flag indicating that this component will prohibit changes by the user. The element may receive focus unless it has also been disabled. A value of false causes no attribute to be rendered, while a value of true causes the attribute to be rendered as readonly=\"readonly\".", defaultValue="false")
+	private boolean readonly;
+	
+	@Property(tlddoc = "Direction indication for text that does not inherit directionality. Valid values are \"LTR\" (left-to-right) and \"RTL\" (right-to-left).")
+	private String dir;
+	
+	@Property(tlddoc = "Code describing the language used in the generated markup for this component.")
+	private String lang;
+	
+	@Property(tlddoc = "Position of this element in the tabbing order for the current document. This value must be an integer between 0 and 32767.")
+	private String tabindex;
+	
+	@Property(tlddoc = "Advisory title information about markup elements generated for this component.")
+	private String title;
 	
     @Field()
     private List itemList;
