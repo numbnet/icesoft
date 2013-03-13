@@ -159,12 +159,13 @@ public class ListMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean controlsEnabled;
 
-    @Property(tlddoc = "Defines the order in which the reordering buttons render.",
+    @Property(tlddoc = "Defines the order in which the reordering buttons render. " +
+            "Specify a space delimited list of values such as \"top\", \"up\", \"dwn\", \"btm\".",
             defaultValue = "top up dwn btm",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String controlsFormat;
 
-    @Property(tlddoc = "", defaultValue = "Style class to apply to the DIV surrounding the reordering controls.",
+    @Property(tlddoc = "Style class to apply to the DIV surrounding the reordering controls.", defaultValue = "",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String controlsContainerClass;
 

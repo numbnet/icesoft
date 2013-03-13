@@ -49,8 +49,8 @@ public class RowMeta extends UIComponentBaseMeta {
             defaultValue = "after", defaultValueType = DefaultValueType.STRING_LITERAL)
     private String pos;
 
-    @Property(tlddoc = "When using 'predicate' conditional mode, defines a function taking the current data model index" +
-            "as an argument, and returning a value determining weather or not to render the conditional row for this index.")
+    @Property(tlddoc = "When using 'predicate' conditional mode, defines a function taking the current data model index " +
+            "as an argument, and returning a value determining whether or not to render the conditional row for this index.")
     private Predicate predicate;
 
     @Property(expression = Expression.VALUE_EXPRESSION, tlddoc="Defines an expression used to determine when a group " +

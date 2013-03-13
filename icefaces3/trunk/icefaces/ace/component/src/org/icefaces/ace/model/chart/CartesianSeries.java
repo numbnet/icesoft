@@ -88,7 +88,6 @@ public class CartesianSeries extends ChartSeries {
     /**
      * Used by the ChartRenderer to produce a JSON representation of the configuration of this series.
      * @return the serialized JSON object
-     * @param chart
      */
     @Override
     public JSONBuilder getDataJSON(UIComponent component) {

@@ -33,7 +33,7 @@ import java.util.Map;
  * @author  Neal Gafter
  * @version %I%, %G%
  * @see java.util.Map
- * @see Collection
+ * @see java.util.Collection
  * @since 1.2
  */
 public class SimpleEntry<K,V> implements Map.Entry<K,V>, java.io.Serializable

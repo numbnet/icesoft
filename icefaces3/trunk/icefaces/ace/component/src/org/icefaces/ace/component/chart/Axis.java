@@ -263,7 +263,7 @@ public class Axis implements Serializable {
     /**
      * Get the type of this Axis
      * If null, defaults on the client to Linear.
-     * @return
+     * @return AxisType
      */
     public AxisType getType() {
         return type;
