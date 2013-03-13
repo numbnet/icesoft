@@ -94,7 +94,7 @@
         <fileset dir="${lib.dir}" includes="*.jar" excludes="**/javax.faces.jar,**/icefaces-mobi.jar"/>
     </path>
 	
-    <import file="../resources/build/build.xml"/>
+    <import file="../resources/build.xml"/>
 
     <tstamp>
         <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
