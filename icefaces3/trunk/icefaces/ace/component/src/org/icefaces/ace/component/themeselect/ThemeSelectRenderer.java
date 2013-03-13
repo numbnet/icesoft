@@ -19,6 +19,7 @@ import org.icefaces.ace.renderkit.InputRenderer;
 import org.icefaces.ace.util.Constants;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -45,6 +46,7 @@ public class ThemeSelectRenderer extends InputRenderer {
     private String clientId;
     private String selectedTheme;
     private Map<String, String> themeList;
+    private boolean ariaEnabled;
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -64,7 +66,14 @@ public class ThemeSelectRenderer extends InputRenderer {
         writer.startElement("select", component);
         writer.writeAttribute("id", selectId, "id");
         writer.writeAttribute("name", selectId, "id");
-        writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default" + getStateStyleClasses(this.component), null);
+        if (this.component.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
+        String styleClass = (styleClass = this.component.getStyleClass()) == null ? "" : " " + styleClass.trim();
+        writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default" + getStateStyleClasses(this.component) + styleClass, null);
+        writeAttributes("accesskey", "dir", "label", "lang", "style", "tabindex", "title", "alt");
+        ariaEnabled = EnvUtils.isAriaEnabled(context);
+        writerSelAriaAttrs();
         renderOptions();
         writer.endElement("select");
 
@@ -76,6 +85,35 @@ public class ThemeSelectRenderer extends InputRenderer {
         writer.endElement("span");
 
         writer.endElement("div");
+    }
+
+    private void writerSelAriaAttrs() throws IOException {
+        if (!ariaEnabled) return;
+
+        writer.writeAttribute("role", "listbox", null);
+        if (component.isRequired()) {
+            writer.writeAttribute("aria-required", "true", "required");
+        }
+        if (component.isDisabled()) {
+            writer.writeAttribute("aria-disabled", "true", "disabled");
+        }
+        if (!component.isValid()) {
+            writer.writeAttribute("aria-invalid", "true", null);
+        }
+        String label = component.getLabel();
+        if (label != null) {
+            writer.writeAttribute("aria-label", label, "label");
+        }
+    }
+
+    private void writeAttributes(String... keys) throws IOException {
+        Object value;
+        for (String key : keys) {
+            value = component.getAttributes().get(key);
+            if (value != null) {
+                writer.writeAttribute(key, value, key);
+            }
+        }
     }
 
     private void renderOptions() throws IOException {
@@ -115,6 +153,7 @@ public class ThemeSelectRenderer extends InputRenderer {
         writer.endElement("script");
     }
 
+    @SuppressWarnings("unchecked")
     private void getThemeList() throws IOException {
         Map<String, Object> appMap = context.getExternalContext().getApplicationMap();
         String THEME_LIST = Constants.THEME_PARAM + ".list";
