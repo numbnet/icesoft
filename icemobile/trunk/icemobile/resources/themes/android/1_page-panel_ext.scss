@@ -14,14 +14,18 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-fieldset {
-    background: none repeat scroll 0 0 black;
-    border-color: black;
-    color: white;
+@import "../mixins";
+@import "android";
+
+.mobi-pagePanel-header, .mobi-pagePanel-footer {
+    @include linear-gradient(#CCC, #999);
+    border-bottom-color: #2D3642;
+    border-top-color: white;
+    color: #FFFFFF;
 }
-.mobi-fieldset-row {
-    border-bottom-color: #424142;
+.mobi-pagePanel-body{
+    min-height: 400px; /* TODO hack for height issue, use flexbox */
 }
-.mobi-fieldset-row-group {
-    color: #666;
+.mobi-pagePanel-body-nofooter {
+    min-height: 480px;
 }

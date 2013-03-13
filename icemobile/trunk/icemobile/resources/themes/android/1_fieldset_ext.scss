@@ -13,14 +13,21 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-video a,.mobi-video a:hover, .mobi-video a:visited,
-.mobi-audio a,.mobi-audio a:hover, .mobi-audio a:visited  {
+
+@import "../mixins";
+@import "android";
+
+$fieldset-border: #000;
+$fieldset-bg: #FFFFFF;
+
+.mobi-fieldset {
+    background: none repeat scroll 0 0 $fieldset-border;
+    border-color: $fieldset-border;
     color: white;
 }
-
-.mobi-mic-record,.mobi-mic-stop{
-    color: #369;
+.mobi-fieldset-row {
+    border-bottom-color: #424142;
 }
-.mobi-mic-record {background: #efefef;}
-
-.mobi-mic-stop {background: #f9d543;}
+.mobi-fieldset-row-group {
+    color: #666;
+}

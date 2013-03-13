@@ -13,8 +13,18 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-menu-btn-btn {
-    border: 1px solid #737173;
-    background-color: #E7EBE7;
-    color: #000000;
+ 
+@import "../mixins";
+@import "android"; 
+ 
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
+body{
+    font-family: Droid, Helvetica, Arial, sans-serif;
+    background: black;
+    color: white;
+}
+a:link { color: white; }
+
+
