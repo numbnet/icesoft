@@ -16,17 +16,25 @@
 
 package org.icefaces.ace.generator.xmlbuilder;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
-import org.icefaces.ace.generator.utils.Utility;
-import org.icefaces.ace.meta.annotation.*;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Element;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+
+import org.xml.sax.SAXException;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.icefaces.ace.generator.context.GeneratorContext;
-import org.icefaces.ace.generator.context.MetaContext;
-
 import org.icefaces.ace.generator.utils.PropertyValues;
+import org.icefaces.ace.generator.utils.Utility;
+import org.icefaces.ace.meta.annotation.*;
+
 
 public class TLDBuilder extends XMLBuilder{
     private Element tag;
@@ -46,6 +54,49 @@ public class TLDBuilder extends XMLBuilder{
         addNode(root, "uri", GeneratorContext.namespace);
     }
 
+    public void includeFileContents(String mergeInPath) {
+        if (mergeInPath == null) {
+            return;
+        }
+        System.out.println("TLD MERGE '"+mergeInPath+"' into '"+getFolder()+"/"+getFileName()+"'");
+        File file = new File(mergeInPath);
+        if (!file.exists()) {
+            return;
+        }
+        try {
+            Element root = getDocument().getDocumentElement();
+            Document mergeInDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(mergeInPath));
+
+            NodeList children = mergeInDocument.getDocumentElement().getChildNodes();
+            for (int childIndex = 0; childIndex < children.getLength(); childIndex++) {
+                Node node = children.item(childIndex);
+                String nodeName = node.getNodeName();
+                if (nodeName.equals("description") ||
+                    nodeName.equals("display-name") ||
+                    nodeName.equals("tlib-version") ||
+                    nodeName.equals("jsp-version") ||
+                    nodeName.equals("short-name") ||
+                    nodeName.equals("uri")) {
+                    continue;
+                }
+                node = getDocument().importNode(node, true);
+                root.appendChild(node);
+            }
+        } catch(IOException e) {
+            System.out.println("Problem merging in TLD from file '" + mergeInPath + "' : " + e);
+            e.printStackTrace();
+            System.exit(1);
+        } catch(ParserConfigurationException e) {
+            System.out.println("Problem configuring parser for merging in TLD from file '" + mergeInPath + "' : " + e);
+            e.printStackTrace();
+            System.exit(1);
+        } catch(SAXException e) {
+            System.out.println("Problem parsing when merging in TLD from file '" + mergeInPath + "' : " + e);
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
     public void addTagInfo(Class clazz, JSP jsp) {
         Element root = (Element)getDocument().getDocumentElement();
         tag = getDocument().createElement("tag");
@@ -61,7 +112,7 @@ public class TLDBuilder extends XMLBuilder{
 
     public void addTagInfo(Class clazz, Component component) {
         Element root = (Element)getDocument().getDocumentElement();
-        tag = getDocument().createElement("tag");        
+        tag = getDocument().createElement("tag");
         root.appendChild(tag);
         Element description = getDocument().createElement("description");
         CDATASection descriptionCDATA = getDocument().createCDATASection( component.tlddoc() + getFacetsTlddoc(clazz) + getClientEventsTlddoc(clazz));
@@ -74,7 +125,7 @@ public class TLDBuilder extends XMLBuilder{
 	
     public void addTagInfo(Class clazz, TagHandler tagHandler) {
         Element root = (Element)getDocument().getDocumentElement();
-        tag = getDocument().createElement("tag");        
+        tag = getDocument().createElement("tag");
         root.appendChild(tag);
         Element description = getDocument().createElement("description");
         CDATASection descriptionCDATA = getDocument().createCDATASection( tagHandler.tlddoc());

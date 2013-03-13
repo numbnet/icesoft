@@ -79,6 +79,10 @@
     <!-- Space or line separated list of faces-config.xml files to merge with ACE output -->
     <property name="faces-config.merge" value="${faces-config.merge.grimlock}"/>
 
+    <!-- Example of declaring to merge in a manual TLD file in before the generated one
+    <property name="jsp.tld.merge" location="resources/icefaces.ace/META-INCLUDE/manual.tld"/>
+    -->
+
     <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
     <condition property="jsf.lib.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
         <isset property="myfaces"/>
@@ -463,6 +467,8 @@
                       value="${taglib.merge}"/>
             <property name="generator.build.dir"
                       value="${build}"/>
+            <property name="generator.jsp.tld.merge"
+                      value="${jsp.tld.merge}"/>
         </ant>
     </target>
 
