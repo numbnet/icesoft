@@ -118,6 +118,28 @@ public class ComboBoxRenderer extends InputRenderer {
 			}};
 			writeAriaAttributes(ariaAttributes, labelAttributes);
 		}
+		String accesskey = comboBox.getAccesskey();
+		if (accesskey != null) writer.writeAttribute("accesskey", accesskey, null);
+		String alt = comboBox.getAlt();
+		if (alt != null) writer.writeAttribute("alt", alt, null);
+		String autocomplete = comboBox.getAutocomplete();
+		if (autocomplete != null) writer.writeAttribute("autocomplete", autocomplete, null);
+		String dir = comboBox.getDir();
+		if (dir != null) writer.writeAttribute("dir", dir, null);
+		boolean disabled = comboBox.isDisabled();
+		if (disabled) writer.writeAttribute("disabled", "disabled", null);
+		String lang = comboBox.getLang();
+		if (lang != null) writer.writeAttribute("lang", lang, null);
+		int maxlength = comboBox.getMaxlength();
+		if (maxlength != Integer.MIN_VALUE) writer.writeAttribute("maxlength", maxlength, null);
+		boolean readonly = comboBox.isReadonly();
+		if (readonly) writer.writeAttribute("readonly", "readonly", null);
+		//int size = comboBox.getSize();
+		//writer.writeAttribute("size", size, null);
+		String tabindex = comboBox.getTabindex();
+		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+		String title = comboBox.getTitle();
+		if (title != null) writer.writeAttribute("title", title, null);
 		writer.endElement("input");
 		
 		// down arrow span
@@ -132,25 +154,6 @@ public class ComboBoxRenderer extends InputRenderer {
 		writer.endElement("span");
 		
 		writeLabelAndIndicatorAfter(labelAttributes);
-
-		/*
-
-		mousedownScript = mousedownScript == null ? "" : mousedownScript;
-		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
-
-		if (onfocusAppValue != null)
-			onfocusCombinedValue += onfocusAppValue.toString();
-
-		writer.writeAttribute("onfocus", onfocusCombinedValue, null);
-
-		if (onblurAppValue != null)
-			onblurCombinedValue += onblurAppValue.toString();
-
-		writer.writeAttribute("onblur", onblurCombinedValue, null);
-
-		if (onchangeAppValue != null)
-			writer.writeAttribute("onchange", onchangeAppValue.toString(), null);
-		*/
 
 		String divId = clientId + AUTOCOMPLETE_DIV;
 
@@ -170,9 +173,6 @@ public class ComboBoxRenderer extends InputRenderer {
 		String divId = clientId + AUTOCOMPLETE_DIV;
 		Object sourceId = paramMap.get("ice.event.captured");
 		boolean isEventSource = sourceId != null && sourceId.toString().equals(inputClientId);
-		//Object event = paramMap.get("javax.faces.behavior.event");
-		//boolean isBlurEvent = 
-		//boolean focus = isEventSource && !isBlurEvent;
 
 		// script
 		writer.startElement("script", null);
