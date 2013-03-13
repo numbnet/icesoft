@@ -16,11 +16,10 @@
 
 <project name="icemobile-comp-common">
 
-    <path id="jruby.js.classpath">
-        <fileset file="lib/jruby-complete-1.7.2.jar"/>
-    	<fileset file="lib/bsf-2.4.0.jar" />
-    	<fileset file="lib/js-1.6R7.jar" />
-    	<fileset file="lib/commons-logging-1.1.1.jar" />
+    <path id="jruby.bsh.classpath">
+    	<pathelement location="lib/jruby-complete-1.6.8.jar"/>
+    	<pathelement location="lib/bsf.jar" />
+    	<pathelement location="lib/commons-logging.jar" />
     </path>
 	
 	<macrodef name="gen.tld.doc">
@@ -126,7 +125,8 @@
     	<copy.theme.resources build.dir="${themes.build.dir}" name="simulator"/>
     	
     	
-        <script language="ruby" classpathref="jruby.js.classpath">
+        <script language="ruby">
+        	<classpath refid="jruby.bsh.classpath"/>
 <![CDATA[
     puts Dir.pwd
     require './resources/lib/sass-3.2.5/lib/sass'
