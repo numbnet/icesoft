@@ -14,12 +14,19 @@
  * governing permissions and limitations under the License.
  */
 
+@import "../mixins";
+@import "android";
+
+$date-popup-bg: #424142;
+$date-popup-title-color: #FFF;
+$date-popup-color: #000;
+
 .mobi-date-popup-btn {
     width: 27px;
     height: 24px;
 }
 .mobi-date-btn, .mobi-time-btn, .mobi-date-popup-btn, .mobi-time-popup-btn {
-    -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
+    @include webkit-tap-highlight;
 }
 .mobi-time-popup-btn {
     width: 28px;
@@ -28,22 +35,21 @@
 
 .mobi-date-container, .mobi-time-container {
     background-color: #ccc;
-    border-radius: 3px;
-    -webkit-box-shadow: 3px 3px 5px black;
-    box-shadow: 3px 3px 5px black;
+    @include border-radius(3px);
+    @include box-shadow(3px 3px 5px black);
     border: 3px solid white;
-    color: #000000;
+    color: $date-popup-color;
 }
 
 .mobi-date-title-container, .mobi-time-title-container {
-    background-color: #424142;
-    color: white;
+    background-color: $date-popup-bg;
+    color: $date-popup-title-color;
     border-bottom: 1px solid white;
 }
 
 .mobi-date-select-container, .mobi-time-select-container  {
-    background-color: #424142;
-    color: white;
+    background-color: $date-popup-bg;
+    color: $date-popup-color;
 }
 
 .mobi-date-submit-container, .mobi-time-submit-container {
@@ -51,17 +57,11 @@
 }
 
 .mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr  {
-    border-radius: 3px 3px 0 0;
-    background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f7f7f7), color-stop(1, #bdbebd));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f7f7f7', EndColorStr = '#bdbebd');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd')";
+    @include border-radius(3px 3px 0 0);
+    @include linear-gradient(#f7f7f7, #bdbebd);
 }
 
 .mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
-    border-radius: 0 0 3px 3px;
-    background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #f7f7f7));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#bdbebd', EndColorStr = '#f7f7f7');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7')";
+    @include border-radius(0 0 3px 3px);
+    @include linear-gradient(#bdbebd, #f7f7f7);
 }

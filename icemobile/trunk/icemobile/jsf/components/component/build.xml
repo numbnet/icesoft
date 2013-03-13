@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="icefaces-mobi" default="lib" basedir=".">
+<project name="icefaces-mobi" default="lib" basedir="." xmlns:ice="urn:ICEsoft" >
 	<description>
         ICEfaces Mobile Components.
     </description>
@@ -58,7 +58,8 @@
 	<property name="combined.js" location="${resources}/org.icefaces.component.util/combined-min.js" />
 	<property name="combined.js.tmp" location="${resource.js.dir}/combined.js" />
 	<!-- theme import location -->
-	<property name="theme.dir.path" location="../../../resources/themes" />
+	<property name="theme.src.path" location="../../../resources/themes" />
+	<property name="theme.build.path" location="../../../resources/build/themes" />
 	<property name="theme.base.dir" value="base" />
 	<property name="theme.base3.dir" value="base3" />
 	<!-- Check if release.type is set, and if so append it after the tertiary
@@ -81,7 +82,7 @@
 		<format property="build.time" pattern="yyyy-mm-dd hh:mm:ss" />
 	</tstamp>
 
-	<import file="../../../resources/build/build.xml" />
+	<import file="../../../resources/build.xml" />
 
 	<path id="compile.run.classpath">
 		<fileset dir="${lib.dir}" includes="*.jar" />
@@ -117,11 +118,11 @@
             <mkdir dir="${root.dir.path}/@{skin}/" />
             <!-- copy base styles -->
             <copy todir="${root.dir.path}/@{skin}/">
-                <fileset dir="${theme.dir.path}/${theme.base.dir}" includes="**" />
+                <fileset dir="${theme.build.path}/${theme.base.dir}" includes="**" />
             </copy>
             <!-- copy base css3 styles -->
             <copy todir="${root.dir.path}/@{skin}/">
-                <fileset dir="${theme.dir.path}/${theme.base3.dir}" includes="**" />
+                <fileset dir="${theme.build.path}/${theme.base3.dir}" includes="**" />
             </copy>
             <!-- copy the actual skin -->
             <copy todir="${root.dir.path}/@{skin}/" overwrite="true">
@@ -147,7 +148,7 @@
             <mkdir dir="${root.dir.path}/@{skin}/" />
             <!-- copy base styles -->
             <copy todir="${root.dir.path}/@{skin}/">
-                <fileset dir="${theme.dir.path}/${theme.base.dir}" includes="**" />
+                <fileset dir="${theme.build.path}/${theme.base.dir}" includes="**" />
             </copy>
             <!-- copy the actual skin -->
             <copy todir="${root.dir.path}/@{skin}/" overwrite="true">
@@ -169,7 +170,7 @@
             <mkdir dir="${root.dir.path}/simulator/" />
             <!-- copy the actual skin -->
             <copy todir="${root.dir.path}/simulator/" overwrite="true">
-                <fileset dir="${theme.dir.path}/simulator" includes="**" />
+                <fileset dir="${theme.build.path}/simulator" includes="**" />
             </copy>
             
             <!-- At the same time, copy all resources to the SmartSprites output directory.
@@ -207,8 +208,8 @@
 			<replaceregexp match="];}" replace="]}" flags="g" file="${resources}/org.icefaces.component.skins/@{name}/@{name}-min.css">
 			</replaceregexp>
 
-			<move file="${resources}/org.icefaces.component.skins/@{name}/@{name}.css" tofile="${resources}/org.icefaces.component.skins/@{name}.css" overwrite="yes" />
-			<move file="${resources}/org.icefaces.component.skins/@{name}/@{name}-min.css" tofile="${resources}/org.icefaces.component.skins/@{name}-min.css" overwrite="yes" />
+			<move verbose="true" file="${resources}/org.icefaces.component.skins/@{name}/@{name}.css" tofile="${resources}/org.icefaces.component.skins/@{name}.css" overwrite="yes" />
+			<move verbose="true" file="${resources}/org.icefaces.component.skins/@{name}/@{name}-min.css" tofile="${resources}/org.icefaces.component.skins/@{name}-min.css" overwrite="yes" />
 
 
 		</sequential>
@@ -353,13 +354,18 @@
 <target name="init-skip-css-properties" description="Test theme source dates against last successful run to avoid unessary work">
 	<!--<mkdir dir="${root.dir.path}" />-->
 	<uptodate targetfile="${build}/skins/in/skins.done" property="skins.skip">
-		<srcfiles dir="${theme.dir.path}" includes="**/*.css" />
+		<srcfiles dir="${theme.src.path}" includes="**/**" />
 	</uptodate>
 	<echo message="Skip CSS: ${skins.skip}" />
 </target>
 
 <target name="skins" unless="skins.skip" depends="init-skip-css-properties" description="Generate skinning resources for deployment.">
 	<echo message="path to cssurlMapper is ${lib.dir}/generator" />
+	
+	<ice:subant target="compile.scss">
+        <fileset dir="../../../resources" includes="build.xml" />
+    </ice:subant>
+	
 	<taskdef name="cssurlmapper" classname="${cssurlmapper.class}" classpath="${lib.dir}/generator/cssurlmapper.jar;${lib.dir}/generator/commons-cli-1.2.jar" />
 
 	<!-- Declare all the resources to include -->
@@ -368,14 +374,14 @@
               under a directory with this name -->
 	<!-- 'skin' is the name of the skin these resources will be part of -->
 
-	<includeBaseResources dir="${theme.dir.path}/archaic" skin="archaic" />
-	<includeBase3Resources dir="${theme.dir.path}/android" skin="android" />
-	<includeBase3Resources dir="${theme.dir.path}/bberry" skin="bberry" />
-	<includeBase3Resources dir="${theme.dir.path}/honeycomb" skin="honeycomb" />
-	<includeBase3Resources dir="${theme.dir.path}/ipad" skin="ipad" />
-	<includeBase3Resources dir="${theme.dir.path}/iphone" skin="iphone" />
-	<includeBase3Resources dir="${theme.dir.path}/android_light" skin="android_light" />
-	<includeBase3Resources dir="${theme.dir.path}/android_dark" skin="android_dark" />
+	<includeBaseResources dir="${theme.build.path}/archaic" skin="archaic" />
+	<includeBase3Resources dir="${theme.build.path}/android" skin="android" />
+	<includeBase3Resources dir="${theme.build.path}/bberry" skin="bberry" />
+	<includeBase3Resources dir="${theme.build.path}/honeycomb" skin="honeycomb" />
+	<includeBase3Resources dir="${theme.build.path}/ipad" skin="ipad" />
+	<includeBase3Resources dir="${theme.build.path}/iphone" skin="iphone" />
+	<includeBase3Resources dir="${theme.build.path}/android_light" skin="android_light" />
+	<includeBase3Resources dir="${theme.build.path}/android_dark" skin="android_dark" />
 	<buildSimulatorSkin/>
 
     <replaceregexp match="(\/\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="">

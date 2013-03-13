@@ -14,21 +14,11 @@
  * governing permissions and limitations under the License.
  */
  
- .mobi-flip-switch{
-    border-bottom: none;
-    background-color: #555;
-    -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
- }
- .mobi-flip-switch-txt {
-    font-weight: bold;
-    color: #3B3E3E;
-    text-shadow: none;
-}
-.mobi-flip-switch-on span:first-child {
-    background-color: #33B5E5;
-    border-top: 1px solid #6FCAEC;
-}
-.mobi-flip-switch-off span:last-child {
-    background-color: #DDD;
-    border-top: 1px solid #878787;
+@import "../mixins";
+@import "android";
+
+.mobi-menu-btn-btn {
+    border: 1px solid #737173;
+    background-color: #E7EBE7;
+    color: #000000;
 }

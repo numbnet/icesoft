@@ -14,34 +14,31 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-list-item a:active, .mobi-list-item a[selected] {
-    background-color: #082658 !important;
-    -webkit-tap-highlight-color: #082658;
-}
-.mobi-list-item {
-    border: 1px solid #424142;
-    background-color: #000;
-    color: white;
-}
+@import "../mixins";
+@import "android";
 
-.mobi-list-item-group {
-    border-bottom: 1px solid #313431;
-    background-color: #211C21;
-    border-top: none;
-    color: #BDBEBD;
-}
-
-.mobi-list > .mobi-list-item:last-child {
-    border-bottom-width: 1px !important;
-}
-
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
+.mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container {
+    background-color: #ccc;
+    border-radius: 1px;
+    border: 1px solid #5c5c5c;
     color: #fff;
 }
-
-.mobi-list-item-custom {
-    color: #fff;
+.mobi-submitnotific-container{
+    background-color: #000000;
 }
+.mobi-panelconf-title-container{
+    background-color: #000000;
 
-
-
+}
+.mobi-panelpopup-title-container  {
+    @include linear-gradient(#CCC, #999);
+    border-bottom-color: #2D3642;
+    color: #FFFFFF;
+}
+.mobi-panelconf-body-container {
+    color: black;
+}
+.mobi-panelconf-submit-container {
+    color: black;
+    background-color: #9a9a9a;
+}

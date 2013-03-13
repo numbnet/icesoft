@@ -14,17 +14,17 @@
  * governing permissions and limitations under the License.
  */
  
-* {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-body{
-    font-family: Droid, Helvetica, Arial, sans-serif;
-    background: black;
+@import "../mixins";
+@import "android";
+ 
+.mobi-video a,.mobi-video a:hover, .mobi-video a:visited,
+.mobi-audio a,.mobi-audio a:hover, .mobi-audio a:visited  {
     color: white;
 }
-a:link { color: white; }
 
-.mobi-tap-highlight{
-    -webkit-tap-highlight-color: #082658;
+.mobi-mic-record,.mobi-mic-stop{
+    color: #369;
 }
+.mobi-mic-record {background: #efefef;}
 
+.mobi-mic-stop {background: #f9d543;}

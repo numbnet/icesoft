@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="icemobile-comp-common"  basedir=".">
+<project name="icemobile-comp-common">
 
     <path id="jruby">
         <fileset file="lib/jruby-complete-1.7.2.jar"/>
@@ -51,6 +51,16 @@
             </java>
         </sequential>
     </macrodef>
+	
+	<macrodef name="copy.theme.resources">
+		<attribute name="name"/>
+		<attribute name="build.dir"/>
+		<sequential>
+			<copy todir="@{build.dir}/@{name}/">
+	            <fileset dir="./themes/@{name}/" excludes="**/*.scss" />
+	        </copy>
+		</sequential>
+	</macrodef>
 
     <macrodef name="concatskin">
         <attribute name="name"/>
@@ -87,14 +97,39 @@
         <echo message="Compiling scss files in ..." />
         <property name="src.dir" value="resources/themes/**/[^_]*.scss" />
     	<echo>${src.dir}</echo>
-        <property name="build.dir" location="build/themes"/>
-        <mkdir dir="${build.dir}/android" />
+        <property name="themes.build.dir" location="./build/themes"/>
+    	
+        <mkdir dir="${themes.build.dir}/android" />
+    	<mkdir dir="${themes.build.dir}/android_dark" />
+    	<mkdir dir="${themes.build.dir}/android_light" />
+    	<mkdir dir="${themes.build.dir}/archaic" />
+    	<mkdir dir="${themes.build.dir}/base" />
+    	<mkdir dir="${themes.build.dir}/base3" />
+    	<mkdir dir="${themes.build.dir}/bberry" />
+    	<mkdir dir="${themes.build.dir}/honeycomb" />
+    	<mkdir dir="${themes.build.dir}/ipad" />
+    	<mkdir dir="${themes.build.dir}/iphone" />
+    	<mkdir dir="${themes.build.dir}/simulator" />
+    	<copy.theme.resources build.dir="${themes.build.dir}" name="android"/>
+    	<copy.theme.resources build.dir="${themes.build.dir}" name="android_dark"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="android_light"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="archaic"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="base"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="base3"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="bberry"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="honeycomb"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="ipad"/>
+    	<copy.theme.resources build.dir="${themes.build.dir}" name="iphone"/>
+    	<copy.theme.resources build.dir="${themes.build.dir}" name="simulator"/>
+    	
+    	
         <script language="ruby" classpathref="jruby">
 <![CDATA[
-    require './resources/conf/lib/sass-3.2.5/lib/sass'
-    require './resources/conf/lib/sass-3.2.5/lib/sass/exec'
+    puts Dir.pwd
+    require './resources/lib/sass-3.2.5/lib/sass'
+    require './resources/lib/sass-3.2.5/lib/sass/exec'
     
-    build_dir = $project.getProperty('build.dir')
+    build_dir = $project.getProperty('themes.build.dir')
 
     files = Dir.glob($project.getProperty('src.dir'))
     files.each do 
@@ -113,5 +148,9 @@
         </script>
         <echo message="Done compiling scss files!" />
     </target>
+	
+	<target name="clean">
+		<delete dir="build/themes" />
+	</target>
 
 </project>

@@ -14,52 +14,61 @@
  * governing permissions and limitations under the License.
  */
  
+@import "../mixins";
+@import "android";
+ 
+$button-default-border: 1px solid #878787;
+$button-default-bg: #555;
+$button-default-color: #F1F1F1;
+$button-selected-bg: #33B5E5;
+$button-selected-border: #737173;
+$button-selected-color: #3B3E3E;
+$button-imp-color: #000;
+$button-unimp-color: #BBB;
+$button-imp-bg: #CCC;
+$button-imp-border: #33B5E5;
+$button-att-border: #AA0102;
+$button-back-color: #F1F1F1;
+
+ 
 .mobi-button-group-hor .mobi-button{
-    border-left: 1px solid #878787;
+    border-left: $button-default-border;
 }
 .mobi-button-group .mobi-button-selected {
-    background-color: #33B5E5;
-    border-color: #737173;
-    color: #3B3E3E;
+    background-color: $button-selected-bg;
+    border-color: $button-selected-border;
+    color: $button-selected-color;
 }
 .mobi-button {
-     background-color: #555;
-     border-top-color: #878787;
-     color: #F1F1F1;
+     background-color: $button-default-bg;
+     border-top: $button-default-border;
+     color: $button-default-color;
      font-weight: bold;
-     border-bottom: 1px solid #555;
+     border-bottom: 1px solid $button-default-bg;
      border-right: none;
      border-left: none;
 }
 .mobi-button:active, .mobi-button:focus, .mobi-button[selected], div.mobi-button-back > input:active {
-    -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
-    -webkit-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
-    box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
-    background-color:#66AFFF;
-    color:#FFF;
+    background-color: $button-selected-color;
+    color: $button-selected-color;
 }
 .mobi-button-important{
-    background-color: #CCC;
-    color: black;
+    background-color: $button-imp-bg;
+    color: $button-imp-color;
     border-bottom: none;
-    border-color: #CCC;
-    border-top: 3px solid #33B5E5;
+    border-color: $button-imp-bg;
+    border-top: 3px solid $button-imp-border;
     padding: 0.45em 5px;
     font-size: 0.9em;
 }
 .mobi-button-attention{
-    background-color: #CCC;
-    color: black;
-    border-bottom: none;
-    border-color: #CCC;
-    border-top: 3px solid #AA0102;
-    padding: 0.45em 5px;
-    font-size: 0.9em;
+    @extend .mobi-button-important;
+    border-top-color: $button-att-border;
 }
 .mobi-button-unimportant{
-    background-color: #555;
-    color: #BBB;
-    border-top-color: #878787;
+    background-color: $button-default-bg;
+    color: $button-unimp-color;
+    border-top: $button-default-border;
 }
 .mobi-button-back{
     background-image: url('back.png');
@@ -69,14 +78,14 @@
     background-size: 16px;
     border: none;
     border-radius:0;
-    color:#F1F1F1;
+    color: $button-back-color;
     font-weight:bold;
     padding-left: 20px;
 }
 .mobi-pagePanel-header .mobi-button{
     background-color: transparent;
     border-radius: 0.5em;
-    border: 1px solid #878787;
+    border: $button-default-border;
 }
 .mobi-pagePanel-header .mobi-button-back{
     left: 0.5em;

@@ -87,6 +87,21 @@
         <build.bin.bundle />
     </target>
 
+   
+    <target name="build.jsp" description="Build JSP library.">
+        <ice:subant target="all">
+            <fileset dir="./jsp" includes="build.xml" />
+        </ice:subant>
+    </target>
+
+    <target name="build.jsf" description="Build JSF library.">
+        <ice:subant target="all">
+            <fileset dir="./jsf" includes="build.xml" />
+        </ice:subant>
+    </target>
+    
+
+
     <target name="zip.src">
         <zip.src />
     </target>
@@ -119,7 +134,7 @@
         <delete dir="${docs.jsf.dir}"/>
     	<delete dir="${docs.jsp.dir}"/>
         <ice:subant target="clean">
-            <filelist dir="." files="jsf, jsp, spring, samples"/>
+            <filelist dir="." files="jsf, jsp, spring, samples, resources"/>
         </ice:subant>
     </target>
 
