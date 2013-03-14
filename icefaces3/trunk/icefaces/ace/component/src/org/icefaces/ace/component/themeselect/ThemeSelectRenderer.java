@@ -59,18 +59,21 @@ public class ThemeSelectRenderer extends InputRenderer {
         writer = context.getResponseWriter();
         clientId = component.getClientId(context);
         String selectId = "select_" + clientId;
+        String styleClass = (styleClass = this.component.getStyleClass()) == null ? "" : styleClass.trim();
 
-        writer.startElement("div", component);
+        writer.startElement("span", component);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", "ui-select-theme" + (styleClass.equals("") ? "" : " " + styleClass), null);
 
         writer.startElement("select", component);
         writer.writeAttribute("id", selectId, "id");
         writer.writeAttribute("name", selectId, "id");
+        String stateClass = "ui-state-default";
         if (this.component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
+            stateClass = "ui-state-disabled";
         }
-        String styleClass = (styleClass = this.component.getStyleClass()) == null ? "" : " " + styleClass.trim();
-        writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default" + getStateStyleClasses(this.component) + styleClass, null);
+        writer.writeAttribute("class", "ui-widget " + stateClass + getStateStyleClasses(this.component), null);
         writeAttributes("accesskey", "dir", "label", "lang", "style", "tabindex", "title", "alt");
         ariaEnabled = EnvUtils.isAriaEnabled(context);
         writerSelAriaAttrs();
@@ -84,7 +87,7 @@ public class ThemeSelectRenderer extends InputRenderer {
         writer.write(Integer.toString(selectedTheme.hashCode()) + Integer.toString(themeList.hashCode()));
         writer.endElement("span");
 
-        writer.endElement("div");
+        writer.endElement("span");
     }
 
     private void writerSelAriaAttrs() throws IOException {
