@@ -202,12 +202,18 @@ public class Utility {
 
     /**
      * @see org.icefaces.ace.meta.annotation.JSP#generatedInterfaceClass()
-     * @return JSP.generatedInterfaceClass(), or if not specified, then Meta
-     * class' name removing "Meta" suffix, adding "I" prefix to simple name part.
+     * @return If the metaClass has a JSP annotation, then check for
+     * JSP.generatedInterfaceClass(), or if not specified, then Meta class'
+     * name removing "Meta" suffix, adding "I" prefix to simple name part.
      * Eg: org.mypackage.MyCompMeta -> org.mypackage.IMyComp
      */
-    public static String getGeneratedInterfaceClassName(Class metaClass, JSP jsp) {
-        return getSpecifiedOrAlternate(jsp.generatedInterfaceClass(), JSP.EMPTY,
+    public static String getGeneratedInterfaceClassName(Class metaClass) {
+        String jspGeneratedInterfaceClass = JSP.EMPTY;
+        if (metaClass.isAnnotationPresent(JSP.class)) {
+            JSP jsp = (JSP) metaClass.getAnnotation(JSP.class);
+            jspGeneratedInterfaceClass = jsp.generatedInterfaceClass();
+        }
+        return getSpecifiedOrAlternate(jspGeneratedInterfaceClass, JSP.EMPTY,
             metaClass.getName(), "Meta", "I", "");
     }
 
@@ -237,13 +243,17 @@ public class Utility {
     /**
      * @see org.icefaces.ace.meta.annotation.JSP#generatedInterfaceExtendsClass()
      * @see org.icefaces.ace.meta.annotation.JSPBaseMeta#interfaceClass()
-     * @return JSP.generatedInterfaceExtendsClass(), or if not specified, then see if
+     * @return If the metaClass has a JSP annotation, then check for
+     * JSP.generatedInterfaceExtendsClass(), or if not specified, then see if
      * the Meta class' superclass has a @JSPBaseMeta annotation, and use its
      * interfaceClass. Can be null or an empty String.
      */
-    public static String getGeneratedInterfaceExtendsClassName(
-            Class metaClass, JSP jsp) {
-        String generatedInterfaceExtendsClass = jsp.generatedInterfaceExtendsClass();
+    public static String getGeneratedInterfaceExtendsClassName(Class metaClass) {
+        String generatedInterfaceExtendsClass = JSP.EMPTY;
+        if (metaClass.isAnnotationPresent(JSP.class)) {
+            JSP jsp = (JSP) metaClass.getAnnotation(JSP.class);
+            generatedInterfaceExtendsClass = jsp.generatedInterfaceExtendsClass();
+        }
         if (generatedInterfaceExtendsClass.equals(JSP.EMPTY)) {
             Class superClass = metaClass.getSuperclass();
             if (superClass.isAnnotationPresent(JSPBaseMeta.class)) {

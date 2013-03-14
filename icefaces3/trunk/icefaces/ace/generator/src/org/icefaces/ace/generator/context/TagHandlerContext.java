@@ -17,6 +17,7 @@
 package org.icefaces.ace.generator.context;
 
 import org.icefaces.ace.generator.artifacts.TagHandlerArtifact;
+import org.icefaces.ace.meta.annotation.OnlyType;
 import org.icefaces.ace.meta.annotation.TagHandler;
 
 public class TagHandlerContext extends MetaContext {
@@ -32,5 +33,10 @@ public class TagHandlerContext extends MetaContext {
     @Override
     protected boolean isRelevantClass(Class clazz) {
         return clazz.isAnnotationPresent(TagHandler.class);
+    }
+
+    @Override
+    protected boolean isAllowedPropertyOnlyType(OnlyType onlyType) {
+        return OnlyType.JSF.equals(onlyType);
     }
 }

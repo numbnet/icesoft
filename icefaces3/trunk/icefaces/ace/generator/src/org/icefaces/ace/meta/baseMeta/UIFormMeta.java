@@ -16,14 +16,13 @@
 
 package org.icefaces.ace.meta.baseMeta;
 
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.DefaultValueType;
-import org.icefaces.ace.meta.annotation.Implementation;
+import org.icefaces.ace.meta.annotation.*;
 
 /**
  * These are the properties for javax.faces.component.UIForm
  */
 public class UIFormMeta extends UIComponentBaseMeta {
+    @Only(OnlyType.JSF)
     @Property(defaultValue="true",
         defaultValueType= DefaultValueType.EXPRESSION,
         implementation= Implementation.EXISTS_IN_SUPERCLASS,

@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.meta.baseMeta;
 
+import org.icefaces.ace.meta.annotation.Only;
+import org.icefaces.ace.meta.annotation.OnlyType;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Implementation;
 
@@ -23,6 +25,7 @@ import org.icefaces.ace.meta.annotation.Implementation;
  * These are the properties for javax.faces.component.UIComponentBase
  */
 public class UIComponentBaseMeta extends UIComponentMeta {
+    @Only(OnlyType.JSF)
     @Property(implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="The component identifier for this component. This value " +
             "must be unique within the closest parent component that is a " +

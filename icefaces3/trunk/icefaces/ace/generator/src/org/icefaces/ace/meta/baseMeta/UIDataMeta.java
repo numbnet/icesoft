@@ -16,14 +16,13 @@
 
 package org.icefaces.ace.meta.baseMeta;
 
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.DefaultValueType;
-import org.icefaces.ace.meta.annotation.Implementation;
+import org.icefaces.ace.meta.annotation.*;
 
 /**
  * These are the properties for javax.faces.component.UIData
  */
 public class UIDataMeta extends UIComponentBaseMeta {
+    @Only(OnlyType.JSF)
     @Property(defaultValue="0",
         defaultValueType=DefaultValueType.EXPRESSION,
         implementation= Implementation.EXISTS_IN_SUPERCLASS,
@@ -32,6 +31,7 @@ public class UIDataMeta extends UIComponentBaseMeta {
             "of the data model.")
     private int first;
 
+    @Only(OnlyType.JSF)
     @Property(defaultValue="0",
         defaultValueType=DefaultValueType.EXPRESSION,
         implementation=Implementation.EXISTS_IN_SUPERCLASS,
@@ -44,6 +44,7 @@ public class UIDataMeta extends UIComponentBaseMeta {
      */
     private int rowIndex;
 
+    @Only(OnlyType.JSF)
     @Property(defaultValue="0",
         defaultValueType= DefaultValueType.EXPRESSION,
         implementation=Implementation.EXISTS_IN_SUPERCLASS,
@@ -52,12 +53,14 @@ public class UIDataMeta extends UIComponentBaseMeta {
             "set of available rows.")
     private int rows;
 
+    @Only(OnlyType.JSF)
     @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="The DataModel instance representing the data to which this " +
         "component is bound, or a collection of data for which a DataModel " +
         "instance is synthesized.")
     private Object value; 
 
+    @Only(OnlyType.JSF)
     @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="The request-scope attribute (if any) under which the data " +
         "object for the current row will be exposed when iterating.")

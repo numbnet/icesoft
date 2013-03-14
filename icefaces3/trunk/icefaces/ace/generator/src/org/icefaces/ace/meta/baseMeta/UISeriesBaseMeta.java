@@ -16,14 +16,13 @@
 
 package org.icefaces.ace.meta.baseMeta;
 
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.DefaultValueType;
-import org.icefaces.ace.meta.annotation.Implementation;
+import org.icefaces.ace.meta.annotation.*;
 
 /**
  * These are the properties for org.icefaces.impl.component.UISeriesBase
  */
 public class UISeriesBaseMeta extends UIDataMeta {
+    @Only(OnlyType.JSF)
     @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="Name of a request-scope attribute under which the current " +
         "indexed state will be exposed. This is modeled after the Facelets " +

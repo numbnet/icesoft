@@ -134,6 +134,12 @@ public abstract class MetaContext {
     }
 
     protected boolean processPotentiallyIrrelevantField(Class clazz, Field field) {
+        if(field.isAnnotationPresent(Only.class)){
+            Only only = field.getAnnotation(Only.class);
+            if (!isAllowedPropertyOnlyType(only.value())) {
+                return false;
+            }
+        }
         if(field.isAnnotationPresent(Property.class)){
             // collect @Property values from top to bottom
             PropertyValues propertyValues = collectPropertyValues(field.getName(), clazz);
@@ -150,23 +156,29 @@ public abstract class MetaContext {
     }
 
     abstract protected boolean isRelevantClass(Class clazz);
+    abstract protected boolean isAllowedPropertyOnlyType(OnlyType onlyType);
     abstract protected void setupArtifacts();
 
     protected void furtherProcessProperty(Class clazz, PropertyValues propertyValues) {
     }
 	
-	protected static PropertyValues collectPropertyValues(String fieldName, Class clazz) {
+	protected PropertyValues collectPropertyValues(String fieldName, Class clazz) {
+        //System.out.println(getClass().getSimpleName() + "  COLLECT  " + clazz.getSimpleName()+"."+fieldName);
 		return collectPropertyValues(fieldName, clazz, new PropertyValues(), true);
 	}
 	
-	protected static PropertyValues collectPropertyValues(String fieldName,
+	protected PropertyValues collectPropertyValues(String fieldName,
             Class clazz, PropertyValues propertyValues, boolean isEndClass) {
         Field field = null;
         Property property = null;
+        OnlyType onlyType = null;
         try {
             field = clazz.getDeclaredField(fieldName);
             if (field.isAnnotationPresent(Property.class)) {
                 property = field.getAnnotation(Property.class);
+            }
+            if (field.isAnnotationPresent(Only.class)) {
+                onlyType = field.getAnnotation(Only.class).value();
             }
         } catch (NoSuchFieldException e) {}
 
@@ -174,29 +186,42 @@ public abstract class MetaContext {
         if (superClass != null) {
             // if isEndClass check for implementation()... otherwise, always go up
             // UNSET or EXISTS_IN_SUPERCLASS will inherit, GENERATE won't
-            if (!isEndClass || field == null || property == null || property.implementation() != Implementation.GENERATE) {
+            // If wrong Only, then scan up for possible right Only or lack of Only
+            if (!isEndClass || field == null || property == null ||
+                property.implementation() != Implementation.GENERATE ||
+                (onlyType != null && !isAllowedPropertyOnlyType(onlyType))) {
                 collectPropertyValues(fieldName, superClass, propertyValues, false);
             }
         }
 
         if (field != null && property != null) {
-            propertyValues.importProperty(field, property, isEndClass);
+            boolean allowed = onlyType == null || isAllowedPropertyOnlyType(onlyType);
+            //System.out.println("  " + clazz.getSimpleName()+"."+fieldName + "  allowed: " + allowed + "\n    field: " + field + "\n    property: " + property);
+            if (allowed) {
+                propertyValues.importProperty(field, property, isEndClass);
+            }
         }
         
 		return propertyValues;
 	}
 	
-	protected static Field[] getDeclaredFields(Class clazz) {
+	protected Field[] getDeclaredFields(Class clazz) {
         HashMap<String, Field> fields = new HashMap<String, Field>();
 		getDeclaredFields(clazz, fields);
         return fields.values().toArray(new Field[fields.size()]);
 	}
 	
 	// collect all declared fields of a class and all its ancestor classes
-	private static void getDeclaredFields(Class clazz, Map<String, Field> fields) {
+	private void getDeclaredFields(Class clazz, Map<String, Field> fields) {
         if (clazz == null) return;
 		// add fields to map
 		for (Field localField : clazz.getDeclaredFields()) {
+            if(localField.isAnnotationPresent(Only.class)){
+                Only only = localField.getAnnotation(Only.class);
+                if (!isAllowedPropertyOnlyType(only.value())) {
+                    continue;
+                }
+            }
 			if (!fields.containsKey(localField.getName())) {
 				fields.put(localField.getName(), localField);
 			}

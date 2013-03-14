@@ -16,10 +16,7 @@
 
 package org.icefaces.ace.meta.baseMeta;
 
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.Expression;
-import org.icefaces.ace.meta.annotation.Implementation;
-import org.icefaces.ace.meta.annotation.DefaultValueType;
+import org.icefaces.ace.meta.annotation.*;
 
 import javax.el.MethodExpression;
 
@@ -27,6 +24,7 @@ import javax.el.MethodExpression;
  * These are the properties for javax.faces.component.UICommand
  */
 public class UICommandMeta extends UIComponentBaseMeta {
+    @Only(OnlyType.JSF)
     @Property(expression= Expression.METHOD_EXPRESSION,
         implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="MethodExpression representing the application action to " +
@@ -37,6 +35,7 @@ public class UICommandMeta extends UIComponentBaseMeta {
             "NavigationHandler for this application.")
     private MethodExpression action;
 
+    @Only(OnlyType.JSF)
     @Property (expression=Expression.METHOD_EXPRESSION,
         methodExpressionArgument="javax.faces.event.ActionEvent",
         implementation=Implementation.EXISTS_IN_SUPERCLASS,
@@ -50,6 +49,7 @@ public class UICommandMeta extends UIComponentBaseMeta {
             "cases where a notification is needed that \"some action happened\".")
     private MethodExpression actionListener;
     
+    @Only(OnlyType.JSF)
     @Property (defaultValue="false",
         defaultValueType= DefaultValueType.EXPRESSION,
         implementation=Implementation.EXISTS_IN_SUPERCLASS,
@@ -60,6 +60,7 @@ public class UICommandMeta extends UIComponentBaseMeta {
             "Application phase.")
     private boolean immediate;
     
+    @Only(OnlyType.JSF)
     @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="The current value of the simple component.")
     private Object value;

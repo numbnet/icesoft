@@ -16,9 +16,7 @@
 
 package org.icefaces.ace.meta.baseMeta;
 
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.DefaultValueType;
-import org.icefaces.ace.meta.annotation.Implementation;
+import org.icefaces.ace.meta.annotation.*;
 
 import javax.el.ValueExpression;
 
@@ -26,12 +24,14 @@ import javax.el.ValueExpression;
  * These are the properties for javax.faces.component.UIComponent
  */
 public class UIComponentMeta {
+    @Only(OnlyType.JSF)
     @Property (implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="Using an EL expression, bind the component reference to " +
             "a bean property, so that the component may be accessed in " +
             "the bean.")
     private ValueExpression binding;
-    
+
+    @Only(OnlyType.JSF)
     @Property(defaultValue="true",
         defaultValueType=DefaultValueType.EXPRESSION,
         implementation=Implementation.EXISTS_IN_SUPERCLASS,

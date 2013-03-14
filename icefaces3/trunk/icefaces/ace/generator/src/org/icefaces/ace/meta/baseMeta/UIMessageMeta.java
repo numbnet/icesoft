@@ -16,15 +16,15 @@
 
 package org.icefaces.ace.meta.baseMeta;
 
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.Implementation;
-import org.icefaces.ace.meta.annotation.DefaultValueType;
+import org.icefaces.ace.meta.annotation.*;
 
 /**
  * These are the properties for javax.faces.component.UIMessage
  */
 public class UIMessageMeta extends UIComponentBaseMeta {
-    @Property(//TODO ICE-6109
+    @Only(OnlyType.JSF)
+    @Property(
+        name = "for", 
         implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="Identifier of the component for which to render error " +
             "messages. If this component is within the same NamingContainer " +
@@ -33,6 +33,7 @@ public class UIMessageMeta extends UIComponentBaseMeta {
             "identifier (starting with \":\").")
     private String forValue;
 
+    @Only(OnlyType.JSF)
     @Property(defaultValue="true",
         defaultValueType= DefaultValueType.EXPRESSION,
         implementation= Implementation.EXISTS_IN_SUPERCLASS,
@@ -40,6 +41,7 @@ public class UIMessageMeta extends UIComponentBaseMeta {
             "for the specified component should be rendered.")
     private boolean showDetail;
 
+    @Only(OnlyType.JSF)
     @Property(defaultValue="false",
         defaultValueType= DefaultValueType.EXPRESSION,
         implementation= Implementation.EXISTS_IN_SUPERCLASS,
@@ -48,6 +50,7 @@ public class UIMessageMeta extends UIComponentBaseMeta {
     private boolean showSummary;
     
     //TODO Check Mojarra 2.0.3+ code to see if exists there
+    @Only(OnlyType.JSF)
     @Property(defaultValue="true",
         defaultValueType= DefaultValueType.EXPRESSION,
         implementation= Implementation.EXISTS_IN_SUPERCLASS,
