@@ -30,13 +30,19 @@ import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
 
                 // WIKI Resources
                 @ExampleResource(type = ResourceType.wiki,
-                        title="ace:message(s)",
+                        title="ace:message",
                         resource = ResourceRootPath.FOR_WIKI + "Message"),
+                @ExampleResource(type = ResourceType.wiki,
+                        title="ace:messages",
+                        resource = ResourceRootPath.FOR_WIKI + "Messages"),
 
                 // TLD Resources
                 @ExampleResource(type = ResourceType.tld,
-                        title="ace:message(s)",
-                        resource = ResourceRootPath.FOR_ACE_TLD + "message.html")
+                        title="ace:message",
+                        resource = ResourceRootPath.FOR_ACE_TLD + "message.html"),
+                @ExampleResource(type = ResourceType.tld,
+                        title="ace:messages",
+                        resource = ResourceRootPath.FOR_ACE_TLD + "messages.html")
         }
 )
 @ManagedBean(name= MessageResources.BEAN_NAME)
