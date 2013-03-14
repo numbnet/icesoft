@@ -302,6 +302,10 @@ public class SelectInputDateRenderer
                 if (selectInputDate.isReadonly()) {
                     dateText.setAttribute(HTML.READONLY_ATTR, HTML.READONLY_ATTR);
                 }
+                int maxlength = selectInputDate.getMaxlength();
+                if (maxlength > 0) {
+                    dateText.setAttribute(HTML.MAXLENGTH_ATTR, String.valueOf(maxlength));
+                }
                 root.appendChild(dateText);
                 Element calendarButton =
                         domContext.createElement(HTML.INPUT_ELEM);
@@ -518,6 +522,10 @@ public class SelectInputDateRenderer
             dateText.setAttribute(
                     HTML.VALUE_ATTR,
                     selectInputDate.getTextToRender());
+            int maxlength = selectInputDate.getMaxlength();
+            if (maxlength > 0) {
+                dateText.setAttribute(HTML.MAXLENGTH_ATTR, String.valueOf(maxlength));
+            }
 
             // get tables , our table is the first and only one
             NodeList tables = root.getElementsByTagName(HTML.TABLE_ELEM);
