@@ -16,27 +16,29 @@
 
 package org.icefaces.ace.generator.context;
 
-import org.icefaces.ace.generator.artifacts.JSPBaseTagArtifact;
+import org.icefaces.ace.generator.artifacts.JSPInterfaceArtifact;
+import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.JSP;
 import org.icefaces.ace.meta.annotation.OnlyType;
 
-public class JSPContext extends MetaContext {
-	public JSPContext(Class clazz) {
+public class InterfaceContext extends MetaContext {
+	public InterfaceContext(Class clazz) {
 		super(clazz);
 	}
 
     @Override
     protected void setupArtifacts() {
-        artifacts.put(JSPBaseTagArtifact.class.getSimpleName(), new JSPBaseTagArtifact(this));
+        artifacts.put(JSPInterfaceArtifact.class.getSimpleName(), new JSPInterfaceArtifact(this));
     }
 
     @Override
     protected boolean isRelevantClass(Class clazz) {
-        return clazz.isAnnotationPresent(JSP.class);
+        return clazz.isAnnotationPresent(Component.class) ||
+            clazz.isAnnotationPresent(JSP.class);
     }
 
     @Override
     protected boolean isAllowedPropertyOnlyType(OnlyType onlyType) {
-        return OnlyType.JSP.equals(onlyType);
+        return OnlyType.JSF.equals(onlyType) || OnlyType.JSP.equals(onlyType);
     }
 }

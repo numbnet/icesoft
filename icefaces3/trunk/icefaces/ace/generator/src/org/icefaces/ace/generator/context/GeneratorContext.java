@@ -150,6 +150,9 @@ public class GeneratorContext{
 	}
     
     public void processMetaContexts(Class clazz) {
+        MetaContext ic = new InterfaceContext(clazz);
+        ic.process();
+        
         MetaContext jc = new JSPContext(clazz);
         jc.process();
         

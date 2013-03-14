@@ -43,7 +43,7 @@ public class JSPBaseTagArtifact extends Artifact {
         String generatedTagExtendsClassName =
             Utility.getGeneratedTagExtendsClassName(metaClass, jsp);
         String interfaceClassName = Utility.getGeneratedInterfaceClassName(
-            metaClass, jsp);
+            metaClass);
 
 		generatedTagClass.append("package ");
 		generatedTagClass.append(Utility.getPackageNameOfClass(generatedTagClassName));

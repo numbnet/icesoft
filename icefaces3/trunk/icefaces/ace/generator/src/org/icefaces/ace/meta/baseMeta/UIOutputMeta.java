@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.meta.baseMeta;
 
+import org.icefaces.ace.meta.annotation.Only;
+import org.icefaces.ace.meta.annotation.OnlyType;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Implementation;
 
@@ -26,11 +28,13 @@ import javax.faces.convert.Converter;
  */
 public class UIOutputMeta extends UIComponentBaseMeta {
 
+    @Only(OnlyType.JSF)
     @Property(implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="The current value of the simple component. The value to be " +
             "rendered.")
     private Object value;
 
+    @Only(OnlyType.JSF)
     @Property (implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="Converter is an interface describing a Java class that can " +
             "perform Object-to-String and String-to-Object conversions " +

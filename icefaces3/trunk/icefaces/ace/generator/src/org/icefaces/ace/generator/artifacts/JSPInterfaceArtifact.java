@@ -16,30 +16,23 @@
 
 package org.icefaces.ace.generator.artifacts;
 
-import org.icefaces.ace.generator.context.JSPContext;
+import org.icefaces.ace.generator.context.InterfaceContext;
 import org.icefaces.ace.generator.utils.FileWriter;
 import org.icefaces.ace.generator.utils.Utility;
 
 import org.icefaces.ace.generator.utils.PropertyValues;
-import org.icefaces.ace.meta.annotation.JSP;
 
 import java.lang.reflect.Field;
 
 public class JSPInterfaceArtifact extends Artifact {
 	private StringBuilder generatedInterface;
 
-	public JSPInterfaceArtifact(JSPContext metaContext) {
+	public JSPInterfaceArtifact(InterfaceContext metaContext) {
 		super(metaContext);
 	}
 
-	private void startInterface(JSP jsp) {
+	private void startInterface(String generatedInterfaceName, String generatedInterfaceExtends) {
 		generatedInterface = new StringBuilder();
-
-        Class metaClass = getMetaContext().getActiveClass();
-        String generatedInterfaceName = Utility.getGeneratedInterfaceClassName(
-            metaClass, jsp);
-        String generatedInterfaceExtends =
-            Utility.getGeneratedInterfaceExtendsClassName(metaClass, jsp);
 
 		generatedInterface.append("package ");
 		generatedInterface.append(Utility.getPackageNameOfClass(generatedInterfaceName));
@@ -101,20 +94,23 @@ public class JSPInterfaceArtifact extends Artifact {
         generatedInterface.append("}\n");
     }
 
-    private void createJavaFile(JSP jsp) {
-        String generatedInterfaceName = Utility.getGeneratedInterfaceClassName(
-            getMetaContext().getActiveClass(), jsp);
+    private void createJavaFile(String generatedInterfaceName) {
         String fileName = Utility.getSimpleNameOfClass(generatedInterfaceName) + ".java";
         String path = Utility.getPackagePathOfClass(generatedInterfaceName);
         FileWriter.write("/generated-interfaces/", path, fileName, generatedInterface);
     }
 
 	public void build() {
-		JSP jsp = (JSP) getMetaContext().getActiveClass().getAnnotation(JSP.class);
-		startInterface(jsp);
+        Class metaClass = getMetaContext().getActiveClass();
+        String generatedInterfaceName = Utility.getGeneratedInterfaceClassName(
+            metaClass);
+        String generatedInterfaceExtends =
+            Utility.getGeneratedInterfaceExtendsClassName(metaClass);
+
+		startInterface(generatedInterfaceName, generatedInterfaceExtends);
         addPropertyGetterSetters();
         addFieldGetterSetters();
 		endInterface();
-        createJavaFile(jsp);
+        createJavaFile(generatedInterfaceName);
 	}
 }

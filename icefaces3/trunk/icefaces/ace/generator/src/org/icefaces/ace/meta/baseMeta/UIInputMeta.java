@@ -16,10 +16,7 @@
 
 package org.icefaces.ace.meta.baseMeta;
 
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.DefaultValueType;
-import org.icefaces.ace.meta.annotation.Implementation;
-import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.annotation.*;
 
 import javax.el.MethodExpression;
 
@@ -27,6 +24,7 @@ import javax.el.MethodExpression;
  * These are the properties for javax.faces.component.UIInput
  */
 public class UIInputMeta extends UIOutputMeta {
+    @Only(OnlyType.JSF)
     @Property(defaultValue="false",
         defaultValueType= DefaultValueType.EXPRESSION,
         implementation= Implementation.EXISTS_IN_SUPERCLASS,
@@ -35,11 +33,13 @@ public class UIInputMeta extends UIOutputMeta {
             "phase instead of Process Validations phase.")
     private boolean immediate;
     
+    @Only(OnlyType.JSF)
     @Property(implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="If present, will be used as the text of the converter " +
             "message, replacing any message that comes from the converter.")
     private String converterMessage;
     
+    @Only(OnlyType.JSF)
     @Property(defaultValue="false",
         defaultValueType= DefaultValueType.EXPRESSION,
         implementation= Implementation.EXISTS_IN_SUPERCLASS,
@@ -47,12 +47,14 @@ public class UIInputMeta extends UIOutputMeta {
             "non-empty submitted value for this component.")
     private boolean required;
     
+    @Only(OnlyType.JSF)
     @Property(implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="If present, will be used as the text of the validation " +
             "message for the \"required\" facility, if the \"required\" " +
             "facility is used.")
     private String requiredMessage;
     
+    @Only(OnlyType.JSF)
     @Property (expression= Expression.METHOD_EXPRESSION,
         methodExpressionArgument="", //TODO ICE-6114
         // void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent, java.lang.Object)
@@ -64,11 +66,13 @@ public class UIInputMeta extends UIOutputMeta {
             "UIComponent, and Object parameters, with a return type of void.")
     private MethodExpression validator;
     
+    @Only(OnlyType.JSF)
     @Property(implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="If present, will be used as the text of the validator " +
             "message, replacing any message that comes from the validator.")
     private String validatorMessage;
     
+    @Only(OnlyType.JSF)
     @Property (expression= Expression.METHOD_EXPRESSION,
         methodExpressionArgument="javax.faces.event.ValueChangeEvent",
         implementation=Implementation.EXISTS_IN_SUPERCLASS,

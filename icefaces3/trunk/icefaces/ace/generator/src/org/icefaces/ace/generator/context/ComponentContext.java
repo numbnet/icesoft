@@ -56,6 +56,11 @@ public class ComponentContext extends MetaContext {
     }
 
     @Override
+    protected boolean isAllowedPropertyOnlyType(OnlyType onlyType) {
+        return OnlyType.JSF.equals(onlyType);
+    }
+    
+    @Override
     protected void processAnnotation(Class clazz) {
         super.processAnnotation(clazz);
         processFacets(clazz);
