@@ -49,7 +49,10 @@ import java.util.*;
 @Menu(
             title = "menu.ace.simpleselectonemenu.subMenu.title",
             menuLinks = {
-                @MenuLink(title = "menu.ace.simpleselectonemenu.subMenu.main", isDefault = true, exampleBeanName = SimpleSelectOneMenuBean.BEAN_NAME)
+                @MenuLink(title = "menu.ace.simpleselectonemenu.subMenu.main", isDefault = true, exampleBeanName = SimpleSelectOneMenuBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.simpleselectonemenu.subMenu.label", exampleBeanName = SimpleSelectOneMenuLabelBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.simpleselectonemenu.subMenu.indicator", exampleBeanName = SimpleSelectOneMenuIndicatorBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.simpleselectonemenu.subMenu.reqStyle", exampleBeanName = SimpleSelectOneMenuReqStyleBean.BEAN_NAME)
             }
 )
 @ManagedBean(name= SimpleSelectOneMenuBean.BEAN_NAME)

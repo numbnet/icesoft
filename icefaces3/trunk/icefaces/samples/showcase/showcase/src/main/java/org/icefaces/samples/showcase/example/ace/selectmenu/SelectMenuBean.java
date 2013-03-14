@@ -50,7 +50,10 @@ import java.util.*;
             title = "menu.ace.selectmenu.subMenu.title",
             menuLinks = {
                 @MenuLink(title = "menu.ace.selectmenu.subMenu.main", isDefault = true, exampleBeanName = SelectMenuBean.BEAN_NAME),
-				@MenuLink(title = "menu.ace.selectmenu.subMenu.facet", exampleBeanName = SelectMenuFacetBean.BEAN_NAME)
+				@MenuLink(title = "menu.ace.selectmenu.subMenu.facet", exampleBeanName = SelectMenuFacetBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.selectmenu.subMenu.label", exampleBeanName = SelectMenuLabelBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.selectmenu.subMenu.indicator", exampleBeanName = SelectMenuIndicatorBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.selectmenu.subMenu.reqStyle", exampleBeanName = SelectMenuReqStyleBean.BEAN_NAME)
             }
 )
 @ManagedBean(name= SelectMenuBean.BEAN_NAME)
