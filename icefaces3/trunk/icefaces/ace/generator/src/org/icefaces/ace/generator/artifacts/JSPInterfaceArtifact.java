@@ -24,10 +24,10 @@ import org.icefaces.ace.generator.utils.PropertyValues;
 
 import java.lang.reflect.Field;
 
-public class JSPInterfaceArtifact extends Artifact {
+public class InterfaceArtifact extends Artifact {
 	private StringBuilder generatedInterface;
 
-	public JSPInterfaceArtifact(InterfaceContext metaContext) {
+	public InterfaceArtifact(InterfaceContext metaContext) {
 		super(metaContext);
 	}
 

@@ -16,7 +16,7 @@
 
 package org.icefaces.ace.generator.context;
 
-import org.icefaces.ace.generator.artifacts.JSPInterfaceArtifact;
+import org.icefaces.ace.generator.artifacts.InterfaceArtifact;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.JSP;
 import org.icefaces.ace.meta.annotation.OnlyType;
@@ -28,7 +28,7 @@ public class InterfaceContext extends MetaContext {
 
     @Override
     protected void setupArtifacts() {
-        artifacts.put(JSPInterfaceArtifact.class.getSimpleName(), new JSPInterfaceArtifact(this));
+        artifacts.put(InterfaceArtifact.class.getSimpleName(), new InterfaceArtifact(this));
     }
 
     @Override
