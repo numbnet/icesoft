@@ -50,7 +50,10 @@ import java.util.*;
             title = "menu.ace.combobox.subMenu.title",
             menuLinks = {
                 @MenuLink(title = "menu.ace.combobox.subMenu.main", isDefault = true, exampleBeanName = ComboBoxBean.BEAN_NAME),
-				@MenuLink(title = "menu.ace.combobox.subMenu.facet", exampleBeanName = ComboBoxFacetBean.BEAN_NAME)
+				@MenuLink(title = "menu.ace.combobox.subMenu.facet", exampleBeanName = ComboBoxFacetBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.combobox.subMenu.label", exampleBeanName = ComboBoxLabelBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.combobox.subMenu.indicator", exampleBeanName = ComboBoxIndicatorBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.combobox.subMenu.reqStyle", exampleBeanName = ComboBoxReqStyleBean.BEAN_NAME)
             }
 )
 @ManagedBean(name= ComboBoxBean.BEAN_NAME)
