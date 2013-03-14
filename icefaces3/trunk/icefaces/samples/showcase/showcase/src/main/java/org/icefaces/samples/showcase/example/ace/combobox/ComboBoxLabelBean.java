@@ -52,7 +52,7 @@ public class ComboBoxLabelBean extends ComponentExampleImpl<ComboBoxLabelBean> i
     public static final String BEAN_NAME = "comboBoxLabelBean";
 
     private String selectedText;    
-    private String labelText = "Cities of the World:";
+    private String labelText = "Select province:";
     private String labelPosition = "left";
 
     public ComboBoxLabelBean() 

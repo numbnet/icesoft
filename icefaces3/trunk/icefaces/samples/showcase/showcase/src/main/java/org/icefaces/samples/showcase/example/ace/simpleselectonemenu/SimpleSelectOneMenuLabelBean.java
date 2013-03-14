@@ -52,7 +52,7 @@ public class SimpleSelectOneMenuLabelBean extends ComponentExampleImpl<SimpleSel
     public static final String BEAN_NAME = "simpleSelectOneMenuLabelBean";
 
     private String selectedText;    
-    private String labelText = "Cities of the World:";
+    private String labelText = "Select province:";
     private String labelPosition = "left";
 
     public SimpleSelectOneMenuLabelBean() 
