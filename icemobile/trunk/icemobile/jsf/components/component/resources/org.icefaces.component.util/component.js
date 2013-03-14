@@ -439,7 +439,9 @@ if (window.addEventListener) {
                 jsf.getViewState = html5getViewState;
                 if ((undefined !== window.FormData) &&
                         (undefined === window.ice.mobile) &&
-                        ((undefined === window.clientInformation) || ("BlackBerry" !== window.clientInformation.platform)) &&
+                        ((undefined === window.clientInformation) ||
+                            ("BlackBerry" !== window.clientInformation.platform) ||
+                            (navigator.userAgent.indexOf(" Version/6.0") < 0)) &&
                         (undefined !== window.Worker)) {
                     ice.submitFunction = html5submitFunction;
                 }
