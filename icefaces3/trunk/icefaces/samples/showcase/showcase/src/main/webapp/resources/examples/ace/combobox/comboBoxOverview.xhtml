@@ -60,11 +60,13 @@
 					<f:selectItem itemValue="Northwest Territories" itemLabel="Northwest Territories" />
 					<f:selectItem itemValue="Nunavut" itemLabel="Nunavut" />
 					<ace:ajax execute="@this" render="@all" />
+					<ace:ajax event="blur" execute="@this" render="@all" />
 				</ace:comboBox>
 				<br />
 				<ace:comboBox id="selectCity" value="#{comboBoxBean.city}" rendered="#{comboBoxBean.displayCities}" label="Select city: " labelPosition="top">
 					<f:selectItems value="#{comboBoxBean.cities}" />
 					<ace:ajax execute="@this" render="@all" />
+					<ace:ajax event="blur" execute="@this" render="@all" />
 				</ace:comboBox>
 				</h:panelGroup>
 				<h:panelGroup>
