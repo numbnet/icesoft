@@ -163,9 +163,9 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 				item = (SelectItem) matches.next();
 				String itemLabel = item.getLabel();
 				String itemValue = (String) item.getValue();
-				if (itemValue == null) {
+				if (itemValue != null) {
 					try {
-						itemValue = (String) getConvertedValue(facesContext, simpleSelectOneMenu, item.getValue(), true);
+						itemValue = (String) getConvertedValue(facesContext, simpleSelectOneMenu, item.getValue());
 					} catch (Exception e) {
 						itemValue = item.getValue().toString();
 					}
@@ -192,10 +192,6 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 	
 	@Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		return getConvertedValue(context, component, submittedValue, false);
-	}
-	
-	private Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue, boolean force) throws ConverterException {
 		SimpleSelectOneMenu simpleSelectOneMenu = (SimpleSelectOneMenu) component;
 		String value = (String) submittedValue;
 		Converter converter = simpleSelectOneMenu.getConverter();
