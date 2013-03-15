@@ -33,6 +33,7 @@
 
 &base-props;
 &core-props; 
+&escape-props; 
 
 <property>
     <description>
