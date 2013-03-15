@@ -18,7 +18,7 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.ComboBoxes) ice.ace.ComboBoxes = {};
 
-ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, behaviors, cfg, clientSideModeCfg) {
+ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, buttonOnlyList, behaviors, cfg, clientSideModeCfg) {
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.ComboBoxes[this.id] && ice.ace.ComboBoxes[this.id].initialized) isInitialized = true;
@@ -27,6 +27,7 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 	this.clientSideModeCfg = clientSideModeCfg;
 	this.height = height == 0 ? 'auto' : height;
 	this.direction = 'down';
+	this.buttonOnlyList = buttonOnlyList;
 	var options = {};
 	this.root = ice.ace.jq(ice.ace.escapeClientId(this.id));
 	var $box = this.root.find('.ui-combobox-value');
@@ -63,9 +64,6 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 				self.cfg.labelIsInField = false;
 			}
 			self.initialize(self.element, self.update, options, rowClass, highlightedRowClass, selectedRowClass, behaviors); 
-			if (ice.ace.ComboBox.Browser.IE) {
-				self.clientSideModeUpdate();
-			}
 		};
 		$element.on('focus', triggerInit);
 		$downArrowButton.on('click', triggerInit);
@@ -177,6 +175,7 @@ ice.ace.ComboBox.prototype = {
 		//ice.ace.jq(this.element).data("labelIsInField", this.cfg.labelIsInField);
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
+		if (!this.buttonOnlyList) ice.ace.jq(this.element).on("click", function(e) { self.onElementClick.call(self, e); });
 		ice.ace.jq(this.downArrowButton).on("click", function(e) { self.onElementClick.call(self, e); });
 		if (ice.ace.ComboBox.Browser.IE) {
 			ice.ace.jq(this.downArrowButton).children().on("click", function(e) { 
@@ -317,8 +316,10 @@ ice.ace.ComboBox.prototype = {
 					event.preventDefault();
                     return;
 				default:
-					var self = this;
-					setTimeout(function(){self.clientSideModeUpdate();},50);
+					if (!this.buttonOnlyList) {
+						var self = this;
+						setTimeout(function(){self.clientSideModeUpdate();},50);
+					}
 					return;
             }
         } else {
@@ -403,17 +404,6 @@ ice.ace.ComboBox.prototype = {
             element.addClass(this.cfg.inFieldLabelStyleClass);
             element.data("labelIsInField", true);
         }
-        if (navigator.userAgent.indexOf("MSIE") >= 0) { // ICE-2225
-            var strictMode = document.compatMode && document.compatMode == "CSS1Compat";
-            var docBody = strictMode ? document.documentElement : document.body;
-            // Right or bottom border, if any, will be treated as scrollbar.
-            // No way to determine their width or scrollbar width accurately.
-            if (event.clientX > docBody.clientLeft + docBody.clientWidth ||
-                event.clientY > docBody.clientTop + docBody.clientHeight) { 
-                this.element.focus();
-                return;
-            }
-        }
         // needed to make click events working
 		var self = this;
         this.hideObserver = setTimeout(function () { self.hide(); }, 250);
@@ -447,22 +437,14 @@ ice.ace.ComboBox.prototype = {
 			var length = this.element.value.length;
 			this.element.setSelectionRange(length, length);
 		}
-		
-		if (this.justSelectedItem) {
-			this.justSelectedItem = false;
-			return;
-		}
-		this.clientSideModeUpdate();
     },
 	
 	onElementClick: function(event) {
 		if (this.active) {
 			this.hide();
-			this.justSelectedItem = true;
 			this.element.focus();
 		} else {
 			if (this.hideObserver) clearTimeout(this.hideObserver);
-			this.justSelectedItem = true;
 			this.clientSideModeUpdate(this.noFilter);
 		}
 	},
@@ -505,6 +487,11 @@ ice.ace.ComboBox.prototype = {
             this.hide();
         }
     },
+	
+	markFirst: function() {
+		this.index = -1;
+		this.markNext();
+	},
 
     markPrevious: function() {
 		// we skip disabled entries
@@ -548,6 +535,30 @@ ice.ace.ComboBox.prototype = {
 		}
     },
 	
+	markFirstMatch: function() {
+		// we skip disabled entries
+		var found = false;
+		var i;
+		for (i = 0; i < this.entryCount; i++) {
+			var entry = this.getEntry(i);
+			if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
+				var entryValue = ice.ace.ComboBox.collectTextNodesIgnoreClass(entry, ice.ace.ComboBox.LABEL_CLASS);
+				if (entryValue) {
+					entryValue = entryValue.toLowerCase();
+					var mainValue = this.element.value.toLowerCase();
+					if (entryValue.indexOf(mainValue) == 0) {
+						found = true;
+						break;
+					}
+				}
+			}
+		}
+		if (found) {
+			this.index = i;
+			this.scrollToMarkedItem();
+		}	
+	},
+	
 	scrollToMarkedItem: function() {
 		if (this.active) {
 			var entry = this.getEntry(this.index);
@@ -587,7 +598,6 @@ ice.ace.ComboBox.prototype = {
         value = ice.ace.ComboBox.collectTextNodesIgnoreClass(selectedEntry, ice.ace.ComboBox.LABEL_CLASS);
 
 		this.updateValue(value);
-		this.justSelectedItem = true;
         this.element.focus();
     },
 
@@ -702,6 +712,12 @@ ice.ace.ComboBox.prototype = {
 			if (rowCount >= rows) break;
 		}
 		this.updateNOW('<div>'+result.html()+'</div>');
+		if (filter == this.noFilter) {
+			this.markFirstMatch();
+		} else {
+			this.markFirst();
+		}
+		this.render();
 	},
 	
 	containsFilter: function(item, value) {

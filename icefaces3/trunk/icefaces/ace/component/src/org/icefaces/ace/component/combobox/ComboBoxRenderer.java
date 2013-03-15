@@ -144,7 +144,7 @@ public class ComboBoxRenderer extends InputRenderer {
 		
 		// down arrow span
 		writer.startElement("div", null);
-		writer.writeAttribute("class", "ui-state-default ui-corner-all", null);
+		writer.writeAttribute("class", "ui-state-default ui-corner-right", null);
 		writer.writeAttribute("style", "float:right; width:17px; height:100%; border-top:0; border-right:0; border-bottom:0;", null);
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
@@ -191,6 +191,7 @@ public class ComboBoxRenderer extends InputRenderer {
 			.item("ui-state-hover")
 			.item("ui-state-active")
 			.item(comboBox.getHeight())
+			.item(comboBox.isButtonOnlyList())
 			.beginMap()
 			.entry("p", ""); // dummy property
 			encodeClientBehaviors(facesContext, comboBox, jb);
