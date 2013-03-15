@@ -71,7 +71,7 @@ public class ComboBoxMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "The width of the text input field, in pixels.", defaultValue="200")
     private int width;
 	
-    @Property(tlddoc = "Maximum height in pixels of the list of possible matches (if 0, then the size is automatically adjusted to show all possible matches).")
+    @Property(tlddoc = "Maximum height in pixels of the list of possible matches (if 0, then the size is automatically adjusted to show all possible matches).", defaultValue="200")
     private int height;
 
     @Property(tlddoc = "Variable name to use for referencing each data object in the list when rendering via a facet.")
@@ -89,9 +89,7 @@ public class ComboBoxMeta extends HtmlInputTextMeta {
 	private Object itemDisabled;
 	
 	@Property(tlddoc="Defines the method of filter comparison used, default is \"startsWith\". " +
-            "Types available include: \"contains\", \"exact\", \"startsWith\", \"endsWith\" and \"none\". " +
-			"Typically, \"none\" will be used in cases where more complex, custom filtering is needed or when " +
-			"option values need to be loaded lazily (e.g. from a data base).", defaultValue="startsWith")
+            "Types available include: \"contains\", \"exact\", \"startsWith\", \"endsWith\" and \"none\".", defaultValue="none")
 	private String filterMatchMode;
 	
     @Property(tlddoc = "Delay in milliseconds for showing the list of possible matches after typing a character.", defaultValue="400")
@@ -103,8 +101,11 @@ public class ComboBoxMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "Boolean value that indicates whether the filtering should be case sensitive or not.", defaultValue="false")
     private boolean caseSensitive;
 	
-    @Property(tlddoc = "The maximum number of possible options to show to the user.", defaultValue="10")
+    @Property(tlddoc = "The maximum number of possible options to show to the user (set to 0 to display all rows).", defaultValue="0")
     private int rows;
+	
+    @Property(tlddoc = "Boolean value that indicates whether the popup list should be displayed only when clicking the down arrow button.", defaultValue="false")
+    private boolean buttonOnlyList;	
 
     @Property(tlddoc = "Indicator indicating that the user is required to provide a submitted value for this input component.")
     private String requiredIndicator;
