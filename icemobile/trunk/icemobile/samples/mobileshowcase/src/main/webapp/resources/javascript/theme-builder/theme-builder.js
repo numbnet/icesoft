@@ -22,7 +22,6 @@ TR.styleArray = [];
 TR.tokens = {};
 TR.undoLog = [];
 TR.redoLog = [];
-TR.version = null;
 
 TR.showStartEnd = [];
 TR.firstAdd = 1;
@@ -170,11 +169,6 @@ TR.addSwatch = function( new_style, duplicate ) {
             .replace( /-a\s/g, "-" + lower + " " ).replace( /-a\"/g, "-" + lower + "\"" );
         $( temp_swatch_template ).insertAfter( TR.phoneIframe.find(".swatch:last") );
         $( temp_swatch_template ).insertAfter( TR.tabletIframe.find(".swatch:last") );
-        
-        var iframe_window = $( "iframe" )[0].contentWindow;
-        //This is a bug in JQM. Header initialization is using a live pagecreate handler on the page
-        //ideally we should be able to write iframe_window.$(".swatch:last").trigger("create");
-        iframe_window.$( ".ui-page" ).trigger( "pagecreate" );
         
         //adding data-form attribute to slider
         TR.addInspectorAttributes( lower );
@@ -1133,6 +1127,11 @@ TR.initThemeRoller = function() {
     TR.initDraggableColors();
     TR.initStyleArray();
     TR.correctNumberOfSwatches();
+    
+    //start the app out with 3 swatches A-C default starter style only has 1
+    for ( var letter = TR.num[ "a" ]; letter < TR.num[ "c" ]; letter++ ) {
+        TR.addSwatch( true );
+    }
     
 }
 
