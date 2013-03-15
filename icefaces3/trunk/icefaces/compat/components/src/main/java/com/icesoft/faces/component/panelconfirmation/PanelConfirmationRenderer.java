@@ -120,7 +120,7 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         }
         Element messageSpan = domContext.createElement(HTML.SPAN_ELEM);
         bodyTd.appendChild(messageSpan);
-        Text messageText = domContext.createTextNode(message);
+        Text messageText = panelConfirmation.isEscape() ? domContext.createTextNode(message) : domContext.createTextNodeUnescaped(message);
         messageSpan.appendChild(messageText);
         
         // Buttons

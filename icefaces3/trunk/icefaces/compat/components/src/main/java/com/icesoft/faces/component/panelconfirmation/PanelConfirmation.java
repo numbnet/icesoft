@@ -258,11 +258,34 @@ public class PanelConfirmation extends UIComponentBase {
 		return boolVal != null ? boolVal.booleanValue() : false;
 	}
 
+    private java.lang.Boolean escape;
+    /**
+     * <p>Return the value of the <code>escape</code> property.</p>
+     * <p>Contents: Flag indicating that characters that are sensitive
+     * in HTML and XML markup must be escaped.  This flag
+     * is set to "true" by default.
+     */
+    public boolean isEscape() {
+        if (null != this.escape) {
+            return this.escape.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("escape");
+        Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    /**
+     * <p>Set the value of the <code>escape</code> property.</p>
+     */
+    public void setEscape(boolean escape) {
+        this.escape = Boolean.valueOf(escape);
+    }
+
     private transient Object states[];
 
     public Object saveState(FacesContext context) {
         if(states == null) {
-            states = new Object[11];
+            states = new Object[12];
         }
         states[0] = super.saveState(context);
         states[1] = title;
@@ -275,6 +298,7 @@ public class PanelConfirmation extends UIComponentBase {
         states[8] = autoCentre;
         states[9] = draggable;
         states[10] = displayAtMouse;
+        states[11] = escape;
         return states;
     }
     
@@ -291,5 +315,6 @@ public class PanelConfirmation extends UIComponentBase {
         autoCentre = (Boolean) states[8];
         draggable = (Boolean) states[9];
         displayAtMouse = (Boolean) states[10];
+        escape = (Boolean) states[11];
     }
 }

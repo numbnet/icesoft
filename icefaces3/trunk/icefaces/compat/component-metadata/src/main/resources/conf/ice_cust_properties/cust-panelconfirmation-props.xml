@@ -16,7 +16,8 @@
   -->
 
 &base-props;
-&core-props; 
+&core-props;
+&escape-props;
 
 <property>
     <description>
