@@ -23,20 +23,16 @@ TR.initializeUI = function() {
 			
 	var colors = [];
 
-	//setting up farbtastic
-//	var f = $.farbtastic( "#colorpicker" ); mobi
 	var p = $( "#picker" ).css( "opacity", 0.25 );
 	var selected;
 	$( ".colorwell" )
 	  	.each(function() { 
-//	  		f.linkTo( this ); mobi
 	  		$( this ).css( "opacity", 0.75 ); 
 	  	})
 	  	.focus(function() {
 			if( selected ) {
 		  		$( selected ).css( "opacity", 0.75 ).removeClass( "colorwell-selected" );
 			}
-//			f.linkTo( this ); mobi
 			p.css( "opacity", 1 );
 			$( selected = this ).css( "opacity", 1 ).addClass( "colorwell-selected" );
 	  	});
@@ -234,8 +230,6 @@ TR.initializeUI = function() {
 		$( this ).hide();
 		well.show();
 		well.focus();
-
-//		f.linkTo( processFarbChange ); mobi
 
 		TR.addMostRecent( well.val() );
 
