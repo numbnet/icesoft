@@ -104,7 +104,7 @@ public class ComboBoxMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "The maximum number of possible options to show to the user (set to 0 to display all rows).", defaultValue="0")
     private int rows;
 	
-    @Property(tlddoc = "Boolean value that indicates whether the popup list should be displayed only when clicking the down arrow button.", defaultValue="false")
+    @Property(tlddoc = "Boolean value that indicates whether the popup list should be displayed/hidden only when clicking the down arrow button.", defaultValue="false")
     private boolean buttonOnlyList;	
 
     @Property(tlddoc = "Indicator indicating that the user is required to provide a submitted value for this input component.")

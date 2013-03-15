@@ -565,7 +565,9 @@ ice.ace.ComboBox.prototype = {
 			if (entry) {
 				var itemTop = ice.ace.jq(entry).position().top;
 				var $update = ice.ace.jq(this.update);
-				$update.scrollTop($update.scrollTop() + itemTop);
+				if (itemTop < 0 || itemTop > $update.height()) {
+					$update.scrollTop($update.scrollTop() + itemTop);
+				}
 			}
 		}
 	},
