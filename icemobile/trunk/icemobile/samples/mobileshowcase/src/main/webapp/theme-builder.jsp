@@ -27,7 +27,6 @@
 
     <title>ICEmobile Theme Builder</title>
     
-    <link rel="canonical" href="index.jsp" />
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 
     <link rel="stylesheet" type="text/css" href="resources/css/theme-builder.layout.css" media="all" />
@@ -67,6 +66,26 @@
                 <div class="tb-button" id="inspector-button">
                     <img src="resources/images/inspector.png" alt=" "/>
                     <span>Inspector <strong>off</strong></span>
+                </div>
+            </div>
+            <div id="button-block-2">
+                <div class="tb-button" id="download-button">
+                    <div class="tb-button-inner">
+                        <img src="resources/images/download.png" alt="Download" />
+                        <div class="text">
+                            <span class="big">Copy</span>
+                            <span>Custom Theme</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tb-button" id="help-button">
+                    <div class="tb-button-inner">
+                        <img src="resources/images/help.png" alt="Help" />
+                        <div class="text">
+                            <span class="big">Help</span>
+                            <span>center</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,14 +143,9 @@
                         </div>
                     </div>
 
-                    <div id="most-recent-colors">
+                    <div id="most_recent_colors" style="display: none">
                         <div class="picker">
-                            <h2>Recent Colors <span style="font-size: smaller; font-style: italic;">(Chrome required)</span></h2>
-                            <%--div class="compact">
-                                <input type="color" name="colorpicker"/>
-                                <a id="recent-color-picker" href="#">colors...</a>
-                                <input type="text" class="colorwell-toggle" value="#FFFFFF" data-name="recent" style="display: none" />
-                            </div--%>
+                            <h2>Recent Colors</h2>
                         </div>
                         <div class="clear"></div>
                         <div class="colors">
@@ -205,11 +219,10 @@
                     <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#phoneView">Phone View</a></li>
                     <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tabletView">Tablet View</a></li>
                 </ul>
-                <div style="border: dotted 1px #999;display: inline-block;" id="phoneView">
+                <div style="border: dotted 1px #999;display: inline-block; float: left; clear: both;" id="phoneView">
                     <div class="phone">
                         <div class="device-frame">
-                            <iframe src="./showcase-small.jsf?theme=iphone&simulator=true" id="phone_iframe"
-                                onload="TR.iframeLoadCallback();"></iframe>
+                            <iframe src="./showcase-small.jsf?theme=iphone&simulator=true" id="phone_iframe"></iframe>
                         </div>
                     </div>
                 </div>
@@ -218,9 +231,21 @@
                     <div class="tablet">
                         <div class="device-frame">
                             <iframe src="./showcase-large.jsf?theme=iphone&simulator=true" id="tablet_iframe"
-                                onload="TR.iframeLoadCallback();"></iframe>
+                                onload="TR.tabletIframeLoadCallback();"></iframe>
                         </div>
                     </div>
+                </div>
+            </div>
+            
+            <div id="download" class="dialog" title=" ">
+                <h1><strong>Custom Theme CSS</strong></h1>
+                <textarea rows="30" cols="40"></textarea>
+                <div class="buttonpane">
+                    <div class="separator"></div>
+                    <img src="resources/images/target_big.png" alt=" "/>
+                    <p>
+                        Copy the new CSS into a new stylesheet for your project.
+                    </p>
                 </div>
             </div>
             

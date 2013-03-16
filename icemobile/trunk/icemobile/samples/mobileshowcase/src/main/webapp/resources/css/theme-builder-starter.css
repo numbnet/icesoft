@@ -1,7 +1,4 @@
 /*
-* jQuery Mobile Git Build: SHA1: 9130927464f2d3e0300a9fb36ebfd69448cf3675 <> Date: Wed Feb 20 11:08:42 2013 -0800
-* http://jquerymobile.com
-*
 * Copyright 2010, 2013 jQuery Foundation, Inc. and other contributors
 * Released under the MIT license.
 * http://jquery.org/license
@@ -241,7 +238,7 @@ a.ui-link-inherit {
 .ui-icon-searchfield:after {
 	background-color: 						#666666 /*{global-icon-color}*/;
 	background-color: 						rgba(0,0,0,.4) /*{global-icon-disc}*/;
-	background-image: url(images/icons-18-white.png) /*{global-icon-set}*/;
+	background-image: url(resources/images/icons-18-white.png) /*{global-icon-set}*/;
 	background-repeat: no-repeat;
 	-webkit-border-radius: 				9px;
 	border-radius: 						9px;
@@ -254,7 +251,7 @@ a.ui-link-inherit {
 .ui-icon-alt .ui-icon-searchfield:after {
 	background-color: 						#fff;
 	background-color: 						rgba(255,255,255,.3);
-	background-image: url(images/icons-18-black.png);
+	background-image: url(resources/images/icons-18-black.png);
 	background-repeat: no-repeat;
 }
 
@@ -324,7 +321,7 @@ a.ui-link-inherit {
 	background-position: 	-539px -1px;
 }
 .ui-icon-home {
-	background-position: 	-575px -1px;
+	background-position: 	-570px 50%;
 }
 /* search */
 .ui-icon-search,
@@ -366,7 +363,7 @@ a.ui-link-inherit {
 	.ui-icon-grid, .ui-icon-star, .ui-icon-alert, .ui-icon-info, .ui-icon-home, .ui-icon-bars, .ui-icon-edit,
 	.ui-icon-search, .ui-icon-searchfield:after, 
 	.ui-icon-checkbox-off, .ui-icon-checkbox-on, .ui-icon-radio-off, .ui-icon-radio-on {
-		background-image: url(images/icons-36-white.png);
+		background-image: url(resources/images/icons-36-white.png);
 		-moz-background-size: 864px 18px;
 		-o-background-size: 864px 18px;
 		-webkit-background-size: 864px 18px;
@@ -374,7 +371,7 @@ a.ui-link-inherit {
 	}
 
 	.ui-icon-alt .ui-icon {
-		background-image: url(images/icons-36-black.png);
+		background-image: url(resources/images/icons-36-black.png);
 	}
 
 	.ui-icon-plus {
@@ -469,7 +466,7 @@ a.ui-link-inherit {
 
 /* loading icon */
 .ui-icon-loading {
-	background: url(images/ajax-loader.gif);
+	background: url(resources/images/ajax-loader.gif);
 	background-size: 46px 46px;
 }
 

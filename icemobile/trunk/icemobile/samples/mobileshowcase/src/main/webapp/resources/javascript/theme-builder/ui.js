@@ -218,7 +218,7 @@ TR.initializeUI = function() {
   // Recent color dropper
 
 	function processFarbChange( color ) {
-		$( "#most-recent-colors input" ).val( color );
+		$( "#most_recent_colors input" ).val( color );
 
 		TR.updateMostRecent( color );
 	}
@@ -236,8 +236,8 @@ TR.initializeUI = function() {
 		event.preventDefault();
 	});
 
-	$( "#most-recent-colors .colorwell-toggle" ).blur(function() {
-		var well = $("#most-recent-colors .colorwell-toggle");
+	$( "#most_recent_colors .colorwell-toggle" ).blur(function() {
+		var well = $("#most_recent_colors .colorwell-toggle");
 		well.hide();
 		$('#recent-color-picker').show();
 	});
@@ -254,13 +254,17 @@ TR.initializeUI = function() {
 	TR.initThemeRoller();
 }
 
-TR.iframeLoadCallback = function()
+TR.tabletIframeLoadCallback = function()
 {
-	TR.isIFrameReady = true;
-	TR.initializeUI();
+    TR.isIFrameReady = true;
+    TR.initializeUI();
 };
 
 $(function() {
 	TR.isDOMReady = true;
 	TR.initPanel();
+	//if chrome show recent colors
+	if( window.chrome ){
+	    $('#most_recent_colors').show();
+	}
 });

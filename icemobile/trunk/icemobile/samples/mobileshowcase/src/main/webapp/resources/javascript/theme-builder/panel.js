@@ -96,7 +96,7 @@ TR.createControl = function( control, label, subGroup ) {
 			}
 			break;
 		case "link":
-			controlMarkup += '<input data-type="' + group + '" data-name="' + name + '" class="colorwell"/>&nbsp;&nbsp;<a class="more" data-name="' + name + '" href="#">+</a><br class="clear" />';
+			controlMarkup += '<input type="color" data-type="' + group + '" data-name="' + name + '" class="colorwell"/>&nbsp;&nbsp;<a class="more" data-name="' + name + '" href="#">+</a><br class="clear" />';
 			controlMarkup += '<div class="start-end links" data-name="' + name + '">';
 			controlMarkup += '<label class="first">LINK HOVER</label><input data-type="' + group + '" data-name="' + prefix + '-hover" class="colorwell"/><br class="clear" />';
 			controlMarkup += '<label class="first">LINK ACTIVE</label><input data-type="' + group + '" data-name="' + prefix + '-active" class="colorwell"/><br class="clear" />';
@@ -104,15 +104,15 @@ TR.createControl = function( control, label, subGroup ) {
 			var noBreak = true;
 			break;
 		case "color":
-			controlMarkup += '<input data-type="' + group + '" data-name="' + name + '" class="colorwell" />';
+			controlMarkup += '<input type="color" data-type="' + group + '" data-name="' + name + '" class="colorwell" />';
 			break;
 		case "gradient":
-			controlMarkup += '<input data-type="' + group + '" data-name="' + name + '" class="colorwell" />';
+			controlMarkup += '<input type="color" data-type="' + group + '" data-name="' + name + '" class="colorwell" />';
 			controlMarkup += '<div class="slider" data-type="' + group + '" data-name="' + name + '"></div>&nbsp;&nbsp;'
 			controlMarkup += '<a class="more" data-name="' + prefix + '" href="">+</a>';
 			controlMarkup += '<div class="start-end" data-name="' + prefix + '">';
 			controlMarkup += '<label class="first">START</label>';
-			controlMarkup += '<input data-type="start" data-name="' + prefix + '-start" class="colorwell"/>';
+			controlMarkup += '<input type="color" data-type="start" data-name="' + prefix + '-start" class="colorwell"/>';
 			controlMarkup += '<label>END</label><input data-name="' + prefix + '-end" data-type="end" class="colorwell" /></div>';
 			break;
 		case "select":

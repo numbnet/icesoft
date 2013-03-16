@@ -73,7 +73,7 @@ TR.addInspectorAttributes = function( swatch ) {
 //adds a most-recent-color to the five right-most draggables in the quickswatch panel
 TR.addMostRecent = function( color ) {
     var found = 0,
-        most_recents = $( "#most-recent-colors .color-drag" );
+        most_recents = $( "#most_recent_colors .color-drag" );
     
     most_recents.each( function() {
         if( color == $(this).css("background-color") ) {
@@ -99,7 +99,7 @@ TR.addMostRecent = function( color ) {
 //updates the newest recent color. Used when adding a color with the color picker
 TR.updateMostRecent = function( newColor ) {
     var found = 0,
-        most_recent = $( "#most-recent-colors .color-drag:first" );
+        most_recent = $( "#most_recent_colors .color-drag:first" );
 
     if( most_recent.length ) {
         most_recent.css( "background-color", newColor );
@@ -767,6 +767,16 @@ TR.initDialogs = function() {
         }
     }));
     
+    $( "#download" ).dialog( $.extend( {}, dialogObj, {
+        width: 850,
+        buttons: {
+            "Close": function() { 
+                $( this ).dialog( "close" ); 
+            }
+        }
+    }));
+    
+    
     $( ".dialog#newColor" ).dialog({
         autoOpen: false,
         width: 450,
@@ -800,6 +810,13 @@ TR.initDialogs = function() {
                     input.next().css( "background-color", input.val() );
                 });
         }
+    });
+    
+  //download dialog
+    $( "#download-button" ).click(function() {
+        $("#download textarea").val(TR.phoneStyleBlock.text());
+        $( "#download" ).dialog( "open" );          
+        return false;
     });
         
     //removing the close button from ui-dialogs
@@ -862,8 +879,8 @@ TR.initDraggableColors = function() {
         
         if(TR.movingColor) {
             TR.movingColor = 0;
-            var frame = $( ".ui-tabs-panel:not(.ui-tabs-hide) iframe" );
-            var frame_offset = frame.offset();
+            var frame = $( ".ui-tabs-panel:not(.ui-tabs-hide) iframe" ).contents();
+            var frame_offset = $( ".ui-tabs-panel:not(.ui-tabs-hide) iframe" ).offset();
             var el_offset = frame.find( ".ui-bar-a" ).offset();
             
             var element = null;
@@ -910,13 +927,14 @@ TR.initDraggableColors = function() {
                 $( ".ui-draggable .ui-draggable-dragging" ).trigger( "drop" );
             } else {
                 //else apply the color and select the element in the panel
-                var swatch = element.attr( "data-theme" );
+                var swatch = 'a'; //TODO element.attr( "data-theme" );
                 if( el_class == ".ui-btn-active" ) {
                     swatch = "global";
                 }
+                /* TODO
                 if( el_class.indexOf(".ui-bar") != -1 ) {
                     swatch = element.attr( "data-swatch" );
-                }
+                }*/
                 var color = $( ".color-drag.ui-draggable-dragging" ).css( "background-color" ) || $( ".kuler-color.ui-draggable-dragging" ).css( "background-color" );
                 if( color != "transparent" ) {
                     color = TR.rgbtohex( color );
