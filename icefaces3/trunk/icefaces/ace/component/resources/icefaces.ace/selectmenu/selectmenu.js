@@ -500,19 +500,10 @@ ice.ace.SelectMenu.prototype = {
             element.removeClass(this.cfg.inFieldLabelStyleClass);
             element.data("labelIsInField", false);
         }
-		if (this.justSelectedItem) {
-			this.justSelectedItem = false;
-			return;
-		}
-		this.active = true;
-		this.updateNOW(this.content);
-		var self = this;
-		this.justFocused = true;
-		this.focusObserver = setTimeout(function() { self.justFocused = false; }, 150);
     },
 	
 	onElementClick: function(event) {
-		if (this.active && !this.justFocused) {
+		if (this.active) {
 			this.hide();
 		} else {
 			if (this.hideObserver) clearTimeout(this.hideObserver);
@@ -642,8 +633,10 @@ ice.ace.SelectMenu.prototype = {
 			else i = 0;
 			var entry = this.getEntry(i);
 			if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
-				value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(entry, ice.ace.SelectMenu.LABEL_CLASS);
+				var labelNode = ice.ace.jq(entry).children('.' + ice.ace.SelectMenu.LABEL_CLASS).get(0);
+				value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(labelNode, ice.ace.SelectMenu.IGNORE_CLASS);
 				if (value) {
+					value = value.replace(/^\s+|\s+$/g, ''); // trim
 					var firstChar = String.fromCharCode(value.charCodeAt(0)).toLowerCase();
 					if (eventChar == firstChar) {
 						found = true;
@@ -652,7 +645,7 @@ ice.ace.SelectMenu.prototype = {
 				}
 			}
 			if (i == this.index) break; // we did one full loop already
-			if (this.index == -1 && i == this.entryCount) break; // special case
+			if (this.index == -1 && i == (this.entryCount - 1)) break; // special case
 		}
 		if (found) {
 			this.index = i;
@@ -700,7 +693,6 @@ ice.ace.SelectMenu.prototype = {
         value = ice.ace.SelectMenu.collectTextNodesIgnoreClass(selectedEntry, ice.ace.SelectMenu.LABEL_CLASS);
 
 		this.updateValue(value);
-		this.justSelectedItem = true;
         this.element.focus();
     },
 
