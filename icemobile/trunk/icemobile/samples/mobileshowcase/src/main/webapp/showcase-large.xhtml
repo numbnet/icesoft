@@ -37,7 +37,7 @@
     <c:if test="#{navigationModel.selectedPanel eq 'gmap'}">
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
     </c:if>
-    <style type="text/css" id="themebuilder"></style>
+    
     <mobi:googleAnalytics/>
 </h:head>
     <h:body>
@@ -45,6 +45,7 @@
             <f:viewParam name="theme" value="#{themeBean.currentTheme}" /> 
             <f:viewParam name="simulator" value="#{themeBean.simulator}"/>
          </f:metadata>
+         <style type="text/css" id="themebuilder"></style>
         <ui:include src="WEB-INF/includes/view/large.xhtml">
             <ui:param name="viewSize" value="large" />
         </ui:include>

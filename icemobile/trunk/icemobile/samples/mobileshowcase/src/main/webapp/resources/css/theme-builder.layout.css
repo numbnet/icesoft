@@ -217,7 +217,7 @@ h2{
 	float: left;
 	border: 1px solid #777;
 }
-#most-recent-colors .color-drag, input[type="color"]{
+#most_recent_colors .color-drag, input[type="color"]{
 	width: 22px;
 	height: 18px;
 	border: none;
@@ -230,11 +230,11 @@ input[type="color"]{
 	margin-left: 15px;
 }
 
-#quickswatch .colors .color-drag, #most-recent-colors .color-drag{
+#quickswatch .colors .color-drag, #most_recent_colors .color-drag{
 	margin: 0 1px 1px 0;
 }
 
-#most-recent-colors {
+#most_recent_colors {
 	float: left;
 	height: 73px;
 	width: 250px;
@@ -242,32 +242,47 @@ input[type="color"]{
 	padding: 10px 20px;
 }
 
-#most-recent-colors h2 {
+#most_recent_colors h2 {
 	font-weight: normal;
 	margin-left: 0;
 }
 
-#most-recent-colors .colors {
+#most_recent_colors .colors {
 	margin-top: -2px;
 }
 
-#most-recent-colors .picker {
+#most_recent_colors .picker {
 	overflow: hidden;
 	display: inline-block; /* Necessary to trigger "hasLayout" in IE */
 	display: block; /* Sets element back to block */
 }
 
-#most-recent-colors .picker h2 {
+#most_recent_colors .picker h2 {
 	float: left;
 }
-#most-recent-colors .picker input {
+#most_recent_colors .picker input {
   width: 50px;
 	margin-top: -5px;
 }
-#most-recent-colors .picker div.compact {
+#most_recent_colors .picker div.compact {
 	float: right;
 	margin-top: 10px;
 }
+
+#download label{
+    margin: 10px;
+    font-size: 15px;
+    float: right;
+}
+
+#download input{
+    margin-top: 8px;
+    font-size: 12px;
+    float: right;
+    height: 15px;
+    width: 200px;
+}
+
 
 #sliders{
 	margin-top: 15px;
