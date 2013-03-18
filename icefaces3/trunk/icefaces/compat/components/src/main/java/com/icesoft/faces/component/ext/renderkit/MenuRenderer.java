@@ -73,8 +73,9 @@ public class MenuRenderer
 					root.setAttribute(HTML.ONKEYUP_ATTR, originalOnkeyup + script);
 					String originalOnclick = root.getAttribute(HTML.ONCLICK_ATTR);
 					originalOnclick = originalOnclick == null ? "" : originalOnclick;
-					root.setAttribute(HTML.ONCLICK_ATTR, originalOnclick + script);
-				}
+                    root.setAttribute(HTML.ONCLICK_ATTR, originalOnclick + script);
+                    root.setAttribute(HTML.ONCHANGE_ATTR, script);
+                }
 				String originalOnfocus = root.getAttribute(HTML.ONFOCUS_ATTR);
 				originalOnfocus = originalOnfocus == null ? "" : originalOnfocus;
 				root.setAttribute(HTML.ONFOCUS_ATTR, originalOnfocus + ";if (!this.previousValue) this.previousValue = this.value;");
