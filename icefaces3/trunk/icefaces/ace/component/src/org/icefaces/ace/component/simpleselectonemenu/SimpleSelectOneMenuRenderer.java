@@ -87,7 +87,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 		writer.startElement("select", null);
 		writer.writeAttribute("name", inputClientId, null);
 		String stateClass = simpleSelectOneMenu.isDisabled() ? "ui-state-disabled" : "ui-state-default";
-		writer.writeAttribute("class", "ui-widget " + stateClass + getStateStyleClasses(simpleSelectOneMenu) + inFieldLabelStyleClass, null);
+		writer.writeAttribute("class", "ui-widget ui-inputfield " + stateClass + getStateStyleClasses(simpleSelectOneMenu) + inFieldLabelStyleClass, null);
 		writer.writeAttribute("style", simpleSelectOneMenu.getStyle(), null);
 		if (ariaEnabled) {
 			writer.writeAttribute("role", "select", null);

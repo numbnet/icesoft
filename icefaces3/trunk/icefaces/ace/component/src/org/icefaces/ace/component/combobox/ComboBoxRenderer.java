@@ -99,7 +99,7 @@ public class ComboBoxRenderer extends InputRenderer {
 		
 		// value field
 		writer.startElement("span", null);
-		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-combobox-value " + getStateStyleClasses(comboBox) + inFieldLabelStyleClass, null);
+		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-combobox-value", null);
 		writer.writeAttribute("style", "display: inline-block; width: " + width + "px;", null);
 		
 		// text input
@@ -107,7 +107,7 @@ public class ComboBoxRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text", null);
 		writer.writeAttribute("name", inputClientId, null);
 		writer.writeAttribute("style", comboBox.getStyle() + "; display: inline-block; overflow: hidden;border:0;", null);
-		writer.writeAttribute("class", "ui-corner-left", null);
+		writer.writeAttribute("class", "ui-inputfield ui-state-default ui-corner-left " + getStateStyleClasses(comboBox) + inFieldLabelStyleClass, null);
 		if (ariaEnabled) {
 			writer.writeAttribute("role", "textbox", null);
 			final ComboBox component = (ComboBox) uiComponent;
@@ -134,8 +134,6 @@ public class ComboBoxRenderer extends InputRenderer {
 		if (maxlength != Integer.MIN_VALUE) writer.writeAttribute("maxlength", maxlength, null);
 		boolean readonly = comboBox.isReadonly();
 		if (readonly) writer.writeAttribute("readonly", "readonly", null);
-		//int size = comboBox.getSize();
-		//writer.writeAttribute("size", size, null);
 		String tabindex = comboBox.getTabindex();
 		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
 		String title = comboBox.getTitle();
@@ -145,7 +143,7 @@ public class ComboBoxRenderer extends InputRenderer {
 		// down arrow span
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-state-default ui-corner-right", null);
-		writer.writeAttribute("style", "float:right; width:17px; height:100%; border-top:0; border-right:0; border-bottom:0;", null);
+		writer.writeAttribute("style", "float:right; width:17px; border-top:0; border-right:0; border-bottom:0;", null);
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
 		writer.endElement("div");

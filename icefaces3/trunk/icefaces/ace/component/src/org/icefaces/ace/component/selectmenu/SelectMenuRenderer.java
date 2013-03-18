@@ -107,8 +107,8 @@ public class SelectMenuRenderer extends InputRenderer {
 		writer.startElement("span", null);
 		boolean disabled = selectMenu.isDisabled();
 		String disabledClass = "";
-		if (disabled) disabledClass = " ui-state-default ";
-		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value " + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass + disabledClass, null);
+		if (disabled) disabledClass = " ui-state-disabled ";
+		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value " + disabledClass, null);
         writer.writeAttribute("style", "display: inline-block; width: " + width + "px;", null);
 		String tabindex = selectMenu.getTabindex();
 		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
@@ -127,12 +127,13 @@ public class SelectMenuRenderer extends InputRenderer {
 		// text span
 		writer.startElement("span", null);
 		writer.writeAttribute("style", selectMenu.getStyle() + "; display: inline-block; overflow: hidden;", null);
+		writer.writeAttribute("class", "ui-inputfield ui-state-default " + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass, null);
 		writer.endElement("span");
 		
 		// down arrow span
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-state-default ui-corner-right", null);
-		writer.writeAttribute("style", "float:right; width:17px; height:100%; border-top:0; border-right:0; border-bottom:0;", null);
+		writer.writeAttribute("style", "float:right; width:17px; border:0;", null);
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
 		writer.endElement("div");
