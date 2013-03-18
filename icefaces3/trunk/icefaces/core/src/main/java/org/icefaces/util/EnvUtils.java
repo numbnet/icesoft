@@ -70,6 +70,7 @@ public class EnvUtils {
     public static String RELOAD_ON_UPDATE_FAILURE = "org.icefaces.reloadOnUpdateFailure";
     public static String RESOURCE_VERSION = "org.icefaces.resourceVersion";
     public static String VERSIONABLE_TYPES = "org.icefaces.versionableTypes";
+    public static String COALESCE_RESOURCES = "org.icefaces.coalesceResources";
 
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -994,6 +995,9 @@ public class EnvUtils {
     }
 
 
+    public static boolean isCoallesceResources(FacesContext context) {
+        return EnvConfig.getEnvConfig(context).coalesceResources;
+    }
 }
 
 class EnvConfig {
@@ -1031,6 +1035,7 @@ class EnvConfig {
     public boolean includeScrollOffsets;
     public boolean focusManaged;
     public boolean reloadOnUpdateFailure;
+    public boolean coalesceResources;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -1068,6 +1073,7 @@ class EnvConfig {
         replayNavigationOnReload = decodeBoolean(initMap, EnvUtils.REPLAY_NAVIGATION_ON_RELOAD, false, info);
         resourceVersion = decodeString(initMap, EnvUtils.RESOURCE_VERSION, ProductInfo.RESOURCE_VERSION, info);
         versionableTypes = decodeString(initMap, EnvUtils.VERSIONABLE_TYPES, DEFAULT_VERSIONABLE_TYPES, info);
+        coalesceResources = decodeBoolean(initMap, EnvUtils.COALESCE_RESOURCES, false, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }
