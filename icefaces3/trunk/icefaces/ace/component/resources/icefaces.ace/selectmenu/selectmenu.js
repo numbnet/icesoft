@@ -32,8 +32,15 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selec
 	this.element = $element.get(0);
 	this.element.id = this.id + "_input";
 	this.displayedValue = $element.find('span').get(0);
-	ice.ace.jq(this.displayedValue).css('width', $element.width() - 19);
-	this.downArrowButton = $element.find('div').eq(0);;
+	ice.ace.jq(this.displayedValue).css('width', $element.width() - 27);
+	this.downArrowButton = $element.find('div').eq(0);
+	if (ice.ace.jq.browser.msie) {// ie7 fix
+		if (ice.ace.jq.browser.version < 8) {
+			if (navigator.userAgent.indexOf("Trident/5") < 0) {
+				ice.ace.jq(this.downArrowButton).css('position', 'absolute');
+			}
+		}
+	}
 	var $input = this.root.find('input[name="'+this.id+'_input"]');
 	this.input = $input.get(0);
 	this.input.id = this.id + "_input";
@@ -824,6 +831,7 @@ ice.ace.SelectMenu.prototype = {
 				this.displayedValue.innerHTML = '&nbsp;';
 			}
 		}
+		ice.ace.jq(this.downArrowButton).css('height', ice.ace.jq(this.displayedValue).outerHeight());
 	},
 	
 	replaceSpaces: function(str) {
