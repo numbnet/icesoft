@@ -31,10 +31,14 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.util.*;
 
-public class CoallescingResourceHandler extends ResourceHandlerWrapper {
+public class CoalescingResourceHandler extends ResourceHandlerWrapper {
+    public static final String COALESCED = "coalesced";
+    public static final String CSS_EXTENSION = ".css";
+    public static final String JS_EXTENSION = ".js";
+    public static final String ICE_CORE_LIBRARY = "ice.core";
     private ResourceHandler handler;
 
-    public CoallescingResourceHandler(ResourceHandler handler) {
+    public CoalescingResourceHandler(ResourceHandler handler) {
         this.handler = handler;
     }
 
@@ -43,14 +47,17 @@ public class CoallescingResourceHandler extends ResourceHandlerWrapper {
     }
 
     public Resource createResource(String resourceName, String libraryName, String contentType) {
-        if (resourceName.equals("coallesced.css") && libraryName.equals("ice.core")) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            CoallescingResource.Infos resourceInfos = (CoallescingResource.Infos) context.getExternalContext().getSessionMap().get(CoallescingResourceHandler.class.getName() + ".css");
-            return new CoallescingResource("coallesced.css", "ice.core", getMapping(), isExtensionMapping(), resourceInfos);
-        } else if (resourceName.equals("coallesced.js") && libraryName.equals("ice.core")) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            CoallescingResource.Infos resourceInfos = (CoallescingResource.Infos) context.getExternalContext().getSessionMap().get(CoallescingResourceHandler.class.getName() + ".js");
-            return new CoallescingResource("coallesced.js", "ice.core", getMapping(), isExtensionMapping(), resourceInfos);
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (EnvUtils.isCoallesceResources(context)) {
+            if (resourceName.equals(COALESCED + CSS_EXTENSION) && libraryName.equals(ICE_CORE_LIBRARY)) {
+                CoalescingResource.Infos resourceInfos = (CoalescingResource.Infos) context.getExternalContext().getSessionMap().get(CoalescingResourceHandler.class.getName() + CSS_EXTENSION);
+                return new CoalescingResource(COALESCED + CSS_EXTENSION, ICE_CORE_LIBRARY, getMapping(), isExtensionMapping(), resourceInfos);
+            } else if (resourceName.equals(COALESCED + JS_EXTENSION) && libraryName.equals(ICE_CORE_LIBRARY)) {
+                CoalescingResource.Infos resourceInfos = (CoalescingResource.Infos) context.getExternalContext().getSessionMap().get(CoalescingResourceHandler.class.getName() + JS_EXTENSION);
+                return new CoalescingResource(COALESCED + JS_EXTENSION, ICE_CORE_LIBRARY, getMapping(), isExtensionMapping(), resourceInfos);
+            } else {
+                return super.createResource(resourceName, libraryName, contentType);
+            }
         } else {
             return super.createResource(resourceName, libraryName, contentType);
         }
@@ -72,8 +79,8 @@ public class CoallescingResourceHandler extends ResourceHandlerWrapper {
         public void processEvent(SystemEvent event) {
             FacesContext context = FacesContext.getCurrentInstance();
             UIViewRoot root = (UIViewRoot) event.getSource();
-            replaceResources(context, root, ".css");
-            replaceResources(context, root, ".js");
+            replaceResources(context, root, CSS_EXTENSION);
+            replaceResources(context, root, JS_EXTENSION);
         }
 
         private void replaceResources(FacesContext context, UIViewRoot root, String extension) {
@@ -82,21 +89,21 @@ public class CoallescingResourceHandler extends ResourceHandlerWrapper {
 
             UIOutput coallescedResourceComponent = new UIOutput();
             Map attrs = coallescedResourceComponent.getAttributes();
-            String name = "coallesced" + extension;
+            String name = COALESCED + extension;
             attrs.put("name", name);
-            attrs.put("library", "ice.core");
+            attrs.put("library", ICE_CORE_LIBRARY);
             String rendererType = context.getApplication().getResourceHandler().getRendererTypeForResourceName(name);
             coallescedResourceComponent.setRendererType(rendererType);
             coallescedResourceComponent.setTransient(true);
 
-            CoallescingResource.Infos resourceInfos = new CoallescingResource.Infos();
+            CoalescingResource.Infos resourceInfos = new CoalescingResource.Infos();
             List children = resourceContainer.getChildren();
             for (UIComponent next : new ArrayList<UIComponent>(children)) {
                 Map<String, Object> nextAttributes = next.getAttributes();
                 String nextName = (String) nextAttributes.get("name");
                 String nextLibrary = (String) nextAttributes.get("library");
                 if (nextName.endsWith(extension) && !"jsf.js".equals(nextName)) {
-                    resourceInfos.resources.add(new CoallescingResource.Info(nextName, nextLibrary));
+                    resourceInfos.resources.add(new CoalescingResource.Info(nextName, nextLibrary));
                     root.removeComponentResource(context, next);
                 }
             }
@@ -104,9 +111,9 @@ public class CoallescingResourceHandler extends ResourceHandlerWrapper {
             root.addComponentResource(context, coallescedResourceComponent);
 
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            CoallescingResource.Infos previousResourceInfos = (CoallescingResource.Infos) sessionMap.get(CoallescingResourceHandler.class.getName() + extension);
+            CoalescingResource.Infos previousResourceInfos = (CoalescingResource.Infos) sessionMap.get(CoalescingResourceHandler.class.getName() + extension);
             if (previousResourceInfos == null) {
-                sessionMap.put(CoallescingResourceHandler.class.getName() + extension, resourceInfos);
+                sessionMap.put(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
             } else {
                 Collection newResourceInfos = new ArrayList(resourceInfos.resources);
                 newResourceInfos.removeAll(previousResourceInfos.resources);
@@ -114,7 +121,7 @@ public class CoallescingResourceHandler extends ResourceHandlerWrapper {
                 if (newResourceInfos.isEmpty()) {
                     previousResourceInfos.modified = false;
                 } else {
-                    sessionMap.put(CoallescingResourceHandler.class.getName() + extension, resourceInfos);
+                    sessionMap.put(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
                 }
             }
 
@@ -136,11 +143,13 @@ public class CoallescingResourceHandler extends ResourceHandlerWrapper {
         return true;
     }
 
-    //register ResourceOrdering dynamically to make sure it is invoked last when PreRenderComponentEvent is fired
+    //register ResourceCollector dynamically to make sure it is invoked last when PreRenderComponentEvent is fired
     public static class RegisterListener implements SystemEventListener {
         public void processEvent(SystemEvent event) throws AbortProcessingException {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.getApplication().subscribeToEvent(PreRenderComponentEvent.class, new ResourceCollector());
+            if (EnvUtils.isCoallesceResources(context)) {
+                    context.getApplication().subscribeToEvent(PreRenderComponentEvent.class, new ResourceCollector());
+            }
         }
 
         public boolean isListenerForSource(Object source) {

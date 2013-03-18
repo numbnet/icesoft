@@ -30,7 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-public class CoallescingResource extends Resource {
+public class CoalescingResource extends Resource {
     private Date lastModified = new Date();
     private String name;
     private String library;
@@ -39,7 +39,7 @@ public class CoallescingResource extends Resource {
     private String mapping;
     private boolean extensionMapping;
 
-    public CoallescingResource(String name, String library, String mapping, boolean extensionMapping, Infos resourceInfos) {
+    public CoalescingResource(String name, String library, String mapping, boolean extensionMapping, Infos resourceInfos) {
         this.name = name;
         this.library = library;
         this.mapping = mapping;
