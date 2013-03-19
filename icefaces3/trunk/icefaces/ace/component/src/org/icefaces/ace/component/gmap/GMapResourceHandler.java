@@ -53,7 +53,7 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
         FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreRenderViewEvent.class, new SystemEventListener() {
             public void processEvent(SystemEvent event) throws AbortProcessingException {
                 try {
-                    if (apiJS == null) createResource(GMAP_API);
+                    if (gmapKey != null && apiJS == null) createResource(GMAP_API);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
