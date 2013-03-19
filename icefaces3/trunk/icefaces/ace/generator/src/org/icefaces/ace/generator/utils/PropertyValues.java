@@ -18,6 +18,8 @@ package org.icefaces.ace.generator.utils;
 
 import org.icefaces.ace.meta.annotation.*;
 
+import java.util.EnumSet;
+
 public class PropertyValues {
 
 	public PropertyValues() {
@@ -40,6 +42,8 @@ public class PropertyValues {
      * The field of the bottom most subclass, likely from the Meta class itself
      */
     public java.lang.reflect.Field field;
+
+    public EnumSet<OnlyType> onlyTypes;
 
 	/**
      * Property was first defined in a superclass
@@ -87,12 +91,16 @@ public class PropertyValues {
         return Utility.getArrayAwareType(field);
     }
 
+    public boolean isIntersectionOfOnlyTypes() {
+        return onlyTypes == null || onlyTypes.equals(EnumSet.allOf(OnlyType.class));
+    }
+
     /**
      * Called in sequence from the most super class until the end sub class,
      * this imports the values from a Property annotation, so that later
      * values take precedence.
      */
-    public void importProperty(java.lang.reflect.Field field, Property property, boolean isEndClass) {
+    public void importProperty(java.lang.reflect.Field field, Property property, boolean isEndClass, OnlyType onlyType) {
         if (property.expression() != Expression.UNSET) {
             expression = property.expression();
         }
@@ -125,6 +133,20 @@ public class PropertyValues {
         }
 
         this.field = field;
+
+        if (onlyType != null) {
+            if (onlyTypes == null) {
+                onlyTypes = EnumSet.of(onlyType);
+            } else {
+                onlyTypes.add(onlyType);
+            }
+        } else {
+            if (onlyTypes == null) {
+                onlyTypes = EnumSet.allOf(OnlyType.class);
+            } else {
+                onlyTypes.addAll(EnumSet.allOf(OnlyType.class));
+            }
+        }
 
         if (isEndClass) {
             definedInEndClass = true;

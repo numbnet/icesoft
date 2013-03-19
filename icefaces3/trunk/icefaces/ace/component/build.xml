@@ -185,7 +185,7 @@
     </macrodef>
 
     <target name="compile"
-            depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, res-js-compress, res-js-no-compress, res-css-combine, res-copy"
+            depends="prepare, generator-dist, compile-meta, generate, compile-interfaces, compile-base, compile-manual, compile-support, res-js-compress, res-js-no-compress, res-css-combine, res-copy"
             description="compile the source ">
     </target>
 
@@ -396,6 +396,14 @@
         <delete dir="${exploded}/META-INF/resources/icefaces.ace/META-INCLUDE"/>
     </target>
 
+    <target name="compile-interfaces">
+        <javac srcdir="${build}/generated-interfaces" destdir="${exploded}"
+               debug="true" verbose="true" includeantruntime="false"
+               failonerror="true">
+            <classpath refid="compile.run.classpath"/>
+        </javac>
+    </target>
+
     <target name="compile-base">
         <javac srcdir="${build}/generated/base" destdir="${exploded}"
                debug="true" verbose="true" includeantruntime="false"
@@ -410,7 +418,7 @@
         simultaneously with manual, since manual JSP code will depend on them,
         while they'll depend on their superclass Tags and interfaces
         -->
-        <javac srcdir="${src}:${build}/generated-jsp/base:${build}/generated-interfaces" destdir="${build}/exploded" debug="true"
+        <javac srcdir="${src}:${build}/generated-jsp/base" destdir="${exploded}" debug="true"
                excludes="**/*Meta.java" verbose="true" failonerror="true"
                includeantruntime="false">
             <classpath refid="compile.run.classpath"/>

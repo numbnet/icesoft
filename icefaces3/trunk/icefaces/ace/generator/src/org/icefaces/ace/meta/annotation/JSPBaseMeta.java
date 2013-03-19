@@ -32,6 +32,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JSPBaseMeta {
+    final String EMPTY = "";
+
     /**
      * Specifies the tag class name that the annotated baseMeta corresponds to.
      *
@@ -53,5 +55,5 @@ public @interface JSPBaseMeta {
      *
      * @return fully qualified class name of the interface.
      */
-    String interfaceClass();
+    String interfaceClass() default EMPTY;
 }
