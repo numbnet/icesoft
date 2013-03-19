@@ -82,10 +82,10 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
             if (apiJS == null) {
                 if (!EnvUtils.isSecure(FacesContext.getCurrentInstance()))
                     apiJS = recreateResource(super.createResource(resourceName, ICEFACES_ACE_LIB),
-                            "http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
+                            "http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true&libraries=places");
                 else
                     apiJS = recreateResource(super.createResource(resourceName, ICEFACES_ACE_LIB),
-                            "https://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
+                            "https://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true&libraries=places");
             }
             return apiJS;
         } else {

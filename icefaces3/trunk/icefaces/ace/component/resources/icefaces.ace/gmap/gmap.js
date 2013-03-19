@@ -300,7 +300,8 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.addAutoComplete = function(mapId, autoId, windowOptions, offset, windowRender){
 
-        var input = document.getElementById('autocomplete_input');
+        var input = document.getElementById(autoId+'_input');
+		ice.ace.jq(input).on('keypress', function(e) {if (e.keyCode == 13 || e.which == 13) return false;});
         var autocomplete = new google.maps.places.Autocomplete(input);
         var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
         if(windowRender){
@@ -309,31 +310,60 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             map: map
         });
         }
+		var splitOffset = offset.split(",");
+		var xOffset = splitOffset[0];
+		var yOffset = splitOffset[1];
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
-                var place = autocomplete.getPlace();
-                if (place.geometry.viewport) {
-                    map.fitBounds(place.geometry.viewport);
-                } else {
-                    map.setCenter(place.geometry.location);
-                    map.setZoom(17);
-                }
-            var splitOffset = offset.split(",");
-            var xOffset = splitOffset[0];
-            var yOffset = splitOffset[1];
-
-            map.panBy(eval(xOffset),eval(yOffset));
-            if(windowRender){
-            marker.setPosition(place.geometry.location);
-            infowindow.setContent("<a href='"+place.url+"' target='_blank'>" + place.formatted_address + "</a>");
-            if(windowOptions!=null&&windowOptions!="none")
-                infowindow.setOptions(eval("({" + windowOptions + "})"));
-            infowindow.open(map,marker);
-            }
-            document.getElementById(autoId+"_latLng").value = place.geometry.location.toString();
-            document.getElementById(autoId+"_address").value = place.formatted_address;
-            document.getElementById(autoId+"_types").value = place.types.toString();
-            document.getElementById(autoId+"_url").value = place.url;
-            ice.se(null,autoId);
+			var place = autocomplete.getPlace();
+			if (place.geometry) {
+				if (place.geometry.viewport) {
+					map.fitBounds(place.geometry.viewport);
+				} else {
+					map.setCenter(place.geometry.location);
+				}
+				map.panBy(eval(xOffset),eval(yOffset));
+				if(windowRender){
+				marker.setPosition(place.geometry.location);
+				infowindow.setContent("<a href='"+place.url+"' target='_blank'>" + place.formatted_address + "</a>");
+				if(windowOptions!=null&&windowOptions!="none")
+					infowindow.setOptions(eval("({" + windowOptions + "})"));
+				infowindow.open(map,marker);
+				}
+				document.getElementById(autoId+"_latLng").value = place.geometry.location.toString();
+				document.getElementById(autoId+"_address").value = place.formatted_address;
+				document.getElementById(autoId+"_types").value = place.types.toString();
+				document.getElementById(autoId+"_url").value = place.url;
+				ice.se(null,autoId);
+			} else {
+				var geocoder = new google.maps.Geocoder();
+				geocoder.geocode({'address': place.name}, function (results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						var result = results[0];
+						if (result.geometry.viewport) {
+							map.fitBounds(result.geometry.viewport);
+						} else {
+							map.setCenter(result.geometry.location);
+						}
+						input.value = result.formatted_address;
+						
+						var url = 'https://maps.google.com/maps/place?q=' + encodeURIComponent(result.formatted_address);
+						map.panBy(eval(xOffset),eval(yOffset));
+						if(windowRender){
+							marker.setPosition(result.geometry.location);
+							infowindow.setContent("<a href='"+url+"' target='_blank'>" + result.formatted_address + "</a>");
+							if(windowOptions!=null&&windowOptions!="none")
+								infowindow.setOptions(eval("({" + windowOptions + "})"));
+							infowindow.open(map,marker);
+						}
+						
+						document.getElementById(autoId+"_latLng").value = result.geometry.location.toString();
+						document.getElementById(autoId+"_address").value = result.formatted_address;
+						document.getElementById(autoId+"_types").value = result.types.toString();
+						document.getElementById(autoId+"_url").value = url;
+						ice.se(null,autoId);
+					}
+				});
+			}
         });
     }
 

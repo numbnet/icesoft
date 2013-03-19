@@ -45,6 +45,7 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
             autocomplete.setAddress(address);
         if (url != null && !url.equals("null"))
             autocomplete.setUrl(url);
+		else autocomplete.setUrl("https://maps.google.com/maps/place");
         if (latLng != null && !latLng.equals("null"))
             autocomplete.setLatLng(latLng);
         if (types != null && !types.equals("null"))
@@ -57,12 +58,14 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         String clientId = autocomplete.getClientId(context);
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("name", clientId, null);
         writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("size", autocomplete.getSize(), null);
         writer.writeAttribute("style", autocomplete.getStyle(), null);
-        writer.writeAttribute("id", "autocomplete_input", null);
+        writer.writeAttribute("id", clientId + "_input", null);
+		String address = autocomplete.getAddress();
+		address = address == null ? "" : address;
+		writer.writeAttribute("value", address, null);
         writer.endElement("input");
         makeFields(writer, clientId, "address");
         makeFields(writer, clientId, "latLng");
