@@ -189,7 +189,7 @@ public class ComboBoxRenderer extends InputRenderer {
 			.item("ui-state-hover")
 			.item("ui-state-active")
 			.item(comboBox.getHeight())
-			.item(comboBox.isButtonOnlyList())
+			.item(comboBox.isShowListOnInput())
 			.beginMap()
 			.entry("p", ""); // dummy property
 			encodeClientBehaviors(facesContext, comboBox, jb);
