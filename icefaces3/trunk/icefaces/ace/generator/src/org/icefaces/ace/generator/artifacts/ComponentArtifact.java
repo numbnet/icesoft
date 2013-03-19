@@ -80,6 +80,10 @@ public class ComponentArtifact extends Artifact{
         writer.append("import org.icefaces.resources.ICEBrowserDependency;\n\n");
         writer.append("import org.icefaces.resources.BrowserType;\n\n");
 
+        String interfaceClassName = Utility.getGeneratedInterfaceClassName(clazz);
+        if (interfaceClassName != null && interfaceClassName.length() > 0) {
+            writer.append("import ").append(interfaceClassName).append(";\n");
+        }
 
         for (Behavior behavior: compCtx.getBehaviors()) {
             behavior.addImportsToComponent(writer);
@@ -128,6 +132,9 @@ public class ComponentArtifact extends Artifact{
         writer.append(" extends ");
         writer.append(component.extendsClass());
         StringBuilder interfaceNames = new StringBuilder();
+        if (interfaceClassName != null && interfaceClassName.length() > 0) {
+            interfaceNames.append(Utility.getSimpleNameOfClass(interfaceClassName));
+        }
         for (Behavior behavior: compCtx.getBehaviors()) {
             if (interfaceNames.length() > 0) interfaceNames.append(',');
             interfaceNames.append(behavior.getInterfaceName());

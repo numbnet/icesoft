@@ -63,6 +63,22 @@ public abstract class MetaContext {
         return list;
     }
 
+    /**
+     * List only of the PropertyValues that we're generating, which apply to both JSP AND JSF,
+     * alphabetically sorted by resolved property name
+     */
+    public ArrayList<PropertyValues> getIntersectionOfOnlyTypesGeneratingPropertyValuesSorted() {
+        ArrayList<PropertyValues> list = new ArrayList<PropertyValues>(propertyValuesMap.size()+1);
+        for(PropertyValues prop : propertyValuesMap.values()) {
+            //System.out.println("PROPERTY " + prop.resolvePropertyName() + "  intersection: " + prop.isIntersectionOfOnlyTypes() + "  generating: " + prop.isGeneratingProperty());
+            if (prop.isIntersectionOfOnlyTypes() && prop.isGeneratingProperty()) {
+                list.add(prop);
+            }
+        }
+        sortByResolvedPropertyName(list);
+        return list;
+    }
+
     private static void sortByResolvedPropertyName(List<PropertyValues> list) {
         Collections.sort(list, new Comparator<PropertyValues>() {
             public int compare(PropertyValues propertyValues, PropertyValues propertyValues1) {
@@ -184,21 +200,14 @@ public abstract class MetaContext {
 
         Class superClass = clazz.getSuperclass();
         if (superClass != null) {
-            // if isEndClass check for implementation()... otherwise, always go up
-            // UNSET or EXISTS_IN_SUPERCLASS will inherit, GENERATE won't
-            // If wrong Only, then scan up for possible right Only or lack of Only
-            if (!isEndClass || field == null || property == null ||
-                property.implementation() != Implementation.GENERATE ||
-                (onlyType != null && !isAllowedPropertyOnlyType(onlyType))) {
-                collectPropertyValues(fieldName, superClass, propertyValues, false);
-            }
+            collectPropertyValues(fieldName, superClass, propertyValues, false);
         }
 
         if (field != null && property != null) {
             boolean allowed = onlyType == null || isAllowedPropertyOnlyType(onlyType);
-            //System.out.println("  " + clazz.getSimpleName()+"."+fieldName + "  allowed: " + allowed + "\n    field: " + field + "\n    property: " + property);
+            //System.out.println("  " + clazz.getSimpleName()+"."+fieldName + "  allowed: " + allowed + "\n    field: " + field + "\n    property: " + property + "\n    onlyType: " + onlyType);
             if (allowed) {
-                propertyValues.importProperty(field, property, isEndClass);
+                propertyValues.importProperty(field, property, isEndClass, onlyType);
             }
         }
         

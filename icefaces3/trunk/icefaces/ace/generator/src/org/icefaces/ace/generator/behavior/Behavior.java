@@ -34,7 +34,7 @@ public abstract class Behavior {
 			if (field.isAnnotationPresent(Property.class)) {
                 Property property = field.getAnnotation(Property.class);
                 PropertyValues prop = new PropertyValues();
-                prop.importProperty(field, property, true);
+                prop.importProperty(field, property, true, null);
                 properties.add(prop);
 			}
 		}

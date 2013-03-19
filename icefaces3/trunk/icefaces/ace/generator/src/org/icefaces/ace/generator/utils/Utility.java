@@ -246,7 +246,7 @@ public class Utility {
      * @return If the metaClass has a JSP annotation, then check for
      * JSP.generatedInterfaceExtendsClass(), or if not specified, then see if
      * the Meta class' superclass has a @JSPBaseMeta annotation, and use its
-     * interfaceClass. Can be null or an empty String.
+     * interfaceClass, which may be unspecified as well. Can be null or an empty String.
      */
     public static String getGeneratedInterfaceExtendsClassName(Class metaClass) {
         String generatedInterfaceExtendsClass = JSP.EMPTY;
@@ -259,7 +259,9 @@ public class Utility {
             if (superClass.isAnnotationPresent(JSPBaseMeta.class)) {
                 JSPBaseMeta jspBaseMeta = (JSPBaseMeta)
                     superClass.getAnnotation(JSPBaseMeta.class);
-                generatedInterfaceExtendsClass = jspBaseMeta.interfaceClass();
+                if (!JSPBaseMeta.EMPTY.equals(jspBaseMeta.interfaceClass())) {
+                    generatedInterfaceExtendsClass = jspBaseMeta.interfaceClass();
+                }
             }
         }
         return generatedInterfaceExtendsClass;

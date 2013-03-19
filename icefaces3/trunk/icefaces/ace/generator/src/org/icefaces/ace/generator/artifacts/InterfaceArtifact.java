@@ -49,7 +49,8 @@ public class InterfaceArtifact extends Artifact {
 	}
     
 	private void addPropertyGetterSetters() {
-		for(PropertyValues prop : getMetaContext().getGeneratingPropertyValuesSorted()) {
+		for(PropertyValues prop : getMetaContext().
+            getIntersectionOfOnlyTypesGeneratingPropertyValuesSorted()) {
             // propertyName can be a reserved Java keyword like "for", so use
             // is to build the getter/setter method name, but not alone
             String propertyName = prop.resolvePropertyName();
