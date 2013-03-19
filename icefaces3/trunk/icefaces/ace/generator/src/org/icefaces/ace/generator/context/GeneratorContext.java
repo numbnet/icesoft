@@ -104,8 +104,8 @@ public class GeneratorContext{
         // Default values for primitive constants where null wont do
         PrimitiveDefaults.put("boolean", "false");
         PrimitiveDefaults.put("byte", "0");
-        PrimitiveDefaults.put("char", "");
-        PrimitiveDefaults.put("double", "0");
+        PrimitiveDefaults.put("char", "0");
+        PrimitiveDefaults.put("double", "0.0");
         PrimitiveDefaults.put("float", "0f");
         PrimitiveDefaults.put("int", "0");
         PrimitiveDefaults.put("long", "0l");
