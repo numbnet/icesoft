@@ -77,6 +77,7 @@ public class UploadServer implements Server {
                                 viewIdentifier = Streams.asString(item.openStream());
                             }
                         } else {
+							if (ViewIdVerifier.isValid(viewIdentifier)) {
                             final View view = (View) views.get(viewIdentifier);
                             view.installThreadLocals();
                             final PersistentFacesState state = view.getPersistentFacesState();
@@ -129,7 +130,8 @@ public class UploadServer implements Server {
                                         "text/html", "UTF-8", iframeContent));
                             }
                         }
-                    }
+						}
+					}
                 } catch (MultipartStream.MalformedStreamException exception) {
                     if (log.isTraceEnabled()) {
                         log.trace("Connection broken by client.", exception);
