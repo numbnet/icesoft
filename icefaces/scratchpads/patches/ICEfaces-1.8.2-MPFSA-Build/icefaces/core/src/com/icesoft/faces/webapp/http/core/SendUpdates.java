@@ -51,7 +51,7 @@ public class SendUpdates implements Server {
 
         public void writeTo(Writer writer) throws IOException {
             String viewIdentifier = request.getParameter("ice.view");
-            if (commandQueues.containsKey(viewIdentifier)) {
+            if (ViewIdVerifier.isValid(viewIdentifier) && commandQueues.containsKey(viewIdentifier)) {
                 CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
                 Command command = queue.take();
                 if (SendUpdates.debugDOMUpdate) {

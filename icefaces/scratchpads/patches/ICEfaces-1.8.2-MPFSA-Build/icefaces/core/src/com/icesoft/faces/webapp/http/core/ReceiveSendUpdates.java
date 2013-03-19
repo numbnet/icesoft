@@ -32,6 +32,12 @@ public class ReceiveSendUpdates implements Server {
             response.writeBody().write("Cannot match view instance. 'ice.view' parameter is missing.".getBytes());
         }
     };
+	private static final ResponseHandler MalformedParameterHandler = new ResponseHandler() {
+        public void respond(Response response) throws Exception {
+            response.setStatus(500);
+            response.writeBody().write("Cannot lookup view instance. 'ice.view' parameter is malformed.".getBytes());
+        }
+    };
     private static Lifecycle lifecycle;
 
     static {
@@ -55,6 +61,8 @@ public class ReceiveSendUpdates implements Server {
         String viewNumber = request.getParameter("ice.view");
         if (viewNumber == null) {
             request.respondWith(MissingParameterHandler);
+		} else if (!ViewIdVerifier.isValid(viewNumber)) {
+            request.respondWith(MalformedParameterHandler);
         } else {
             if (!pageTest.isLoaded()) {
                 request.respondWith(new ReloadResponse(""));

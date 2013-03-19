@@ -35,13 +35,15 @@ public class ReceivePing implements Server {
             request.respondWith(new ReloadResponse(""));
         } else {
             String viewIdentifier = request.getParameter("ice.view");
-            CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
-            if (queue != null) {
-                queue.put(PONG);
-            } else {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("could not get a valid queue for " + viewIdentifier);
-                }
+			if (ViewIdVerifier.isValid(viewIdentifier)) {
+				CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
+				if (queue != null) {
+					queue.put(PONG);
+				} else {
+					if (LOG.isWarnEnabled()) {
+						LOG.warn("could not get a valid queue for " + viewIdentifier);
+					}
+				}
             }
             request.respondWith(NOOPResponse.Handler);
         }
