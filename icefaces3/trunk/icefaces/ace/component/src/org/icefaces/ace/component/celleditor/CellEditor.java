@@ -32,11 +32,13 @@
 
 package org.icefaces.ace.component.celleditor;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
 import javax.faces.context.ResponseWriter;
 
+import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.datatable.DataTableConstants;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.util.HTML;
@@ -48,9 +50,26 @@ import java.util.ArrayList;
 
 })
 public class CellEditor extends CellEditorBase {
+    DataTable table = null;
 
-    public void processDecodes(FacesContext context) {
-        RowState rowState = (RowState) context.getExternalContext().getRequestMap().get("rowState");
+    protected DataTable findParentTable(FacesContext context) {
+        if (table != null) return table;
+
+        UIComponent parent = this.getParent();
+
+        while(parent != null)
+            if (parent instanceof DataTable) {
+                table = (DataTable) parent;
+                break;
+            }
+            else parent = parent.getParent();
+
+        return table;
+    }
+
+    public void processUpdates(FacesContext context) {
+        DataTable table = findParentTable(context);
+        RowState rowState = (RowState) context.getExternalContext().getRequestMap().get(table.getRowStateVar());
         List<String> selectedEditorIds = rowState.getActiveCellEditorIds();
 
         if (selectedEditorIds.contains(this.getId())) {
@@ -59,6 +78,6 @@ public class CellEditor extends CellEditorBase {
             this.getFacet("input").setRendered(false);
         }
 
-        super.processDecodes(context);
+        super.processUpdates(context);
     }
 }
