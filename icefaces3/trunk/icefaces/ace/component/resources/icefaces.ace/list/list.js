@@ -310,6 +310,8 @@ ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
         fromIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1));
         to = this.getSiblingList(e.shiftKey);
 
+    item.css('display','none');
+
     fromIndex = this.getUnshiftedIndex(
             this.element.find('> ul').children().length,
             this.read('reorderings'),
