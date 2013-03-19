@@ -26,10 +26,6 @@
  * Contributors: ______________________
  */
 
-/*
- * Generated, Do Not Modify
- */
-
 package org.icefaces.ace.component.celleditor;
 
 import javax.faces.component.UIComponent;
@@ -50,34 +46,4 @@ import java.util.ArrayList;
 
 })
 public class CellEditor extends CellEditorBase {
-    DataTable table = null;
-
-    protected DataTable findParentTable(FacesContext context) {
-        if (table != null) return table;
-
-        UIComponent parent = this.getParent();
-
-        while(parent != null)
-            if (parent instanceof DataTable) {
-                table = (DataTable) parent;
-                break;
-            }
-            else parent = parent.getParent();
-
-        return table;
-    }
-
-    public void processUpdates(FacesContext context) {
-        DataTable table = findParentTable(context);
-        RowState rowState = (RowState) context.getExternalContext().getRequestMap().get(table.getRowStateVar());
-        List<String> selectedEditorIds = rowState.getActiveCellEditorIds();
-
-        if (selectedEditorIds.contains(this.getId())) {
-            this.getFacet("input").setRendered(true);
-        } else {
-            this.getFacet("input").setRendered(false);
-        }
-
-        super.processUpdates(context);
-    }
 }
