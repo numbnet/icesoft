@@ -141,16 +141,31 @@ public class MessagesRenderer extends Renderer {
 
         writer.startElement("div", messages);
         writer.writeAttribute("class", "ui-corner-all ui-state-" + states[ordinal] + (text.equals("") ? " ui-empty-message" : ""), null);
+        writeAttributes(writer, messages, "lang", "title");
 
         writer.startElement("span", messages);
         writer.writeAttribute("class", "ui-icon ui-icon-" + icons[ordinal], null);
         writer.endElement("span");
 
         if (!text.equals("")) {
-            writer.writeText(text, messages, null);
+            if (messages.isEscape()) {
+                writer.writeText(text, messages, null);
+            } else {
+                writer.write(text);
+            }
         }
         writer.endElement("div");
 
         facesMessage.rendered();
+    }
+
+    private void writeAttributes(ResponseWriter writer, UIComponent component, String... keys) throws IOException {
+        Object value;
+        for (String key : keys) {
+            value = component.getAttributes().get(key);
+            if (value != null) {
+                writer.writeAttribute(key, value, key);
+            }
+        }
     }
 }

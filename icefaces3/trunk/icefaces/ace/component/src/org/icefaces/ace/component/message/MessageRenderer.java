@@ -41,7 +41,6 @@ public class MessageRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         Message message = (Message) component;
         String forId = (forId = message.getFor()) == null ? "" : forId.trim();
-        String style = message.getStyle();
         String styleClass = "ui-faces-message" + ((styleClass = message.getStyleClass()) == null ? "" : " " + styleClass);
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
         String sourceMethod = "encodeEnd";
@@ -55,9 +54,7 @@ public class MessageRenderer extends Renderer {
 
         writer.startElement("span", message);
         writer.writeAttribute("id", message.getClientId(), "id");
-        if (style != null) {
-            writer.writeAttribute("style", style, "style");
-        }
+        writeAttributes(writer, component, "lang", "style", "title");
         if (ariaEnabled) {
             writer.writeAttribute("role", "alert", null);
             writer.writeAttribute("aria-atomic", "true", null);
@@ -105,9 +102,23 @@ public class MessageRenderer extends Renderer {
         writer.endElement("span");
 
         if (!text.equals("")) {
-            writer.writeText(text, message, null);
+            if (message.isEscape()) {
+                writer.writeText(text, message, null);
+            } else {
+                writer.write(text);
+            }
         }
 
         facesMessage.rendered();
+    }
+
+    private void writeAttributes(ResponseWriter writer, UIComponent component, String... keys) throws IOException {
+        Object value;
+        for (String key : keys) {
+            value = component.getAttributes().get(key);
+            if (value != null) {
+                writer.writeAttribute(key, value, key);
+            }
+        }
     }
 }

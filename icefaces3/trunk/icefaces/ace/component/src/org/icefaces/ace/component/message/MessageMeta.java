@@ -53,4 +53,16 @@ public class MessageMeta extends UIMessageMeta {
     @Property(tlddoc = "Space-separated list of CSS style class(es) to be applied when this element is rendered. " +
             "This value must be passed through as the \"class\" attribute on generated markup.")
     private String styleClass;
+
+    @Property(tlddoc = "Flag indicating that characters that are sensitive in HTML and XML markup must be escaped. " +
+            "Note: setting this to false may open up security issues. " +
+            "See <a href=\"https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet\">XSS (Cross Site Scripting) Prevention Cheat Sheet.</a>",
+            defaultValue = "true")
+    private boolean escape;
+
+    @Property(tlddoc = "Code describing the language used in the generated markup for this component.")
+    private String lang;
+
+    @Property(tlddoc = "Advisory title information about markup elements generated for this component.")
+    private String title;
 }
