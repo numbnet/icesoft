@@ -140,7 +140,14 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 var map = ice.ace.gMap.getGMapWrapper(clientId).getRealGMap();
                 map.setCenter(new google.maps.LatLng(results[0].geometry.location.lat(),results[0].geometry.location.lng()));
             } else {
-                alert("Geocode was not successful for the following reason: " + status);
+				var message;
+				if (status == 'ERROR') message = 'There was a problem contacting the Google servers.';
+				else if (status == 'INVALID_REQUEST') message = 'This GeocoderRequest was invalid.';
+				else if (status == 'OVER_QUERY_LIMIT') message = 'The webpage has gone over the requests limit in too short a period of time.';
+				else if (status == 'REQUEST_DENIED') message = 'The webpage is not allowed to use the geocoder.';
+				else if (status == 'ZERO_RESULTS') message = 'No result was found for this GeocoderRequest.';
+				else message = 'A geocoding request could not be processed due to a server error. The request may succeed if you try again.'; // UNKNOWN_ERROR
+                alert("GMaps Geocode was not successful for the following reason: " + message);
             }
         });
 
