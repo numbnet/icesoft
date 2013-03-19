@@ -56,13 +56,13 @@ public class GMapAutocompleteMeta extends UIPanelMeta {
             "Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#AutocompleteOptions." +
             " Form is attribute:'value'.", defaultValue = "none")
     private String windowOptions;
-    @Property(tlddoc = "The location to send the text value of the address selected by gMapAutocomplete.")
+    @Property(tlddoc = "The backing bean property to store the text value of the address selected by gMapAutocomplete.")
     private String address;
-    @Property(tlddoc = "The location to send the lat/lng coordinates of the address selected by gMapAutocomplete.")
+    @Property(tlddoc = "The backing bean property to store the lat/lng coordinates of the address selected by gMapAutocomplete. Format: \"(0.000000,0.000000)\".")
     private String latLng;
-    @Property(tlddoc = "The location to send the array of types that Google determines match the address selected by gMapAutocomplete.")
+    @Property(tlddoc = "The backing bean property to store the array of types that Google determines match the address selected by gMapAutocomplete.")
     private String types;
-    @Property(tlddoc = "The location to send the url attributed to the address selected by gMapAutocomplete.")
+    @Property(tlddoc = "The backing bean property to store the url attributed to the address selected by gMapAutocomplete.", defaultValue="https://maps.google.com/maps/place")
     private String url;
     @Property(tlddoc = "Value to shift the map after finding new location, in pixels. (useful for mobile devices) Form is x,y.", defaultValue = "0,0")
     private String offset;
