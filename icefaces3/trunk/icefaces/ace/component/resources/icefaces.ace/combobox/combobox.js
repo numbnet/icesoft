@@ -18,7 +18,7 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.ComboBoxes) ice.ace.ComboBoxes = {};
 
-ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, buttonOnlyList, behaviors, cfg, clientSideModeCfg) {
+ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, showListOnInput, behaviors, cfg, clientSideModeCfg) {
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.ComboBoxes[this.id] && ice.ace.ComboBoxes[this.id].initialized) isInitialized = true;
@@ -27,7 +27,7 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 	this.clientSideModeCfg = clientSideModeCfg;
 	this.height = height == 0 ? 'auto' : height;
 	this.direction = 'down';
-	this.buttonOnlyList = buttonOnlyList;
+	this.showListOnInput = showListOnInput;
 	var options = {};
 	this.root = ice.ace.jq(ice.ace.escapeClientId(this.id));
 	var $box = this.root.find('.ui-combobox-value');
@@ -176,7 +176,6 @@ ice.ace.ComboBox.prototype = {
 		//ice.ace.jq(this.element).data("labelIsInField", this.cfg.labelIsInField);
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
-		if (!this.buttonOnlyList) ice.ace.jq(this.element).on("click", function(e) { self.onElementClick.call(self, e); });
 		ice.ace.jq(this.downArrowButton).on("click", function(e) { self.onElementClick.call(self, e); });
 		if (ice.ace.ComboBox.Browser.IE) {
 			ice.ace.jq(this.downArrowButton).children().on("click", function(e) { 
@@ -309,15 +308,19 @@ ice.ace.ComboBox.prototype = {
 					event.preventDefault();
                     return;
 				case ice.ace.ComboBox.keys.KEY_UP:
+					var self = this;
+					setTimeout(function(){self.clientSideModeUpdate();},50);
 					event.stopPropagation();
 					event.preventDefault();
                     return;
                 case ice.ace.ComboBox.keys.KEY_DOWN:
+					var self = this;
+					setTimeout(function(){self.clientSideModeUpdate();},50);
 					event.stopPropagation();
 					event.preventDefault();
                     return;
 				default:
-					if (!this.buttonOnlyList) {
+					if (this.showListOnInput) {
 						var self = this;
 						setTimeout(function(){self.clientSideModeUpdate();},50);
 					}
