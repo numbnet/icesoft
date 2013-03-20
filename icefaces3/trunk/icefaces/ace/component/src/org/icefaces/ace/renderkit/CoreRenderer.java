@@ -281,12 +281,6 @@ public class CoreRenderer extends Renderer {
             domEvent = "change";
         else if(event.equalsIgnoreCase("action"))       //commands
             domEvent = "click";
-        else if (event.startsWith("post")) {
-            domEvent = event.substring(4);
-            char c[] = domEvent.toCharArray();
-            c[0] = Character.toLowerCase(c[0]);
-            domEvent = new String(c);
-        }
 
         return domEvent;
     }
