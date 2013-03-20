@@ -177,6 +177,13 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         // The strategy is to invoke @PreDestroy on as many applicable window scoped beans as possible and not to bail
         // out on the first fail.
         State state = (State) session.getAttribute(WindowScopeManager.class.getName());
+
+        //ICE-9071: It's possible for a session to expire without a WindowScopeManager if the session was created and
+        //invalidated outside of ICEfaces' scope.
+        if(state == null){
+            return;
+        }
+
         notifyPreDestroyForAll(state.windowScopedMaps.values());
         notifyPreDestroyForAll(state.disposedWindowScopedMaps);
     }
