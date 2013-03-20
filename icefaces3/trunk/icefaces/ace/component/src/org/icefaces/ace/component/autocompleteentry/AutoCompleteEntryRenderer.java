@@ -270,9 +270,11 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         writer.writeText("})();", null);
         writer.endElement("script");
         writer.endElement("span");
+		
+		encodeList(facesContext, autoCompleteEntry);
     }
 
-    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    private void encodeList(FacesContext facesContext, UIComponent uiComponent) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
         AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) uiComponent;
 		String clientId = autoCompleteEntry.getClientId(facesContext);
