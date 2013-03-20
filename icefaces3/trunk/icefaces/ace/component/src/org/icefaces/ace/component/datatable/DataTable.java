@@ -391,36 +391,36 @@ public class DataTable extends DataTableBase implements Serializable {
 
     @Override
     public void processUpdates(FacesContext context) {
-            if (context == null) {
-                throw new NullPointerException();
-            }
-            if (!isRendered()) {
-                return;
-            }
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        if (!isRendered()) {
+            return;
+        }
 
-            pushComponentToEL(context, this);
-            //preUpdate(context);
+        pushComponentToEL(context, this);
+        //preUpdate(context);
 
-            // Required to prevent child input component processing on filter and pagination initiated submits.
-            if (isAlwaysExecuteContents() || !isTableFeatureRequest(context))
-                iterate(context, PhaseId.UPDATE_MODEL_VALUES);
+        // Required to prevent child input component processing on filter and pagination initiated submits.
+        if (isAlwaysExecuteContents() || !isTableFeatureRequest(context))
+            iterate(context, PhaseId.UPDATE_MODEL_VALUES);
 
-            if (savedPageState != null)
-                savedPageState.restoreState(this);
+        if (savedPageState != null)
+            savedPageState.restoreState(this);
 
-            if (isApplyingSorts()) {
-                if (savedSortState != null)
-                    savedSortState.restoreState(this);
-                processSorting();
-            }
+        if (isApplyingFilters()) {
+            if (savedFilterState != null)
+                savedFilterState.restoreState(this);
+            setFilteredData(processFilters(context));
+        }
 
-            if (isApplyingFilters()) {
-                if (savedFilterState != null)
-                    savedFilterState.restoreState(this);
-                setFilteredData(processFilters(context));
-            }
+        if (isApplyingSorts()) {
+            if (savedSortState != null)
+                savedSortState.restoreState(this);
+            processSorting();
+        }
 
-            popComponentFromEL(context);
+        popComponentFromEL(context);
     }
 
     @Override
