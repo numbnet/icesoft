@@ -197,14 +197,24 @@ ice.ace.extend = function(targetObject, sourceObject) {
     for (var attrname in sourceObject) { targetObject[attrname] = sourceObject[attrname]; }
 }
 
-ice.ace.extendAjaxArguments = function(callArguments, options) {
+ice.ace.extendAjaxArgs = function(callArguments, options) {
     // Return a modified copy of the original arguments instead of modifying the original.
     // The cb arguments, being a configured property of the component will live past this request.
     callArguments = ice.ace.clone(callArguments);
 
+    // Premerge arrays of arguments supplied by the server
+    if (callArguments instanceof Array) {
+        var arrayArguments = callArguments;
+        var callArguments = {};
+        for (var x in arrayArguments) {
+            callArguments = ice.ace.extendAjaxArgs(callArguments, arrayArguments[x]);
+        }
+    }
+
     var params     = options.params,
         execute    = options.execute,
         render     = options.render,
+        source     = options.source,
         node       = options.node,
         onstart    = options.onstart,
         onerror    = options.onerror,
@@ -236,12 +246,16 @@ ice.ace.extendAjaxArguments = function(callArguments, options) {
         callArguments['node'] = node;
     }
 
+    if (source) {
+        callArguments['source'] = source;
+    }
+
     if (onstart) {
         if (callArguments['onstart']) {
             var existingStartCall = callArguments['onstart'];
             callArguments['onstart'] = function(xhr) {
-                existingStartCall(xhr);
-                onstart(xhr);
+                var ret = existingStartCall(xhr);
+                return onstart(xhr) && ret;
             }
         } else {
             callArguments['onstart'] = onstart;
@@ -252,8 +266,8 @@ ice.ace.extendAjaxArguments = function(callArguments, options) {
         if (callArguments['onerror']) {
             var existingErrorCall = callArguments['onerror'];
             callArguments['onerror'] = function(xhr, status, error) {
-                existingErrorCall(xhr, status, error);
-                onerror(xhr, status, error);
+                var ret = existingErrorCall(xhr, status, error);
+                return onerror(xhr, status, error) && ret;
             }
         } else {
             callArguments['onerror'] = onerror;
@@ -264,8 +278,8 @@ ice.ace.extendAjaxArguments = function(callArguments, options) {
         if (callArguments['onsuccess']) {
             var existingSuccessCall = callArguments['onsuccess'];
             callArguments['onsuccess'] = function(data, status, xhr, args) {
-                existingSuccessCall(data, status, xhr, args);
-                onsuccess(data, status, xhr, args);
+                var ret = existingSuccessCall(data, status, xhr, args);
+                return onsuccess(data, status, xhr, args) && ret;
             }
         } else {
             callArguments['onsuccess'] = onsuccess;
@@ -276,8 +290,8 @@ ice.ace.extendAjaxArguments = function(callArguments, options) {
         if (callArguments['oncomplete']) {
             var existingCompleteCall = callArguments['oncomplete'];
             callArguments['oncomplete'] = function(xhr, status, args) {
-                existingCompleteCall(xhr, status, args);
-                oncomplete(xhr, status, args);
+                var ret = existingCompleteCall(xhr, status, args);
+                return oncomplete(xhr, status, args) && ret;
             }
         } else {
             callArguments['oncomplete'] = oncomplete;
@@ -293,7 +307,7 @@ ice.ace.PARTIAL_REQUEST_PARAM = "javax.faces.partial.ajax";
 ice.ace.PARTIAL_UPDATE_PARAM = "javax.faces.partial.render";
 ice.ace.PARTIAL_PROCESS_PARAM = "javax.faces.partial.execute";
 ice.ace.PARTIAL_SOURCE_PARAM = "javax.faces.source";
-ice.ace. BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
+ice.ace.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
 ice.ace.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
 ice.ace.VIEW_STATE = "javax.faces.ViewState";
 

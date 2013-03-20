@@ -1392,7 +1392,7 @@ ice.ace.DataTable.prototype.ie7UnpinColumn = function(i) {
     // Send request
     if (this.behaviors && this.behaviors.unpin) {
         var options = { source: this.id }
-        ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.unpin, options));
+        ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.unpin, options));
     }
 }
 
@@ -1448,7 +1448,7 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
         var options = {
             source: this.id
         }
-        ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.unpin, options));
+        ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.unpin, options));
     }
 }
 
@@ -1616,7 +1616,7 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
             source: this.id
         }
 
-        ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.pin, options));
+        ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.pin, options));
     }
 }
 
@@ -1720,7 +1720,7 @@ ice.ace.DataTable.prototype.ie7PinColumn = function(i) {
             source: this.id
         }
 
-        ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.pin, options));
+        ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.pin, options));
     }
 }
 
@@ -1793,7 +1793,7 @@ ice.ace.DataTable.prototype.reorderColumns = function (oldIndex, newIndex) {
 
     if (this.behaviors)
         if (this.behaviors.reorder) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.reorder,
                 options
             ));
@@ -1860,7 +1860,7 @@ ice.ace.DataTable.prototype.paginate = function (newState) {
 
     if (this.behaviors)
         if (this.behaviors.page) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.page,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -1921,7 +1921,7 @@ ice.ace.DataTable.prototype.sort = function (headerCells, savedState) {
 
     if (this.behaviors)
         if (this.behaviors.sort) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.sort,
                 options
             ));
@@ -1978,7 +1978,7 @@ ice.ace.DataTable.prototype.filter = function (evn) {
 
     if (this.behaviors)
         if (this.behaviors.filter) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.filter,
                 options
             ));
@@ -2080,13 +2080,13 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
 
         if (this.behaviors)
             if (this.behaviors.select && !deselection) {
-                ice.ace.ab(ice.ace.extendAjaxArguments(
+                ice.ace.ab(ice.ace.extendAjaxArgs(
                     this.behaviors.select,
                     ice.ace.removeExecuteRenderOptions(options)
                 ));
                 return;
             } else if (this.behaviors.deselect && deselection) {
-                ice.ace.ab(ice.ace.extendAjaxArguments(
+                ice.ace.ab(ice.ace.extendAjaxArgs(
                     this.behaviors.deselect,
                     ice.ace.removeExecuteRenderOptions(options)
                 ));
@@ -2174,7 +2174,7 @@ ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function (lastIndex, curr
 
         if (this.behaviors)
             if (this.behaviors.select) {
-                ice.ace.ab(ice.ace.extendAjaxArguments(
+                ice.ace.ab(ice.ace.extendAjaxArgs(
                     this.behaviors.select,
                     ice.ace.removeExecuteRenderOptions(options)
                 ));
@@ -2237,7 +2237,7 @@ ice.ace.DataTable.prototype.sendPanelContractionRequest = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.contract) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.contract,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -2269,7 +2269,7 @@ ice.ace.DataTable.prototype.sendRowContractionRequest = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.contract) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.contract,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -2300,7 +2300,7 @@ ice.ace.DataTable.prototype.loadExpandedRows = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.expand) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.expand,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -2331,7 +2331,7 @@ ice.ace.DataTable.prototype.loadExpandedPanelContent = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.expand) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.expand,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -2394,7 +2394,7 @@ ice.ace.DataTable.prototype.doRowEditShowRequest = function (element) {
 
     if (this.behaviors)
         if (this.behaviors.editStart) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.editStart,
                 options
             ));
@@ -2441,7 +2441,7 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function (element) {
 
     if (this.behaviors)
         if (this.behaviors.editCancel) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.editCancel,
                 options
             ));
@@ -2497,7 +2497,7 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function (element) {
 
     if (this.behaviors)
         if (this.behaviors.editSubmit) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
+            ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.behaviors.editSubmit,
                 options
             ));

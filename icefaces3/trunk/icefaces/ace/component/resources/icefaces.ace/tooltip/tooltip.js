@@ -148,7 +148,7 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function(callback) {
 
     var behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.display;
     if (behavior) {
-        ice.ace.ab(ice.ace.extendAjaxArguments(
+        ice.ace.ab(ice.ace.extendAjaxArgs(
                 behavior,
                 ice.ace.removeExecuteRenderOptions(options)
         ));

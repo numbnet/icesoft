@@ -110,7 +110,6 @@ public class RowEditorRenderer extends CoreRenderer {
                     state.removeActiveCellEditor(c.getCellEditor());
             }
             else if (params.containsKey(tableId + "_editShow")) {
-                //component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
                for (Column c : table.getColumns())
                    state.addActiveCellEditor(c.getCellEditor());
             }               

@@ -63,7 +63,7 @@ ice.ace.Draggable.prototype.setupDragStartHandler = function() {
         if (dragStartBehaviour) {
             options.params[_self.id] = _self.id; // also triggers drag start listener, if any
             ice.ace.ab(
-                ice.ace.extendAjaxArguments(
+                ice.ace.extendAjaxArgs(
                     dragStartBehaviour,
                     ice.ace.removeExecuteRenderOptions(options)
                 )
@@ -105,7 +105,7 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
         if (dropBehaviour) {
             options.params[_self.id] = _self.id; // also triggers drop listener, if any
             ice.ace.ab(
-                ice.ace.extendAjaxArguments(
+                ice.ace.extendAjaxArgs(
                     dropBehaviour,
                     ice.ace.removeExecuteRenderOptions(options)
                 )

@@ -235,6 +235,7 @@ ice.ace.TableConf = function (id, cfg) {
 ice.ace.TableConf.prototype.setupOkButton = function() {
     var self = this;
     ice.ace.jq(this.id + "_tableconf_ok")
+            .off('mouseenter mouseleave click')
             .hover(function (event) {
                 ice.ace.jq(event.currentTarget).toggleClass('ui-state-hover');
             })
@@ -253,6 +254,7 @@ ice.ace.TableConf.prototype.setupOkButton = function() {
 ice.ace.TableConf.prototype.setupCloseButton = function() {
     var self = this;
     ice.ace.jq(this.id + "_tableconf_close")
+            .off('mouseenter mouseleave click')
             .hover(function (event) {
                 ice.ace.jq(event.currentTarget).toggleClass('ui-state-hover');
             })
@@ -356,7 +358,7 @@ ice.ace.TableConf.prototype.submitTableConfig = function (target) {
 
     if (this.behaviors)
         if (this.behaviors.submit) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.submit,{'params':params}));
+            ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.submit,{'params':params}));
             return;
         }
 

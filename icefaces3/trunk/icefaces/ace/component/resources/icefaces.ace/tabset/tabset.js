@@ -158,7 +158,7 @@ ice.ace.tabset = {
                             targetElement.id = clientId;
                             var otherParams = {};
                             var submitBehaviourStartTime = new Date().getTime();
-                            ice.ace.ab(ice.ace.extendAjaxArguments(
+                            ice.ace.ab(ice.ace.extendAjaxArgs(
                                     sJSFProps.behaviors.serverSideTabChange,
                                     {params: otherParams, execute: "@this", render: "@this", onsuccess: doOnSuccess}));
                             //restore id
