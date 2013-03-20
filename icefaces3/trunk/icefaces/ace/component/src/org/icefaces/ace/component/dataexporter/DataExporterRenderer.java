@@ -73,7 +73,7 @@ public class DataExporterRenderer extends CoreRenderer {
 				String script = behavior.getScript(cbc);    //could be null if disabled
 
 				if(script != null) {
-					onclick.append("ice.ace.ab(ice.ace.extendAjaxArguments(");
+					onclick.append("ice.ace.ab(ice.ace.extendAjaxArgs(");
                     onclick.append(script);
 					onclick.append(", {'event':event, node:this}));");
 				}

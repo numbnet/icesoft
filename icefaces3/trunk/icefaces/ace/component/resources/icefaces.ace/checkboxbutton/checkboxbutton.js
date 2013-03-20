@@ -117,7 +117,7 @@ ice.ace.checkboxbutton.prototype.toggleCheckbox = function (e) {
     }
 
     if (this.options.behaviors && this.options.behaviors.activate) {
-        ice.ace.ab(ice.ace.extendAjaxArguments(
+        ice.ace.ab(ice.ace.extendAjaxArgs(
             this.options.behaviors.activate,
             {params: this.options.uiParams}
         ));

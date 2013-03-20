@@ -115,7 +115,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 							String script = behavior.getScript(cbc);    //could be null if disabled
 
 							if(script != null) {
-								command.append("ice.ace.ab(ice.ace.extendAjaxArguments(");
+								command.append("ice.ace.ab(ice.ace.extendAjaxArgs(");
 								command.append(script);
 								command.append(", opt));");
 							}

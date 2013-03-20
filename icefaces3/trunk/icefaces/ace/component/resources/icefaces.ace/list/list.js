@@ -114,7 +114,7 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
     this.sendMigrateRequest();
 };
 
-ice.ace.List.prototype.sendMigrateRequest = function() {
+ice.ace.List.prototype.sendMigrateRequest = function(onsuccess) {
     var destList = this,
         sourceListId = destList.immigrantMessage[0],
         sourceList = ice.ace.Lists[sourceListId],
@@ -136,12 +136,15 @@ ice.ace.List.prototype.sendMigrateRequest = function() {
         sourceList.element = ice.ace.jq(ice.ace.escapeClientId(sourceList.element.attr('id')));
         if (sourceList.cfg.dragging) sourceList.element.find("> ul").sortable(sourceList.cfg);
 
+        if (ice.ace.jq.isFunction(onsuccess))
+            onsuccess();
+
         return true;
     };
 
     if (this.behaviors)
         if (this.behaviors.migrate) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.migrate, options));
+            ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.migrate, options));
 
             // Clear submitted states
             this.clearState();
@@ -238,18 +241,21 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
 };
 
 ice.ace.List.prototype.setupControls = function() {
-    var self = this;
+    var self = this,
+        itemSelector = this.jqId + ' > div.if-list-ctrls .if-list-ctrl';
 
-    this.element.find('> div.if-list-ctrls .if-list-ctrl')
-            .off('mouseenter').on('mouseenter', function(e) {
+    this.element
+            .off('mouseenter').on('mouseenter', itemSelector, function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).addClass('ui-state-hover');
             })
-            .off('mouseleave').on('mouseleave', function(e) {
+            .off('mouseleave').on('mouseleave', itemSelector, function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).removeClass('ui-state-hover');
             })
-            .off('click').on('click', function(e) { self.controlClickHandler.call(self, e); });
+            .off('click').on('click', itemSelector, function(e) {
+                self.controlClickHandler.call(self, e);
+            });
 };
 
 ice.ace.List.prototype.controlClickHandler = function(e) {
@@ -307,10 +313,9 @@ ice.ace.List.prototype.itemLeave = function(e) {
 ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
     var item = ice.ace.jq(e.currentTarget),
         id = item.attr('id'),
+        from = this,
         fromIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1));
         to = this.getSiblingList(e.shiftKey);
-
-    item.css('display','none');
 
     fromIndex = this.getUnshiftedIndex(
             this.element.find('> ul').children().length,
@@ -330,7 +335,10 @@ ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
         this.addSelectedItem(item, fromIndex);
     }
 
-    to.sendMigrateRequest();
+    // Only allow more clicks to occur once migration has finished
+    to.sendMigrateRequest(function() {
+        from.doubleClickAttempted = false;
+    });
 }
 
 /* Get the following (or if shift is held, previous) list in the first
@@ -357,9 +365,13 @@ ice.ace.List.prototype.getSiblingList = function (shift) {
 }
 
 ice.ace.List.prototype.pendingClickHandling;
+ice.ace.List.prototype.doubleClickAtempted = false;
 
 ice.ace.List.prototype.itemClickHandler = function(e) {
-    if (this.pendingClickHandling == undefined) {
+    // Prevent click handling if waiting to see if we've double clicked
+    // or prevent click handling if we have already double clicked and are
+    // mindlessly mashing on this element
+    if (this.pendingClickHandling == undefined && !this.doubleClickAttempted) {
         var li = e.currentTarget,
             jqLi = ice.ace.jq(li),
             self = this,
@@ -418,6 +430,7 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
     } else {
         clearTimeout(this.pendingClickHandling);
         this.pendingClickHandling = undefined;
+        this.doubleClickAttempted = true;
     }
 };
 
