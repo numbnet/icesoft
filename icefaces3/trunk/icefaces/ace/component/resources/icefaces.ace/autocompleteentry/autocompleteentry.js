@@ -310,7 +310,7 @@ ice.ace.Autocompleter.prototype = {
 						event.preventDefault();
 						return false;
 					}
-                    this.getUpdatedChoices(true, event, -1, 'textFieldEnter');
+                    this.getUpdatedChoices(true, event, -1, 'enter');
 					event.stopPropagation();
 					event.preventDefault();
                     return;
@@ -335,7 +335,7 @@ ice.ace.Autocompleter.prototype = {
 
                     this.hidden = true; // Hack to fix before beta. Was popup up the list after a selection was made
                     var idx = this.selectEntry();
-                    this.getUpdatedChoices(true, event, idx);
+                    this.getUpdatedChoices(true, event, idx, 'enter');
                     this.hide();
 					event.stopPropagation();
 					event.preventDefault();
