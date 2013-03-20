@@ -29,7 +29,11 @@ function CKsaveAjax(editor) {
     var theForm = document.getElementById(editor.name).form;
     var nothingEvent = new Object();
     document.getElementById(editor.name).value = editor.getData();
-    iceSubmit(theForm, document.getElementById(editor.name), nothingEvent);
+    if (editor.config.partialSubmit) {
+        iceSubmitPartial(theForm, document.getElementById(editor.name), nothingEvent);
+    } else {
+        iceSubmit(theForm, document.getElementById(editor.name), nothingEvent);
+    }
 }
 
 CKEDITOR.config.extraPlugins = "iceSave";
@@ -68,7 +72,7 @@ function getToolbar(toolbar) {
 }
 
 
-function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _customConfig, saveOnSubmit, hashCode) {
+function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _customConfig, saveOnSubmit, partialSubmit, hashCode) {
     CKEDITOR.config.defaultLanguage = lang;
     if (_skin == 'default' || _skin == 'silver') {
         _skin = 'v2'
@@ -91,7 +95,8 @@ function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _cus
             height: _height,
             width: _width,
             customConfig : _customConfig,
-            htmlEncodeOutput : false
+            htmlEncodeOutput : false,
+            partialSubmit: partialSubmit
         });
         editorInstance.setData(document.getElementById(editor).value);
         if (saveOnSubmit) {

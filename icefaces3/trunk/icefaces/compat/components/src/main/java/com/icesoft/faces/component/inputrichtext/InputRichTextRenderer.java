@@ -73,6 +73,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             		"'"+ inputRichText.getWidth() +"'," +
             		"'"+ customConfig + "'," +
             		inputRichText.isSaveOnSubmit()+ "," +
+                    (!inputRichText.isSaveOnSubmit() && inputRichText.getPartialSubmit()) + "," +
 					hashCode + ")"));
             scrptWrpr.appendChild(scrpt);
 
