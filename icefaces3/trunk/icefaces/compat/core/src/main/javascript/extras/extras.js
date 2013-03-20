@@ -3952,11 +3952,21 @@ Ice.PanelDivider.onWindowResize = function() {
 }
 
 Ice.PanelDivider.onLoad = function(divider, isHorizontal) {
-    Event.stopObserving(window, "resize", Ice.PanelDivider.onWindowResize); // Will register multiple times if don't do this?
-    Ice.PanelDivider.dividerHash.set(divider, isHorizontal); // Will replace existing, if any.
-    Event.observe(window, "resize", Ice.PanelDivider.onWindowResize);
-    Ice.PanelDivider.adjustSecondPaneSize(divider, isHorizontal);
-    Ice.PanelDivider.adjustPercentBasedHeight(divider, isHorizontal);
+    //poll document.readyState until the document is completely loaded, only then IE7 will be able to return non-zero
+    //offsetWidth/Height or clientwidth/Height values
+    var pid = window.setInterval(function() {
+        if (document.readyState == 'complete') {
+            try {
+                Event.stopObserving(window, "resize", Ice.PanelDivider.onWindowResize); // Will register multiple times if don't do this?
+                Ice.PanelDivider.dividerHash.set(divider, isHorizontal); // Will replace existing, if any.
+                Event.observe(window, "resize", Ice.PanelDivider.onWindowResize);
+                Ice.PanelDivider.adjustSecondPaneSize(divider, isHorizontal);
+                Ice.PanelDivider.adjustPercentBasedHeight(divider, isHorizontal);
+            } finally {
+                window.clearInterval(pid);
+            }
+        }
+    }, 30);
 }
 
 ResizableUtil = {
