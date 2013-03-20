@@ -216,6 +216,7 @@ ice.ace.extendAjaxArgs = function(callArguments, options) {
         render     = options.render,
         source     = options.source,
         node       = options.node,
+        event      = options.event,
         onstart    = options.onstart,
         onerror    = options.onerror,
         onsuccess  = options.onsuccess,
@@ -248,6 +249,10 @@ ice.ace.extendAjaxArgs = function(callArguments, options) {
 
     if (source) {
         callArguments['source'] = source;
+    }
+
+    if (event) {
+        callArguments['event'] = event;
     }
 
     if (onstart) {
