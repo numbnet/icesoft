@@ -59,16 +59,16 @@ public class FormSubmit implements SystemEventListener {
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", "type");
                 writer.writeAttribute("id", getClientId(context), "id");
-                writer.write("ice.captureSubmit('");
-                writer.write(formId);
-                writer.write("',");
-                writer.write(Boolean.toString(deltaSubmit));
-                writer.write(");");
-                writer.write("ice.captureKeypress('");
-                writer.write(formId);
-                writer.write("',");
-                writer.write(keyMap == null ? "null" : keyMap.toString());
-                writer.write(");");
+                writer.write("ice.captureSubmit('" +
+                formId +
+                "'," +
+                Boolean.toString(deltaSubmit) +
+                ");" +
+                "ice.captureKeypress('" +
+                formId +
+                "'," +
+                (keyMap == null ? "null" : keyMap.toString())+
+                ");");
                 writer.endElement("script");
             }
         };
