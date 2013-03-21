@@ -100,8 +100,6 @@ public class Car implements Serializable {
 	    return getName();
 	}
 
-    // Fix symptoms of session serialization issue when using TreeDataModel
-    // by giving hashCode implementation to row objects.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,15 +108,12 @@ public class Car implements Serializable {
         Car car = (Car) o;
 
         if (id != car.id) return false;
-        if (!name.equals(car.name)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + name.hashCode();
-        return result;
+        return id;
     }
 }
