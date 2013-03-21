@@ -46,13 +46,14 @@
                 display: inline-block;
                 border: 1px solid black;
                 width: 80%;
+                min-height: 9em;
                 margin-left: 1em;
             }
         </style>
 
         <h:form>
             <ace:list compact="true"
-                      style="vertical-align:middle"
+                      style="vertical-align:middle;"
                       selectionMode="multiple"
                       value="#{backing.selections}">
                 <ace:ajax event="select" render="@form" />
@@ -65,8 +66,7 @@
             </ace:list>
 
             <h:panelGroup>
-                <h:panelGroup rendered="#{not empty backing.selections}"
-                              styleClass="outPane"
+                <h:panelGroup styleClass="outPane"
                               style="vertical-align: middle">
                     <ui:repeat value="#{backing.selections}" var="car">
                         <h:panelGroup styleClass="iblock">

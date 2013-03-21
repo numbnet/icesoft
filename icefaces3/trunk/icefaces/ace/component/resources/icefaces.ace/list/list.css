@@ -84,13 +84,23 @@
 .if-list.if-mini.ui-widget {
     font-size:8pt;
     display:inline-block;
-    overflow-x:auto;
-    height:10em;
+
+    /* IE7 inline block hack */
+    *display:inline;
+    zoom:1;
+
+    overflow-y:auto;
+}
+
+.if-list.if-mini.ui-widget > ul {
+    display: block;
+    height: 10em;
 }
 
 .if-list.if-mini.ui-widget .if-list-item {
     margin:0 2px 2px 2px;
     padding:0;
     padding-left:0.5em;
+    *margin-right:18px;
 }
 /********************/
