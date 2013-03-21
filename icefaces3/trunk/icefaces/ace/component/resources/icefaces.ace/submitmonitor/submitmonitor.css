@@ -41,3 +41,7 @@
     width: 32px;
     height: 32px;
 }
+
+.ice-sub-mon .ui-icon {
+    text-indent: 0;
+}
