@@ -18,14 +18,18 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMotion/CoreMotion.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import <MessageUI/MessageUI.h>
 #import "NativeInterfaceViewController.h"
 
 @class MainViewController;
 @class QRScanner;
 @class ARViewController;
 
-@interface NativeInterface : NSObject<UIImagePickerControllerDelegate, 
-        UINavigationControllerDelegate,  ABPeoplePickerNavigationControllerDelegate> {
+@interface NativeInterface : NSObject<
+        UIImagePickerControllerDelegate,
+        UINavigationControllerDelegate,
+        ABPeoplePickerNavigationControllerDelegate,
+        MFMessageComposeViewControllerDelegate> {
 
 	UIViewController<NativeInterfaceViewController> *controller;
     NSString *userAgent;

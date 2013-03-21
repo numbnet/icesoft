@@ -108,6 +108,9 @@ static char base64EncodingTable[64] = {
         [self aug:[params objectForKey:@"id"] locations:params];
     } else if ([@"fetchContacts" isEqualToString:commandName])  {
         [self address:[params objectForKey:@"id"]];
+    } else if ([@"sms" isEqualToString:commandName])  {
+        [self sms:[params objectForKey:@"n"]
+                    body:[params objectForKey:@"body"]];
     }
 
     return YES;
@@ -524,6 +527,27 @@ NSLog(@"Found record %@", result);
     NSLog(@"NativeInterface peoplePickerNavigationControllerDidCancel ");
     [self dismissAddress];
     [self.controller doCancel];
+}
+
+- (BOOL)sms:(NSString*)number body:(NSString*)body {
+    NSLog(@"NativeInterface sms ");
+
+    MFMessageComposeViewController *smsController = [[[MFMessageComposeViewController alloc] init] autorelease];
+    if ([MFMessageComposeViewController canSendText])  {
+        smsController.body = body;
+        smsController.recipients = [NSArray arrayWithObjects:number, nil];
+        smsController.messageComposeDelegate = self;
+        [self.controller presentModalViewController:smsController animated:YES];
+    }
+
+    return YES;
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+        didFinishWithResult:(MessageComposeResult)result  {
+    //no return value from sms so effectively cancel
+    [self.controller doCancel];
+    [self.controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)aug: (NSString*)augId locations:(NSDictionary *)places {
