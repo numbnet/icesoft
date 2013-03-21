@@ -205,7 +205,10 @@ public class TabSetRenderer extends CoreRenderer {
 
         // The tabs whose contents we need to render. Subset of clickableTabs,
         // where the order has a different meaning: [safeIndex] -> tabClientId
-        List<String> visitedTabClientIds = tabSet.getVisitedTabClientIdsAsList();
+        List<String> visitedTabClientIds = tabSet.getVisitedTabClientIds();
+        if (visitedTabClientIds == null) {
+            visitedTabClientIds = new ArrayList();
+        }
 
         // Used to detect changes from last lifecycle
         List<String> toRender = new ArrayList<String>();
@@ -247,7 +250,7 @@ public class TabSetRenderer extends CoreRenderer {
                 visitedTabClientIds.add(tabClientId);
             }
         }
-        tabSet.setVisitedTabClientIdsFromList(visitedTabClientIds);
+        tabSet.setVisitedTabClientIds(visitedTabClientIds);
 
         final String safeIdPrefix = clientId+"_safe_";
         int clickableLen = clickableTabs.size();
@@ -502,6 +505,7 @@ public class TabSetRenderer extends CoreRenderer {
             String clientId = tab.getClientId(facesContext);
             clickableTabs.add(clientId);
             TabPaneCache orig = TabPaneCache.get(tab.getCache());
+System.out.println("doTab  clientId: " + clientId + "  TabPaneCache: " + orig);
             TabPaneCache cache = orig.resolve(facesContext, tab);
             tabPaneClientId2Cache.put(clientId, cache);
             TabPaneCache revert = cache.getRevertTo();
