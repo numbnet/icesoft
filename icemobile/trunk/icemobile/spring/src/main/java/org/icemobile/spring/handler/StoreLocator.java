@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icemobile.application.ResourceStore;
 import org.icemobile.spring.annotation.ICEmobileResourceStore;
+import org.icemobile.spring.controller.ICEmobileSXController;
 import org.icemobile.spring.handler.support.MapFileStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,11 @@ public class StoreLocator {
     ResourceStore getStore(Class beanClass, HttpServletRequest request){
         ResourceStore store = null;
         
-        if( beanClass.isAnnotationPresent(ICEmobileResourceStore.class)){
+        if (beanClass.equals(ICEmobileSXController.class))  {
+            //use session scoped store for ICEmobile-SX registration
+            store = getSessionScopedStore(request);
+        } else if (beanClass.isAnnotationPresent(
+                ICEmobileResourceStore.class))  {
             ICEmobileResourceStore storeAnn = (ICEmobileResourceStore)
                     beanClass.getAnnotation(ICEmobileResourceStore.class);
             String beanName = storeAnn.bean();
