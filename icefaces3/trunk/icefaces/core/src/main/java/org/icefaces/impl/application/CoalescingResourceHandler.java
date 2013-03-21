@@ -24,12 +24,14 @@ import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.util.*;
+import java.util.logging.Level;
 
 public class CoalescingResourceHandler extends ResourceHandlerWrapper {
     public static final String COALESCED = "coalesced";
@@ -37,6 +39,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
     public static final String JS_EXTENSION = ".js";
     public static final String ICE_CORE_LIBRARY = "ice.core";
     private ResourceHandler handler;
+    private String mapping;
 
     public CoalescingResourceHandler(ResourceHandler handler) {
         this.handler = handler;
@@ -51,10 +54,10 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
         if (EnvUtils.isCoallesceResources(context)) {
             if (resourceName.equals(COALESCED + CSS_EXTENSION) && libraryName.equals(ICE_CORE_LIBRARY)) {
                 CoalescingResource.Infos resourceInfos = (CoalescingResource.Infos) context.getExternalContext().getSessionMap().get(CoalescingResourceHandler.class.getName() + CSS_EXTENSION);
-                return new CoalescingResource(COALESCED + CSS_EXTENSION, ICE_CORE_LIBRARY, getMapping(), isExtensionMapping(), resourceInfos);
+                return new CoalescingResource(COALESCED + CSS_EXTENSION, ICE_CORE_LIBRARY, getMapping(context), isExtensionMapping(context), resourceInfos);
             } else if (resourceName.equals(COALESCED + JS_EXTENSION) && libraryName.equals(ICE_CORE_LIBRARY)) {
                 CoalescingResource.Infos resourceInfos = (CoalescingResource.Infos) context.getExternalContext().getSessionMap().get(CoalescingResourceHandler.class.getName() + JS_EXTENSION);
-                return new CoalescingResource(COALESCED + JS_EXTENSION, ICE_CORE_LIBRARY, getMapping(), isExtensionMapping(), resourceInfos);
+                return new CoalescingResource(COALESCED + JS_EXTENSION, ICE_CORE_LIBRARY, getMapping(context), isExtensionMapping(context), resourceInfos);
             } else {
                 return super.createResource(resourceName, libraryName, contentType);
             }
@@ -135,13 +138,35 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
     }
 
 
-    private static String getMapping() {
-        return ".jsf";
+    private String getMapping(FacesContext context) {
+        if (mapping == null) {
+            ExternalContext extContext = context.getExternalContext();
+            String servletPath = extContext.getRequestServletPath();
+            String pathInfo = extContext.getRequestPathInfo();
+
+            if (servletPath == null) {
+                mapping = "/";
+            }
+            if (servletPath.isEmpty()) {
+                mapping = "/*";
+            }
+            if (pathInfo != null) {
+                mapping = servletPath;
+            } else if (servletPath.contains(".")) {
+                mapping = servletPath.substring(servletPath.lastIndexOf('.'));
+            } else {
+                mapping = servletPath;
+            }
+        }
+
+        return mapping;
     }
 
-    private static boolean isExtensionMapping() {
-        return true;
+    private boolean isExtensionMapping(FacesContext context) {
+        String m = getMapping(context);
+        return (m != null && !m.startsWith("/"));
     }
+
 
     //register ResourceCollector dynamically to make sure it is invoked last when PreRenderComponentEvent is fired
     public static class RegisterListener implements SystemEventListener {
