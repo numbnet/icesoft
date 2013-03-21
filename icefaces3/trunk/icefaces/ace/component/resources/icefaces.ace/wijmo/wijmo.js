@@ -4032,7 +4032,7 @@ function wijmoASPNetParseOptions(o) {
 
 					$(this).find("ul ." + linkCss + ",ul >.ui-widget-header,ul " +
 						'>.wijmo-wijmenu-separator, div .' + linkCss + ",div >.ui-widget-header,div " + // ICE-7827 
-						'>.wijmo-wijmenu-separator').bind("mouseenter" + nameSpace,
+						'>.wijmo-wijmenu-separator, .ui-menu-multicolumn-header, .ui-menu-multicolumn-footer').bind("mouseenter" + nameSpace,
 					function (e) {
 						if (o.disabled) {
 							return;

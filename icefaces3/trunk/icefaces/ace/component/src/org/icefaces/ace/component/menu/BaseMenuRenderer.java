@@ -268,6 +268,14 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		if (relativeTo != null) {
 			writer.writeAttribute("relativeto", relativeTo.toLowerCase(), null);
 		}
+		
+		// header
+		writer.startElement("div", null);
+		writer.writeAttribute("style", "width: 100%;", null);
+		writer.writeAttribute("class", "ui-menu-multicolumn-header", null);
+		writer.startElement("div", null);
+		writer.endElement("div");
+		writer.endElement("div");
 			
 		for (MenuColumn menuColumn : menuColumns) {
 			if (menuColumn.isRendered()) {
@@ -304,6 +312,14 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				}
 			}
 		}
+		
+		// footer
+		writer.startElement("div", null);
+		writer.writeAttribute("style", "width: 100%;", null);
+		writer.writeAttribute("class", "ui-menu-multicolumn-footer", null);
+		writer.startElement("div", null);
+		writer.endElement("div");
+		writer.endElement("div");
 		
 		writer.endElement("div");
 	}
