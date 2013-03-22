@@ -221,9 +221,11 @@ public class ICEmobileSX extends Activity
 
 	    mReturnUri = Uri.parse((String) commandParts.get("r"));
 	    mPOSTUri = Uri.parse((String) commandParts.get("u"));
-	}
-	if (null != commandName)  {
-	    dispatch(commandName, commandParts, commandParams);
+	    if (null != commandName)  {
+		dispatch(commandName, commandParts, commandParams);
+	    }
+	} else {
+	    returnToBrowser();
 	}
     }
 
@@ -310,6 +312,7 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
 	    encodedForm = "hidden-iceCloudPushId=" +
 		URLEncoder.encode(cloudNotificationId);
 	}
+	Log.d(LOG_TAG, "POSTing to " + postUriString);
 	Log.d(LOG_TAG, "POST to register will send " + encodedForm);
 	utilInterface.setUrl(postUriString);
 	utilInterface.submitForm("", encodedForm, mBrowserReturn);
