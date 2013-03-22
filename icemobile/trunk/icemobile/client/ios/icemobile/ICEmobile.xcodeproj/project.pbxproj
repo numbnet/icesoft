@@ -20,6 +20,7 @@
 		9C113907132ACD2E00FB7919 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C113906132ACD2E00FB7919 /* icon.png */; };
 		9C1923F815547FBA00A6BE22 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1923F615547FBA00A6BE22 /* AudioController.m */; };
 		9C1923F915547FBA00A6BE22 /* AudioController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C1923F715547FBA00A6BE22 /* AudioController.xib */; };
+		9C1B7A0A16FCCC9B0015C815 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C1B7A0916FCCC9B0015C815 /* MessageUI.framework */; };
 		9C285F3C155DD31400BAC772 /* ARView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C285F35155DD31300BAC772 /* ARView.m */; };
 		9C285F3D155DD31400BAC772 /* ARViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C285F36155DD31300BAC772 /* ARViewController_iPad.xib */; };
 		9C285F3E155DD31400BAC772 /* ARViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C285F37155DD31300BAC772 /* ARViewController_iPhone.xib */; };
@@ -93,6 +94,7 @@
 		9C1923F615547FBA00A6BE22 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioController.m; path = Shared/AudioController.m; sourceTree = "<group>"; };
 		9C1923F715547FBA00A6BE22 /* AudioController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AudioController.xib; path = Shared/AudioController.xib; sourceTree = "<group>"; };
 		9C19240115548F7800A6BE22 /* NativeInterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterfaceViewController.h; path = Shared/NativeInterfaceViewController.h; sourceTree = "<group>"; };
+		9C1B7A0916FCCC9B0015C815 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9C285F34155DD31300BAC772 /* ARView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARView.h; path = Shared/ARView.h; sourceTree = "<group>"; };
 		9C285F35155DD31300BAC772 /* ARView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARView.m; path = Shared/ARView.m; sourceTree = "<group>"; };
 		9C285F36155DD31300BAC772 /* ARViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ARViewController_iPad.xib; path = Shared/ARViewController_iPad.xib; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C1B7A0A16FCCC9B0015C815 /* MessageUI.framework in Frameworks */,
 				9C05859F162F6E59003D1890 /* AddressBook.framework in Frameworks */,
 				9C0585A0162F6E59003D1890 /* AddressBookUI.framework in Frameworks */,
 				9CCD001B15742A710012893A /* MapKit.framework in Frameworks */,
@@ -246,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				9C3B27921427AEA000409376 /* libiconv.dylib */,
+				9C1B7A0916FCCC9B0015C815 /* MessageUI.framework */,
 				9C05859D162F6E59003D1890 /* AddressBook.framework */,
 				9C05859E162F6E59003D1890 /* AddressBookUI.framework */,
 				9CCD001A15742A710012893A /* MapKit.framework */,
