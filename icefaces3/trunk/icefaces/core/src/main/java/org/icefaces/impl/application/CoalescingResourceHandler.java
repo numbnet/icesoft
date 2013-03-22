@@ -146,8 +146,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
 
             if (servletPath == null) {
                 mapping = "/";
-            }
-            if (servletPath.isEmpty()) {
+            } else if (servletPath.length() == 0) {
                 mapping = "/*";
             }
             if (pathInfo != null) {
