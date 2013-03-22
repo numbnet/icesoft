@@ -882,7 +882,8 @@ Ice.modal = {
                     }
                     modalWidth = parseInt(modalWidth) / 2;
                     modalHeight = parseInt(modalHeight) / 2;
-                    if (!manualPosition && !Ice.autoCentre.ids.include(target)) {
+                    if (!manualPosition && !Ice.autoCentre.ids.include(target) && !Ice.modal.updated) {
+						Ice.modal.updated = false;
                         var viewportWidth = document.viewport.getWidth();
                         var scrollOffset = document.viewport.getScrollOffsets();
                         modal.style.top = (parseInt(viewportHeight) / 2) - modalHeight - modalParentOffset.top + scrollOffset.top + "px";
@@ -1004,6 +1005,7 @@ Ice.modal = {
     },
 
     stop:function(target) {
+		Ice.modal.updated = false;
         if (Ice.modal.running.include(target)) {
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
@@ -1012,6 +1014,7 @@ Ice.modal = {
                     e.onkeyup = null;
                     e.onkeydown = null;
                     e.onclick = null;
+					Ice.modal.updated = true;
                 }
 
                 Event.stopObserving(window, "resize", iframe.resize);
