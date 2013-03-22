@@ -151,7 +151,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             }
             if (pathInfo != null) {
                 mapping = servletPath;
-            } else if (servletPath.contains(".")) {
+            } else if (servletPath.indexOf(".") > -1) {
                 mapping = servletPath.substring(servletPath.lastIndexOf('.'));
             } else {
                 mapping = servletPath;
