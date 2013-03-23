@@ -39,7 +39,7 @@ import javax.faces.event.PhaseId;
 import org.icefaces.ace.component.ajax.AjaxBehavior;
 import org.icefaces.ace.event.AccordionPaneChangeEvent;
 import org.icefaces.ace.renderkit.CoreRenderer;
-import org.icefaces.ace.util.ComponentUtils;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
@@ -81,7 +81,8 @@ public class AccordionRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext context, Accordion accordionPanel) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = accordionPanel.getClientId(context);
-		
+		boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
+
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
 		String style = accordionPanel.getStyle();
@@ -91,6 +92,7 @@ public class AccordionRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
 
+        if (ariaEnabled) encodeAriaAttributes(writer);
 		encodeTabs(context, accordionPanel);
   
         writer.endElement("div");
@@ -101,7 +103,11 @@ public class AccordionRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 
-	protected void encodeScript(FacesContext context, Accordion acco) throws IOException {
+    private void encodeAriaAttributes(ResponseWriter writer) throws IOException {
+        writer.writeAttribute(HTML.ARIA_MULTI_SELECTABLE_ATTR, "true", null);
+    }
+
+    protected void encodeScript(FacesContext context, Accordion acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         JSONBuilder jb = JSONBuilder.create();
         String clientId = acco.getClientId(context);
@@ -123,8 +129,7 @@ public class AccordionRenderer extends CoreRenderer {
           .beginArray()
           .item(clientId)
 		  .beginMap()
-          .entry("animated", acco.getEffect())
-          .entry("ariaEnabled", EnvUtils.isAriaEnabled(context));;
+          .entry("animated", acco.getEffect());
 
 		String event = acco.getEvent();
 
@@ -161,7 +166,7 @@ public class AccordionRenderer extends CoreRenderer {
 	
 	protected void encodeTabs(FacesContext context, Accordion acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-		
+
 		for(int i=0; i < acco.getChildCount(); i++) {
 			UIComponent kid = acco.getChildren().get(i);
 			
@@ -188,7 +193,7 @@ public class AccordionRenderer extends CoreRenderer {
                 writer.writeAttribute("id", clientId + "_content", null);
 				
                 tab.encodeAll(context);
-                
+
 				writer.endElement("div");
 				writer.endElement("div");
 			}
