@@ -50,7 +50,7 @@ public class GMapEventRenderer extends CoreRenderer {
             } else
                 testComponent = testComponent.getParent();
         }
-        writer.write("ice.ace.gMap.addEvent('" + mapContext + "','" + gMapEvent.getParent().getClientId(context) + "', '" + clientId + "','" + gMapEvent.getParent().toString() + "','" + gMapEvent.getEventType() + "','" + gMapEvent.getRendererType() + "',\"" + gMapEvent.getScript() + "\");");
+        writer.write("ice.ace.gMap.addEvent('" + mapContext + "','" + gMapEvent.getParent().getClientId(context) + "', '" + clientId + "','" + gMapEvent.getParent().toString() + "','" + gMapEvent.getEventType() + "','" + gMapEvent.getRendererType() + "',\"" + gMapEvent.getScriptToUse() + "\");");
         writer.write("});");
         writer.endElement("script");
         writer.endElement("span");

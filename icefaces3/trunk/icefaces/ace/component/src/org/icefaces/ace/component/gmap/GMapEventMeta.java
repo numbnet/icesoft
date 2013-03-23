@@ -53,9 +53,7 @@ public class GMapEventMeta extends UIPanelMeta {
     private String eventType;
 
     @Property(tlddoc = "The script to be executed when the chosen event is fired. Use the variable 'map' to refer to the parent gMap and 'component' to refer to the parent tag. ")
-    private String script;
+    private String scriptToUse;
 
-    @Property(tlddoc = "The handler type that is to be created for this event. Valid types are (case insensitive) 'DomListener', 'DomListenerOnce','Listener', 'ListenerOnce' and 'Trigger'. The explanation for these listeners can be found at the Google API here: https://developers.google.com/maps/documentation/javascript/reference#MapsEventListener.", defaultValue = "DomListener")
-    private String handlerType;
 
 }

@@ -61,6 +61,8 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
                 exampleBeanName = MapControlBean.BEAN_NAME),
 		@MenuLink(title = "menu.ace.gMap.subMenu.direction",
                 exampleBeanName = MapDirectionBean.BEAN_NAME),
+		@MenuLink(title = "menu.ace.gMap.subMenu.event",
+                exampleBeanName = MapEventBean.BEAN_NAME),
 		@MenuLink(title = "menu.ace.gMap.subMenu.infowindow",
                 exampleBeanName = MapInfoWindowBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.gMap.subMenu.layer",
