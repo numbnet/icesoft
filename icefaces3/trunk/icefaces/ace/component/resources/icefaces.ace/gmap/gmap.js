@@ -747,35 +747,38 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.addEvent = function (mapId,parentId,eventId,parentName,eventType,rendererType,script){
         var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
-        var map = wrapper.getRealGMap();
-        var selectedComponent;
+
+        var componentToUse;
         var parent;
         //TODO: Update Autocomplete to work with this.
         if (parentName.indexOf("gmap.GMapAutocomplete") != -1){
             parent = wrapper.infoWindows[parentId];
-            selectedComponent = "ice.ace.gMap.getGMapWrapper(" + mapId + ").infoWindows['"+parentId+"']";
+            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').infoWindows['"+parentId+"']";
         }
         else if (parentName.indexOf("gmap.GMapInfoWindow") != -1){
             parent = wrapper.infoWindows[parentId];
-            selectedComponent = "ice.ace.gMap.getGMapWrapper(" + mapId + ").infoWindows['"+parentId+"']";
+            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').infoWindows['"+parentId+"']";
         }
         else if (parentName.indexOf("gmap.GMapLayer") != -1){
             parent = wrapper.layer;
-            selectedComponent = "ice.ace.gMap.getGMapWrapper(" + mapId + ").layer";
+            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').layer";
         }
         else if (parentName.indexOf("gmap.GMapMarker") != -1){
             parent = wrapper.markers[parentId];
-            selectedComponent = "ice.ace.gMap.getGMapWrapper(" + mapId + ").markers['"+parentId+"']";
+            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').markers['"+parentId+"']";
         }
         else if (parentName.indexOf("gmap.GMapOverlay") != -1){
             parent = wrapper.overlays[parentId];
-            selectedComponent = "ice.ace.gMap.getGMapWrapper(" + mapId + ").overlays['"+parentId+"']";
+            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').overlays['"+parentId+"']";
         }
         else if(parentName.indexOf("gmap.GMap") != -1){
             parent = wrapper.getRealGMap();
-            selectedComponent = "ice.ace.gMap.getGMapWrapper(" + mapId + ").getRealGMap()";
+            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').getRealGMap()";
         }
+        event = [];
         google.maps.event.addDomListener(parent,eventType,function(){
+            var map = eval("ice.ace.gMap.getGMapWrapper('" + mapId + "').getRealGMap()");
+            var component = eval(componentToUse);
             eval(script);
         });
     }
