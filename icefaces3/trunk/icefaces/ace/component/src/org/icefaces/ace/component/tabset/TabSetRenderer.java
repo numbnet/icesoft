@@ -505,7 +505,6 @@ public class TabSetRenderer extends CoreRenderer {
             String clientId = tab.getClientId(facesContext);
             clickableTabs.add(clientId);
             TabPaneCache orig = TabPaneCache.get(tab.getCache());
-System.out.println("doTab  clientId: " + clientId + "  TabPaneCache: " + orig);
             TabPaneCache cache = orig.resolve(facesContext, tab);
             tabPaneClientId2Cache.put(clientId, cache);
             TabPaneCache revert = cache.getRevertTo();
