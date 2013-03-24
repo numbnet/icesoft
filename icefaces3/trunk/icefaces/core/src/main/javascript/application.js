@@ -560,7 +560,7 @@ if (!window.ice.icefaces) {
             ice.push.register([viewID], retrieveUpdate(viewID));
         };
 
-        namespace.setupRefresh = function(viewID, interval, duration) {
+        namespace.setupRefresh = function(viewID, interval, duration, id) {
             var times = duration < 0 ? null : Math.floor(duration / interval);
             var requestUpdate = retrieveUpdate(viewID);
             var delay = Delay(requestUpdate, interval);
@@ -569,6 +569,8 @@ if (!window.ice.icefaces) {
             namespace.onSessionExpiry(stopDelay);
             namespace.onNetworkError(stopDelay);
             namespace.onServerError(stopDelay);
+            namespace.onUnload(stopDelay);
+            namespace.onElementUpdate(id, stopDelay);
         };
 
         namespace.captureKeypress = function(id, keyMap) {
