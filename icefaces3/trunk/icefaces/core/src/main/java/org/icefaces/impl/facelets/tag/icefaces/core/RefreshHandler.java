@@ -90,6 +90,8 @@ public class RefreshHandler extends TagHandler {
 
         public void encodeBegin(FacesContext context) throws IOException {
             ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("span", this);
+            writer.writeAttribute("id", getClientId(context), null);
             writer.startElement("script", this);
             writer.writeAttribute("type", "text/javascript", null);
             writer.writeText("ice.setupRefresh('", null);
@@ -98,7 +100,10 @@ public class RefreshHandler extends TagHandler {
             writer.writeText(interval, null);
             writer.writeText(", ", null);
             writer.writeText(duration, null);
-            writer.writeText(");", null);
+            writer.writeText(", '", null);
+            writer.writeText(getClientId(context), null);
+            writer.writeText("');", null);
+            writer.endElement("span");
             writer.endElement("script");
         }
     }
