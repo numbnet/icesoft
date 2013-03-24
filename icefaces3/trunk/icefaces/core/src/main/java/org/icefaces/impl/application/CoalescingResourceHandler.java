@@ -16,6 +16,7 @@
 
 package org.icefaces.impl.application;
 
+import org.icefaces.resources.ICEResourceLibrary;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.Resource;
@@ -30,6 +31,8 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import java.net.URI;
+import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -95,7 +98,8 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             String name = COALESCED + extension;
             attrs.put("name", name);
             attrs.put("library", ICE_CORE_LIBRARY);
-            String rendererType = context.getApplication().getResourceHandler().getRendererTypeForResourceName(name);
+            ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+            String rendererType = resourceHandler.getRendererTypeForResourceName(name);
             coallescedResourceComponent.setRendererType(rendererType);
             coallescedResourceComponent.setTransient(true);
 
@@ -105,7 +109,9 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                 Map<String, Object> nextAttributes = next.getAttributes();
                 String nextName = (String) nextAttributes.get("name");
                 String nextLibrary = (String) nextAttributes.get("library");
-                if (nextName.endsWith(extension) && !"jsf.js".equals(nextName)) {
+                Resource nextResource = resourceHandler.createResource(nextName, nextLibrary);
+                if (nextName.endsWith(extension) && !"jsf.js".equals(nextName) &&
+                        nextResource != null && !URI.create(nextResource.getRequestPath()).isAbsolute()) {
                     resourceInfos.resources.add(new CoalescingResource.Info(nextName, nextLibrary));
                     root.removeComponentResource(context, next);
                 }
