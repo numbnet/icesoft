@@ -129,7 +129,15 @@ public class CoalescingResource extends Resource {
         }
 
         public boolean equals(Object o) {
-            return o instanceof Info && name.equals(((Info) o).name) && library.equals(((Info) o).library);
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Info info = (Info) o;
+
+            if (library != null ? !library.equals(info.library) : info.library != null) return false;
+            if (name != null ? !name.equals(info.name) : info.name != null) return false;
+
+            return true;
         }
     }
 

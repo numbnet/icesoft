@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,19 +51,6 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
     public GMapResourceHandler(ResourceHandler handler) {
         this.handler = handler;
         gmapKey = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("org.icefaces.ace.gmapKey");
-        FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreRenderViewEvent.class, new SystemEventListener() {
-            public void processEvent(SystemEvent event) throws AbortProcessingException {
-                try {
-                    if (gmapKey != null && apiJS == null) createResource(GMAP_API);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            public boolean isListenerForSource(Object source) {
-                return EnvUtils.isICEfacesView(FacesContext.getCurrentInstance());
-            }
-        });
     }
 
     public ResourceHandler getWrapped() {
@@ -94,43 +82,17 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
     }
 
     private Resource recreateResource(Resource resource, String url) {
-        byte[] content;
-        try {
-            InputStream in = new URL(url).openConnection().getInputStream();
-            content = readIntoByteArray(in);
-        } catch (IOException e) {
-            content = NO_BYTES;
-        }
-        return new ResourceEntry(GMAP_API, resource.getRequestPath(), content);
-    }
-
-    private static byte[] readIntoByteArray(InputStream in) throws IOException {
-        byte[] buffer = new byte[4096];
-        int bytesRead;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-        while ((bytesRead = in.read(buffer)) != -1) {
-            out.write(buffer, 0, bytesRead); // write
-        }
-        out.flush();
-
-        return out.toByteArray();
+        return new ResourceEntry(GMAP_API, url);
     }
 
     private class ResourceEntry extends Resource {
         private Date lastModified = new Date();
         private String localPath;
         private String requestPath;
-        private byte[] content;
-        private String mimeType;
 
-        private ResourceEntry(String localPath, String requestPath, byte[] content) {
+        private ResourceEntry(String localPath, String requestPath) {
             this.localPath = localPath;
             this.requestPath = requestPath;
-            this.content = content;
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = facesContext.getExternalContext();
-            this.mimeType = externalContext.getMimeType(localPath);
         }
 
         public String getLibraryName() {
@@ -142,23 +104,15 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
         }
 
         public InputStream getInputStream() throws IOException {
-            return new ByteArrayInputStream(content);
+            return new ByteArrayInputStream(NO_BYTES);
         }
 
         public Map<String, String> getResponseHeaders() {
-
-            HashMap headers = new HashMap();
-            headers.put("ETag", eTag());
-            headers.put("Cache-Control", "public");
-            headers.put("Content-Type", mimeType);
-            headers.put("Date", Util.HTTP_DATE.format(new Date()));
-            headers.put("Last-Modified", Util.HTTP_DATE.format(lastModified));
-
-            return headers;
+            return Collections.emptyMap();
         }
 
         public String getContentType() {
-            return mimeType;
+            return "text/javascript";
         }
 
         public String getRequestPath() {
