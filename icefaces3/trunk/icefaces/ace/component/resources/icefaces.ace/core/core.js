@@ -84,12 +84,16 @@ ice.ace.create = function(name, args) {
                 'for more details.';
 };
 
+// Get originating event object in call stack if one exists
 ice.ace.getEvent = function() {
+    if (ice.ace.jq.browser.msie && ice.ace.jq.browser.version < 9) return window.event;
+
     var source = arguments.callee.caller;
     while (source) {
         source = source.caller;
-        if (source.arguments[0] instanceof Event)
+        if (source && source.arguments[0] instanceof Event)
             return source.arguments[0];
+        else return null;
     }
 }
 
