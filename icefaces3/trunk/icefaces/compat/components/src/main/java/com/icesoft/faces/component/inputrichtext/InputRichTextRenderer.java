@@ -49,24 +49,23 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             textarea.setAttribute(HTML.NAME_ATTR,  ClientIdPool.get(clientId));
             textarea.setAttribute(HTML.ID_ATTR,  ClientIdPool.get(clientId));
             textarea.setAttribute(HTML.STYLE_ATTR,  "display:none;");
-            Object value = inputRichText.getValue();
-            if (value != null) {
+            String value = getValue(facesContext, uiComponent);
+            int hashCode = 0;
+            if (value != null && value.length() > 0) {
             	textarea.appendChild(domContext.createTextNode(String.valueOf(value)));
+                hashCode = value.toString().hashCode();
             }
             root.appendChild(textarea);
 			
-            int hashCode = 0;
-            if (value != null) {
-            	hashCode = value.toString().hashCode();
-            }
-
             Element scrptWrpr = domContext.createElement(HTML.SPAN_ELEM);
-            scrptWrpr.setAttribute(HTML.ID_ATTR, clientId+ "scrpt");
+            scrptWrpr.setAttribute(HTML.ID_ATTR, clientId+ "_scrpt");
             root.getParentNode().appendChild(scrptWrpr);
             Element scrpt = domContext.createElement(HTML.SCRIPT_ELEM);
             scrpt.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             String customConfig =  (inputRichText.getCustomConfigPath() == null)? "": inputRichText.getCustomConfigPath();
-            scrpt.appendChild(domContext.createTextNodeUnescaped("renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"'," +
+            scrpt.appendChild(domContext.createTextNodeUnescaped("renderEditor('"+
+                    ClientIdPool.get(clientId) +"', '"+
+                    inputRichText.getToolbar() +"'," +
             		"'"+ inputRichText.getLanguage()+"'," +
             		"'"+ inputRichText.getSkin().toLowerCase()+"'," +
             		"'"+ inputRichText.getHeight() + "'," +
@@ -74,7 +73,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             		"'"+ customConfig + "'," +
             		inputRichText.isSaveOnSubmit()+ "," +
                     (!inputRichText.isSaveOnSubmit() && inputRichText.getPartialSubmit()) + "," +
-					hashCode + ")"));
+					hashCode + ");"));
             scrptWrpr.appendChild(scrpt);
 
             domContext.stepOver();
