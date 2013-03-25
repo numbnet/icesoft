@@ -15,9 +15,20 @@
  */
 
 ice.ace.tabset = {
+    devMode : false,
+    logAll : false,  // Set to true to enable more debugging to be logged
+
+    consoleLog : function(important, msg) {
+        if (window.console && window.console.log) {
+            if (ice.ace.tabset.devMode && (ice.ace.tabset.logAll || important)) {
+                console.log(msg);
+            }
+        }
+    },
+
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        var initializeStartTime = new Date().getTime();
-       //logger.info('1. tabset initialize');
+       ice.ace.tabset.consoleLog(false, 'tabSet.initialize');
 	 
 		 YAHOO.util.Event.onDOMReady(function () {
 		 var Dom = YAHOO.util.Dom;
@@ -30,28 +41,28 @@ ice.ace.tabset = {
        initElem.suppressTabChange = true;
        if (jsfProps.isClientSide) {
     	   if(ice.ace.clientState.has(clientId)){
+               ice.ace.tabset.consoleLog(false, 'tabSet.initialize  clientSide  setActiveIndex from clientState: ' + ice.ace.clientState.get(clientId));
     		   tabview.set('activeIndex', ice.ace.clientState.get(clientId));
     	   }
     	   else {
-    		   tabview.set('activeIndex', jsfProps.selectedIndex);      
+               ice.ace.tabset.consoleLog(false, 'tabSet.initialize  clientSide  setActiveIndex from server: ' + jsfProps.selectedIndex);
+    		   tabview.set('activeIndex', jsfProps.selectedIndex);
     	   }
        }
        else {
-           //alert("server side init");
            if(!ice.ace.clientState.has(clientId)) {
-               //alert("server side init - no context");
+               ice.ace.tabset.consoleLog(false, 'tabSet.initialize  serverSide  setActiveIndex from server: ' + jsfProps.selectedIndex);
                tabview.set('activeIndex', jsfProps.selectedIndex);
            }
        }
        initElem.suppressTabChange = null;
        
-       //logger.info('3. tabset initialize');
        var tabChange=function(event) {
             var tabChangeStartTime = new Date().getTime();
-            //alert('tabChange: ENTER');
+            ice.ace.tabset.consoleLog(false, 'tabSet.tabChange  ENTER');
             var rootElem = document.getElementById(clientId);
             if (rootElem.suppressTabChange) {
-                //alert('tabChange: EXIT suppressTabChange');
+                ice.ace.tabset.consoleLog(false, 'tabSet.tabChange  EXIT suppressTabChange');
                 return;
             }
             var context = ice.ace.getJSContext(clientId);
@@ -60,17 +71,17 @@ ice.ace.tabset = {
             event.target = rootElem;
             var currentIndex = tabview.getTabIndex(event.newValue);
             if (currentIndex == null) {
-                //alert('tabChange: EXIT null currentIndex');
+                ice.ace.tabset.consoleLog(false, 'tabSet.tabChange  EXIT null currentIndex');
                 return;
             }
-            //YAHOO.log(" currentIndex="+currentIndex);
+            ice.ace.tabset.consoleLog(false, 'tabSet.tabChange  currentIndex: ' + currentIndex);
             var tabIndexInfo = clientId + '='+ currentIndex;
             var doOnSuccess = function() {
                 if (rootElem.suppressServerSideTransition) {
                     rootElem.suppressServerSideTransition = null;
                     return;
                 }
-                //alert('doOnSuccess: ENTER');
+                ice.ace.tabset.consoleLog(false, 'tabSet.tabChange.doOnSuccess  ENTER');
 
                 // Ajax content transition. YUI content transition doesn't execute for server side cases
                 // allowing our companonent to trigger content transition when the server call succeeds.
@@ -114,7 +125,7 @@ ice.ace.tabset = {
 
                 ice.ace.jq(tabview._contentParent).css({opacity:1});
                 cachedNewTab = null;
-                //alert('doOnSuccess: EXIT');
+                ice.ace.tabset.consoleLog(false, 'tabSet.tabChange.doOnSuccess  EXIT');
             };
             var params = function(parameter) {
 							//parameter('ice.focus', event.newValue.get('element').firstChild.id);
@@ -125,25 +136,22 @@ ice.ace.tabset = {
                             });
                         };
             if (sJSFProps.isClientSide){
-            	//YAHOO.log(" clientSide and currentIndex="+currentIndex);
+                ice.ace.tabset.consoleLog(false, 'tabSet.tabChange  clientSide  currentIndex: ' + currentIndex);
             	ice.ace.clientState.set(clientId, currentIndex);
                 if (sJSFProps.behaviors) {
                     if (sJSFProps.behaviors.clientSideTabChange) {
                         var submitClientSideStartTime = new Date().getTime();
                         ice.ace.ab(sJSFProps.behaviors.clientSideTabChange);
-                        if (window.console && jsfProps.devMode) {
-                            console.log("ace:tabSet - ID: " + clientId + " - submit CS - " + (new Date().getTime() - submitClientSideStartTime) + "ms");
-                        }
+                        ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - submit CS - " + (new Date().getTime() - submitClientSideStartTime) + "ms");
                     }
                 }
                 ice.ace.jq(tabview._contentParent).css({opacity:1});
-                //console.info('Client side tab ');
             } else {
                 var targetElement = ice.ace.tabset.getTabIndexField(rootElem);
                 if(targetElement) {
                 	targetElement.value = tabIndexInfo;
-                }            	
-                //logger.info('Server side tab '+ event);
+                }
+                ice.ace.tabset.consoleLog(false, 'tabSet.tabChange  serverSide  event: ' + event);
                 try {
                     // When multiple requests are sent before the first returns, only transition if
                     // the new tab matches the last recorded here.
@@ -163,26 +171,20 @@ ice.ace.tabset = {
                                     {params: otherParams, execute: "@this", render: "@this", onsuccess: doOnSuccess}));
                             //restore id
                             targetElement.id = elementId;
-                            if (window.console && jsfProps.devMode) {
-                                console.log("ace:tabSet - ID: " + clientId + " - submit B - " + (new Date().getTime() - submitBehaviourStartTime) + "ms");
-                            }
+                            ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - submit B - " + (new Date().getTime() - submitBehaviourStartTime) + "ms");
                         }
                     }
                     if (!haveBehaviour) {
                         var submitServerSideStartTime = new Date().getTime();
                         ice.submit(event, targetElement, params);
-                        if (window.console && jsfProps.devMode) {
-                            console.log("ace:tabSet - ID: " + clientId + " - submit SS - " + (new Date().getTime() - submitServerSideStartTime) + "ms");
-                        }
+                        ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - submit SS - " + (new Date().getTime() - submitServerSideStartTime) + "ms");
                     }
                 } catch(e) {
-                    //logger.info(e);
+                    ice.ace.tabset.consoleLog(true, 'tabSet.tabChange  exception: ' + e);
                 }
             }//end if
-            if (window.console && jsfProps.devMode) {
-                console.log("ace:tabSet - ID: " + clientId + " - tabChange - " + (new Date().getTime() - tabChangeStartTime) + "ms");
-            }
-            //alert('tabChange: EXIT end');
+            ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - tabChange - " + (new Date().getTime() - tabChangeStartTime) + "ms");
+            ice.ace.tabset.consoleLog(false, 'tabSet.tabChange  EXIT end');
        };//tabchange;
        
        //Check for aria support
@@ -312,9 +314,7 @@ ice.ace.tabset = {
        bindYUI(tabview);
 
 	 }); // *** end of domready
-       if (window.console && jsfProps.devMode) {
-           console.log("ace:tabSet - ID: " + clientId + " - initialize - " + (new Date().getTime() - initializeStartTime) + "ms");
-       }
+     ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - initialize - " + (new Date().getTime() - initializeStartTime) + "ms");
    },
    
    //this function is responsible to provide an element that keeps tab index
@@ -333,10 +333,10 @@ ice.ace.tabset = {
 				   try {
 					   _form = formOf(tsc);
 				   } catch(e) {
-					   //logger.info('ERROR: The tabSetProxy must be enclosed inside a Form element');
+                       ice.ace.tabset.consoleLog(true, 'ERROR: The tabSetProxy must be enclosed inside a form element');
 				   }
 			   } else {
-				   //logger.info('ERROR: If tabset is not inside a form, then you must use tabSetProxy component');
+                   ice.ace.tabset.consoleLog(true, 'ERROR: If tabSet is not inside a form, then you must use tabSetProxy component');
 			   }
 		   }
 	   }
@@ -364,6 +364,7 @@ ice.ace.tabset = {
  
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {
+      ice.ace.tabset.devMode = jsfProps.devMode;
       var updatePropertiesStartTime = new Date().getTime();
        var lib = this;
 	   YAHOO.util.Event.onDOMReady(function () {
@@ -380,6 +381,7 @@ ice.ace.tabset = {
        }
        var requiresInitialise = ice.ace.tabset.handlePotentialTabChanges(
                clientId, oldJSFProps, jsfProps);
+       ice.ace.tabset.consoleLog(false, 'tabSet.updateProperties  requiresInitialise: ' + requiresInitialise);
        // If the tab info changed sufficiently to require an initialise
        if (context) {
            if (requiresInitialise) {
@@ -399,6 +401,7 @@ ice.ace.tabset = {
                var existingTabs = tabviewObj.get('tabs');
                existingTabs[index].set('disabled', false);
 
+               ice.ace.tabset.consoleLog(false, 'tabSet.updateProperties  object index: ' + objIndex + '  server index: ' + index);
                if (index != objIndex) {
                    existingTabs[objIndex].set('disabled', false);
 
@@ -406,9 +409,9 @@ ice.ace.tabset = {
                    rootElem.suppressTabChange = true;
                    rootElem.suppressServerSideTransition = true;
                    if (!jsfProps.isClientSide){
-                       //alert('updateProperties: index mismatch BEFORE set activeIndex');
+                       //ice.ace.tabset.consoleLog(false, 'updateProperties: index mismatch BEFORE set activeIndex');
                        tabviewObj.set('activeIndex', index);
-                       //alert('updateProperties: index mismatch AFTER set activeIndex');
+                       //ice.ace.tabset.consoleLog(false, 'updateProperties: index mismatch AFTER set activeIndex');
 
                        var tabs = tabviewObj.get('tabs');
                        var countIndex;
@@ -423,11 +426,12 @@ ice.ace.tabset = {
                            }
                        }
 
-                       //alert('updateProperties: index mismatch BETWEEN set contentVisible/active AND opacity');
+                       //ice.ace.tabset.consoleLog(false, 'updateProperties: index mismatch BETWEEN set contentVisible/active AND opacity');
                    } else {
-                       //alert('updateProperties: index mismatch BEFORE selectTab');
+                       //ice.ace.tabset.consoleLog(false, 'updateProperties: index mismatch BEFORE selectTab');
+                       ice.ace.clientState.set(clientId, index);
                        tabviewObj.selectTab(index);
-                       //alert('updateProperties: index mismatch AFTER selectTab');
+                       //ice.ace.tabset.consoleLog(false, 'updateProperties: index mismatch AFTER selectTab');
                    }
                    ice.ace.jq(tabviewObj._contentParent).css({opacity:1});
                    rootElem.suppressTabChange = null;
@@ -453,13 +457,9 @@ ice.ace.tabset = {
 
        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, lib);
 
-       if (window.console && jsfProps.devMode) {
-           console.log("ace:tabSet - ID: " + clientId + " - updateProperties DR - " + (new Date().getTime() - updatePropertiesDOMReadyStartTime) + "ms");
-       }
+       ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - updateProperties DR - " + (new Date().getTime() - updatePropertiesDOMReadyStartTime) + "ms");
        });
-       if (window.console && jsfProps.devMode) {
-           console.log("ace:tabSet - ID: " + clientId + " - updateProperties - " + (new Date().getTime() - updatePropertiesStartTime) + "ms");
-       }
+       ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - updateProperties - " + (new Date().getTime() - updatePropertiesStartTime) + "ms");
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 
