@@ -251,7 +251,7 @@ ice.ace.extendAjaxArgs = function(callArguments, options) {
         callArguments['node'] = node;
     }
 
-    if (source) {
+    if (source && !(callArguments['source'])) {
         callArguments['source'] = source;
     }
 
