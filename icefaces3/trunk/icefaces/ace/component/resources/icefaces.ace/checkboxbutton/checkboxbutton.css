@@ -19,6 +19,10 @@
 
 .ice-checkboxbutton .yui-button > span > button {
     border:none;
+
+    /* IE7 hacks */
+    *padding: 0px 6px 0px;
+    *font-size: small;
 }
 
 .ui-icon-unchecked {
