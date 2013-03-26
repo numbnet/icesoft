@@ -15,8 +15,8 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,19 +26,19 @@
 
     <repositories>
         <repository>
-            <id>ICEsoft Snapshot Repository</id>
+            <id>ICEsoft Release Repository</id>
             <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
         </repository>
     </repositories>
 
     <parent>
-        <groupId>org.icefaces.tutorial.ace</groupId>
+        <groupId>org.icefaces.tutorial.ace-only</groupId>
         <artifactId>base</artifactId>
         <version>1.0</version>
     </parent>
 
-    <name>Conditional Row Messages Tutorial</name>
-    <url>http://www.icefaces.org</url>
+    <name>ACE Conditional Row Messages Tutorial</name>
+    <url>http://www.icesoft.org/wiki/display/ICE/DataTable+Conditional+Row+Messages</url>
 
     <packaging>war</packaging>
 </project>

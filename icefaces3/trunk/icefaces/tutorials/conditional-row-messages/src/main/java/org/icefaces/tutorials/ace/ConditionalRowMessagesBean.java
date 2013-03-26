@@ -20,15 +20,11 @@ import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.ace.util.collections.Predicate;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 
-@ManagedBean
-@SessionScoped
 public class ConditionalRowMessagesBean {
     ArrayList<Task> data = new ArrayList<Task>() {{
         int i = 0;
