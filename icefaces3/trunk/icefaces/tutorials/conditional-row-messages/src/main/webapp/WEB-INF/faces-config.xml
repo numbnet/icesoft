@@ -28,5 +28,21 @@
         </locale-config>
         <message-bundle>messages</message-bundle>
     </application>
-  
+
+    <managed-bean>
+        <managed-bean-name>conditionalRowMessagesBean</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.tutorials.ace.ConditionalRowMessagesBean
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>messageUtils</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.tutorials.util.TutorialMessageUtils
+        </managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
 </faces-config>
