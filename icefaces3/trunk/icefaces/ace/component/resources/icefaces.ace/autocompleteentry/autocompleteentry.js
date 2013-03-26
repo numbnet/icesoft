@@ -174,7 +174,6 @@ ice.ace.Autocompleter.prototype = {
 			if (behaviors.behaviors) {
 				if (behaviors.behaviors.submit) {
 					this.ajaxSubmit = behaviors.behaviors.submit;
-					this.ajaxSubmit.source = this.ajaxSubmit.source + "_input";
 				}
 				if (behaviors.behaviors.blur) {
 					this.ajaxBlur = behaviors.behaviors.blur;
