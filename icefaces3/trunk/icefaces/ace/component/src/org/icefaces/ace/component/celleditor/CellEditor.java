@@ -36,14 +36,86 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.datatable.DataTableConstants;
+import org.icefaces.ace.component.roweditor.RowEditor;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.resources.ICEResourceDependencies;
-import java.util.List;
-import java.util.ArrayList;
+
+import java.util.*;
 
 @ICEResourceDependencies({
 
 })
 public class CellEditor extends CellEditorBase {
+    Map<String, Object> requestMap;
+    String rowStateVar;
+
+    @Override
+    public Iterator<UIComponent> getFacetsAndChildren() {
+        Iterator<UIComponent> result;
+        int childCount = this.getChildCount(),
+            facetCount = this.getFacetCount();
+
+        if (requestMap == null)
+            requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+
+        if (rowStateVar == null)
+            rowStateVar = getRowStateVar();
+
+        RowState rowState = (RowState) requestMap.get(rowStateVar);
+
+        // not in an iterative table visit, return default impl
+        if (rowState == null) return super.getFacetsAndChildren();
+
+        List<String> selectedEditorIds = rowState.getActiveCellEditorIds();
+
+        // If there are neither facets nor children
+        if (0 == childCount && 0 == facetCount) {
+            result = new ArrayList<UIComponent>().iterator();
+        }
+        // If there are only facets and no children
+        else if (0 == childCount) {
+            List<UIComponent> facets = new ArrayList<UIComponent>();
+
+            if (selectedEditorIds.contains(getId())) facets.add(getFacet("input"));
+            else facets.add(getFacet("output"));
+
+            List<UIComponent> unmodifiable = Collections.unmodifiableList(facets);
+            result = unmodifiable.iterator();
+        }
+        // If there are only children and no facets
+        else if (0 == facetCount) {
+            List<UIComponent> unmodifiable =
+                    Collections.unmodifiableList(getChildren());
+            result = unmodifiable.iterator();
+        }
+        // If there are both children and facets
+        else {
+            List<UIComponent> children = getChildren();
+
+            if (selectedEditorIds.contains(getId())) children.add(getFacet("input"));
+            else children.add(getFacet("output"));
+
+            List<UIComponent> unmodifiable = Collections.unmodifiableList(children);
+            result = unmodifiable.iterator();
+        }
+
+        return result;
+    }
+
+    private DataTable findParentTable() {
+        UIComponent parent = getParent();
+
+        while (parent != null)
+            if (parent instanceof DataTable) return (DataTable) parent;
+            else parent = parent.getParent();
+
+        return null;
+    }
+
+    private String getRowStateVar() {
+        DataTable table = findParentTable();
+
+        return table.getRowStateVar();
+    }
 }
