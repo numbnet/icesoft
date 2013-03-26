@@ -96,13 +96,6 @@ ice.ace.Dialog = function(id, cfg) {
         _self.onHide(event, ui);
     });
     this.jq.bind('dialogopen', function(event, ui) {
-        if (ice.ace.jq.browser.msie && ice.ace.jq.browser.version < 8) // ICE-8748
-            var overlay = ice.ace.jq('.ui-widget-overlay');
-            if (overlay.length > 0) {
-                overlay.css('position', 'fixed').css('top', 0).css('left', 0);
-                overlay.appendTo(_self.jq.parent().parent());
-            }
-
         _self.onShow(event, ui);
     });
 	
