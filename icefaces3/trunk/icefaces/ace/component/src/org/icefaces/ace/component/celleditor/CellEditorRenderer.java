@@ -33,6 +33,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.datatable.DataTableConstants;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.renderkit.CoreRenderer;
@@ -41,12 +42,16 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="cellEditor", value="org.icefaces.ace.component.celleditor.CellEditor")
 public class CellEditorRenderer extends CoreRenderer {
+    String rowStateVar;
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CellEditor editor = (CellEditor) component;
-        RowState rowState = (RowState) context.getExternalContext().getRequestMap().get("rowState");
+
+        if (rowStateVar == null) rowStateVar = getRowStateVar(editor);
+
+        RowState rowState = (RowState) context.getExternalContext().getRequestMap().get(rowStateVar);
         List<String> selectedEditorIds = rowState.getActiveCellEditorIds();
 
         writer.startElement(HTML.DIV_ELEM, null);
@@ -81,4 +86,20 @@ public class CellEditorRenderer extends CoreRenderer {
 		return true;
 	}
 
+
+    private DataTable findParentTable(CellEditor editor) {
+        UIComponent parent = editor.getParent();
+
+        while (parent != null)
+            if (parent instanceof DataTable) return (DataTable) parent;
+            else parent = parent.getParent();
+
+        return null;
+    }
+
+    private String getRowStateVar(CellEditor editor) {
+        DataTable table = findParentTable(editor);
+
+        return table.getRowStateVar();
+    }
 }
