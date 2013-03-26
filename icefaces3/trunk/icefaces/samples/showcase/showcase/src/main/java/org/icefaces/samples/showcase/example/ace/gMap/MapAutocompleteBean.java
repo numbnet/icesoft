@@ -53,7 +53,8 @@ import java.io.Serializable;
 public class MapAutocompleteBean extends ComponentExampleImpl<MapAutocompleteBean> implements Serializable{
 	public static final String BEAN_NAME = "autocompleteBean";
 	private boolean showWindow = false;
-    private String address,types,url;
+    private String address,types;
+	private String url = "https://maps.google.com/maps/place";
 
     public boolean isShowWindow() {
         return showWindow;
