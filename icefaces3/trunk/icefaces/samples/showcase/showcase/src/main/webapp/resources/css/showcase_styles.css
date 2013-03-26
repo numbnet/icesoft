@@ -528,3 +528,13 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
 .ui-state-optional.ui-state-error {
     background-color: #ff9999;
 }
+
+.ui-combobox .ui-inputfield {
+    padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.ui-selectmenu .ui-inputfield {
+    padding-top: 2px;
+	padding-bottom: 2px;
+}

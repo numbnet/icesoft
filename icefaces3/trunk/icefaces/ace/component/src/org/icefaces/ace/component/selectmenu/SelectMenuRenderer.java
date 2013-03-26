@@ -42,8 +42,8 @@ import java.io.IOException;
 public class SelectMenuRenderer extends InputRenderer {
 
     private static final String AUTOCOMPLETE_DIV = "_div";
-	private static final String LABEL_CLASS = "ui-select-item-label";
-	private static final String VALUE_CLASS = "ui-select-item-value";
+	private static final String LABEL_CLASS = "ui-selectmenu-item-label";
+	private static final String VALUE_CLASS = "ui-selectmenu-item-value";
 
     public boolean getRendersChildren() {
         return true;
@@ -93,7 +93,7 @@ public class SelectMenuRenderer extends InputRenderer {
 		// root
         writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", "ui-select " + selectMenu.getStyleClass(), null);
+		writer.writeAttribute("class", "ui-selectmenu " + selectMenu.getStyleClass(), null);
 		String dir = selectMenu.getDir();
 		if (dir != null) writer.writeAttribute("dir", dir, null);
 		String lang = selectMenu.getLang();
@@ -108,7 +108,7 @@ public class SelectMenuRenderer extends InputRenderer {
 		boolean disabled = selectMenu.isDisabled();
 		String disabledClass = "";
 		if (disabled) disabledClass = " ui-state-disabled ";
-		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-select-value " + disabledClass, null);
+		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-selectmenu-value " + disabledClass, null);
         writer.writeAttribute("style", "display: inline-block; width: " + width + "px;", null);
 		String tabindex = selectMenu.getTabindex();
 		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
@@ -126,14 +126,16 @@ public class SelectMenuRenderer extends InputRenderer {
 		
 		// text span
 		writer.startElement("span", null);
-		writer.writeAttribute("style", selectMenu.getStyle() + "; display: inline-block; overflow: hidden;", null);
-		writer.writeAttribute("class", "ui-inputfield ui-state-default " + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass, null);
+		writer.writeAttribute("style", selectMenu.getStyle() + "; display: inline-block; overflow: hidden; border-top:0;border-bottom:0;border-left:0;", null);
+		writer.writeAttribute("class", "ui-inputfield ui-state-default ui-corner-left " + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass, null);
 		writer.endElement("span");
 		
 		// down arrow span
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-state-default ui-corner-right", null);
 		writer.writeAttribute("style", "float:right; width:17px; border:0;", null);
+		writer.startElement("div", null);
+		writer.endElement("div");
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
 		writer.endElement("div");
@@ -152,7 +154,7 @@ public class SelectMenuRenderer extends InputRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", divId, null);
-        writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all ui-select-list", null);
+        writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all ui-selectmenu-list", null);
         writer.writeAttribute("style", "display:none;z-index:500;", null);
         writer.endElement("div");
 
