@@ -471,15 +471,21 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     /**
      * <p>Prepare for rendering into subtrees.</p>
      */
-    public void startSubtreeRendering() {
+    public void startSubtreeRendering(Document oldDoc) {
         //subtree rendering will replace specified
         //subtrees in the old DOM
-        Document oldDoc = getOldDocument();
-        if (oldDoc != null) {
+        if (null != oldDoc)  {
             document = oldDoc;
-        } else {
-            refreshDocument();
+            return;
         }
+
+        oldDoc = getOldDocument();
+        if (null != oldDoc)  {
+            document = oldDoc;
+            return;
+        }
+        
+        refreshDocument();
 
     }
 
