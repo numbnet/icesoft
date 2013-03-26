@@ -145,6 +145,8 @@ public class ComboBoxRenderer extends InputRenderer {
 		writer.writeAttribute("class", "ui-state-default ui-corner-right", null);
 		writer.writeAttribute("style", "float:right; width:17px; border-top:0; border-right:0; border-bottom:0;", null);
 		writer.startElement("div", null);
+		writer.endElement("div");
+		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
 		writer.endElement("div");
 		writer.endElement("div");

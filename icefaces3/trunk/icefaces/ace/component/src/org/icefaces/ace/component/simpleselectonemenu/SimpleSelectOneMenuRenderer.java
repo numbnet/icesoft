@@ -79,7 +79,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 		// root
         writer.startElement("span", null);
 		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", "ui-select-simple " + simpleSelectOneMenu.getStyleClass(), null);
+		writer.writeAttribute("class", "ui-simpleselectonemenu " + simpleSelectOneMenu.getStyleClass(), null);
 
 		writeLabelAndIndicatorBefore(labelAttributes);
 		

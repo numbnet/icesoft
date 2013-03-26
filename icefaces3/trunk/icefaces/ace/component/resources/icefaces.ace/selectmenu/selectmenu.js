@@ -28,19 +28,20 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selec
 	this.direction = 'down';
 	var options = {};
 	this.root = ice.ace.jq(ice.ace.escapeClientId(this.id));
-	var $element = this.root.find('.ui-select-value');
+	var $element = this.root.find('.ui-selectmenu-value');
 	this.element = $element.get(0);
 	this.element.id = this.id + "_input";
 	this.displayedValue = $element.find('span').get(0);
 	ice.ace.jq(this.displayedValue).css('width', $element.width() - 27);
-	this.downArrowButton = $element.find('div').eq(0);
+	this.$downArrowButton = $element.find('div').eq(0);
 	if (ice.ace.jq.browser.msie) {// ie7 fix
 		if (ice.ace.jq.browser.version < 8) {
 			if (navigator.userAgent.indexOf("Trident/5") < 0) {
-				ice.ace.jq(this.downArrowButton).css('position', 'absolute');
+				this.$downArrowButton.css('position', 'absolute');
 			}
 		}
 	}
+	this.adjustDownArrowButtonHeight();
 	var $input = this.root.find('input[name="'+this.id+'_input"]');
 	this.input = $input.get(0);
 	this.input.id = this.id + "_input";
@@ -89,9 +90,9 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selec
 	}
 };
 
-ice.ace.SelectMenu.LABEL_CLASS = 'ui-select-item-label';
-ice.ace.SelectMenu.VALUE_CLASS = 'ui-select-item-value';
-ice.ace.SelectMenu.IGNORE_CLASS = 'ui-select-item-ignore';
+ice.ace.SelectMenu.LABEL_CLASS = 'ui-selectmenu-item-label';
+ice.ace.SelectMenu.VALUE_CLASS = 'ui-selectmenu-item-value';
+ice.ace.SelectMenu.IGNORE_CLASS = 'ui-selectmenu-item-ignore';
 
 ice.ace.SelectMenu.keys = {
 KEY_BACKSPACE: 8,
@@ -174,7 +175,7 @@ ice.ace.SelectMenu.prototype = {
         this.options.onShow = this.options.onShow ||
             function(element, update) {
                 try {
-					self.downArrowButton.addClass('ui-state-hover');
+					self.$downArrowButton.addClass('ui-state-hover');
 					self.calculateListPosition();
                     ice.ace.jq(update).fadeIn(150)
                 } catch(e) {
@@ -183,7 +184,7 @@ ice.ace.SelectMenu.prototype = {
             };
         this.options.onHide = this.options.onHide ||
             function(element, update) {
-			self.downArrowButton.removeClass('ui-state-hover');
+			self.$downArrowButton.removeClass('ui-state-hover');
 			ice.ace.jq(update).fadeOut(150)
             };
 
@@ -820,6 +821,8 @@ ice.ace.SelectMenu.prototype = {
 				var labelSpan = ice.ace.jq(currentEntry).find('.'+ice.ace.SelectMenu.LABEL_CLASS).get(0);
 				var label = ice.ace.SelectMenu.collectTextNodesIgnoreClass(labelSpan, ice.ace.SelectMenu.IGNORE_CLASS);
 				this.displayedValue.innerHTML = this.replaceSpaces(label);
+			} else {
+				this.displayedValue.innerHTML = '&nbsp;';
 			}
 		} else {
 			var element = ice.ace.jq(this.element);
@@ -831,7 +834,14 @@ ice.ace.SelectMenu.prototype = {
 				this.displayedValue.innerHTML = '&nbsp;';
 			}
 		}
-		ice.ace.jq(this.downArrowButton).css('height', ice.ace.jq(this.displayedValue).outerHeight());
+		this.adjustDownArrowButtonHeight();
+	},
+	
+	adjustDownArrowButtonHeight: function() {
+		this.$downArrowButton.css('height', ice.ace.jq(this.displayedValue).outerHeight());
+		var height = this.$downArrowButton.height();
+		var padding = (height - 16) / 2;
+		this.$downArrowButton.children().eq(0).css('height', padding);
 	},
 	
 	replaceSpaces: function(str) {
@@ -841,6 +851,7 @@ ice.ace.SelectMenu.prototype = {
 	
 	// update selected index if value was changed programmatically or was pre-selected
 	updateSelectedIndex: function() {
+		if (typeof this.selectedIndex != 'number' && !this.selectedIndex) this.selectedIndex = -1;
 		var currentEntry = this.getEntry(this.selectedIndex);
 		if ((currentEntry && (this.input.value != ice.ace.SelectMenu.collectTextNodesIgnoreClass(currentEntry, ice.ace.SelectMenu.LABEL_CLASS)))
 			|| (this.selectedIndex == -1 && this.input.value)) {

@@ -37,7 +37,10 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 	$element.css('width', $box.width() - 26);
 	var $downArrowButton = $box.find('div');
 	this.downArrowButton = $downArrowButton.eq(0);
-	$downArrowButton.css('height', $box.height());
+	this.downArrowButton.css('height', $box.height());
+	var height = this.downArrowButton.height();
+	var padding = (height - 16) / 2;
+	this.downArrowButton.children().eq(0).css('height', padding);
 	if (ice.ace.jq.browser.msie) {// ie7 fix
 		if (ice.ace.jq.browser.version < 8) {
 			if (navigator.userAgent.indexOf("Trident/5") < 0) {
