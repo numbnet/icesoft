@@ -272,7 +272,8 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                         ArrayList selectedOptions = new ArrayList();
                         for (int k = 0; k < options.getLength(); k++) {
                             Element option = (Element) options.item(k);
-                            if ("selected".equalsIgnoreCase(option.getAttribute("selected"))) {
+                            String selectedAttribute = option.getAttribute("selected");
+                            if ("selected".equalsIgnoreCase(selectedAttribute) || "true".equalsIgnoreCase(selectedAttribute)) {
                                 selectedOptions.add(option.getAttribute("value"));
                             }
                         }
