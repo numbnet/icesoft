@@ -88,13 +88,14 @@ ice.ace.create = function(name, args) {
 ice.ace.getEvent = function() {
     if (ice.ace.jq.browser.msie && ice.ace.jq.browser.version < 9) return window.event;
 
-    var source = arguments.callee.caller;
+    var source = ice.ace.getEvent.caller; // firefox compatible caller usage
     while (source) {
         source = source.caller;
         if (source && source.arguments[0] instanceof Event)
             return source.arguments[0];
-        else return null;
     }
+
+    return null;
 }
 
 ice.ace.addSubmitParam = function(parent, name, value) {
