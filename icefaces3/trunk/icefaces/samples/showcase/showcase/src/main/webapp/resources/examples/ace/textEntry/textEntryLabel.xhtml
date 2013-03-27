@@ -54,7 +54,7 @@
 
         <h:form id="textEntryForm">
             
-            <ace:panel id="personalInfoInputPanel" header="Personal Info">
+            <ace:panel id="personalInfoInputPanel" header="Personal Info" styleClass="required-styling-demo">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
                     <ace:textEntry id="firstNameInput" value="#{textEntryLabelBean.firstName}" label="#{textEntryLabelBean.firstLabelText}" labelPosition="#{textEntryLabelBean.labelPosition}" required="true" requiredIndicator="(*)" indicatorPosition="right">
                         <ace:ajax render="@this firstNameOutput firstNameMsg"/>
