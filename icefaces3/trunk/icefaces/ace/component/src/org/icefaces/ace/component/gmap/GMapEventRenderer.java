@@ -6,6 +6,7 @@ import org.icefaces.render.MandatoryResourceComponent;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.FacesException;
 import java.io.IOException;
 
 /*
@@ -37,19 +38,19 @@ public class GMapEventRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        String mapContext = gMapEvent.getParent().toString();
-        Boolean done = false;
+        String mapContext = null;
         UIComponent testComponent = component.getParent();
-        while (!done) {
-            if (testComponent.getRendererType().contains("GMapRenderer")) {
+        while (testComponent != null) {
+            if (testComponent instanceof GMap) {
                 mapContext = testComponent.getClientId(context);
-                done = true;
-            } else if (testComponent.toString().contains("UIOutput")) {
-                System.out.print("Component not nested in map");
-                done = true;
-            } else
+                break;
+            } else {
                 testComponent = testComponent.getParent();
+			}
         }
+		if (mapContext == null) {
+			throw new FacesException("ace:gMapEvent component '" + gMapEvent.getId() + "' is not nested inside an ace:gMap component.");
+		}
         writer.write("ice.ace.gMap.addEvent('" + mapContext + "','" + gMapEvent.getParent().getClientId(context) + "', '" + clientId + "','" + gMapEvent.getParent().toString() + "','" + gMapEvent.getEventType() + "','" + gMapEvent.getRendererType() + "',\"" + gMapEvent.getScriptToUse() + "\");");
         writer.write("});");
         writer.endElement("script");

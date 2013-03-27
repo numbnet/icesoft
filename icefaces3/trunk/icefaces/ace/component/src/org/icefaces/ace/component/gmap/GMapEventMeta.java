@@ -34,9 +34,7 @@ import org.icefaces.resources.ICEResourceLibrary;
         componentType = "org.icefaces.ace.component.GMapEvent",
         rendererType = "org.icefaces.ace.component.GMapEventRenderer",
         componentFamily = "org.icefaces.ace.component",
-        tlddoc = "The ace:gMapLayer component creates one of a variety of layers on top of the parent ace:gMap, to enhance or display new information. " +
-                "Google provides Bicycling, Traffic and Transit layers, which display bike paths, traffic flow and public transportations routes respectively. " +
-                "Alternatively, a user defined kml file can also be used." +
+        tlddoc = "The ace:gMapEvent component allows the other Google maps subcomponents to integrate with the google event handling API and execute user defined code." +
                 " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
 )
 
@@ -52,7 +50,7 @@ public class GMapEventMeta extends UIPanelMeta {
     @Property(tlddoc = "The type of event that you want the script to execute on. The script will execute when the parent component of this tag fires the chosen event. Valid types vary based on parent tag, but can be found under the parent's mention in the google API.")
     private String eventType;
 
-    @Property(tlddoc = "The script to be executed when the chosen event is fired. Use the variable 'map' to refer to the parent gMap and 'component' to refer to the parent tag. ")
+    @Property(tlddoc = "The script to be executed when the chosen event is fired. Use the variable 'map' to refer to the parent gMap (a google.maps.Map instance) and 'component' to refer to the Google Maps API Javascript object corresponding to the parent tag.")
     private String scriptToUse;
 
 
