@@ -332,6 +332,7 @@ NSLog(@"hideControls");
             @"Augmented Reality View", @"aug", 
             @"Address Book", @"fetchContacts", 
             @"Send SMS", @"sms", 
+            @"Location Upload", @"geospy", 
             nil];
     self.confirmMessages = [NSDictionary dictionaryWithObjectsAndKeys:
             @"Register with server ", @"register", 
@@ -341,7 +342,8 @@ NSLog(@"hideControls");
             @"Send QR Code to ", @"scan", 
             @"Send augmented reality location to ", @"aug", 
             @"Send contact to ", @"fetchContacts", 
-            @"Send SMS to ", @"sms", 
+            @"Send SMS", @"sms", 
+            @"Periodically send location to ", @"geospy", 
             nil];
     self.commandNames = [NSArray arrayWithObjects:
             @"camera", 
@@ -351,6 +353,7 @@ NSLog(@"hideControls");
             @"aug", 
             @"fetchContacts", 
             @"sms", 
+            @"geospy", 
             nil];
 }
 

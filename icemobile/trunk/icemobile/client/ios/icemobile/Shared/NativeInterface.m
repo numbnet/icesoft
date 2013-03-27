@@ -32,6 +32,7 @@
 @synthesize controller;
 @synthesize userAgent;
 @synthesize activeDOMElementId;
+@synthesize geospyName;
 @synthesize maxwidth;
 @synthesize maxheight;
 @synthesize soundFilePath;
@@ -49,6 +50,7 @@
 @synthesize soundRecorder;
 @synthesize popoverSource;
 @synthesize motionManager;
+@synthesize locationManager;
 
 static char base64EncodingTable[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -111,6 +113,8 @@ static char base64EncodingTable[64] = {
     } else if ([@"sms" isEqualToString:commandName])  {
         [self sms:[params objectForKey:@"n"]
                     body:[params objectForKey:@"body"]];
+    } else if ([@"geospy" isEqualToString:commandName])  {
+        [self geospy:[params objectForKey:@"id"]];
     }
 
     return YES;
@@ -717,6 +721,37 @@ NSLog(@"Found record %@", result);
     LogDebug(@"NativeInterface aug selected %@", augResult);
     [controller completePost:augResult forComponent:augName
             withName:augName];
+}
+
+- (BOOL)geospy:(NSString*) geoId {
+    self.geospyName = geoId;
+    if (nil == self.locationManager)
+        self.locationManager = [[CLLocationManager alloc] init];
+ 
+    self.locationManager.delegate = self;
+//    [self.locationManager startMonitoringSignificantLocationChanges];
+    [self.locationManager startUpdatingLocation];
+    [self.controller doCancel];
+    return YES;
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+        didUpdateLocations:(NSArray *)locations {
+   CLLocation* location = [locations lastObject];
+   NSString *geoResult = [NSString stringWithFormat:@"%+.6f,%+.6f,%+.6f",
+        location.coordinate.latitude,
+        location.coordinate.longitude,
+        location.altitude];
+
+    NSLog(@"geospy location changed %@\n", geoResult);
+    if (self.uploading)  {
+        NSLog(@"geospy already uploading\n");
+        return;
+    }
+    self.uploading = YES;
+    [self.controller completePost:geoResult forComponent:self.geospyName
+            withName:self.geospyName];
+
 }
 
 - (void)startMotionManager {
