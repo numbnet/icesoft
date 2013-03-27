@@ -41,19 +41,21 @@
                     <icecore:singleSubmit/>
                     <h:panelGrid id="configGrid" columns="2" styleClass="centeredPanelWithBorderSpacingAndLeftJustifiedText">
                         <h:outputLabel id="forLabel" for="forSelector" value="Region to listen to:" />
-                        <h:selectOneMenu id="forSelector" value="#{submitMonitor.forSelection}" valueChangeListener="#{submitMonitor.sleep}">
+                        <ace:simpleSelectOneMenu id="forSelector" value="#{submitMonitor.forSelection}" valueChangeListener="#{submitMonitor.sleep}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue=":demoForm:demoGroup" itemLabel="Demonstration Panel"/>
                             <f:selectItem itemValue=":configForm:configGrid :demoForm:demoGroup" itemLabel="Configuration and Demonstration Panels"/>
                             <f:selectItem itemValue="" itemLabel="Whole page"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
 
                         <h:outputLabel id="blockLabel" for="blockSelector" value="What to block:" />
-                        <h:selectOneMenu id="blockSelector" value="#{submitMonitor.blockSelection}" valueChangeListener="#{submitMonitor.sleep}">
+                        <ace:simpleSelectOneMenu id="blockSelector" value="#{submitMonitor.blockSelection}" valueChangeListener="#{submitMonitor.sleep}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="@none" itemLabel="Nothing"/>
                             <f:selectItem itemValue="@source" itemLabel="Only the submitting component"/>
                             <f:selectItem itemValue=":completeExample" itemLabel="Configuration and Demonstration Panels"/>
                             <f:selectItem itemValue="@all" itemLabel="Whole page"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
 
                         <h:outputLabel id="idleLabel" for="idleInput" value="Idle label:"/>
                         <h:inputText id="idleInput" value="#{submitMonitor.idleLabel}" valueChangeListener="#{submitMonitor.sleep}"/>

@@ -38,14 +38,14 @@
                <ace:panel>
                     <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing" columns="2"> 
                         <h:outputLabel value="Effect Type:" for="effectType"/>
-                            <h:selectOneMenu    id="effectType"
+                            <ace:simpleSelectOneMenu    id="effectType"
                                                 value="#{menuEffect.effectName}">
                                 <f:selectItems value="#{menuEffect.availableEffects}"
                                                var="type"
                                                itemValue="#{type.value}"
                                                itemLabel="#{type.key}"/>
-                                <f:ajax execute="@this" render="@form" event="change"/>
-                            </h:selectOneMenu>
+                                <ace:ajax execute="@this" render="@form" />
+                            </ace:simpleSelectOneMenu>
                             <h:outputLabel id="effectDur" value="Effect Duration (#{menuEffect.effectDuration} ms):" for="effectDuration"/>
                             <h:panelGroup>
                             <ace:sliderEntry id="effectDuration"

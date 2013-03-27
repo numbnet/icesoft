@@ -38,13 +38,13 @@
     </ace:gMap>
 	<br/>
     <h:form id="inputForm">
-        <h:selectOneMenu id="locationSelector" value="#{overlayBean.shape}">
-        <f:ajax event="valueChange" render="@all"/>
+        <ace:simpleSelectOneMenu id="locationSelector" value="#{overlayBean.shape}">
+        <ace:ajax event="valueChange" render="@all"/>
         <f:selectItem itemValue="polyline" itemLabel="Line"/>
         <f:selectItem itemValue="polygon" itemLabel="Polygon"/>
         <f:selectItem itemValue="rectangle" itemLabel="Rectangle"/>
         <f:selectItem itemValue="circle" itemLabel="Circle"/>
-    </h:selectOneMenu>
+    </ace:simpleSelectOneMenu>
         <h:outputLabel for="optionsIn" value="Options:"/>
         <h:inputText  id="optionsIn" size="50" value="${overlayBean.options}"/>
         <br/>

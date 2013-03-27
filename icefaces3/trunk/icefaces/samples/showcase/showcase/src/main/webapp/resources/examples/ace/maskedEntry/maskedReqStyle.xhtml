@@ -39,23 +39,25 @@
                 <h:panelGrid width="100%" columns="3" columnClasses="col25,col25,col50"
                              cellpadding="6" cellspacing="6">
                         <h:outputLabel for="reqColor" value="Required Color Style:"/>
-                        <h:selectOneMenu id="reqColor" value="#{maskedReqStyleBean.reqColor}"
+                        <ace:simpleSelectOneMenu id="reqColor" value="#{maskedReqStyleBean.reqColor}"
                                          style="width: 150px;">
+										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                         <ace:message for="reqColor"/>
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
-                        <h:selectOneMenu id="optColor" value="#{maskedReqStyleBean.optColor}"
+                        <ace:simpleSelectOneMenu id="optColor" value="#{maskedReqStyleBean.optColor}"
                                          style="width: 150px;">
+										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                         <ace:message for="optColor"/>
                 </h:panelGrid>
             </ace:panel>

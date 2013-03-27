@@ -55,10 +55,11 @@
                      <h:inputText id="labelText" value="#{dateLabel.labelText}" maxlength="250"/>
                      
                      <h:outputLabel for="positionIn" value="Label Position:"/>
-                     <h:selectOneMenu id="positionIn" value="#{dateLabel.labelPosition}"
+                     <ace:simpleSelectOneMenu id="positionIn" value="#{dateLabel.labelPosition}"
                                       valueChangeListener="#{dateLabel.positionChanged}">
+									  <ace:ajax execute="@this" />
                         <f:selectItems value="#{positionBean.labelPositions}"/>
-                     </h:selectOneMenu>
+                     </ace:simpleSelectOneMenu>
                 </h:panelGrid>
             </ace:panel>
             </h:form>

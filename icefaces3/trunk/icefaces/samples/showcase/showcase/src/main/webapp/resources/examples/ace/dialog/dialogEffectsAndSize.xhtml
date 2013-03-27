@@ -39,21 +39,24 @@
 				<icecore:singleSubmit/>
                     <h:panelGrid columns="2" width="100%">
                         <h:outputLabel id="minWidthLabel" for="minWidthSelector" value="Dialog minimum width:"/>
-                        <h:selectOneMenu id="minWidthSelector" value="#{dialogEffectsAndSizeBean.minWidth}">
+                        <ace:simpleSelectOneMenu id="minWidthSelector" value="#{dialogEffectsAndSizeBean.minWidth}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="200" itemLabel="200 px"/>
                             <f:selectItem itemValue="400" itemLabel="400 px"/>
                             <f:selectItem itemValue="600" itemLabel="600 px"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
 
                         <h:outputLabel id="minHeightLabel" for="minHeightSelector" value="Dialog minimum height:"/>
-                        <h:selectOneMenu id="minHeightSelector" value="#{dialogEffectsAndSizeBean.minHeight}">
+                        <ace:simpleSelectOneMenu id="minHeightSelector" value="#{dialogEffectsAndSizeBean.minHeight}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="200" itemLabel="200 px"/>
                             <f:selectItem itemValue="400" itemLabel="400 px"/>
                             <f:selectItem itemValue="600" itemLabel="600 px"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
 
                         <h:outputLabel id="onShowEffectLabel" for="onShowEffectSelector" value="Dialog show effect:"/>
-                        <h:selectOneMenu id="onShowEffectSelector" value="#{dialogEffectsAndSizeBean.showEffect}">
+                        <ace:simpleSelectOneMenu id="onShowEffectSelector" value="#{dialogEffectsAndSizeBean.showEffect}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="blind" itemLabel="Blind Effect"/>
                             <f:selectItem itemValue="bounce" itemLabel="Bounce Effect"/>
                             <f:selectItem itemValue="clip" itemLabel="Clip Effect"/>
@@ -65,10 +68,11 @@
                             <f:selectItem itemValue="scale" itemLabel="Scale Effect"/>
                             <f:selectItem itemValue="shake" itemLabel="Shake Effect"/>
                             <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
 
                         <h:outputLabel id="onHideEffectLabel" for="onHideEffectSelector" value="Dialog hide effect:"/>
-                        <h:selectOneMenu id="onHideEffectSelector" value="#{dialogEffectsAndSizeBean.hideEffect}">
+                        <ace:simpleSelectOneMenu id="onHideEffectSelector" value="#{dialogEffectsAndSizeBean.hideEffect}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="blind" itemLabel="Blind Effect"/>
                             <f:selectItem itemValue="bounce" itemLabel="Bounce Effect"/>
                             <f:selectItem itemValue="clip" itemLabel="Clip Effect"/>
@@ -78,7 +82,7 @@
                             <f:selectItem itemValue="puff" itemLabel="Puff Effect"/>
                             <f:selectItem itemValue="scale" itemLabel="Scale Effect"/>
                             <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                     </h:panelGrid>
 			</h:form>
             

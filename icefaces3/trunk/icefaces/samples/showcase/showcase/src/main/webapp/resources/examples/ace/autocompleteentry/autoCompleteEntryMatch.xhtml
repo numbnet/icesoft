@@ -37,13 +37,13 @@
         <h:form id="inputForm">
             <h:panelGrid columns="2" cellspacing="6" cellpadding="6">
                 <h:outputLabel for="filterIn" value="Filter Match Mode:"/>
-                <h:selectOneMenu id="filterIn" value="#{autoCompleteEntryMatchBean.filterMode}">
-                    <f:ajax event="valueChange" render="@this autoComplete"/>
+                <ace:simpleSelectOneMenu id="filterIn" value="#{autoCompleteEntryMatchBean.filterMode}">
+                    <ace:ajax event="valueChange" render="@this autoComplete"/>
                     <f:selectItem itemValue="startsWith" itemLabel="Starts With Text"/>
                     <f:selectItem itemValue="endsWith" itemLabel="End With Text"/>
                     <f:selectItem itemValue="contains" itemLabel="Contains Text"/>
                     <f:selectItem itemValue="exact" itemLabel="Exactly Matches Text"/>
-                </h:selectOneMenu>
+                </ace:simpleSelectOneMenu>
                 
                 <h:outputLabel for="caseIn" value="Case Sensitive:"/>
                 <h:selectBooleanCheckbox id="caseIn" value="#{autoCompleteEntryMatchBean.caseSensitive}">

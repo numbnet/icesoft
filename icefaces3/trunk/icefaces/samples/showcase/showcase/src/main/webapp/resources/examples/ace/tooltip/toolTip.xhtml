@@ -42,56 +42,63 @@
             <ace:panel header="Tooltip Component Configuration Panel">
                 <h:panelGrid columns="2" styleClass="centeredPanelGridWithLeftJustifiedText">
                        <h:outputLabel id="tooltipEffectLabel" for="tooltipEffectSelector" value="Effect:" />
-                        <h:selectOneMenu id="tooltipEffectSelector" value="#{tooltipOverviewBean.tooltipEffect}">
+                        <ace:simpleSelectOneMenu id="tooltipEffectSelector" value="#{tooltipOverviewBean.tooltipEffect}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="fade" itemLabel="Fade Effect"/>
                             <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
                             <f:selectItem itemValue="grow" itemLabel="Grow Effect"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                    
                         <h:outputLabel id="tooltipShowDelayLabel" for="tooltipShowDelaySelector" value="Show Delay:" />
-                        <h:selectOneMenu id="tooltipShowDelaySelector" value="#{tooltipOverviewBean.tooltipShowDelay}">
+                        <ace:simpleSelectOneMenu id="tooltipShowDelaySelector" value="#{tooltipOverviewBean.tooltipShowDelay}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="100" itemLabel="0.1 seconds"/>
                             <f:selectItem itemValue="500" itemLabel="0.5 seconds"/>
                             <f:selectItem itemValue="1000" itemLabel="1 second"/>
                             
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                    
                        <h:outputLabel id="tooltipHideDelayLabel" for="tooltipHideDelaySelector" value="Hide Delay:" />
-                        <h:selectOneMenu id="tooltipHideDelaySelector" value="#{tooltipOverviewBean.tooltipHideDelay}">
+                        <ace:simpleSelectOneMenu id="tooltipHideDelaySelector" value="#{tooltipOverviewBean.tooltipHideDelay}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="100" itemLabel="0.1 seconds"/>
                             <f:selectItem itemValue="500" itemLabel="0.5 seconds"/>
                             <f:selectItem itemValue="1000" itemLabel="1 second"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                    
                         <h:outputLabel id="tooltipShowEffectLengthDelayLabel" for="tooltipShowEffectLengthSelector" value="Show Effect Length:" />
-                        <h:selectOneMenu id="tooltipShowEffectLengthSelector" value="#{tooltipOverviewBean.showEffectLength}">
+                        <ace:simpleSelectOneMenu id="tooltipShowEffectLengthSelector" value="#{tooltipOverviewBean.showEffectLength}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="100" itemLabel="100 ms"/>
                             <f:selectItem itemValue="500" itemLabel="500 ms"/>
                             <f:selectItem itemValue="1000" itemLabel="1 second"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                    
                         <h:outputLabel id="tooltipHideEffectLengthDelayLabel" for="tooltipHideEffectLengthSelector" value="Hide Effect Length:" />
-                        <h:selectOneMenu id="tooltipHideEffectLengthSelector" value="#{tooltipOverviewBean.hideEffectLength}">
+                        <ace:simpleSelectOneMenu id="tooltipHideEffectLengthSelector" value="#{tooltipOverviewBean.hideEffectLength}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="100" itemLabel="100 ms"/>
                             <f:selectItem itemValue="500" itemLabel="500 ms"/>
                             <f:selectItem itemValue="1000" itemLabel="1 second"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                    
                        <h:outputLabel id="tooltipTargetPositionLabel" for="tooltipTargetPositionSelector" value="Position relative to tooltip target:" />
-                        <h:selectOneMenu id="tooltipTargetPositionSelector" value="#{tooltipOverviewBean.tooltipTargetPosition}">
+                        <ace:simpleSelectOneMenu id="tooltipTargetPositionSelector" value="#{tooltipOverviewBean.tooltipTargetPosition}">
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="bottomLeft" itemLabel="Bottom Left"/>
                             <f:selectItem itemValue="bottomRight" itemLabel="Bottom Right"/>
                             <f:selectItem itemValue="topLeft" itemLabel="Top Left"/>
                             <f:selectItem itemValue="topRight" itemLabel="Top Right"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                    
                        <h:outputLabel id="tooltipPositionLabel" for="tooltipPositionSelector" value="Tooltip position:" />
-                       <h:selectOneMenu id="tooltipPositionSelector" value="#{tooltipOverviewBean.tooltipPosition}">
+                       <ace:simpleSelectOneMenu id="tooltipPositionSelector" value="#{tooltipOverviewBean.tooltipPosition}">
+							<ace:ajax execute="@this" />
                            <f:selectItem itemValue="topRight" itemLabel="Top Right"/>
                             <f:selectItem itemValue="topLeft" itemLabel="Top Left"/>
                             <f:selectItem itemValue="bottomRight" itemLabel="Bottom Right"/>
                             <f:selectItem itemValue="bottomLeft" itemLabel="Bottom Left"/>
-                        </h:selectOneMenu>
+                        </ace:simpleSelectOneMenu>
                        
                        <h:outputLabel id="tooltipBubbleLabel" for="tooltipBubbleSelector" value="Enable Tooltip Speech Buble:" />
                        <h:selectBooleanCheckbox id="tooltipBubbleSelector" value="#{tooltipOverviewBean.renderSpeechBuble}"/>    

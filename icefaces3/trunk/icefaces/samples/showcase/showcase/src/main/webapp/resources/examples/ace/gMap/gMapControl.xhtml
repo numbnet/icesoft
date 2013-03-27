@@ -52,8 +52,8 @@
             <tr>
                 <td>Type Control:</td>
                 <td style="text-align: center;"><h:selectBooleanCheckbox value="#{controlBean.type}"><ace:ajax/></h:selectBooleanCheckbox></td>
-                <td><h:selectOneMenu value="#{controlBean.typeLocation}"><f:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></h:selectOneMenu></td>
-                <td><h:selectOneMenu value="#{controlBean.typeStyle}"><f:ajax event="valueChange" render="@all"/><f:selectItem itemValue="bar" itemLabel="Bar"/><f:selectItem itemValue="dropdown" itemLabel="Dropdown"/></h:selectOneMenu></td>
+                <td><ace:simpleSelectOneMenu value="#{controlBean.typeLocation}"><ace:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></ace:simpleSelectOneMenu></td>
+                <td><ace:simpleSelectOneMenu value="#{controlBean.typeStyle}"><ace:ajax event="valueChange" render="@all"/><f:selectItem itemValue="bar" itemLabel="Bar"/><f:selectItem itemValue="dropdown" itemLabel="Dropdown"/></ace:simpleSelectOneMenu></td>
             </tr>
             <tr>
                 <td>Overview Control:</td>
@@ -64,26 +64,26 @@
             <tr>
                 <td>Pan Control:</td>
                 <td style="text-align: center;"><h:selectBooleanCheckbox value="#{controlBean.pan}"><ace:ajax/></h:selectBooleanCheckbox></td>
-                <td><h:selectOneMenu value="#{controlBean.panLocation}"><f:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></h:selectOneMenu></td>
+                <td><ace:simpleSelectOneMenu value="#{controlBean.panLocation}"><ace:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></ace:simpleSelectOneMenu></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Scale Control:</td>
                 <td style="text-align: center;"><h:selectBooleanCheckbox value="#{controlBean.scale}"><ace:ajax/></h:selectBooleanCheckbox></td>
-                <td><h:selectOneMenu value="#{controlBean.scaleLocation}"><f:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></h:selectOneMenu></td>
+                <td><ace:simpleSelectOneMenu value="#{controlBean.scaleLocation}"><ace:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></ace:simpleSelectOneMenu></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Street View Control:</td>
                 <td style="text-align: center;"><h:selectBooleanCheckbox value="#{controlBean.streetView}"><ace:ajax/></h:selectBooleanCheckbox></td>
-                <td><h:selectOneMenu value="#{controlBean.streetViewLocation}"><f:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></h:selectOneMenu></td>
+                <td><ace:simpleSelectOneMenu value="#{controlBean.streetViewLocation}"><ace:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></ace:simpleSelectOneMenu></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Zoom Control:</td>
                 <td style="text-align: center;"><h:selectBooleanCheckbox value="#{controlBean.zoom}"><ace:ajax/></h:selectBooleanCheckbox></td>
-                <td><h:selectOneMenu value="#{controlBean.zoomLocation}"><f:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></h:selectOneMenu></td>
-                <td><h:selectOneMenu value="#{controlBean.zoomStyle}"><f:selectItem itemValue="large" itemLabel="Large"/><f:ajax event="valueChange" render="@all"/><f:selectItem itemValue="small" itemLabel="Small"/></h:selectOneMenu></td>
+                <td><ace:simpleSelectOneMenu value="#{controlBean.zoomLocation}"><ace:ajax event="valueChange" render="@all"/><f:selectItems value="#{controlBean.positions}"/></ace:simpleSelectOneMenu></td>
+                <td><ace:simpleSelectOneMenu value="#{controlBean.zoomStyle}"><f:selectItem itemValue="large" itemLabel="Large"/><ace:ajax event="valueChange" render="@all"/><f:selectItem itemValue="small" itemLabel="Small"/></ace:simpleSelectOneMenu></td>
             </tr>
         </table>
     </h:form>
