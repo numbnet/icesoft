@@ -62,6 +62,9 @@ public class CellEditor extends CellEditorBase {
         if (rowStateVar == null)
             rowStateVar = getRowStateVar();
 
+        // not in an iterative table visit, return default impl
+        if (rowStateVar == null) return super.getFacetsAndChildren();
+
         RowState rowState = (RowState) requestMap.get(rowStateVar);
 
         // not in an iterative table visit, return default impl
@@ -116,6 +119,6 @@ public class CellEditor extends CellEditorBase {
     private String getRowStateVar() {
         DataTable table = findParentTable();
 
-        return table.getRowStateVar();
+        return table != null ? table.getRowStateVar() : null;
     }
 }
