@@ -83,6 +83,16 @@ ice.ace.tabset = {
                 }
                 ice.ace.tabset.consoleLog(false, 'tabSet.tabChange.doOnSuccess  ENTER');
 
+                // We don't want the yti value lingering, since it's only set
+                // from user tab clicks and not from server overrides, but we
+                // can't use a parameter since its the actual element used for
+                // the submit.
+                var targetElement = ice.ace.tabset.getTabIndexField(rootElem, false);
+                ice.ace.tabset.consoleLog(false, 'tabSet.doOnSuccess  clear yti if exists: ' + (targetElement?'true':'false'));
+                if(targetElement) {
+                    targetElement.value = '';
+                }
+
                 // Ajax content transition. YUI content transition doesn't execute for server side cases
                 // allowing our companonent to trigger content transition when the server call succeeds.
                 if (event.oldValue) {
@@ -147,7 +157,7 @@ ice.ace.tabset = {
                 }
                 ice.ace.jq(tabview._contentParent).css({opacity:1});
             } else {
-                var targetElement = ice.ace.tabset.getTabIndexField(rootElem);
+                var targetElement = ice.ace.tabset.getTabIndexField(rootElem, true);
                 if(targetElement) {
                 	targetElement.value = tabIndexInfo;
                 }
@@ -319,7 +329,7 @@ ice.ace.tabset = {
    
    //this function is responsible to provide an element that keeps tab index
    //only one field will be used per form element.
-   getTabIndexField:function(tabset) {
+   getTabIndexField:function(tabset, createIt) {
 	   //YAHOO.log("in getTabIndexField");
 	   var _form = null;
 	   try {
@@ -344,7 +354,7 @@ ice.ace.tabset = {
 	   if (_form) {
 		   var f = document.getElementById(_form.id + 'yti');
 		   //if tabindex holder is not exist already, then create it lazily.
-		   if (!f) {
+		   if (!f && createIt) {
 			   f = ice.ace.tabset.createHiddenField(_form, _form.id + 'yti');
 		   }
 	       return f 
