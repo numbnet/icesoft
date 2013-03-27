@@ -42,18 +42,36 @@ public class SortState {
 
     public SortState() {}
 
-    public SortState(DataTable table) {
+    public static SortState getSortState(DataTable table) {
+        SortState state = new SortState();
+
         List<Column> columnList = table.getColumns(true);
         for (Column column : columnList)
-            saveState(column);
+            state.saveState(column);
+
+        return state;
     }
 
-    public SortState(FacesContext context, DataTable table) {
+    public static SortState getSortStateFromRequest(FacesContext context, DataTable table) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = table.getClientId(context);
+        SortState self = new SortState();
+        self.initFromRequest(context, table, params.get(clientId + "_sortKeys"));
+        return self;
+    }
+
+    public static SortState getSortStateFromRequest(FacesContext context, DataTable table, String sortKeyString) {
+        SortState self = new SortState();
+        self.initFromRequest(context, table, sortKeyString);
+        return self;
+    }
+
+    private void initFromRequest(FacesContext context, DataTable table, String sortKeyString) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ColumnGroup group = table.getColumnGroup("header");
         Column sortColumn = null;
         String clientId = table.getClientId(context);
-        String[] sortKeys = params.get(clientId + "_sortKeys").split(",");
+        String[] sortKeys = sortKeyString.split(",");
         String[] sortDirs = params.get(clientId + "_sortDirs").split(",");
         List<Column> columns = table.getColumns(true);
 

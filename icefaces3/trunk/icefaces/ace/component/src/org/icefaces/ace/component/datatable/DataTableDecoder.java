@@ -248,7 +248,10 @@ public class DataTableDecoder {
     // Sort ---------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
     static void decodeSortRequest(FacesContext context, DataTable table, String clientId, String sortKeysInput) {
-        table.savedSortState = new SortState(context, table);
+        table.savedSortState = sortKeysInput != null
+                ? SortState.getSortStateFromRequest(context, table, sortKeysInput)
+                : SortState.getSortStateFromRequest(context, table);
+
         table.applySorting();
     }
 
