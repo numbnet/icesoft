@@ -148,7 +148,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 
     public void populateList(FacesContext facesContext, SimpleSelectOneMenu simpleSelectOneMenu) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		String value = (String) simpleSelectOneMenu.getValue();
+		Object value = simpleSelectOneMenu.getValue();
 		String clientId = simpleSelectOneMenu.getClientId(facesContext);
 		boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         simpleSelectOneMenu.populateItemList();
@@ -162,24 +162,24 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 			while (matches.hasNext()) {
 				item = (SelectItem) matches.next();
 				String itemLabel = item.getLabel();
-				String itemValue = (String) item.getValue();
+				Object itemValue = item.getValue();
 				if (itemValue != null) {
 					try {
-						itemValue = (String) getConvertedValue(facesContext, simpleSelectOneMenu, item.getValue());
+						itemValue = getConvertedValue(facesContext, simpleSelectOneMenu, item.getValue());
 					} catch (Exception e) {
 						itemValue = item.getValue().toString();
 					}
 				}
 				String selected = "";
-				if (!selectedFound && value != null && value.toString().equals(itemValue)) {
+				if (!selectedFound && value != null && value.toString().equals(itemValue.toString())) {
 					selected = " selected=\"selected\"";
 					selectedFound = true;
 				}
-				itemLabel = itemLabel == null ? itemValue : itemLabel;
+				itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
 				if (item.isDisabled()) {
-					sb.append("<option disabled=\"disabled\" value=\"" + itemValue + "\"" + selected + role + ">").append(itemLabel).append("</option>");
+					sb.append("<option disabled=\"disabled\" value=\"" + itemValue.toString() + "\"" + selected + role + ">").append(itemLabel).append("</option>");
 				} else {
-					sb.append("<option value=\"" + itemValue + "\"" + selected + role + ">").append(itemLabel).append("</option>");
+					sb.append("<option value=\"" + itemValue.toString() + "\"" + selected + role + ">").append(itemLabel).append("</option>");
 				}
 			}
 			writer.write(sb.toString());
