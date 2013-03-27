@@ -110,6 +110,7 @@
         <mkdir dir="${themes.build.dir}/base" />
         <mkdir dir="${themes.build.dir}/base3" />
         <mkdir dir="${themes.build.dir}/bberry" />
+		<mkdir dir="${themes.build.dir}/bb10" />
         <mkdir dir="${themes.build.dir}/honeycomb" />
         <mkdir dir="${themes.build.dir}/ipad" />
         <mkdir dir="${themes.build.dir}/iphone" />
@@ -121,6 +122,7 @@
         <copy.theme.resources build.dir="${themes.build.dir}" name="base"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="base3"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="bberry"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="bb10"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="honeycomb"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="ipad"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="iphone"/>

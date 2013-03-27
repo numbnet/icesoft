@@ -362,7 +362,7 @@
 <target name="skins" unless="skins.skip" depends="init-skip-css-properties" description="Generate skinning resources for deployment.">
 	<echo message="path to cssurlMapper is ${lib.dir}/generator" />
 	
-	<ice:subant target="compile.scss">
+	<ice:subant target="compile.scss" >
         <fileset dir="../../../resources" includes="build.xml" />
     </ice:subant>
 	
@@ -377,6 +377,7 @@
 	<includeBaseResources dir="${theme.build.path}/archaic" skin="archaic" />
 	<includeBase3Resources dir="${theme.build.path}/android" skin="android" />
 	<includeBase3Resources dir="${theme.build.path}/bberry" skin="bberry" />
+	<includeBase3Resources dir="${theme.build.path}/bb10" skin="bb10" />
 	<includeBase3Resources dir="${theme.build.path}/honeycomb" skin="honeycomb" />
 	<includeBase3Resources dir="${theme.build.path}/ipad" skin="ipad" />
 	<includeBase3Resources dir="${theme.build.path}/iphone" skin="iphone" />
@@ -393,7 +394,8 @@
     <concatskin name="honeycomb" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
     <concatskin name="iphone" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
     <concatskin name="bberry" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-    <concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	<concatskin name="bb10" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	<concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="archaic" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="simulator" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="android_light" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
@@ -454,6 +456,7 @@
 	<generatesprites skin="android" />
 	<generatesprites skin="honeycomb" />
 	<generatesprites skin="bberry" />
+	<generatesprites skin="bb10" />
 	<generatesprites skin="archaic" />
 </target>
 
@@ -465,6 +468,7 @@
 	<compresscssmacro name="android_dark" />
 	<compresscssmacro name="honeycomb" />
 	<compresscssmacro name="bberry" />
+	<compresscssmacro name="bb10" />
 	<compresscssmacro name="archaic" />
 	<compresscssmacro name="simulator" />
 </target>

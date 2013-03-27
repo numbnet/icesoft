@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 public class InputTextTag extends SimpleTagSupport {
 
-    public static final String INPUT_TEXT_CLASS = "mobi-input-text";
+    public static final String INPUT_TEXT_CLASS = "mobi-input-text ui-input-text";
     private static Logger LOG = Logger.getLogger(InputTextTag.class.getName());
 
     private String id;

@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.fieldset;
 
 
 import org.icefaces.mobi.utils.HTML;
+import org.icemobile.util.CSSUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -42,9 +43,11 @@ public class FieldSetRowRenderer extends Renderer {
         // apply default style
         String userDefinedClass = field.getStyleClass();
         StringBuilder styleClass = new StringBuilder(FieldSetRow.FIELDSETROW_CLASS);
+        styleClass.append(" ");
+        styleClass.append(CSSUtils.STYLECLASS_FIELDCONTAIN);
         // apply group stying if any, header look to group rows.
         if (field.isGroup()) {
-            styleClass.append(" ").append(FieldSetRow.FIELDSETGROUP_CLASS);
+            styleClass.append(" ").append(FieldSetRow.FIELDSETGROUP_CLASS).append(" ui-bar-b");
         }
         // apply user defined style class
         if (userDefinedClass != null && userDefinedClass.length() > 0){

@@ -13,22 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-list .mobi-list-item{ 
-    border-radius: 0;
-}
-.mobi-list-item-group {
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-}
 
-.mobi-list-inset > .mobi-list-item:first-child {
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-}
-
-.mobi-list-inset > .mobi-list-item:last-child {
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-.mobi-list-item-dis {
-    opacity: 0.5;
+.mobi-fieldset {
+    border-color: #D6D6D6;
 }

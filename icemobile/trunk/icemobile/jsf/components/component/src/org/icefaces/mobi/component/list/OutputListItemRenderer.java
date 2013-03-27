@@ -40,7 +40,7 @@ public class OutputListItemRenderer extends Renderer {
         writer.startElement(HTML.LI_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         String userDefinedClass = item.getStyleClass();
-        String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS;
+        String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS + " " + CSSUtils.STYLECLASS_BTN_UP_A ;
         if (item.isGroup()) {
             styleClass = OutputListItem.OUTPUTLISTITEMGROUP_CLASS + " " + CSSUtils.STYLECLASS_BAR_B;
             if (userDefinedClass != null) {
@@ -48,7 +48,7 @@ public class OutputListItemRenderer extends Renderer {
             }
         } else {
             if (userDefinedClass != null) {
-                styleClass = OutputListItem.OUTPUTLISTITEM_CLASS + " " + userDefinedClass;
+                styleClass += " " + userDefinedClass;
             }
         }
         writer.writeAttribute("class", styleClass, "styleClass");

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.icemobile.util.CSSUtils;
 
 public class OutputListItemsRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(OutputListItemsRenderer.class.getName());
@@ -51,7 +52,7 @@ public class OutputListItemsRenderer extends BaseLayoutRenderer {
                 writer.startElement(HTML.LI_ELEM, null);
                 writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
                 String userDefinedClass = list.getStyleClass();
-                String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS;
+                String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS + CSSUtils.STYLECLASS_BTN_UP_A;
                 if (userDefinedClass != null) {
                     styleClass += " " + userDefinedClass;
                 }

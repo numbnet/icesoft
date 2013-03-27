@@ -13,7 +13,9 @@ as follows:
     |
     |-- android - CSS 3 Android 2.x theme
     |
-    |-- bberry - CSS 3 Blackberry theme
+    |-- bberry - CSS 3 BlackBerry 6 & 7 theme
+    |
+    |-- bb10 - CSS 3 BlackBerry 10 Theme
     |
     |-- honeycomb - CSS 3 Android 3.x theme
     |
