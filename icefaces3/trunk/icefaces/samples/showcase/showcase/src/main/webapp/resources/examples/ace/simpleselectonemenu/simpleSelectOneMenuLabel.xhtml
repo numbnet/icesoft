@@ -45,7 +45,7 @@
                      <h:outputLabel for="positionIn" value="Label Position:"/>
                      <ace:simpleSelectOneMenu id="positionIn" value="#{simpleSelectOneMenuLabelBean.labelPosition}">
 						<ace:ajax execute="@this" />
-                        <f:selectItems value="#{positionBean.labelPositions}"/>
+                        <f:selectItems value="#{simpleSelectOneMenuLabelBean.labelPositions}"/>
                      </ace:simpleSelectOneMenu>
                 </h:panelGrid>
             </ace:panel>
