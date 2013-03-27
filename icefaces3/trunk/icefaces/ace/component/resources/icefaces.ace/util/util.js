@@ -44,25 +44,10 @@ ice.ace.util.isEventSourceInputElement = function(event) {
     }
 };
 
-ice.ace.util.isMouseOver = function(elem, jqEvent) {
-    elem = ice.ace.jq(elem);
-
-    var offset = elem.offset(),
-        xMin = offset.left,
-        xMax = xMin + elem.outerWidth(),
-        yMin = offset.top,
-        yMax = yMin + elem.outerHeight(),
-        mouseY = jqEvent.pageY,
-        mouseX = jqEvent.pageX;
-
-    return (mouseY < yMax && mouseY > yMin && mouseX < xMax && mouseX > xMin);
-}
-
 ice.ace.util.eventTarget = function(event) {
        event = event || window.event;           
        return(event.target || event.srcElement);
 };
-
 
 ice.ace.util.insertElementAtIndex = function(parentElem, insertElem, index) {
 	if (!parentElem.hasChildNodes()) {
