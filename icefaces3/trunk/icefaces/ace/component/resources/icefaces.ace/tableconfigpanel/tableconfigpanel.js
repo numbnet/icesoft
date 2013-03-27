@@ -118,7 +118,14 @@ ice.ace.TableConf = function (id, cfg) {
                         controlOffset = $this.offset(),
                         controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
                         descending = false,
-                        metaKey = (altMeta == undefined) ? event.metaKey : altMeta;
+                        metaKey = altMeta;
+
+                    if (metaKey == undefined) {
+                        if (ice.ace.jq.browser.os == 'mac')
+                            metaKey = event.metaKey;
+                        else
+                            metaKey = event.ctrlKey;
+                    }
 
                     // altY and altMeta allow these event parameters to be optionally passed in
                     // from an event triggering this event artificially
@@ -215,19 +222,23 @@ ice.ace.TableConf = function (id, cfg) {
         this.$this.find('.ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
                 .find('.ui-icon-triangle-1-n')
                 .keypress(function(event) {
+                    var metaKey = ice.ace.jq.browser.os == 'mac' ? event.metaKey : event.ctrlKey;
+
                     if (event.which == 32 || event.which == 13) {
                         var $currentTarget = ice.ace.jq(event.currentTarget);
                         $currentTarget.closest('.ui-sortable-control')
-                                .trigger('click', [$currentTarget.offset().top, event.metaKey]);
+                                .trigger('click', [$currentTarget.offset().top, metaKey]);
                 }}).not('.ui-toggled').fadeTo(0, 0.33);
 
         this.$this.find('.ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
                 .find('.ui-icon-triangle-1-s')
                 .keypress(function(event) {
+                    var metaKey = ice.ace.jq.browser.os == 'mac' ? event.metaKey : event.ctrlKey;
+
                     if (event.which == 32 || event.which == 13) {
                         var $currentTarget = ice.ace.jq(event.currentTarget);
                         $currentTarget.closest('.ui-sortable-control')
-                                .trigger('click', [$currentTarget.offset().top + 6, event.metaKey]);
+                                .trigger('click', [$currentTarget.offset().top + 6, metaKey]);
                 }}).not('.ui-toggled').fadeTo(0, 0.33);
     }
 }
