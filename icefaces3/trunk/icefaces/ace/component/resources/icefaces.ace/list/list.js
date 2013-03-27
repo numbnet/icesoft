@@ -314,13 +314,15 @@ ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
     var item = ice.ace.jq(e.currentTarget),
         id = item.attr('id'),
         from = this,
-        fromIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1));
+        fromIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1)),
         to = this.getSiblingList(e.shiftKey);
 
     fromIndex = this.getUnshiftedIndex(
             this.element.find('> ul').children().length,
             this.read('reorderings'),
             fromIndex);
+
+    if (to == undefined) return;
 
     to.immigrantMessage = [];
     to.immigrantMessage.push(this.id);
@@ -365,6 +367,8 @@ ice.ace.List.prototype.getSiblingList = function (shift) {
                 return ice.ace.Lists[ice.ace.jq(listSet[listIndex]).attr('id')];
         }
     }
+
+    return undefined;
 }
 
 ice.ace.List.prototype.pendingClickHandling;
