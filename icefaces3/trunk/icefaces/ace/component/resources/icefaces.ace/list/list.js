@@ -335,6 +335,9 @@ ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
         this.addSelectedItem(item, fromIndex);
     }
 
+    clearTimeout(this.pendingClickHandling);
+    this.pendingClickHandling = undefined;
+
     // Only allow more clicks to occur once migration has finished
     to.sendMigrateRequest(function() {
         from.doubleClickAttempted = false;
