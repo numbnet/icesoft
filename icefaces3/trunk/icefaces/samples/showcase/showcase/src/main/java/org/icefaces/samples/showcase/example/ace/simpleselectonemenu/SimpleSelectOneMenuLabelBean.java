@@ -24,6 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import java.io.Serializable;
 
 @ComponentExample(
@@ -54,11 +55,21 @@ public class SimpleSelectOneMenuLabelBean extends ComponentExampleImpl<SimpleSel
     private String selectedText;    
     private String labelText = "Select province:";
     private String labelPosition = "left";
-
+	
+	public static final SelectItem[] LABEL_POSITIONS = new SelectItem[] {
+		new SelectItem("left", "Left"),
+		new SelectItem("right", "Right"),
+		new SelectItem("top", "Top"),
+		new SelectItem("bottom", "Bottom"),
+		new SelectItem("none", "None")
+	};
+	
     public SimpleSelectOneMenuLabelBean() 
     {
         super(SimpleSelectOneMenuLabelBean.class);
     }
+	
+	public SelectItem[] getLabelPositions() { return LABEL_POSITIONS; }
     
     public String getSelectedText() {
         return selectedText;
