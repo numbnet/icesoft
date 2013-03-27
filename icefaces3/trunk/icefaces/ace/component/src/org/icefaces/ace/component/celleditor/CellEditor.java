@@ -106,6 +106,41 @@ public class CellEditor extends CellEditorBase {
         return result;
     }
 
+    @Override
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+
+        updateVisibility(context);
+    }
+
+    private void updateVisibility(FacesContext context) {
+        if (requestMap == null)
+            requestMap = context.getExternalContext().getRequestMap();
+
+        if (rowStateVar == null)
+            rowStateVar = getRowStateVar();
+
+        // not in an iterative table visit
+        if (rowStateVar == null) return;
+
+        RowState rowState = (RowState) requestMap.get(rowStateVar);
+
+        // not in an iterative table visit
+        if (rowState == null) return;
+
+        List<String> selectedEditorIds = rowState.getActiveCellEditorIds();
+        boolean editable = selectedEditorIds.contains(getId());
+
+        // Update rendered state based on editing during update
+        if (editable) {
+            getFacet("input").setRendered(true);
+            getFacet("output").setRendered(false);
+        } else {
+            getFacet("input").setRendered(false);
+            getFacet("output").setRendered(true);
+        }
+    }
+
     private DataTable findParentTable() {
         UIComponent parent = getParent();
 
