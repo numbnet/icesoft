@@ -242,18 +242,18 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
 
 ice.ace.List.prototype.setupControls = function() {
     var self = this,
-        itemSelector = this.jqId + ' > div.if-list-ctrls .if-list-ctrl';
+        itemSelector = ' > div.if-list-ctrls .if-list-ctrl';
 
     this.element
-            .off('mouseenter').on('mouseenter', itemSelector, function(e) {
+            .off('mouseenter', itemSelector).on('mouseenter', itemSelector, function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).addClass('ui-state-hover');
             })
-            .off('mouseleave').on('mouseleave', itemSelector, function(e) {
+            .off('mouseleave', itemSelector).on('mouseleave', itemSelector, function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).removeClass('ui-state-hover');
             })
-            .off('click').on('click', itemSelector, function(e) {
+            .off('click', itemSelector).on('click', itemSelector, function(e) {
                 self.controlClickHandler.call(self, e);
             });
 };
