@@ -24,7 +24,7 @@ package com.icesoft.icefaces.tutorial.component.converter.custom;
 public class RegisterBean {
     
     public String register(){
-        return "success";
+        return "registered";
     }
     
     

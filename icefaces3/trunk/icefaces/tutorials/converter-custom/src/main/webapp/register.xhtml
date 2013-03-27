@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
   ~
@@ -14,7 +15,12 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ice="http://www.icesoft.com/icefaces/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core">
 <h:head>
     <title>ICEfaces Converter Example - Custom</title>
     <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
@@ -30,63 +36,63 @@
            optional delimiters.</p>
 
         First Name:
-        <h:inputText id="firstname" value="#{user.firstName}" />
+        <ice:inputText id="firstname" value="#{user.firstName}" />
         <ice:message style="color:red;" id="firstNameError" for="firstname" />
         <br/>
 
 
         Last Name:
-        <h:inputText id="lastname" value="#{user.lastName}" />
+        <ice:inputText id="lastname" value="#{user.lastName}" />
         <ice:message style="color:red;" id="lastNameError" for="lastname" />
         <br/>
 
 
         Address:
-        <h:inputText id="address" value="#{user.address}" />
+        <ice:inputText id="address" value="#{user.address}" />
         <ice:message style="color:red;" id="addressError" for="address" />
         <br/>
 
 
         City:
-        <h:inputText id="city" value="#{user.city}" />
+        <ice:inputText id="city" value="#{user.city}" />
         <ice:message style="color:red;" id="cityError" for="city" />
         <br/>
 
 
         Phone Number:
-        <h:inputText id="phone" value="#{user.phone}">
+        <ice:inputText id="phone" value="#{user.phone}">
             <f:converter converterId="icefaces.PhoneConverter" />
-        </h:inputText>
-        <h:outputText value="Input: 1 (xxx) xxx-xxxx  Output: 1-xxx-xxx-xxxx" style="color:gray;"/>
+        </ice:inputText>
+        <ice:outputText value="Input: 1 (xxx) xxx-xxxx  Output: 1-xxx-xxx-xxxx" style="color:gray;"/>
         <ice:message style="color:red;" id="phoneError" for="phone" />
         <br/>
 
 
         Age:
-        <h:inputText id="age" value="#{user.age}" partialSubmit="true">
+        <ice:inputText id="age" value="#{user.age}" partialSubmit="true">
             <f:converter converterId="javax.faces.Integer" />
-        </h:inputText>
+        </ice:inputText>
         <ice:message style="color:red;" id="ageError" for="age" />
         <br/>
 
 
         Birth Date:
-        <h:inputText id="birthdate" value="#{user.birthDate}">
+        <ice:inputText id="birthdate" value="#{user.birthDate}">
             <f:convertDateTime dateStyle="short" />
-        </h:inputText>
+        </ice:inputText>
         <ice:message style="color:red;" id="birthDateError" for="birthdate" />
         <br/>
 
 
         Salary:
-        <h:inputText id="salary" value="#{user.salary}">
+        <ice:inputText id="salary" value="#{user.salary}">
             <f:convertNumber maxFractionDigits="2" groupingUsed="true" currencySymbol="$" maxIntegerDigits="7" type="currency" />
-        </h:inputText>
+        </ice:inputText>
         <ice:message style="color:red;" id="salaryError" for="salary" />
         <br/>
 
 
-        <h:commandButton id="registercommand" type="submit" value="Register" action="#{registerBean.register}" />
+        <ice:commandButton id="registercommand" type="submit" value="Register" action="#{registerBean.register}" />
     </h:form>
 </h:body>
 </html>
