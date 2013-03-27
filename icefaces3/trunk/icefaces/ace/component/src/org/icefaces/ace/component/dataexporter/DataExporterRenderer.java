@@ -75,7 +75,7 @@ public class DataExporterRenderer extends CoreRenderer {
 				if(script != null) {
 					onclick.append("ice.ace.ab(ice.ace.extendAjaxArgs(");
                     onclick.append(script);
-					onclick.append(", {'event':event, node:this}));");
+					onclick.append(", {node:this}));");
 				}
 			}
             onclick.append(" });");
