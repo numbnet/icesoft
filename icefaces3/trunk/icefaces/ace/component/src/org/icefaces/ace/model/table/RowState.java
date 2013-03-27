@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RowState implements Serializable{
+public class RowState implements Serializable {
     public enum ExpansionType { PANEL, ROW, NONE }
     ExpansionType expansionType = ExpansionType.PANEL;
 
@@ -114,24 +114,26 @@ public class RowState implements Serializable{
     /**
      * Convenience method to take the id of the CellEditor component and add it to the list of active editors
      * in the row state for a given row object.
+     *
+     * Only call this method while DataTable has a row index set or the editor will be disabled for all rows.
      * @param editor
      */
     public void addActiveCellEditor(UIComponent editor) {
         if (editor != null) {
             getActiveCellEditorIds().add(editor.getId());
-            editor.getFacet("input").setRendered(true);
         }
     }
 
     /**
      * Convenience method to take the id of the CellEditor component and remove it from the list of active editors
      * in the row state for a given row object.
+     *
+     * Only call this method while DataTable has a row index set or the editor will be disabled for all rows.
      * @param editor
      */
     public void removeActiveCellEditor(UIComponent editor) {
         if (editor != null) {
             getActiveCellEditorIds().remove(editor.getId());
-            editor.getFacet("input").setRendered(false);
         }
     }
 }
