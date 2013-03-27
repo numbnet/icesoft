@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
   ~
@@ -14,10 +15,23 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
-                   <title>ICEfaces Output Connection Status Tutorial</title>
-                   <link rel="stylesheet" type="text/css" href="./xmlhttp/css/royale/royale.css" />
-                      </h:head><h:body>
-                          <h1>Graphical representation - Theme : Royale</h1>
-                      <ice:outputConnectionStatus id="status"></ice:outputConnectionStatus> 
-                    </h:body></f:view></html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ice="http://www.icesoft.com/icefaces/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<f:view>
+    <h:head>
+        <title>ICEfaces Output Connection Status Tutorial</title>
+        <link rel="stylesheet" type="text/css" href="./xmlhttp/css/royale/royale.css" />
+    </h:head>
+    <h:body>
+        <h1>Graphical representation - Theme : Royale</h1>
+        <ice:outputConnectionStatus id="status"/>
+        <h:form>
+            <ice:commandButton value="Submit" actionListener="#{bean.sleep}"/>
+        </h:form>
+    </h:body>
+</f:view>
+</html>
