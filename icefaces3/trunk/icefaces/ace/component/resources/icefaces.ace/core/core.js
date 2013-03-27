@@ -42,6 +42,20 @@ ice.ace.showWatermarks = function(){
     ice.ace.jq.watermark.showAll();
 };
 
+ice.ace.isMouseOver = function(elem, jqEvent) {
+    elem = ice.ace.jq(elem);
+
+    var offset = elem.offset(),
+            xMin = offset.left,
+            xMax = xMin + elem.outerWidth(),
+            yMin = offset.top,
+            yMax = yMin + elem.outerHeight(),
+            mouseY = jqEvent.pageY,
+            mouseX = jqEvent.pageX;
+
+    return (mouseY < yMax && mouseY > yMin && mouseX < xMax && mouseX > xMin);
+}
+
 ice.ace.lazy = function(name, args) {
     var clientId = args[0], // lazy requires clientId is first arg
         jqId = ice.ace.escapeClientId(clientId),
