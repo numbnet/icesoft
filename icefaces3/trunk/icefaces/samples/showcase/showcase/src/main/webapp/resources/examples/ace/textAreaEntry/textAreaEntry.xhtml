@@ -36,7 +36,7 @@
 
     <ui:define name="example">
         <h:form id="textAreaEntryForm">
-            <ace:panel id="inputPanel" header="Enter Comments Below">
+            <ace:panel id="inputPanel" header="Enter Comments Below" styleClass="required-styling-demo">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
                     <ace:textAreaEntry id="comment1Input" value="#{textAreaEntryBean.comment1}" label="Comments" labelPosition="inField" required="true" requiredIndicator=" (*)" indicatorPosition="labelRight">
                         <ace:ajax render="@this comment1Output comment1Msg"/>

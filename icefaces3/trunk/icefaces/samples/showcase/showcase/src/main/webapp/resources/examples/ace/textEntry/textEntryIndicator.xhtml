@@ -59,7 +59,7 @@
         </h:form>
 
         <h:form id="textEntryForm">
-            <ace:panel id="personalInfoInputPanel" header="Personal Info">
+            <ace:panel id="personalInfoInputPanel" header="Personal Info" styleClass="required-styling-demo">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
                     <ace:textEntry id="firstNameInput" value="#{textEntryIndicatorBean.firstName}" label="First Name" labelPosition="left"
                                    required="#{textEntryIndicatorBean.required}"

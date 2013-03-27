@@ -53,7 +53,7 @@
 		</h:form>
 
         <h:form id="textAreaEntryForm">		
-            <ace:panel id="inputPanel" header="Comments">
+            <ace:panel id="inputPanel" header="Comments" styleClass="required-styling-demo">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
                     <ace:textAreaEntry id="comment1Input" label="#{textAreaEntryLabelBean.comment1LabelText}" labelPosition="#{textAreaEntryLabelBean.labelPosition}" >
                         <ace:ajax render="@this comment1Msg"/>
