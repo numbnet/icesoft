@@ -69,8 +69,8 @@ draggable:${gMapOptionsBean.draggable}, scrollwheel:${gMapOptionsBean.scrollWhee
                    closable="false"
                    toggleable="true"
                    collapsed="#{gMapOptionsBean.mapTypeControlPanel}">
-            <h:selectOneMenu id="locationSelector" value="#{gMapOptionsBean.typeLocation}">
-                <f:ajax event="valueChange" render="@all"/>
+            <ace:simpleSelectOneMenu id="locationSelector" value="#{gMapOptionsBean.typeLocation}">
+                <ace:ajax render="@all"/>
                 <f:selectItem itemValue="TOP_LEFT" itemLabel="Top Left"/>
                 <f:selectItem itemValue="TOP_CENTER" itemLabel="Top Center"/>
                 <f:selectItem itemValue="TOP_RIGHT" itemLabel="Top Right"/>
@@ -83,12 +83,12 @@ draggable:${gMapOptionsBean.draggable}, scrollwheel:${gMapOptionsBean.scrollWhee
                 <f:selectItem itemValue="RIGHT_TOP" itemLabel="Right Top"/>
                 <f:selectItem itemValue="RIGHT_CENTER" itemLabel="Right Center"/>
                 <f:selectItem itemValue="RIGHT_BOTTOM" itemLabel="Right Bottom"/>
-            </h:selectOneMenu>
-            <h:selectOneMenu id="styleSelector" value="#{gMapOptionsBean.typeStyle}">
-                <f:ajax event="valueChange" render="@all"/>
+            </ace:simpleSelectOneMenu>
+            <ace:simpleSelectOneMenu id="styleSelector" value="#{gMapOptionsBean.typeStyle}">
+                <ace:ajax render="@all"/>
                 <f:selectItem itemValue="HORIZONTAL_BAR" itemLabel="Horizontal Bar"/>
                 <f:selectItem itemValue="DROPDOWN_MENU" itemLabel="Dropdown"/>
-            </h:selectOneMenu>
+            </ace:simpleSelectOneMenu>
          </ace:panel>
         <ace:panel id="mapOptionsPanel"
                    header="Map Options"

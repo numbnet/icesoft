@@ -43,9 +43,10 @@
                      <h:inputText id="labelText" value="#{comboBoxLabelBean.labelText}" maxlength="250"/>
                      
                      <h:outputLabel for="positionIn" value="Label Position:"/>
-                     <h:selectOneMenu id="positionIn" value="#{comboBoxLabelBean.labelPosition}">
+                     <ace:simpleSelectOneMenu id="positionIn" value="#{comboBoxLabelBean.labelPosition}">
+						<ace:ajax execute="@this" />
                         <f:selectItems value="#{positionBean.labelPositions}"/>
-                     </h:selectOneMenu>
+                     </ace:simpleSelectOneMenu>
                 </h:panelGrid>
             </ace:panel>
             

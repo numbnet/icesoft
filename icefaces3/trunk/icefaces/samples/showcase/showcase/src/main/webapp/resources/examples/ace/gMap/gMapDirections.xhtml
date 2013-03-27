@@ -40,13 +40,13 @@
     <h:form id="inputForm">
         <h:outputLabel for="optionsIn" value="Options:"/>
         <h:inputText  id="optionsIn" value="${directionBean.options}"/>
-        <h:selectOneMenu id="travelModeSelector" value="${directionBean.travelMode}">
-            <f:ajax event="valueChange" render="@all"/>
+        <ace:simpleSelectOneMenu id="travelModeSelector" value="${directionBean.travelMode}">
+            <ace:ajax event="valueChange" render="@all"/>
             <f:selectItem itemValue="DRIVING" itemLabel="Driving"/>
             <f:selectItem itemValue="WALKING" itemLabel="Walking"/>
             <f:selectItem itemValue="BICYCLING" itemLabel="Bicycling"/>
             <f:selectItem itemValue="TRANSIT" itemLabel="Transit"/>
-        </h:selectOneMenu>
+        </ace:simpleSelectOneMenu>
         <br/>
         <h:outputLabel for="pointsIn" value="Points:"/>
         <h:inputText  size="75" id="pointsIn" value="${directionBean.points}"/>

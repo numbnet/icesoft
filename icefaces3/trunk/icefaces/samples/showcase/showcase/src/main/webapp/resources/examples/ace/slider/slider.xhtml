@@ -36,53 +36,59 @@
     <ui:define name="example">
         <h:form id="form">
             <h:panelGrid columns="2" style="width: 100%;">
-                <ace:panel id="sliderConfigPanel" header="Slider Configuration Panel" style="height: 230px;">
+                <ace:panel id="sliderConfigPanel" header="Slider Configuration Panel" style="height: 270px;">
                     <f:ajax execute="@this" render="@form">
                         <h:panelGrid columns="2" styleClass="centeredPanelWithBorderSpacingAndLeftJustifiedText">
                             <h:outputLabel id="axisLabel" for="axisSelector" value="Axis:" />
-                            <h:selectOneMenu id="axisSelector" value="#{slider.axis}">
+                            <ace:simpleSelectOneMenu id="axisSelector" value="#{slider.axis}">
+								<ace:ajax execute="@this" />
                                 <f:selectItem itemValue="x" itemLabel="X axis"/>
                                 <f:selectItem itemValue="y" itemLabel="Y axis"/>
-                            </h:selectOneMenu>
+                            </ace:simpleSelectOneMenu>
 
                             <h:outputLabel id="clickableRailLabel" for="clickableRailSelector" value="Clickable Rail? :"/>
-                            <h:selectOneMenu id="clickableRailSelector" value="#{slider.clickableRail}">
+                            <ace:simpleSelectOneMenu id="clickableRailSelector" value="#{slider.clickableRail}">
+								<ace:ajax execute="@this" />
                                 <f:selectItem itemValue="true" itemLabel="yes"/>
                                 <f:selectItem itemValue="false" itemLabel="no"/>
-                            </h:selectOneMenu>
+                            </ace:simpleSelectOneMenu>
 
                             <h:outputLabel id="lenghtSelectorLabel" for="lenghtSelector" value="Length:"/>
-                            <h:selectOneMenu id="lenghtSelector" value="#{slider.length}">
+                            <ace:simpleSelectOneMenu id="lenghtSelector" value="#{slider.length}">
+								<ace:ajax execute="@this" />
                                 <f:selectItem itemValue="50" itemLabel="50 px"/>
                                 <f:selectItem itemValue="100" itemLabel="100 px"/>
                                 <f:selectItem itemValue="150" itemLabel="150 px"/>
-                            </h:selectOneMenu>
+                            </ace:simpleSelectOneMenu>
 
                             <h:outputLabel id="minSelectorLabel" for="minSelector" value="Min. value:"/>
-                            <h:selectOneMenu id="minSelector" value="#{slider.minValue}">
+                            <ace:simpleSelectOneMenu id="minSelector" value="#{slider.minValue}">
+								<ace:ajax execute="@this" />
                                 <f:selectItem itemValue="0" itemLabel="0"/>
                                 <f:selectItem itemValue="10" itemLabel="10"/>
                                 <f:selectItem itemValue="20" itemLabel="20"/>
-                            </h:selectOneMenu>
+                            </ace:simpleSelectOneMenu>
 
                             <h:outputLabel id="maxSelectorLabel" for="maxSelector" value="Max. value:"/>
-                            <h:selectOneMenu id="maxSelector" value="#{slider.maxValue}">
+                            <ace:simpleSelectOneMenu id="maxSelector" value="#{slider.maxValue}">
+								<ace:ajax execute="@this" />
                                 <f:selectItem itemValue="50" itemLabel="50"/>
                                 <f:selectItem itemValue="80" itemLabel="80"/>
                                 <f:selectItem itemValue="100" itemLabel="100"/>
-                            </h:selectOneMenu>
+                            </ace:simpleSelectOneMenu>
 
                             <h:outputLabel id="stepSelectorLabel" for="stepSelector" value="Step percent:"/>
-                            <h:selectOneMenu id="stepSelector" value="#{slider.stepPercent}">
+                            <ace:simpleSelectOneMenu id="stepSelector" value="#{slider.stepPercent}">
+								<ace:ajax execute="@this" />
                                 <f:selectItem itemValue="10" itemLabel="10%"/>
                                 <f:selectItem itemValue="25" itemLabel="25%"/>
                                 <f:selectItem itemValue="50" itemLabel="50%"/>
-                            </h:selectOneMenu>
+                            </ace:simpleSelectOneMenu>
                         </h:panelGrid>
                     </f:ajax>
                 </ace:panel>
                 
-                <ace:panel style="height: 230px; font-weight: bold;">
+                <ace:panel style="height: 270px; font-weight: bold;">
                     <h:panelGrid style="height: 220px; width: 200px; margin-left: auto; margin-right: auto;">
                         <h:panelGrid id="exampleHolder" styleClass="centeredPanelGridWithBorderSpacing">
                             <ace:sliderEntry id="slideEntry"

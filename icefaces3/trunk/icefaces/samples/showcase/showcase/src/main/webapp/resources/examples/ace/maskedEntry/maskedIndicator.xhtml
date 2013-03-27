@@ -50,9 +50,10 @@
                                   disabled="#{maskedIndicatorBean.required}"/>
                                   
                      <h:outputLabel for="positionIn" value="Indicator Position:"/>
-                     <h:selectOneMenu id="positionIn" value="#{maskedIndicatorBean.position}">
+                     <ace:simpleSelectOneMenu id="positionIn" value="#{maskedIndicatorBean.position}">
+						<ace:ajax execute="@this" />
                         <f:selectItems value="#{positionBean.indicatorPositions}"/>
-                     </h:selectOneMenu>
+                     </ace:simpleSelectOneMenu>
                 </h:panelGrid>
             </ace:panel>
         </h:form>
