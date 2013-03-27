@@ -23,6 +23,6 @@ package com.icesoft.icefaces.tutorial.component.converter.basic;
  */
 public class RegisterBean {
     public String register(){
-        return "success";
+        return "registered";
     }
 }
