@@ -134,6 +134,10 @@ public class ClientDescriptor implements Serializable{
     public boolean isBlackBerryOS() {
         return os == OS.BLACKBERRY;
     }
+    
+    public boolean isBlackBerry10OS(){
+        return _userAgentInfo.isBlackberry10OS();
+    }
 
     public boolean isIEBrowser() {
         return _userAgentInfo.isIE();

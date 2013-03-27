@@ -77,7 +77,7 @@ public class InputTextRenderer extends BaseInputRenderer {
         writer.writeAttribute(HTML.ID_ATTR, compId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, compId, null);
 
-        StringBuilder baseClass = new StringBuilder("mobi-input-text");
+        StringBuilder baseClass = new StringBuilder("mobi-input-text ui-input-text");
         String styleClass = inputText.getStyleClass();
         if (styleClass != null) {
             baseClass.append(" ").append(styleClass);

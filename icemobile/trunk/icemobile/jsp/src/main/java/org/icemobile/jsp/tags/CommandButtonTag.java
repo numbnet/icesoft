@@ -38,7 +38,7 @@ public class CommandButtonTag extends BaseSimpleTag {
     public static final String UNIMPORTANT_STYLE_CLASS = " mobi-button-unimportant";
     public static final String BACK_STYLE_CLASS = " mobi-button-back";
     public static final String ATTENTION_STYLE_CLASS = " mobi-button-attention";
-    public static final String SELECTED_STYLE_CLASS = " mobi-button-selected";
+    public static final String SELECTED_STYLE_CLASS = " mobi-button-selected ui-btn-active";
 
     private String id;
     private String name;

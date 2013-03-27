@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  */
 public class HeadersTag extends TagSupport {
 
-    private static final String TABSET_HEADERS_CLASS = "mobi-tabset-tabs";
+    private static final String TABSET_HEADERS_CLASS = "mobi-tabset-tabs ui-bar-b";
     private static Logger LOG = Logger.getLogger(HeadersTag.class.getName());
 
     private TabSetTag mTabParent;

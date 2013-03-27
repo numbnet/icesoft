@@ -63,14 +63,13 @@ html.ipad .mobi-tabset > .mobi-tabset-tabs, html.honeycomb .mobi-tabset > .mobi-
 .mobi-tabset > .mobi-tabset-tabs > ul{
     margin: 0;
     padding: 0;
+    height: 40px;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
     cursor: pointer;
     display: inline-block;
-    line-height: 40px;
+    line-height: 38px;
     padding: 0;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
