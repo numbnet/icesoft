@@ -110,6 +110,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
 
             CoalescingResource.Infos resourceInfos = new CoalescingResource.Infos();
             List children = resourceContainer.getChildren();
+            ArrayList<UIComponent> toBeReAdded = new ArrayList<UIComponent>();
             for (UIComponent next : new ArrayList<UIComponent>(children)) {
                 Map<String, Object> nextAttributes = next.getAttributes();
                 String nextName = (String) nextAttributes.get("name");
@@ -121,12 +122,18 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
 
                     if (isFirstGETRequest || previousResourceInfos.resources.contains(info)) {
                         resourceInfos.resources.add(info);
-                        root.removeComponentResource(context, next);
+                    } else {
+                        toBeReAdded.add(next);
                     }
+                    root.removeComponentResource(context, next);
                 }
             }
 
+            //add back the additional resource components, but make sure the coalesced resource is first
             root.addComponentResource(context, coallescedResourceComponent);
+            for (UIComponent next : toBeReAdded) {
+                root.addComponentResource(context, next);
+            }
 
             if (previousResourceInfos == null) {
                 sessionMap.put(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
