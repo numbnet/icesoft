@@ -88,7 +88,7 @@ public class RowEditorRenderer extends CoreRenderer {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         RowEditor editor = (RowEditor) component;
         String clientId = editor.getClientId(context);
-        
+
         //Decode row edit request triggered by this editor
         if(params.containsKey(clientId)) {
             DataTable table = findParentTable(context, editor);
@@ -106,13 +106,10 @@ public class RowEditorRenderer extends CoreRenderer {
             }
             else if (params.containsKey(tableId + "_editCancel")) {
                 component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
+
                 for (Column c : table.getColumns())
                     state.removeActiveCellEditor(c.getCellEditor());
             }
-            else if (params.containsKey(tableId + "_editShow")) {
-               for (Column c : table.getColumns())
-                   state.addActiveCellEditor(c.getCellEditor());
-            }               
         }
     }
 

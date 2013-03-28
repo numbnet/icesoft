@@ -120,7 +120,9 @@ public class RowState implements Serializable {
      */
     public void addActiveCellEditor(UIComponent editor) {
         if (editor != null) {
-            getActiveCellEditorIds().add(editor.getId());
+            String id = editor.getId();
+            if (!getActiveCellEditorIds().contains(id))
+                getActiveCellEditorIds().add(id);
         }
     }
 

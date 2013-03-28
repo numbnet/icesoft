@@ -39,13 +39,16 @@ import org.icefaces.ace.model.table.RowState;
 
 import javax.el.MethodExpression;
 import javax.faces.application.NavigationHandler;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
 import org.icefaces.resources.ICEResourceDependencies;
 import javax.faces.event.AbortProcessingException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 @ICEResourceDependencies({
 
@@ -62,15 +65,10 @@ public class RowEditor extends RowEditorBase {
         DataTable table = RowEditorRenderer.findParentTable(context, this);
         RowState state = (RowState)(context.getExternalContext().getRequestMap().get(table.getRowStateVar()));
 
-        if (event instanceof RowEditEvent) {
-            if (!table.isToggleOnInvalidEdit()) {
-                for (Column c : table.getColumns())
-                    state.removeActiveCellEditor(c.getCellEditor());
-            }
-
+        if (event instanceof RowEditEvent)
             me = getRowEditListener();
-        }
-        else if (event instanceof RowEditCancelEvent)  me = getRowEditCancelListener();
+        else if (event instanceof RowEditCancelEvent)
+            me = getRowEditCancelListener();
 
         if (me != null) outcome = (String) me.invoke(context.getELContext(), new Object[] {event});
 
@@ -78,6 +76,31 @@ public class RowEditor extends RowEditorBase {
             NavigationHandler navHandler = context.getApplication().getNavigationHandler();
             navHandler.handleNavigation(context, null, outcome);
             context.renderResponse();
+        }
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+
+        //Decode row edit request triggered by this editor
+        if (params.containsKey(clientId)) {
+            DataTable table = RowEditorRenderer.findParentTable(context, this);
+            RowState state = (RowState)(context.getExternalContext().getRequestMap().get(table.getRowStateVar()));
+            String tableId = table.getClientId(context);
+            tableId = tableId.substring(0, tableId.lastIndexOf(UINamingContainer.getSeparatorChar(context)));
+
+            if (params.containsKey(tableId + "_editSubmit") &&
+                    !table.isToggleOnInvalidEdit()) {
+                for (Column c : table.getColumns()) {
+                    state.removeActiveCellEditor(c.getCellEditor());
+                }
+            } else if (params.containsKey(tableId + "_editShow")) {
+                for (Column c : table.getColumns()) {
+                    state.addActiveCellEditor(c.getCellEditor());
+                }
+            }
         }
     }
 }
