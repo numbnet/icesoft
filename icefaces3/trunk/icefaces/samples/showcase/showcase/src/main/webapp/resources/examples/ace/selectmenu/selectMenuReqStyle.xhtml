@@ -89,6 +89,7 @@
 					<f:selectItem itemValue="Northwest Territories" itemLabel="Northwest Territories" />
 					<f:selectItem itemValue="Nunavut" itemLabel="Nunavut" />
 					<ace:ajax execute="@this" render="@all" />
+					<ace:ajax event="blur" />
 				</ace:selectMenu>
 				<h:message for="selectProvince" />
 				<br />
@@ -100,6 +101,7 @@
                                          styleClass="#{selectMenuReqStyleBean.optColor}">
 					<f:selectItems value="#{selectMenuBean.cities}" />
 					<ace:ajax execute="@this" render="@all" />
+					<ace:ajax event="blur" />
 				</ace:selectMenu>
 				<h:message for="selectCity" />
 				</h:panelGroup>
@@ -109,6 +111,7 @@
 					<h:outputText style="margin-left:20px;" value="City: #{selectMenuBean.city}" />
 				</h:panelGroup>
 			</h:panelGrid>
+			<h:commandButton value="Clear values" actionListener="#{selectMenuBean.clearValues}" />
             </ace:panel>
         </h:form>
         

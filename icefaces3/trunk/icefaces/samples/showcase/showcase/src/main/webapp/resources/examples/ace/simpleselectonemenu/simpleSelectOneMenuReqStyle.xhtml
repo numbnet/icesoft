@@ -76,6 +76,7 @@
                                          requiredIndicator="(Required)"
                                          indicatorPosition="right"
                                          styleClass="#{simpleSelectOneMenuReqStyleBean.reqColor}">
+					<f:selectItem itemValue="" itemLabel="" />
 					<f:selectItem itemValue="British Columbia" itemLabel="British Columbia" />
 					<f:selectItem itemValue="Alberta" itemLabel="Alberta" />
 					<f:selectItem itemValue="Saskatchewan" itemLabel="Saskatchewan" />
@@ -90,8 +91,9 @@
 					<f:selectItem itemValue="Northwest Territories" itemLabel="Northwest Territories" />
 					<f:selectItem itemValue="Nunavut" itemLabel="Nunavut" />
 					<ace:ajax />
+					<ace:ajax event="blur" />
 				</ace:simpleSelectOneMenu>
-				<h:message for="selectProvince" />
+				<br /><h:message for="selectProvince" />
 				<br />
 				<ace:simpleSelectOneMenu id="selectCity" value="#{simpleSelectOneMenuBean.city}" rendered="#{simpleSelectOneMenuBean.displayCities}"
                                          label="Select city:"
@@ -102,8 +104,9 @@
                                          styleClass="#{simpleSelectOneMenuReqStyleBean.optColor}">
 						<f:selectItems value="#{simpleSelectOneMenuBean.cities}" />
 						<ace:ajax />
+						<ace:ajax event="blur" />
 				</ace:simpleSelectOneMenu>
-				<h:message for="selectCity" />
+				<br /><h:message for="selectCity" />
 				</h:panelGroup>
 				<h:panelGroup>
 					<h:outputText style="margin-left:20px;" value="Province: #{simpleSelectOneMenuBean.province}" />
@@ -111,6 +114,7 @@
 					<h:outputText style="margin-left:20px;" value="City: #{simpleSelectOneMenuBean.city}" />
 				</h:panelGroup>
 			</h:panelGrid>
+			<h:commandButton value="Clear values" actionListener="#{simpleSelectOneMenuBean.clearValues}" />
             </ace:panel>
         </h:form>
         

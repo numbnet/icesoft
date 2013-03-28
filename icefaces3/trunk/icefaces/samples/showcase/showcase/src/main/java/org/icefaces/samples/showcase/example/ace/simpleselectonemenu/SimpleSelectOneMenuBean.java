@@ -80,23 +80,28 @@ public class SimpleSelectOneMenuBean extends ComponentExampleImpl< SimpleSelectO
         super(SimpleSelectOneMenuBean.class);
 		
 		britishColumbiaCities = new ArrayList<SelectItem>();
+		britishColumbiaCities.add(new SelectItem(""));
 		britishColumbiaCities.add(new SelectItem("Kelowna"));
 		britishColumbiaCities.add(new SelectItem("Tofino"));
 		britishColumbiaCities.add(new SelectItem("Vancouver"));
 		britishColumbiaCities.add(new SelectItem("Victoria"));
 		britishColumbiaCities.add(new SelectItem("Whistler"));
 		albertaCities = new ArrayList<SelectItem>();
+		albertaCities.add(new SelectItem(""));
 		albertaCities.add(new SelectItem("Banff"));
 		albertaCities.add(new SelectItem("Calgary"));
 		albertaCities.add(new SelectItem("Edmonton"));
 		albertaCities.add(new SelectItem("Jasper"));
 		saskatchewanCities = new ArrayList<SelectItem>();
+		saskatchewanCities.add(new SelectItem(""));
 		saskatchewanCities.add(new SelectItem("Regina"));
 		saskatchewanCities.add(new SelectItem("Saskatoon"));
 		manitobaCities = new ArrayList<SelectItem>();
+		manitobaCities.add(new SelectItem(""));
 		manitobaCities.add(new SelectItem("Winnipeg"));
 		manitobaCities.add(new SelectItem("Churchill"));
 		ontarioCities = new ArrayList<SelectItem>();
+		ontarioCities.add(new SelectItem(""));
 		ontarioCities.add(new SelectItem("Niagara Falls"));
 		ontarioCities.add(new SelectItem("Niagara-on-the-Lake"));
 		ontarioCities.add(new SelectItem("London"));
@@ -105,27 +110,35 @@ public class SimpleSelectOneMenuBean extends ComponentExampleImpl< SimpleSelectO
 		ontarioCities.add(new SelectItem("Stratford"));
 		ontarioCities.add(new SelectItem("Toronto"));
 		quebecCities = new ArrayList<SelectItem>();
+		quebecCities.add(new SelectItem(""));
 		quebecCities.add(new SelectItem("Montreal"));
 		quebecCities.add(new SelectItem("Quebec City"));
 		quebecCities.add(new SelectItem("Sherbrooke"));
 		quebecCities.add(new SelectItem("Trois Rivières"));
 		newfoundlandCities = new ArrayList<SelectItem>();
+		newfoundlandCities.add(new SelectItem(""));
 		newfoundlandCities.add(new SelectItem("Corner Brook"));
 		newfoundlandCities.add(new SelectItem("St. John's"));
 		princeEdwardIslandCities = new ArrayList<SelectItem>();
+		princeEdwardIslandCities.add(new SelectItem(""));
 		princeEdwardIslandCities.add(new SelectItem("Cavendish"));
 		princeEdwardIslandCities.add(new SelectItem("Charlottetown"));
 		newBrunswickCities = new ArrayList<SelectItem>();
+		newBrunswickCities.add(new SelectItem(""));
 		newBrunswickCities.add(new SelectItem("Fredericton"));
 		newBrunswickCities.add(new SelectItem("Saint John"));
 		novaScotiaCities = new ArrayList<SelectItem>();
+		novaScotiaCities.add(new SelectItem(""));
 		novaScotiaCities.add(new SelectItem("Cape Breton"));
 		novaScotiaCities.add(new SelectItem("Halifax"));
 		yukonCities = new ArrayList<SelectItem>();
+		yukonCities.add(new SelectItem(""));
 		yukonCities.add(new SelectItem("Whitehorse"));
 		northwestTerritoriesCities = new ArrayList<SelectItem>();
+		northwestTerritoriesCities.add(new SelectItem(""));
 		northwestTerritoriesCities.add(new SelectItem("Yellowknife"));
 		nunavutCities = new ArrayList<SelectItem>();
+		nunavutCities.add(new SelectItem(""));
 		nunavutCities.add(new SelectItem("Iqaluit"));
 		
 		provinceCitiesMap = new HashMap<String, List<SelectItem>>();
@@ -177,5 +190,10 @@ public class SimpleSelectOneMenuBean extends ComponentExampleImpl< SimpleSelectO
 			}
 		}
 		setDisplayCities(false);
+	}
+	
+	public void clearValues() {
+		this.province = "";
+		this.city = "";
 	}
 }
