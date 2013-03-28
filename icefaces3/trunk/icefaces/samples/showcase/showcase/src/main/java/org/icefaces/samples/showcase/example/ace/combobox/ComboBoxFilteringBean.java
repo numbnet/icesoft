@@ -29,39 +29,29 @@ import javax.faces.model.SelectItem;
 import java.util.*;
 
 @ComponentExample(
-        title = "example.ace.combobox.title",
-        description = "example.ace.combobox.description",
-        example = "/resources/examples/ace/combobox/comboBoxOverview.xhtml"
+		parent = ComboBoxBean.BEAN_NAME,
+        title = "example.ace.combobox.filtering.title",
+        description = "example.ace.combobox.filtering.description",
+        example = "/resources/examples/ace/combobox/comboBoxFiltering.xhtml"
 )
 @ExampleResources(
         resources ={
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
-                    title="comboBoxOverview.xhtml",
-                    resource = "/resources/examples/ace/combobox/comboBoxOverview.xhtml"),
+                    title="comboBoxFiltering.xhtml",
+                    resource = "/resources/examples/ace/combobox/comboBoxFiltering.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="ComboBoxBean.java",
+                    title="ComboBoxFilteringBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/combobox/ComboBoxBean.java")
+                    "/example/ace/combobox/ComboBoxFilteringBean.java")
         }
 )
-@Menu(
-            title = "menu.ace.combobox.subMenu.title",
-            menuLinks = {
-                @MenuLink(title = "menu.ace.combobox.subMenu.main", isDefault = true, exampleBeanName = ComboBoxBean.BEAN_NAME),
-				@MenuLink(title = "menu.ace.combobox.subMenu.facet", exampleBeanName = ComboBoxFacetBean.BEAN_NAME),
-				@MenuLink(title = "menu.ace.combobox.subMenu.filtering", exampleBeanName = ComboBoxFilteringBean.BEAN_NAME),
-				@MenuLink(title = "menu.ace.combobox.subMenu.label", exampleBeanName = ComboBoxLabelBean.BEAN_NAME),
-				@MenuLink(title = "menu.ace.combobox.subMenu.indicator", exampleBeanName = ComboBoxIndicatorBean.BEAN_NAME),
-				@MenuLink(title = "menu.ace.combobox.subMenu.reqStyle", exampleBeanName = ComboBoxReqStyleBean.BEAN_NAME)
-            }
-)
-@ManagedBean(name= ComboBoxBean.BEAN_NAME)
+@ManagedBean(name= ComboBoxFilteringBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class ComboBoxBean extends ComponentExampleImpl< ComboBoxBean > implements Serializable {
+public class ComboBoxFilteringBean extends ComponentExampleImpl< ComboBoxFilteringBean > implements Serializable {
 
-    public static final String BEAN_NAME = "comboBoxBean";
+    public static final String BEAN_NAME = "comboBoxFilteringBean";
 	
 	private List<SelectItem> britishColumbiaCities;
 	private List<SelectItem> albertaCities;
@@ -78,8 +68,8 @@ public class ComboBoxBean extends ComponentExampleImpl< ComboBoxBean > implement
 	private List<SelectItem> nunavutCities;
 	private Map<String, List<SelectItem>> provinceCitiesMap;
     
-    public ComboBoxBean() {
-        super(ComboBoxBean.class);
+    public ComboBoxFilteringBean() {
+        super(ComboBoxFilteringBean.class);
 		
 		britishColumbiaCities = new ArrayList<SelectItem>();
 		britishColumbiaCities.add(new SelectItem("Kelowna"));
@@ -179,10 +169,5 @@ public class ComboBoxBean extends ComponentExampleImpl< ComboBoxBean > implement
 			}
 		}
 		setDisplayCities(false);
-	}
-	
-	public void clearValues() {
-		this.province = "";
-		this.city = "";
 	}
 }
