@@ -20,10 +20,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" >
 
-		<context-param>
-			<param-name>javax.faces.PROJECT_STAGE</param-name>
-			<param-value>Development</param-value>
-		</context-param>
+        <context-param>
+            <param-name>javax.faces.PROJECT_STAGE</param-name>
+            <param-value>Development</param-value>
+        </context-param>
 
     	<context-param>
         	<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -52,9 +52,13 @@
     	<servlet-mapping>
         	<servlet-name>Resource Servlet</servlet-name>
         	<url-pattern>/xmlhttp/*</url-pattern>
-    	</servlet-mapping>
+        </servlet-mapping>
 
-		<!-- Resolve the missing PNG entry issue on old servers such as WAS7 -->
+        <session-config>
+            <session-timeout>1</session-timeout>
+        </session-config>
+
+        <!-- Resolve the missing PNG entry issue on old servers such as WAS7 -->
 		<mime-mapping>
 			<extension>png</extension>
 			<mime-type>image/png</mime-type>
