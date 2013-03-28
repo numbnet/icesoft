@@ -405,15 +405,16 @@ ice.ace.ComboBox.prototype = {
     },
 
     onBlur: function(event) {
-        var element = ice.ace.jq(this.element);
-        if (ice.ace.jq.trim(this.element.value) == '' && this.cfg.inFieldLabel) {
-			this.element.value = this.cfg.inFieldLabel;
-            element.addClass(this.cfg.inFieldLabelStyleClass);
-            element.data("labelIsInField", true);
-        }
-        // needed to make click events working
 		var self = this;
-        this.hideObserver = setTimeout(function () { self.hide(); }, 250);
+        this.hideObserver = setTimeout(function () { // needed to make click events work
+				self.hide();
+				var element = ice.ace.jq(self.element);
+				if (ice.ace.jq.trim(self.element.value) == '' && self.cfg.inFieldLabel) {
+					self.element.value = self.cfg.inFieldLabel;
+					element.addClass(self.cfg.inFieldLabelStyleClass);
+					element.data("labelIsInField", true);
+				}
+			}, 250);
         this.hasFocus = false;
 		setFocus('');
 		if (this.ajaxBlur) {
