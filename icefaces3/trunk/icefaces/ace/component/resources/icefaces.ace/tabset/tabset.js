@@ -30,8 +30,7 @@ ice.ace.tabset = {
        var initializeStartTime = new Date().getTime();
        ice.ace.tabset.consoleLog(false, 'tabSet.initialize');
 	 
-		 YAHOO.util.Event.onDOMReady(function () {
-		 var Dom = YAHOO.util.Dom;
+	   var Dom = YAHOO.util.Dom;
 
        var tabview = new YAHOO.widget.TabView(clientId), cachedOldTabs = [], cachedNewTab = null;
        tabview.set('orientation', jsProps.orientation);
@@ -323,8 +322,7 @@ ice.ace.tabset = {
        tabview.addListener('beforeActiveTabChange', function (e) { ice.ace.jq(tabview._contentParent).css({opacity:0.4}); });
        bindYUI(tabview);
 
-	 }); // *** end of domready
-     ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - initialize - " + (new Date().getTime() - initializeStartTime) + "ms");
+       ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - initialize - " + (new Date().getTime() - initializeStartTime) + "ms");
    },
    
    //this function is responsible to provide an element that keeps tab index
@@ -377,7 +375,6 @@ ice.ace.tabset = {
       ice.ace.tabset.devMode = jsfProps.devMode;
       var updatePropertiesStartTime = new Date().getTime();
        var lib = this;
-	   YAHOO.util.Event.onDOMReady(function () {
            var updatePropertiesDOMReadyStartTime = new Date().getTime();
            YAHOO.widget.Tab.prototype.ACTIVE_CLASSNAME = 'ui-state-active';
            YAHOO.widget.Tab.prototype.HIDDEN_CLASSNAME = 'ui-tabs-hide';
@@ -468,7 +465,6 @@ ice.ace.tabset = {
        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, lib);
 
        ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - updateProperties DR - " + (new Date().getTime() - updatePropertiesDOMReadyStartTime) + "ms");
-       });
        ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - updateProperties - " + (new Date().getTime() - updatePropertiesStartTime) + "ms");
    },
  
