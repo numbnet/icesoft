@@ -103,6 +103,11 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             coallescedResourceComponent.setRendererType(rendererType);
             coallescedResourceComponent.setTransient(true);
 
+            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+            CoalescingResource.Infos previousResourceInfos = (CoalescingResource.Infos) sessionMap.get(CoalescingResourceHandler.class.getName() + extension);
+
+            boolean isFirstGETRequest = previousResourceInfos == null && !context.isPostback();
+
             CoalescingResource.Infos resourceInfos = new CoalescingResource.Infos();
             List children = resourceContainer.getChildren();
             for (UIComponent next : new ArrayList<UIComponent>(children)) {
@@ -112,15 +117,17 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                 Resource nextResource = resourceHandler.createResource(nextName, nextLibrary);
                 if (nextName.endsWith(extension) && !"jsf.js".equals(nextName) &&
                         nextResource != null && !URI.create(nextResource.getRequestPath()).isAbsolute()) {
-                    resourceInfos.resources.add(new CoalescingResource.Info(nextName, nextLibrary));
-                    root.removeComponentResource(context, next);
+                    CoalescingResource.Info info = new CoalescingResource.Info(nextName, nextLibrary);
+
+                    if (isFirstGETRequest || previousResourceInfos.resources.contains(info)) {
+                        resourceInfos.resources.add(info);
+                        root.removeComponentResource(context, next);
+                    }
                 }
             }
 
             root.addComponentResource(context, coallescedResourceComponent);
 
-            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            CoalescingResource.Infos previousResourceInfos = (CoalescingResource.Infos) sessionMap.get(CoalescingResourceHandler.class.getName() + extension);
             if (previousResourceInfos == null) {
                 sessionMap.put(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
             } else {
