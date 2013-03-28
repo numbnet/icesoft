@@ -39,29 +39,11 @@
 
     <distributionManagement>
 
-        <!--<snapshotRepository>-->
-            <!--<id>icefaces-local</id>-->
-            <!--<name>Local filesystem repository for testing</name>-->
-            <!--<url>file://${user.home}/icefaces/local-test-repo</url>-->
-        <!--</snapshotRepository>-->
-
         <snapshotRepository>
-            <id>icefaces-remote</id>
-            <name>ICEsoft Maven Repository</name>
-            <url>svn:http://10.18.39.25:8888/svn/ossrepo/maven2/snapshots/</url>
+            <id>icefaces-local</id>
+            <name>Local filesystem repository for testing</name>
+            <url>file://${user.home}/icefaces/local-test-repo</url>
         </snapshotRepository>
-
-        <!--<snapshotRepository>-->
-            <!--<id>sonatype-nexus-snapshots</id>-->
-            <!--<name>Sonatype Nexus Snapshots</name>-->
-            <!--<url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
-        <!--</snapshotRepository>-->
-
-        <!--<repository>-->
-            <!--<id>sonatype-nexus-staging</id>-->
-            <!--<name>Nexus Release Repository</name>-->
-            <!--<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-        <!--</repository>-->
 
     </distributionManagement>
 
