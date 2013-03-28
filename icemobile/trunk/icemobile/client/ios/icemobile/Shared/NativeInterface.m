@@ -114,7 +114,8 @@ static char base64EncodingTable[64] = {
         [self sms:[params objectForKey:@"n"]
                     body:[params objectForKey:@"body"]];
     } else if ([@"geospy" isEqualToString:commandName])  {
-        [self geospy:[params objectForKey:@"id"]];
+        [self geospy:[params objectForKey:@"id"]
+                withStrategy:[params objectForKey:@"strategy"]];
     }
 
     return YES;
@@ -723,14 +724,19 @@ NSLog(@"Found record %@", result);
             withName:augName];
 }
 
-- (BOOL)geospy:(NSString*) geoId {
+- (BOOL)geospy:(NSString*) geoId withStrategy:(NSString*) strategy  {
     self.geospyName = geoId;
     if (nil == self.locationManager)
         self.locationManager = [[CLLocationManager alloc] init];
  
     self.locationManager.delegate = self;
-//    [self.locationManager startMonitoringSignificantLocationChanges];
-    [self.locationManager startUpdatingLocation];
+    if ([@"continuous" isEqualToString:strategy]) {
+        NSLog(@"geospy starting continuous updates");
+        [self.locationManager startUpdatingLocation];
+    } else {
+        NSLog(@"geospy starting significant updates");
+        [self.locationManager startMonitoringSignificantLocationChanges];
+    }
     [self.controller doCancel];
     return YES;
 }
