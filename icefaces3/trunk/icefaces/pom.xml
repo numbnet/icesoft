@@ -40,10 +40,16 @@
     <distributionManagement>
 
         <snapshotRepository>
-            <id>icefaces-local</id>
+            <id>icefaces-local-snapshot</id>
             <name>Local filesystem repository for testing</name>
-            <url>file://${user.home}/icefaces/local-test-repo</url>
+            <url>file://${user.home}/icefaces/local-test-repo/snapshots</url>
         </snapshotRepository>
+
+        <repository>
+            <id>icefaces-local-release</id>
+            <name>Local filesystem repository for testing</name>
+            <url>file://${user.home}/icefaces/local-test-repo/releases</url>
+        </repository>
 
     </distributionManagement>
 
