@@ -61,17 +61,21 @@ public class CellEditorRenderer extends CoreRenderer {
         else
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.CELL_EDITOR_CLASS, null);
 
+        UIComponent input = editor.getFacet("input");
+        UIComponent output = editor.getFacet("output");
+
         if (!selectedEditorIds.contains(editor.getId())) {
-            writer.startElement(HTML.SPAN_ELEM, null);
-            editor.getFacet("output").encodeAll(context);
-            writer.endElement(HTML.SPAN_ELEM);
+            input.setRendered(false);
+            output.setRendered(true);
+        } else {
+            input.setRendered(true);
+            output.setRendered(false);
         }
 
-        if (selectedEditorIds.contains(editor.getId())) {
-            writer.startElement(HTML.SPAN_ELEM, null);
-            editor.getFacet("input").encodeAll(context);
-            writer.endElement(HTML.SPAN_ELEM);
-        }
+        writer.startElement(HTML.SPAN_ELEM, null);
+        editor.getFacet("output").encodeAll(context);
+        editor.getFacet("input").encodeAll(context);
+        writer.endElement(HTML.SPAN_ELEM);
 
         writer.endElement(HTML.DIV_ELEM);
     }
