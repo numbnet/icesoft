@@ -207,7 +207,7 @@
             </lib>
             
             <lib dir="${icefaces.base.dir}/samples/ace/themes">
-                <include name="*.jar"/>
+                <include name="*.jar" if="includeThemeJars"/>
             </lib>
             
             <classes dir="${classes.dir}"/>
