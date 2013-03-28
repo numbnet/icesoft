@@ -24,6 +24,7 @@
     <property name="compat" value="true" />
     <property name="ace" value="true" />
     <property name="includeSrc" value="true" />
+    <property name="includeThemeJars" value="true"/>
     
     <property file="../build/build.properties"/>
     <property file="./build.properties"/>
