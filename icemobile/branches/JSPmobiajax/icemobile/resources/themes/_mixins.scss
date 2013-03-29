@@ -1,0 +1,20 @@
+@mixin border-radius($border){
+    -webkit-border-radius: $border;
+    border-radius: $border;
+}
+
+@mixin box-shadow($shadow) {
+    -moz-box-shadow: $shadow;
+    -webkit-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+
+@mixin linear-gradient($start, $end) {
+    background: $start; /* Old browsers */
+    background: -moz-linear-gradient(top, $start 0%, $end 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start), color-stop(100%,$end)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  $start 0%,$end 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, $start 0%,$end 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, $start 0%,$end 100%); /* IE10+ */
+    background: linear-gradient(to bottom, $start 0%,$end 100%); /* W3C */
+}
