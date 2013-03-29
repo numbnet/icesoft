@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
+    <title>gmap geolocation example</title>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
+</h:head>
+
+<h:body>
+    <ui:include src="inc-gmap-geolocation.xhtml"/>
+</h:body>
+</html>

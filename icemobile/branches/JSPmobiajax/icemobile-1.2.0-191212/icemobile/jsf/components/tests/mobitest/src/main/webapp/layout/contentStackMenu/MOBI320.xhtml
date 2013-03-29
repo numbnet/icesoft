@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+     <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen" />
+    <title>Menu with contentStack</title>
+</h:head>
+<h:body>
+  <h:form id="upperfrm">
+    <mobi:splitPane id="lp1" scrollable="true" columnDivider="30">
+       <f:facet name="left">
+			<mobi:contentStackMenu id="mnu" contentStackId="stack1"
+				selectedPane="#{layoutBean.selectedPane}">
+				<mobi:contentMenuItem label="Menu" />
+				<mobi:contentMenuItem label="Pane 1" value="panel1" />
+				<mobi:contentMenuItem label="Pane 2" value="panel2" />
+				<mobi:contentMenuItem label="Pane 3" value="panel3" />
+			</mobi:contentStackMenu>
+
+        </f:facet>
+        <f:facet name="right">
+            <mobi:contentStack id="stack1"
+                currentId="#{layoutBean.selectedPane}" contentMenuId="mnu">
+                <mobi:contentPane id="panel1">
+                                Pane 1
+                            </mobi:contentPane>
+                <mobi:contentPane id="panel2">
+                                Pane2
+                            </mobi:contentPane>
+                <mobi:contentPane id="panel3">
+                                Pane 3
+                            </mobi:contentPane>
+            </mobi:contentStack>
+        </f:facet>
+    </mobi:splitPane>
+   </h:form>
+  </h:body>
+</html>

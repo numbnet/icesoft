@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+	<meta http-equiv="Co ntent-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<!--    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.js"></script> --> 
+	<h:outputStylesheet library="jquery.mobile-1.0b2" name="jquery.mobile-1.0b2.css" target="head"/> 
+	<h:outputScript library="jquery.mobile" name="jquery-1.6.1.js" target="head"/> 
+	<h:outputScript library="jquery.mobile-1.0b2" name="jquery.mobile-1.0b2.js" target="head"/> 
+	<h:outputScript library="org.icefaces.component.util" name="component.js" target="head"/> 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+    <mobi:deviceStylesheet />
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+    $('.searchPage').live('swipeleft swiperight',function(event){
+        console.log(event.type);
+        if (event.type == "swipeleft") {
+            var prev = $("#prevlink",$.mobile.activePage);
+            if (prev.length) {
+                var prevurl = $(prev).attr("href");
+                console.log(prevurl);
+                $.mobile.changePage(prevurl);
+            }
+        }
+        if (event.type == "swiperight") {
+            var next = $("#nextlink",$.mobile.activePage);
+            if (next.length) {
+                var nexturl = $(next).attr("href");
+                console.log(nexturl);
+                $.mobile.changePage(nexturl);
+            }
+        }
+        event.preventDefault();
+    });
+});
+
+</script>
+</h:head>
+
+<h:body>
+<f:view contentType="text/html">
+<div data-role="page" data-theme="e">
+
+    <div data-role="header">
+        <h1>Art Search</h1>
+    </div>
+
+    <div data-role="content">   
+        <div data-inline="true">
+        <h:form  method="post" id='searchform'>
+        <input type="search" name="search" data-inline="true"/> <input type="submit" value="Search" data-inline="true"/>
+        </h:form>
+        </div>
+    </div>
+
+</div>
+<li><a href="../index.html">index page</a>
+    </li>
+</f:view>
+	
+</h:body>
+ 
+</html>
+

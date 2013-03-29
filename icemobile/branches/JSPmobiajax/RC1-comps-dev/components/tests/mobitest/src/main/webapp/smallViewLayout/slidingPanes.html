@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
+    <title>sliding panes</title>
+    <style type="text/css">
+        h1 {
+            font: bold 21px/21px Helvetica, Arial, Sans-serif;
+            text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            margin: 0px;
+            -moz-box-flex: 1;
+            text-align: center;
+        }
+        header{
+          width: 100%;
+            padding:  5px 0px;
+            background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
+            display: -webkit-box;
+            -webkit-box-orient: horizontal;
+            -webkit-box-pack:justify;
+            display: -moz-box;
+            -moz-box-orient: horizontal;
+            -moz-box-pack:justify;
+        }
+        .button {
+            color: #fff;
+            text-decoration: none;
+            display:block;
+            padding:  4px 10px;
+            -webkit-border-radius: 5px;
+            font:  normal 14px/16px Hevletica, Arial, sans-serif;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        .button.menu {
+            background-image:  -webkit-gradient(linear, left top, left bottom,
+                    from(#7d828c),
+                   color-stop(0.5, #303749),
+                   color-stop(0.5, #121a2e),
+                   to(#121a2e));
+            background-image: -moz-linear-gradient(top, #7d828c, #303749 50%, #121a2e 50%, #121a2e);
+                   border: solid 1px rgba(79, 79, 79, 0.75);
+        }
+        .button.menu:hover {
+            background-image: -webkit-gradient(linear, left top, left bottom,
+                         from(#4286f5),
+                         color-stop(0.5, #4286f5),
+                         color-stop(0.5, #194fdb),
+                         to(#194fdb));
+            background-image: -moz-linear-gradient(top, #4286f5, #4286f5 50%, #194fdb 50%, #194fdb);
+        }
+        .button.menu:active {
+            background-image: -webkit-gradient(linear, left top, left bottom,
+                         from(#4286f5),
+                         color-stop(0.5, #4286f5),
+                         color-stop(0.5, #194fdb),
+                         to(#194fdb));
+            background-image: -moz-linear-gradient(top, #4286f5, #4286f5 50%, #194fdb 50%, #194fdb);
+        }
+        #nav > li {
+            padding:  5px 10px;
+        }
+        #container {
+            overflow:  hidden;
+            position: relative;
+        }
+        #panes {
+            overflow:  hidden;
+            position: relative;
+            overflow: auto;
+        }
+        .deadPane {
+            display:block;
+            overflow:  auto;
+    /*           -moz-transition: all 0.5s ease-out;  /* FF4+ */
+  /*  -o-transition: all 0.3s ease-out;  /* Opera 10.5+ */
+   /* -webkit-transition: all 0.3s ease-out;  /* Saf3.2+, Chrome */
+ /*   -ms-transition: all 0.3s ease-out;  /* IE10 */
+ /*   transition: all 0.3s ease-out; */
+            -moz-transition: opacity .25s linear, visibility .1s linear .5s;
+           -webkit-transition: opacity .25s linear, visibility .1s linear .5s;
+            -webkit-transition: left 1s ease-in;
+           -o-transition: opacity .25s linear, visibility .1s linear .5s;
+           transition: opacity .25s linear, visibility .1s linear .5s;
+           visibility: hidden;
+            opacity: 0;
+            height: 0;
+         /*   overflow:  hidden;*/
+            position: absolute;
+           visibility: hidden;
+           left: 200%;
+         /*   -webkit-transition: opacity 1s ease-out;
+            opacity: 0;
+            height: 0;
+            overflow:  hidden; */
+            border: solid;
+            border-color:  black;
+        }
+        .activePane {
+            display:block;
+            opacity: 1;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            border:  solid;
+            border-color:  red;
+            -webkit-transition: opacity 1s ease-out;
+            -webkit-transition: left 1s ease-out;
+            overflow: auto;
+       /*     visibility: visible;*/
+        }
+    </style>
+    <script type="text/javascript">
+       var currentPage='navPane';
+       var viewportdim = viewport();
+       var width=viewportdim.width;
+    function setupPage(){
+       var viewportdim = viewport();
+       var containerwidth = viewportdim.width;
+       var containerheight = viewportdim.height || 250;
+       var height = containerheight-40 + 'px';
+       var panesWidth = 4* containerwidth +"px";
+        document.getElementById("container").style.height = height;
+       var elem = document.getElementById('panes');
+       elem.style.setProperty("clientWidth", containerwidth-20+"px");
+        elem.style.height = height;
+       var navElem = document.getElementById(currentPage);
+       navElem.style.height=height;
+
+       //do we want an option to swipe from container to menu?? if we allow menu, submenu, content and subcontent then
+       //panes width would be 4*container size and we could allow user to swipe on to other.
+    }
+
+    function slideTo(clientId){
+       hidePage(currentPage);
+       showPage(clientId);
+       currentPage=clientId;
+    }
+
+    function hidePage(hideId){
+       var hideElem = document.getElementById(hideId);
+       addClass(hideElem, 'deadPane');
+        if (hideId == 'navPane'){
+            hideElem.style.left = "-100%";
+        }
+        else {
+            hideElem.style.left = "100%";
+        }
+      /* hideElem.style.left="-500px";
+       hideElem.style.opacity=0; */
+    }
+    function showPage(showId){
+       var showElem = document.getElementById(showId);
+       showElem.style.left = "0px";
+       addClass(showElem, 'activePane') ;
+   /*    showElem.style.setProperty("left", "0px");
+       showElem.style.setProperty("height", "auto");
+       showElem.style.opacity = 100;  */
+    }
+     function hasClass(ele,cls) {
+	       return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+     }
+      function addClass(ele,cls) {
+            if (!this.hasClass(ele,cls)) ele.className =cls;
+     }
+      function removeClass(ele,cls) {
+         if (hasClass(ele,cls)) {
+            // var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+             ele.className=" ";
+         }
+      }
+     function viewport(){
+        var e = window;
+        var a = 'inner';
+        if (!('innerWidth' in window)){
+            a = 'client';
+            e = document.documentElement || document.body;
+        }
+        return { width : e[ a+'Width' ] , height : e[ a+'Height' ]
+        }
+     }
+    </script>
+</head>
+<body onload="setupPage();">
+
+<div id="container">
+  <header><h3> container or application heading </h3> </header>
+  <div id="panes">
+     <h5> Single view here be sliding containers...</h5>
+    <div id="navPane" class="activePane">
+      <ul id="nav" >
+        <li><h3><a class="button menu" onclick="slideTo('page1');">Content Pane 1</a></h3></li>
+        <li><h3><a class="button menu" onclick="slideTo('page2');">Content Pane 2</a></h3></li>
+        <li><h3><a class="button menu" onclick="slideTo('page3');">Content Pane 3</a></h3></li>
+      </ul>
+    </div>
+    <div id="page1" class="deadPane">
+        <header>
+            <a class="button menu" onclick="slideTo('navPane');">Menu</a>
+            <h3>Content Pane 1</h3>
+        </header>
+        Content for page 1
+        <h5> footer for page 1</h5>
+    </div>
+    <div id="page2" class="deadPane">
+        <header>
+            <a class="button menu" onclick="slideTo('navPane');">Menu</a>
+            <h3>Content Pane 2</h3>
+        </header>
+        Content for page 1
+        <h5> footer for page 1</h5>
+    </div>
+    <div id="page3" class="deadPane">
+        <header>
+            <a class="button menu" onclick="slideTo('navPane');">Menu</a>
+            <h3>Content Pane 3</h3>
+        </header>
+             Content for page 1
+        <h5> footer for page 1</h5>
+    </div>
+  </div>
+</div>
+</body>
+</html>

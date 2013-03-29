@@ -1,0 +1,93 @@
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+<head><title>(For validation only)</title></head>
+<body>
+
+<!--
+    Contruct to allow users ot view component documentation, source and a usage example.
+-->
+<composite:interface
+        displayName="Example Tabset control"
+        shortDescription="Contruct to allow users ot view component documentation, source and a usage example.">
+
+    <composite:attribute name="exampleBean" required="true"
+                         displayName="Example bean"
+                         type="org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl"
+                         shortDescription="Manged bean used for this component example"/>
+
+    <composite:attribute name="renderDescription" default="true"
+                         displayName="Render Description tab"/>
+    <composite:attribute name="renderExample" default="true"
+                         displayName="Render Example tab"/>
+    <composite:attribute name="renderSource" default="true"
+                         displayName="Render Source tab"/>
+
+    <composite:attribute name="autoWidth" default="true"
+                         displayName="Passthough attirbue for tabset which when true
+                         enabled the component to set the width in percent of the child
+                         tabs. "/>
+    <composite:attribute name="parentFooter" default="true"
+                         displayName="Passthough attirbue for tabset which when true
+                         enables the component changes the style for fixed parent header. "/>
+
+    <composite:attribute name="defaultId" required="false"
+                         default="example"
+                         displayName="Default selected Tabset"
+                         shortDescription="Set the default selected tabset conent pane.  By
+                         default the 'example' pane is set by default. Valud values
+                         are desc|example|docs"/>
+
+</composite:interface>
+
+<composite:implementation>
+
+    <mobi:tabSet style="background-color:transparent;"
+                 defaultId="#{cc.attrs.exampleBean.defaultId}"
+                 parentFooter="#{cc.attrs.parentFooter}"
+                 autoWidth="#{cc.attrs.autoWidth}"
+                 orientation="top">
+        <!-- description tab -->
+        <mobi:contentPane
+                facelet="true" client="true"
+                rendered="#{cc.attrs.renderDescription}"
+                id="desc" title="#{mmsgs['example.description.label']}">
+            <ui:include src="#{cc.attrs.exampleBean.descriptionPath}"/>
+        </mobi:contentPane>
+        <!-- example tab -->
+        <mobi:contentPane
+                facelet="false" client="true"
+                rendered="#{cc.attrs.renderDescription}"
+                id="example" title="#{mmsgs['example.example.label']}">
+            <ui:include src="#{cc.attrs.exampleBean.examplePath}"/>
+        </mobi:contentPane>
+        <!-- docs tab -->
+        <mobi:contentPane
+                facelet="false" client="true"
+                rendered="#{cc.attrs.renderDescription}"
+                id="docs" title="#{mmsgs['example.resources.label']}">
+            <ui:include src="#{cc.attrs.exampleBean.resourcesPath}"/>
+        </mobi:contentPane>
+    </mobi:tabSet>
+
+</composite:implementation>
+</body>
+</html>

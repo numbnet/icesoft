@@ -1,0 +1,73 @@
+/*
+ * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions an
+ * limitations under the License.
+ */
+
+/* named styles that describe generic characteristics, like .shadow or .h2 */
+body, .mobi-body {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #c8c8c8;
+}
+
+* {
+    -webkit-tap-highlight-color: #194FDB;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 8px 10px;
+}
+
+.mobi-shadow {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.mobi-round-all {
+    border-radius: 0.6em 0.6em 0.6em 0.6em;
+    -webkit-border-radius: 0.6em;
+    -moz-border-radius: 0.6em;
+}
+
+.mobi-round-top {
+    border-top-left-radius: 0.6em;
+    border-top-right-radius: 0.6em;
+}
+
+.mobi-round-bottom {
+    border-bottom-left-radius: 0.6em;
+    border-bottom-right-radius: 0.6em;
+}
+
+.mobi-round-left {
+    border-top-left-radius: 0.6em;
+    border-bottom-left-radius: 0.6em;
+}
+
+.mobi-round-right {
+    border-top-right-radius: 0.6em;
+    border-bottom-right-radius: 0.6em;
+}
+
+.mobi-controlgroup-controls {
+    display: block;
+    width: 95%;
+}
+
+.mobi-device {
+    background-image: url(iphone.png); /** sprite-ref: sprite;  */
+    background-repeat: no-repeat;
+    height: 94px;
+
+}

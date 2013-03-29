@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title id="title">inputComponent events no icefaces on page</title>
+	<meta http-equiv="Co ntent-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</h:head>
+
+<h:body>
+ 
+    <h5>html5 input</h5>
+     <form id="inputForm">
+ 
+       <div>
+        <h:outputText value="plain html"/>
+        <input type="text" value="" placeholder="placeholder" onchange="alert('onchange textfield');"
+              title="basic text input"/> 
+       </div>
+       <br />
+       <div id="phonediv">
+        <h:outputText value="phone"/>
+        <input type="tel" value="1-403-860-2621" onchange="alert('onchange telephone');"/>
+       </div>
+      <br />
+       <div id="numberdiv">
+        <h:outputText value="NUMBER"/>
+        <input type="number" value="99867" onchange="alert('onchange number');"/>
+       </div>     
+       
+         <div id="submittext">
+          <input type="submit" value="submitForm"/>
+       </div>
+  
+     </form>
+
+	<li><a href="../mobilityCompsindex.html">index page</a>
+	</li>
+</h:body>
+</html>

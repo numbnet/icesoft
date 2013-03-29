@@ -1,0 +1,71 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <h:form prependId="false" enctype="multipart/form-data">
+
+        <h4>Send Notification</h4>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Subject" for="subject"/>
+                <mobi:inputText id="subject"
+                                value="#{notificationBean.notificationSubject}"
+                                type="text" placeholder="subject"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Message" for="message"/>
+                <mobi:inputText id="message"
+                                value="#{notificationBean.notificationMessage}"
+                                type="text" placeholder="message"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:commandButton value="Send" type="important"
+                                    actionListener="#{notificationBean.sendNotificationMessage}"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
+
+    <h:form>
+        <h4>Push Message</h4>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Message" for="message"/>
+                <mobi:inputText id="message"
+                                value="#{notificationBean.pushMessage}"
+                                type="text" placeholder="message"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Push Message Echo:"/>
+                <h:outputText style="float:right;width:100px;"
+                              value="#{messageHub.message}"/>
+
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:commandButton value="Send" type="important"
+                                    actionListener="#{notificationBean.sendPushMessage}"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+    </h:form>
+
+</ui:fragment>
+
+

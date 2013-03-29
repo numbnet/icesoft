@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <mobi:tabSet parentHeader="#{parentHeader}"
+            parentFooter="#{parentFooter}"
+            autoWidth="#{autoWidth}"
+            orientation="#{orientation}">
+        <mobi:contentPane title="Tab 1" id="tab1">
+            Tab 1 Content
+        </mobi:contentPane>
+        <mobi:contentPane title="Tab 2" id="tab2">
+            Tab 2 Content
+        </mobi:contentPane>
+        <mobi:contentPane title="Tab 3" id="tab3">
+            Tab 3 Content
+        </mobi:contentPane>
+    </mobi:tabSet>
+</ui:composition>

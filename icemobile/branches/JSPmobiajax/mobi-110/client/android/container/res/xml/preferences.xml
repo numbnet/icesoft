@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+* Copyright 2004-2011 ICEsoft Technologies Canada Corp.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions an
+* limitations under the License.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory 
+        android:title="Preferences"
+        android:key="preferences">
+        
+        <EditTextPreference
+            android:key="url"
+            android:title="New URL" 
+            android:summary="Load a new URL into container."
+            android:dialogTitle="URL"
+            android:dialogMessage="Set URL"    
+            android:persistent="true"
+            android:defaultValue="http://"
+            />
+       <CheckBoxPreference 
+            android:key="gallery"
+            android:summary="Select media from the gallery."
+            android:title="Use Media Gallery" 
+            android:defaultValue="false"
+        />
+        <CheckBoxPreference 
+            android:key="c2dm"
+            android:summary="Use C2DM Notification"
+            android:title="C2DM Notify" 
+            android:defaultValue="true"
+        />
+        <EditTextPreference
+            android:key="email"
+            android:title="Email Notification" 
+            android:summary="Email address for cloud notification."
+            android:dialogTitle="Email Notify"
+            android:dialogMessage="Set email notification"    
+            android:persistent="true"
+            android:defaultValue=""
+            />
+        <CheckBoxPreference
+            android:key="progressBar"
+            android:summary="Display progress dialog overlay."
+            android:title="Progress Dialog"
+            android:defaultValue="false"
+        />
+    </PreferenceCategory>
+    
+</PreferenceScreen>

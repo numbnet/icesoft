@@ -1,0 +1,100 @@
+/***
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+.mobi-button-group-vert .mobi-button, .mobi-button-group-hor .mobi-button {
+    border-radius:0; 
+}
+.mobi-button-group-vert .mobi-button:first-child{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.mobi-button-group-vert .mobi-button:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.mobi-button-group-hor .mobi-button:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-origin: padding;
+    background-clip: border-box;
+}
+.mobi-button-group-hor .mobi-button:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-origin: padding;
+    background-clip: border-box;
+}
+.mobi-button {
+    -webkit-appearance: none;
+}
+.mobi-button-dis, .mobi-button:disabled {
+    opacity: 0.5;
+    filter: alpha(opacity = 50);
+}
+/* back button */
+div.mobi-button-back{
+    line-height:18px; /* button height matches before point */
+    margin: 0.5em 5px 0.5em 15px;
+    padding: 5px 6px 5px 0px;
+    position: relative;
+    /*
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    */
+    overflow:initial !important;
+    
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+div.mobi-button-back > span {
+    display: inline-block;
+    position: absolute;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    top: 3px;
+    left: -0.7em;
+    height: 21px;
+    width: 21px;
+}
+div.mobi-button-back input{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    left: -2px;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    padding: 0;
+}
+.mobi-button-placeholder{
+    color: transparent;
+    text-shadow: none;
+    padding-right: 5px;
+}
+.mobi-pagePanel-header .mobi-button{
+    left: 0.5em;
+    position: absolute;
+    top: 4px;
+    margin: 0;
+}
+.mobi-pagePanel-header .mobi-button-back{
+    left: 1.2em;
+}
