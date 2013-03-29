@@ -1,0 +1,94 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <h:form style="margin-top:10px;">
+
+        <mobi:outputList inset="false">
+            <mobi:outputListItem group="true">
+                Common Link Structure
+            </mobi:outputListItem>
+            <mobi:outputListItem>
+                <h:link>Link to this page</h:link>
+            </mobi:outputListItem>
+            <mobi:outputListItem>
+                <h:commandLink action="#{navigationController.navigateBack}">
+                    Link back to main menu</h:commandLink>
+            </mobi:outputListItem>
+            <mobi:outputListItem type="default">
+                <h:link>
+                    <p class="mobi-list-item-aside"><strong>2:30</strong>AM</p>
+
+                    <h3>John Doe</h3>
+
+                    <p>
+                        <strong>You've been invited to a meeting at ICEsof in Calgary, AB</strong>
+                    </p>
+
+                    <p>Hi John, how was the Calgary Stampeed this year? I would like to discuss</p>
+                </h:link>
+            </mobi:outputListItem>
+        </mobi:outputList>
+
+        <mobi:outputList inset="true">
+            <mobi:outputListItem group="true">
+                Thumbnail display
+            </mobi:outputListItem>
+            <mobi:outputListItem type="thumb">
+                <h:link>
+                    <h:graphicImage library="images/auction" name="icesailor.png"/>
+
+                    <h3>ICEsoft Ice Sailer</h3>
+
+                    <p>Put him on the ice and watch him go!</p>
+                </h:link>
+            </mobi:outputListItem>
+            <mobi:outputListItem type="thumb">
+                <h:link>
+                    <h:graphicImage library="images/auction"
+                                    name="icebreaker.png"/>
+
+                    <h3>ICEsoft Icebreaker</h3>
+
+                    <p>Used icebreaker with very few dents.</p>
+                </h:link>
+            </mobi:outputListItem>
+            <mobi:outputListItem type="thumb">
+                <h:link>
+                    <h:graphicImage library="images/auction"
+                                    name="iceskate.png"/>
+
+                    <h3>ICEsoft Ice Skate</h3>
+
+                    <p>A single sharpened ice skate, size 7.</p>
+                </h:link>
+            </mobi:outputListItem>
+            <mobi:outputListItem type="thumb">
+                <h:link>
+                    <h:graphicImage library="images/auction" name="icecar.png"/>
+
+                    <h3>ICEsoft Ice Car</h3>
+
+                    <p>Beautiful ice car with metal car filling.</p>
+                </h:link>
+            </mobi:outputListItem>
+        </mobi:outputList>
+    </h:form>
+</ui:fragment>

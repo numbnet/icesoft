@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title id="title">Photo Drop Scanner</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+    <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+</h:head>
+
+<h:body>
+
+    <h2>Photo Drop Scanner</h2>
+
+    <h:form style="text-align:center;">
+        <mobi:scan style="height:50px;width:150px;"
+            value="#{photoDropBean.uploadedCode}" />
+        <div style="height:50px;" />
+        <mobi:thumbnail for="cam"/><br/>
+        <mobi:camera id="cam" style="height:50px;width:100px;" 
+            value="#{photoDropBean.uploadedPhoto}" />
+        <div style="height:50px;" />
+        <h:commandButton style="height:50px;width:100px;"
+            class="mobi-button mobi-button-default" 
+            value="Upload" action="#{photoDropBean.upload}"/>
+    </h:form>
+
+    <br />
+    <li><a href="../inputComponents.html">index page</a>
+    </li>
+</h:body>
+</html>

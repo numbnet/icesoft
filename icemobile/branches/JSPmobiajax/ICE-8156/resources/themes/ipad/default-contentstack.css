@@ -1,0 +1,9 @@
+.mobi-contentStack-container {
+ /*    overflow:  hidden;
+   position: relative; */
+}
+.mobi-contentStack-panes {
+    overflow:  hidden;
+  /*  position: relative;  */
+   /* overflow:  auto;   */
+}

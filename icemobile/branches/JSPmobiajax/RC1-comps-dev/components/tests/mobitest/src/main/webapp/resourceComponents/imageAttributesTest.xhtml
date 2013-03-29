@@ -1,0 +1,48 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<meta charset="UTF-8"></meta>
+	<title>image</title>
+
+</h:head>
+<h:body>
+
+	<h3>mobi graphicImage Attribute passthrough supporttesting</h3>
+
+	<h:outputText value="Static File" />
+	<br />
+	<mobi:graphicImage id="imageFile" value="../images/DSC_6.JPG" width="94" height="144" title="title for image" rendered="true"/>
+    <mobi:graphicImage alt="alternate" id="image2" value="../images/DSC_1.jpg" width="60" height="100" title="another title" usemap="true" rendered="true"/>
+    <mobi:graphicImage id="clickme" value="../images/DSC_2.JPG" onclick="alert('clickme');" disabled="true"/>       
+   <br />
+   
+   <br /> 
+	<h5>from byte array in session scope</h5>
+	<mobi:graphicImage name="viewImage" id="image1" value="#{imageBean.fileInBytes}" dir="LTR"  scope="session"/>
+	<br />
+
+	<li><a href="../resourceComponents.html">index page</a>
+	</li>
+</h:body>
+</html>

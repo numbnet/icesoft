@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<meta charset="UTF-8"></meta>
+	<title>camera on iPhone</title>
+</h:head>
+<h:body>
+<!--   <h:form prependId="false"  id="cform"> --> 
+    <h:form id="cform">
+		<h3>Mobile Camera</h3>
+		<h5>uploaded images</h5>
+		<div id="uploadedImage" rendered="#{not empty ImageStore.imageStack}">
+		   <ul>
+		<!--      <ui:repeat value="#{imageStore.carouselStack}"
+                               var="imageCache">-->
+                 <li>
+                   <div>
+                   <h5>last uploaded image of #{cameraBean.numberImages}</h5>
+                     <h:graphicImage
+                            value="#{cameraBean.pathToFile}"
+                            alt="uploadModel path To file"
+                            style="padding-left:1px;padding-right:1px;"
+                            width="#{cameraBean.width}"
+                            height="#{cameraBean.height}"/>
+                    </div>
+		       	 </li>
+		      <!--   </ui:repeat> -->
+		   </ul>
+		</div>
+		<div>
+		<h5>path to file from imageStore</h5>
+		   <h:outputText value="#{CameraBean.pathToFile}"/>
+		</div>
+	<!--  <div>
+		    <h:graphicImage value="../images/image.jpg"/>
+		</div> -->	
+		<br />
+        <br />
+     </h:form>   
+    <h2>Take a Picture</h2>
+    <fieldset>
+        <h:form prependId="false" id="cform2" enctype="multipart/form-data" >
+          <div id="skinningPnl" >
+            <mobi:camera id="camera" height="200" width="200" value="#{cameraBean.cameraImage}"/>
+            <mobi:thumbnail for="camera"/>
+            <input type="button" id="upload1"
+                   onclick="ice.s(event, this);"
+                   value="upload"></input>
+           </div>
+        </h:form>
+    </fieldset>
+	
+		<li><a href="../index.html">index page</a>
+		</li>
+
+</h:body>
+</html>

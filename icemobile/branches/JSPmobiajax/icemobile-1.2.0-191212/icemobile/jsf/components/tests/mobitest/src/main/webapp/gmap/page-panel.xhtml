@@ -1,0 +1,24 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      template="/templates/template.xhtml">
+      
+    <ui:define name="head">
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
+    </ui:define>
+    <ui:define name="large">
+        <mobi:splitPane scrollable="true" columnDivider="30">
+            <f:facet name="left">
+                <h2>Menu</h2>
+            </f:facet>
+            <f:facet name="right">
+                <ui:include src="inc-gmap-basic.xhtml"/>
+            </f:facet>
+        </mobi:splitPane>
+    </ui:define>
+    <ui:define name="small">
+        <ui:include src="inc-gmap-basic.xhtml"/>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,97 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">submitNotification Tests</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+ 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+   <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+
+</h:head>
+
+<h:body>
+ 
+    <h3>panelConfirmation with commandButton</h3>
+  <fieldset title="form1">
+    <h:form id="inputForm">
+    
+       <h5>just submitNotification</h5>
+       <p>
+           <h:outputText value="A. mobi comp input no ss"/>
+           <mobi:inputText id="text1" value="#{input.name}" type="text" placeholder="name" />
+       </p>
+        <h5>have submitNotification on here</h5>
+        <mobi:commandButton id="subNotEx1" value="submitBlockPopup" submitNotification="sn1"
+                            actionListener="#{input.defaultEvent}"/>
+        <mobi:submitNotification id="sn1">
+            <h:outputText value="WORKING..."/>
+        </mobi:submitNotification>
+
+    </h:form>
+   </fieldset>
+   <fieldset >
+      <legend>example with panelConfirmation and submitNotification</legend>
+      <h:form id="form2">
+       <p>
+        <h:outputText value="B. mobi comp singleSubmit is false "/>
+        <mobi:inputText id="textSSFalse" value="#{input.someText}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+       </p>
+          <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
+          <h:outputText value="#{input.eventString}"/>
+       <h5>SingleSubmit will not be
+            available with panelConfirmation</h5>
+       <mobi:commandButton id="ex2" buttonType="default" value="StandardSubmit"
+                           panelConfirmation="pc1" submitNotification="sn2"
+                           actionListener="#{input.defaultEvent}"/>
+       <mobi:panelConfirmation id="pc1" message="working"/>
+       <mobi:submitNotification id="sn2">
+            <h:outputText value="WORKING..."/>
+       </mobi:submitNotification>
+        <br />
+    </h:form>
+ </fieldset>
+
+
+    <h3>RESULTS</h3>
+    <h:outputText id="out1" value="#{input.someText}">
+            <h:outputLabel for="out1" value="A. simple:-"/>
+    </h:outputText>
+    <h:outputText id="out2" value="#{input.someText2}">
+            <h:outputLabel for="out2" value="B. invalid panelConf:-"/>
+    </h:outputText>
+   <h:outputText id="out3" value="#{input.name}">
+            <h:outputLabel for="out3" value="C. mobi ajax:-"/>
+    </h:outputText>
+    <br/>
+
+
+    <br />
+	<li><a href="../latestComponents.html">index page</a>
+	</li>
+</h:body>
+</html>

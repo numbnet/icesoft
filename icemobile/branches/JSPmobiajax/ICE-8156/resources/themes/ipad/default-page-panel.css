@@ -1,0 +1,104 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+.mobi-pagePanel-body, .mobi-pagePanel-header, .mobi-pagePanel-footer {
+    background-color: #e2e5ea;
+    margin: 0;
+    padding: 0;
+}
+
+.mobi-pagePanel-header {
+    width: 100%;
+    z-index: 500;
+}
+
+.mobi-pagePanel-header {
+    height: 43px;
+    line-height: 43px;
+    background: -moz-linear-gradient(top, #f4f5f7, #a8acb9) repeat scroll 0 0 #a8acb9;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f4f5f7), color-stop(1, #a8acb9));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f4f5f7', EndColorStr = '#a8acb9');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
+    border-top: 1px solid white;
+    border-bottom: 1px solid #7a8091;
+    padding: 0 0 0 5px;
+    font-size: 20px;
+    text-align: left;
+    color: #717880;
+    text-shadow: 0 1px 0 #d8dae0;
+    white-space: nowrap;
+    font-weight: bold;
+    float: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.mobi-pagePanel-body {
+    margin: 0;
+    z-index: 1;
+    clear: both;
+    overflow: auto;
+    padding: 44px 0 50px 0;
+    min-height: 640px;
+}
+
+.mobi-pagePanel-footer {
+    bottom: 0;
+    height: 50px;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #999), color-stop(0.02, #666), color-stop(1, #222));
+    background: -moz-linear-gradient(top, #999, #666, #222) repeat scroll 0 0 #222;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#999999', EndColorStr = '#222222');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#999999', EndColorStr='#222222')";
+    padding: 0;
+    border-top: 1px solid #444;
+    position: fixed;
+    width: 100%;
+}
+
+.mobi-pagePanel-body-noheader {
+    padding-top: 0;
+}
+
+.mobi-pagePanel-body-nofooter {
+    padding-bottom: 0;
+}
+
+/* tablet specific layout */
+.mobi-pagePanel-header .branding {
+    width: 30px;
+    height: 30px;
+    margin: 0 3px 0 0;
+    border: 0;
+}
+
+.mobi-pagePanel-body-menu {
+    width: 30%;
+    float: left;
+    overflow-y: scroll;
+
+}
+
+.mobi-pagePanel-body-menu .mobi-list {
+    border-right: 1px solid black;
+}
+
+.mobi-pagePanel-body-content {
+    width: 70%;
+    float: left;
+    overflow-y: scroll;
+    /*margin: 44px 0 0 0;*/
+}

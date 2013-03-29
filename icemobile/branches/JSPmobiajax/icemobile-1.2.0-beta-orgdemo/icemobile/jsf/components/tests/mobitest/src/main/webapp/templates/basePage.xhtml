@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<mobi:deviceStylesheet />
+    <script src="http://debug.phonegap.com/target/target-script-min.js#jgug"></script>
+</h:head>
+<h:body>
+	<mobi:viewSelector defaultView="large">
+		<f:facet name="small">
+			<ui:include src="../templates/small.xhtml" />
+		</f:facet>
+		<f:facet name="large">
+			<ui:include src="../templates/large.xhtml" />
+		</f:facet>
+	</mobi:viewSelector>
+</h:body>
+</html>

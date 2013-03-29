@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+	<meta http-equiv="Co ntent-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.js"></script>
+	<h:outputScript library="org.icefaces.component.util" name="component.js" target="head"/> 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+    <mobi:deviceStylesheet />
+
+</h:head>
+
+<h:body>
+<h:outputScript library="org.icefaces.component.util" name="component.js" target="head"/> 
+<f:view contentType="text/html">
+<!--  <div data-theme="b" class="ui-page-active" data-role="page"> -->
+  <div data-role="page" id="testPage">
+   <div data-role="header">
+      <h3>slider from jquery prototype</h3>
+   </div>
+     <h:form id="sliderForm" data-ajax="false">
+       <div>
+        <h:outputText value="mobi comp slider singleSubmit false"/>
+        <mobi:slider id="sliderOne" value="#{input.sliderValue}"/>
+       </div>
+       <div>
+         <h:outputText value="mobi comp slider singleSubmit true"/>
+         <mobi:slider id="sliderTwo" value="#{input.sliderVal2}" singleSubmit="true"/>
+       
+       </div>
+       
+       <div data-role="fieldcontain">
+	    <label for="slider">Input slider:</label>
+ 	    <input type="range" name="slider" id="slider" value="0" min="0" max="100"  />
+       </div> 
+       
+       <div data-role="fieldcontain">
+          <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+              <li>Toggle Me <select name="slider" id="toggle-me" data-role="slider">
+                  <option value="off">Off</option>
+                  <option value="on">On</option>
+              </select>
+              </li>
+           </ul>                
+       </div>
+      
+       <div>
+        <h:outputText value="plain html"/>
+        <input type="range" /> 
+       </div>
+         <div id="submittext">
+          <input type="submit" value="submitForm"/>
+       </div>
+     </h:form>
+    
+ 
+
+</div>
+</f:view>
+	<li><a href="../index.html">index page</a>
+	</li>
+</h:body>
+ <!--   <script type="text/javascript">
+ function showValue(newValue){
+	  var el= document.getElementById('sliderForm:sliderOne');
+	  var hiddenVal =  document.getElementById('sliderOne_hidden');
+	  if (hiddenVal)hiddenVal.value= newValue;
+	  if (!hiddenVal)alert("NO hiddenVal");
+     
+	  }
+</script> -->
+<script type="text/javascript">
+var oldVal = $("#toggle-me").bind("change", function(){
+	       if(oldVal != $(this).val()){
+	           oldVal = $(this).val();
+	           console.log("val change to " + oldVal);
+	       }
+}).val();
+
+var newVal = $("#slider").bind("change", function(){
+	if (newVal != $(this).val()){
+		newVal= $(this).val();
+	    console.log(" val is now"+newVal);
+	}
+}).val();
+</script>
+</html>
+

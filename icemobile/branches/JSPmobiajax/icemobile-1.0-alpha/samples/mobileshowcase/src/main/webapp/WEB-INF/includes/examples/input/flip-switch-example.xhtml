@@ -1,0 +1,57 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+
+    <h:form>
+        <mobic:fieldsetGroup>
+
+            <mobic:fieldsetRow>
+                <h:outputLabel for="cap" value="Auto-Capitalization"/>
+                <mobic:selectFlipSwitch id="cap" style="float:right"
+                                        labelOn="ON" labelOff="OFF"
+                                        value="#{flipSwitchBean.autoCapitalization}"/>
+            </mobic:fieldsetRow>
+            <mobic:fieldsetRow>
+                <h:outputLabel for="cor" value="Auto-Correction"/>
+                <mobic:selectFlipSwitch id="cor" style="float:right"
+                                        labelOn="ON" labelOff="OFF"
+                                        value="#{flipSwitchBean.autoCorrection}"/>
+            </mobic:fieldsetRow>
+            <mobic:fieldsetRow>
+                <h:outputLabel for="spell" value="Check Spelling"/>
+                <mobic:selectFlipSwitch id="spell" style="float:right"
+                                        labelOn="ON" labelOff="OFF"
+                                        value="#{flipSwitchBean.checkSpelling}"/>
+            </mobic:fieldsetRow>
+            <mobic:fieldsetRow>
+                <h:outputLabel for="lock" value="Enable Caps Lock"/>
+                <mobic:selectFlipSwitch id="lock" style="float:right"
+                                        labelOn="ON" labelOff="OFF"
+                                        value="#{flipSwitchBean.enableCapsLock}"/>
+            </mobic:fieldsetRow>
+
+        </mobic:fieldsetGroup>
+
+    </h:form>
+
+
+</ui:fragment>

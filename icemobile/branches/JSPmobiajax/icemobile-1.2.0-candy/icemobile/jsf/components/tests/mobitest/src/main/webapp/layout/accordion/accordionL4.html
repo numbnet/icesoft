@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <meta name="viewport" content="user-scalable=0, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="http://debug.phonegap.com/target/target-script-min.js#judy"></script>
+    <title>accordion html test</title>
+      <script  type="text/javascript">
+          var openId = "panel1_sect" ;
+          var openElem;
+          var sectHt;
+
+          window.onload = function() {
+             var accNode = document.getElementById('test1_acc');
+             var sections = accNode.getElementsByTagName('section');
+             openElem =  document.getElementById(openId);
+             var wrap = document.getElementById('panel1wrp');
+             var wrapHt = 80;
+             var sectHt = 113;
+             var handlHt = '33px';
+          }
+          toggleClient= function(clientId, sectId){
+              var parent = document.getElementById(sectId);
+            //  console.log("clicked handle="+parent.id);
+           //   alert('toggle id='+parent.id);
+              if (openElem && openElem == parent )  {
+                  if (openElem.className=="open"){
+                      closePane(openElem);
+                  }else {
+                      openPane(openElem, sectHt);
+                  }
+              }else{
+                  if (openElem.className=="open"){
+                      closePane(openElem);
+                  }
+                  openPane(parent);
+              }
+              openElem = parent;
+
+          }
+          openPane = function(openElem, sectHt){
+              openElem.className = "open";
+              var wrapper = openElem.lastChild;
+              if (wrapper){
+                  wrapper.style='height: 80px; overflow: auto;';
+              }
+             // openElem.style.height = sectHt;
+          }
+          closePane = function(elem){
+              elem.className="closed";
+              var wrapper = elem.lastChild;
+              if (wrapper){
+                  wrapper.style='';
+              }
+           //   elem.height = "34px";
+          }
+
+      </script>
+  <style type="text/css">
+      .mobi-accordion .handle {
+          cursor: pointer;
+          height:33px;
+      }
+      .mobi-accordion .handle a {
+      }
+      .mobi-accordion section {
+          min-height: 33px;
+          overflow: hidden;
+      }
+      .mobi-accordion .closed {
+  /*        max-height: 33px;*/
+          height: 33px;
+      }
+
+      .mobi-accordion .pointer {
+          font-size: 1px;
+          margin: 10px 10px 0 5px;
+          line-height: 18px;
+       /*   display: inline-block; */
+      }
+
+      .mobi-accordion section.menu, .mobi-accordion section.content {
+          float: left;
+          overflow-y: scroll;
+      }
+
+      .mobi-accordion section.menu section.mobi-list {
+          border-right: 1px solid black;
+      }
+
+      .mobi-accordion .mobi-layoutmenu .mobi-list:last-child {
+          margin-bottom: 0;
+      }
+
+      .mobi-accordion .mobi-layoutmenu .mobi-list{
+          border-right: none;
+      }
+      .mobi-accordion{
+          border-top: 1px solid #7B7B7B;
+          border-bottom: 1px solid #7B7B7B;
+          overflow: hidden;
+      }
+
+      .mobi-accordion .handle {
+          color: white;
+          background: -moz-linear-gradient(top, #cccccc, #999999) repeat scroll 0 0 #999999;
+          background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999));
+          filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#cccccc', EndColorStr = '#999999');
+          -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#999999')";
+          border-bottom: 1px solid #999999;
+          position:relative;
+          left:0;
+      }
+.mobi-accordion .open, .mobi-accordion .closed {
+
+    -webkit-transition: max-height 0.2s, height 0.2s;
+    -webkit-transition-delay: 0.1s, 0.1s;
+    -o-transition: max-height 0.2s, height 0.2s ease-in-out;
+    -o-transition-delay: 0.2s, 0.2s;
+    -ms-transition: max-height 0.2s, height 0.2s ease-in-out;
+    -ms-transition-delay: 0.1s, 0.1s;
+    transition:  max-height 0.2s, height 0.2s ease-in-out;
+    transition-delay: 0.1s, 0.1s;
+}
+/*.mobi-accordion .handle .pointer {
+    -webkit-transition: -webkit-transform 0.2s;
+    -ms-transition: -ms-transform 0.2s;
+    transition: transform 0.2s;
+    -webkit-transform-style: preserv-3d;
+} */
+.mobi-accordion .open .handle .pointer {
+    width: 0;
+    height: 0;
+    position: relative;
+    top: 12px;
+    border-left:  7px solid transparent;
+    border-right:  7px solid transparent;
+    border-top:  7px solid white;
+}
+.mobi-accordion .closed .handle .pointer {
+    width:0;
+    height: 0;
+    border-top:  7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid white;
+}
+.scrollCntr {
+    overflow: auto;
+    height: 80px;
+}
+/*.arrow-down {
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid black;
+}
+
+.arrow-right {
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid black;
+}  */
+  </style>
+
+</head>
+<body>
+<form>
+<div id="contentForm:test1">
+    <div class="mobi-accordion" id="test1_acc">
+        <section class="open" id="panel1_sect">
+            <div class="handle" onclick="toggleClient('test1','panel1_sect');">
+              <span class="pointer"></span> panel1 </div>
+            <div id="panel1wrp" class="scrollCntr">
+            <div id="panel1" >
+               <div id="inner1">
+                      <fieldset title="panel1">
+                      <legend>Panel1</legend>
+                      <h3> header for panel 1</h3>
+                       <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                           <img alt="king of clubs" height="150" src="../../images/kingOfClubs.jpg" width="85">
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                      <p>
+                          some more stuff to make sure that the heights
+                          of contentPanes are not equal
+                      </p>
+                  </fieldset>
+                  </div>
+            </div>
+        </div>
+        </section>
+        <section class="closed" id="panel2_sect">
+             <div class="handle" onclick="toggleClient('test1','panel2_sect');">
+              <span class="pointer"></span>panel2 </div>
+             <div id="panel2wrp" class="scrollCntr" >
+                       <div id="panel2" >
+                           <h3>header for panel 2</h3>
+                           <p> content of pane 2 not much to look at</p>
+                           <p>  more content.....</p>
+                        <p> content of pane 2 not much to look at</p>
+                           <p>  more content.....</p>
+                       </div>
+             </div>
+        </section>
+        <section class="closed" id="panel3_sect" >
+             <div class="handle" onclick="toggleClient('test1','panel3_sect');">
+                <span class="pointer"></span> panel3</div>
+               <div id="panel3wrp"  class="scrollCntr">
+                <div id="panel3" >
+                 <div id="inner3">
+                 <fieldset title="panel3">
+                      <legend>Panel3</legend>
+                  <h3> header for panel 3</h3>
+                  <p> content for panel 3 - some other card..</p>
+                     <figure>
+                         <img alt="joker" height="150" src="../../images/Joker.jpg" width="85">
+                         <figcaption>joker</figcaption>
+                        </figure>
+                  </fieldset>
+                 </div>
+                </div>
+            </div>
+        </section>
+        <div id="test1_hid">
+            <span><input id="test1_hidden" name="test1_hidden" type="hidden" value="panel3">
+
+            </span>
+            <span id="test1_script"></span>
+        </div>
+    </div>
+ </div>
+</form>
+</body>
+</html>
