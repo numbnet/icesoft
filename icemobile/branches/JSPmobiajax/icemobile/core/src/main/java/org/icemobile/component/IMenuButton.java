@@ -16,21 +16,20 @@
 
 package org.icemobile.component;
 
-public interface ISplitPane extends IMobiComponent{
-    
-    public static final String SPLITPANE_BASE_CSS = "mobi-splitpane" ;
-    public static final String SPLITPANE_NONSCROLL_CSS = "mobi-splitpane-nonScrollable";
-    public static final String SPLITPANE_SCROLLABLE_CSS = "mobi-splitpane-scrollable";
-    public static final String SPLITPANE_DIVIDER_CSS = "mobi-splitpane-divider";
-    /**
-    * <p>the percent distance from left side of splitPane that the divider is located</p>
-    */
-    public int getColumnDivider();
+/*
+  MenuButton is a html select with javascript to reset after use on value change
+  and for ajax submit
+ */
+public interface IMenuButton extends IMobiComponent  {
+    public static final String BASE_STYLE_CLASS = "mobi-menu-btn";
+    public static final String BUTTON_STYLE_CLASS = "mobi-menu-btn-btn";
+    public static final String DISABLED_STYLE_CLASS = "mobi-button-dis";
+    public static final String MENU_SELECT_CLASS =  "mobi-menu-btn-menu";
 
-    /**
-     * <p> whether the contents of the splitPane are scrollable</p>
-     */
-    public boolean isScrollable();
+    public void setButtonLabel(String label);
+    public String getButtonLabel();
 
+    public void setSelectTitle(String title);
+    public String getSelectTitle();
 
 }

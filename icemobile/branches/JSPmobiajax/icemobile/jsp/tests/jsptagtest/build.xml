@@ -45,7 +45,6 @@
                  <fileset dir="${lib.dir}" >
                     <include name="${icepush.lib.name}.jar"/>
                     <include name="mobi.jar"/>
-                    <include name="javax.faces.jar"/>
                     <include name="el-api-2.2.1-b03.jar"/>
                     <include name="javax.servlet-api.jar"/>
 	            	<include name="javax.annotation.jar"/>
@@ -66,7 +65,8 @@
             <lib dir="${lib.dir}"  erroronmissingdir="false">
 	            	<include name="${icemobile-jsp.lib.name}.jar"/>
                     <include name="${icepush.lib.name}.jar"/>
-                    <include name="jstl-1.1.2.jar"/>
+                    <include name="jstl-api-1.2.jar"/>
+                    <include name="jstl-1.2.jar"/>
 	        </lib>
 	         <classes dir="${classes.dir}"/>
         </war>
@@ -79,7 +79,7 @@
 	            <lib dir="${lib.dir}"  erroronmissingdir="false">
 	            	<include name="${icemobile-jsp.lib.name}.jar"/>
                     <include name="${icepush.lib.name}.jar"/>
-                    <include name="jstl-impl-1.2.jar"/>
+                    <include name="jstl-1.2.jar"/>
                     <include name="jstl-api-1.2.jar"/>
 	            </lib>
 	     

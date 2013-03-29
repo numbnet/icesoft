@@ -136,24 +136,6 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
     }
 
     /**
-     * differs from version in BaseCoreRenderer in that it provides an index to the javascript
-     * for update
-     * @param writer
-     * @param id
-     * @param selectedIndex
-     * @throws IOException
-     */
-    private void encodeHiddenSelected(IResponseWriter writer, String id, int selectedIndex,
-                                      String name) throws IOException {
-        writer.startElement("input");
-        writer.writeAttribute("id", id + "_hidden");
-        writer.writeAttribute("name", name);
-        writer.writeAttribute("type", "hidden");
-        writer.writeAttribute("value", String.valueOf(selectedIndex));
-        writer.endElement("input");
-    }
-
-    /**
      *
      * @param carousel
      * @param writer

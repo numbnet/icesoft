@@ -17,60 +17,61 @@ if (!window['mobi']) {
     window.mobi = {};
 }
 
-mobi.menubutton = {
+ice.mobi.menubutton = {
     cfg: {},
     initmenu: function(clientId, cfgI){
-         var myselect = document.getElementById(clientId+'_sel');
-         var selTitle = cfgI.selectTitle;
-         var option = myselect.options[0];
-         if (option && option.label!=selTitle) {
-             try{
-                var anoption = document.createElement("option");
-                anoption.label=selTitle;
-                myselect.add(new Option(selTitle, "0"), myselect.options[0]);
-             } catch(e) {
-                myselect.add(new Option(selTitle, "0"), 0);
-             }
+        var myselect = document.getElementById(clientId+'_sel');
+        var selTitle = cfgI.selectTitle;
+        var option = myselect.options[0];
+        if (option && option.label!=selTitle) {
+            try{
+               var anoption = document.createElement("option");
+               anoption.label=selTitle;
+               myselect.add(new Option(selTitle, "0"), myselect.options[0]);
+            } catch(e) {
+               myselect.add(new Option(selTitle, "0"), 0);
+            }
             myselect.options[0].selected=true;
             myselect.render;
-         }
+        }
     },
     select: function(clientId){
-         var myselect = document.getElementById(clientId+'_sel');
-         var index = 0;
-         for (var i=1; i<myselect.options.length; i++){
-             if (myselect.options[i].selected==true){
-                index = i;
-                break
-             }
-         }
-         var optId = myselect.options[index].id;
-         var singleSubmit = false;
-         var disabled = false;
-         if (this.cfg[optId]){
-             singleSubmit = this.cfg[optId].singleSubmit;
-             disabled = this.cfg[optId].disabled;
-         }
-         if (index ==0)return;
-         var snId =this.cfg[optId].snId || null
-         if (this.cfg[optId].pcId){
-            var pcId= this.cfg[optId].pcId;
-            mobi.panelConf.init(pcId, optId, this.cfg[optId], singleSubmit ) ;
-         }
-         else if (singleSubmit){
-             if (snId){
-                 mobi.submitnotify.open(snId, optId, true);
-             }else {
-                 ice.se(null, optId);
-             }
-            // this.reset(myselect, index);
-         } else {
-             if (snId){
-                 mobi.submitnotify.open(snId, optId, false,null);
-             } else {
-                 ice.s(null, optId);
-             }
-         }
+        var myselect = document.getElementById(clientId+'_sel');
+        var index = 0;
+        for (var i=1; i<myselect.options.length; i++){
+            if (myselect.options[i].selected==true){
+               index = i;
+               break
+            }
+        }
+        var optId = myselect.options[index].id || null;
+        if (!optId){
+            console.log(" Problem selecting items in menuButton. See docs.")
+        }
+        var singleSubmit = this.cfg[optId].singleSubmit || false;
+        var disabled = this.cfg[optId].disabled || false;
+        //currently menuButtonItem doesn't yet support mobi ajax.
+        var options = {
+            source: optId,
+            render: '@all'
+        };
+        if (index ==0)return;
+        var snId =this.cfg[optId].snId || null ;
+        var pcId = this.cfg[optId].pcId || null;
+        if (singleSubmit){
+            options.execute="@this";
+        } else {
+            options.execute="@all";
+        }
+        if (pcId){
+           ice.mobi.panelConf.init(pcId, optId, this.cfg[optId], options) ;
+           return;
+        }
+        if (snId){
+            ice.mobi.submitnotify.open(snId, optId, this.cfg[optId], options);
+            return;
+        }
+        mobi.AjaxRequest(options);
 
     },
     reset: function reset(myselect, index) {

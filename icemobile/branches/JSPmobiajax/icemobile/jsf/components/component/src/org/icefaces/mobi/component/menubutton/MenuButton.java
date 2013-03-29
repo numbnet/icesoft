@@ -15,16 +15,11 @@
  */
 package org.icefaces.mobi.component.menubutton;
 
+import org.icefaces.mobi.utils.Attribute;
+
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by IntelliJ IDEA.
- * User: jguglielmin
- * Date: 12-02-12
- * Time: 12:56 PM
- * To change this template use File | Settings | File Templates.
- */
 public class MenuButton extends MenuButtonBase {
     public static final String BASE_STYLE_CLASS = "mobi-menu-btn ";
     public static final String BUTTON_STYLE_CLASS = "mobi-menu-btn-btn ";
@@ -33,6 +28,10 @@ public class MenuButton extends MenuButtonBase {
 
     protected Map<String, StringBuilder> menuItemCfg = new HashMap<String, StringBuilder>() ;
 
+    private Attribute[] commonInputAttributeNames = {
+            new Attribute("name", null),
+            new Attribute("tabindex", null),
+    };
     public Map<String, StringBuilder> getMenuItemCfg() {
         return menuItemCfg;
     }
@@ -44,4 +43,11 @@ public class MenuButton extends MenuButtonBase {
         this.menuItemCfg.put(itemId, cfg);
     }
 
+    public Attribute[] getCommonInputAttributeNames() {
+        return commonInputAttributeNames;
+    }
+
+    public void setCommonInputAttributeNames(Attribute[] commonInputAttributeNames) {
+        this.commonInputAttributeNames = commonInputAttributeNames;
+    }
 }

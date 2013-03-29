@@ -27,6 +27,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
 
 
 public class MenuButtonRenderer extends BaseLayoutRenderer {
@@ -36,7 +37,7 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
     private static final String JS_LIBRARY = "org.icefaces.component.button";
 
 
-    public void decode(FacesContext facesContext, UIComponent uiComponent) {
+  /*  public void decode(FacesContext facesContext, UIComponent uiComponent) {
          Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
          MenuButton menu = (MenuButton) uiComponent;
          String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
@@ -46,12 +47,12 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
                  if (!menu.isDisabled()) {
                      /*  currently using submit of menuButtonItem
                      find the item in the list and queue the event for it*/
-                 }
+       /*          }
              } catch (Exception e) {
                  logger.warning("Error queuing MenuButtonItem event");
              }
          }
-     }
+     }  */
 
      public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
@@ -66,7 +67,7 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
          writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-         writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
+         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, menu.getCommonInputAttributeNames());
          // apply button type style classes
          StringBuilder baseClass = new StringBuilder(MenuButton.BASE_STYLE_CLASS);
          StringBuilder buttonClass = new StringBuilder(MenuButton.BUTTON_STYLE_CLASS) ;
@@ -102,7 +103,7 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
          writer.writeAttribute(HTML.ID_ATTR, clientId+"_sel", HTML.ID_ATTR);
          writer.writeAttribute(HTML.NAME_ATTR, clientId+"_sel", HTML.NAME_ATTR);
          writer.writeAttribute(HTML.CLASS_ATTR, selectClass, HTML.CLASS_ATTR);
-         writer.writeAttribute(HTML.ONCHANGE_ATTR, "mobi.menubutton.select('"+clientId+"');", HTML.ONCHANGE_ATTR);
+         writer.writeAttribute(HTML.ONCHANGE_ATTR, "ice.mobi.menubutton.select('"+clientId+"');", HTML.ONCHANGE_ATTR);
          if (null!=menu.getStyle()){
              String style= menu.getStyle();
              if ( style.trim().length() > 0) {
@@ -148,13 +149,13 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("id", clientId+"_initScr", "id");
         writer.startElement("script", uiComponent);
         writer.writeAttribute("type", "text/javascript", null);
-        StringBuilder sb = new StringBuilder("mobi.menubutton.initmenu('");
+        StringBuilder sb = new StringBuilder("ice.mobi.menubutton.initmenu('");
         sb.append(clientId).append("',").append("{ selectTitle: '").append(menu.getSelectTitle()).append("'});");
         writer.write(sb.toString());
          if (!menu.getMenuItemCfg().isEmpty()){
              for (Map.Entry<String, StringBuilder> entry: menu.getMenuItemCfg().entrySet()){
-              //    logger.info(" item cfg prints="+entry.getValue().toString());
-                 StringBuilder jsCall = new StringBuilder("mobi.menubutton.initCfg('").append(clientId).append("',");
+          //        logger.info(" item cfg prints="+entry.getValue().toString());
+                 StringBuilder jsCall = new StringBuilder("ice.mobi.menubutton.initCfg('").append(clientId).append("',");
                  jsCall.append(entry.getValue());
                   writer.write(jsCall.toString());
              }
