@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.submitnotification;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -39,13 +40,13 @@ import javax.faces.application.ResourceDependency;
 })
 public class SubmitNotificationMeta extends UIPanelMeta {
 
-     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
-     private int tabindex;
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+    private String style;
 
-     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
-     private String style;
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+    private String styleClass;
 
-     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
-     private String styleClass;
+    @Property(tlddoc = TLDConstants.DISABLED)
+    private boolean disabled;
 
 }

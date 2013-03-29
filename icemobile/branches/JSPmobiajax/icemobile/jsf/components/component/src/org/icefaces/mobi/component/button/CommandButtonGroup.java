@@ -16,18 +16,17 @@
 
 package org.icefaces.mobi.component.button;
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IButtonGroup;
+import org.icemobile.util.ClientDescriptor;
+
 /**
  *
  */
-public class CommandButtonGroup extends CommandButtonGroupBase {
+public class CommandButtonGroup extends CommandButtonGroupBase implements IButtonGroup{
 
-    // Default button types.
-    public static final String ORIENTATION_VERTICAL = "vertical";
-    public static final String ORIENTATION_HORIZONTAL = "horizontal";
-
-    // button styles.
-    public static final String DEFAULT_STYLE_CLASS = "mobi-button-group";
-    public static final String VERTICAL_STYLE_CLASS = " mobi-button-group-vert";
-    public static final String HORIZONTAL_STYLE_CLASS = " mobi-button-group-hor";
+     public ClientDescriptor getClient() {
+        return MobiJSFUtils.getClientDescriptor();
+    }
 
 }

@@ -16,63 +16,54 @@
 if (!window['mobi']) {
     window.mobi = {};
 }
-mobi.submitnotify = {
+ice.mobi.submitnotify = {
     visible:{},
     bgClass:"mobi-submitnotific-bg",
+    bgHideClass: "mobi-submitnotific-bg-hide",
     containerClass:"mobi-submitnotific-container",
+    contHideClass: "mobi-submitnotific-container-hide",
     centerCalculation:{},
     cfg:{},
-    open:function (clientId, callerId, singleSubmit, params) {
+    open: function (clientId, callerId, cfg, options) {
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
-        document.getElementById(idPanel).className = 'mobi-submitnotific-bg';
-        document.getElementById(containerId).className = 'mobi-submitnotific-container';
+        var behaviors = cfg.behaviors ||null;
+        var bgNode = document.getElementById(idPanel);
+        var pNode = document.getElementById(containerId);
+        ice.mobi.swapClasses(bgNode, this.bgHideClass, this.bgClass);
+        ice.mobi.swapClasses(pNode, this.contHideClass, this.containerClass);
         // apply centering code.
         var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
         // add scroll listener
         this.centerCalculation[clientId] = function () {
             mobi.panelAutoCenter(containerId);
         };
-
-        if (window.addEventListener) {
-            window.addEventListener(scrollEvent, this.centerCalculation[clientId], false);
-            window.addEventListener('resize', this.centerCalculation[clientId], false);
-        } else { // older ie event listener
-            window.attachEvent(scrollEvent, this.centerCalculation[clientId]);
-            window.attachEvent("resize", this.centerCalculation[clientId]);
-        }
+        ice.mobi.addListener(window, scrollEvent, this.centerCalculation[clientId]);
+        ice.mobi.addListener(window, 'resize', this.centerCalculation[clientId]);
         // calculate center for first view
         mobi.panelAutoCenter(containerId);
-        var cfg = {};
-        cfg.source = callerId;
-        cfg.execute = "@all";
-        cfg.render = "@all";
-        if (singleSubmit){
-            cfg.execute="@this";
+        var closeCall = function(xhr, status, args) {ice.mobi.submitnotify.close(clientId);};
+        var keyCall = function(xhr, status, args) {ice.mobi.button.unSelect(callerId);};
+        if (behaviors){
+            cfg.oncomplete = closeCall;
+            cfg.onsuccess = options.keyCall || keyCall;
+            mobi.AjaxRequest(cfg);
+        }else{
+            options.oncomplete = closeCall;
+            mobi.AjaxRequest(options);
         }
-        if (params !=null){
-            cfg.params = params;
-        }
-      //  var closeCall = function(xhr, status, args) {alert('close');mobi.submitnotify.close(clientId);};
-        var closeCall = function(xhr, status, args) {mobi.submitnotify.close(clientId);};
-        cfg.oncomplete = closeCall;
-        cfg.onsuccess = closeCall;
-        mobi.AjaxRequest(cfg);
     },
     close:function (clientId) {
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
-        document.getElementById(idPanel).className = 'mobi-submitnotific-bg-hide ';
-        document.getElementById(containerId).className = 'mobi-submitnotific-container-hide ';
+        var bgNode = document.getElementById(idPanel);
+        var pNode = document.getElementById(containerId);
+        ice.mobi.swapClasses(bgNode, this.bgClass, this.bgHideClass);
+        ice.mobi.swapClasses(pNode, this.containerClass, this.contHideClass);
         // clean up centering listeners.
         var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-        if (window.removeEventListener) {
-            window.removeEventListener(scrollEvent, this.centerCalculation[clientId], false);
-            window.removeEventListener('resize', this.centerCalculation[clientId], false);
-        } else { // older ie cleanup
-            window.detachEvent(scrollEvent, this.centerCalculation[clientId], false);
-            window.detachEvent('resize', this.centerCalculation[clientId], false);
-        }
+        ice.mobi.removeListener(window, scrollEvent, this.centerCalculation[clientId]);
+        ice.mobi.removeListener(window, 'resize', this.centerCalculation[clientId]);
         this.centerCalculation[clientId] = undefined;
     }
 

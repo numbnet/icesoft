@@ -16,13 +16,16 @@
 
 package org.icefaces.mobi.component.button;
 
-import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
+import org.icemobile.component.IButtonGroup;
+import org.icemobile.renderkit.ButtonGroupCoreRenderer;
+import org.icemobile.renderkit.IResponseWriter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -35,35 +38,17 @@ public class CommandButtonGroupRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(CommandButtonGroupRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-        CommandButtonGroup buttonGroup = (CommandButtonGroup) uiComponent;
-
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-
-        // apply the default style classes
-        String orientation = buttonGroup.getOrientation();
-        StringBuilder styleClasses = new StringBuilder(CommandButtonGroup.DEFAULT_STYLE_CLASS);
-        // assign orientation style
-        if (CommandButtonGroup.ORIENTATION_VERTICAL.equals(orientation)) {
-            styleClasses.append(CommandButtonGroup.VERTICAL_STYLE_CLASS);
-        }else{
-            styleClasses.append(CommandButtonGroup.HORIZONTAL_STYLE_CLASS);
-        }
-        // finally assign any user defines style
-        String userDefinedClass = buttonGroup.getStyleClass();
-        if (userDefinedClass != null && userDefinedClass.length() > 0){
-            styleClasses.append(" ").append(userDefinedClass);
-        }
-        writer.writeAttribute(HTML.CLASS_ATTR, styleClasses, "styleClass");
-        // append any users specified style info
-        writer.writeAttribute(HTML.STYLE_ATTR, buttonGroup.getStyle(), "style");
+        IButtonGroup buttonGroup = (IButtonGroup)uiComponent;
+        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        ButtonGroupCoreRenderer renderer = new ButtonGroupCoreRenderer();
+        renderer.encodeBegin(buttonGroup, writer);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.endElement(HTML.DIV_ELEM);
+        IButtonGroup buttonGroup = (IButtonGroup)uiComponent;
+        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        ButtonGroupCoreRenderer renderer = new ButtonGroupCoreRenderer();
+        renderer.encodeEnd(buttonGroup, writer);
     }
 }
