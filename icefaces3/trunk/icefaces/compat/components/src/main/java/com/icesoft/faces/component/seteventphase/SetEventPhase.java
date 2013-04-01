@@ -64,39 +64,49 @@ public class SetEventPhase extends UIComponentBase {
     }
     
     protected boolean eventMatchingType(FacesEvent event) {
+        if (event == null) {
+            return false;
+        }
         String events = getEvents();
         if (events == null || events.length() == 0) {
             return false;
         }
         String[] specifiedEvents = events.split("\\s");
-        if (specifiedEvents.length > 0) {
-            for(int i = 0; i < specifiedEvents.length; i++) {
-                Class specifiedClass = null;
-                try {
-                    specifiedClass = Class.forName(specifiedEvents[i]);
-                }
-                catch(Exception directName) {
-                    if (specifiedEvents[i].indexOf(".") < 0) {
-                        try {
-                            specifiedClass = Class.forName(
-                                "javax.faces.event." + specifiedEvents[i]);
-                        }
-                        catch(Exception shortName) {
-                            // If both the given class name and our attempt at
-                            // adding a package didn't resolve to an actual
-                            // class, complain using the given class name
-                            throw new FacesException(
-                                "Could not resolve event class type: " +
-                                    specifiedEvents[i], directName);
-                        }
-                    }
-                }
-                if (specifiedClass == null) {
-                    continue;
-                }
-                if (specifiedClass.isInstance(event)) {
-                    return true;
-                }
+        return (specifiedEvents.length > 0) &&
+            isEventOneOf(event, specifiedEvents);
+    }
+
+    protected boolean isEventOneOf(FacesEvent event, String[] specifiedEvents) {
+        Class clazz = event.getClass();
+        do {
+            if (isClassOrInterfacesOneOf(clazz, specifiedEvents)) {
+                return true;
+            }
+            clazz = clazz.getSuperclass();
+        } while (clazz != null);
+        return false;
+    }
+
+    protected boolean isClassOrInterfacesOneOf(Class clazz, String[] specifiedEvents) {
+        if (isClassNameOneOf(clazz.getName(), specifiedEvents)) {
+            return true;
+        }
+        Class[] interfaces = clazz.getInterfaces();
+        for (Class inter : interfaces) {
+            if (isClassOrInterfacesOneOf(inter, specifiedEvents)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean isClassNameOneOf(String className, String[] specifiedEvents) {
+        for (String specified : specifiedEvents) {
+            if (className.equals(specified)) {
+                return true;
+            } else if (specified.indexOf(".") < 0 &&
+                className.equals("javax.faces.event." + specified)) {
+                return true;
             }
         }
         return false;
