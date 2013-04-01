@@ -93,7 +93,7 @@ public class GetEnhancedCoreRenderer {
             if( client.isIOS() || client.isAndroidOS() ){
                 writer.startElement(ANCHOR_ELEM, null);
                 writer.writeAttribute(HREF_ATTR,"#");
-                writer.writeAttribute(CLASS_ATTR, "mobi-button mobi-button-important");
+                writer.writeAttribute(CLASS_ATTR, "mobi-button ui-btn-up-a mobi-button-important");
                 writer.writeAttribute(ONCLICK_ATTR, component.getICEmobileRegisterSXScript());
                 writer.writeText("Enable ICEmobile SX");
                 writer.endElement(ANCHOR_ELEM);
@@ -102,7 +102,7 @@ public class GetEnhancedCoreRenderer {
             if( component.isIncludeLink() ){
                 writer.startElement(ANCHOR_ELEM);
                 writer.writeAttribute(HREF_ATTR, link);
-                writer.writeAttribute(CLASS_ATTR, "mobi-button mobi-button-important");
+                writer.writeAttribute(CLASS_ATTR, "mobi-button ui-btn-up-a mobi-button-important");
                 writer.writeText(IGetEnhanced.DOWNLOAD);
                 writer.endElement(ANCHOR_ELEM);
             }

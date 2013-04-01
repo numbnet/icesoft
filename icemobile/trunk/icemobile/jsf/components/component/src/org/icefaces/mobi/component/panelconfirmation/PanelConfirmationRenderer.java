@@ -64,7 +64,7 @@ public class  PanelConfirmationRenderer extends BaseLayoutRenderer {
         //title
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_title", HTML.ID_ATTR);
-        writer.writeAttribute("class", PanelConfirmation.TITLE_CLASS + " " + CSSUtils.STYLECLASS_BAR_B, null);
+        writer.writeAttribute("class", PanelConfirmation.TITLE_CLASS + " " + CSSUtils.STYLECLASS_BAR_A, null);
         writer.write(panel.getTitle());
         writer.endElement(HTML.DIV_ELEM);
         //message

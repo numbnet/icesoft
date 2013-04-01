@@ -30,6 +30,7 @@
     text-align:center;
     width: 100%;
     z-index: 496;
+    border: none;
 }
 .mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs{
     top: 0;
@@ -79,6 +80,7 @@ html.ipad .mobi-tabset > .mobi-tabset-tabs, html.honeycomb .mobi-tabset > .mobi-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: 40px;
 }
 .mobi-tabpage-hidden { 
     display: none; 
