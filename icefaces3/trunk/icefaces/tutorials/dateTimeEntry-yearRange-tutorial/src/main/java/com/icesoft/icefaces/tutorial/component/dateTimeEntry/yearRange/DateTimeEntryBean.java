@@ -16,14 +16,10 @@
 
 package com.icesoft.icefaces.tutorial.component.dateTimeEntry.yearRange;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@ManagedBean
-@SessionScoped
 public class DateTimeEntryBean {
     private Date selectedDate;
     private String yearRange = "c-5:c+5";

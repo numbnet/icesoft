@@ -18,9 +18,9 @@ package com.icesoft.icefaces.tutorial.component.table.basic;
 
 /**
  * <p>
- * A basic backing bean for a ice:dataTable component.  This bean contains a
- * Collection of IventoryItem objects which is used as the dataset for a
- * dataTable component.  Each instance variable in the InventoryItem obejct
+ * A basic backing bean for an ice:dataTable component.  This bean contains
+ * an array of InventoryItem objects which is used as the dataset for a
+ * dataTable component.  Each instance variable in the InventoryItem object
  * is represented as a column in the dataTable component.
  * </p>
  */
@@ -28,7 +28,7 @@ public class TableBean {
 
     //  List of sample inventory data.
     private InventoryItem[] carInventory = new InventoryItem[]{
-            new InventoryItem(58285, "Dodge Grand Caravan", " Sto&Go/Keyless",  43500, 21695),
+            new InventoryItem(58285, "Dodge Grand Caravan", "Sto&Go/Keyless",  43500, 21695),
             new InventoryItem(57605, "Dodge SX 2.0", "Loaded/Keyless", 28000 ,14495),
             new InventoryItem(57805, "Chrysler Sebring Touring", "Keyless/Trac Cont", 31500, 15995),
             new InventoryItem(57965, "Chrysler PT Cruiser Convertible", "Touring/Loaded", 7000 , 22195),
@@ -129,7 +129,5 @@ public class TableBean {
         public int getPrice() {
             return price;
         }
-
     }
-
 }
