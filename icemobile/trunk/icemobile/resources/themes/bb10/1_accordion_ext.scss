@@ -14,15 +14,9 @@
  * governing permissions and limitations under the License.
  */
  
-* { 
-    -webkit-tap-highlight-color: #0099ff; 
+.mobi-accordion > section.open > .handle > .pointer {
+    border-top-color: inherit;
 }
-
-a{
-    color: #0069B7;
-    text-decoration: none;
-}
-
-a:hover{
-    color: #024679;
+.mobi-accordion > section.closed > .handle > .pointer{
+    border-left-color: inherit;
 }

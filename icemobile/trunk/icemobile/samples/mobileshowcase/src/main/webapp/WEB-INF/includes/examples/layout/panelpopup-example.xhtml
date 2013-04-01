@@ -37,9 +37,6 @@
                          headerText="Group of popup items"
                          style="#{panelPopupBean.autoCenter ? '' : (viewSize eq 'large' ? 'top:50px;left:32%' : 'top:50px;left:10px' )}">
             <mobi:outputList inset="false">
-                <mobi:outputListItem group="true">
-                    Panel Popup
-                </mobi:outputListItem>
                 <mobi:outputListItem>
                     <h:commandLink
                             actionListener="#{panelPopupBean.selectListItemAction}">
@@ -113,7 +110,7 @@
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Selected Value:"/>
-                <span>#{panelPopupBean.selectedListItem}</span>
+                <span class="result">#{panelPopupBean.selectedListItem}</span>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="clientSide" value="Client Side:"/>

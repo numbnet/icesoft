@@ -164,6 +164,7 @@
     	<buildSkin skin="archaic" />
     	<buildCSS3Skin skin="android" />
 		<buildCSS3Skin skin="bberry" />
+    	<buildCSS3Skin skin="bb10" />
 		<buildCSS3Skin skin="honeycomb" />
 		<buildCSS3Skin skin="ipad" />
 		<buildCSS3Skin skin="iphone" />
@@ -186,6 +187,8 @@
                     outputdir="${build.dir}/skins/out"/>
         <concatskin name="bberry" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
+    	<concatskin name="bb10" inputdir="${build.dir}/skins/in"
+    	                    outputdir="${build.dir}/skins/out"/>
         <concatskin name="ipad" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
 		<concatskin name="archaic" inputdir="${build.dir}/skins/in"
@@ -211,6 +214,7 @@
         <compresscss name="android"/>
         <compresscss name="honeycomb"/>
         <compresscss name="bberry"/>
+    	<compresscss name="bb10"/>
     	<compresscss name="simulator"/>
         <compresscss name="android_light"/>
         <compresscss name="android_dark"/>
