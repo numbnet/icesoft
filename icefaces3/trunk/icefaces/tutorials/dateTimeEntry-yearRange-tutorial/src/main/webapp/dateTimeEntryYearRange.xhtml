@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
   ~
@@ -14,13 +15,15 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:ace="http://www.icefaces.org/icefaces/components">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
 <f:view>
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-        <title>DataTimeEntry Locale Tutorial</title>
+        <title>DataTimeEntry Year Range Tutorial</title>
     </h:head>
     <h:body>
         <h:form id="yearRangeForm">
@@ -32,7 +35,9 @@
                 <f:selectItem itemLabel="2008:2018" itemValue="2008:2018"/>
                 <f:selectItem itemLabel="2003:+5" itemValue="2003:+5"/>
             </h:selectOneRadio>
-            <ace:dateTimeEntry id="yearRangeCal" navigator="true" value="#{dateTimeEntryBean.selectedDate}" yearRange="#{dateTimeEntryBean.yearRange}"/>
+            <ace:dateTimeEntry id="yearRangeCal" navigator="true"
+                               value="#{dateTimeEntryBean.selectedDate}"
+                               yearRange="#{dateTimeEntryBean.yearRange}"/>
         </h:form>
     </h:body>
 </f:view>

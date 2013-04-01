@@ -18,23 +18,21 @@ package com.icesoft.icefaces.tutorial.component.table.sortable;
 
 import java.util.Comparator;
 import java.util.Arrays;
+import java.io.Serializable;
 
 /**
  * <p>
- * A basic backing bean for a ice:dataTable component.  This bean contains a
- * Collection of IventoryItem objects which is used as the dataset for a
- * dataTable component.  Each instance variable in the InventoryItem obejct
+ * A basic backing bean for an ice:dataTable component.  This bean contains
+ * an array of InventoryItem objects which is used as the dataset for a
+ * dataTable component.  Each instance variable in the InventoryItem object
  * is represented as a column in the dataTable component.
  * </p>
- * <p>This Bean also extends SortableList to aid in making the dataTable
- * sortable via commandSortHeader component. </p>
- *
  */
-public class TableBean extends SortableList {
+public class TableBean implements Serializable {
 
     //  List of sample inventory data.
     private InventoryItem[] carInventory = new InventoryItem[]{
-            new InventoryItem(58285, "Dodge Grand Caravan", " Sto&Go/Keyless",  43500, 21695),
+            new InventoryItem(58285, "Dodge Grand Caravan", "Sto&Go/Keyless",  43500, 21695),
             new InventoryItem(57605, "Dodge SX 2.0", "Loaded/Keyless", 28000 ,14495),
             new InventoryItem(57805, "Chrysler Sebring Touring", "Keyless/Trac Cont", 31500, 15995),
             new InventoryItem(57965, "Chrysler PT Cruiser Convertible", "Touring/Loaded", 7000 , 22195),
@@ -63,9 +61,13 @@ public class TableBean extends SortableList {
     private static final String odometerColumnName = "Odometer";
     private static final String priceColumnName = "Price";
 
+    protected String sortColumnName;
+    protected boolean ascending;
 
     public TableBean() {
-        super(stockColumnName);
+        sortColumnName = stockColumnName;
+        ascending = true;
+        sort();
     }
 
     public String getStockColumnName() {
@@ -89,29 +91,51 @@ public class TableBean extends SortableList {
     }
 
     /**
+     * Gets the sortColumnName column.
+     *
+     * @return column to sortColumnName
+     */
+    public String getSortColumnName() {
+        return sortColumnName;
+    }
+
+    /**
+     * Sets the sortColumnName column
+     *
+     * @param sortColumnName column to sortColumnName
+     */
+    public void setSortColumnName(String sortColumnName) {
+        this.sortColumnName = sortColumnName;
+    }
+
+    /**
+     * Is the sortColumnName ascending.
+     *
+     * @return true if the ascending sortColumnName otherwise false.
+     */
+    public boolean isAscending() {
+        return ascending;
+    }
+
+    /**
+     * Set sortColumnName type.
+     *
+     * @param ascending true for ascending sortColumnName, false for desending sortColumnName.
+     */
+    public void setAscending(boolean ascending) {
+        this.ascending = ascending;
+    }
+
+    /**
      * Gets the inventoryItem array of car data.
      * @return array of car inventory data.
      */
     public InventoryItem[] getCarInventory() {
-
-        // we only want to sortColumnName if the column or ordering has changed.
-        if (!oldSort.equals(sortColumnName) ||
-                oldAscending != ascending){
-             sort();
-             oldSort = sortColumnName;
-             oldAscending = ascending;
-        }
         return carInventory;
     }
 
-    /**
-     * Determines the sortColumnName order.
-     *
-     * @param   sortColumn to sortColumnName by.
-     * @return  whether sortColumnName order is ascending or descending.
-     */
-    protected boolean isDefaultAscending(String sortColumn) {
-        return true;
+    public void doSort(javax.faces.event.ActionEvent event) {
+        sort();
     }
 
     /**
@@ -125,25 +149,20 @@ public class TableBean extends SortableList {
                 if (sortColumnName == null) {
                     return 0;
                 }
+                int ret = 0;
                 if (sortColumnName.equals(stockColumnName)) {
-                    return ascending ?
-                            new Integer(c1.getStock()).compareTo(new Integer(c2.getStock())) :
-                            new Integer(c2.getStock()).compareTo(new Integer(c1.getStock()));
+                    ret = new Integer(c1.getStock()).compareTo(new Integer(c2.getStock()));
                 } else if (sortColumnName.equals(modelColumnName)) {
-                    return ascending ? c1.getModel().compareTo(c2.getModel()) :
-                            c2.getModel().compareTo(c1.getModel());
+                    ret =  c1.getModel().compareTo(c2.getModel());
                 } else if (sortColumnName.equals(descriptionColumnName)) {
-                    return ascending ? c1.getDescription().compareTo(c2.getDescription()) :
-                            c2.getDescription().compareTo(c1.getDescription());
+                    ret = c1.getDescription().compareTo(c2.getDescription());
                 } else if (sortColumnName.equals(odometerColumnName)) {
-                    return ascending ?
-                            new Integer(c1.getOdometer()).compareTo(new Integer(c2.getOdometer())) :
-                            new Integer(c2.getOdometer()).compareTo(new Integer(c1.getOdometer()));
+                    ret = new Integer(c1.getOdometer()).compareTo(new Integer(c2.getOdometer()));
                 } else if (sortColumnName.equals(priceColumnName)) {
-                    return ascending ?
-                            new Integer(c1.getPrice()).compareTo(new Integer(c2.getPrice())) :
-                            new Integer(c2.getPrice()).compareTo(new Integer(c1.getPrice()));
-                } else return 0;
+                    ret = new Integer(c1.getPrice()).compareTo(new Integer(c2.getPrice()));
+                }
+                ret *= (ascending ? 1 : -1);
+                return ret;
             }
         };
         Arrays.sort(carInventory, comparator);
@@ -220,7 +239,5 @@ public class TableBean extends SortableList {
         public int getPrice() {
             return price;
         }
-
     }
-
 }

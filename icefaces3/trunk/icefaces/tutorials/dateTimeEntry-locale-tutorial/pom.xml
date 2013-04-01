@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.icefaces.tutorial</groupId>
-    <artifactId>dataTable-sortable-tutorial</artifactId>
+    <artifactId>dateTimeEntry-locale-tutorial</artifactId>
     <version>1.0</version>
 
     <repositories>
@@ -32,13 +32,13 @@
     </repositories>
 
     <parent>
-        <groupId>org.icefaces.tutorial.ice</groupId>
+        <groupId>org.icefaces.tutorial.ace-only</groupId>
         <artifactId>base</artifactId>
         <version>1.0</version>
     </parent>
 
-    <name>ICE DataTable Sortable Tutorial</name>
-    <url>http://www.icesoft.org/wiki/display/ICE/Data+Table</url>
+    <name>ACE DateTimeEntry Locale Tutorial</name>
+    <url>http://www.icesoft.org/wiki/display/ICE/DateTimeEntry+Locale</url>
 
     <packaging>war</packaging>
 </project>
