@@ -32,7 +32,7 @@ public class CommandButtonTag extends BaseSimpleTag {
     public static final String BUTTON_TYPE_BACK = "back";
 
     // button styles.
-    public static final String BASE_STYLE_CLASS = "mobi-button";
+    public static final String BASE_STYLE_CLASS = "mobi-button ui-btn-up-a";
     public static final String DISABLED_STYLE_CLASS = " mobi-button-dis";
     public static final String IMPORTANT_STYLE_CLASS = " mobi-button-important";
     public static final String UNIMPORTANT_STYLE_CLASS = " mobi-button-unimportant";

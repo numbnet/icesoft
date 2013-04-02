@@ -21,11 +21,20 @@
     border-bottom: 1px solid #C7C7C7;
     font-size: 0.9em;
     list-style: none;
-    padding: 12px;
 }
 .mobi-list > .mobi-list-item > .mobi-list-item-default > a {
-    padding: 3px 18px;
+    padding: 10px 25px;
+    background-image: url("next.png");
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    background-size: 20px;
+    color: #5E5E5E;
+    text-shadow: 1px 1px 1px #E2E2E2;
+    border-top: 1px solid #D7D7D7;
 }
+
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a:hover{ color: #2373A5; }
+
 
 
 

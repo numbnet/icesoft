@@ -31,7 +31,7 @@
         <div class="ajaxzone">
             <mobi:pagePanel>
                 <mobi:pagePanelHeader>
-                    <a href="<c:url value="/menu"/>" id="menuLink" class="mobi-button ui-icon ui-icon-menu ui-icon-shadow"></a>
+                    <a href="<c:url value="/menu"/>" id="menuLink" class="ui-icon ui-icon-menu ui-icon-shadow"></a>
                     ${param.demoTitle}
                 </mobi:pagePanelHeader>
                 <mobi:pagePanelBody noFooter="true">

@@ -53,7 +53,7 @@ public class CSSUtils {
     /* body */
     public static final String STYLECLASS_BODY_A = "ui-body-a"; //default for body
     /* clickable region */
-    public static final String STYLECLASS_BTN_UP_A = "ui-btn-up-a"; //default for list items
+    public static final String STYLECLASS_BTN_UP_A = "ui-btn-up-a"; 
     public static final String STYLECLASS_BTN_DOWN_A = "ui-btn-down-a"; //default pressed state
     /* globals */
     public static final String STYLECLASS_ACTIVE = "ui-btn-active";

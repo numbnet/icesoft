@@ -52,7 +52,7 @@ public class OutputListItemsRenderer extends BaseLayoutRenderer {
                 writer.startElement(HTML.LI_ELEM, null);
                 writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
                 String userDefinedClass = list.getStyleClass();
-                String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS + CSSUtils.STYLECLASS_BTN_UP_A;
+                String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS;
                 if (userDefinedClass != null) {
                     styleClass += " " + userDefinedClass;
                 }

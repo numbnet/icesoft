@@ -73,7 +73,7 @@
 .ui-overlay-a {
 	border: none /*{a-body-border}*/;
 	background: 			#F3F3F3 /*{a-body-background-color}*/;
-	color: 					#3E3E60 /*{a-body-color}*/;
+	color: 					#666 /*{a-body-color}*/;
 	text-shadow: 0 /*{a-body-shadow-x}*/ 0 /*{a-body-shadow-y}*/ 0 /*{a-body-shadow-radius}*/ #FFF /*{a-body-shadow-color}*/;
 	font-weight: normal;
 	background-image: -webkit-gradient(linear, left top, left bottom, from( #F3F3F3 /*{a-body-background-start}*/), to( #F0F0F0 /*{a-body-background-end}*/)); /* Saf4+, Chrome */
@@ -861,7 +861,7 @@ a.ui-link-inherit {
 .ui-icon-searchfield:after {
 	background: 						#666 /*{global-icon-color}*/;
 	background: 						rgba(0,0,0,.4) /*{global-icon-disc}*/;
-	background-image: url(images/icons-18-white.png) /*{global-icon-set}*/;
+	background-image: url(icons-18-white.png) /*{global-icon-set}*/;
 	background-repeat: no-repeat;
 	-moz-border-radius: 				9px;
 	-webkit-border-radius: 				9px;
@@ -872,7 +872,7 @@ a.ui-link-inherit {
 .ui-icon-alt {
 	background: 						#fff;
 	background: 						rgba(255,255,255,.3);
-	background-image: url(images/icons-18-black.png);
+	background-image: url(icons-18-black.png);
 	background-repeat: no-repeat;
 }
 /* HD/"retina" sprite
@@ -886,14 +886,14 @@ a.ui-link-inherit {
 	.ui-icon-gear, .ui-icon-refresh, .ui-icon-forward, .ui-icon-back,
 	.ui-icon-grid, .ui-icon-star, .ui-icon-alert, .ui-icon-info, .ui-icon-home, .ui-icon-search, .ui-icon-searchfield:after, 
 	.ui-icon-checkbox-off, .ui-icon-checkbox-on, .ui-icon-radio-off, .ui-icon-radio-on {
-		background-image: url(images/icons-36-white.png);
+		background-image: url(icons-36-white.png);
 		-moz-background-size: 776px 18px;
 		-o-background-size: 776px 18px;
 		-webkit-background-size: 776px 18px;
 		background-size: 776px 18px;
 	}
 	.ui-icon-alt {
-		background-image: url(images/icons-36-black.png);
+		background-image: url(icons-36-black.png);
 	}
 }
 /* plus minus */
@@ -984,7 +984,7 @@ a.ui-link-inherit {
 }
 /* loading icon */
 .ui-icon-loading {
-	background: url(images/ajax-loader.gif);
+	background: url(ajax-loader.gif);
 	background-size: 46px 46px;
 }
 /* Button corner classes
@@ -2121,14 +2121,17 @@ label.ui-submit { font-size: 16px; line-height: 1.4; font-weight: normal; margin
 	.ui-popup .ui-field-contain label.ui-submit,
 	.ui-popup .ui-field-contain .ui-controlgroup-label,
 	.ui-popup .ui-field-contain label.ui-select,
-	.ui-popup .ui-field-contain label.ui-input-text {
+	.ui-popup .ui-field-contain label.ui-input-text,
+	.ui-popup .ui-field-contain label /* mobi */ {
 		font-size: 16px; line-height: 1.4; display: block; font-weight: normal; margin: 0 0 .3em;
 	}
 	.ui-popup .ui-field-contain .ui-btn.ui-submit,
 	.ui-popup .ui-field-contain .ui-controlgroup-controls,
 	.ui-popup .ui-field-contain .ui-select,
 	.ui-popup .ui-field-contain input.ui-input-text,
+	.ui-popup .ui-field-contain input, /* mobi */
 	.ui-popup .ui-field-contain textarea.ui-input-text,
+	.ui-popup .ui-field-contain textarea, /* mobi */
 	.ui-popup .ui-field-contain .ui-input-search {
 		width: 100%; display: block;
 	}
@@ -2199,12 +2202,14 @@ label.ui-submit { font-size: 16px; line-height: 1.4; font-weight: normal; margin
 .ui-checkbox .ui-mini.ui-btn-icon-right .ui-icon, .ui-radio .ui-mini.ui-btn-icon-right .ui-icon { right: 9px; }
 /* input, label positioning */
 .ui-checkbox input,.ui-radio input { position:absolute; left:20px; top:50%; width: 10px; height: 10px; margin:-5px 0 0 0; outline: 0 !important; z-index: 1; }
-.ui-field-contain, fieldset.ui-field-contain { padding: .8em 0; margin: 0; border-width: 0 0 1px 0; overflow: visible; }
+/* mobi 
+.ui-field-contain, fieldset.ui-field-contain { padding: .8em 0; margin: 0; border-width: 0 0 1px 0; overflow: visible; }*/
 .ui-field-contain:last-child { border-bottom-width: 0; }
 .ui-field-contain { max-width: 100%; } /* This prevents horizontal scrollbar in IE7 */
+/* mobi 
 @media all and (min-width: 450px){
 	.ui-field-contain, .ui-mobile fieldset.ui-field-contain { border-width: 0; padding: 0; margin: 1em 0; }
-}
+}*/
 .ui-select { display: block; position: relative; }
 .ui-select select { position: absolute; left: -9999px; top: -9999px; }
 .ui-select .ui-btn { overflow: hidden; opacity: 1; }
@@ -2243,13 +2248,13 @@ label.ui-select { font-size: 16px; line-height: 1.4; font-weight: normal; margin
 .ui-selectmenu .ui-header .ui-title { margin: 0.6em 46px 0.8em; }
 @media all and (min-width: 450px){
 	.ui-field-contain label.ui-select { vertical-align: top; display: inline-block; width: 20%; margin: 0 2% 0 0; }
-	.ui-field-contain .ui-select { width: 78%; display: inline-block; }
+	.ui-field-contain .ui-select, .ui-field-contain select /* mobi */{ width: 78%; display: inline-block; }
 	.ui-hide-label .ui-select { width: 100%; } 
 }
 /* when no placeholder is defined in a multiple select, the header height doesn't even extend past the close button.  this shim's content in there */
 .ui-selectmenu .ui-header h1:after { content: '.'; visibility: hidden; }
 label.ui-input-text { font-size: 16px; line-height: 1.4; display: block; font-weight: normal; margin: 0 0 .3em; }
-input.ui-input-text, textarea.ui-input-text { background-image: none; padding: .4em; margin: .5em 0; line-height: 1.4; font-size: 16px; display: block; width: 100%; outline: 0; }
+input.ui-input-text, textarea.ui-input-text { background-image: none; padding: .2em; margin: .5em 0; line-height: 1.4; font-size: 14px; display: block; width: 100%; outline: 0; }
 input.ui-input-text.ui-mini, textarea.ui-input-text.ui-mini { margin: .25em 0; }
 .ui-field-contain input.ui-input-text, .ui-field-contain textarea.ui-input-text { margin: 0; }
 input.ui-input-text, textarea.ui-input-text, .ui-input-search { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; }
@@ -2266,9 +2271,16 @@ textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; 
 input.ui-mini, .ui-mini input, textarea.ui-mini { font-size: 14px; }
 textarea.ui-mini { height: 45px; }
 @media all and (min-width: 450px){
-	.ui-field-contain label.ui-input-text  { vertical-align: top; display: inline-block; width: 20%; margin: 0 2% 0 0 }
+	.ui-field-contain label.ui-input-text,
+	.ui-field-contain label /* mobi */  { 
+		vertical-align: top; display: inline-block; width: 20%; margin: 0 2% 0 0;
+		line-height: 1.8em;
+		text-align: left;
+	}
 	.ui-field-contain input.ui-input-text, 
+	.ui-field-contain input, /* mobi */
 	.ui-field-contain textarea.ui-input-text, 
+	.ui-field-contain textara, /* mobi */
 	.ui-field-contain .ui-input-search { width: 78%; display: inline-block; } 
 	.ui-hide-label input.ui-input-text, 
 	.ui-hide-label textarea.ui-input-text, 
