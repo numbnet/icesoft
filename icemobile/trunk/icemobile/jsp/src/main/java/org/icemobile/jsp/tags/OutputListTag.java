@@ -20,7 +20,6 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collection;
 import java.util.logging.Logger;
 
 /**
@@ -28,8 +27,8 @@ import java.util.logging.Logger;
  */
 public class OutputListTag extends TagSupport {
 
-    public static final String OUTPUTLIST_CLASS = "mobi-list ";
-    public static final String OUTPUTLISTINSET_CLASS = " mobi-list-inset ";
+    public static final String OUTPUTLIST_CLASS = "mobi-list ui-listview ";
+    public static final String OUTPUTLISTINSET_CLASS = "mobi-list-inset ui-listview-inset ";
     private static Logger LOG = Logger.getLogger(OutputListTag.class.getName());
 
     public int doStartTag() throws JspTagException {

@@ -42,7 +42,7 @@ public class OutputListItemRenderer extends Renderer {
         String userDefinedClass = item.getStyleClass();
         String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS;
         if (item.isGroup()) {
-            styleClass = OutputListItem.OUTPUTLISTITEMGROUP_CLASS + " " + CSSUtils.STYLECLASS_BAR_B;
+            styleClass = OutputListItem.OUTPUTLISTITEMGROUP_CLASS;
             if (userDefinedClass != null) {
                 styleClass += " " + userDefinedClass;
             }

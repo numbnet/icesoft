@@ -81,6 +81,7 @@ html.ipad .mobi-tabset > .mobi-tabset-tabs, html.honeycomb .mobi-tabset > .mobi-
     overflow: hidden;
     text-overflow: ellipsis;
     height: 40px;
+    float: left;
 }
 .mobi-tabpage-hidden { 
     display: none; 
