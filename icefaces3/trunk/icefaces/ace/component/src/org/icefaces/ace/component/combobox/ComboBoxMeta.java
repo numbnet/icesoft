@@ -127,6 +127,18 @@ public class ComboBoxMeta extends HtmlInputTextMeta {
 	@Property(tlddoc = "Not supported. Use 'width' instead.", implementation=Implementation.EXISTS_IN_SUPERCLASS)
 	private int size;	
 	
+	@Property(tlddoc="Effect to use when showing the list. Possible values are 'blind', 'bounce', 'clip', 'drop', 'explode', 'fade', 'fold', 'puff', 'pulsate', 'scale', 'slide', and 'shake'.", defaultValue="fade")
+	private String showEffect;
+
+	@Property(tlddoc="Length of time in milliseconds the show effect will last for.", defaultValue="150")
+	private int showEffectLength;
+
+	@Property(tlddoc="Effect to use when hiding the list. Possible values are 'blind', 'bounce', 'clip', 'drop', 'explode', 'fade', 'fold', 'puff', 'pulsate', 'scale', and 'slide'.", defaultValue="fade")
+	private String hideEffect;
+
+	@Property(tlddoc="Length of time in milliseconds the hide effect will last for.", defaultValue="150")
+	private int hideEffectLength;
+	
     @Field()
     private List itemList;
 }

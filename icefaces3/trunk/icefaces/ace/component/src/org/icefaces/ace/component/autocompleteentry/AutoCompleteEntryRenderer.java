@@ -250,6 +250,14 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			} else {
 				jb.item("null", false);
 			}
+			
+			// effects
+			jb.beginMap()
+			.entry("show", autoCompleteEntry.getShowEffect())
+			.entry("showLength", autoCompleteEntry.getShowEffectLength())
+			.entry("hide", autoCompleteEntry.getHideEffect())
+			.entry("hideLength", autoCompleteEntry.getHideEffectLength())
+			.endMap();
 
 			jb.endArray();
             jb.endFunction();
