@@ -29,16 +29,16 @@ ice.ace.TextAreaEntry = function(id, cfg) {
             function() {
                 var input = jQ(this);
                 if (input.hasClass(cfg.inFieldLabelStyleClass)) {
-//                    input.text("");
-                    input.attr({name: inputId, value: ""});
+                    input.attr({name: inputId});
+                    input.val("");
                     input.removeClass(cfg.inFieldLabelStyleClass);
                 }
             }).blur(
             function() {
                 var input = jQ(this);
                 if (jQ.trim(input.val()) == "") {
-//                    input.text(cfg.inFieldLabel);
-                    input.attr({name: labelName, value: cfg.inFieldLabel});
+                    input.attr({name: labelName});
+                    input.val(cfg.inFieldLabel);
                     input.addClass(cfg.inFieldLabelStyleClass);
                 }
             });
