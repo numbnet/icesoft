@@ -12,7 +12,7 @@ public class ButtonBean {
     private String style;
     private String styleClass;
     private String selectedButton  = "Yes";
-    private String orientation = "horizontal";
+    private String orientation;
     private String buttonGroupStyle ;
 
     public ButtonBean(){

@@ -23,13 +23,14 @@ import org.icemobile.jsp.tags.BaseBodyTag;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  *
  */
 public class CommandButtonGroupTag extends BaseBodyTag implements IButtonGroup{
 
-    private static Logger LOG = Logger.getLogger(CommandButtonGroupTag.class.getName());
+    private static Logger logger = Logger.getLogger(CommandButtonGroupTag.class.getName());
 
     private String orientation;
     private ButtonGroupCoreRenderer renderer;
@@ -83,18 +84,21 @@ public class CommandButtonGroupTag extends BaseBodyTag implements IButtonGroup{
     }
 
     public String getOrientation() {
-        if (!IButtonGroup.ORIENTATION_VERTICAL.equals(orientation) || !IButtonGroup.ORIENTATION_HORIZONTAL.equals(orientation)){
+        if (!(this.orientation.equals(IButtonGroup.ORIENTATION_HORIZONTAL)) && !(this.orientation.equals(IButtonGroup.ORIENTATION_VERTICAL))){
+            if (logger.isLoggable(Level.FINER)) {
+                logger.info("invalid orientation ="+this.orientation+" returning default = "+IButtonGroup.ORIENTATION_HORIZONTAL);
+            }
             return IButtonGroup.ORIENTATION_HORIZONTAL; //default
         }
-        return orientation;
+        return this.orientation;
     }
 
     public String getClientId(){
         return this.id;
     }
 
-    public void setOrientation(String orientation) {
-        this.orientation = orientation;
+    public void setOrientation(String orient) {
+        this.orientation = orient;
     }
 
     public String getSelectedId() {
@@ -102,7 +106,7 @@ public class CommandButtonGroupTag extends BaseBodyTag implements IButtonGroup{
     }
 
     public void setSelectedId(String selectedId) {
-        this.selectedId = selectedId;
+            this.selectedId = selectedId;
     }
 
     public String getName() {
@@ -115,7 +119,6 @@ public class CommandButtonGroupTag extends BaseBodyTag implements IButtonGroup{
 
     public void release(){
         super.release();
-        this.orientation=null;
         this.writer= null;
         this.renderer=null;
     }

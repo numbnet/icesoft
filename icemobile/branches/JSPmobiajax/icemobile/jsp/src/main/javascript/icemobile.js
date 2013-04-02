@@ -236,14 +236,15 @@ ice.mobi.button = {
         //get class and add the pressed state
         var me = document.getElementById(clientId);
         var curClass = me.className;
+        if (cfg.pDisabled){
+            return; // no change on which button can be selected
+        }
         if (ice.mobi.hasClass(me, ice.mobi.BUTTON_UNPRESSED )){
             var newCls = me.className.replace('up','down');
             me.className = newCls;
-        } else {
-            //what to do?  we always will render it this way...
         }
         //check if it's part of a commandButtonGroup needed for jsp
-        if (cfg.groupId){
+        if (cfg.groupId ){
             var groupElem = document.getElementById(cfg.groupId+"_hidden");
             if (groupElem){
             //    console.log("for groupId "+cfg.groupId+" value is "+clientId);
@@ -251,14 +252,6 @@ ice.mobi.button = {
             }
         }
         var myForm = ice.formOf(document.getElementById(clientId));
-   /*     if (typeof MvcUtil.enhanceForm != undefined){
-            if (myForm){
-               MvcUtil.enhanceForm(myForm);
-            }else {
-                console.log("problems submitting jsp form with icemobilespring");
-            }
-            return;
-        }  */
         var params = cfg.params || null;
 
         //otherwise, just check for behaviors, singleSubmit and go

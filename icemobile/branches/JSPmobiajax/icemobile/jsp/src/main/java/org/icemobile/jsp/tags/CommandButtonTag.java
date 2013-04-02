@@ -48,6 +48,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     private TagWriter writer;
     private CommandButtonGroupTag mParent;
     private StringBuilder jsCall;
+    private boolean parentDisabled = false;
 
     public void setParent(Tag parent) {
         logger.info("SETPARENT!!!");
@@ -73,14 +74,16 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     public void checkSelected(){
         //logger.info("parent has selected id =" + mParent.getSelectedId());
         if (mParent.isDisabled()) { //no changes allowed if parent is disabled
-            return;
+            this.parentDisabled=true;
         }
         if (mParent.getSelectedId()!=null){
             String selId = mParent.getSelectedId();
             if (selId.equals(this.id)){
                 this.selectedButton = true;
+                this.selected=true;
             }else {
                 this.selectedButton = false;
+                this.selected = false;
             }
         }else {
             this.selectedButton = false;
@@ -88,7 +91,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
         }
     }
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(String id) {
@@ -96,7 +99,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     }
 
     public String getStyle() {
-        return style;
+        return this.style;
     }
 
     public Boolean isSelectedButton() {
@@ -120,7 +123,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     }
 
     public String getStyleClass() {
-        return styleClass;
+        return this.styleClass;
     }
 
     public void setStyleClass(String styleClass) {
@@ -128,7 +131,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     }
 
     public String getButtonType() {
-        return buttonType;
+        return this.buttonType;
     }
 
     public void setButtonType(String buttonType) {
@@ -136,7 +139,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     }
 
     public boolean isDisabled() {
-        return disabled;
+        return this.disabled;
     }
 
     public void setDisabled(boolean disabled) {
@@ -144,7 +147,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     }
 
     public Object getValue() {
-        return value;
+        return this.value;
     }
 
     public void setValue(Object value) {
@@ -152,7 +155,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {
@@ -229,8 +232,14 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     public void setJsCall(StringBuilder jsCall) {
         this.jsCall = jsCall;
     }
-
+    public boolean isParentDisabled(){
+        return this.parentDisabled;
+    }
+    public void setParentDisabled(boolean dis){
+        this.parentDisabled = dis;
+    }
     public void release(){
+        logger.info("button id="+this.id+" RELEASE");
         super.release();
         this.mParent = null ;
         this.writer= null;
