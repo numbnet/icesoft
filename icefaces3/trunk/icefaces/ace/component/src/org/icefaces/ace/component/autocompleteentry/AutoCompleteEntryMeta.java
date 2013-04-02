@@ -139,6 +139,18 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
     	expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.event.TextChangeEvent",
     	tlddoc = "MethodExpression representing a text change listener method that will be notified when the text of the input field changes after the user types new characters or removes them. This is different from a value change event in that in this case the user has not yet given a definite input and is just typing strings to to obtain lists of possible values. The value change event differs in that it only fires once the user has selected a value from the list or has pressed 'enter' on the input field. The expression must evaluate to a public method that takes a org.icefaces.ace.event.TextChageEvent parameter, with a return type of void.")
     private MethodExpression textChangeListener;
+	
+	@Property(tlddoc="Effect to use when showing the list. Possible values are 'blind', 'bounce', 'clip', 'drop', 'explode', 'fade', 'fold', 'puff', 'pulsate', 'scale', 'slide', and 'shake'.", defaultValue="fade")
+	private String showEffect;
+
+	@Property(tlddoc="Length of time in milliseconds the show effect will last for.", defaultValue="150")
+	private int showEffectLength;
+
+	@Property(tlddoc="Effect to use when hiding the list. Possible values are 'blind', 'bounce', 'clip', 'drop', 'explode', 'fade', 'fold', 'puff', 'pulsate', 'scale', and 'slide'.", defaultValue="fade")
+	private String hideEffect;
+
+	@Property(tlddoc="Length of time in milliseconds the hide effect will last for.", defaultValue="150")
+	private int hideEffectLength;
 
     @Field(defaultValue="false")
     private Boolean populateList;

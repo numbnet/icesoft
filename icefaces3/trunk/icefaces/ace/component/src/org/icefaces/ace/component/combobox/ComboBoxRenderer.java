@@ -212,6 +212,14 @@ public class ComboBoxRenderer extends InputRenderer {
 			.entry("filterMatchMode", filterMatchMode.toString())
 			.entry("caseSensitive", comboBox.isCaseSensitive())
 			.endMap();
+			
+			// effects
+			jb.beginMap()
+			.entry("show", comboBox.getShowEffect())
+			.entry("showLength", comboBox.getShowEffectLength())
+			.entry("hide", comboBox.getHideEffect())
+			.entry("hideLength", comboBox.getHideEffectLength())
+			.endMap();
 
 			jb.endArray();
 			jb.endFunction();

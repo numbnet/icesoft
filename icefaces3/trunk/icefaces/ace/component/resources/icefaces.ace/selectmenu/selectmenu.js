@@ -18,7 +18,7 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.SelectMenus) ice.ace.SelectMenus = {};
 
-ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, behaviors, cfg) {
+ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, behaviors, cfg, effects) {
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.SelectMenus[this.id] && ice.ace.SelectMenus[this.id].initialized) isInitialized = true;
@@ -49,6 +49,7 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selec
 	$update.css('width', $element.width());
 	this.update = $update.get(0);
 	this.cfg = cfg;
+	this.effects = effects;
 	$element.data("labelIsInField", this.cfg.labelIsInField);
 	
 	if (isInitialized) {
@@ -177,7 +178,7 @@ ice.ace.SelectMenu.prototype = {
                 try {
 					self.$downArrowButton.addClass('ui-state-hover');
 					self.calculateListPosition();
-                    ice.ace.jq(update).fadeIn(150)
+                    self.showEffect(update);
                 } catch(e) {
                     //logger.info(e);
                 }
@@ -185,7 +186,7 @@ ice.ace.SelectMenu.prototype = {
         this.options.onHide = this.options.onHide ||
             function(element, update) {
 			self.$downArrowButton.removeClass('ui-state-hover');
-			ice.ace.jq(update).fadeOut(150)
+			self.hideEffect(update);
             };
 
         this.observer = null;
@@ -866,5 +867,25 @@ ice.ace.SelectMenu.prototype = {
 			}
 			if (!found) this.selectedIndex = -1;
 		}
+	},
+	
+	showEffect: function(update) {
+		var list = ice.ace.jq(update);
+		var e = this.effects.show;
+		e = e ? e.toLowerCase() : '';
+		if (e == 'blind' || e == 'bounce' || e == 'clip' || e == 'drop' || e == 'explode'
+				|| e == 'fold' || e == 'puff' || e == 'pulsate' || e == 'scale' || e == 'slide' || e == 'shake') {
+			list.toggle(this.effects.show, {}, this.effects.showLength);
+		} else list.fadeIn(this.effects.showLength);
+	},
+	
+	hideEffect: function(update) {
+		var list = ice.ace.jq(update);
+		var e = this.effects.show;
+		e = e ? e.toLowerCase() : '';
+		if (e == 'blind' || e == 'bounce' || e == 'clip' || e == 'drop' || e == 'explode'
+				|| e == 'fold' || e == 'puff' || e == 'pulsate' || e == 'scale' || e == 'slide') {
+			list.toggle(this.effects.hide, {}, this.effects.hideLength);
+		} else list.fadeOut(this.effects.hideLength);
 	}
 }
