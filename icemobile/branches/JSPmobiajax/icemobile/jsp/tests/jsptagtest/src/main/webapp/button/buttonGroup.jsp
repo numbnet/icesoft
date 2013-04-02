@@ -15,7 +15,7 @@
   --%>
 <%@ page import="org.icemobile.input.ButtonGroupBean"  %>
 <%@ include file="../includes/pageInfo.jsp"%>
-<jsp:useBean id="buttonGroupInfo" class="org.icemobile.input.ButtonGroupBean" scope="page"/>
+<jsp:useBean id="buttonGroupInfo" class="org.icemobile.input.ButtonGroupBean" scope="session"/>
 <jsp:setProperty name="buttonGroupInfo" property="*" />
 <!DOCTYPE html >
 <html >

@@ -40,6 +40,7 @@ import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IButton;
+import org.icemobile.component.IButtonGroup;
 import org.icemobile.renderkit.IResponseWriter;
 import org.icemobile.renderkit.ButtonCoreRenderer;
 
@@ -85,9 +86,14 @@ public class  CommandButtonRenderer extends CoreRenderer {
          */
         String clientId = button.getClientId();
         Object parent = uiComponent.getParent();
-        if (parent instanceof CommandButtonGroup)  {
-            CommandButtonGroup cbg = (CommandButtonGroup)parent;
+        if (parent instanceof IButtonGroup)  {
+            IButtonGroup cbg = (IButtonGroup)parent;
             button.setGroupId(cbg.getClientId());
+            logger.info("button group has disabled="+cbg.isDisabled());
+            if (cbg.isDisabled()){
+                logger.info(" parent button group is disabled");
+                button.setParentDisabled(true);
+            }
             String selectedId = cbg.getSelectedId();
             if (null != selectedId){
                 if (selectedId.equals(clientId)) {

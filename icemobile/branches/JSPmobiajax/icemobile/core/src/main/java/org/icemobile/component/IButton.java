@@ -80,5 +80,7 @@ public interface IButton extends IMobiComponent{
     public String getOpenContentPane();
     public StringBuilder getJsCall();
     public void setJsCall(StringBuilder jsCall);
+    public boolean isParentDisabled();
+    public void setParentDisabled(boolean disabled);
   //  public String getSrc();
 }

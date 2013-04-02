@@ -35,6 +35,7 @@
             <mobi:fieldsetRow>
                 <mobi:commandButtonGroup orientation="#{button.orientation}"
                                          styleClass="#{button.styleClass}"
+                                         disabled="#{button.groupDisabled}"
                                          style="#{button.buttonGroupStyle}">
                     <mobi:commandButton value="Yes"
                              buttonType="${button.buttonType}">
@@ -84,6 +85,10 @@
             <mobi:fieldsetRow>
                 <h:outputLabel for="style" value="Style:" />
                 <mobi:inputText id="style" value="#{button.style}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:" />
+                <mobi:flipswitch id="disabled" value="#{button.groupDisabled}" singleSubmit="true"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
     </h:form>

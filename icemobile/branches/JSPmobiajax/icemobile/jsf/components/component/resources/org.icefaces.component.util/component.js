@@ -659,6 +659,9 @@ ice.mobi.button = {
     select: function(clientId, event, cfg) {
         //get class and add the pressed state
         var me = document.getElementById(clientId);
+        if (cfg.pDisabled){
+            return; // no change on which button can be selected
+        }
         var curClass = me.className;
   //      console.log("curClass="+curClass);
         if (ice.mobi.hasClass(me, ice.mobi.BUTTON_UNPRESSED )){

@@ -150,6 +150,9 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             if (null != button.getSubmitNotification()){
                 sb.append(", snId: '").append(button.getSubmitNotificationId()).append("'");
             }
+            if (button.isParentDisabled()){
+                sb.append(", pDisabled: ").append(button.isParentDisabled());
+            }
             if (null != button.getBehaviors()){
                 sb.append(button.getBehaviors());
             }

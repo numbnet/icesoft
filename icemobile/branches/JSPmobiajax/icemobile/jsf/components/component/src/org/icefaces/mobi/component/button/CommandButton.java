@@ -24,9 +24,17 @@ import org.icemobile.util.ClientDescriptor;
 
 public class CommandButton extends CommandButtonBase implements IButton{
 
-
+    private boolean parentDisabled = false;
     public ClientDescriptor getClient() {
          return MobiJSFUtils.getClientDescriptor();
+    }
+
+    public boolean isParentDisabled(){
+        return false;// not handled for JSF in javascript
+    }
+
+    public void setParentDisabled(boolean disabled){
+        this.parentDisabled = disabled;
     }
 
 }

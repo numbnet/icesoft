@@ -49,6 +49,7 @@ public class ButtonBean implements Serializable {
     private String param2;
     private String param1Returned;
     private String param2Returned;
+    private boolean groupDisabled = false;
 
     public ButtonBean(){
 
@@ -214,5 +215,13 @@ public class ButtonBean implements Serializable {
 
     public void setParam2(String param2) {
         this.param2 = param2;
+    }
+
+    public boolean isGroupDisabled() {
+        return groupDisabled;
+    }
+
+    public void setGroupDisabled(boolean groupDisabled) {
+        this.groupDisabled = groupDisabled;
     }
 }
