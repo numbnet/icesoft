@@ -43,8 +43,10 @@ import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.beans.Beans;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -73,6 +75,8 @@ public class OutputStyleRenderer extends DomBasicRenderer {
     private static final int OPERA = 6;
     private static final int OPERA_MOBILE = 7;
     private static final int IE_8 = 8;
+
+    private String browserSpecificFilename;
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -115,11 +119,13 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                             if(browserType == OPERA_MOBILE){
                                 extention = OPERA_MOBILE_EXTENTION;
                             }
-                            // W3C spec: To make a style sheet preferred, set the rel attribute to "stylesheet" and name the style sheet with the title attribute
-                            ieStyleEle.setAttribute(HTML.TITLE_ATTR, extention);
-                            String hrefURL = CoreUtils.resolveResourceURL(facesContext, start + extention + CSS_EXTENTION);
-                            ieStyleEle.setAttribute(HTML.HREF_ATTR, hrefURL);
-                            styleEle.getParentNode().appendChild(ieStyleEle);
+                            if (useSpecific(facesContext, start, extention)) {
+                                // W3C spec: To make a style sheet preferred, set the rel attribute to "stylesheet" and name the style sheet with the title attribute
+                                ieStyleEle.setAttribute(HTML.TITLE_ATTR, extention);
+                                String hrefURL = CoreUtils.resolveResourceURL(facesContext, browserSpecificFilename);
+                                ieStyleEle.setAttribute(HTML.HREF_ATTR, hrefURL);
+                                styleEle.getParentNode().appendChild(ieStyleEle);
+                            }
                         } else {
                             throw new RuntimeException(
                                     "OutputStyle file attribute is too short. " +
@@ -224,5 +230,73 @@ public class OutputStyleRenderer extends DomBasicRenderer {
             }
         }
         return result;
+    }
+
+    // Contributed code. See http://jira.icesoft.org/browse/ICE-8758.
+    private boolean useSpecific(FacesContext facesContext, String start, String extention) {
+        // assume we are not going to use the specific file
+        boolean useSpecific=false;
+        // this is the file we are going to verify existence of.
+        browserSpecificFilename = start + extention + CSS_EXTENTION;
+
+
+        String realRoot = CoreUtils.getRealPath(facesContext, "/");
+        if (realRoot != null) {
+            File realParent = new File(realRoot);
+
+
+            // first use case of absolute file (/...),
+            //
+            // find our real root path, we need this to determine
+            // existence of the file containing the extension.
+            //
+            // Then append the browser specific filename to the root and find
+            // the file.
+            if (browserSpecificFilename.startsWith("/")) {
+                File browserSpecificFile = null;
+
+                // can start with /[context_name]/
+                // if it does, we need to strip it off
+
+                String contextName = null;
+                Object servletContextObject = FacesContext.getCurrentInstance().getExternalContext().getContext();
+                if (servletContextObject != null && servletContextObject instanceof ServletContext) {
+                    contextName = ((ServletContext)servletContextObject).getContextPath();
+                }
+
+                // if context name is available then we need to strip it off of the URL if it
+                // is there otherwise just use href as-is.
+                if (contextName != null) {
+
+                    // starts with context name?
+                    String contextRoot = contextName +"/";
+                    if (browserSpecificFilename.startsWith(contextRoot)) {
+                        browserSpecificFile = new File (realParent,browserSpecificFilename.substring(contextRoot.length()));
+                    }
+                    else {
+                        browserSpecificFile = new File (realParent,browserSpecificFilename.substring(1));
+                    }
+
+                }
+                useSpecific=browserSpecificFile != null ? browserSpecificFile.exists(): false;
+            }
+            // second use case of relative file (.../...),
+            //
+            // find the directory of the relative path of the request
+            //
+            //
+            // Then append the browser specific filename to the root and find
+            // the file.
+            else {
+                String pathInfo = facesContext.getExternalContext().getRequestServletPath();
+                if (pathInfo != null) {
+                    pathInfo=new File(pathInfo).getParent();
+                    File realPath = new File (realParent,pathInfo);
+                    File browserSpecificFile = new File (realPath,browserSpecificFilename);
+                    useSpecific=browserSpecificFile.exists();
+                }
+            }
+        }
+        return useSpecific;
     }
 }
