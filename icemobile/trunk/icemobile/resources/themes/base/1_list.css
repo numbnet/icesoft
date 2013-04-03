@@ -29,21 +29,20 @@
     margin: 8px;
 }
 
-.mobi-list .mobi-list-item {
+.mobi-list-item {
     margin: 0;
     font-size: 15px;
     font-weight: bold;
     list-style: none;
-    border-bottom-width: 0 !important;
-    border-top-width: 1px !important;
-    border-left-width: 0 !important;
-    border-right-width: 0 !important;
 }
 
 .mobi-list-item-group {
     font-weight: bold;
     padding: 8px 10px;
     top: 0;
+    line-height: 26px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .mobi-list > .mobi-list-item:last-child {
