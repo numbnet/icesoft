@@ -107,20 +107,19 @@
 .ui-icon {
     width: 30px;
     height: 25px;
-    border-top: 1px solid white;
     border-radius: 7px;
     display: block;
-    border: 1px solid rgba(255,255,255,0.5);
     position: absolute;
     left: 0.5em;
     top: 5px;
-}
-html.bb10 .ui-icon{
     border: 2px solid rgba(255, 255, 255, 0.5);
     background-color: inherit;
+    background-image: url(images/icons-white.png.jsf);
+    background-repeat: no-repeat;
 }
-.ui-icon{
-   background-image: url(images/icons-white.png.jsf);
+html.android_light .ui-icon {
+    border: 2px solid #D6D6D6;
+    background-color: #9C9C9C;
 }
 html.android .ui-icon:active, html.android .ui-icon:focus, html.android .ui-icon[selected] {
     -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
@@ -180,6 +179,7 @@ html.android #splash header{
 #splash p:last-child{
     margin-bottom:0;
 }
+/*
 html.iphone #splash figure,
 html.bberry #splash figure,
 html.android #splash figure,
@@ -189,7 +189,7 @@ html.bb10 #splash figure{
 }
 html.ipad #splash fieldset, html.honeycomb #splash fieldset{ 
     padding: 20px;
-}
+}*/
 #splash header, #splash figure{
     margin-bottom: 1em;
 }
@@ -379,6 +379,9 @@ html.bb10 .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
         max-width: 35%;
         margin-bottom:10px;
     }
+    #splash fieldset{ 
+        padding: 20px;
+    }
 }
 /* SMALL SCREEN */
 @media screen and (max-width: 579px) {  
@@ -388,6 +391,10 @@ html.bb10 .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
         width: 100%;
         max-width: 300px;
         margin-bottom:10px;
+    }
+    #splash figure{
+        display:block;
+        text-align:center;
     }
 }
 html.android .back{

@@ -30,7 +30,6 @@
     background-size: 20px;
     color: #5E5E5E;
     text-shadow: 1px 1px 1px #E2E2E2;
-    border-top: 1px solid #D7D7D7;
 }
 
 .mobi-list > .mobi-list-item > .mobi-list-item-default > a:hover{ color: #2373A5; }
