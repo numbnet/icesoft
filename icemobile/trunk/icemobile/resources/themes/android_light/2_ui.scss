@@ -116,7 +116,7 @@
 	border: 1px solid 		#CCC /*{a-bup-border}*/;
 	background: 			#DDD /*{a-bup-background-color}*/;
 	font-weight: bold;
-	color: 					#666 /*{a-bup-color}*/;
+	color: 					#424242 /*{a-bup-color}*/;
 	text-shadow: 0 /*{a-bup-shadow-x}*/ 1px /*{a-bup-shadow-y}*/ 1px /*{a-bup-shadow-radius}*/ #FFF /*{a-bup-shadow-color}*/;
 	background-image: -webkit-gradient(linear, left top, left bottom, from( #E2E2E2 /*{a-bup-background-start}*/), to( #EEE /*{a-bup-background-end}*/)); /* Saf4+, Chrome */
 	background-image: -webkit-linear-gradient( #E2E2E2 /*{a-bup-background-start}*/, #EEE /*{a-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
@@ -124,6 +124,8 @@
 	background-image:     -ms-linear-gradient( #E2E2E2 /*{a-bup-background-start}*/, #EEE /*{a-bup-background-end}*/); /* IE10 */
 	background-image:      -o-linear-gradient( #E2E2E2 /*{a-bup-background-start}*/, #EEE /*{a-bup-background-end}*/); /* Opera 11.10+ */
 	background-image:         linear-gradient( #E2E2E2 /*{a-bup-background-start}*/, #EEE /*{a-bup-background-end}*/);
+    border-radius: 5px;
+    box-shadow: 0 0 6px #EEE;
 }
 
 .ui-btn-up-a:visited,
@@ -748,7 +750,7 @@ a.ui-link-inherit {
 	background: 			#549fd8 /*{global-active-background-color}*/;
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzU0OWZkOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjIwJSIgc3RvcC1jb2xvcj0iIzcwYWNkYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iIzZmYWNkNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0MDk5ZDUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 	font-weight: bold;
-	color: 					#fff /*{global-active-color}*/;
+	color: 					#fff !important/*{global-active-color}*/;
 	cursor: pointer;
 	text-shadow: 0 /*{global-active-shadow-x}*/ 1px /*{global-active-shadow-y}*/ 1px /*{global-active-shadow-radius}*/ #3373a5 /*{global-active-shadow-color}*/;
 	text-decoration: none;
@@ -2130,7 +2132,6 @@ label.ui-submit { font-size: 16px; line-height: 1.4; font-weight: normal; margin
 	.ui-popup .ui-field-contain .ui-controlgroup-controls,
 	.ui-popup .ui-field-contain .ui-select,
 	.ui-popup .ui-field-contain input.ui-input-text,
-	.ui-popup .ui-field-contain input, /* mobi */
 	.ui-popup .ui-field-contain textarea.ui-input-text,
 	.ui-popup .ui-field-contain textarea, /* mobi */
 	.ui-popup .ui-field-contain .ui-input-search {
@@ -2249,7 +2250,9 @@ label.ui-select { font-size: 16px; line-height: 1.4; font-weight: normal; margin
 .ui-selectmenu .ui-header .ui-title { margin: 0.6em 46px 0.8em; }
 @media all and (min-width: 450px){
 	.ui-field-contain label.ui-select { vertical-align: top; display: inline-block; width: 20%; margin: 0 2% 0 0; }
-	.ui-field-contain .ui-select, .ui-field-contain select /* mobi */{ width: 78%; display: inline-block; }
+	.ui-field-contain .ui-select{ 
+	   width: 78%; display: inline-block; 
+	}
 	.ui-hide-label .ui-select { width: 100%; } 
 }
 /* when no placeholder is defined in a multiple select, the header height doesn't even extend past the close button.  this shim's content in there */
@@ -2277,11 +2280,11 @@ textarea.ui-mini { height: 45px; }
 		vertical-align: top; display: inline-block; width: 20%; margin: 0 2% 0 0;
 		line-height: 1.8em;
 		text-align: left;
+        box-sizing: border-box;
 	}
 	.ui-field-contain input.ui-input-text, 
-	.ui-field-contain input, /* mobi */
 	.ui-field-contain textarea.ui-input-text, 
-	.ui-field-contain textara, /* mobi */
+	.ui-field-contain textarea, /* mobi */
 	.ui-field-contain .ui-input-search { width: 78%; display: inline-block; } 
 	.ui-hide-label input.ui-input-text, 
 	.ui-hide-label textarea.ui-input-text, 

@@ -277,7 +277,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("div", uiComponent);                          //button container for set or cancel
         writer.writeAttribute("class", "mobi-date-submit-container", null);
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", "mobi-button", null);
+        writer.writeAttribute("class", "mobi-button ui-btn-up-a", null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Set", null);
         if (!dateSpinner.isDisabled() && !dateSpinner.isReadonly()) {
@@ -286,7 +286,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("input");
 
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", "mobi-button", null);
+        writer.writeAttribute("class", "mobi-button ui-btn-up-a", null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Cancel", null);
         writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.close('" + clientId + "');", null);

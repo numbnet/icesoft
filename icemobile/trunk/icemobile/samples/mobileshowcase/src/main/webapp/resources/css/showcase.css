@@ -167,6 +167,9 @@ html.bberry .ui-icon{
     width: 100%;
     text-shadow: 2px 2px 3px #EEE;
 }
+html.android_dark #splash header{
+    text-shadow: none;
+}
 html.honeycomb #splash header,
 html.android #splash header{
     text-shadow: 2px 2px 3px #333;
@@ -198,6 +201,7 @@ html.ipad #splash fieldset, html.honeycomb #splash fieldset{
 #splash h5{ 
     margin-left:20px;
     width:auto;
+    border-bottom: none;
 }
 @media screen and (min-width: 445px) {  
     #splash .intro{ position: relative; padding-left: 125px; }
