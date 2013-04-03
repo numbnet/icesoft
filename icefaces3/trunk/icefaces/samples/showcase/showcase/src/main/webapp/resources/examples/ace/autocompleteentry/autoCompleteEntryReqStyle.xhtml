@@ -79,6 +79,8 @@
                                          indicatorPosition="right"
                                          styleClass="#{autoCompleteEntryReqStyleBean.reqColor}">
                         <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
+						<ace:ajax event="textChange" execute="@this"/>
+						<ace:ajax event="valueChange" execute="@this"/>
 						<ace:ajax event="blur" />
                     </ace:autoCompleteEntry>
                     <ace:message for="autoComplete1" />
@@ -93,6 +95,8 @@
                                          indicatorPosition="right"
                                          styleClass="#{autoCompleteEntryReqStyleBean.optColor}">
                         <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
+						<ace:ajax event="textChange" execute="@this"/>
+						<ace:ajax event="valueChange" execute="@this"/>
                     </ace:autoCompleteEntry>
                 </h:panelGrid>
             </ace:panel>
