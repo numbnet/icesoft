@@ -70,8 +70,10 @@
                                      indicatorPosition="right"
                                      styleClass="#{maskedReqStyleBean.reqColor}">
                         <ace:ajax execute="@this" render="@this workPhoneOutput"/>
+						<ace:ajax event="blur" execute="@this" render="@all"/>
                     </ace:maskedEntry>
-                    
+					<br />
+                    <ace:message for="workPhoneInput" />
                     <h:outputLabel id="mobilePhoneLabel" for="mobilePhoneInput" value="Mobile Phone:"/>
                     <ace:maskedEntry id="mobilePhoneInput" value="#{maskedReqStyleBean.mobilePhone}" mask="(999) 999-9999"
                                      required="false" optionalIndicator="(Optional)"
