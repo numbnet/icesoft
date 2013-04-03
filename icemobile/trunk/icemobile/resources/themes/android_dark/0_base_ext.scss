@@ -19,10 +19,15 @@
 }
 body{
     font-family: Droid, Helvetica, Arial, sans-serif;
+    background: black;
+    color: white;
 }
+a:link { color: white; }
+
 .mobi-tap-highlight{
     -webkit-tap-highlight-color: #082658;
 }
+
 @font-face {
   font-family: 'Droid Sans';
   font-style: normal;
@@ -37,3 +42,6 @@ body{
 }
 a, a:visited{ color: #666; text-decoration:none;}
 a:hover{ color: #2373A5; }
+h1, h2, h3, h4, h5, h6 {
+    border-bottom: 1px solid #33B5E5;
+}

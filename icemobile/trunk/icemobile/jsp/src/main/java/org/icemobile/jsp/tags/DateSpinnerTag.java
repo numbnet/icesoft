@@ -255,7 +255,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         writer.write(tu.DIV_TAG);                          //button container for set or cancel
         tu.writeAttribute(writer, "class", "mobi-date-submit-container");
         writer.write(">" + tu.INPUT_TAG);
-        tu.writeAttribute(writer, "class", "mobi-button");
+        tu.writeAttribute(writer, "class", "mobi-button ui-btn-up-a");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "Set");
         if (!isDisabled() && !isReadOnly()) {
@@ -264,7 +264,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         writer.write(">" + tu.INPUT_TAG_END);
 
         writer.write(tu.INPUT_TAG);
-        tu.writeAttribute(writer, "class", "mobi-button");
+        tu.writeAttribute(writer, "class", "mobi-button ui-btn-up-a");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "Cancel");
         tu.writeAttribute(writer, CLICK_EVENT, "ice.mobi.datespinner.close('" + id + "');");
