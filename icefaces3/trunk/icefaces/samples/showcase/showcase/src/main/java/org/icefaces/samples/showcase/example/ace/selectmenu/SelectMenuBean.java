@@ -183,5 +183,6 @@ public class SelectMenuBean extends ComponentExampleImpl< SelectMenuBean > imple
 	public void clearValues() {
 		this.province = "";
 		this.city = "";
+		setDisplayCities(false);
 	}
 }

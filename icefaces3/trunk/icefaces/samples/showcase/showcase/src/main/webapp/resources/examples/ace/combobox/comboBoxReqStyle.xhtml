@@ -89,7 +89,7 @@
 					<f:selectItem itemValue="Northwest Territories" itemLabel="Northwest Territories" />
 					<f:selectItem itemValue="Nunavut" itemLabel="Nunavut" />
 					<ace:ajax execute="@this" render="@all" />
-					<ace:ajax event="blur" />
+					<ace:ajax event="blur" execute="@this" />
 				</ace:comboBox>
 				<ace:message for="selectProvince" />
 				<br />
@@ -101,7 +101,7 @@
                                          styleClass="#{comboBoxReqStyleBean.optColor}">
 					<f:selectItems value="#{comboBoxBean.cities}" />
 					<ace:ajax execute="@this" render="@all" />
-					<ace:ajax event="blur" />
+					<ace:ajax event="blur" execute="@this" />
 				</ace:comboBox>
 				<ace:message for="selectCity" />
 				</h:panelGroup>
@@ -111,7 +111,9 @@
 					<h:outputText style="margin-left:20px;" value="City: #{comboBoxBean.city}" />
 				</h:panelGroup>
 			</h:panelGrid>
-			<h:commandButton value="Clear values" actionListener="#{comboBoxBean.clearValues}" />
+			<ace:pushButton value="Clear values" actionListener="#{comboBoxBean.clearValues}">
+				<ace:ajax execute="@this" render="@all" onStart="setTimeout(function(){cfg.onstart = null; ice.ace.ab(cfg);},250); return false;"/>
+			</ace:pushButton>
             </ace:panel>
         </h:form>
         

@@ -184,5 +184,6 @@ public class ComboBoxBean extends ComponentExampleImpl< ComboBoxBean > implement
 	public void clearValues() {
 		this.province = "";
 		this.city = "";
+		setDisplayCities(false);
 	}
 }

@@ -195,5 +195,6 @@ public class SimpleSelectOneMenuBean extends ComponentExampleImpl< SimpleSelectO
 	public void clearValues() {
 		this.province = "";
 		this.city = "";
+		setDisplayCities(false);
 	}
 }
