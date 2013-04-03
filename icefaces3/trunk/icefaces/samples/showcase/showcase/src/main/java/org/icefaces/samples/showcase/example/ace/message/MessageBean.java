@@ -66,11 +66,14 @@ public class MessageBean extends ComponentExampleImpl<MessageBean> implements Se
     private String country;
 
     private static HashMap<String, Integer> severityMap = new HashMap<String, Integer>() {{
-        put("First Name", 0);
-        put("Last Name", 1);
-        put("City", 2);
-        put("Country", 3);
-    }};
+            put("First Name", 0);
+            put("Last Name", 1);
+            put("City", 2);
+            put("Country", 3);
+        }
+        private static final long serialVersionUID = 6584997908723158778L;
+    };
+    private static String[] severityNames = {"Info", "Warn", "Error", "Fatal"};
 
     public MessageBean() {
         super(MessageBean.class);
@@ -124,13 +127,11 @@ public class MessageBean extends ComponentExampleImpl<MessageBean> implements Se
     public void blurListener(AjaxBehaviorEvent event) {
         TextEntry textEntry = (TextEntry) event.getComponent();
         if (textEntry.getValue().toString().trim().equals("")) {
-            FacesContext context = FacesContext.getCurrentInstance();
             String label = textEntry.getLabel();
-            FacesMessage.Severity severity = (FacesMessage.Severity) FacesMessage.VALUES.get(severityMap.get(label));
-            String severityName = (severityName = severity.toString()).substring(0, severityName.length() - 2);
-            String message = "Please enter " + label + ". (Sample " + severityName + " message.)";
-            FacesMessage facesMessage = new FacesMessage(severity, message, message);
-            context.addMessage(textEntry.getClientId(), facesMessage);
+            int index = severityMap.get(label);
+            String message = "Please enter " + label + ". (Sample " + severityNames[index] + " message.)";
+            FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(index), message, message);
+            FacesContext.getCurrentInstance().addMessage(textEntry.getClientId(), facesMessage);
         }
     }
 }

@@ -31,7 +31,6 @@ import java.util.logging.Logger;
 @MandatoryResourceComponent(tagName = "messages", value = "org.icefaces.ace.component.messages.Messages")
 public class MessagesRenderer extends Renderer {
 
-    private static int iconIndex = -1;
     private static String[] icons = new String[]{"notice", "info", "alert", "alert"};
     private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
     private Logger logger = Logger.getLogger(this.getClass().getName());
@@ -136,8 +135,7 @@ public class MessagesRenderer extends Renderer {
         String summary = (null != (summary = facesMessage.getSummary())) ? summary : "";
         String detail = (null != (detail = facesMessage.getDetail())) ? detail : ""; // Mojarra defaults to summary. Not good.
         String text = ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
-        int ordinal = facesMessage.getSeverity().getOrdinal();
-//        ordinal = iconIndex = ++iconIndex % 4;
+        int ordinal = (ordinal = FacesMessage.VALUES.indexOf(facesMessage.getSeverity())) > -1 && ordinal < states.length ? ordinal : 0;
 
         writer.startElement("div", messages);
         writer.writeAttribute("class", "ui-corner-all ui-state-" + states[ordinal] + (text.equals("") ? " ui-empty-message" : ""), null);
