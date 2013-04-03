@@ -61,14 +61,16 @@ ice.ace.TextEntry = function(id, cfg) {
             function() {
                 var input = jQ(this);
                 if (input.attr("name") == labelName) {
-                    input.attr({name: inputId, value: ""});
+                    input.attr({name: inputId});
+                    input.val("");
                     input.removeClass("ui-input-label-infield");
                 }
             }).blur(
             function() {
                 var input = jQ(this);
                 if (jQ.trim(input.val()) == "") {
-                    input.attr({name: labelName, value: cfg.embeddedLabel});
+                    input.attr({name: labelName});
+                    input.val(cfg.embeddedLabel);
                     input.addClass("ui-input-label-infield");
                 }
             });
