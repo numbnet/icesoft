@@ -29,6 +29,7 @@
             android:dialogTitle="URL"
             android:dialogMessage="Set URL"    
             android:persistent="true"
+	    android:inputType="textUri"
             android:defaultValue="http://"
             />
        <CheckBoxPreference 

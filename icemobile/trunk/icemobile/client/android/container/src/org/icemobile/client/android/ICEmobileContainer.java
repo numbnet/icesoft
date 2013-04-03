@@ -398,6 +398,9 @@ public class ICEmobileContainer extends Activity
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals("url")) {
             newURL = prefs.getString(key, HOME_URL);
+	    if (!newURL.startsWith("http://")) {
+		newURL = "http://" + newURL;
+	    }
             historyManager.add(newURL);
         } else if (key.equals("gallery")) {
             setGallery(prefs.getBoolean(key, false));
