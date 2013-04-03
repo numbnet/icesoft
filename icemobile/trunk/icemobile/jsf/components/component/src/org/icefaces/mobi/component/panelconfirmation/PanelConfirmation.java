@@ -25,7 +25,7 @@ public class PanelConfirmation extends PanelConfirmationBase{
     public static final String CONTAINER_CLASS = "mobi-panelconf-container ";
     public static final String TITLE_CLASS = "mobi-panelconf-title-container ";
     public static final String SELECT_CONT_CLASS = "mobi-panelconf-body-container ";
-    public static final String BUTTON_CONT_CLASS = "mobi-panelconf-submit-container ui-btn-up-a ";
+    public static final String BUTTON_CONT_CLASS = "mobi-panelconf-submit-container ";
     public static final String BUTTON_ACCEPT_CLASS = "mobi-button mobi-button-attention ui-btn-up-a ";
     public static final String BUTTON_CANCEL_CLASS = "mobi-button mobi-button-important ui-btn-up-a ";
 

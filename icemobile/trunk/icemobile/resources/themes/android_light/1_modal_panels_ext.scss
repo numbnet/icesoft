@@ -15,18 +15,40 @@
  */
  
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container {
-    background-color: #ccc;
-    border-radius: 1px;
-    border: 1px solid #5c5c5c;
-    color: #fff;
+    border-radius: 10px;
+    border: 2px solid #F6F6F8;
+    color: #F7F7F7 !important;
+    opacity: 0.9;
+    font-size: 1.1em;
+}
+.mobi-panelconf-container, .mobi-submitnotific-container {
+    background-color: #40413C;
+}
+.mobi-panelpopup-container{
+    background-color: #F3F3F3;
 }
 .mobi-submitnotific-container{
     background-color: #000000;
 }
 .mobi-panelconf-body-container {
-    color: black;
+    padding: 30px;
 }
 .mobi-panelconf-submit-container {
-    color: black;
-    background-color: #9a9a9a;
+    background-color: #AFA6A7;
+    border-radius: 0 0 8px 8px;
+}
+.mobi-panelconf-submit-container input{
+    border: 1px solid #696566;
+    border-radius: 2px;
+    color: #141414 !important;
+}
+.mobi-panelconf-title-container {
+    padding: 10px;
+    background-repeat: no-repeat;
+    background-color: #40413C !important;
+    background-image: none !important;
+    color: #F7F7F7 !important;
+    text-shadow: none !important;
+    border-bottom: 1px solid #33B5E5 !important;
+    box-shadow: none !important;
 }

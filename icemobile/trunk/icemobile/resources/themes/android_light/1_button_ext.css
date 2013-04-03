@@ -38,30 +38,17 @@
     background-color:#66AFFF;
     color:#FFF;
 }
-.mobi-button-important{
-    background-color: #CCC;
-    color: black;
-    border-bottom: none;
-    border-color: #CCC;
-    border-top: 3px solid #33B5E5;
-    padding: 0.45em 5px;
-    font-size: 0.9em;
-}
 .mobi-button-attention{
-    background-color: #CCC;
-    color: black;
-    border-bottom: none;
-    border-color: #CCC;
-    border-top: 3px solid #AA0102;
-    padding: 0.45em 5px;
-    font-size: 0.9em;
+    color: white;
+    border-color: #0677A1;
+    text-shadow: 0 1px 1px #9E9E9E;
 }
 .mobi-button-unimportant{
     background-color: #555;
     color: #BBB;
     border-top-color: #878787;
 }
-.mobi-button-back{
+.mobi-button.mobi-button-back{
     background-image: url('back.png');
     background-color: transparent;
     background-position: -3px 43%;
@@ -69,9 +56,11 @@
     background-size: 16px;
     border: none;
     border-radius:0;
-    color:#F1F1F1;
+    color:#666;
     font-weight:bold;
     padding-left: 20px;
+    box-shadow: none;
+    text-shadow: none;
 }
 .mobi-pagePanel-header .mobi-button{
     background-color: transparent;
