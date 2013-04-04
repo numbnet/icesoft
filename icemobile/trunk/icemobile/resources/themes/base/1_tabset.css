@@ -44,23 +44,6 @@
 .mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
     bottom: 40px;
 }
-/* TODO functional css but needs to lose theme name dependencies */
-html.ipad .mobi-tabset, html.honeycomb .mobi-tabset{
-    padding-top: 0;
-    padding-bottom: 0;
-}
-html.ipad .mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs,
-html.honeycomb .mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
-    top: 0;
-}
-html.ipad .mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs,
-html.honeycomb .mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
-    bottom: 0;
-}
-html.ipad .mobi-tabset > .mobi-tabset-tabs, html.honeycomb .mobi-tabset > .mobi-tabset-tabs{
-    position:relative;
-    width:auto;
-}
 .mobi-tabset > .mobi-tabset-tabs > ul{
     margin: 0;
     padding: 0;

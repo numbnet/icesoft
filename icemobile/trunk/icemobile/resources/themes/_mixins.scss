@@ -9,6 +9,13 @@
     box-shadow: $shadow;
 }
 
+@mixin border-box {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 @mixin linear-gradient($start, $end) {
     background: $start; /* Old browsers */
     background: -moz-linear-gradient(top, $start 0%, $end 100%); /* FF3.6+ */
