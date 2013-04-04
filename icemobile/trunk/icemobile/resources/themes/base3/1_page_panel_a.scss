@@ -13,8 +13,10 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
+ @import "../mixins";
+ 
 .mobi-pagePanel-header, .mobi-pagePanel-footer {
-    -mox-box-sizing: border-box;
-    box-sizing: border-box;
+    @include border-box;
     height: 40px; 
 }

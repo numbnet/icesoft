@@ -13,9 +13,10 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
+ @import "../mixins";
+ 
 .mobi-carousel-cursor li {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+    @include border-box;
     border-radius: 0.6em;
 }

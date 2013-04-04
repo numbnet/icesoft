@@ -13,6 +13,8 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
+ @import "../mixins";
 
 /* Field set specific */
 .mobi-list, .mobi-list-item {
@@ -41,8 +43,7 @@
     padding: 8px 10px;
     top: 0;
     line-height: 26px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
+    @include border-box;
 }
 
 .mobi-list > .mobi-list-item:last-child {
