@@ -16,7 +16,9 @@
 
 package org.icefaces.tutorials.ace;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
     int id;
     String topic;
     String action;

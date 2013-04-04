@@ -16,11 +16,6 @@
 
 package org.icefaces.tutorial.composite.beans;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-
-@ManagedBean(name="nameBean")
-@SessionScoped
 public class NameBean {
 	private String firstName;
 	private String middleName;

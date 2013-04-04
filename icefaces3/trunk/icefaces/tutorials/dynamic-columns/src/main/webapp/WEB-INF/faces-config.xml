@@ -15,11 +15,12 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   -->
-<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
-              version="2.0"
-              metadata-complete="false">
+
+<faces-config
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+        version="2.0">
 
     <application>
         <locale-config>
@@ -28,5 +29,16 @@
         </locale-config>
         <message-bundle>messages</message-bundle>
     </application>
-  
+
+    <managed-bean>
+        <description>
+            Backing bean for ace:dataTable with dynamic columns example.
+        </description>
+        <managed-bean-name>dynamicColumnsBean</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.tutorials.ace.DynamicColumnsBean
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
 </faces-config>

@@ -70,8 +70,8 @@
             <exclude name="${icefaces-compat.lib.name}.jar" if="no-icefaces"/>
             <exclude name="${icefaces-compat.lib.name}.jar" unless="compat"/>
 
-            <exclude name=" ${icepush.lib.name}.jar"         if="no-icefaces"/>
-            <exclude name=" ${icepush.lib.name}.jar"         if="no-icepush"/>
+            <exclude name="${icepush.lib.name}.jar"         if="no-icefaces"/>
+            <exclude name="${icepush.lib.name}.jar"         if="no-icepush"/>
         </patternset>
     </patternset>
 
@@ -144,7 +144,7 @@
     </target>
 
     <target name="war.basic" depends="compile">
-        <war basedir="${web.dir}" 
+        <war basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war" 
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="${lib.dir}">
@@ -172,16 +172,12 @@
 
         <antcall target="war.basic">
             <param name="jsf"  value="true" />
-            <param name="compat"  value="true" />
-            <param name="ace"  value="true" />
-        </antcall>    	
+        </antcall>
     </target>
 
     <target name="web-profile"
             description="Generate a .war file according to the web-profile which excludes the JSF and EL libraries. (GlassFish v3, JBoss 6)">
-        <antcall target="war.basic">          
-             <param name="compat"  value="true" />
-             <param name="ace"  value="true" />
-        </antcall> 
+        <antcall target="war.basic">
+        </antcall>
     </target>
 </project>

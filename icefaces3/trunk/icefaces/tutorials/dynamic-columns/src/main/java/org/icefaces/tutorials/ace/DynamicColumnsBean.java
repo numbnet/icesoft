@@ -16,16 +16,12 @@
 
 package org.icefaces.tutorials.ace;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@ManagedBean
-@SessionScoped
 public class DynamicColumnsBean implements Serializable {
     List<Task> data = new ArrayList<Task>() {{
         int i = 0;
