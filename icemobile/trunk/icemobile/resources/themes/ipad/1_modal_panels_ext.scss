@@ -14,14 +14,15 @@
  * governing permissions and limitations under the License.
  */
  
+ @import "../mixins";
+ 
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container  {
     border-radius: 6px;
-    -webkit-box-shadow: 3px 3px 5px black;
-    box-shadow: 3px 3px 5px black;
+    @include box-shadow(3px 3px 5px black);
     border: 1px solid #333;
     color: #000000;
     background: -moz-linear-gradient(top, #DEDEDE, black, black, black) repeat scroll 0 0 black;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, white), color-stop(.45, black), color-stop(.5, black), color-stop(1, #black));
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, white), color-stop(.45, black), color-stop(.5, black), color-stop(1, black));
     background-color: #000000
 }
 .mobi-panelpopup-container {
@@ -41,15 +42,14 @@
     font-weight: bold;
 }
 .mobi-panelpopup-title-container{
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#AAB8C9), to(#6E84A2), color-stop(.5,#6E84A2));
-    background: -moz-linear-gradient(0% 65% 90deg,#6E84A2, #AAB8C9, #AAB8C9 100%);
-    border-bottom-color: #7a8091;
-    border-top-color: white;
+    background: -moz-linear-gradient(top, #f4f5f7, #a8acb9) repeat scroll 0 0 #a8acb9;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f4f5f7), color-stop(1, #a8acb9));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f4f5f7', EndColorStr = '#a8acb9');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
-    border-bottom: 1px solid #2D3642;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-    color: #FFFFFF;
+    border-top-color: white;
+    border-bottom-color: #7a8091;
+    color: #717880;
+    text-shadow: 0 1px 0 #d8dae0;
 }
 .mobi-panelconf-body-container {
     color: white;

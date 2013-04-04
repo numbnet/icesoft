@@ -14,11 +14,13 @@
  * governing permissions and limitations under the License.
  */
  
+ @import "../mixins";
+ 
 .mobi-panelconf-container, .mobi-panelpopup-container  {
     opacity: 0.9;
     background-color: #EFEFEF;
     width: 80%;
-    box-shadow: 0px 0px 12px #009ADC;
+    @include box-shadow(0px 0px 12px #009ADC);
     border-radius: 5px;
     max-width: 400px;
 }

@@ -13,6 +13,8 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
+ @import "../mixins";
 
 .mobi-time-popup-btn {
     width: 27px;
@@ -26,8 +28,7 @@
 .mobi-date-container, .mobi-time-container {
     background-color: #ccc;
     border-radius: 3px;
-    -webkit-box-shadow: 3px 3px 5px black;
-    box-shadow: 3px 3px 5px black;
+    @include box-shadow(3px 3px 5px black);
     border: 1px solid white;
     color: #000000;
 }

@@ -18,23 +18,12 @@
 
 /* Theme Roller compatibility */
 .ui-icon-shadow {
-    -moz-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
-    -webkit-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
-    box-shadow: 0px 1px 0 rgba(255,255,255,.4);
+    @include box-shadow(0px 1px 0 rgba(255,255,255,.4));
 }
 /* Flexbox */
 .mobi-grid{
-    display:-webkit-box;
-    display:-moz-box;
-    -webkit-box-orient: horizontal;
-    -moz-box-orient: horizontal;
-    -webkit-box-align:center;
-    -moz-box-align:center;
     padding: 0 10px;
     @include border-box;
-    -moz-box-orient: horizontal;
-    box-orient: horizontal;
-    min-width:100%;
     position: relative;
 }
 .mobi-left{
@@ -46,28 +35,14 @@
     -moz-box-pack: end;
 }
 .mobi-justify{
-    -webkit-box-pack: justify;
-    -moz-box-pack: justify;
+    text-align:center;
 }
 .mobi-center{
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
+    text-align:center;
 }
 .mobi-col {
     @include border-box;
     overflow:hidden;
-    display:block !important;
+    display:inline-block !important;
     float:none !important;
-}
-.mobi-weight1 {
-    -webkit-box-flex:1;
-    -moz-box-flex:1;
-}
-.mobi-weight2 {
-    -webkit-box-flex:2;
-    -moz-box-flex:2;
-}
-.mobi-weight3 {
-    -webkit-box-flex:3;
-    -moz-box-flex:3;
 }

@@ -13,14 +13,15 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
-.mobi-input-text, .mobi-input-secret, .mobi-input-textarea {
-    border: 1px solid #B3B3B3;
-    color: #333333;
-    text-shadow: 0 1px 0 #fff;
-    background: white;
-    -webkit-box-shadow: inset 0px 1px 4px rgba(0, 0, 0, .2);
-    box-shadow: inset 0px 1px 4px rgba(0, 0, 0, .2);
-    background-clip: padding;
-    border-radius: .6em;
+ 
+ @import "../mixins";
+ 
+.mobi-fieldset {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-color: #999999;
+    border-radius: 0.6em;
+    @include box-shadow2(0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset);
+}
+.mobi-fieldset-row {
+    border-bottom-color: #999999;
 }
