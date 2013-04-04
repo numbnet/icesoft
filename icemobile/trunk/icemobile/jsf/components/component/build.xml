@@ -81,6 +81,10 @@
 	<tstamp>
 		<format property="build.time" pattern="yyyy-mm-dd hh:mm:ss" />
 	</tstamp>
+	
+	<presetdef name="subant" uri="urn:ICEsoft">
+        <subant inheritall="false" failonerror="true" verbose="true"/>
+    </presetdef>
 
 	<import file="../../../resources/build.xml" />
 
