@@ -13,6 +13,9 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
+ @import "../mixins";
+ 
 .mobi-contentpane-hidden {
     visibility: hidden;
     height: 0;
@@ -45,7 +48,6 @@
     width: 100%;
     position: absolute;
     overflow: auto;
-    -moz-box-sizing:border-box;
-    box-sizing:border-box;
+    @include border-box;
     
 }

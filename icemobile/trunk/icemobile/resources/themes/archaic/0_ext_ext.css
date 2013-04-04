@@ -13,6 +13,8 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
+ @import "../mixins";
 
 /* Theme Roller compatibility */
 .ui-icon-shadow {
@@ -21,7 +23,7 @@
 /* Flexbox */
 .mobi-grid{
     padding: 0 10px;
-    box-sizing: border-box;
+    @include border-box;
     position: relative;
 }
 .mobi-left{
@@ -39,7 +41,7 @@
     text-align:center;
 }
 .mobi-col {
-    box-sizing: border-box;
+    @include border-box;
     overflow:hidden;
     display:inline-block !important;
     float:none !important;

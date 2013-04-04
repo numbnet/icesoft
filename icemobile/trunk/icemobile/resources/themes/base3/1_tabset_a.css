@@ -14,7 +14,8 @@
  * governing permissions and limitations under the License.
  */
  
+  @import "../mixins";
+ 
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    @include border-box;
  }
