@@ -16,7 +16,9 @@
 
 package org.icefaces.tutorials.ace;
 
-public class ColumnModel {
+import java.io.Serializable;
+
+public class ColumnModel implements Serializable {
     String value;
     String headerText;
 

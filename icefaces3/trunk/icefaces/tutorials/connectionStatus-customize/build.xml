@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="connectionStatus-customize" default="war.basic">
+<project name="connectionStatus-customize" default="servlet-profile">
     <property file="./build.properties"/>
     <import file="../common.xml"/>
 </project>

@@ -42,22 +42,22 @@
                 <h:panelGroup>
                     <h:outputText value="Enter some text to start the Auto Complete component:"></h:outputText>
                     <ice:selectInputText id="selectin" rows="10" width="300" valueChangeListener="#{autoCompleteBean.updateList}">
-                        <f:selectItems value="#{autoCompleteBean.list}"></f:selectItems>
+                        <f:selectItems value="#{autoCompleteBean.list}"/>
                     </ice:selectInputText>
                 </h:panelGroup>
                 <h:panelGroup>
-                    <h:outputText value="Auto Complete Output:" style="font-weight:bold;"></h:outputText>
+                    <h:outputText value="Auto Complete Output:" style="font-weight:bold;"/>
                     <h:panelGrid columns="2">
-                        <h:outputText value="City:"></h:outputText>
-                        <h:outputText id="city" value="#{autoCompleteBean.currentCity.city}"></h:outputText>
-                        <h:outputText value="State:"></h:outputText>
-                        <h:outputText id="state" value="#{autoCompleteBean.currentCity.state} #{autoCompleteBean.currentCity.stateCode}"></h:outputText>
-                        <h:outputText value="County:"></h:outputText>
-                        <h:outputText id="county" value="#{autoCompleteBean.currentCity.country}"></h:outputText>
-                        <h:outputText value="Zip:"></h:outputText>
-                        <h:outputText id="zip" value="#{autoCompleteBean.currentCity.zip}"></h:outputText>
-                        <h:outputText value="Area Code:"></h:outputText>
-                        <h:outputText id="areaCode" value="#{autoCompleteBean.currentCity.areaCode}"></h:outputText>
+                        <h:outputText value="City:"/>
+                        <h:outputText id="city" value="#{autoCompleteBean.currentCity.city}"/>
+                        <h:outputText value="State:"/>
+                        <h:outputText id="state" value="#{autoCompleteBean.currentCity.state} #{autoCompleteBean.currentCity.stateCode}"/>
+                        <h:outputText value="County:"/>
+                        <h:outputText id="county" value="#{autoCompleteBean.currentCity.country}"/>
+                        <h:outputText value="Zip:"/>
+                        <h:outputText id="zip" value="#{autoCompleteBean.currentCity.zip}"/>
+                        <h:outputText value="Area Code:"/>
+                        <h:outputText id="areaCode" value="#{autoCompleteBean.currentCity.areaCode}"/>
                     </h:panelGrid>
                 </h:panelGroup>
 			</h:panelGrid>

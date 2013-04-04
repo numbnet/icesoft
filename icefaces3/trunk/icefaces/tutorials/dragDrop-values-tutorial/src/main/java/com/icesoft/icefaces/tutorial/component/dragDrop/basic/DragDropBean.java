@@ -18,12 +18,13 @@ package com.icesoft.icefaces.tutorial.component.dragDrop.basic;
 
 import com.icesoft.faces.component.dragdrop.DndEvent;
 import com.icesoft.faces.component.dragdrop.DragEvent;
+import java.io.Serializable;
 
 /**
  * <p>The DragDropBean handles DragEvent listeners for the
  * Drag and Drop tutorial.</p>
  */
-public class DragDropBean {
+public class DragDropBean implements Serializable {
 
 	private String dragMessage = "";
 	private String dropValue = "";

@@ -32,7 +32,7 @@
     </repositories>
 
     <parent>
-        <groupId>org.icefaces.tutorial.ace</groupId>
+        <groupId>org.icefaces.tutorial.ace-only</groupId>
         <artifactId>base</artifactId>
         <version>1.0</version>
     </parent>

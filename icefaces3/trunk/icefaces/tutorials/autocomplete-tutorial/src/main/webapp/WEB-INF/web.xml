@@ -42,7 +42,6 @@
         	<load-on-startup>1</load-on-startup>
    		</servlet>
    		
-   		
     	<!-- Faces Servlet Mapping -->
     	<servlet-mapping>
         	<servlet-name>Faces Servlet</servlet-name>

@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="converter-custom" default="war.basic">
+<project name="converter-custom" default="servlet-profile">
     <property file="./build.properties"/>
     <import file="../common.xml"/>
 </project>

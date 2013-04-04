@@ -32,13 +32,13 @@
     </repositories>
 
     <parent>
-        <groupId>org.icefaces.tutorial.ace</groupId>
+        <groupId>org.icefaces.tutorial.ace-only</groupId>
         <artifactId>base</artifactId>
         <version>1.0</version>
     </parent>
 
     <name>Dynamic Columns Tutorial</name>
-    <url>http://www.icefaces.org</url>
+    <url>http://www.icesoft.org/wiki/display/ICE/DataTable+Dynamic+Columns</url>
 
     <packaging>war</packaging>
 </project>

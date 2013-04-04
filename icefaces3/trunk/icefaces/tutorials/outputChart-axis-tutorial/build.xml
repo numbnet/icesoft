@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="outputChart-axis-tutorial" default="war.basic">
+<project name="outputChart-axis-tutorial" default="servlet-profile">
     <property file="./build.properties"/>
     <import file="../common.xml"/>
 </project>
