@@ -52,10 +52,10 @@ import org.icefaces.resources.ICEResourceLibrary;
 	@ClientEvent(name="valueChange", javadoc="Fired every time the value of the text input changes (default event).", 
 	tlddoc="Fired every time the value of the text input changes (default event). When pressing the ENTER key on the text field, this event will be fired as well, even if the value didn't actually change.", defaultRender="@all", defaultExecute="@all"),
     @ClientEvent(name = "keypress", defaultExecute = "@this", defaultRender = "@none", argumentClass = "org.icefaces.ace.event.KeyPressEvent",
-               tlddoc = "Fired on a keypress event. Use only to read input char. Don't re-render or do JS-like event handling.",
-              javadoc = "Fired on a keypress event. Use only to read input char. Don't re-render or do JS-like event handling."),
+               tlddoc = "Fired on a keypress event. Use only to read input char. Don't re-render or do JS-like event handling. Otherwise could cause focus and DOM update problems, losing both focus and value.",
+              javadoc = "Fired on a keypress event. Use only to read input char. Don't re-render or do JS-like event handling. Otherwise could cause focus and DOM update problems, losing both focus and value."),
 	@ClientEvent(name="blur", javadoc="Fired any time the text input field loses focus.", 
-	tlddoc="Fired any time the text input field loses focus.", defaultRender="@all", defaultExecute="@all")
+	tlddoc="Fired any time the text input field loses focus.", defaultRender="@all", defaultExecute="@this")
 }, defaultEvent="valueChange")
 public class MaskedEntryMeta extends HtmlInputTextMeta {
 

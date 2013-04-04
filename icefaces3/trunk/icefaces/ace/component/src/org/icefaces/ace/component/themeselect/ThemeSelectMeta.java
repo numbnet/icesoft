@@ -44,8 +44,8 @@ import org.icefaces.resources.ICEResourceLibrary;
         @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
-        @ClientEvent(name = "valueChange", javadoc = "Fired whenever the value of the component changes (default event).",
-                tlddoc = "Fired whenever the value of the component changes (default event).", defaultRender = "@this", defaultExecute = "@this")
+        @ClientEvent(name = "valueChange", javadoc = "Fired when theme changes (default event). Theme change done on client side. Event used just for syncing with server side.",
+                tlddoc = "Fired when theme changes (default event). Theme change done on client side. Event used just for syncing with server side.", defaultRender = "@this", defaultExecute = "@this")
 }, defaultEvent = "valueChange")
 
 public class ThemeSelectMeta extends UIInputMeta {

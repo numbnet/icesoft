@@ -46,7 +46,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name = "blur", javadoc = "Fired when the text input field loses focus (default event).",
-                tlddoc = "Fired when the text input field loses focus (default event).", defaultRender = "@this", defaultExecute = "@this")
+                tlddoc = "Fired when the text input field loses focus (default event).", defaultRender = "@all", defaultExecute = "@this")
 }, defaultEvent = "blur")
 public class TextAreaEntryMeta extends UIInputMeta {
 
