@@ -9,6 +9,12 @@
     box-shadow: $shadow;
 }
 
+@mixin box-shadow2($shadow1, $shadow2) {
+    -moz-box-shadow: $shadow1, $shadow2;
+    -webkit-box-shadow: $shadow1, $shadow2;
+    box-shadow: $shadow1, $shadow2;
+}
+
 @mixin border-box {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;

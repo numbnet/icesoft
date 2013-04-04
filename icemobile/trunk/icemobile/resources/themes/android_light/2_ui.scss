@@ -43,7 +43,7 @@
 	color: 					#666 /*{a-bar-color}*/;
 	font-weight: bold;
 	text-shadow: 1px /*{a-bar-shadow-x}*/ 1px /*{a-bar-shadow-y}*/ 1px /*{a-bar-shadow-radius}*/ #E0E0E0 /*{a-bar-shadow-color}*/;
-	box-shadow: 2px 2px 7px #BBB;
+	@include box-shadow(2px 2px 7px #BBB);
 }
 .ui-bar-a,
 .ui-bar-a input,
@@ -126,7 +126,7 @@
 	background-image:      -o-linear-gradient( #E2E2E2 /*{a-bup-background-start}*/, #EEE /*{a-bup-background-end}*/); /* Opera 11.10+ */
 	background-image:         linear-gradient( #E2E2E2 /*{a-bup-background-start}*/, #EEE /*{a-bup-background-end}*/);
     border-radius: 5px;
-    box-shadow: 0 0 6px #EEE;
+    @include box-shadow(0 0 6px #EEE);
 }
 
 .ui-btn-up-a:visited,
@@ -1084,31 +1084,21 @@ a.ui-link-inherit {
 	height: 100%;
 }
 .ui-overlay-shadow {
-	-moz-box-shadow: 0px 0px 12px 			rgba(0,0,0,.6);
-	-webkit-box-shadow: 0px 0px 12px 		rgba(0,0,0,.6);
-	box-shadow: 0px 0px 12px 				rgba(0,0,0,.6);
+	@include box-shadow(0px 0px 12px rgba(0,0,0,.6));
 }
 .ui-shadow {
-	-moz-box-shadow: 0px 1px 4px /*{global-box-shadow-size}*/ 			rgba(0,0,0,.3) /*{global-box-shadow-color}*/;
-	-webkit-box-shadow: 0px 1px 4px /*{global-box-shadow-size}*/ 		rgba(0,0,0,.3) /*{global-box-shadow-color}*/;
-	box-shadow: 0px 1px 4px /*{global-box-shadow-size}*/ 				rgba(0,0,0,.3) /*{global-box-shadow-color}*/;
+	@include box-shadow(0px 1px 4px /*{global-box-shadow-size}*/ rgba(0,0,0,.3) /*{global-box-shadow-color}*/);
 }
 .ui-bar-a .ui-shadow,
 .ui-bar-b .ui-shadow ,
 .ui-bar-c .ui-shadow  {
-	-moz-box-shadow: 0px 1px 0 				rgba(255,255,255,.3);
-	-webkit-box-shadow: 0px 1px 0 			rgba(255,255,255,.3);
-	box-shadow: 0px 1px 0 					rgba(255,255,255,.3);
+	@include box-shadow(0px 1px 0 rgba(255,255,255,.3));
 }
 .ui-shadow-inset {
-	-moz-box-shadow: inset 0px 1px 4px 		rgba(0,0,0,.2);
-	-webkit-box-shadow: inset 0px 1px 4px 	rgba(0,0,0,.2);
-	box-shadow: inset 0px 1px 4px 			rgba(0,0,0,.2);
+	@include box-shadow(inset 0px 1px 4px rgba(0,0,0,.2));
 }
 .ui-icon-shadow {
-	-moz-box-shadow: 0px 1px 0 				rgba(255,255,255,.4) /*{global-icon-shadow}*/;
-	-webkit-box-shadow: 0px 1px 0 			rgba(255,255,255,.4) /*{global-icon-shadow}*/;
-	box-shadow: 0px 1px 0 					rgba(255,255,255,.4) /*{global-icon-shadow}*/;
+	@include box-shadow(0px 1px 0 rgba(255,255,255,.4) /*{global-icon-shadow}*/);
 }
 /* Focus state - set here for specificity (note: these classes are added by JavaScript)
 -----------------------------------------------------------------------------------------------------------*/
@@ -1120,22 +1110,16 @@ a.ui-link-inherit {
 }
 .ui-focus,
 .ui-btn:focus {
-	-moz-box-shadow: inset 0px 0px 3px 		#387bbe /*{global-active-background-color}*/, 0px 0px 9px 		#387bbe /*{global-active-background-color}*/;
-	-webkit-box-shadow: inset 0px 0px 3px 	#387bbe /*{global-active-background-color}*/, 0px 0px 9px 		#387bbe /*{global-active-background-color}*/;
-	box-shadow: inset 0px 0px 3px 			#387bbe /*{global-active-background-color}*/, 0px 0px 9px 		#387bbe /*{global-active-background-color}*/;
+	@include box-shadow2(inset 0px 0px 3px #387bbe /*{global-active-background-color}*/, 0px 0px 9px #387bbe /*{global-active-background-color}*/);
 }
 .ui-input-text.ui-focus,
 .ui-input-search.ui-focus {
-	-moz-box-shadow: 0px 0px 12px 			#387bbe /*{global-active-background-color}*/;
-	-webkit-box-shadow: 0px 0px 12px 		#387bbe /*{global-active-background-color}*/;
-	box-shadow: 0px 0px 12px 					#387bbe /*{global-active-background-color}*/;	
+	@include box-shadow(0px 0px 12px #387bbe /*{global-active-background-color}*/);	
 }
 /* unset box shadow in browsers that don't do it right
 -----------------------------------------------------------------------------------------------------------*/
 .ui-mobile-nosupport-boxshadow * {
-	-moz-box-shadow: none !important;
-	-webkit-box-shadow: none !important;
-	box-shadow: none !important;
+	@include box-shadow(none !important);
 }
 /* ...and bring back focus */
 .ui-mobile-nosupport-boxshadow .ui-focus,
@@ -1169,7 +1153,16 @@ div.ui-mobile-viewport { overflow-x: hidden; }
 .ui-loading .ui-loader { display: block; }
 .ui-loader { display: none; z-index: 9999999; position: fixed; top: 50%; left: 50%; border:0; }
 .ui-loader-default { background: none; filter: Alpha(Opacity=18); opacity: .18; width: 46px; height: 46px; margin-left: -23px; margin-top: -23px; }
-.ui-loader-verbose { width: 200px; filter: Alpha(Opacity=88); opacity: .88; box-shadow: 0 1px 1px -1px #fff; height: auto; margin-left: -110px; margin-top: -43px; padding: 10px; }
+.ui-loader-verbose { 
+    width: 200px; 
+    filter: Alpha(Opacity=88); 
+    opacity: .88; 
+    @include box-shadow(0 1px 1px -1px #fff);
+    height: auto; 
+    margin-left: -110px; 
+    margin-top: -43px; 
+    padding: 10px; 
+}
 .ui-loader-default h1 { font-size: 0; width: 0; height: 0; overflow: hidden; }
 .ui-loader-verbose h1 { font-size: 16px; margin: 0; text-align: center; }
 .ui-loader .ui-icon { background-color: #000; display: block; margin: 0; width: 44px; height: 44px; padding: 1px; -webkit-border-radius: 36px; -moz-border-radius: 36px; border-radius: 36px; }
@@ -1668,14 +1661,12 @@ div.ui-mobile-viewport { overflow-x: hidden; }
 .flow {
 	-webkit-transform-origin: 50% 30%;
 	-moz-transform-origin: 50% 30%;	
-	-webkit-box-shadow: 0 0 20px rgba(0,0,0,.4);
-	-moz-box-shadow: 0 0 20px rgba(0,0,0,.4);
+	@include box-shadow(0 0 20px rgba(0,0,0,.4));
 }
 .ui-dialog.flow {
 	-webkit-transform-origin: none;
 	-moz-transform-origin: none;	
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
+	@include box-shadow(none);
 }
 .flow.out {
 	-webkit-transform: translateX(-100%) scale(.7);

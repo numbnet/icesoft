@@ -14,6 +14,8 @@
  * governing permissions and limitations under the License.
  */
  
+ @import "../mixins";
+ 
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container {
     border-radius: 10px;
     border: 2px solid #F6F6F8;
@@ -51,5 +53,5 @@
     color: #F7F7F7 !important;
     text-shadow: none !important;
     border-bottom: 1px solid #33B5E5 !important;
-    box-shadow: none !important;
+    @include box-shadow(none !important);
 }
