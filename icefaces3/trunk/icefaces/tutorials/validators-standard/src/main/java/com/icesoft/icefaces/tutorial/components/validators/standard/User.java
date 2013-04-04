@@ -31,12 +31,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.apache.commons.lang.StringUtils;
 
+import java.io.Serializable;
+
 /**
  *
  * @author dnorthcott
  */
-public class User {
+public class User implements Serializable {
 
+    private static final long serialVersionUID = -2217818719254232652L;
     private long age =0;
     private long displayAge = 0;
     private String name;
