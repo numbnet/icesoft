@@ -32,12 +32,12 @@
     </repositories>
 
     <parent>
-        <groupId>org.icefaces.tutorial.ice</groupId>
+        <groupId>org.icefaces.tutorial.core</groupId>
         <artifactId>base</artifactId>
         <version>1.0</version>
     </parent>
 
-    <name>ICEfaces 2 Window Scope Tutorial</name>
+    <name>Window Scope Tutorial</name>
     <url>http://www.icesoft.org/wiki/display/ICE/Using+Window+Scope</url>
 
     <packaging>war</packaging>
