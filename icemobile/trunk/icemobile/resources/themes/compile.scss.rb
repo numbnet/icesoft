@@ -1,9 +1,9 @@
-puts Dir.pwd
-require './resources/lib/sass-3.2.5/lib/sass'
-require './resources/lib/sass-3.2.5/lib/sass/exec'
+base_dir = File.expand_path("..",File.dirname(__FILE__))
+require File.join(base_dir, 'lib/sass-3.2.5/lib/sass')
+require File.join(base_dir, 'lib/sass-3.2.5/lib/sass/exec')
 
-build_dir = './resources/build/themes'
-src_dir = './resources/themes/**/[^_]*.scss'
+build_dir = File.join(base_dir, 'build/themes')
+src_dir = File.join(base_dir, 'themes/**/[^_]*.scss')
 
 files = Dir.glob(src_dir)
 files.each do 
