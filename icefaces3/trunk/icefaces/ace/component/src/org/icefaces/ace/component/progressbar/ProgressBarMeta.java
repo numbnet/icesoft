@@ -49,9 +49,9 @@ import org.icefaces.resources.ICEResourceLibrary;
     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="complete", javadoc="Fired when the value of the progressbar reaches the maximum value (default event).", tlddoc="Fired when the value of the progressbar reaches the maximum value (default event).", defaultRender="@this", defaultExecute="@this"),
-	@ClientEvent(name="cancel", javadoc="Fired when the progress process is cancelled by calling cancel().", tlddoc="Fired when the progress process is cancelled by calling cancel().", defaultRender="@this", defaultExecute="@this"),
-	@ClientEvent(name="change", javadoc="Fired when the value of the progressbar changes.", tlddoc="Fired when the value of the progressbar changes.", defaultRender="@this", defaultExecute="@this")
+	@ClientEvent(name="complete", javadoc="Fired when the value of the progressbar reaches the maximum value (default event).", tlddoc="Fired when the value of the progressbar reaches the maximum value (default event).", defaultRender="@all", defaultExecute="@this"),
+	@ClientEvent(name="cancel", javadoc="Fired when the progress process is cancelled by calling cancel().", tlddoc="Fired when the progress process is cancelled by calling cancel().", defaultRender="@all", defaultExecute="@this"),
+	@ClientEvent(name="change", javadoc="Fired when the value of the progressbar changes.", tlddoc="Fired when the value of the progressbar changes.", defaultRender="@all", defaultExecute="@this")
 }, defaultEvent="complete")
 public class ProgressBarMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Name of the client side widget.")

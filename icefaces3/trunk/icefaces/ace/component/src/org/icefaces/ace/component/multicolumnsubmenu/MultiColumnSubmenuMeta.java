@@ -42,7 +42,7 @@ public class MultiColumnSubmenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Style of the submenu label.")
     private String style;
 
-    @Property(tlddoc = "StyleClass of the submenu label.")
+    @Property(tlddoc = "Style class of the submenu label.")
     private String styleClass;
 	
     @Property(tlddoc = "Boolean value to disable/enable the multi-column submenu. The submenu label will still be shown but with different styling, and clicking or hovering on it will not display its children submenus and menu items.")
@@ -56,4 +56,10 @@ public class MultiColumnSubmenuMeta extends UIComponentBaseMeta {
 	
     @Property(tlddoc = "Specifies whether the 'positionLeft' and 'positionRight' attributes are relative to the submenu label or the menu bar. It also affects centering when using the value 'center' in 'direction. Possible values are 'label' and 'menubar'. The default value is 'label'.")
     private String relativeTo;
+	
+    @Property(tlddoc = "Style class of the submenu header.")
+    private String headerClass;
+	
+    @Property(tlddoc = "Style class of the submenu footer.")
+    private String footerClass;
 }

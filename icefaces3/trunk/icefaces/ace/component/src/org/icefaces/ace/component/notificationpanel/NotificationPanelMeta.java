@@ -48,8 +48,8 @@ import org.icefaces.resources.ICEResourceLibrary;
         @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="close", tlddoc="Fired when the panel is closed (default event).", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="display", tlddoc="Fired when the panel is displayed.", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="close", tlddoc="Fired when the panel is closed (default event).", defaultRender="@all", defaultExecute="@this"),
+	@ClientEvent(name="display", tlddoc="Fired when the panel is displayed.", defaultRender="@all", defaultExecute="@this")
 }, defaultEvent="close")
 public class NotificationPanelMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Name of the client side widget.")

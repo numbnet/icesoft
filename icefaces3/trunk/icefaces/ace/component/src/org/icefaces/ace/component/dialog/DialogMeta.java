@@ -48,7 +48,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 	@ICEResourceDependency(name=ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="close", javadoc="Fired when the panel is closed (default event).", tlddoc="Fired when the panel is closed (default event).", defaultRender="@all", defaultExecute="@all", argumentClass="org.icefaces.ace.event.CloseEvent")
+	@ClientEvent(name="close", javadoc="Fired when the panel is closed (default event).", tlddoc="Fired when the panel is closed (default event).", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.CloseEvent")
 }, defaultEvent="close")
 
 public class DialogMeta extends UIPanelMeta {

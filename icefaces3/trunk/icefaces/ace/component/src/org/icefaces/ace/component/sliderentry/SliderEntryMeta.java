@@ -66,15 +66,15 @@ import javax.el.MethodExpression;
 	@ClientEvent( name="slideStart",
 		javadoc="Fired when a drag operation on the slider control is initiated.",
 		tlddoc="Fired when a drag operation on the slider control is initiated.",
-		defaultRender="@all", defaultExecute="@all" ),
+		defaultRender="@all", defaultExecute="@this" ),
 	@ClientEvent( name="slide",
 		javadoc="Fired each time the the slider control is moved during a drag operation.",
 		tlddoc="Fired each time the the slider control is moved during a drag operation.",
-		defaultRender="@all", defaultExecute="@all"),
+		defaultRender="@all", defaultExecute="@this"),
 	@ClientEvent( name="slideEnd",
 		javadoc="Fired when a drag operation is completed by releasing the slider control (default event).",
 		tlddoc="Fired when a drag operation is completed by releasing the slider control (default event).", 
-		defaultRender="@all", defaultExecute="@all") },
+		defaultRender="@all", defaultExecute="@this") },
 	defaultEvent="slideEnd" )
 	
 public class SliderEntryMeta extends UIComponentBaseMeta {

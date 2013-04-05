@@ -45,7 +45,7 @@ import javax.el.ValueExpression;
      @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="display", javadoc="Fired before the tooltip is shown (default event).", tlddoc="Fired before the tooltip is shown (default event).", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="display", javadoc="Fired before the tooltip is shown (default event).", tlddoc="Fired before the tooltip is shown (default event).", defaultRender="@all", defaultExecute="@this")
 }, defaultEvent="display")
 
 public class TooltipMeta extends UIOutputMeta {

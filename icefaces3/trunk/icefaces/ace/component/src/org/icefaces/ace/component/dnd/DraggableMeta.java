@@ -44,8 +44,8 @@ import org.icefaces.resources.ICEResourceLibrary;
                  "<a href=\"http://wiki.icefaces.org/display/ICE/Draggable\">Draggable Wiki Documentation</a>."
 )
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="start", javadoc="Fired when the target component starts to be dragged  (default event).", 
-	tlddoc="Fired when the target component starts to be dragged (default event).", defaultRender="@none", defaultExecute="@this")
+	@ClientEvent(name="start", javadoc="Fired when the target component starts to be dragged (default event). By default, no components are rendered in this ajax request, because rendering this draggable component itself or the target component could cause a dynamic update that replaces the original nodes being dragged on the page, which could interrupt the dragging action for the user.", 
+	tlddoc="Fired when the target component starts to be dragged (default event). By default, no components are rendered in this ajax request, because rendering this draggable component itself or the target component could cause a dynamic update that replaces the original nodes being dragged on the page, which could interrupt the dragging action for the user.", defaultRender="@none", defaultExecute="@this")
 }, defaultEvent="start")
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
