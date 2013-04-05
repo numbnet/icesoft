@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="validators-backing-bean" default="war.basic">
+<project name="validators-backing-bean" default="servlet-profile">
     <property file="./build.properties"/>
     <import file="../common.xml"/>
 </project>
