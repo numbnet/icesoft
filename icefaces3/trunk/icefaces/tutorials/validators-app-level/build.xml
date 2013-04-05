@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="validators-app-level" default="war.basic">
+<project name="validators-app-level" default="servlet-profile">
     <property file="./build.properties"/>
     <import file="../common.xml"/>
 </project>
