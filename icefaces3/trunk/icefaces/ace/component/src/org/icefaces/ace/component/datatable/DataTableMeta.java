@@ -69,7 +69,7 @@ import java.util.Map;
         @ClientEvent(name="editStart", javadoc="Fired when a row is enabled for editing.",
                 tlddoc="Fired when a row is enabled for editing.", defaultRender="@this", defaultExecute="@this"),
         @ClientEvent(name="editSubmit", javadoc="Fired when a row is submits its edits.",
-                tlddoc="Fired when a row is submits its edits.", defaultRender="@this", defaultExecute="@this"),
+                tlddoc="Fired when a row is submits its edits.", defaultRender="@all", defaultExecute="@this"),
         @ClientEvent(name="editCancel", javadoc="Fired when a row cancels an in-progress edit.",
                 tlddoc="Fired when a row cancels an in-progress edit.", defaultRender="@this", defaultExecute="@this"),
         @ClientEvent(name="expand", javadoc="Fired when a child ExpansionToggler component is clicked to expand.",
