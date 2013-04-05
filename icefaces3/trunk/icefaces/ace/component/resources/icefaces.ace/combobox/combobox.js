@@ -415,14 +415,14 @@ ice.ace.ComboBox.prototype = {
 					element.addClass(self.cfg.inFieldLabelStyleClass);
 					element.data("labelIsInField", true);
 				}
-			}, 250);
+			}, 400);
         this.hasFocus = false;
 		setFocus('');
 		if (this.ajaxBlur) {
 			if (this.blurObserver) clearTimeout(this.blurObserver);
 			this.ajaxBlur.params = this.ajaxBlur.params || {};
 			var self = this;
-			this.blurObserver = setTimeout(function() { ice.ace.ab(self.ajaxBlur); }, 200);
+			this.blurObserver = setTimeout(function() { try{ice.ace.ab(self.ajaxBlur);}catch(e){} }, 390);
 		}
     },
 

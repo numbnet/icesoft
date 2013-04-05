@@ -480,7 +480,7 @@ ice.ace.Autocompleter.prototype = {
         }
         // needed to make click events working
 		var self = this;
-        setTimeout(function () { self.hide(); }, 250);
+        setTimeout(function () { self.hide(); }, 400);
         this.hasFocus = false;
         this.active = false;
 		setFocus('');
@@ -489,7 +489,7 @@ ice.ace.Autocompleter.prototype = {
 			this.ajaxBlur.params = this.ajaxBlur.params || {};
 			this.ajaxBlur.params[this.id + '_hardSubmit'] = true;
 			var self = this;
-			this.blurObserver = setTimeout(function() { ice.ace.ab(self.ajaxBlur); }, 200);
+			this.blurObserver = setTimeout(function() { try{ice.ace.ab(self.ajaxBlur);}catch(e){} }, 390);
 		}
     },
 
