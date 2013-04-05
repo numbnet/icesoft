@@ -31,7 +31,7 @@ import org.icemobile.util.CSSUtils;
  */
 public class PagePanelHeaderTag extends BaseBodyTag {
 
-    public static final String HEADER_CLASS = "mobi-pagePanel-header" + " " + CSSUtils.STYLECLASS_BAR_A;
+    public static final String HEADER_CLASS = "mobi-pagePanel-header ui-header " + CSSUtils.STYLECLASS_BAR_A;
     private static Logger LOG = Logger.getLogger(PagePanelHeaderTag.class.getName());
     public PagePanelTag mParent;
 

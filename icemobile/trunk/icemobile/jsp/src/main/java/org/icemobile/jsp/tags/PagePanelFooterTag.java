@@ -31,7 +31,7 @@ import org.icemobile.util.CSSUtils;
  */
 public class PagePanelFooterTag extends TagSupport {
 
-    public static final String FOOTER_CLASS = "mobi-pagePanel-footer" + " " + CSSUtils.STYLECLASS_BAR_A;;
+    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ui-footer " + CSSUtils.STYLECLASS_BAR_A;;
 
     private static Logger LOG = Logger.getLogger(PagePanelFooterTag.class.getName());
     public PagePanelTag mParent;
