@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.icefaces.tutorial</groupId>
-    <artifactId>dynamic-columns</artifactId>
+    <artifactId>dynamic-columns-tutorial</artifactId>
     <version>1.0</version>
 
     <repositories>
@@ -37,7 +37,7 @@
         <version>1.0</version>
     </parent>
 
-    <name>Dynamic Columns Tutorial</name>
+    <name>ACE Dynamic Columns Tutorial</name>
     <url>http://www.icesoft.org/wiki/display/ICE/DataTable+Dynamic+Columns</url>
 
     <packaging>war</packaging>

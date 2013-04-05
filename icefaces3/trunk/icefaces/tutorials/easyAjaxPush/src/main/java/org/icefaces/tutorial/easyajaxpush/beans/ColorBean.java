@@ -19,9 +19,6 @@ package org.icefaces.tutorial.easyajaxpush.beans;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -29,12 +26,9 @@ import org.icefaces.application.PushRenderer;
 
 import org.icefaces.tutorial.easyajaxpush.model.TextModel;
 
-@ManagedBean(name="colorBean")
-@ViewScoped
 public class ColorBean implements Serializable {
 	private static final String PUSH_GROUP = "colorPage";
 	
-	@ManagedProperty(value="#{messageBean}")
 	private MessageBean messageBean;
 	private String color = "black";
 	private String sessionId;

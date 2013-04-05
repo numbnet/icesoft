@@ -28,5 +28,16 @@
         </locale-config>
         <message-bundle>messages</message-bundle>
     </application>
-  
+
+    <managed-bean>
+        <description>
+            Backing bean for dynamic menu example.
+        </description>
+        <managed-bean-name>todoListBean</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.tutorials.dynamicmenu.TodoListBean
+        </managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
 </faces-config>

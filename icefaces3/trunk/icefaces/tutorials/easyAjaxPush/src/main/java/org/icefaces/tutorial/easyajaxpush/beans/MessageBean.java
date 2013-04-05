@@ -20,13 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-
 import org.icefaces.tutorial.easyajaxpush.model.TextModel;
 
-@ManagedBean(name="messageBean")
-@ApplicationScoped
 public class MessageBean implements Serializable {
 	private static final int MAX_SIZE = 25;
 	
