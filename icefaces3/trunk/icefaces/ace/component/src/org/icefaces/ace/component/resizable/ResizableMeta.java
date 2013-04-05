@@ -52,7 +52,7 @@ import org.icefaces.resources.ICEResourceLibrary;
     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="resize", javadoc="Fired at the end of a resize operation (default event).", tlddoc="Fired at the end of a resize operation (default event).", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="resize", javadoc="Fired at the end of a resize operation (default event).", tlddoc="Fired at the end of a resize operation (default event).", defaultRender="@all", defaultExecute="@this")
 }, defaultEvent="resize")
 
 public class ResizableMeta extends UIComponentBaseMeta {

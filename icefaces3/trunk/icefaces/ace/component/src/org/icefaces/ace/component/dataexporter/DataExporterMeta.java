@@ -54,7 +54,7 @@ import org.icefaces.resources.ICEResourceLibrary;
      @ICEResourceDependency(name="util/ace-datatable.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the button is clicked or pressed by any other means.", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="Triggers when the button is clicked or pressed by any other means. By default, both this data exporter component and the target table are executed in this ajax request.", tlddoc="Triggers when the button is clicked or pressed by any other means. By default, both this data exporter component and the target table are executed in this ajax request.", defaultRender="@all", defaultExecute="@this")
 }, defaultEvent="activate")
 public class DataExporterMeta extends UIComponentBaseMeta {
 

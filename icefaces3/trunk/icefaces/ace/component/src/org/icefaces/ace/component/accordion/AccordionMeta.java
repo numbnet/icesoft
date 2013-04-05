@@ -49,7 +49,7 @@ import javax.el.MethodExpression;
 	@ClientEvent(name="panechange",
             javadoc="Fired when the active accordion pane is changed (default event).",
             tlddoc="Fired when the active accordion pane is changed (default event).",
-            defaultRender="@all", defaultExecute="@all")
+            defaultRender="@all", defaultExecute="@this")
 }, defaultEvent="panechange")
 
 public class AccordionMeta extends UIPanelMeta {

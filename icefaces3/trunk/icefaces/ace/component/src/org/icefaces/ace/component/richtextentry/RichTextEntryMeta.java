@@ -52,7 +52,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 	@ClientEvent( name="save",
 		javadoc="Fired when the 'Save' button is clicked and the contents of the editor are saved.",
 		tlddoc="Fired when the 'Save' button is clicked and the contents of the editor are saved.",
-		defaultRender="@all", defaultExecute="@all" ) },
+		defaultRender="@all", defaultExecute="@this" ) },
 	defaultEvent="save" )
 public class RichTextEntryMeta extends UIInputMeta {
 

@@ -46,8 +46,8 @@ import org.icefaces.resources.ICEResourceLibrary;
                  "<a href=\"http://wiki.icefaces.org/display/ICE/Droppable\">Droppable Wiki Documentation</a>."
 )
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="drop", javadoc="Fired when a draggable component is dropped on this droppable component (default event).", 
-	tlddoc="Fired when a draggable component is dropped on this droppable component (default event).", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="drop", javadoc="Fired when a draggable component is dropped on this droppable component (default event). By default, both the draggable and the droppable components are executed in this ajax request.", 
+	tlddoc="Fired when a draggable component is dropped on this droppable component (default event). By default, both the draggable and the droppable components are executed in this ajax request.", defaultRender="@all", defaultExecute="@this")
 }, defaultEvent="drop")
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({

@@ -52,11 +52,11 @@ import java.util.List;
 	@ClientEvent( name="valueChange",
 		javadoc="Fired whenever the value of the component changes.",
 		tlddoc="Fired whenever the value of the component changes.",
-		defaultRender="@all", defaultExecute="@all" ),
+		defaultRender="@all", defaultExecute="@this" ),
 	@ClientEvent( name="blur",
 		javadoc="Fired any time the component loses focus.",
 		tlddoc="Fired any time the component loses focus.",
-		defaultRender="@all", defaultExecute="@all" )},
+		defaultRender="@all", defaultExecute="@this" )},
 	defaultEvent="valueChange" )
 public class SimpleSelectOneMenuMeta extends UISelectOneMeta {
 
