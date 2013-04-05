@@ -90,10 +90,10 @@ div.mobi-button-back input{
     padding-right: 5px;
 }
 .mobi-pagePanel-header .mobi-button{
-    left: 0.5em;
     position: absolute;
     top: 4px;
     margin: 0;
+    max-width: 20%;
 }
 .mobi-pagePanel-header .mobi-button-back{
     left: 1.2em;
