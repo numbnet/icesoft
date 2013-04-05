@@ -182,17 +182,6 @@ html.android #splash header{
 #splash p:last-child{
     margin-bottom:0;
 }
-/*
-html.iphone #splash figure,
-html.bberry #splash figure,
-html.android #splash figure,
-html.bb10 #splash figure{
-    display:block;
-    text-align:center;
-}
-html.ipad #splash fieldset, html.honeycomb #splash fieldset{ 
-    padding: 20px;
-}*/
 #splash header, #splash figure{
     margin-bottom: 1em;
 }
@@ -201,6 +190,10 @@ html.ipad #splash fieldset, html.honeycomb #splash fieldset{
 #splash h5{ 
     margin-left:20px;
     width:auto;
+}
+#splash .mobi-fieldset h3,
+#splash .mobi-fieldset h4,
+#splash .mobi-fieldset h5{ 
     border-bottom: none;
 }
 @media screen and (min-width: 445px) {  
