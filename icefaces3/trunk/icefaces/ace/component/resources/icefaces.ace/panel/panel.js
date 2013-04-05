@@ -82,6 +82,18 @@ ice.ace.Panel.prototype.toggle = function() {
                     ice.ace.ab(toggleBehavior);
                 }
             }
+			// handle disableInputs overlay
+			var panel = ice.ace.jq(ice.ace.escapeClientId(_self.id + '_content'));
+			var overlay = panel.find('.ui-disableinputs');
+			var overlayNode = overlay.get(0);
+			if (overlayNode) {
+				if (_self.cfg.collapsed == false) {
+					ice.ace.Panel.positionOverlay(_self.id, overlayNode);
+					overlay.show();
+				} else {
+					overlay.hide();
+				}
+			}
         });
 }
 
@@ -137,10 +149,31 @@ ice.ace.Panel.prototype.setupTriggerVisuals = function(trigger) {
             .mouseout(function() {ice.ace.jq(this).removeClass('ui-state-hover');});
 }
 
+ice.ace.Panel.unfocus = function(e,ui) {
+	this.blur();
+	setFocus('');
+}
+
 ice.ace.Panel.disableInputs = function(id) {
-	ice.ace.jq(ice.ace.escapeClientId(id)).find('input, select, label, textarea').attr('disabled', 'disabled');
+	var panel = ice.ace.jq(ice.ace.escapeClientId(id + '_content'));
+	panel.find('input, select, label, textarea, button, a').on('focus', ice.ace.Panel.unfocus);
+	var overlay = document.createElement('div');
+	overlay.className = 'ui-widget-overlay ui-disableinputs';
+	ice.ace.Panel.positionOverlay(id, overlay);
+	panel.get(0).appendChild(overlay);
+	ice.ace.Panel.overlay = overlay;
 };
 
+ice.ace.Panel.positionOverlay = function(id, overlay) {
+	var panel = ice.ace.jq(ice.ace.escapeClientId(id + '_content'));
+	var offset = panel.offset();
+	overlay.style.cssText = 'position: absolute; z-index: 900; zoom: 1;' +
+		'top:' + offset.top + 'px;left:' + offset.left + 'px;' +
+		'height:' + panel.outerHeight() + 'px;width:' + panel.outerWidth() + 'px;';
+}
+
 ice.ace.Panel.enableInputs = function(id) {
-	ice.ace.jq(ice.ace.escapeClientId(id)).find('input, select, label, textarea').removeAttr('disabled');
+	var panel = ice.ace.jq(ice.ace.escapeClientId(id + '_content'));
+	panel.find('input, select, label, textarea, button, a').off('focus', ice.ace.Panel.unfocus);
+	panel.get(0).removeChild(ice.ace.Panel.overlay);
 };

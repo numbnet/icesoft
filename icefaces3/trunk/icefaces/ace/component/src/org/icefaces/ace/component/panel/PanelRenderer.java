@@ -145,6 +145,7 @@ public class PanelRenderer extends CoreRenderer {
 
         if (optionsMenu != null) {
             optionsMenu.setPosition("dynamic");
+			if (optionsMenu.getZindex() == 1) optionsMenu.setZindex(1000); // set default zIndex for disableInputs overlay
             optionsMenu.setTrigger(clientId + "_menu");
             optionsMenu.setMy("left top");
             optionsMenu.setAt("left bottom");
