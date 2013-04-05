@@ -16,6 +16,7 @@
 
 package org.icefaces.tutorials.ace;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -25,7 +26,8 @@ import java.util.List;
  * Time: 12:21 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Region {
+public class Region implements Serializable {
+    private static final long serialVersionUID = 2080871151933220361L;
     String name;
     List<City> cityList;
 

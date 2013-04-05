@@ -16,6 +16,7 @@
 
 package org.icefaces.tutorials.ace;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -25,7 +26,8 @@ import java.util.Date;
  * Time: 12:21 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Person {
+public class Person implements Serializable {
+    private static final long serialVersionUID = -752541228765589566L;
     Date born;
     String phone;
     String name;

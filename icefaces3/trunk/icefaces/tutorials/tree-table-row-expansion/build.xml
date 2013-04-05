@@ -17,21 +17,4 @@
 <project name="tree-table-row-expansion" default="servlet-profile">
     <property file="build.properties"/>
     <import file="../common.xml"/>
-
-    <target name="servlet-profile"
-            description="Generate a .war file according to the servlet-profile which includes the JSF and EL libraries. (Jetty 7, Tomcat 6 and 7)">
-
-        <antcall target="war.basic">
-            <param name="jsf"  value="true" />
-            <param name="ace"  value="true" />
-        </antcall>
-    </target>
-
-    <target name="web-profile"
-            description="Generate a .war file according to the web-profile which excludes the JSF and EL libraries. (GlassFish v3, JBoss 6)">
-        <antcall target="war.basic">
-             <param name="ace"  value="true" />
-        </antcall>
-    </target>
-
 </project>

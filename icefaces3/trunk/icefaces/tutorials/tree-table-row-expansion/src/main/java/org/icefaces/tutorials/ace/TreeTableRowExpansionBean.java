@@ -21,8 +21,6 @@ import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.util.*;
 
-@ManagedBean
-@SessionScoped
 public class TreeTableRowExpansionBean implements Serializable {
     // Create sample data structure
     List<Person> persons = new ArrayList<Person>() {{

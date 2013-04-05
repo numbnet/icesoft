@@ -28,8 +28,6 @@ import java.util.Set;
  * Date: 11-04-05
  * Time: 1:50 PM
  */
-@ApplicationScoped
-@ManagedBean(name = "messageUtils")
 public class TutorialMessageUtils {
     private Map getLinkLabelMap = new LinkLabelMap();
     private Map getLinkUrlMap = new LinkUrlMap();
