@@ -53,13 +53,13 @@ import java.util.Set;
      @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
-    @ClientEvent(name="select", defaultRender="@this", defaultExecute="@this",
+    @ClientEvent(name="select", defaultRender="@all", defaultExecute="@this",
             javadoc="Fired when an item is clicked & selected in the List.",
             tlddoc ="Fired when an item is clicked & selected in the List."),
-    @ClientEvent(name="deselect", defaultRender="@this", defaultExecute="@this",
+    @ClientEvent(name="deselect", defaultRender="@all", defaultExecute="@this",
             javadoc="Fired when an item is clicked & deselected in the List.",
             tlddoc ="Fired when an item is clicked & deselected in the List."),
-    @ClientEvent(name="move", defaultRender="@this", defaultExecute="@this",
+    @ClientEvent(name="move", defaultRender="@all", defaultExecute="@this",
             javadoc="Fired when an item is moved within the List.",
             tlddoc ="Fired when an item is moved within the List."),
     @ClientEvent(name="migrate", defaultRender="@all", defaultExecute="@all",
