@@ -34,14 +34,15 @@
                 <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
                 <!-- theme selector -->
                  <div style="position: absolute;right: 1.5em;top: 6px;">
-                    <span style="font-size: 14px">Theme: </span>
+                    <span style="font-size: 14px">
+                        <i class="icon-eye-open" style="padding:3px"/>Theme: 
+                    </span>
                     <h:selectOneMenu
                             style="font-size:14px;font-weight:normal;"
                             onchange="ice.s(event, this);"
                             value="#{themeBean.currentTheme}">
                         <f:selectItem itemLabel="Auto" itemValue=""/>
                         <f:selectItem itemLabel="iPad" itemValue="ipad"/>
-                        <f:selectItem itemLabel="Android" itemValue="honeycomb"/>
                         <f:selectItem itemLabel="Android Light"
                                       itemValue="android_light"/>
                         <f:selectItem itemLabel="Android Dark"

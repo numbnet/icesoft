@@ -74,15 +74,16 @@
                     <h:form styleClass="theme">
                         <icecore:singleSubmit rendered="false"/>
         
-                        <span style="font-size:14px;color:white;font-weight:bold;">Theme: </span>
+                        <span style="font-size:14px;color:white;font-weight:bold;">
+                            <i class="icon-eye-open" style="padding:3px"/>
+                            Theme: 
+                        </span>
                         <h:selectOneMenu value="#{themeBean.currentTheme}"
                                          onchange="ice.s(event, this);"
                                          style="font-size:13px;">
                             <f:selectItem itemLabel="Auto" itemValue=""/>
                             <f:selectItem itemLabel="iPhone"
                                           itemValue="iphone"/>
-                            <f:selectItem itemLabel="Android"
-                                          itemValue="android"/>
                             <f:selectItem itemLabel="Android Light"
                                           itemValue="android_light"/>
                             <f:selectItem itemLabel="Android Dark"
