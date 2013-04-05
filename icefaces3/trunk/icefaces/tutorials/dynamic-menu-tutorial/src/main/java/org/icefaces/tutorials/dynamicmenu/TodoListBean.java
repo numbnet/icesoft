@@ -26,8 +26,6 @@ import org.icefaces.ace.model.MenuModel;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -39,8 +37,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@ManagedBean(name="todoListBean")
-@ViewScoped
 public class TodoListBean implements Serializable {
 
 	private MenuModel defaultMenu;

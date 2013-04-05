@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.icefaces.tutorial</groupId>
-    <artifactId>dynamicMenuTutorial</artifactId>
+    <artifactId>dynamic-menu-tutorial</artifactId>
     <version>1.0</version>
 
     <repositories>
@@ -37,7 +37,7 @@
         <version>1.0</version>
     </parent>
 
-    <name>Dynamic Menu Tutorial Tutorial</name>
+    <name>ACE Dynamic Menu Tutorial Tutorial</name>
     <url>http://www.icesoft.org/wiki/display/ICE/Dynamic+Menu+Tutorial</url>
 
     <packaging>war</packaging>
