@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.icefaces.tutorial</groupId>
-    <artifactId>validators-custom</artifactId>
+    <artifactId>validators-custom-tutorial</artifactId>
     <version>1.0</version>
 
     <repositories>
@@ -41,12 +41,4 @@
     <url>http://www.icesoft.org/wiki/display/ICE/Validators</url>
 
     <packaging>war</packaging>
-
-    <dependencies>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.4</version>
-        </dependency>
-    </dependencies>
 </project>

@@ -29,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -117,7 +116,8 @@ public class User implements Serializable {
 
         setDisplayName(name);
         FacesContext context = FacesContext.getCurrentInstance();
-        if(StringUtils.isEmpty(getName())){
+        String str = getName();
+        if(str == null || str.length() == 0){
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setSummary("Name Field is Blank");
