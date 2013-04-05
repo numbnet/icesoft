@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.icefaces.tutorial</groupId>
-    <artifactId>tree-table-row-expansion</artifactId>
+    <artifactId>tree-table-row-expansion-tutorial</artifactId>
     <version>1.0</version>
 
     <repositories>
@@ -37,8 +37,8 @@
         <version>1.0</version>
     </parent>
 
-    <name>Tree Table Expansion Tutorial</name>
-    <url>http://www.icefaces.org</url>
+    <name>ACE Tree Table Expansion Tutorial</name>
+    <url>http://www.icesoft.org/wiki/display/ICE/Tree+Table+Row+Expansion</url>
 
     <packaging>war</packaging>
 </project>

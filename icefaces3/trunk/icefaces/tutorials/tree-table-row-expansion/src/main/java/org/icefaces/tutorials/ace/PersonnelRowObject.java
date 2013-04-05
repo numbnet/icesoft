@@ -17,7 +17,10 @@
 package org.icefaces.tutorials.ace;
 
 
-public class PersonnelRowObject {
+import java.io.Serializable;
+
+public class PersonnelRowObject implements Serializable {
+    private static final long serialVersionUID = -6428051687630559981L;
     Person person;
     City city;
     Region region;
