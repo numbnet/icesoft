@@ -62,7 +62,7 @@ import java.util.Set;
     @ClientEvent(name="move", defaultRender="@all", defaultExecute="@this",
             javadoc="Fired when an item is moved within the List.",
             tlddoc ="Fired when an item is moved within the List."),
-    @ClientEvent(name="migrate", defaultRender="@all", defaultExecute="@all",
+    @ClientEvent(name="migrate", defaultRender="@all", defaultExecute="@this",
             javadoc="Fired when an item is migrated to this List.",
             tlddoc ="Fired when an item is migrated to this List.")
     },

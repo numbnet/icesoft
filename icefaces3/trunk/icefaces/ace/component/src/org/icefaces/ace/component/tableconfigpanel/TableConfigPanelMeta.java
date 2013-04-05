@@ -44,11 +44,11 @@ import org.icefaces.resources.ICEResourceLibrary;
 
 @ClientBehaviorHolder(events = {
     @ClientEvent(name="open", javadoc="Fired when the TableConfigPanel is shown.",
-            tlddoc="Fired when the TableConfigPanel is shown.", defaultRender="@all", defaultExecute="@all"),
+            tlddoc="Fired when the TableConfigPanel is shown.", defaultRender="@all", defaultExecute="@this"),
     @ClientEvent(name="submit", javadoc="Fired when the TableConfigPanel submits its changes and closes.",
-            tlddoc="Fired when the TableConfigPanel submits its changes and closes.", defaultRender="@all", defaultExecute="@all"),
+            tlddoc="Fired when the TableConfigPanel submits its changes and closes.", defaultRender="@all", defaultExecute="@this"),
     @ClientEvent(name="cancel", javadoc="Fired when the TableConfigPanel cancel its changes and closes.",
-            tlddoc="Fired when the TableConfigPanel cancel its changes and closes.", defaultRender="@all", defaultExecute="@all")},
+            tlddoc="Fired when the TableConfigPanel cancel its changes and closes.", defaultRender="@all", defaultExecute="@this")},
     defaultEvent = "submit"
 )
 public class TableConfigPanelMeta extends UIComponentBaseMeta {
