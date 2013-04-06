@@ -193,7 +193,8 @@ public class FileEntryResults implements Serializable, Cloneable {
             if (invalidate) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.validationFailed();
-                if (!PhaseId.RESTORE_VIEW.equals(context.getCurrentPhaseId())) {
+                PhaseId phase = context.getCurrentPhaseId();
+                if (phase != null && !PhaseId.RESTORE_VIEW.equals(phase)) {
                     context.renderResponse();
                 }
             }
