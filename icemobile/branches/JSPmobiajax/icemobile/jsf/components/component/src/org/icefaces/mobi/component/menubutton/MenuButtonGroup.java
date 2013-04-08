@@ -15,15 +15,11 @@
  */
 package org.icefaces.mobi.component.menubutton;
 
-import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icemobile.component.IMenuButton;
-import org.icemobile.util.ClientDescriptor;
+import org.icemobile.component.IMenuButtonGroup;
 
 
-public class MenuButton extends MenuButtonBase implements IMenuButton {
+public class MenuButtonGroup extends MenuButtonGroupBase implements IMenuButtonGroup {
 
-    public ClientDescriptor getClient() {
-         return MobiJSFUtils.getClientDescriptor();
-    }
+
 
 }

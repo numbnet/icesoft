@@ -1961,4 +1961,130 @@
             <type>boolean</type>
         </attribute>
     </tag>
+    <tag>
+        <description>Menu Button allows users to select a value from the list and then resets
+            itself after every use so that same value can be selected again the next time.
+        </description>
+        <name>menuButton</name>
+        <tag-class>org.icemobile.jsp.tags.input.MenuButtonTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>Pagewide unique identifier.</description>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Name attribute is required for submit purposes.</description>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Menu Button Label.</description>
+            <name>buttonLabel</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Select Label. Non is displayed if not used.</description>
+            <name>selectTitle</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Inline style definition.</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>User defined CSS class.</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>String value of selected menuButtonItem.</description>
+            <name>selectedValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>When disabled is true, no submitNotification panel appears.
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Menu Button Item Group. Can order menu button items by group and disable</description>
+        <name>menuButtonGroup</name>
+        <tag-class>org.icemobile.jsp.tags.input.MenuButtonItemGroupTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>Label of Group heading.</description>
+            <name>label</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>ability to disabled group of menuButton items.</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>Style of menu Button item group</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Item that can be selected from menu button. Can order menu button items by group and disable</description>
+        <name>menuButtonItem</name>
+        <tag-class>org.icemobile.jsp.tags.input.MenuButtonItemTag</tag-class>
+        <body-content>none</body-content>
+        <attribute>
+            <description>Pagewide unique identifier.</description>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Label for menu item.</description>
+            <name>label</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Value of Menu Item.</description>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>ability to disabled group of menuButton items.</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>id of panelConfirmation tag on same form for this item.</description>
+            <name>panelConfirmation</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>id of submitNotification tag on same form for this item.</description>
+            <name>submitNotification</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

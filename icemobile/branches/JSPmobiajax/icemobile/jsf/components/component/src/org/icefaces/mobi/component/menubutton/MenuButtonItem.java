@@ -16,6 +16,12 @@
 package org.icefaces.mobi.component.menubutton;
 
 
-public class MenuButtonItem extends MenuButtonItemBase {
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IMenuButtonItem;
+import org.icemobile.util.ClientDescriptor;
 
+public class MenuButtonItem extends MenuButtonItemBase implements IMenuButtonItem {
+    public ClientDescriptor getClient() {
+         return MobiJSFUtils.getClientDescriptor();
+    }
 }

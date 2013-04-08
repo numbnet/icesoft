@@ -16,71 +16,61 @@
 if (!window['mobi']) {
     window.mobi = {};
 }
-
 ice.mobi.menubutton = {
-    cfg: {},
-    initmenu: function(clientId, cfgI){
-        var myselect = document.getElementById(clientId+'_sel');
-        var selTitle = cfgI.selectTitle;
-        var option = myselect.options[0];
-        if (option && option.label!=selTitle) {
-            try{
-               var anoption = document.createElement("option");
-               anoption.label=selTitle;
-               myselect.add(new Option(selTitle, "0"), myselect.options[0]);
-            } catch(e) {
-               myselect.add(new Option(selTitle, "0"), 0);
-            }
-            myselect.options[0].selected=true;
-            myselect.render;
-        }
-    },
     select: function(clientId){
         var myselect = document.getElementById(clientId+'_sel');
-        var index = 0;
-        for (var i=1; i<myselect.options.length; i++){
-            if (myselect.options[i].selected==true){
-               index = i;
-               break
-            }
-        }
-        var optId = myselect.options[index].id || null;
+        var myOptions = myselect.options;
+        var index = myselect.selectedIndex;
+        var behaviors = myOptions[index].getAttribute('cfg');
+        var singleSubmit = myOptions[index].getAttribute("singleSubmit") || null;
+        var myForm = ice.formOf(document.getElementById(clientId));
+        var params = myOptions[index].getAttribute("params") || null;
+        var optId = myOptions[index].id || null;
         if (!optId){
-            console.log(" Problem selecting items in menuButton. See docs.")
+            console.log(" Problem selecting items in menuButton. See docs.") ;
+            return;
         }
-        var singleSubmit = this.cfg[optId].singleSubmit || false;
-        var disabled = this.cfg[optId].disabled || false;
-        //currently menuButtonItem doesn't yet support mobi ajax.
+        var disabled = myOptions[index].getAttribute("disabled") || false;
+        if (disabled==true){
+            console.log(" option id="+optId+" is disabled no submit");
+            return;
+        }
         var options = {
             source: optId,
-            render: '@all'
+            jspForm: myForm
         };
-        if (index ==0)return;
-        var snId =this.cfg[optId].snId || null ;
-        var pcId = this.cfg[optId].pcId || null;
+        var cfg = {
+            source: optId,
+        }
+        var snId = myOptions[index].getAttribute("snId") || null ;
+        var pcId = myOptions[index].getAttribute("pcId") || null;
         if (singleSubmit){
             options.execute="@this";
         } else {
             options.execute="@all";
         }
+        if (behaviors){
+            cfg.behaviors = behaviors;
+        }
         if (pcId){
-           ice.mobi.panelConf.init(pcId, optId, this.cfg[optId], options) ;
-           return;
+            if (snId){
+                options.snId = snId;
+            }
+            options.pcId = pcId;
+            ice.mobi.panelConf.init(pcId, optId, cfg, options) ;
+            return;
         }
         if (snId){
-            ice.mobi.submitnotify.open(snId, optId, this.cfg[optId], options);
+            ice.mobi.submitnotify.open(snId, optId, cfg, options);
             return;
         }
         mobi.AjaxRequest(options);
-
+        this.reset(myselect, index);
     },
     reset: function reset(myselect, index) {
+        console.log("RESET");
             myselect.options[index].selected = false;
-            myselect.options.index = 0;
+       //     myselect.options.index = 0;
 
-    },
-    initCfg: function(clientId, optionId, cfg){
-        this.cfg[optionId] = cfg;
     }
-
 };

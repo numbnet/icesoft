@@ -60,14 +60,18 @@ public class MenuButtonCoreRenderer extends BaseCoreRenderer {
         writer.endElement(SPAN_ELEM);
         if (menu.isDisabled()) {
             writer.writeAttribute(DISABLED_ATTR, "disabled");  //what about disabled class?
-            writer.endElement(DIV_ELEM);
-            return;
         }
         writer.startElement(SELECT_ELEM, menu);
         writer.writeAttribute(ID_ATTR, clientId+"_sel");
-        writer.writeAttribute(NAME_ATTR, clientId+"_sel");
+        if (null == menu.getName()){
+            writer.writeAttribute(NAME_ATTR, clientId+"_sel");
+        } else {
+            writer.writeAttribute(NAME_ATTR, menu.getName());
+        }
         writer.writeAttribute(CLASS_ATTR, selectClass);
-        writer.writeAttribute(ONCHANGE_ATTR, "mobi.menubutton.select('"+clientId+"');");
+        if (!menu.isDisabled()){
+            writer.writeAttribute(ONCHANGE_ATTR, "ice.mobi.menubutton.select('"+clientId+"');");
+        }
         if (null!=menu.getStyle()){
             String style= menu.getStyle();
             if ( style.trim().length() > 0) {
@@ -78,8 +82,33 @@ public class MenuButtonCoreRenderer extends BaseCoreRenderer {
 
     public void encodeEnd(IMenuButton button, IResponseWriter writer) throws IOException {
         writer.endElement(SELECT_ELEM);
+   //     encodeInitScript(button, writer);
         writer.endElement(DIV_ELEM);
     }
 
-
+    private void encodeInitScript(IMenuButton button, IResponseWriter writer) throws IOException{
+        String clientId = button.getClientId();
+        writer.startElement(SPAN_ELEM, button);
+        writer.writeAttribute(ID_ATTR, clientId+"_initScr");
+        writer.startElement(SCRIPT_ELEM, button);
+        writer.writeAttribute(TYPE_ATTR, "text/javascript");
+        StringBuilder sb = new StringBuilder("ice.mobi.menubutton.initmenu('");
+        sb.append(clientId).append("'");
+        if (null != button.getSelectTitle()) {
+            sb.append(",").append("{ selectTitle: '").append(button.getSelectTitle()).append("'});");
+        } else {
+            sb.append(");") ;
+        }
+        writer.write(sb.toString());
+        writer.endElement(SCRIPT_ELEM);
+        writer.endElement(SPAN_ELEM);
+     }
+    public void encodeSelectTitle(IMenuButton item, IResponseWriter writer)
+            throws IOException{
+        writer.startElement(OPTION_ELEM, item);
+        // ask Philip about styleClass and style.
+        writer.writeAttribute(VALUE_ATTR, "selectTitle");
+        writer.write(item.getSelectTitle());
+        writer.endElement(OPTION_ELEM);
+    }
 }

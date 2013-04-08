@@ -90,6 +90,16 @@ mobi.findForm = function (sourceId) {
     }
     return node;
 };
+/* copied from icemobile.js in jsp project for menuButton so can use same js */
+ice.formOf = function formOf(element) {
+    var parent = element;
+    while (null != parent) {
+        if ("form" == parent.nodeName.toLowerCase()) {
+            return parent;
+        }
+        parent = parent.parentNode;
+    }
+}
 ice.mobi.findFormFromNode = function (sourcenode) {
     if (!sourcenode){
         console.log("source cannot be null to find form for ajax submit") ;

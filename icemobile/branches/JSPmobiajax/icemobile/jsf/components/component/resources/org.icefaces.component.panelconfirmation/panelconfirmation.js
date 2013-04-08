@@ -40,7 +40,7 @@ ice.mobi.panelConf = {
     confirm:function (clientId) {
       // does not yet support mobi ajax.  need more work on mobi ajax support first
         var callerId = this.cfg.source || this.caller[clientId];
-        var snId = this.cfg[clientId].snId || null;
+        var snId = this.cfg[clientId].snId || this.options[clientId].snId || null;
         if (snId ==null && callerId) {
             this.close(clientId);
             mobi.AjaxRequest(this.options[clientId]);
