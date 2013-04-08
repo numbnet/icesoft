@@ -31,7 +31,6 @@ a#viewAllDevices {
 
     body, button, input, select, textarea {
         font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        /*color: #6D6E71;*/
     }
     body{
         background-color: #222;
@@ -185,6 +184,14 @@ a#viewAllDevices {
     .nexus4-portrait-icon.active{
         background-image: url(css-images/nexus4-portrait-icon-active.png);
     }
+    .bbz10-portrait-icon{
+        background-image: url(css-images/bbz10-portrait-icon.png);
+        height: 50px;
+        width: 24px;
+    }
+    .bbz10-portrait-icon.active{
+        background-image: url(css-images/bbz10-portrait-icon-active.png);
+    }
     .iphone-landscape-icon{
         background-image: url(css-images/iphone-landscape-icon.png);
         height: 20px;
@@ -259,11 +266,19 @@ iframe {
     padding: 100px 0 117px 0px;
     background-size: 440px 843px;
 }
+.bbz10-portrait {
+    background-image: url(css-images/bbz10-portrait.png);
+    padding: 131px 14px 117px 0px;
+    background-size: 697px 885px;
+}
 .iphone-portrait .device{
     width: 320px; height: 456px; padding-top: 20px;padding-bottom: 44px;
 }
 .nexus4-portrait .device{
     width: 384px; height: 640px; padding-top: 20px;padding-bottom: 44px;
+}
+.bbz10-portrait .device{
+    width: 346px; height: 576px; padding-top: 20px;padding-bottom: 44px;
 }
 .iphone-landscape .device{
     width: 480px; height: 299px; padding-top: 28px;padding-bottom: 32px;
@@ -278,6 +293,8 @@ iframe {
 .mac #iphone-portrait{ width: 320px }
 #nexus4-portrait{ width: 400px }
 .mac #nexus4-portrait{ width: 384px }
+#bbz10-portrait{ width: 361px }
+.mac #bbz10-portrait{ width: 345px }
 #iphone-landscape{ width:496px }
 .mac #iphone-landscape{ width:480px }
 #ipad-portrait{width:785px}
@@ -302,6 +319,10 @@ iframe {
     margin-top: 184px;
 }
 #nexus4-portrait-device .device-type{
+    margin-left: 298px;
+    margin-top: 184px;
+}
+#bbz10-portrait-device .device-type{
     margin-left: 298px;
     margin-top: 184px;
 }
@@ -347,6 +368,11 @@ iframe {
 #slide3:checked ~ #slides .inner { margin-left:-200%; }
 #slide4:checked ~ #slides .inner { margin-left:-300%; }
 #slide5:checked ~ #slides .inner { margin-left:-400%; }
+#slide6:checked ~ #slides .inner { margin-left:-500%; }
+#slide7:checked ~ #slides .inner { margin-left:-600%; }
+#slide8:checked ~ #slides .inner { margin-left:-700%; }
+#slide9:checked ~ #slides .inner { margin-left:-800%; }
+#slide10:checked ~ #slides .inner { margin-left:-900%; }
 
 
 #overflow {
@@ -360,12 +386,12 @@ article img {
 }*/
 
 #slides .inner {
-    width: 500%;
+    width: 1000%;
     line-height: 0;
 }
 
 #slides article {
-    width: 20%;
+    width: 10%;
     float: left;
 }
 

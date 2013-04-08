@@ -37,6 +37,10 @@
                         <label id="nexus4-portrait-label" 
                             for="slide5" class="icon nexus4-portrait-icon"></label>
                     </li>
+                    <li>
+                        <label id="bbz10-portrait-label" 
+                            for="slide6" class="icon bbz10-portrait-icon"></label>
+                    </li>
                 </ul>
             </nav>
             
@@ -82,6 +86,11 @@
         <input type="radio" name="slider" id="slide3" onchange="openIpadPortrait()">
         <input type="radio" name="slider" id="slide4" onchange="openIpadLandscape()">
         <input type="radio" name="slider" id="slide5" onchange="openNexus4Portrait()">
+        <input type="radio" name="slider" id="slide6" onchange="openBBZ10Portrait()">
+        <input type="radio" name="slider" id="slide7" onchange="openBBZ10Portrait()">
+        <input type="radio" name="slider" id="slide8" onchange="openBBZ10Portrait()">
+        <input type="radio" name="slider" id="slide9" onchange="openBBZ10Portrait()">
+        <input type="radio" name="slider" id="slide10" onchange="openBBZ10Portrait()">
     
     
         <!-- The Slider -->
@@ -91,6 +100,7 @@
             <div id="overflow">
             
                 <div class="inner">
+                
                     <article id="iphone-portrait-device" class="active">
                         <span class="device-type">iPhone 3/4 Portrait Mode</span>
                         <div class='deviceWrap iphone-portrait'>
@@ -120,6 +130,7 @@
                             </div>
                         </div>
                     </article>
+                    
                     <article id="ipad-portrait-device">
                         <span class="device-type">iPad Portrait Mode</span>
                         <div class='deviceWrap ipad-portrait'>
@@ -131,6 +142,7 @@
                             </div>
                         </div>
                     </article>
+                    
                     <article id="ipad-landscape-device">
                         <span class="device-type">iPad Landscape Mode</span>
                         <div class='deviceWrap ipad-landscape'>
@@ -142,11 +154,57 @@
                             </div>
                         </div>
                     </article>
+                    
                     <article id="nexus4-portrait-device">
                         <span class="device-type">Nexus 4 Portrait Mode</span>
                         <div class='deviceWrap nexus4-portrait'>
                             <div class='device'>
                                 <iframe src='about:blank' id='nexus4-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="bbz10-portrait-device">
+                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
+                        <div class='deviceWrap bbz10-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="bbz10-portrait-device2">
+                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
+                        <div class='deviceWrap bbz10-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="bbz10-portrait-device3">
+                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
+                        <div class='deviceWrap bbz10-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="bbz10-portrait-device4">
+                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
+                        <div class='deviceWrap bbz10-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="bbz10-portrait-device5">
+                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
+                        <div class='deviceWrap bbz10-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
                             </div>
                         </div>
                     </article>
@@ -202,23 +260,34 @@
             document.getElementById('nexus4-portrait-device').classList.add('active');
         }
     }
+    function openBBZ10Portrait(){
+        closeAllDevices();
+        document.getElementById('bbz10-portrait').setAttribute('src','./showcase-small.jsf?theme=bb10&simulator=true');
+        if( document.documentElement.classList ){
+            document.getElementById('bbz10-portrait-label').classList.add('active');
+            document.getElementById('bbz10-portrait-device').classList.add('active');
+        }
+    }
     function closeAllDevices(){
         document.getElementById('iphone-portrait').setAttribute('src','about:blank');
         document.getElementById('iphone-landscape').setAttribute('src','about:blank');
         document.getElementById('ipad-portrait').setAttribute('src','about:blank');
         document.getElementById('ipad-landscape').setAttribute('src','about:blank');
         document.getElementById('nexus4-portrait').setAttribute('src','about:blank');
+        document.getElementById('bbz10-portrait').setAttribute('src','about:blank');
         if( document.documentElement.classList ){
             document.getElementById('iphone-portrait-label').classList.remove('active');
             document.getElementById('iphone-landscape-label').classList.remove('active');
             document.getElementById('ipad-portrait-label').classList.remove('active');
             document.getElementById('ipad-landscape-label').classList.remove('active');
             document.getElementById('nexus4-portrait-label').classList.remove('active');
+            document.getElementById('bbz10-portrait-label').classList.remove('active');
             document.getElementById('iphone-portrait-device').classList.remove('active');
             document.getElementById('iphone-landscape-device').classList.remove('active');
             document.getElementById('ipad-portrait-device').classList.remove('active');
             document.getElementById('ipad-landscape-device').classList.remove('active');
             document.getElementById('nexus4-portrait-device').classList.remove('active');
+            document.getElementById('bbz10-portrait-device').classList.remove('active');
         }
         
     }
