@@ -170,7 +170,7 @@ a:link, a:visited {
 
 
 /* content */
-.mid  { padding-top: 18px; overflow:hidden; }
+.mid  { padding-top: 18px; }
 
 .primary {
 	display: inline-block;
