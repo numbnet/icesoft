@@ -72,7 +72,7 @@
             </h:form>
             <h:form id="form2">
             <ace:panel header="Date Entry" styleClass="required-styling-demo">
-                <h:panelGrid id="calendarPanel" width="100%" columns="3">
+                <h:panelGrid id="calendarPanel" width="100%" columns="2">
                     <ace:dateTimeEntry id="cal"
                                        value="#{dateIndicator.selectedDate}"
                                        timeZone="Canada/Mountain"
@@ -85,6 +85,7 @@
                                        label="Selected Date:"
                                        labelPosition="left"/>
                     <h:commandButton id="submit" value="Submit"/>
+                    <h:outputText value=""/><h:outputText value=""/>
                     <ace:message for="cal"/>
                 </h:panelGrid>
             </ace:panel>
