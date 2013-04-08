@@ -566,6 +566,161 @@
             <keywords>ICEfaces Component Suite Showcase ACE Checkbox Button</keywords>
         </portlet-info>
     </portlet>
+
+    <portlet>
+        <portlet-name>checkboxButtonCustom</portlet-name>
+        <display-name>Checkbox Button Custom</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/checkboxButton/checkboxbuttoncustom.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Checkbox Button Custom</title>
+            <keywords>ICEfaces ACE Component Showcase Checkbox Button Custom</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBox</portlet-name>
+        <display-name>Combo Box</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/combobox/comboBoxOverview.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Combo Box</title>
+            <keywords>ICEfaces ACE Component Showcase Combo Box</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxFacet</portlet-name>
+        <display-name>Combo Box Facet</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/combobox/comboBoxFacet.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Combo Box Facet</title>
+            <keywords>ICEfaces ACE Component Showcase Combo Box Facet</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxFiltering</portlet-name>
+        <display-name>Combo Box Filtering</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/combobox/comboBoxFiltering.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Combo Box Filtering</title>
+            <keywords>ICEfaces ACE Component Showcase Combo Box Filtering</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxIndicator</portlet-name>
+        <display-name>Combo Box Indicator</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/combobox/comboBoxIndicator.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Combo Box Indicator</title>
+            <keywords>ICEfaces ACE Component Showcase Combo Box Indicator</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxLabel</portlet-name>
+        <display-name>Combo Box Label</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/combobox/comboBoxLabel.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Combo Box Label</title>
+            <keywords>ICEfaces ACE Component Showcase Combo Box Label</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxReqStyle</portlet-name>
+        <display-name>Combo Box Required Style</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/combobox/comboBoxReqStyle.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Combo Box Required Style</title>
+            <keywords>ICEfaces ACE Component Showcase Combo Box Required Style</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>confirmationDialog</portlet-name>
         <display-name>Confirmation Dialog</display-name>
@@ -1555,8 +1710,8 @@
         </portlet-info>
     </portlet>
     <portlet>
-        <portlet-name>dragDropOverview</portlet-name>
-        <display-name>Drag Drop Overview</display-name>
+        <portlet-name>dragDrop</portlet-name>
+        <display-name>Drag Drop</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -1571,13 +1726,13 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>Drag Drop Overview</title>
-            <keywords>ICEfaces Component Suite Showcase ACE Drag Drop Overview</keywords>
+            <title>Drag Drop</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Drag Drop</keywords>
         </portlet-info>
     </portlet>
     <portlet>
-        <portlet-name>draggableOverview</portlet-name>
-        <display-name>Draggable Overview</display-name>
+        <portlet-name>draggable</portlet-name>
+        <display-name>Draggable</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -1592,8 +1747,8 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>Draggable Overview</title>
-            <keywords>ICEfaces Component Suite Showcase ACE Draggable Overview</keywords>
+            <title>Draggable</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Draggable</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1810,7 +1965,29 @@
             <keywords>ICEfaces ACE Component Showcase GMap Directions</keywords>
         </portlet-info>
     </portlet>
-    
+
+    <portlet>
+        <portlet-name>gMapEvent</portlet-name>
+        <display-name>GMap Event</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/gMap/gMapEvent.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>GMap Event</title>
+            <keywords>ICEfaces ACE Component Showcase GMap Event</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>gMapInfoWindow</portlet-name>
         <display-name>GMap Info Window</display-name>
@@ -2158,6 +2335,28 @@
     </portlet>
 
     <portlet>
+        <portlet-name>listSelectionMini</portlet-name>
+        <display-name>List Selection Mini</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listSelectionMini.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>List Selection Mini</title>
+            <keywords>ICEfaces ACE Component Showcase List Selection Mini</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
         <portlet-name>maskedEntry</portlet-name>
         <display-name>Masked Entry</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
@@ -2495,6 +2694,29 @@
             <keywords>ICEfaces Component Suite Showcase ACE Menu Button</keywords>
         </portlet-info>
     </portlet>
+
+    <portlet>
+        <portlet-name>message</portlet-name>
+        <display-name>Message</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/message/message.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Message</title>
+            <keywords>ICEfaces ACE Component Showcase Message</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>notificationPanel</portlet-name>
         <display-name>Notification Panel</display-name>
@@ -2664,8 +2886,8 @@
         </portlet-info>
     </portlet>
     <portlet>
-        <portlet-name>printerOverview</portlet-name>
-        <display-name>Printer Overview</display-name>
+        <portlet-name>printer</portlet-name>
+        <display-name>Printer</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -2680,8 +2902,8 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>Printer Overview</title>
-            <keywords>ICEfaces Component Suite Showcase ACE Printer Overview</keywords>
+            <title>Printer</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Printer</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -2873,6 +3095,205 @@
             <keywords>ICEfaces Component Suite Showcase ACE Rich Text Entry</keywords>
         </portlet-info>
     </portlet>
+
+    <portlet>
+        <portlet-name>selectMenu</portlet-name>
+        <display-name>Select Menu</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/selectmenu/selectMenuOverview.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Select Menu</title>
+            <keywords>ICEfaces ACE Component Showcase Select Menu</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>selectMenuFacet</portlet-name>
+        <display-name>Select Menu Facet</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/selectmenu/selectMenuFacet.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Select Menu Facet</title>
+            <keywords>ICEfaces ACE Component Showcase Select Menu Facet</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>selectMenuIndicator</portlet-name>
+        <display-name>Select Menu Indicator</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/selectmenu/selectMenuIndicator.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Select Menu Indicator</title>
+            <keywords>ICEfaces ACE Component Showcase Select Menu Indicator</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>selectMenuLabel</portlet-name>
+        <display-name>Select Menu Label</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/selectmenu/selectMenuLabel.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Select Menu Label</title>
+            <keywords>ICEfaces ACE Component Showcase Select Menu Label</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>selectMenuReqStyle</portlet-name>
+        <display-name>Select Menu Required Style</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/selectmenu/selectMenuReqStyle.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Select Menu Required Style</title>
+            <keywords>ICEfaces ACE Component Showcase Select Menu Required Style</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>simpleSelectOneMenu</portlet-name>
+        <display-name>Select One Menu</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/simpleselectonemenu/simpleSelectOneMenuOverview.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Select One Menu</title>
+            <keywords>ICEfaces ACE Component Showcase Select One Menu</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>simpleSelectOneMenuIndicator</portlet-name>
+        <display-name>Select One Menu Indicator</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/simpleselectonemenu/simpleSelectOneMenuIndicator.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Select One Menu Indicator</title>
+            <keywords>ICEfaces ACE Component Showcase Select One Menu Indicator</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>simpleSelectOneMenuLabel</portlet-name>
+        <display-name>Select One Menu Label</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/simpleselectonemenu/simpleSelectOneMenuLabel.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Select One Menu Label</title>
+            <keywords>ICEfaces ACE Component Showcase Select One Menu Label</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>simpleSelectOneMenuReqStyle</portlet-name>
+        <display-name>Select One Menu Required Style</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/simpleselectonemenu/simpleSelectOneMenuReqStyle.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Select One Menu Required Style</title>
+            <keywords>ICEfaces ACE Component Showcase Select One Menu Required Style</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>sliderAsyncInput</portlet-name>
         <display-name>Slider Async</display-name>

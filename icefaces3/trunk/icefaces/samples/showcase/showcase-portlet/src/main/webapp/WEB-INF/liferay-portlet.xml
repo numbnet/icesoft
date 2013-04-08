@@ -164,6 +164,49 @@
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
+
+    <portlet>
+        <portlet-name>checkboxButtonCustom</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBox</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxFacet</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxFiltering</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxIndicator</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxLabel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>comboBoxReqStyle</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
     <portlet>
         <portlet-name>confirmationDialog</portlet-name>
         <instanceable>false</instanceable>
@@ -402,12 +445,12 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>dragDropOverview</portlet-name>
+        <portlet-name>dragDrop</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>draggableOverview</portlet-name>
+        <portlet-name>draggable</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -465,6 +508,12 @@
         <ajaxable>false</ajaxable>
     </portlet>
     
+    <portlet>
+        <portlet-name>gMapEvent</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
     <portlet>
         <portlet-name>gMapInfoWindow</portlet-name>
         <instanceable>false</instanceable>
@@ -555,6 +604,12 @@
     </portlet>
 
     <portlet>
+        <portlet-name>listSelectionMini</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
         <portlet-name>maskedEntry</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -637,6 +692,12 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>message</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
         <portlet-name>notificationPanel</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -677,7 +738,7 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>printerOverview</portlet-name>
+        <portlet-name>printer</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -726,6 +787,60 @@
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
+    <portlet>
+        <portlet-name>selectMenu</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>selectMenuFacet</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>selectMenuIndicator</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>selectMenuLabel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>selectMenuReqStyle</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>simpleSelectOneMenu</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>simpleSelectOneMenuIndicator</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>simpleSelectOneMenuLabel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>simpleSelectOneMenuReqStyle</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
     <portlet>
         <portlet-name>sliderAsyncInput</portlet-name>
         <instanceable>false</instanceable>
