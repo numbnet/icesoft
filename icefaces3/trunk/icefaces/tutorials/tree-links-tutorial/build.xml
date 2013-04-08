@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="tree-links-tutorial" default="war.basic">
+<project name="tree-links-tutorial" default="servlet-profile">
     <property file="./build.properties"/>
     <import file="../common.xml"/>
 </project>
