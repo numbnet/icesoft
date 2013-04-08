@@ -46,9 +46,10 @@ a#viewAllDevices {
         background-size: 2079px 84px;
         height: 84px;
         margin-bottom: 0;
+        min-width: 600px;
         position: relative;
         z-index: 999;
-        box-shadow: 0px 1px 19px #E2E2E2;
+        box-shadow: 0px 1px 4px #E2E2E2;
     }
     * {
         -webkit-transition: all 0.5s ease-out;
@@ -126,7 +127,7 @@ a#viewAllDevices {
     .icemobile-icon img{
         height: 56px;vertical-align: middle;padding-left: 15px;
     }
-    @media screen and (max-width: 600px) {  
+    @media screen and (max-width: 700px) {  
         .icemobile-icon img{ 
             padding-left: 10px;
             height: 20px;
@@ -149,7 +150,7 @@ a#viewAllDevices {
               max-width: 62px;
           }
     }
-    @media screen and (max-width: 400px) {  
+    @media screen and (max-width: 500px) {  
         .info {
              padding: 5px;
              font-size: 10px;
@@ -348,31 +349,7 @@ iframe {
     position: absolute;
     font-size: 32px;
     display: block;
-    text-shadow: 0px 0px 15px #A4C9EB;
-}
-#iphone-portrait-device .device-type{
-    margin-left: 298px;
-    margin-top: 184px;
-}
-#nexus4-portrait-device .device-type{
-    margin-left: 298px;
-    margin-top: 184px;
-}
-#nexus7-portrait-device .device-type{
-    margin-left: 298px;
-    margin-top: 184px;
-}
-#bbz10-portrait-device .device-type{
-    margin-left: 298px;
-    margin-top: 184px;
-}
-#bbq10-portrait-device .device-type{
-    margin-left: 298px;
-    margin-top: 184px;
-}
-#iphone-landscape-device .device-type{
-    margin-left: 200px;
-    margin-top: 184px;
+    text-shadow: 0px 0px 4px #A4C9EB;
 }
 #slides .active .device-type{
     -ms-transform:rotate(0deg); /* IE 9 */
