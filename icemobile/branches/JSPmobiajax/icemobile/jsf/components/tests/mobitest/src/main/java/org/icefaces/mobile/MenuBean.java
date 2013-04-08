@@ -18,12 +18,14 @@ package org.icefaces.mobile;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
+import javax.faces.component.UIComponent;
 import javax.faces.model.SelectItem;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ActionEvent;
 import java.util.logging.Logger;
+import org.icefaces.mobi.component.menubutton.MenuButtonItem;
 
 @ManagedBean(name="menu")
 @ViewScoped
@@ -33,12 +35,18 @@ public class MenuBean implements Serializable {
     Logger.getLogger(ListBean.class.toString());
     private List<String> simpleList = new ArrayList<String>() ;
     private String outputString = "none";
-    private String selTitle="Pick One";
+    private String selTitle="Select";
+    private String buttonLabel = "Buttonlabel";
+    private String itemChosen="none";
+    private boolean disabled = false;
+    private String mbstyle;
 
  //   private List<MenuAction> itemList = new ArrayList<MenuAction>();
     private List<ModelData> data = new ArrayList<ModelData>();
     private String height="12px";
     private String style="display:inline-block;position:relative;top:-25px;left:0;color:white;";
+    private String styleClass;
+
 
     public MenuBean(){
         this.simpleList.add("Edit");
@@ -61,7 +69,7 @@ public class MenuBean implements Serializable {
     }
 
     public String getSelTitle() {
-        return selTitle;
+        return this.selTitle;
     }
 
     public void setSelTitle(String selTitle) {
@@ -81,7 +89,6 @@ public class MenuBean implements Serializable {
         this.simpleList = simpleList;
     }
 
-
     public String getHeight() {
         return height;
     }
@@ -94,15 +101,73 @@ public class MenuBean implements Serializable {
         return style;
     }
 
-
     public void setStyle(String style) {
         this.style = style;
     }
+
+    public void actionMethod(ActionEvent ae){
+        UIComponent uic = ae.getComponent();
+        if (uic instanceof MenuButtonItem) {
+            MenuButtonItem mbi = (MenuButtonItem)uic;
+         //   logger.info("Item selected="+mbi.getValue()+" label="+mbi.getLabel());
+            this.itemChosen = mbi.getValue().toString();
+        }
+    }
+
+    public void actionMethodSleep(ActionEvent ae){
+        UIComponent uic = ae.getComponent();
+        if (uic instanceof MenuButtonItem) {
+            MenuButtonItem mbi = (MenuButtonItem)uic;
+         //   logger.info("Item selected="+mbi.getValue()+" label="+mbi.getLabel());
+            this.itemChosen = mbi.getValue().toString();
+        }
+            try{
+                Thread.sleep(5000);
+                logger.info("slept");
+            }   catch (Exception e){
+       }
+    }
+
+    public String getItemChosen() {
+        return itemChosen;
+    }
+
     public static String EVENT_TRIGGERED="NONE";
     public String getOutputString() {
         return EVENT_TRIGGERED;
     }
 
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
+    public String getButtonLabel() {
+        return buttonLabel;
+    }
+
+    public void setButtonLabel(String buttonLabel) {
+        this.buttonLabel = buttonLabel;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public String getMbstyle() {
+        return mbstyle;
+    }
+
+    public void setMbstyle(String mbstyle) {
+        this.mbstyle = mbstyle;
+    }
 
     public class ModelData implements Serializable{
         private String eventTriggered = "none";

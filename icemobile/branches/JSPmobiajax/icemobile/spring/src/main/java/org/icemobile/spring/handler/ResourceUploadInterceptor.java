@@ -75,15 +75,19 @@ public class ResourceUploadInterceptor extends HandlerInterceptorAdapter{
             HandlerMethod handlerMethod = (HandlerMethod)handler;
             Class beanClass = handlerMethod.getBean().getClass();
             ResourceStore store = storeLocator.getStore(beanClass, request);
-            LOG.info("beanClass: " + beanClass.getName() + ", store: " + store);
-            processUploads(request, store);
+            LOG.info("CHECK  beanClass: " + beanClass.getName() + ", store: " + store);
+            if ( null != store ){
+                processUploads(request, store);
+            }
         }
         return true;
     }
     
     protected void processUploads(HttpServletRequest request, ResourceStore store){
         String token = request.getSession().getId();
-        store.handleRequest(request, token);
+        if (null != store){
+           store.handleRequest(request, token);
+        }
     }
 
 }

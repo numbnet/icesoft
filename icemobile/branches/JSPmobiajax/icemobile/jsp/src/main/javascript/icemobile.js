@@ -2114,7 +2114,7 @@ ice.mobi.panelConf = {
     confirm:function (clientId) {
       // does not yet support mobi ajax.  need more work on mobi ajax support first
         var callerId = this.cfg.source || this.caller[clientId];
-        var snId = this.cfg[clientId].snId || null;
+        var snId = this.cfg[clientId].snId || this.options[clientId].snId || null;
         if (snId ==null && callerId) {
             this.close(clientId);
             mobi.AjaxRequest(this.options[clientId]);
@@ -2216,7 +2216,64 @@ ice.mobi.submitnotify = {
     }
 
 };
+ice.mobi.menubutton = {
+    select: function(clientId){
+        var myselect = document.getElementById(clientId+'_sel');
+        var myOptions = myselect.options;
+        var index = myselect.selectedIndex;
+        var behaviors = myOptions[index].getAttribute('cfg');
+        var singleSubmit = myOptions[index].getAttribute("singleSubmit") || null;
+        var myForm = ice.formOf(document.getElementById(clientId));
+        var params = myOptions[index].getAttribute("params") || null;
+        var optId = myOptions[index].id || null;
+        if (!optId){
+            console.log(" Problem selecting items in menuButton. See docs.") ;
+            return;
+        }
+        var disabled = myOptions[index].getAttribute("disabled") || false;
+        if (disabled==true){
+            console.log(" option id="+optId+" is disabled no submit");
+            return;
+        }
+        var options = {
+            source: optId,
+            jspForm: myForm
+        };
+        var cfg = {
+            source: optId,
+        }
+        var snId = myOptions[index].getAttribute("snId") || null ;
+        var pcId = myOptions[index].getAttribute("pcId") || null;
+        if (singleSubmit){
+            options.execute="@this";
+        } else {
+            options.execute="@all";
+        }
+        if (behaviors){
+            cfg.behaviors = behaviors;
+        }
+        if (pcId){
+            if (snId){
+                options.snId = snId;
+            }
+            options.pcId = pcId;
+            ice.mobi.panelConf.init(pcId, optId, cfg, options) ;
+            return;
+        }
+        if (snId){
+            ice.mobi.submitnotify.open(snId, optId, cfg, options);
+            return;
+        }
+        mobi.AjaxRequest(options);
+        this.reset(myselect, index);
+    },
+    reset: function reset(myselect, index) {
+        console.log("RESET");
+            myselect.options[index].selected = false;
+       //     myselect.options.index = 0;
 
+    }
+};
 /* add js marker for progressive enhancement */
 document.documentElement.className = document.documentElement.className + ' js';
 

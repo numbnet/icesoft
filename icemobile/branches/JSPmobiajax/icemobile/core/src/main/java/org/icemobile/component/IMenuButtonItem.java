@@ -17,33 +17,24 @@
 package org.icemobile.component;
 
 
-public interface IMenuItem extends IMobiComponent{
-   // Default button types.
+public interface IMenuButtonItem extends IMobiComponent{
 
- //   public static final String BUTTON_PRESSED = "ui-btn-up-a";
- //   public static final String BUTTON_UNPRESSED = "ui-btn-down-a";
+ //
     /**
     * <p>so far can use this to distinguish between JSF and JSP</p>
     */
     public boolean isSingleSubmit();
 
+    public void setValue(Object value);
     public Object getValue();
+    public String getLabel();
+    public void setLabel(String label);
 
-  //  public String getType(); could use for button or link styling?
-
-    public String getSubmitNotification();
-
-    public String getParams();
-    public void setParams(String params);
+    public String getPanelConfirmationId();
+ //   public void setPanelConfirmation(String pcId);
 
     public String getBehaviors();
-    public void setBehaviors(String behaviors);
 
-    public void setSubmitNotificationId(String snId);
     public String getSubmitNotificationId();
 
- //   public String getOpenContentPane();
- /*   public StringBuilder getJsCall();
-    public void setJsCall(StringBuilder jsCall);*/
-  //  public String getSrc();
 }

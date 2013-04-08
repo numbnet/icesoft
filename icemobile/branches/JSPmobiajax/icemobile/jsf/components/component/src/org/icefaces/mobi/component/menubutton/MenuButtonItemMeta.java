@@ -48,41 +48,52 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class MenuButtonItemMeta extends UICommandMeta {
-      @Property(defaultValue = "false",
+    @Property(defaultValue = "false",
             tlddoc = TLDConstants.SINGLESUBMIT)
-      private boolean singleSubmit;
+    private boolean singleSubmit;
 
-        @Property(defaultValue = "false",
+    @Property(defaultValue = "false",
                 tlddoc = TLDConstants.DISABLED)
-        private boolean disabled;
+    private boolean disabled;
+ /*
+      @Property(tlddoc = TLDConstants.TABINDEX)
+      private Integer tabindex; */
 
-        @Property(tlddoc = TLDConstants.TABINDEX)
-        private Integer tabindex;
+    @Property(tlddoc="The value of menuButtonItem to be submitted to Server.")
+    private String value;
 
-        @Property(tlddoc="The value of menuButtonItem to be submitted to Server.")
-        private String value;
+    @Property(tlddoc="The label of menutButtonItem in the select list.")
+    private String label;
 
-        @Property(tlddoc="The label of menutButtonItem in the select list.")
-        private String label;
+    @Property(tlddoc = TLDConstants.STYLECLASS)
+    private String styleClass;
 
-        @Property(tlddoc = TLDConstants.STYLECLASS)
-        private String styleClass;
+    @Property(tlddoc = TLDConstants.STYLE)
+    private String style;
 
-        @Property(tlddoc = TLDConstants.STYLE)
-        private String style;
+    @Property(defaultValue = "false", tlddoc = TLDConstants.IMMEDIATE_INPUT)
+    private boolean immediate;
 
-        @Property(defaultValue = "false", tlddoc = TLDConstants.IMMEDIATE_INPUT)
-        private boolean immediate;
-
-        @Property(tlddoc="The id of a panelConfirmation component in the same view to be used with this component." +
+    @Property(tlddoc="The id of a panelConfirmation component in the same view to be used with this component." +
                 "In order to find the panelConfirmation component referenced by this id, it is best to have the " +
                 "panelConfirmation component and menuButton in the same form or naming container.")
-        private String panelConfirmation;
+    private String panelConfirmation;
 
-        @Property(tlddoc="The id of blocking submitNotification panel which blocks any further access to page " +
+    @Property(tlddoc="The id of blocking submitNotification panel which blocks any further access to page " +
                 "until process is complete.  In order to successfully find the submitNotification component " +
                 "referenced by this id, it is advisable to have the submitNotification component and the " +
                 "menuButton in the same form or naming container.")
-        private String submitNotification;
+    private String submitNotification;
 
+    @Field
+    private String name;
+
+    @Field
+    private String submitNotificationId;
+
+    @Field
+    private String panelConfirmationId;
+
+    @Field
+    private String behaviors;
 }

@@ -52,22 +52,6 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
         SubmitNotificationCoreRenderer renderer = new SubmitNotificationCoreRenderer();
         ISubmitNotification panel = (ISubmitNotification)component;
         renderer.encodeEnd(panel, writer);
-/*        StringBuilder popupBaseClass = new StringBuilder(ISubmitNotification.CONTAINER_HIDE_CLASS);
-        // div that is use to hide/show the popup screen black out--will manipulate using js
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_bg", HTML.ID_ATTR);
-        writer.writeAttribute(HTML.CLASS_ATTR, SubmitNotification.BLACKOUT_PNL_HIDE_CLASS, HTML.CLASS_ATTR);
-        writer.endElement(HTML.DIV_ELEM);
-        // panel
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_popup", HTML.ID_ATTR);
-        writer.writeAttribute("class", popupBaseClass.toString(), "class");
-        writer.writeAttribute("style", panelNotify.getStyle(), "style");
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_popup_inner", HTML.ID_ATTR);
-        renderChildren(facesContext, panelNotify);
-        writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.DIV_ELEM); */
     }
 
 
