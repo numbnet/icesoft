@@ -20,6 +20,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import java.io.Serializable;
 
 /**
  * <p/>
@@ -32,8 +33,9 @@ import javax.faces.event.ValueChangeEvent;
  * of attributes set at the component level.
  * </p>
  */
-public class TreeBean {
+public class TreeBean implements Serializable {
 
+    private static final long serialVersionUID = 6892859356452798293L;
     // tree default model, used as a value for the tree component
     private DefaultTreeModel model;
 

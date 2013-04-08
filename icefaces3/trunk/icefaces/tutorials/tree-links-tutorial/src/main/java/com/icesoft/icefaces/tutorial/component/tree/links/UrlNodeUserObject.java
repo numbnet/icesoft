@@ -19,14 +19,16 @@ package com.icesoft.icefaces.tutorial.component.tree.links;
 import com.icesoft.faces.component.tree.IceUserObject;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.io.Serializable;
 
 /**
  * The UrlNodeUserObject object is responsible for storing extra data
  * for a url.  The url along with text is bound to a ice:commanLink object which
  * will launch a new browser window pointed to the url.
  */
-public class UrlNodeUserObject extends IceUserObject {
+public class UrlNodeUserObject extends IceUserObject implements Serializable {
 
+    private static final long serialVersionUID = 3836607336402377527L;
     // url to show when a node is clicked
     private String url;
 
