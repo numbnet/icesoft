@@ -184,6 +184,14 @@ a#viewAllDevices {
     .nexus4-portrait-icon.active{
         background-image: url(css-images/nexus4-portrait-icon-active.png);
     }
+    .nexus7-portrait-icon{
+        background-image: url(css-images/nexus7-portrait-icon.png);
+        height: 63px;
+        width: 40px;
+    }
+    .nexus7-portrait-icon.active{
+        background-image: url(css-images/nexus7-portrait-icon-active.png);
+    }
     .bbz10-portrait-icon{
         background-image: url(css-images/bbz10-portrait-icon.png);
         height: 50px;
@@ -274,6 +282,11 @@ iframe {
     padding: 100px 0 117px 0px;
     background-size: 440px 843px;
 }
+.nexus7-portrait {
+    background-image: url(css-images/nexus7-portrait.png);
+    padding: 92px 0 157px 0px;
+    background-size: 760px 1241px;
+}
 .bbz10-portrait {
     background-image: url(css-images/bbz10-portrait.png);
     padding: 157px 14px 117px 0px;
@@ -281,7 +294,7 @@ iframe {
 }
 .bbq10-portrait {
     background-image: url(css-images/bbq10-portrait.png);
-    padding: 113px 1px 117px 0px;
+    padding: 113px 1px 215px 0px;
     background-size: 377px 679px;
 }
 .iphone-portrait .device{
@@ -289,6 +302,9 @@ iframe {
 }
 .nexus4-portrait .device{
     width: 384px; height: 640px; padding-top: 20px;padding-bottom: 44px;
+}
+.nexus7-portrait .device{
+    width: 603px; height: 950px; padding-top: 20px;padding-bottom: 44px;
 }
 .bbz10-portrait .device{
     width: 346px; height: 548px; padding-top: 20px;padding-bottom: 44px;
@@ -309,10 +325,12 @@ iframe {
 .mac #iphone-portrait{ width: 320px }
 #nexus4-portrait{ width: 400px }
 .mac #nexus4-portrait{ width: 384px }
+#nexus7-portrait{ width: 619px }
+.mac #nexus7-portrait{ width: 603px }
 #bbz10-portrait{ width: 361px }
 .mac #bbz10-portrait{ width: 345px }
-#bbq10-portrait{ width: 361px }
-.mac #bbq10-portrait{ width: 345px }
+#bbq10-portrait{ width: 337px }
+.mac #bbq10-portrait{ width: 320px }
 #iphone-landscape{ width:496px }
 .mac #iphone-landscape{ width:480px }
 #ipad-portrait{width:785px}
@@ -337,6 +355,10 @@ iframe {
     margin-top: 184px;
 }
 #nexus4-portrait-device .device-type{
+    margin-left: 298px;
+    margin-top: 184px;
+}
+#nexus7-portrait-device .device-type{
     margin-left: 298px;
     margin-top: 184px;
 }
