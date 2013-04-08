@@ -41,6 +41,10 @@
                         <label id="bbz10-portrait-label" 
                             for="slide6" class="icon bbz10-portrait-icon"></label>
                     </li>
+                    <li>
+                        <label id="bbq10-portrait-label" 
+                            for="slide7" class="icon bbq10-portrait-icon"></label>
+                    </li>
                 </ul>
             </nav>
             
@@ -87,10 +91,10 @@
         <input type="radio" name="slider" id="slide4" onchange="openIpadLandscape()">
         <input type="radio" name="slider" id="slide5" onchange="openNexus4Portrait()">
         <input type="radio" name="slider" id="slide6" onchange="openBBZ10Portrait()">
-        <input type="radio" name="slider" id="slide7" onchange="openBBZ10Portrait()">
-        <input type="radio" name="slider" id="slide8" onchange="openBBZ10Portrait()">
-        <input type="radio" name="slider" id="slide9" onchange="openBBZ10Portrait()">
-        <input type="radio" name="slider" id="slide10" onchange="openBBZ10Portrait()">
+        <input type="radio" name="slider" id="slide7" onchange="openBBQ10Portrait()">
+        <input type="radio" name="slider" id="slide8">
+        <input type="radio" name="slider" id="slide9">
+        <input type="radio" name="slider" id="slide10">
     
     
         <!-- The Slider -->
@@ -173,11 +177,11 @@
                         </div>
                     </article>
                     
-                    <article id="bbz10-portrait-device2">
-                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
-                        <div class='deviceWrap bbz10-portrait'>
+                    <article id="bbq10-portrait-device">
+                        <span class="device-type">BlackBerry Q10 Portrait Mode</span>
+                        <div class='deviceWrap bbq10-portrait'>
                             <div class='device'>
-                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
+                                <iframe src='about:blank' id='bbq10-portrait'></iframe>
                             </div>
                         </div>
                     </article>
@@ -268,6 +272,14 @@
             document.getElementById('bbz10-portrait-device').classList.add('active');
         }
     }
+    function openBBQ10Portrait(){
+        closeAllDevices();
+        document.getElementById('bbq10-portrait').setAttribute('src','./showcase-small.jsf?theme=bb10&simulator=true');
+        if( document.documentElement.classList ){
+            document.getElementById('bbq10-portrait-label').classList.add('active');
+            document.getElementById('bbq10-portrait-device').classList.add('active');
+        }
+    }
     function closeAllDevices(){
         document.getElementById('iphone-portrait').setAttribute('src','about:blank');
         document.getElementById('iphone-landscape').setAttribute('src','about:blank');
@@ -275,6 +287,7 @@
         document.getElementById('ipad-landscape').setAttribute('src','about:blank');
         document.getElementById('nexus4-portrait').setAttribute('src','about:blank');
         document.getElementById('bbz10-portrait').setAttribute('src','about:blank');
+        document.getElementById('bbq10-portrait').setAttribute('src','about:blank');
         if( document.documentElement.classList ){
             document.getElementById('iphone-portrait-label').classList.remove('active');
             document.getElementById('iphone-landscape-label').classList.remove('active');
@@ -282,12 +295,14 @@
             document.getElementById('ipad-landscape-label').classList.remove('active');
             document.getElementById('nexus4-portrait-label').classList.remove('active');
             document.getElementById('bbz10-portrait-label').classList.remove('active');
+            document.getElementById('bbq10-portrait-label').classList.remove('active');
             document.getElementById('iphone-portrait-device').classList.remove('active');
             document.getElementById('iphone-landscape-device').classList.remove('active');
             document.getElementById('ipad-portrait-device').classList.remove('active');
             document.getElementById('ipad-landscape-device').classList.remove('active');
             document.getElementById('nexus4-portrait-device').classList.remove('active');
             document.getElementById('bbz10-portrait-device').classList.remove('active');
+            document.getElementById('bbq10-portrait-device').classList.remove('active');
         }
         
     }
