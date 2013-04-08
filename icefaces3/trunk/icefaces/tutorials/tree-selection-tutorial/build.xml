@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="tree-selection-tutorial" default="war.basic">
+<project name="tree-selection-tutorial" default="servlet-profile">
     <property file="./build.properties"/>
     <import file="../common.xml"/>
 </project>
