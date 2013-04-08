@@ -21,6 +21,7 @@ import com.icesoft.faces.component.tree.IceUserObject;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.faces.event.ActionEvent;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 
 /**
  * <p>The PanelSelectUserObject is responsible for selcting a known panel in a
@@ -29,8 +30,9 @@ import javax.faces.context.FacesContext;
  * bean which is responsible for setting the selected panel in the panelStack
  * component</p>
  */
-public class PanelSelectUserObject extends IceUserObject {
+public class PanelSelectUserObject extends IceUserObject implements Serializable {
 
+    private static final long serialVersionUID = 4708525521970673798L;
     // displayPanel to show when a node is clicked
     private String displayPanel;
 

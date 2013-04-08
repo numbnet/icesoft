@@ -27,8 +27,9 @@ package com.icesoft.icefaces.tutorial.component.tree.selection;
  * comonent will not change the current selected PanelStack
  * </p>
  */
-public class PanelStackBean {
+public class PanelStackBean implements java.io.Serializable {
 
+    private static final long serialVersionUID = 3873419766151672310L;
     // default panel name
     private String selectedPanel = "splash";
 

@@ -29,8 +29,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * panel in a ice:panelStack.
  * </p>
  */
-public class TreeBean {
+public class TreeBean implements java.io.Serializable {
 
+    private static final long serialVersionUID = 2553857920953007974L;
     // tree default model, used as a value for the tree component
     private DefaultTreeModel model;
 
