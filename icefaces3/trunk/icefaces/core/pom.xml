@@ -108,7 +108,7 @@
                                     <directory>build/javascript/resources</directory>
                                     <filtering>false</filtering>
                                     <includes>
-                                        <include>*.js</include>
+                                        <include>**/*.js</include>
                                     </includes>
                                 </resource>
                             </resources>
