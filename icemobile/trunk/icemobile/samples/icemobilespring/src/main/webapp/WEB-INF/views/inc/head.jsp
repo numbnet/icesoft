@@ -29,13 +29,5 @@
     <script type="text/javascript"
         src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
     <script type="text/javascript" src="<c:url value="/resources/icemobilespring.js" />"></script> 
-    <script type="text/javascript">
-        <%
-            String cloudPushId = Utils.getCloudPushId(request);
-            if (null != cloudPushId) {
-                out.println("window.addEventListener('load', function() { ice.push.parkInactivePushIds('" + cloudPushId + "'); }, false);");
-            }
-        %>
-    </script>
     <mobi:googleAnalytics/>
 </head>

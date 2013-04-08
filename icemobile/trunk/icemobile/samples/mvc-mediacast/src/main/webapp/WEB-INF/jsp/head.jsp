@@ -40,14 +40,5 @@
             <script type="text/javascript" src='<c:url value="/resources/javascript/mediacast-jquery.js"/>'></script>
         </c:otherwise>
     </c:choose>
-	
-    <script type="text/javascript">
-        <%
-            String cloudPushId = Utils.getCloudPushId(request);
-            if (null != cloudPushId) {
-                out.println("window.addEventListener('load', function() { ice.push.parkInactivePushIds('" + cloudPushId + "'); }, false);");
-            }
-        %>
-    </script>
     <mobi:googleAnalytics/>
 </head>
