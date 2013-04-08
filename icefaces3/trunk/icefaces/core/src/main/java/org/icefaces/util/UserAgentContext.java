@@ -2,6 +2,7 @@ package org.icefaces.util;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -30,6 +31,8 @@ import org.icefaces.resources.BrowserType;
  */
 public class UserAgentContext
 implements Serializable {
+
+    private static Logger log = Logger.getLogger(UserAgentContext.class.getName());
     private static final String SESSION_KEY = "userAgentContext";
     public static enum OS{ WINDOWS, IOS, MAC, ANDROID, BLACKBERRY, LINUX }
     public static enum FORM_FACTOR{ HANDHELD, TABLET, DESKTOP }
@@ -214,9 +217,13 @@ implements Serializable {
         UserAgentContext uac = (UserAgentContext)sessionMap.get(SESSION_KEY);
 
         if (uac == null) {
-            uac = new UserAgentContext(extContext.getRequestHeaderMap()
-                    .get("user-agent"),
-                    sessionMap);
+            String userAgent = EnvUtils.getUserAgent(context);
+
+            if( userAgent != null ){
+                uac = new UserAgentContext(userAgent,sessionMap);
+            } else {
+                log.severe("could not get user-agent header");
+            }
         }
 
         return uac;
