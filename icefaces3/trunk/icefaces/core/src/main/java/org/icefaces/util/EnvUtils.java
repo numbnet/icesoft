@@ -998,6 +998,25 @@ public class EnvUtils {
     public static boolean isCoallesceResources(FacesContext context) {
         return EnvConfig.getEnvConfig(context).coalesceResources;
     }
+
+    public static String getUserAgent(FacesContext fc) {
+
+        //In most cases this approach works
+        HttpServletRequest req = getSafeRequest(fc);
+        String userAgent = req.getHeader("user-agent");
+        if (userAgent != null) {
+            return userAgent;
+        }
+
+        //Unfortunately, the old PortletFaces Bridge does not provide the "user-agent"
+        //header as part of the header map.  So we have to try something a bit more complex.
+        if( req instanceof ProxyHttpServletRequest){
+            return ((ProxyHttpServletRequest)req).getUserAgentFromPortletFacesBridge();
+        }
+
+        return null;
+    }
+
 }
 
 class EnvConfig {

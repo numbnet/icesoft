@@ -494,6 +494,28 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
         return null;
     }
 
+    public String getUserAgentFromPortletFacesBridge(){
+        //The PortletFaces Bridge does not include the user-agent header in the map so we need to try
+        //a more roundabout way of retrieving it if possible.  This means reflectively getting the
+        //original HttpServletRequest and querying it for the user-agent header.
+        Object origRequest = getMethodAndInvoke(externalContext.getRequest(),"getHttpServletRequest");
+
+        if(origRequest == null ){
+            return null;
+        }
+
+        String userAgent = null;
+        try {
+            Method headerMeth = origRequest.getClass().getMethod("getHeader", String.class);
+            Object result = headerMeth.invoke(origRequest,"user-agent");
+            userAgent = (String)result;
+        } catch (Exception e) {
+            log.log(Level.FINE, "problem calling getHeader('user-agent') using " + origRequest, e);
+        }
+
+        return userAgent;
+    }
+
 }
 
 /**
