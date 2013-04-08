@@ -66,7 +66,9 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(defaultValue = "false", tlddoc = "Whether to render the calendar inline or as a popup.")
     private boolean renderAsPopup;
 
-    @Property(defaultValue = "MM/dd/yyyy", tlddoc = "DateFormat pattern for localization")
+    @Property(defaultValue = "MM/dd/yyyy", tlddoc = "DateFormat pattern for localization. See the " +
+            "<a href=\"http://wiki.icefaces.org/display/ICE/DateTimeEntry\">DateTimeEntry Wiki Documentation</a> for limitations. " +
+            "Ignored if the converter attribute is used to do format conversion.")
     private String pattern;
 
     @Property(tlddoc = "Locale to be used for labels and conversion. Locale string or java.util.Locale object. Default is locale of view root.")
@@ -199,7 +201,8 @@ public class DateTimeEntryMeta extends UIInputMeta {
     private String buttonText;
 
     @Property(defaultValue = "true", tlddoc = "With lenient parsing, the Java date parser may use heuristics to interpret" +
-            " inputs that do not precisely match this date's format. With strict parsing, inputs must match this date's format.")
+            " inputs that do not precisely match this date's format. With strict parsing, inputs must match this date's format." +
+            " Ignored if the converter attribute is used to do format conversion.")
     private boolean lenientParsing;
 
     @Property(tlddoc = "The maximum number of characters that may be entered in this field.")
