@@ -66,7 +66,7 @@ public class MenuButtonMeta extends UISeriesBaseMeta {
     @Property(defaultValue="Menu", tlddoc="The label on the menu button.")
     private String buttonLabel;
 
-    @Property( tlddoc="The label for the first item in list which cannot be selected " +
+    @Property(defaultValue = "Select", tlddoc="The label for the first item in list which cannot be selected " +
             "but helpful to users to understand how to use the component, ie: that they must select an option in the list.")
     private String selectTitle;
 
