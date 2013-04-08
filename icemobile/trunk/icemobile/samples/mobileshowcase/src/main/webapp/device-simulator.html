@@ -33,6 +33,10 @@
                         <label id="ipad-landscape-label" 
                             for="slide4" class="icon ipad-landscape-icon"></label>
                     </li>
+                    <li>
+                        <label id="nexus4-portrait-label" 
+                            for="slide5" class="icon nexus4-portrait-icon"></label>
+                    </li>
                 </ul>
             </nav>
             
@@ -77,6 +81,7 @@
         <input type="radio" name="slider" id="slide2" onchange="openIphoneLandscape()">
         <input type="radio" name="slider" id="slide3" onchange="openIpadPortrait()">
         <input type="radio" name="slider" id="slide4" onchange="openIpadLandscape()">
+        <input type="radio" name="slider" id="slide5" onchange="openNexus4Portrait()">
     
     
         <!-- The Slider -->
@@ -137,6 +142,14 @@
                             </div>
                         </div>
                     </article>
+                    <article id="nexus4-portrait-device">
+                        <span class="device-type">Nexus 4 Portrait Mode</span>
+                        <div class='deviceWrap nexus4-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='nexus4-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
                     
                 </div> 
                 
@@ -181,20 +194,31 @@
             document.getElementById('ipad-landscape-device').classList.add('active');
         }
     }
+    function openNexus4Portrait(){
+        closeAllDevices();
+        document.getElementById('nexus4-portrait').setAttribute('src','./showcase-small.jsf?theme=android_light&simulator=true');
+        if( document.documentElement.classList ){
+            document.getElementById('nexus4-portrait-label').classList.add('active');
+            document.getElementById('nexus4-portrait-device').classList.add('active');
+        }
+    }
     function closeAllDevices(){
         document.getElementById('iphone-portrait').setAttribute('src','about:blank');
         document.getElementById('iphone-landscape').setAttribute('src','about:blank');
         document.getElementById('ipad-portrait').setAttribute('src','about:blank');
         document.getElementById('ipad-landscape').setAttribute('src','about:blank');
+        document.getElementById('nexus4-portrait').setAttribute('src','about:blank');
         if( document.documentElement.classList ){
             document.getElementById('iphone-portrait-label').classList.remove('active');
             document.getElementById('iphone-landscape-label').classList.remove('active');
             document.getElementById('ipad-portrait-label').classList.remove('active');
             document.getElementById('ipad-landscape-label').classList.remove('active');
+            document.getElementById('nexus4-portrait-label').classList.remove('active');
             document.getElementById('iphone-portrait-device').classList.remove('active');
             document.getElementById('iphone-landscape-device').classList.remove('active');
             document.getElementById('ipad-portrait-device').classList.remove('active');
             document.getElementById('ipad-landscape-device').classList.remove('active');
+            document.getElementById('nexus4-portrait-device').classList.remove('active');
         }
         
     }

@@ -167,6 +167,7 @@ a#viewAllDevices {
         vertical-align: middle;
         display: inline-block;
         cursor: pointer;
+        background-repeat: no-repeat;
     }
     .iphone-portrait-icon{
         background-image: url(css-images/iphone-portrait-icon.png);
@@ -175,6 +176,14 @@ a#viewAllDevices {
     }
     .iphone-portrait-icon.active{
         background-image: url(css-images/iphone-portrait-icon-active.png);
+    }
+    .nexus4-portrait-icon{
+        background-image: url(css-images/nexus4-portrait-icon.png);
+        height: 40px;
+        width: 20px;
+    }
+    .nexus4-portrait-icon.active{
+        background-image: url(css-images/nexus4-portrait-icon-active.png);
     }
     .iphone-landscape-icon{
         background-image: url(css-images/iphone-landscape-icon.png);
@@ -245,8 +254,16 @@ iframe {
     background-image: url(css-images/iphone3-portrait.png);
     padding: 115px 0 117px 0px;
 }
+.nexus4-portrait {
+    background-image: url(css-images/nexus4-portrait.png);
+    padding: 100px 0 117px 0px;
+    background-size: 440px 843px;
+}
 .iphone-portrait .device{
     width: 320px; height: 456px; padding-top: 20px;padding-bottom: 44px;
+}
+.nexus4-portrait .device{
+    width: 384px; height: 640px; padding-top: 20px;padding-bottom: 44px;
 }
 .iphone-landscape .device{
     width: 480px; height: 299px; padding-top: 28px;padding-bottom: 32px;
@@ -259,6 +276,8 @@ iframe {
 }
 #iphone-portrait{ width: 336px }
 .mac #iphone-portrait{ width: 320px }
+#nexus4-portrait{ width: 400px }
+.mac #nexus4-portrait{ width: 384px }
 #iphone-landscape{ width:496px }
 .mac #iphone-landscape{ width:480px }
 #ipad-portrait{width:785px}
@@ -279,6 +298,10 @@ iframe {
     text-shadow: 0px 0px 15px #A4C9EB;
 }
 #iphone-portrait-device .device-type{
+    margin-left: 298px;
+    margin-top: 184px;
+}
+#nexus4-portrait-device .device-type{
     margin-left: 298px;
     margin-top: 184px;
 }
