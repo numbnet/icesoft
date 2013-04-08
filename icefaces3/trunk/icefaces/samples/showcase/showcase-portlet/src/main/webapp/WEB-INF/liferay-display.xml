@@ -39,7 +39,8 @@
             </category>
             <category name="Button">
                 <portlet id="checkboxButton"/>
-<!-- 
+                <portlet id="checkboxButtonCustom"/>
+<!--
                 While these components work in portlets, the current example
                 code has them doing navigation which is disruptive to the
                 portlet experience.
@@ -59,6 +60,14 @@
                 <portlet id="chartGauge"/>
                 <portlet id="chartLine"/>
                 <portlet id="chartPie"/>
+            </category>
+            <category name="ComboBox">
+                <portlet id="comboBox"/>
+                <portlet id="comboBoxFacet"/>
+                <portlet id="comboBoxFiltering"/>
+                <portlet id="comboBoxIndicator"/>
+                <portlet id="comboBoxLabel"/>
+                <portlet id="comboBoxReqStyle"/>
             </category>
             <category name="Dialog">
                 <portlet id="confirmationDialog"/>
@@ -110,8 +119,8 @@
                 <portlet id="dateTimeEntry"/>
             </category>
             <category name="Drag-n-Drop">
-                <portlet id="dragDropOverview"/>
-                <portlet id="draggableOverview"/>
+                <portlet id="dragDrop"/>
+                <portlet id="draggable"/>
                 <portlet id="dataTableIntegration"/>
             </category>
             <category name="File">
@@ -127,6 +136,7 @@
                 <portlet id="gMapBasic"/>
                 <portlet id="gMapControl"/>
                 <portlet id="gMapDirections"/>
+                <portlet id="gMapEvent"/>
                 <portlet id="gMapInfoWindow"/>
                 <portlet id="gMapLayer"/>
                 <portlet id="gMapMarker"/>
@@ -144,6 +154,7 @@
                 <portlet id="listReorderAjax"/>
                 <portlet id="listSelection"/>
                 <portlet id="listSelectionAjax"/>
+                <portlet id="listSelectionMini"/>
             </category>
             <category name="Menu">
                 <portlet id="contextMenu"/>
@@ -163,10 +174,20 @@
                 <portlet id="menuBarEffect"/>
                 <portlet id="menuBarMultiColumn"/>
                 <portlet id="menuButton"/>
+                <portlet id="selectMenu"/>
+                <portlet id="selectMenuFacet"/>
+                <portlet id="selectMenuIndicator"/>
+                <portlet id="selectMenuLabel"/>
+                <portlet id="selectMenuReqStyle"/>
+                <portlet id="simpleSelectOneMenu"/>
+                <portlet id="simpleSelectOneMenuIndicator"/>
+                <portlet id="simpleSelectOneMenuLabel"/>
+                <portlet id="simpleSelectOneMenuReqStyle"/>
             </category>
             <category name="Misc">
                 <portlet id="animation"/>
-                <portlet id="printerOverview"/>
+                <portlet id="message"/>
+                <portlet id="printer"/>
                 <portlet id="submitMonitor"/>
             </category>
             <category name="Notification">
