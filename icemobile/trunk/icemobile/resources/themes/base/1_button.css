@@ -48,6 +48,10 @@
     text-align: center;
     text-decoration: none;
 }
-.mobi-pagePanel-header .mobi-button-back {
-    font-weight:bold;
+.mobi-pagePanel-header .mobi-button{
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    margin: 0;
+    max-width: 20%;
 }
