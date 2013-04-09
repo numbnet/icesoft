@@ -28,5 +28,27 @@
         </locale-config>
         <message-bundle>messages</message-bundle>
     </application>
+
+    <managed-bean>
+        <description>
+            Backing bean for ace:tabSet with dynamic tabset example.
+        </description>
+        <managed-bean-name>messageUtils</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.tutorials.util.TutorialMessageUtils
+        </managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+            Backing bean for ace:tabSet with dynamic tabset example.
+        </description>
+        <managed-bean-name>dynamic</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.tutorials.Dynamic
+        </managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
   
 </faces-config>
