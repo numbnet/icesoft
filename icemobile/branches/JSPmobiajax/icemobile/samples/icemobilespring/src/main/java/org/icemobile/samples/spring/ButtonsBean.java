@@ -29,10 +29,10 @@ import java.lang.String;
 public class ButtonsBean {
     private String selectedId = "button2";
 
-   // @ModelAttribute("buttonsBean")
-  /*  public ButtonsBean createBean() {
+    @ModelAttribute("buttonsBean")
+    public ButtonsBean createBean() {
         return new ButtonsBean();
-    }   */
+    }
 
     public String getSelectedId() {
         return selectedId;
