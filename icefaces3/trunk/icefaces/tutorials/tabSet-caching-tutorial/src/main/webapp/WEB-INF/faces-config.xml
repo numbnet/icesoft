@@ -28,5 +28,16 @@
         </locale-config>
         <message-bundle>messages</message-bundle>
     </application>
+
+    <managed-bean>
+        <description>
+            Backing bean for ace:tabSet with caching tabset example.
+        </description>
+        <managed-bean-name>caching</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.tutorials.Caching
+        </managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
   
 </faces-config>

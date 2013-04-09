@@ -18,14 +18,11 @@ package org.icefaces.tutorials;
 
 import org.icefaces.ace.component.tabset.TabPaneCache;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 
-@ManagedBean(name="caching")
-@ViewScoped
 public class Caching implements Serializable {
+    private static final long serialVersionUID = 178220630189443946L;
     private long counter = 0;
     private String conditionallyIncrement;
     private String staticAutoInput;
