@@ -18,17 +18,14 @@ package org.icefaces.tutorials;
 
 import org.icefaces.tutorials.util.TutorialMessageUtils;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@ManagedBean(name="dynamic")
-@ViewScoped
 public class Dynamic implements Serializable {
+    private static final long serialVersionUID = 4481683100331087579L;
     private int selectedTabIndex = 0;
     private List<Movie> movies = new ArrayList<Movie>();
     private String richText="";

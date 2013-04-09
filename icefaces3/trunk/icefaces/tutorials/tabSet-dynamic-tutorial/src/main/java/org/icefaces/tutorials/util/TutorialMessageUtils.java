@@ -16,16 +16,12 @@
 
 package org.icefaces.tutorials.util;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-@ApplicationScoped
-@ManagedBean(name = "messageUtils")
 public class TutorialMessageUtils {
     private Map getLinkLabelMap = new LinkLabelMap();
     private Map getLinkUrlMap = new LinkUrlMap();
