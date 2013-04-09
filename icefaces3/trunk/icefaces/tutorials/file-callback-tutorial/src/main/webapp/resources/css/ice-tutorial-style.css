@@ -96,7 +96,6 @@ body {
 #example .messages-holder, #example .messages-holder div { display:inline; }
 #example .messages {
     padding:5px;
-    width:400px;
     font-size:11pt;
     float:right;
     margin:0;
