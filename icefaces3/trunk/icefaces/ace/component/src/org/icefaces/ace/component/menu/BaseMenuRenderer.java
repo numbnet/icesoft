@@ -272,7 +272,9 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		// header
 		writer.startElement("div", null);
 		writer.writeAttribute("style", "width: 100%;", null);
-		writer.writeAttribute("class", "ui-menu-multicolumn-header", null);
+		String headerClass = submenu.getHeaderClass();
+		headerClass = headerClass == null ? "" : " " + headerClass;
+		writer.writeAttribute("class", "ui-menu-multicolumn-header" + headerClass, null);
 		writer.startElement("div", null);
 		writer.endElement("div");
 		writer.endElement("div");
@@ -316,7 +318,9 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		// footer
 		writer.startElement("div", null);
 		writer.writeAttribute("style", "width: 100%;", null);
-		writer.writeAttribute("class", "ui-menu-multicolumn-footer", null);
+		String footerClass = submenu.getFooterClass();
+		footerClass = footerClass == null ? "" : " " + footerClass;
+		writer.writeAttribute("class", "ui-menu-multicolumn-footer" + footerClass, null);
 		writer.startElement("div", null);
 		writer.endElement("div");
 		writer.endElement("div");
