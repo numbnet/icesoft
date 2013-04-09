@@ -275,6 +275,8 @@
                 <file name="icefaces.ace/tree/tree.js"/>
                 <file name="icefaces.ace/submitmonitor/submitmonitor.js"/>
 				<file name="icefaces.ace/autocompleteentry/autocompleteentry.js"/>
+				<file name="icefaces.ace/combobox/combobox.js"/>
+				<file name="icefaces.ace/selectmenu/selectmenu.js"/>
 				<file name="icefaces.ace/themeselect/themeselect.js"/>
             </filelist>
         </concat>

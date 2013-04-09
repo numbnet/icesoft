@@ -14,8 +14,6 @@
  * governing permissions and limitations under the License.
  */
 
-if (!window['ice']) window.ice = {};
-if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.SelectMenus) ice.ace.SelectMenus = {};
 
 ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, behaviors, cfg, effects) {
@@ -888,4 +886,4 @@ ice.ace.SelectMenu.prototype = {
 			list.toggle(this.effects.hide, {}, this.effects.hideLength);
 		} else list.fadeOut(this.effects.hideLength);
 	}
-}
+};

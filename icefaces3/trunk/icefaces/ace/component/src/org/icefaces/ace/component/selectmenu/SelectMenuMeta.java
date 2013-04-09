@@ -25,6 +25,7 @@ import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
+import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import javax.el.ValueExpression;
@@ -46,8 +47,8 @@ import java.util.List;
                  "<a href=\"http://wiki.icefaces.org/display/ICE/SelectMenu\">SelectMenu Wiki Documentation</a>."
 )
 @ICEResourceDependencies({
-	@ICEResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ICEResourceDependency(library = "icefaces.ace", name = "selectmenu/selectmenu.js")
+	@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY, name = ACEResourceNames.JQUERY_JS),
+	@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY, name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent( name="valueChange",

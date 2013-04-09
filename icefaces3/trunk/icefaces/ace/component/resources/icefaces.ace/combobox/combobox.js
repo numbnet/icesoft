@@ -14,8 +14,6 @@
  * governing permissions and limitations under the License.
  */
 
-if (!window['ice']) window.ice = {};
-if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.ComboBoxes) ice.ace.ComboBoxes = {};
 
 ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, showListOnInput, behaviors, cfg, clientSideModeCfg, effects) {
@@ -849,4 +847,4 @@ ice.ace.ComboBox.prototype = {
 			list.toggle(this.effects.hide, {}, this.effects.hideLength);
 		} else list.fadeOut(this.effects.hideLength);
 	}
-}
+};
