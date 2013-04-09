@@ -32,6 +32,16 @@
 
 package org.icefaces.ace.component.printer;
 
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+
 public class Printer extends PrinterBase {
 
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        super.broadcast(event);
+		
+		if (event != null) {
+			setPassedValidation(true);
+		}
+	}
 }
