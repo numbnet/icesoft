@@ -42,12 +42,23 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import java.util.*;
 
+import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
+
 @MandatoryResourceComponent(tagName="printer", value="org.icefaces.ace.component.printer.Printer")
 public class PrinterRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext facesContext, UIComponent component) {
 		Printer printer = (Printer) component;
+		String clientId = printer.getClientId(facesContext);
+		
+		Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
+		Object sourceId = requestMap.get("ice.event.captured");
+		if (sourceId != null && sourceId.toString().equals(clientId)) {
+			printer.queueEvent(new ActionEvent(printer) {{ setPhaseId(PhaseId.INVOKE_APPLICATION); }});
+		}
+		
 		decodeBehaviors(facesContext, printer);
 	}
 	
@@ -55,13 +66,14 @@ public class PrinterRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Printer printer = (Printer) component;
+		String clientId = printer.getClientId(facesContext);
 		String parentClientId = printer.getParent().getClientId(facesContext);
 		UIComponent forValue = printer.findComponent(printer.getFor());
 		if(forValue == null)
 			throw new FacesException("Cannot find component \"" + printer.getFor() + "\" in view.");
 		
 		writer.startElement("span", printer);
-		writer.writeAttribute("id", component.getClientId(), null);
+		writer.writeAttribute("id", clientId, null);
 		writer.startElement("script", printer);
 		writer.writeAttribute("type", "text/javascript", null);
 			
@@ -71,7 +83,6 @@ public class PrinterRenderer extends CoreRenderer {
         // ClientBehaviors
         Map<String,List<ClientBehavior>> behaviorEvents = printer.getClientBehaviors();
         if(!behaviorEvents.isEmpty()) {
-            String clientId = printer.getClientId(facesContext);
             List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
 			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("activate").iterator(); behaviorIter.hasNext();) {
 				ClientBehavior behavior = behaviorIter.next();
@@ -85,10 +96,27 @@ public class PrinterRenderer extends CoreRenderer {
 				}
 			}
 		}
-		writer.write("ice.ace.jq(ice.ace.escapeClientId('" + forValue.getClientId(facesContext) + "')).jqprint();\n");
+		if (printer.isIgnoreValidation())
+			writer.write("ice.ace.jq(ice.ace.escapeClientId('" + forValue.getClientId(facesContext) + "')).jqprint();\n");
 		writer.write("});");
-
+		writer.endElement("script");
+		
+		// ignoreValidation
+		writer.startElement("span", printer);
+		writer.writeAttribute("id", clientId + "_ignoreValidation", null);
+		writer.startElement("script", printer);
+		writer.writeAttribute("type", "text/javascript", null);
+		if (!printer.isIgnoreValidation() && printer.isPassedValidation()) {
+			Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
+			Object sourceId = requestMap.get("ice.event.captured");
+			if (sourceId != null && sourceId.toString().equals(clientId))
+				writer.write("ice.ace.jq(ice.ace.escapeClientId('" + forValue.getClientId(facesContext) + "')).jqprint();\n");
+				writer.write("// " + System.currentTimeMillis());
+        }
 		writer.endElement("script");
 		writer.endElement("span");
+		writer.endElement("span");
+		
+		printer.setPassedValidation(false);
 	}
 }

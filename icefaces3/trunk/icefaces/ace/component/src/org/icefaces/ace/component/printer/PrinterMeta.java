@@ -20,6 +20,7 @@ import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
@@ -51,4 +52,10 @@ public class PrinterMeta extends UIComponentBaseMeta {
 
 	@Property(name="for", tlddoc="Specifies the id of the component to print.")
 	private String forValue;
+	
+	@Property(tlddoc="If an ajax behavior is attached to this component, the print interface will appear whether validation failed or not for the ajax request fi this attribute is set to true. Otherwise, the printing action will be halted.", defaultValue="true")
+	private boolean ignoreValidation;
+	
+	@Field(defaultValue="false")
+	private Boolean passedValidation;
 }
