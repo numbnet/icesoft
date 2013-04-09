@@ -33,6 +33,7 @@ import javax.faces.event.ActionEvent;
  * allows for direct manipulations of the parent tree. </p>
  */
 public class DynamicNodeUserObject extends IceUserObject {
+    private static final long serialVersionUID = 6153551662875793151L;
     private TreeBean treeBean;
 
     public DynamicNodeUserObject(DefaultMutableTreeNode wrapper, TreeBean tree) {

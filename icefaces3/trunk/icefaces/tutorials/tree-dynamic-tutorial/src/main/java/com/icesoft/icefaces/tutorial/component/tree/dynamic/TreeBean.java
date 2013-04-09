@@ -19,6 +19,7 @@ package com.icesoft.icefaces.tutorial.component.tree.dynamic;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 
 /**
  * <p/>
@@ -30,8 +31,9 @@ import javax.faces.event.ActionEvent;
  * <p>The TreeBean can then copy or delete the selected node from the
  * DefaultTreeModel using the methods #deleteSelectedNode and #copySelectedNode. </p>
  */
-public class TreeBean {
+public class TreeBean implements Serializable {
 
+    private static final long serialVersionUID = 6197956477293382208L;
     // tree default model, used as a value for the tree component
     private DefaultTreeModel model;
 
