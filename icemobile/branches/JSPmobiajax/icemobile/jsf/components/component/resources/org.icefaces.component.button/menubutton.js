@@ -21,13 +21,16 @@ ice.mobi.menubutton = {
         var myselect = document.getElementById(clientId+'_sel');
         var myOptions = myselect.options;
         var index = myselect.selectedIndex;
+        if (index==0){
+            return;  //assume index of 0 is select title so no submit happens
+        }
         var behaviors = myOptions[index].getAttribute('cfg');
         var singleSubmit = myOptions[index].getAttribute("singleSubmit") || null;
         var myForm = ice.formOf(document.getElementById(clientId));
         var params = myOptions[index].getAttribute("params") || null;
         var optId = myOptions[index].id || null;
         if (!optId){
-            console.log(" Problem selecting items in menuButton. See docs.") ;
+            console.log(" Problem selecting items in menuButton. See docs. index = ") ;
             return;
         }
         var disabled = myOptions[index].getAttribute("disabled") || false;
@@ -40,7 +43,7 @@ ice.mobi.menubutton = {
             jspForm: myForm
         };
         var cfg = {
-            source: optId,
+            source: optId
         }
         var snId = myOptions[index].getAttribute("snId") || null ;
         var pcId = myOptions[index].getAttribute("pcId") || null;
@@ -58,10 +61,14 @@ ice.mobi.menubutton = {
             }
             options.pcId = pcId;
             ice.mobi.panelConf.init(pcId, optId, cfg, options) ;
+            this.reset(myselect, index);
             return;
         }
         if (snId){
+            var resetCall = function(xhr, status, args) {ice.mobi.menubutton.reset(myselect, index);};
+            options.onsuccess = resetCall;
             ice.mobi.submitnotify.open(snId, optId, cfg, options);
+       //     this.reset(myselect, index);
             return;
         }
         mobi.AjaxRequest(options);
@@ -69,7 +76,8 @@ ice.mobi.menubutton = {
     },
     reset: function reset(myselect, index) {
         console.log("RESET");
-            myselect.options[index].selected = false;
+        myselect.options[index].selected = false;
+        myselect.options[0].selected=true;
        //     myselect.options.index = 0;
 
     }
