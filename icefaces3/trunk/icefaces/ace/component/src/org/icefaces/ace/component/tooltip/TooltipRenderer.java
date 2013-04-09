@@ -226,6 +226,10 @@ public class TooltipRenderer extends CoreRenderer {
 
         encodeClientBehaviors(facesContext, tooltip, jb);
         jb.entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
+		String style = tooltip.getStyle();
+		if (style != null) jb.entry("inlineStyle", style);
+		String styleClass = tooltip.getStyleClass();
+		if (styleClass != null) jb.entry("styleClass",styleClass);
 //        jb.entry("ariaEnabled", false);
 		jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());
