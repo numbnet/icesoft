@@ -19,7 +19,8 @@ package com.icesoft.icefaces.tutorial.component.tree.basic;
 import com.icesoft.faces.component.tree.IceUserObject;
 
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.DefaultMutableTreeNode; 
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -33,8 +34,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * </p>
  *
  */
-public class TreeBean {
+public class TreeBean implements Serializable {
 
+    private static final long serialVersionUID = 6256505532910172146L;
     // tree default model, used as a value for the tree component
     private DefaultTreeModel model;
 
