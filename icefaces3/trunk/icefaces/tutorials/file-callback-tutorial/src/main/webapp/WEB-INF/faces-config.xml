@@ -22,16 +22,26 @@
               metadata-complete="false">
 
     <application>
-    <resource-bundle>
-    <base-name>messages</base-name>
-    <var>msgs</var>
-    </resource-bundle>
+        <resource-bundle>
+            <base-name>messages</base-name>
+            <var>msgs</var>
+        </resource-bundle>
+
         <locale-config>
             <default-locale>en</default-locale>
             <supported-locale>en</supported-locale>
         </locale-config>
-        
-        
     </application>
-  
+    
+    <managed-bean>
+        <description>
+            Backing bean for fileEntry callback example.
+        </description>
+        <managed-bean-name>fileMD5EncodingCallback</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.tutorials.ace.faces.listeners.FileMD5EncodingCallback
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
 </faces-config>

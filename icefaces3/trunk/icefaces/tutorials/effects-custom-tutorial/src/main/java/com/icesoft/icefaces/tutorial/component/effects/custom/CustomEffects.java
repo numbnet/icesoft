@@ -23,11 +23,12 @@
 
 package com.icesoft.icefaces.tutorial.component.effects.custom;
 
+import java.io.Serializable;
 import com.icesoft.faces.context.effects.BlindDown;
 import com.icesoft.faces.context.effects.Effect;
 
 
-public class CustomEffects {
+public class CustomEffects implements Serializable {
     //effect used to expand the panelGroup
     private Effect panelEffect;
     
@@ -39,9 +40,6 @@ public class CustomEffects {
         return panelEffect;
     }
 
-    public void setPanelEffect(Effect panelEffect) {
-        this.panelEffect = panelEffect;
-    }
     /*
      *fires the blindDown effect
      *@return null
@@ -50,5 +48,4 @@ public class CustomEffects {
         panelEffect = new BlindDown();
         return null;
     }
-    
 }
