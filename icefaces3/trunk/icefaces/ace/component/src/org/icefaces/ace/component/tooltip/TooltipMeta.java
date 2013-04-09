@@ -110,4 +110,10 @@ public class TooltipMeta extends UIOutputMeta {
 	
 	@Property(tlddoc="Specifies whether the tooltip should be stylized as a speech bubble (i.e. with a speech bubble arrow tip pointing to the triggerer element).", defaultValue="false")
 	private boolean speechBubble;
+	
+    @Property(tlddoc="The CSS style class of the component, rendered on the root div of the component.")
+    private String styleClass;  
+
+    @Property(tlddoc="The inline style of the component, rendered on the root div of the component.")
+    private String style;
 }

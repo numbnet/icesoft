@@ -57,11 +57,18 @@ ice.ace.Tooltip = function(id, cfg) {
 		styleClasses += ' ice-ace-speechbubble'
 		showTip = true;
     }
+	styleClasses += ' ' + this.cfg.styleClass;
 	this.cfg.style = {widget:true, tip:{corner:showTip, width:12, height:12}};
+	var inlineStyle = this.cfg.inlineStyle;
 	
 	var self = this;
 	var events = {};
-	events.render = function(event, api) {api.elements.tooltip.addClass(styleClasses)};
+	events.render = function(event, api) {
+		var jqTooltip = api.elements.tooltip;
+		jqTooltip.addClass(styleClasses);
+		var nodeStyle = jqTooltip.attr('style');
+		jqTooltip.attr('style', nodeStyle + ';' + inlineStyle);
+	};
 	events.show = function() { if (!ice.ace.Tooltips[self.cfg.id] && (self.cfg.displayListener || self.cfg.behaviors.display)) { ice.ace.Tooltips[self.cfg.id] = true; self.triggerDisplayListener(); }};
 	events.hide = function() { delete ice.ace.Tooltips[self.cfg.id] };
 	this.cfg.events = events;
