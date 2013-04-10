@@ -20,16 +20,19 @@ import javax.faces.model.SelectItem;
 import javax.faces.event.ValueChangeEvent;
 import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushRenderer;
+
+import java.io.Serializable;
 import java.util.Random;
 import javax.faces.context.FacesContext;
 /**
  * Class used to allow the toggling of the two progress bar modes
  * Basically just track whether we should be determinate or indeterminate
  */
-public class ModeBean
+public class ModeBean implements Serializable
 {
     private static final int PAUSE_AMOUNT_S = 300; // milliseconds to pause between progress increases
     protected int percent = 0;
+    private static final long serialVersionUID = 7316741045420993728L;
     protected boolean isRunning = false;
     protected Thread progressThread;
     protected PortableRenderer renderer;
