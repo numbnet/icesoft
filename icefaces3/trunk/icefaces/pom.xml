@@ -118,7 +118,7 @@
         <!-- The portlet bridge implmentation to use.
              Default is portletfaces but liferayfaces can also be specified. -->
         <portletfaces.version>2.0.2-ice-8986</portletfaces.version>
-        <liferayfaces.version>3.1.0-ga1</liferayfaces.version>
+        <liferayfaces.version>3.1.2-ga3-SNAPSHOT</liferayfaces.version>
 
         <!-- When building samples for Pluto Portal -->
         <pluto.version>2.0.3</pluto.version>
@@ -171,6 +171,10 @@
     </build>
 
     <repositories>
+        <repository>
+            <id>sonatype.snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
         <repository>
             <id>java.net</id>
             <url>http://download.java.net/maven/2</url>
