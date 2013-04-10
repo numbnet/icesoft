@@ -45,30 +45,39 @@ public class WindowAndViewIDSetup implements SystemEventListener {
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         UIForm form = (UIForm) ((ComponentSystemEvent) event).getComponent();
         String componentId = form.getId() + ID_SUFFIX;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map requestMap = context.getExternalContext().getRequestMap();
+
+        final String windowID = WindowScopeManager.lookupAssociatedWindowID(requestMap);
+        final String viewID = BridgeSetup.getViewID(context.getExternalContext());
+        final WindowScopeManager.ScopeMap scopeMap = WindowScopeManager.lookupWindowScope(context);
 
         UIOutput output = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
-                Map requestMap = context.getExternalContext().getRequestMap();
 
-                if (WindowScopeManager.lookupAssociatedWindowID(requestMap) == null) {
-                    Log.severe("Missing window ID attribute. Request map cleared prematurely.");
+                if (windowID == null) {
+                    Log.warning("Missing window ID attribute. Request map cleared prematurely.");
                     return;
                 }
-                String viewId = BridgeSetup.getViewID(context.getExternalContext());
-                if (viewId == null) {
-                    Log.severe("Missing view ID attribute. Request map cleared prematurely.");
+                if (viewID == null) {
+                    Log.warning("Missing view ID attribute. Request map cleared prematurely.");
                     return;
                 }
+                if (scopeMap == null) {
+                    Log.warning("Missing window scope map. Session was invalidated or dispose window request already cleared the window scope.");
+                    return;
+                }
+
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.window", null);
-                writer.writeAttribute("value", WindowScopeManager.lookupWindowScope(context).getId(), null);
+                writer.writeAttribute("value", scopeMap.getId(), null);
                 writer.endElement("input");
 
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.view", null);
-                writer.writeAttribute("value", viewId, null);
+                writer.writeAttribute("value", viewID, null);
                 writer.endElement("input");
             }
         };
