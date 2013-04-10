@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="panelPopup-advanced-tutorial" default="war.basic">
-    <property file="./build.properties"/>
+<project name="panelPopup-advanced-tutorial" default="servlet-profile">
+    <property file="build.properties"/>
     <import file="../common.xml"/>
 </project>

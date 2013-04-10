@@ -17,15 +17,16 @@
 package com.icesoft.icefaces.tutorial.component.panelPopup.advanced;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
+import java.io.Serializable;
+
 /**
  * Class used to allow the dynamic opening and closing of panelPopups
  * That means the visibility status is tracked, as well as supporting
  *  methods for button clicks on the page
  */ 
-@ApplicationScoped
-@ManagedBean(name="popup")
-public class PopupBean
+public class PopupBean implements Serializable
 {
+    private static final long serialVersionUID = -5972120643066053354L;
     private boolean visible = true;
     
     public boolean isVisible() { return visible; }
