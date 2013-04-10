@@ -515,16 +515,20 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
 
 .required-styling-demo .ui-inputfield.ui-state-required {
     background-color: #33ffff;
+	background-image: none;
 }
 
 .required-styling-demo .ui-inputfield.ui-state-optional {
     background-color: #ffff33;
+	background-image: none;
 }
 
 .required-styling-demo .ui-state-required.ui-state-error {
     background-color: #cd0a0a;
+	background-image: none;
 }
 
 .required-styling-demo .ui-state-optional.ui-state-error {
     background-color: #ff9999;
+	background-image: none;
 }
