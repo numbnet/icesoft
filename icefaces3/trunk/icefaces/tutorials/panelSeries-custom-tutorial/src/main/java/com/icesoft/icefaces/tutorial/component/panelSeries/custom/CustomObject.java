@@ -16,13 +16,14 @@
 
 package com.icesoft.icefaces.tutorial.component.panelSeries.custom;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.faces.event.ActionEvent;
 
 /**
  * <p>A custom object represents the personal information</p>
  */
-public class CustomObject{
+public class CustomObject implements Serializable {
 
 	private String name;
 	private String emailAddress;
