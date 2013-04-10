@@ -17,15 +17,18 @@
 package com.icesoft.icefaces.tutorial.component.panelSeries.basic;
 
 
+import java.io.Serializable;
+
 /**
  * <p>
  * A basic backing bean for a ice:panelSeries component.  The only instance variable
  * needed is an array of Strings which is bound to the icefaces tree
  * component in the jspx code.</p>
  */
-public class BasicPanelSeriesBean{
+public class BasicPanelSeriesBean implements Serializable {
 
-	private String[] colorList = new String[]{
+    private static final long serialVersionUID = 5541832815571111343L;
+    private String[] colorList = new String[]{
 		"Black",
 		"White",
 		"Yellow",
