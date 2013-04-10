@@ -16,6 +16,7 @@
 
 package com.icesoft.icefaces.tutorial.component.outputchart.basic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,8 +24,10 @@ import java.util.List;
 /**
  * SalesBean retrieves sales data to be displayed in the UI.
  */
-public class SalesBean extends Sales{
-    
+public class SalesBean extends Sales implements Serializable {
+
+    private static final long serialVersionUID = 7046508728833936043L;
+
     /**
      * Method to build the sales list and create the chart using the data from
      * the Sales class

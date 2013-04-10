@@ -18,6 +18,7 @@ package com.icesoft.icefaces.tutorial.component.outputchart.basic;
 
 import com.icesoft.faces.component.outputchart.OutputChart;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
@@ -28,8 +29,9 @@ import javax.faces.event.ActionEvent;
  *
  * @since 1.5
  */
-public class PieChartBean extends PieChart {
-    
+public class PieChartBean extends PieChart implements Serializable {
+
+    private static final long serialVersionUID = -1420728945742006104L;
     //String displayed in the UI
     private static String clickedAreaValue = "Click on the image map below to display a chart value: ";
 
