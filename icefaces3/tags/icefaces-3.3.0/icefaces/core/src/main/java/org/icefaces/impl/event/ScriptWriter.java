@@ -47,16 +47,15 @@ public class ScriptWriter extends UIOutput {
         this.setTransient(true);
         this.javascriptContents = javascriptContents;
         if (optionalId != null) {
-            this.setId(optionalId);
+            this.setId(parent.getId() + optionalId);
         }
     }
 
+    @Override
     public void encodeBegin(FacesContext context) {
         ResponseWriter writer = context.getResponseWriter();
         try {
-            writer.startElement("span", this);
-            writer.writeAttribute("id", getClientId(context), null);
-            writer.startElement("script", this);
+            writer.startElement("script", parent);
             writer.writeAttribute("type", "text/javascript", "type");
             writer.write(javascriptContents);
         } catch (Exception ioe) {
@@ -64,11 +63,11 @@ public class ScriptWriter extends UIOutput {
         }
     }
 
+    @Override
     public void encodeEnd(FacesContext context) {
         ResponseWriter writer = context.getResponseWriter();
         try {
             writer.endElement("script");
-            writer.endElement("span");
         } catch (Exception ioe) {
             Log.severe("Exception encoding script tag: " +  ioe);
         }
