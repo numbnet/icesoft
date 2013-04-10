@@ -173,9 +173,7 @@ ice.ace.ComboBox.prototype = {
 			self.active = false;
             };
 
-        this.observer = null;
         ice.ace.jq(this.update).hide();
-		//ice.ace.jq(this.element).data("labelIsInField", this.cfg.labelIsInField);
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
 		ice.ace.jq(this.downArrowButton).on("click", function(e) { self.onElementClick.call(self, e); });
@@ -396,11 +394,9 @@ ice.ace.ComboBox.prototype = {
 			this.selectEntry();
 			this.getUpdatedChoices(true, event, idx);
 			this.hide();
-		} else {
-			if (this.hideObserver) clearTimeout(this.hideObserver);
-			if (this.observer) clearTimeout(this.observer);
-			if (this.blurObserver) clearTimeout(this.blurObserver);
 		}
+		if (this.hideObserver) clearTimeout(this.hideObserver);
+		if (this.blurObserver) clearTimeout(this.blurObserver);
     },
 
     onBlur: function(event) {
@@ -449,9 +445,12 @@ ice.ace.ComboBox.prototype = {
 	onElementClick: function(event) {
 		if (this.active) {
 			this.hide();
+			if (this.hideObserver) clearTimeout(this.hideObserver);
+			if (this.blurObserver) clearTimeout(this.blurObserver);
 			this.element.focus();
 		} else {
 			if (this.hideObserver) clearTimeout(this.hideObserver);
+			if (this.blurObserver) clearTimeout(this.blurObserver);
 			this.clientSideModeUpdate(this.noFilter);
 		}
 	},
@@ -671,7 +670,6 @@ ice.ace.ComboBox.prototype = {
             event = new Object();
         }
 
-		if (this.observer) clearTimeout(this.observer);
 		if (this.blurObserver) clearTimeout(this.blurObserver);
 		if (this.ajaxValueChange) {
 			var ajaxCfg = {};
@@ -830,21 +828,22 @@ ice.ace.ComboBox.prototype = {
 	
 	showEffect: function(update) {
 		var list = ice.ace.jq(update);
+		list.css('opacity', 1);
 		var e = this.effects.show;
 		e = e ? e.toLowerCase() : '';
 		if (e == 'blind' || e == 'bounce' || e == 'clip' || e == 'drop' || e == 'explode'
 				|| e == 'fold' || e == 'puff' || e == 'pulsate' || e == 'scale' || e == 'slide' || e == 'shake') {
-			list.toggle(this.effects.show, {}, this.effects.showLength);
+			list.show(e, {}, this.effects.showLength);
 		} else list.fadeIn(this.effects.showLength);
 	},
 	
 	hideEffect: function(update) {
 		var list = ice.ace.jq(update);
-		var e = this.effects.show;
+		var e = this.effects.hide;
 		e = e ? e.toLowerCase() : '';
 		if (e == 'blind' || e == 'bounce' || e == 'clip' || e == 'drop' || e == 'explode'
 				|| e == 'fold' || e == 'puff' || e == 'pulsate' || e == 'scale' || e == 'slide') {
-			list.toggle(this.effects.hide, {}, this.effects.hideLength);
+			list.hide(e, {}, this.effects.hideLength);
 		} else list.fadeOut(this.effects.hideLength);
 	}
 };
