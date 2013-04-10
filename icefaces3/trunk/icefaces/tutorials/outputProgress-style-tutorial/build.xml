@@ -14,11 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="outputProgress-style-tutorial" default="war.basic">
-    <property name="lib.extra.dir" location="." />
-    <property name="compat" value="true" />
-    <property name="ace" value="true" />
-    <property name="jsf" value="true" />
-    <property file="./build.properties"/>
+<project name="outputProgress-style-tutorial" default="servlet-profile">
+    <property file="build.properties"/>
     <import file="../common.xml"/>
 </project>
