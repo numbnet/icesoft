@@ -145,7 +145,6 @@ public class PanelRenderer extends CoreRenderer {
 
         if (optionsMenu != null) {
             optionsMenu.setPosition("dynamic");
-			if (optionsMenu.getZindex() == 1) optionsMenu.setZindex(1000); // set default zIndex for disableInputs overlay
             optionsMenu.setTrigger(clientId + "_menu");
             optionsMenu.setMy("left top");
             optionsMenu.setAt("left bottom");
@@ -160,22 +159,6 @@ public class PanelRenderer extends CoreRenderer {
         writer.writeAttribute("class", "ui-helper-hidden", null);
         writer.endElement("span");
         writer.endElement("div");
-		
-		// disableInputs
-        writer.startElement("span", null);
-		writer.writeAttribute("id", clientId + "_disableInputs", null);
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		if (panel.isDisableInputs()) {
-			writer.write("ice.ace.Panel.disableInputs('"+clientId+"'); //" + System.currentTimeMillis()); // keep disabled across updates
-		} else if (panel.isPreviousDisableInputs() != null) { 
-			if (panel.isPreviousDisableInputs() == true) // only render when there's a change from disabled to enabled
-				writer.write("ice.ace.Panel.enableInputs('"+clientId+"');");
-		}
-		writer.endElement("script");
-        writer.endElement("span");
-		
-		panel.setPreviousDisableInputs(panel.isDisableInputs());
     }
 
     protected void encodeHeader(FacesContext context, Panel panel) throws IOException {
