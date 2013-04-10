@@ -129,5 +129,11 @@ var setupDefaultIndicators;
                 PopupIndicator("User Session Expired", "Reload this page to start a new user session.", overlay);
             }
         });
+
+        namespace.onBeforeSessionExpiry(function(time) {
+            if (showIndicators()) {
+                PopupIndicator("User Session is about to expire in " + time + " seconds.", "Reload this page to keep your current user session.", overlay);
+            }
+        });
     }
 })();

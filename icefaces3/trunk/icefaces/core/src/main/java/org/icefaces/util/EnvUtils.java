@@ -71,6 +71,7 @@ public class EnvUtils {
     public static String RESOURCE_VERSION = "org.icefaces.resourceVersion";
     public static String VERSIONABLE_TYPES = "org.icefaces.versionableTypes";
     public static String COALESCE_RESOURCES = "org.icefaces.coalesceResources";
+    public static String WARN_BEFORE_SESSION_EXPIRY_INTERVAL = "org.icefaces.warnBeforeSessionExpiryInterval";
 
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -1017,7 +1018,9 @@ public class EnvUtils {
         return null;
     }
 
-}
+    public static long getWarnBeforeExpiryInterval(FacesContext context) {
+        return EnvConfig.getEnvConfig(context).warnBeforeExpiryInterval;
+    }}
 
 class EnvConfig {
     private static Logger log = Logger.getLogger(EnvConfig.class.getName());
@@ -1055,6 +1058,7 @@ class EnvConfig {
     public boolean focusManaged;
     public boolean reloadOnUpdateFailure;
     public boolean coalesceResources;
+    public long warnBeforeExpiryInterval;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -1093,6 +1097,7 @@ class EnvConfig {
         resourceVersion = decodeString(initMap, EnvUtils.RESOURCE_VERSION, ProductInfo.RESOURCE_VERSION, info);
         versionableTypes = decodeString(initMap, EnvUtils.VERSIONABLE_TYPES, DEFAULT_VERSIONABLE_TYPES, info);
         coalesceResources = decodeBoolean(initMap, EnvUtils.COALESCE_RESOURCES, false, info);
+        warnBeforeExpiryInterval = decodeLong(initMap, EnvUtils.WARN_BEFORE_SESSION_EXPIRY_INTERVAL, -1L, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }

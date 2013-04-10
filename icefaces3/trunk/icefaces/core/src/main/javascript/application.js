@@ -52,6 +52,12 @@ if (!window.ice.icefaces) {
             }
         }
 
+        var beforeSessionExpiryListeners = [];
+        namespace.onBeforeSessionExpiry = function(callback) {
+            append(beforeSessionExpiryListeners, callback);
+            return removeCallbackCallback(beforeSessionExpiryListeners, detectByReference(callback));
+        };
+
         var sessionExpiryListeners = [];
         namespace.onSessionExpiry = function(callback) {
             append(sessionExpiryListeners, callback);
@@ -571,6 +577,15 @@ if (!window.ice.icefaces) {
             namespace.onServerError(stopDelay);
             namespace.onUnload(stopDelay);
             namespace.onElementUpdate(id, stopDelay);
+        };
+
+        var sessionExpiryTimeoutBomb = object(function(method) {
+            method(stop, noop);
+        });
+        namespace.resetSessionExpiryTimeout = function(deltaTime, timeLeft) {
+            stop(sessionExpiryTimeoutBomb);
+            var timeInSeconds = Math.round(timeLeft / 1000);
+            sessionExpiryTimeoutBomb = runOnce(Delay(curry(broadcast, beforeSessionExpiryListeners, [timeInSeconds]), deltaTime));
         };
 
         namespace.captureKeypress = function(id, keyMap) {
