@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="singleSubmit" default="war.basic">
+<project name="singleSubmit" default="servlet-profile">
     <property file="./build.properties"/>
     <import file="../common.xml"/>
 </project>
