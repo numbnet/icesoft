@@ -20,12 +20,14 @@ import javax.faces.model.SelectItem;
 import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushRenderer;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 
 /**
  * Class used to allow the toggling of label position, and setting of the label text
  */
-public class LabelBean extends ProgressBar
+public class LabelBean extends ProgressBar implements Serializable
 {
+    private static final long serialVersionUID = 5663060276720931002L;
     private SelectItem[] AVAILABLE_POSITIONS = {new SelectItem("left"),
                                                 new SelectItem("right"),
                                                 new SelectItem("top"),
