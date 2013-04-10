@@ -20,6 +20,7 @@ import com.icesoft.faces.component.outputchart.OutputChart;
 import com.icesoft.icefaces.tutorial.component.outputchart.basic.Sales;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,8 +35,9 @@ import javax.faces.model.SelectItem;
  *
  * @since 1.5
  */
-public class PieChartBean extends PieChart {
+public class PieChartBean extends PieChart implements Serializable {
 
+    private static final long serialVersionUID = 608262055978356273L;
     //flag to determine if the graph needs rendering
     private boolean pieNeedsRendering = false;
     
