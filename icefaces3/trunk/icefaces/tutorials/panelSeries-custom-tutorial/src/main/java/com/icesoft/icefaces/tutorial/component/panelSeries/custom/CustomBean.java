@@ -16,6 +16,7 @@
 
 package com.icesoft.icefaces.tutorial.component.panelSeries.custom;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +24,7 @@ import java.util.Date;
 /**
  * <p>A custom backing bean uses a Java List to store a list of personals</p>
  */
-public class CustomBean{
+public class CustomBean implements Serializable {
 
 	private List customObjectList;
 
