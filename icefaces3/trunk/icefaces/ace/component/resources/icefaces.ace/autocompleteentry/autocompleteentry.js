@@ -458,6 +458,8 @@ ice.ace.Autocompleter.prototype = {
         this.selectEntry();
         this.getUpdatedChoices(true, event, idx);
         this.hide();
+		if (this.hideObserver) clearTimeout(this.hideObserver);
+		if (this.blurObserver) clearTimeout(this.blurObserver);
     },
 
     onBlur: function(event) {
@@ -480,7 +482,7 @@ ice.ace.Autocompleter.prototype = {
         }
         // needed to make click events working
 		var self = this;
-        setTimeout(function () { self.hide(); }, 400);
+        this.hideObserver = setTimeout(function () { self.hide(); }, 400);
         this.hasFocus = false;
         this.active = false;
 		setFocus('');
@@ -862,21 +864,22 @@ ice.ace.Autocompleter.prototype = {
 	
 	showEffect: function(update) {
 		var list = ice.ace.jq(update);
+		list.css('opacity', 1);
 		var e = this.effects.show;
 		e = e ? e.toLowerCase() : '';
 		if (e == 'blind' || e == 'bounce' || e == 'clip' || e == 'drop' || e == 'explode'
 				|| e == 'fold' || e == 'puff' || e == 'pulsate' || e == 'scale' || e == 'slide' || e == 'shake') {
-			list.toggle(this.effects.show, {}, this.effects.showLength);
+			list.toggle(e, {}, this.effects.showLength);
 		} else list.fadeIn(this.effects.showLength);
 	},
 	
 	hideEffect: function(update) {
 		var list = ice.ace.jq(update);
-		var e = this.effects.show;
+		var e = this.effects.hide;
 		e = e ? e.toLowerCase() : '';
 		if (e == 'blind' || e == 'bounce' || e == 'clip' || e == 'drop' || e == 'explode'
 				|| e == 'fold' || e == 'puff' || e == 'pulsate' || e == 'scale' || e == 'slide') {
-			list.toggle(this.effects.hide, {}, this.effects.hideLength);
+			list.toggle(e, {}, this.effects.hideLength);
 		} else list.fadeOut(this.effects.hideLength);
 	}
 };
