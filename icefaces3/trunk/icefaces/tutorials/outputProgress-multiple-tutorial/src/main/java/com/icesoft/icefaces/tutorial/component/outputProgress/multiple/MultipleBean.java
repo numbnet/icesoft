@@ -16,6 +16,7 @@
 
 package com.icesoft.icefaces.tutorial.component.outputProgress.multiple;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -27,10 +28,11 @@ import javax.faces.context.FacesContext;
  * Class used to manage multiple progress bars
  * This will also use a thread to update the percent value of each progress bar
  */
-public class MultipleBean
+public class MultipleBean implements Serializable
 {
     private static final int PAUSE_AMOUNT_S = 1000; // milliseconds to pause between progress updates
     private Random randomizer = new Random(System.currentTimeMillis());
+    private static final long serialVersionUID = -8801335546851905408L;
     private ArrayList progressBarList = generateDefaultList();
     private Thread updateThread;
     private boolean isRunning = true;
