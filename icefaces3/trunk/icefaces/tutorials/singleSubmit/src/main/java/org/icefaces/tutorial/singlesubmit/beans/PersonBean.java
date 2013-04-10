@@ -16,17 +16,12 @@
 
 package org.icefaces.tutorial.singlesubmit.beans;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 
-@ManagedBean(name="personBean")
-@ViewScoped
 public class PersonBean implements Serializable {
-	private String name;
+    private static final long serialVersionUID = -8480318208828974023L;
+    private String name;
 	private int age;
 	private String gender;
 	private String favorite;
