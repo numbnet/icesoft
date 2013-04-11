@@ -19,6 +19,7 @@ package com.icesoft.icefaces.tutorials.menubar.basic;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -26,8 +27,9 @@ import java.util.Map;
  * stores the modified id information in a String. MenuBarBean also controls the
  * orientation of the Menu Bar.</p>
  */
-public class MenuBarBean {
+public class MenuBarBean implements Serializable {
 
+    private static final long serialVersionUID = 8789957949564114786L;
     // records the param value for the menu item which fired the event
     private String param;
 
