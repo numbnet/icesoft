@@ -102,6 +102,7 @@ ice.ace.fileentry = {
         //submitted = submitted.nodeType == 1 ? submitted : submitted.parentNode;
 
         var context = {};
+        context.element = formElem;
         context.sourceid = formElem.id;
         context.formid = formElem.id;
         context.render = "@all";
