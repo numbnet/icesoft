@@ -74,6 +74,13 @@
         <param-value>AIzaSyAATyWVqT2qNusNGmcVTyQ0QmymkpU-B5o&amp;libraries=places</param-value>
     </context-param>
 
+	<!-- Enable resource coalescing for this application -->
+	<context-param>
+        <description>Resource Coalescing will automatically combine required resources for the initial page load into single .css and .js files</description>
+        <param-name>org.icefaces.coalesceResources</param-name>
+        <param-value>true</param-value>
+  </context-param>
+
 	
     <!-- Servlet declarations and mappings -->
     <servlet>
