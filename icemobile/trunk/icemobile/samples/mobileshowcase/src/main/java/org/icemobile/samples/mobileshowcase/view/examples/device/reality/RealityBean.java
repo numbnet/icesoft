@@ -113,7 +113,9 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         super(RealityBean.class);
         markerList = new ArrayList();
 
-        HashMap marker = new HashMap();
+        HashMap marker;
+
+        marker = new HashMap();
         marker.put("label", "puz1");
         marker.put("model", getContextURL() + 
                 "/resources/3d/puz1.obj" );
@@ -129,6 +131,18 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         marker.put("label", "icemobile");
         marker.put("model", getContextURL() +
                 "/resources/3d/icemobile.obj" );
+        markerList.add(marker);
+
+        marker = new HashMap();
+        marker.put("label", "ice.arform");
+        marker.put("model", getContextURL() +
+                "/resources/3d/catalog.xml" );
+        markerList.add(marker);
+
+        marker = new HashMap();
+        marker.put("label", "ice.targets");
+        marker.put("model", getContextURL() +
+                "/resources/3d/mobileshowcase.xml" );
         markerList.add(marker);
 
         for (HashMap theMarker : markerList)  {
@@ -235,6 +249,17 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         this.selectedModel1 = selectedModel;
         HashMap marker = allMarkers.get(selectedModel);
         markerList.set(0, marker);
+        if ( ("ice.targets".equals(selectedModel)) ||
+             ("ice.arform".equals(selectedModel)) )  {
+            markerList = new ArrayList();
+            markerList.add(marker);
+        } else {
+            if (markerList.size() == 1)  {
+                markerList = new ArrayList(2);
+            }
+            markerList.set(0, allMarkers.get(selectedModel1));
+            markerList.set(1, allMarkers.get(selectedModel2));
+        }
     }
 
     public String getSelectedModel2() {
@@ -242,6 +267,9 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     }
 
     public void setSelectedModel2(String selectedModel) {
+        if (markerList.size() == 1)  {
+            return;
+        }
         this.selectedModel2 = selectedModel;
         HashMap marker = allMarkers.get(selectedModel);
         markerList.set(1, marker);
