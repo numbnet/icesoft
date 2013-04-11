@@ -165,7 +165,7 @@ public class ThemeSelectRenderer extends InputRenderer {
             return;
         }
         themeList = new TreeMap<String, String>();
-        themeList.put("none", "");
+//        themeList.put("none", "");
 
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
         Resource resource;
