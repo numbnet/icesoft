@@ -79,11 +79,9 @@
 </form:form>
 <script type="text/javascript">
     MvcUtil.enhanceForm("#buttonsform");
-	mobi.AjaxRequest = function( options){
+    mobi.AjaxRequest = function( options){
         if (options.jspForm){
-            options.jspForm.submit();
+            $(options.jspForm).submit();
         }
     };
-
-
 </script>
