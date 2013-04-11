@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.io.Serializable;
 
 import javax.faces.event.ActionEvent;
 
@@ -42,8 +43,9 @@ import com.icesoft.faces.component.outputchart.OutputChart;
  *
  * @since 1.5
  */
-public class CombinedChart{
-    
+public class CombinedChart implements Serializable {
+
+    private static final long serialVersionUID = 8486500013246791132L;
     //the text value returned after clicking on the chart
     private String clickedValue;
 
