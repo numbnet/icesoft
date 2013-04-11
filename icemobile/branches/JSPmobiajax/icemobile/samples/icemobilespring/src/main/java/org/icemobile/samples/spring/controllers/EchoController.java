@@ -20,6 +20,7 @@ import org.icemobile.samples.spring.AccordionBean;
 import org.icemobile.samples.spring.CarouselBean;
 import org.icemobile.samples.spring.DateTimeSpinnerBean;
 import org.icemobile.samples.spring.FlipSwitchBean;
+import org.icemobile.samples.spring.ButtonsBean;
 import org.icemobile.samples.spring.InputTextBean;
 import org.icemobile.samples.spring.ListBean;
 import org.icemobile.samples.spring.TabsetBean;
@@ -48,7 +49,10 @@ public class EchoController extends ICEmobileBaseController{
     }
 
     @RequestMapping(value = "/buttons")
-    public void doRequest(Model model,
+    public void doRequest(
+        @ModelAttribute("buttonsBean")ButtonsBean model) {
+    }
+  /*  public void doRequest(Model model,
                           @RequestParam(value = "submitB", required = false)
                           String submitted) {
         if (submitted != null) {
@@ -57,7 +61,7 @@ public class EchoController extends ICEmobileBaseController{
             }
             model.addAttribute("pressed", "[" + submitted + "]");
         }
-    }
+    }  */
 
     @RequestMapping(value = "/carousel")
     public void doRequest(
