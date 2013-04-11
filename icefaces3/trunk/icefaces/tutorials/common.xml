@@ -76,11 +76,15 @@
     </patternset>
 
     <patternset id="lib.compile.compat" includes="commons-logging.jar ${lib.compile.compat.includes}">
-        <exclude name="*.jar"                   unless="compat"/>
+        <exclude name="*.jar"                              unless="compat"/>
+        <exclude name="jxl.jar"                            unless="compat_dataExporter"/>
+        <exclude name="krysalis-jCharts-1.0.0-alpha-1.jar" unless="compat_outputChart"/>
     </patternset>
 
     <patternset id="lib.distribute.compat" includes="commons-logging.jar ${lib.distribute.compat.includes}">
-        <exclude name="*.jar"                   unless="compat"/>
+        <exclude name="*.jar"                              unless="compat"/>
+        <exclude name="jxl.jar"                            unless="compat_dataExporter"/>
+        <exclude name="krysalis-jCharts-1.0.0-alpha-1.jar" unless="compat_outputChart"/>
     </patternset>
 
 	<patternset id="lib.compile.mojarra" includes="${lib.compile.mojarra.includes}"/>			

@@ -17,13 +17,14 @@
 package com.icesoft.icefaces.tutorial.crud.hibernate;
 
 import com.icesoft.icefaces.tutorial.crud.hibernate.util.HibernateUtil;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import org.hibernate.Query;
@@ -35,8 +36,6 @@ import javax.faces.model.SelectItem;
  * Hibernate to connect and interact with a MySql database.  
  **/
 
-@ManagedBean
-@SessionScoped
 public class RegisterManager {
     
     // List of student id's
@@ -57,6 +56,10 @@ public class RegisterManager {
     private Course currentCourse = new Course();
     // List of course id's that a student is registered 
     private List studentCourses = new ArrayList();
+    // The ice:panelTabSet's selectedIndex, for when we constrain the display
+    // to the Add Student tab, when all the students have been deleted
+    private int selectedTabIndex = 0;
+    private long courseIdToRemoveFromStudent = -1;
     
     public RegisterManager() {
        init();
@@ -80,21 +83,46 @@ public class RegisterManager {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         List studentResult = session.createQuery("select s.studentId from com.icesoft.icefaces.tutorial.crud.hibernate.Student as s").list();
-        List courseResult = session.createQuery("select c.courseName from com.icesoft.icefaces.tutorial.crud.hibernate.Course as c").list();        
+        List courseResult = session.createQuery("select c.courseName from com.icesoft.icefaces.tutorial.crud.hibernate.Course as c").list();
+        if (studentResult.size() > 0) {
+            currentStudent = (Student) session.get(Student.class, (java.io.Serializable) Integer.parseInt(studentResult.get(0).toString()));
+        } else {
+            selectedTabIndex = 0;
+        }
+        setStudentCourses();
+        if (courseResult.size() > 0) {
+            Query q = session.createQuery("from com.icesoft.icefaces.tutorial.crud.hibernate.Course as c where " +
+                    "c.courseName=:name");
+            q.setString("name", courseResult.get(0).toString());
+            currentCourse = (Course) q.uniqueResult();
+        } else {
+            currentCourse = new Course();
+        }
         session.getTransaction().commit();
-        
-        studentItems.add(new SelectItem(""));
-        for(int i = 0; i < studentResult.size();i++){
-            studentItems.add(new SelectItem(studentResult.get(i).toString()));
+
+        studentItems.clear();
+        for(Object studentId : studentResult){
+            studentItems.add(new SelectItem(studentId.toString()));
         }
-        if (studentItems.size() > 0) ((SelectItem)studentItems.get(0)).getLabel();
-       
-        for(int i = 0;i < courseResult.size();i++){
-            courseItems.add(new SelectItem(courseResult.get(i)));
+
+        courseItems.clear();
+        for(Object courseName : courseResult){
+            courseItems.add(new SelectItem(courseName));
         }
-        if (courseItems.size() > 0)((SelectItem)courseItems.get(0)).getLabel();
     }
-    
+
+    public int getSelectedTabIndex() {
+        return selectedTabIndex;
+    }
+
+    public void setSelectedTabIndex(int selectedTabIndex) {
+        this.selectedTabIndex = selectedTabIndex;
+    }
+
+    public void setCourseIdToRemoveFromStudent(long courseIdToRemoveFromStudent) {
+        this.courseIdToRemoveFromStudent = courseIdToRemoveFromStudent;
+    }
+
     /**
      * Gets the studentItems list of student id's.
      * @return list of student id's.
@@ -152,27 +180,11 @@ public class RegisterManager {
     }
     
     /**
-     * Sets the currentStudent Student object.
-     * @param Student object currenty selected.
-     */
-    public void setCurrentStudent(Student currentStudent){
-        this.currentStudent = currentStudent;
-    }
-    
-    /**
      * Gets the newStudent Student object.
      * @return Student object to be added.
      */
     public Student getNewStudent(){
         return newStudent;
-    }
-    
-    /**
-     * Sets the newStudent Student object.
-     * @param Student object to be added.
-     */
-    public void setNewStudent(Student newStudent){
-        this.newStudent = newStudent;
     }
     
     /**
@@ -184,27 +196,11 @@ public class RegisterManager {
     }
     
     /**
-     * Sets the updateStudent Student object.
-     * @param Student object to be updated.
-     */
-    public void setUpdateStudent(Student updateStudent){
-        this.updateStudent = updateStudent;
-    }
-    
-    /**
      * Gets the currentCourse Course object.
      * @return Course object currently selected.
      */
     public Course getCurrentCourse(){
         return currentCourse;
-    }
-    
-    /**
-     * Sets the currentCourse object.
-     * @param Course object currently selected.
-     */
-    public void setCurrentCourse(Course currentCourse){
-        this.currentCourse = currentCourse;
     }
     
     /**
@@ -219,39 +215,36 @@ public class RegisterManager {
      * Sets the studentCourses with the courses related to the currentStudent 
      * object.
      */
-    public void setStudentCourses(){
-        if(studentCourses.isEmpty() == false){
-                studentCourses.clear();
+    protected void setStudentCourses(){
+        studentCourses.clear();
+        Set<Course> c = (currentStudent != null) ? currentStudent.getCourses() : null;
+        if (c != null) {
+            studentCourses.addAll(c);
+            Collections.sort(studentCourses, new Comparator<Course>() {
+                public int compare(Course o1, Course o2) {
+                    return Long.signum(o1.getCourseId() - o2.getCourseId());
+                }
+            });
         }
-        Set c = currentStudent.getCourses();
-        Iterator it = c.iterator();
-        while(it.hasNext()){
-            Course course = (Course)it.next();
-            studentCourses.add(course);
-        }
-    
     }
+    
     /**
      * Listener for the student id selectOneMenu component value change action.
      * @param ValueChangeEvent representing the new value.
      */   
     public void studentValueChanged(ValueChangeEvent event){
         if(event.getNewValue() != null){
-            int id = Integer.parseInt((String)event.getNewValue());
+            int id = Integer.parseInt(event.getNewValue().toString());
             Session session = HibernateUtil.getSessionFactory()
-                                                    .getCurrentSession();
+                .getCurrentSession();
             session.beginTransaction();
-            Query q = session.createQuery("from com.icesoft.icefaces.tutorial.crud.hibernate.Student as s where " +
-                    "s.studentId=:id");
-            q.setInteger("id",id);
-            List sResult = q.list();
-            currentStudent = (Student)sResult.get(0);
+            currentStudent = (Student) session.load(Student.class, id);
             setStudentCourses();
             session.getTransaction().commit();
-            
-            
+        } else {
+            currentStudent = new Student();
+            setStudentCourses();
         }
-        
     }
     /**
      * Listener for the course name selectOneMenu component value change action.
@@ -259,17 +252,16 @@ public class RegisterManager {
      */
     public void courseValueChanged(ValueChangeEvent event){
         if(event.getNewValue() != null){
-            String name = (String)event.getNewValue();
+            String name = event.getNewValue().toString();
             Session session = HibernateUtil.getSessionFactory()
-                                                    .getCurrentSession();
+                .getCurrentSession();
             session.beginTransaction();
-            Query q = session.createQuery("from com.icesoft.icefaces.tutorial.crud.hibernate.Course as c where " +
-                    "c.courseName=:name");
+            Query q = session.createQuery(
+                "from com.icesoft.icefaces.tutorial.crud.hibernate.Course " +
+                    "as c where c.courseName=:name");
             q.setString("name", name);
-            List cResult = q.list();
+            currentCourse = (Course) q.uniqueResult();
             session.getTransaction().commit();
-            currentCourse = (Course)cResult.get(0);
-            
         }
     }
     
@@ -281,13 +273,11 @@ public class RegisterManager {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         
-        Student s = newStudent;
-        
-        session.save(s);
+        session.save(newStudent);
         
         session.getTransaction().commit();
         
-        s.clear();
+        newStudent.clear();
         init();
     }
     
@@ -299,16 +289,20 @@ public class RegisterManager {
         if(currentStudent != null){
             int id = currentStudent.getStudentId();
             Session session = HibernateUtil.getSessionFactory()
-                                                    .getCurrentSession();
+                .getCurrentSession();
             session.beginTransaction();
-            Query q = session.createQuery("delete from com.icesoft.icefaces.tutorial.crud.hibernate.Student as s where " +
-                    "s.studentId =:id");
-            q.setInteger("id",id);
-            int rowCount = q.executeUpdate();
+
+            currentStudent = (Student) session.get(Student.class,
+                currentStudent.getStudentId());
+            for (Course c : currentStudent.getCourses()) {
+                c.getStudents().remove(currentStudent);
+            }
+            currentStudent.getCourses().clear();
+            session.delete(currentStudent);
+
             session.getTransaction().commit();
-            System.out.println("Rows affected: " + rowCount);
+
             currentStudent.clear();
-            studentItems.clear();
             init();
         }
     }
@@ -318,62 +312,46 @@ public class RegisterManager {
      * @param ActionEvent click action event.
      */
     public void updateStudent(ActionEvent event){
-        Student temp = new Student();
-        if(updateStudent.getFirstName().length()==0){
-            temp.setFirstName(currentStudent.getFirstName());
-        }
-        else{
-            temp.setFirstName(updateStudent.getFirstName());
-        }           
-        if(updateStudent.getLastName().length()==0){
-            temp.setLastName(currentStudent.getLastName());
-        }
-        else{
-            temp.setLastName(updateStudent.getLastName());
-        }
-        if(updateStudent.getAddress().length()==0){
-            temp.setAddress(currentStudent.getAddress());
-        }
-        else{
-            temp.setAddress(updateStudent.getAddress());
-        }
-        String firstName = temp.getFirstName();
-        String lastName = temp.getLastName();
-        String address = temp.getAddress();
-        int id = currentStudent.getStudentId();
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
-        Query q = session.createQuery("update com.icesoft.icefaces.tutorial.crud.hibernate.Student set firstName=:" +
-                "firstName, lastName=:lastName, address=:address where " +
-                "studentId=:id");
-        q.setString("firstName", firstName);
-        q.setString("lastName", lastName);
-        q.setString("address", address);
-        q.setInteger("id", id);
-        int rowCount = q.executeUpdate();
+
+        currentStudent = (Student) session.get(Student.class,
+            currentStudent.getStudentId());
+        if (updateStudent.getFirstName().length() > 0) {
+            currentStudent.setFirstName(updateStudent.getFirstName());
+        }
+        if (updateStudent.getLastName().length() > 0) {
+            currentStudent.setLastName(updateStudent.getLastName());
+        }
+        if (updateStudent.getAddress().length() > 0) {
+            currentStudent.setAddress(updateStudent.getAddress());
+        }
+        session.persist(currentStudent);
+
         session.getTransaction().commit();
         
-        currentStudent = updateStudent;
         updateStudent.clear();
-        System.out.println(rowCount);
-    } 
+    }
     
     /**
      * Listener for the add course button click action.
      * @param ActionEvent click action event.
      */
     public void addCourseToStudent(ActionEvent event){
-        Session session = HibernateUtil.getSessionFactory().
-                                                    getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
 
-        Student s = (Student)session.load(Student.class, 
-                                        currentStudent.getStudentId());
-        Course c = (Course)session.load(Course.class, 
-                                        currentCourse.getCourseId());
+        currentStudent = (Student) session.get(Student.class,
+            currentStudent.getStudentId());
+        currentCourse = (Course) session.load(Course.class,
+            currentCourse.getCourseId());
 
-        s.getCourses().add(c);
+        currentStudent.getCourses().add(currentCourse);
+        currentCourse.getStudents().add(currentStudent);
+        // Or persist currentCourse. Either way cascades.
+        session.persist(currentStudent);
         setStudentCourses();
+
         session.getTransaction().commit();
     }
     
@@ -381,21 +359,27 @@ public class RegisterManager {
      * Listener for the remove course button click action.
      * @param ActionEvent click action event.
      */ 
-    public void removeCourseFromStudent(ActionEvent event){
+    public void removeCourseFromStudent(){
+        if (courseIdToRemoveFromStudent < 0) {
+            return;
+        }
+
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         
-        Student s = (Student)session.load(Student.class, 
-                                            currentStudent.getStudentId());
-        Course c = (Course)session.load(Course.class, 
-                                            currentCourse.getCourseId());
-        s.getCourses().remove(c);
+        currentStudent = (Student) session.get(Student.class,
+            currentStudent.getStudentId());
+        Course removeCourse = (Course) session.load(Course.class,
+            courseIdToRemoveFromStudent);
+
+        currentStudent.getCourses().remove(removeCourse);
+        removeCourse.getStudents().remove(currentStudent);
+        // Or persist removeCourse. Either way cascades.
+        session.persist(currentStudent);
         setStudentCourses();
+
         session.getTransaction().commit();
-        
+
+        courseIdToRemoveFromStudent = -1;
     }
-    
-    
-    
-    
 }
