@@ -307,7 +307,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.addAutoComplete = function(mapId, autoId, windowOptions, offset, windowRender){
 
-        var input = document.getElementById(autoId+'_input');
+        var input = ice.ace.jq(ice.ace.escapeClientId(autoId)).children().get(0);
 		ice.ace.jq(input).on('keypress', function(e) {if (e.keyCode == 13 || e.which == 13) return false;});
         var autocomplete = new google.maps.places.Autocomplete(input);
         var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
