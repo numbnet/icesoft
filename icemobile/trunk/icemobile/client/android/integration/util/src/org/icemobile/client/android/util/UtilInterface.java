@@ -64,13 +64,13 @@ public class UtilInterface implements JavascriptInterface,
     private Handler handler;
     private String url;
     private String userAgent;
-    private Activity container;
+    private final Activity container;
     private final WebView view;
     private LinkedList<HttpPostTask> postQueue;
     private LinkedList<String> responseQueue;
     private static final int PROGRESS_INTERVAL = 10;  //Percent
-    private static final int PROGRESS_MSG = 0;
     private static final int RESPONSE_MSG = 1;
+    private static final int MSG_PADDING = 150;
 
     public UtilInterface (Activity container, WebView webView, String userAgent) {
 	this.container = container;
@@ -82,9 +82,6 @@ public class UtilInterface implements JavascriptInterface,
 		@Override
 		    public void handleMessage(Message msg) {
 		    switch(msg.what) {
-		    case PROGRESS_MSG:
-			loadURL("javascript:ice.progress(" + msg.arg1 + ");");
-			break;
 		    case RESPONSE_MSG:
 			loadURL("javascript:ice.handleResponse(window.ICEutil.getResult());");
 			break;
@@ -141,7 +138,7 @@ public class UtilInterface implements JavascriptInterface,
                 }
             } else {
                 StringBody sb = new StringBody(URLDecoder.decode(params[i].getValue(),"UTF-8"));
-                contentSize += sb.getContentLength();
+                contentSize += sb.getContentLength() + MSG_PADDING;
                 content.addPart(URLDecoder.decode(paramName,"UTF-8"), sb);
             }
 	    }
@@ -151,6 +148,9 @@ public class UtilInterface implements JavascriptInterface,
 	    CookieManager cookieManager = CookieManager.getInstance();
 	    postRequest.setHeader("Cookie", cookieManager.getCookie(url));
 	    postRequest.setHeader("Faces-Request", "partial/ajax");
+	    if (contentSize < content.getContentLength()) {
+		contentSize = content.getContentLength();
+	    }
 	    content.measureProgress(contentSize/(PROGRESS_INTERVAL+1));
 	    postRequest.setEntity(content);
 	    queueRequest(postRequest, callback);
@@ -227,12 +227,7 @@ public class UtilInterface implements JavascriptInterface,
     }
 
     private void sendProgress(int progress) {
-	if (progress <= 100) {
-	    Message msg = new Message();
-	    msg.what = PROGRESS_MSG;
-	    msg.arg1 = progress;
-	    handler.sendMessage(msg);
-	}
+	((SubmitProgressListener)container).submitProgress(progress);
     }
 
     private BasicNameValuePair[] getNameValuePairs(String data, String delim1, String delim2) {
@@ -378,8 +373,7 @@ public class UtilInterface implements JavascriptInterface,
 	    if (outputStream_ != null) {
 		outputStream_.setChunkSize(chunkSize);
 	    }
-	}
-	    
+	}	    
     }
 
     private class CountingOutputStream extends FilterOutputStream {

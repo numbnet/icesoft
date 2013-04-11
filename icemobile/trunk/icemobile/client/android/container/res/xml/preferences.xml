@@ -53,12 +53,6 @@
             android:persistent="true"
             android:defaultValue=""
             />
-        <CheckBoxPreference
-            android:key="progressBar"
-            android:summary="Display progress dialog overlay."
-            android:title="Progress Dialog"
-            android:defaultValue="false"
-        />
     </PreferenceCategory>
     
 </PreferenceScreen>

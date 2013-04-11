@@ -22,28 +22,6 @@ if (!window.ice.mobile) {
     (function(namespace) {
         namespace.mobile = true;
 
-        namespace.progress = function(amount) {
-            var canvas = document.getElementById('progMeterCanvas');
-            if (null == canvas) {
-                return;
-            }
-            if (canvas.getContext) {
-                var ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, 200, 200);
-                ctx.beginPath();
-                var theta = ((Math.PI * 2) * amount) / 100;
-                ctx.moveTo(15, 15);
-                ctx.arc(15, 15, 12, 0, theta, false);
-                ctx.fillStyle = '#0B5383';
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(15, 15, 12, 0, theta, false);
-                ctx.strokeStyle = 'gray';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            }
-        }
-
         namespace.setThumbnail = function(id, value) {
             var imageTag = document.getElementById(id);
             if (!imageTag) {
@@ -320,25 +298,7 @@ if (!window.ice.mobile) {
 
     })(window.ice)
 
-    function addConnectionStatus() {
-        var croot = document.createElement("canvas");
-        croot.setAttribute("width", "30");
-        croot.setAttribute("height", "30");
-        croot.setAttribute("style", "position:fixed;top:0;right:0;z-index:990;");
-        croot.setAttribute("id", "progMeterCanvas");
-
-        document.body.appendChild(croot);
-
-        ice.progress(100);
-    }
-
     function init() {
-//        var iframe = document.createElement('iframe');
-//        iframe.setAttribute("id", "ipciframe");
-//        iframe.setAttribute("frameborder", "0");
-//        iframe.setAttribute("style", "width: 0; height: 0; border: 0;position:fixed;top:0;left:0;z-index:1;");
-//        document.body.appendChild(iframe);
-        addConnectionStatus();
     }
 
     //use below if loaded over network vs embedded use to eval this file

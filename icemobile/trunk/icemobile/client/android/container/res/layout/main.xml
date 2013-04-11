@@ -15,10 +15,19 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<WebView  xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/webview"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-	android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
-/>
-
+<AbsoluteLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+	       android:orientation="vertical"
+	       android:layout_width="fill_parent"
+	       android:layout_height="fill_parent">
+  <WebView android:id="@+id/webview"
+	   android:layout_width="fill_parent"
+	   android:layout_height="fill_parent"
+	   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+  <ProgressBar android:id="@+id/pbar"
+	       style="@android:style/Widget.ProgressBar.Horizontal"
+	       android:layout_x="0px"
+	       android:layout_y="38dp"
+	       android:layout_width="fill_parent"
+	       android:progressDrawable="@drawable/blue_progress"
+	       android:layout_height="1dp" />
+</AbsoluteLayout>
