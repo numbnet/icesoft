@@ -54,6 +54,7 @@ public class UserAgentInfo implements Serializable{
     public static final String MOBILE_SAFARI = "mobile safari";
     public static final String PHONE_HTC_SENSATION = "sensation_4g";
     public static final String ANDROID_CONTAINER = "apache-httpclient";
+    public static final String PLAYBOOK = "playbook";
     
 
     public UserAgentInfo(String userAgent) {
@@ -100,7 +101,8 @@ public class UserAgentInfo implements Serializable{
     }
 
     public boolean isAndroidOS() {
-        boolean foundAndroid = userAgentString.contains(ANDROID) || userAgentString.contains(ANDROID_CONTAINER);
+        boolean foundAndroid = (userAgentString.contains(ANDROID) || userAgentString.contains(ANDROID_CONTAINER) )
+                && !userAgentString.contains(PLAYBOOK);
         log(foundAndroid, "Android", userAgentString);
         return foundAndroid;
     }
@@ -112,7 +114,7 @@ public class UserAgentInfo implements Serializable{
     }
     
     public boolean isBlackberry10OS() {
-        boolean result = userAgentString.contains(BLACKBERRY10);
+        boolean result = userAgentString.contains(BLACKBERRY10) || userAgentString.contains(PLAYBOOK);
         log(result, "BlackBerry 10", userAgentString);
         return result;
     }
