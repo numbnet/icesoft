@@ -22,16 +22,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-@ManagedBean(name="pageBean")
-@SessionScoped
 public class PageBean implements Serializable {
-	private List<SelectItem> availableLocales;
+    private static final long serialVersionUID = 8109006400604945995L;
+    private List<SelectItem> availableLocales;
 	private Locale currentLocale;
 	private String dropdownItem;
 	
