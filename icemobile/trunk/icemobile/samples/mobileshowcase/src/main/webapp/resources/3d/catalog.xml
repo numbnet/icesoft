@@ -1,0 +1,7 @@
+<targets database="mobileshowcase.xml">
+  <target name="page3" >
+    <model name="onlamp" src="mobi.obj" offset="10,20,30" />
+    <toggle name="lamp" value="off" on="onlamp" off="" />
+    <button name="buy" />
+  </target>
+</targets>
