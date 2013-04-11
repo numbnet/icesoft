@@ -22,14 +22,17 @@ import javax.faces.model.SelectItem;
 
 import com.icesoft.faces.component.outputchart.OutputChart;
 
+import java.io.Serializable;
+
 /**
  * AxisChartBean is the backend bean handling all UI interaction with
  * the AxisChart.
  *
  * @since 1.5
  */
-public class AxisChartBean extends AxisChart{
-    
+public class AxisChartBean extends AxisChart implements Serializable {
+
+    private static final long serialVersionUID = -5566104048052983899L;
     //sets the chart type to bar for default
     private String type = OutputChart.BAR_CHART_TYPE;
     
