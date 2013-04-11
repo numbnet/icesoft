@@ -48,13 +48,13 @@ public class Course {
 	@Column(name = "description")
 	private String description;
 	// set of students that are related/registered for the course
-	@ManyToMany
-	@JoinTable(name = "student_course", 
-	joinColumns = 
-	@JoinColumn(name = "course_id", referencedColumnName = "course_id"), 
-	inverseJoinColumns = 
-	@JoinColumn(name = "student_id", referencedColumnName = "student_id"))
-	private Set<Student> students = new HashSet<Student>();
+    @ManyToMany
+    @JoinTable(name = "student_course",
+        joinColumns =
+        @JoinColumn(name = "course_id", referencedColumnName = "course_id"),
+        inverseJoinColumns =
+        @JoinColumn(name = "student_id", referencedColumnName = "student_id"))
+    private Set<Student> students;
 
 	/**
 	 * Default contructor.
@@ -140,7 +140,7 @@ public class Course {
 	 * 
 	 * @return Set of students.
 	 */
-	public Set getStudents() {
+	public Set<Student> getStudents() {
 		return students;
 	}
 
@@ -150,20 +150,7 @@ public class Course {
 	 * @param Set
 	 *            of students.
 	 */
-	public void setStudents(Set students) {
+	public void setStudents(Set<Student> students) {
 		this.students = students;
-	}
-
-	/**
-	 * Method used by the UI to clear information on the screen.
-	 * 
-	 * @return String used in the navigation rules.
-	 */
-	@Transient
-	public String clear() {
-		courseId = 0;
-		courseName = "";
-		description = "";
-		return "clear";
 	}
 }

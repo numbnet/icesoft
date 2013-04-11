@@ -60,7 +60,8 @@ public class Student {
     private String address;
     // set of courses that the student is related/registered for
     @ManyToMany(cascade=CascadeType.ALL, mappedBy="students", targetEntity=Course.class)
-    private Set<Course> courses = new HashSet<Course>();
+    private Set<Course> courses;
+    
     @Transient
     private boolean uiToggle;
     
@@ -151,7 +152,7 @@ public class Student {
      * Gets the Set of courses for this student.
      * @return Set of courses.
      */
-    public Set getCourses(){
+    public Set<Course> getCourses(){
         return courses;
     }
     
@@ -159,7 +160,7 @@ public class Student {
      * Sets the Set of courses for this student.
      * @return Set of courses.
      */
-    public void setCourses(Set courses){
+    public void setCourses(Set<Course> courses){
         this.courses = courses;
     }
     
@@ -168,11 +169,9 @@ public class Student {
      * @return String used in the navigation rules.
      */
     @Transient
-    public String clear(){
+    public void clear(){
         firstName="";
         lastName="";
         address="";
-        return "clear";
     }
-    
 }
