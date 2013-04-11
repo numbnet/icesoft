@@ -19,6 +19,7 @@ package org.icefaces.impl.event;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
@@ -56,15 +57,21 @@ public class WindowAndViewIDSetup implements SystemEventListener {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
 
                 if (windowID == null) {
-                    Log.warning("Missing window ID attribute. Request map cleared prematurely.");
+                    if (context.isProjectStage(ProjectStage.Development)) {
+                        Log.warning("Missing window ID attribute. Request map cleared prematurely.");
+                    }
                     return;
                 }
                 if (viewID == null) {
-                    Log.warning("Missing view ID attribute. Request map cleared prematurely.");
+                    if (context.isProjectStage(ProjectStage.Development)) {
+                        Log.warning("Missing view ID attribute. Request map cleared prematurely.");
+                    }
                     return;
                 }
                 if (scopeMap == null) {
-                    Log.warning("Missing window scope map. Session was invalidated or dispose window request already cleared the window scope.");
+                    if (context.isProjectStage(ProjectStage.Development)) {
+                        Log.warning("Missing window scope map. Session was invalidated or dispose window request already cleared the window scope.");
+                    }
                     return;
                 }
 
