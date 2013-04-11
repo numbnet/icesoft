@@ -140,6 +140,13 @@ html.bberry .ui-icon{
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+.ui-icon-home {
+    background-position: -570px 50%;
+}
+.ui-icon-menu {
+    background-position: -426px 50%;
+}
+
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
        only screen and (min--moz-device-pixel-ratio: 1.5),
        only screen and (min-resolution: 240dpi) {
@@ -149,18 +156,18 @@ html.bberry .ui-icon{
         -webkit-background-size: 776px 18px;
         background-size: 776px 18px;
     }
-    html.iphone .ui-icon, html.ipad .ui-icon, html.honeycomb .ui-icon, html.android .ui-icon, html.bb10 .ui-icon {
+    html.iphone .ui-icon, html.ipad .ui-icon, html.honeycomb .ui-icon, html.android .ui-icon {
         background-image: url(images/icons-36-white.png.jsf);
     }
     html.bberry .ui-icon {
         background-image: url(images/icons-36-black.png.jsf);
     }
-}
-.ui-icon-home {
-    background-position: -570px 50%;
-}
-.ui-icon-menu {
-    background-position: -426px 50%;
+    html.iphone .ui-icon-menu, html.bberry .ui-icon-menu {
+        background-position: -701px 50%;
+    }
+    html.iphone .ui-icon-home, html.bberry .ui-icon-home {
+        background-position: -509px 50%;
+    }
 }
 #splash header{ 
     text-align: center;
