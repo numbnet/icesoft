@@ -16,15 +16,10 @@
 
 package org.icemobile.samples.mobileshowcase.view.navigation;
 
-import java.io.Serializable;
-
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-
 import org.icemobile.samples.mobileshowcase.view.examples.layout.accordion.AccordionBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.carousel.CarouselBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.contentstack.ContentStackBean;
+import org.icemobile.samples.mobileshowcase.view.examples.layout.dataview.DataViewBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.fieldset.FieldsetBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.list.ListBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.panelPopup.PanelPopupBean;
@@ -32,6 +27,11 @@ import org.icemobile.samples.mobileshowcase.view.examples.layout.panelconfirmati
 import org.icemobile.samples.mobileshowcase.view.examples.layout.tabset.TabsetBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.theme.SkinBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import java.io.Serializable;
 
 /**
  * Menu items for native integration
@@ -48,6 +48,9 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
                 @MenuLink(title = "menu.layout.contentstack.title",
                         exampleBeanName = ContentStackBean.BEAN_NAME,
                         examplePanelId = "contentstack"),
+                @MenuLink(title = "menu.layout.dataview.title",
+                          exampleBeanName = DataViewBean.BEAN_NAME,
+                          examplePanelId = "dataview"),
                 @MenuLink(title = "menu.layout.theming.title",
                         exampleBeanName = SkinBean.BEAN_NAME,
                         examplePanelId = "theme"),
@@ -66,7 +69,6 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
                 @MenuLink(title = "menu.layout.tabset.title",
                         exampleBeanName = TabsetBean.BEAN_NAME,
                         examplePanelId = "tabset")
-        
         })
 @ManagedBean(name = LayoutAndNavigationMenu.BEAN_NAME)
 @ApplicationScoped
