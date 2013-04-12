@@ -61,6 +61,9 @@
 
     // Thanks to 9__, found at http://users.livejournal.com/9__/380664.html
     ice.ace.jq.fn.outer = function() {
-      return $($('<div></div>').html(this.clone())).html();
+		var copy = $('<div></div>');
+		copy.html(this.clone());
+		copy.find('script').remove();
+		return $(copy).html();
     }
 })(ice.ace.jq);
