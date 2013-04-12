@@ -16,7 +16,6 @@
 
 package org.icefaces.impl.application;
 
-import org.icefaces.resources.ICEResourceLibrary;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.Resource;
@@ -32,9 +31,7 @@ import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.net.URI;
-import java.net.URL;
 import java.util.*;
-import java.util.logging.Level;
 
 public class CoalescingResourceHandler extends ResourceHandlerWrapper {
     public static final String COALESCED = "coalesced";
@@ -115,7 +112,11 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                 Map<String, Object> nextAttributes = next.getAttributes();
                 String nextName = (String) nextAttributes.get("name");
                 String nextLibrary = (String) nextAttributes.get("library");
-                Resource nextResource = resourceHandler.createResource(nextName, nextLibrary);
+                String iceType = (String) nextAttributes.get("ice.type");
+                Resource nextResource = null;
+                if(iceType == null){
+                    nextResource = resourceHandler.createResource(nextName, nextLibrary);
+                }
                 if (nextName.endsWith(extension) && !"jsf.js".equals(nextName) &&
                         nextResource != null && !URI.create(nextResource.getRequestPath()).isAbsolute()) {
                     CoalescingResource.Info info = new CoalescingResource.Info(nextName, nextLibrary);
