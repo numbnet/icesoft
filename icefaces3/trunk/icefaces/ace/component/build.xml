@@ -216,6 +216,7 @@
                 <file name="icefaces.ace/jquery/ui/jquery.ui.touch-punch.js"/>
                 <file name="icefaces.ace/core/core.js"/>
                 <file name="icefaces.ace/json/json2.js"/>
+				<file name="icefaces.ace/simpleselectonemenu/simpleselectonemenu.js"/>
             </filelist>
         </concat>
         <!-- ace-datatable.js -->
