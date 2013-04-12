@@ -93,7 +93,7 @@
 					<ace:ajax />
 					<ace:ajax event="blur" />
 				</ace:simpleSelectOneMenu>
-				<br /><h:message for="selectProvince" />
+				<br /><ace:message for="selectProvince" />
 				<br />
 				<ace:simpleSelectOneMenu id="selectCity" value="#{simpleSelectOneMenuBean.city}" rendered="#{simpleSelectOneMenuBean.displayCities}"
                                          label="Select city:"
@@ -106,7 +106,7 @@
 						<ace:ajax />
 						<ace:ajax event="blur" />
 				</ace:simpleSelectOneMenu>
-				<br /><h:message for="selectCity" />
+				<br /><ace:message for="selectCity" />
 				</h:panelGroup>
 				<h:panelGroup>
 					<h:outputText style="margin-left:20px;" value="Province: #{simpleSelectOneMenuBean.province}" />
