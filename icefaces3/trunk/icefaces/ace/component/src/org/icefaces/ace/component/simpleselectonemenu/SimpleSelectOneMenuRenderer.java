@@ -118,24 +118,20 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 		
 		writeLabelAndIndicatorAfter(labelAttributes);
 
-		// script
-		JSONBuilder jb = JSONBuilder.create();
-		jb.beginMap()
-		.entry("p", ""); // dummy property
-		encodeClientBehaviors(facesContext, simpleSelectOneMenu, jb);
-		jb.endMap();
-		
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-        writer.writeText("(function() {", null);
-		writer.writeText("var $select = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "')).find('select');", null);
-		// dynamically set id to cause full markup updates that include this script when the select element changes
-		writer.writeText("$select.attr('id', '" + inputClientId + "');", null);
-		writer.writeText("var b = " + jb.toString() + ";", null);
-		writer.writeText("$select.off('change').on('change', function(e){ e.stopPropagation(); if (b.behaviors && b.behaviors.change) ice.ace.ab(b.behaviors.change); });", null);
-		writer.writeText("$select.off('blur').on('blur', function(e){ e.stopPropagation(); if (b.behaviors && b.behaviors.blur) ice.ace.ab(b.behaviors.blur); });", null);
-        writer.writeText("})();", null);
-        writer.endElement("script");
+		if (org.icefaces.impl.util.Util.withinSingleSubmit(simpleSelectOneMenu) 
+			|| !simpleSelectOneMenu.getClientBehaviors().isEmpty()) {
+			// script
+			JSONBuilder jb = JSONBuilder.create();
+			jb.beginMap()
+			.entry("p", ""); // dummy property
+			encodeClientBehaviors(facesContext, simpleSelectOneMenu, jb);
+			jb.endMap();
+			
+			writer.startElement("script", null);
+			writer.writeAttribute("type", "text/javascript", null);
+			writer.writeText("ice.ace.SimpleSelectOneMenu('" + clientId + "', " + jb.toString() + ");", null);
+			writer.endElement("script");
+		}
 		
 		writer.endElement("span");
     }
