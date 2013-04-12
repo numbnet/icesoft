@@ -276,9 +276,22 @@ html.bberry .form .mobi-fieldset{
 html.android .form .mobi-fieldset-row,
 html.honeycomb .form .mobi-fieldset-row,
 html.ipad .form .mobi-fieldset-row,
-html.iphone .form .mobi-fieldset-row,
-html.bb10 .form .mobi-fieldset-row{
+html.iphone .form .mobi-fieldset-row{
     display: -webkit-box;
+    display: -moz-box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+    position: relative;
+    min-width:100%;
+}
+html.bb10 .form .mobi-fieldset-row{
+    display: -webkit-flex;
     display: -moz-box;
     -webkit-box-orient: horizontal;
     -moz-box-orient: horizontal;
@@ -297,9 +310,11 @@ html.bb10 .form .mobi-fieldset-row{
 html.android .form .mobi-fieldset.intro .mobi-fieldset-row,
 html.honeycomb .form .mobi-fieldset.intro .mobi-fieldset-row,
 html.ipad .form .mobi-fieldset.intro .mobi-fieldset-row,
-html.iphone .form .mobi-fieldset.intro .mobi-fieldset-row,
-html.bb10 .form .mobi-fieldset.intro .mobi-fieldset-row{
+html.iphone .form .mobi-fieldset.intro .mobi-fieldset-row{
     display:block;
+}
+html.bb10 .form .mobi-fieldset.intro .mobi-fieldset-row{
+    display:-webkit-flex;
 }
 .form p{ text-align:left; margin:0;}
 .form .mobi-fieldset-row .mobi-getenhanced{
@@ -316,8 +331,7 @@ html.bb10 .form .mobi-fieldset-row .mobi-getenhanced .mobi-button{
 html.android .form label,
 html.honeycomb .form label,
 html.ipad .form label,
-html.iphone .form label,
-html.bb10 .form label{
+html.iphone .form label{
     width:105px;
     text-align:left;
     -webkit-box-flex: 1;
@@ -327,10 +341,20 @@ html.bb10 .form label{
     display: block!important;
     float: none!important;
 }
-html.android .form .mobi-fieldset-row > input, html.honeycomb .form .mobi-fieldset-row > input, html.ipad .form .mobi-fieldset-row > input, html.iphone .form .mobi-fieldset-row > input, html.bb10 .form .mobi-fieldset-row > input,
-html.android .form .mobi-fieldset-row > select, html.honeycomb .form .mobi-fieldset-row > select, html.ipad .form .mobi-fieldset-row > select, html.iphone .form .mobi-fieldset-row > select, html.bb10 .form .mobi-fieldset-row > select,
-html.android .form .mobi-fieldset-row > span, html.honeycomb .form .mobi-fieldset-row > span, html.ipad .form .mobi-fieldset-row > span, html.iphone .form .mobi-fieldset-row > span, html.bb10 .form .mobi-fieldset-row > span,
-html.android .form .mobi-fieldset-row > textarea, html.honeycomb .form .mobi-fieldset-row > textarea, html.ipad .form .mobi-fieldset-row > textarea, html.bb10 .form .mobi-fieldset-row > textarea{
+html.bb10 .form label{
+    width:105px;
+    text-align:left;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: -inline-block;
+    float: none!important;
+}
+html.android .form .mobi-fieldset-row > input, html.honeycomb .form .mobi-fieldset-row > input, html.ipad .form .mobi-fieldset-row > input, html.iphone .form .mobi-fieldset-row > input,
+html.android .form .mobi-fieldset-row > select, html.honeycomb .form .mobi-fieldset-row > select, html.ipad .form .mobi-fieldset-row > select, html.iphone .form .mobi-fieldset-row > select,
+html.android .form .mobi-fieldset-row > span, html.honeycomb .form .mobi-fieldset-row > span, html.ipad .form .mobi-fieldset-row > span, html.iphone .form .mobi-fieldset-row > span,
+html.android .form .mobi-fieldset-row > textarea, html.honeycomb .form .mobi-fieldset-row > textarea, html.ipad .form .mobi-fieldset-row > textarea{
     -webkit-box-flex: 2;
     -moz-box-flex: 2;
     -moz-box-sizing: border-box;
@@ -340,6 +364,20 @@ html.android .form .mobi-fieldset-row > textarea, html.honeycomb .form .mobi-fie
     display: block!important;
     float: none!important;
 }
+html.bb10 .form .mobi-fieldset-row > input,
+html.bb10 .form .mobi-fieldset-row > select,
+html.bb10 .form .mobi-fieldset-row > span,
+html.bb10 .form .mobi-fieldset-row > textarea{
+    -webkit-flex-grow: 2;
+    flex-grow: 2;
+    -moz-box-sizing: border-box;
+    -wekit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: inline-block;
+    float: none!important;
+}
+
 .form .mobi-fieldset-row.mobi-fieldset-row-group{
     text-align:left;
 }
@@ -368,8 +406,7 @@ html.bb10 .form .mobi-fieldset-row > span > input{
 html.android .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
 html.honeycomb .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
 html.ipad .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
-html.iphone .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
-html.bb10 .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
+html.iphone .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
     -moz-box-sizing: border-box; 
     -wekit-box-sizing: border-box;
     box-sizing: border-box;
@@ -378,6 +415,17 @@ html.bb10 .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
     float: none!important;
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
+}
+html.bb10 .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
+    -moz-box-sizing: border-box; 
+    -wekit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: inline-block;
+    float: none!important;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    
 }
 .form h3{
     clear:both;
