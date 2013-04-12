@@ -399,7 +399,7 @@ public class DataTableHeadRenderer {
             JSONBuilder json = JSONBuilder.create().beginFunction("ice.ace.lazy")
                     .item("TableConfLauncher")
                     .beginArray()
-                    .item(clientId)
+                    .item(clientId + "_tableconf_launch")
                     .item(panelJsId, false)
                     .endArray()
                     .endFunction();
