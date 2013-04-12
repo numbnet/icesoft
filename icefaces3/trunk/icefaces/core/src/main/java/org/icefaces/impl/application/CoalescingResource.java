@@ -16,7 +16,6 @@
 
 package org.icefaces.impl.application;
 
-import org.icefaces.impl.util.Base64;
 import org.icefaces.impl.util.Util;
 
 import javax.faces.application.Resource;
@@ -26,6 +25,7 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -116,7 +116,7 @@ public class CoalescingResource extends Resource {
         return calculateDigest(resourceInfos);
     }
 
-    public static class Info {
+    public static class Info implements Serializable {
         private String name, library;
 
         public Info(String name, String library) {
@@ -141,7 +141,7 @@ public class CoalescingResource extends Resource {
         }
     }
 
-    public static class Infos {
+    public static class Infos implements Serializable {
         public boolean modified = true;
         public ArrayList<Info> resources;
 
