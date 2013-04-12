@@ -93,7 +93,12 @@
                 <ui:include src="/WEB-INF/includes/examples/layout/contentstack.xhtml" />
             </ui:decorate>
         </mobi:contentPane>
-        
+        <mobi:contentPane id="dataview" facelet="true" client="false" >
+            <ui:param name="title" value="Data View"/>
+            <ui:decorate template="/WEB-INF/includes/content/small-page-panel.xhtml">
+                <ui:include src="/WEB-INF/includes/examples/layout/dataview.xhtml" />
+            </ui:decorate>
+        </mobi:contentPane>
         <mobi:contentPane id="tabset" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Tabset"/>

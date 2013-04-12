@@ -44,6 +44,9 @@ ice.mobi.ready = function (callback) {
         window.attachEvent('onload', callback);
     }
 };
+ice.mobi.escapeJsfId = function(id) {
+    return id.replace(/:/g,"\\:");
+}
 ice.mobi.addListener= function(obj, event, fnc){
     if (obj.addEventListener){
         obj.addEventListener(event, fnc, false);
@@ -477,7 +480,7 @@ if (window.addEventListener) {
 		ice.log.debug(ice.log, 'PAUSING from visibility change');
 		ice.push.connection.pauseConnection();
             }
-	} 
+	}
 	else {
             if (ice.push) {
 		ice.log.debug(ice.log, 'RESUMING from visibility change');
@@ -689,7 +692,7 @@ ice.mobi.geolocation = {
         if (highAccuracy != 'false')  {
             geoParams.enableHighAccuracy = true;
         }
-        console.log('Launching watchPosition, ' + 
+        console.log('Launching watchPosition, ' +
             'maxAge: ' + geoParams.maximumAge + '(ms),' +
             ' timeout: ' + geoParams.timeout + '(ms)' +
             ' highAccuracy: ' + geoParams.enableHighAccuracy);
@@ -700,7 +703,7 @@ ice.mobi.geolocation = {
 
         window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
         ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
-        console.log('Lauching positionWatch for client: ' + pClientId + 
+        console.log('Lauching positionWatch for client: ' + pClientId +
                 ' watchId: ' + ice.mobi.geolocation.watchId);
     },
 
@@ -766,6 +769,250 @@ ice.mobi.geolocation = {
         window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
     }
 };
+
+(function() {
+    function DataView(clientId, cfg) {
+        var self = this,
+            selectorId = '#' + ice.mobi.escapeJsfId(clientId),
+            headSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead',
+            footSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot',
+            bodyDivSelector = selectorId + ' > .mobi-dv-mst > div',
+            element, details, headCells, footCells, bodyRows;
+
+        function initElementVars() {
+            var headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead > tr > th',
+                footCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot > tr > td',
+                bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
+                detailsSelector = selectorId + ' > .mobi-dv-det';
+
+            details = document.querySelector(detailsSelector);
+            element = document.getElementById(clientId);
+            headCells = document.querySelectorAll(headCellSelector);
+            bodyRows = document.querySelectorAll(bodyRowSelector);
+            footCells = document.querySelectorAll(footCellSelector);
+        }
+
+        function getScrollableContainer() {
+            var height = element.clientHeight,
+                parent = element.parentNode;
+
+            while (parent != null && parent.scrollHeight == parent.clientHeight)
+                parent = parent.parentNode;
+
+            return parent;
+        }
+
+        function getIndexInput() {
+            var r = Array.prototype.filter.call(details.children, function(n) {
+                return n.nodeName == "INPUT";
+            });
+            return r[0];
+        }
+
+        function initTableAlignment() {
+            var dupeHead = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead'),
+                dupeHeadCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead > tr > th'),
+                dupeFoot = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tfoot'),
+                dupeFootCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tfoot > tr > td'),
+                head = document.querySelector(headSelector),
+                foot = document.querySelector(footSelector),
+                bodyDivWrapper = document.querySelector(bodyDivSelector);
+
+            var firstRowBodyCells = Array.prototype.filter.call(bodyRows[0].children, function(val){
+                return val.nodeName == "TD"; /* remove hidden input */
+            });
+
+            var scrollWidth = ice.mobi.dataView.getScrollWidth();
+
+//            if (scrollWidth) {
+//                head.parentNode.parentNode.style.paddingRight = scrollWidth + "px";
+//            }
+
+            var frbcWidths = Array.prototype.map.call(
+                firstRowBodyCells,
+                function(n) {
+                    var compd = document.defaultView.getComputedStyle(n, null);
+                    return n.clientWidth - parseInt(compd.paddingLeft) - parseInt(compd.paddingRight);
+            });
+
+            /* fix body column widths */
+            for (var i = 0; i < firstRowBodyCells.length; i++) {
+                firstRowBodyCells[i].style.width = frbcWidths[i] + 'px';
+            }
+
+            var dupeHeadCellWidths = Array.prototype.map.call(
+                dupeHeadCells,
+                function(n) {
+                    var compd = document.defaultView.getComputedStyle(n, null);
+                    return n.clientWidth - parseInt(compd.paddingLeft) - parseInt(compd.paddingRight);
+            });
+
+            var dupeFootCellWidths = Array.prototype.map.call(
+                dupeFootCells,
+                function(n) {
+                    var compd = document.defaultView.getComputedStyle(n, null);
+                    return n.clientWidth - parseInt(compd.paddingLeft) - parseInt(compd.paddingRight);
+                });
+
+            /* copy head col widths from duplicate header */
+            for (var i = 0; i < dupeHeadCellWidths.length; i++) {
+                headCells[i].style.width = dupeHeadCellWidths[i] + 'px';
+            }
+
+            /* copy foot col widths from duplicate footer */
+            for (var i = 0; i < dupeFootCellWidths.length; i++) {
+                footCells[i].style.width = dupeFootCellWidths[i] + 'px';
+            }
+
+            /* hide duplicate header */
+            dupeHead.style.display = 'none';
+            dupeFoot.style.display = 'none';
+
+            recalcScrollHeight(head, foot, bodyDivWrapper);
+
+//            if (scrollWidth) {
+//                head.parentNode.parentNode.style.paddingRight = '';
+//                head.parentNode.style.width = (head.parentNode.clientWidth - scrollWidth + 1) + "px";
+//                foot.parentNode.style.width = (foot.parentNode.clientWidth - scrollWidth + 1) + "px";
+//            }
+        }
+
+        /* arguments optional to avoid lookup */
+        function recalcScrollHeight(inHead, inFoot, inDivWrap) {
+            /* set scroll body to maximum height, reserving space for head / foot */
+            var head = inHead ? inHead : document.querySelector(headSelector),
+                foot = inFoot ? inFoot : document.querySelector(footSelector),
+                bodyDivWrapper = inDivWrap ? inDivWrap : document.querySelector(bodyDivSelector),
+                dim = element.getBoundingClientRect(),
+                maxHeight = window.innerHeight - dim.top,
+                headHeight = head.clientHeight,
+                footHeight = foot.clientHeight,
+                fullHeight = maxHeight - headHeight - footHeight - 1;
+
+            /* set height to full visible size of parent */
+            bodyDivWrapper.style.height = fullHeight + 'px';
+            bodyDivWrapper.style.overflow = 'auto';
+
+            /* set height to full visible size of parent minus
+             height of all following elements */
+            var container = getScrollableContainer(),
+                    bottomResize = function() {
+                        bodyDivWrapper.style.height = fullHeight
+                                - (container.scrollHeight - container.clientHeight) + 'px';
+                    };
+
+            if (container) bottomResize();
+        }
+
+        function initActivationEvents() {
+            for (var i = 0; i < bodyRows.length; ++i) {
+                var row = bodyRows[i];
+                row.addEventListener("click", activateRow);
+                row.addEventListener("touchend", function() {alert('touchend');});
+            }
+        }
+
+        function activateRow(event) {
+            var newIndex = event.currentTarget.getAttribute('data-index'),
+                newValue = Array.prototype.filter.call(
+                        event.currentTarget.children,
+                        function(n) { return n.nodeName == "INPUT"; }
+                ),
+                valueParts = newValue[0].getAttribute('value').split('|');
+
+
+            /* lookup elem by id and insert value */
+            for (var i = 0; i < valueParts.length; i++) {
+                var v = valueParts[i].split('='),
+                    elem = document.getElementById(v[0]),
+                    dir = v[1],
+                    value;
+
+                switch (dir) {
+                    case 'html':
+                        elem.innerHTML = v[2];
+                    case 'attr':
+                        if (v[2] == 'checked') {
+                            if (v[3] == 'true') elem.checked = true;
+                            else elem.checked = false;
+                        } else {
+                            elem.setAttribute(v[2], v[3]);
+                        }
+                    default :
+                        value = '';
+                }
+            };
+
+
+            getIndexInput().setAttribute("value", newIndex);
+            details.setAttribute("data-index", newIndex);
+
+            // if vertical orientation
+            recalcScrollHeight();
+        }
+
+        function update(newCfg){
+            initElementVars();
+            initActivationEvents();
+            initTableAlignment();
+        }
+
+        initElementVars();
+        initActivationEvents();
+
+        /* first alignment needs to occur shortly after script eval
+        *  else heights are miscalculated for following elems */
+        setTimeout(initTableAlignment, 100);
+
+        /* resize height adjust */
+        window.addEventListener("resize", function() { self.recalcScrollHeight(); });
+
+        /* Instance API */
+        return { update: update }
+    }
+
+    var width;
+    var getScrollWidth = function() {
+        if (width) return width;
+
+        var inner = document.createElement("p");
+        inner.style.width = '100%';
+        inner.style.height = '100%';
+
+        var outer = document.createElement("div");
+        outer.style.position = 'absolute';
+        outer.style.width = '100px';
+        outer.style.height = '100px';
+        outer.style.top = '0';
+        outer.style.left = '0';
+        outer.style.visibility = 'hidden';
+        outer.style.overflow = 'hidden';
+        outer.appendChild(inner);
+
+        document.body.appendChild(outer);
+
+        var w1 = outer.clientWidth;
+        outer.style.overflow = 'scroll';
+        var w2 = outer.clientWidth;
+
+        document.body.removeChild(outer);
+        width = (w1 - w2);
+
+        return width;
+    };
+
+    ice.mobi.dataView = {
+        getScrollWidth : getScrollWidth,
+        instances: {},
+        create: function(clientId, cfg) {
+            if (this.instances[clientId]) this.instances[clientId].update(cfg);
+            else this.instances[clientId] = DataView(clientId, cfg);
+
+            return this.instances[clientId];
+        }
+    }
+
+})();
 
 /* touch active state support */
 document.addEventListener("touchstart", function(){}, true);

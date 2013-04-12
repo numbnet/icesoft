@@ -1,0 +1,74 @@
+/* Theme CSS */
+.mobi-dv > table > thead > tr {
+}
+
+.mobi-dv > table > tbody > tr {
+}
+
+/* Testing CSS */
+/* rows */
+.mobi-dv-head th, .mobi-dv-body th {
+    border: 1px solid black;
+}
+.mobi-dv-body td {
+    border: 1px solid black;
+}
+.mobi-dv-body tr:first-child td { border-top: none; }
+.mobi-dv-body tr:last-child td { border-bottom: none; }
+.mobi-dv-foot td {
+    border: 1px solid black;
+}
+.mobi-dv-det {
+    border:1px solid black;
+    border-bottom: none;
+}
+
+
+
+/* Structural CSS */
+
+.mobi-dv {}
+
+.mobi-dv-mst {
+    position: relative;
+}
+
+.mobi-dv-mst > div {
+    overflow:auto;
+}
+
+/* details */
+.mobi-dv > .mobi-dv-det {
+    border: 1px solid black;
+    border-bottom: none;
+}
+.mobi-dv > .mobi-dv-det:not([data-index]){
+    display: none;
+}
+
+/* rows */
+.mobi-dv-head {
+    width:100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.mobi-dv-body {
+    width:100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.mobi-dv-foot {
+    width:100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.mobi-dv-head > thead > tr, .mobi-dv-body > thead > tr {
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 26px;
+}
+.mobi-dv-body > tbody > tr {
+    font-size: 17px;
+    font-weight: bold;
+}

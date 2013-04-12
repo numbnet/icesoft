@@ -91,6 +91,15 @@
         <ui:include src="/WEB-INF/includes/examples/layout/accordion.xhtml" />
       </ui:decorate>
     </mobi:contentPane>
+    <mobi:contentPane id="dataview" client="true" >
+        <ui:decorate template="/WEB-INF/includes/content/small-page-panel.xhtml">
+            <ui:param name="title" value="Data View"/>
+            <ui:param name="nav" value="menu"/>
+            <ui:param name="buttonType" value="back"/>
+            <ui:param name="buttonLabel" value="Menu"/>
+            <ui:include src="/WEB-INF/includes/examples/layout/dataview.xhtml" />
+        </ui:decorate>
+    </mobi:contentPane>
     <mobi:contentPane id="carousel" client="false" >
       <ui:decorate template="/WEB-INF/includes/content/small-page-panel.xhtml">
         <ui:param name="nav" value="menu"/>

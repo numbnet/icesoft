@@ -28,7 +28,4 @@ public interface IMobiComponent {
     public boolean isDisabled();
     public String getClientId();
     public ClientDescriptor getClient();
-
-
-
 }
