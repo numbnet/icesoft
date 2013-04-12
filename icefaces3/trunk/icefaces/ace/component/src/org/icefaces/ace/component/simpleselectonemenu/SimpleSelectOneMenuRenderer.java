@@ -132,14 +132,8 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 		// dynamically set id to cause full markup updates that include this script when the select element changes
 		writer.writeText("$select.attr('id', '" + inputClientId + "');", null);
 		writer.writeText("var b = " + jb.toString() + ";", null);
-		writer.writeText("if (b.behaviors) {", null);
-		writer.writeText("if (b.behaviors.change) {", null);
-		writer.writeText("$select.off('change').on('change', function(){ ice.ace.ab(b.behaviors.change); });", null);
-		writer.writeText("}", null);
-		writer.writeText("if (b.behaviors.blur) {", null);
-		writer.writeText("$select.off('blur').on('blur', function(){ ice.ace.ab(b.behaviors.blur); });", null);
-		writer.writeText("}", null);
-		writer.writeText("}", null);
+		writer.writeText("$select.off('change').on('change', function(e){ e.stopPropagation(); if (b.behaviors && b.behaviors.change) ice.ace.ab(b.behaviors.change); });", null);
+		writer.writeText("$select.off('blur').on('blur', function(e){ e.stopPropagation(); if (b.behaviors && b.behaviors.blur) ice.ace.ab(b.behaviors.blur); });", null);
         writer.writeText("})();", null);
         writer.endElement("script");
 		
