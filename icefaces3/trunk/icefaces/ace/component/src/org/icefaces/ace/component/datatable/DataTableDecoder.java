@@ -34,6 +34,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -328,8 +329,9 @@ public class DataTableDecoder {
     }
 
     static private void decodeColumnOrdering(Map<String, String> params, DataTable table, String clientId) {
-        String[] indexes = params.get(clientId + "_colorder").split(",");
-        table.setColumnOrdering(indexes);
+        String strInput = params.get(clientId + "_colorder");
+        String[] indexes = strInput.split(",");
+        if (strInput.length() > 0) table.setColumnOrdering(indexes);
     }
 
     static private void decodeColumnSizing(Map<String, String> params, Column column, int i, String clientId) {

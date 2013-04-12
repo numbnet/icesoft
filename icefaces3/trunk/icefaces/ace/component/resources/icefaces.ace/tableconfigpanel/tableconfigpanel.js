@@ -18,15 +18,15 @@ if (!window.ice['ace']) {
     window.ice.ace = {};
 }
 ice.ace.TableConfLauncher = function(clientId, panelJsId) {
-    var panel = ice.ace.jq(ice.ace.escapeClientId(clientId)),
-        launcher = ice.ace.jq(ice.ace.escapeClientId(clientId + '_tableconf_launch'))
-        modal = panel.next('.ui-tableconf-modal');
+    var launcher = ice.ace.jq(ice.ace.escapeClientId(clientId));
 
     var activate = function(e) {
+        var panel = ice.ace.jq(ice.ace.escapeClientId(clientId.replace('_tableconf_launch', ''))),
+            modal = panel.next('.ui-tableconf-modal');
+
         panel.toggle();
         modal.toggle();
         ice.ace.jq(e.currentTarget).toggleClass('ui-state-active').removeClass('ui-state-hover');
-
 
         if (panel.is(':not(:visible)'))
             panelJsId.submitTableConfig(e.currentTarget);
@@ -37,11 +37,11 @@ ice.ace.TableConfLauncher = function(clientId, panelJsId) {
     }
 
     var unload = function() {
-        launcher.off('click mouseenter mouseleave');
+        launcher.off('click mouseenter mouseleave keyup');
     }
 
     // Toggle active state when initialized via hover
-    launcher.toggleClass('ui-state-hover')
+    launcher.toggleClass('ui-state-hover').addClass()
         .mouseenter(function(e) {
             ice.ace.jq(e.currentTarget).addClass('ui-state-hover');
         })
@@ -54,7 +54,7 @@ ice.ace.TableConfLauncher = function(clientId, panelJsId) {
             if (e.which == 13) activate(e);
         });
 
-    ice.onElementUpdate(clientId + '_tableconf_launch', unload);
+    ice.onElementUpdate(clientId, unload);
 }
 
 ice.ace.TableConf = function (id, cfg) {
