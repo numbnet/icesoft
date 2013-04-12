@@ -91,7 +91,7 @@
 					<ace:ajax execute="@this" render="@all" />
 					<ace:ajax event="blur" execute="@this" />
 				</ace:selectMenu>
-				<h:message for="selectProvince" />
+				<ace:message for="selectProvince" />
 				<br />
 				<ace:selectMenu id="selectCity" value="#{selectMenuBean.city}" rendered="#{selectMenuBean.displayCities}" label="Select city: " 
                                          labelPosition="left"
@@ -103,7 +103,7 @@
 					<ace:ajax execute="@this" render="@all" />
 					<ace:ajax event="blur" execute="@this" />
 				</ace:selectMenu>
-				<h:message for="selectCity" />
+				<ace:message for="selectCity" />
 				</h:panelGroup>
 				<h:panelGroup>
 					<h:outputText style="margin-left:20px;" value="Province: #{selectMenuBean.province}" />
