@@ -147,3 +147,7 @@
     background-color: #11FF11;
 	background-image: none;
 }
+
+.th-align-left {
+    text-align: left;
+}

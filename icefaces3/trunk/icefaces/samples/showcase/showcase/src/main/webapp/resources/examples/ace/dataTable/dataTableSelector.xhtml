@@ -530,7 +530,9 @@
 
            <h:panelGrid id="status" columns="2">
                <f:facet name="header">
-                   Selection Status
+                   <h:panelGroup layout="block" styleClass="th-align-left">
+                       <h:outputText value="Selection Status"/>
+                   </h:panelGroup>
                </f:facet>
 
                <h:outputLabel for="multiRowOut" value="Selected Rows:"/>
