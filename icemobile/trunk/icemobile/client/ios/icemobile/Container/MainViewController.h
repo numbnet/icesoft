@@ -24,6 +24,7 @@
     ZXingDelegate,UINavigationControllerDelegate,UIActionSheetDelegate> {
 
     UIWebView *webView;
+    UIProgressView *uploadProgress;
     NSURLRequest *currentRequest;
     NSURLResponse *currentResponse;
     NSMutableData *receivedData;
@@ -42,6 +43,7 @@
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (nonatomic, retain) IBOutlet UIButton *prefsButton;
+@property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
 @property (retain) NSURLRequest *currentRequest;
 @property (retain) NSURLResponse *currentResponse;
 @property (retain) NSMutableData *receivedData;

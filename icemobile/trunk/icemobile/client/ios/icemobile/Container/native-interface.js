@@ -23,6 +23,9 @@ if (!window.ice.mobile) {
         namespace.mobile = true;
 
         namespace.progress = function(amount)  {
+          //remove return line below, return true, and customize
+          //progress indicator within application
+          return false;
           var canvas = document.getElementById('progMeterCanvas');
           if (canvas.getContext){
             var ctx = canvas.getContext('2d');
@@ -39,6 +42,7 @@ if (!window.ice.mobile) {
             ctx.lineWidth = 2;
             ctx.stroke();
           }
+          return true;
         }
         
         namespace.native = function(command)  {
