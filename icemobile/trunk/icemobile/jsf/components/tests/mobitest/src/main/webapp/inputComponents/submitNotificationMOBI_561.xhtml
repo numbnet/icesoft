@@ -44,7 +44,7 @@
                                 submitNotification="sn2"
                                 actionListener="#{panelConfirmation.actionMethod2}"/>
         </mobi:menuButton>
-        <mobi:panelConfirmation id="pc1" message="panel Conf 1" disabled="#{panelConfirmation.disabled}"/>
+        <mobi:panelConfirmation id="pc1" message="panel Conf 1" />
         <mobi:panelConfirmation id="pc2" message="panel Conf 2"/>
         <mobi:submitNotification id="sn1">
             <h:outputText value="#{panelConfirmation.submitMessage}"/>
@@ -65,10 +65,6 @@
             <mobi:fieldsetRow>
                 <h:outputLabel for="disabled" value="Menu Button Disabled:" />
                 <mobi:flipswitch id="disabled" value="#{panelConfirmation.menuButtonDisabled}" singleSubmit="true"/>
-            </mobi:fieldsetRow>
-           <mobi:fieldsetRow>
-                <h:outputLabel for="disabled2" value="Panel Confirmation for item2 Disabled:" />
-                <mobi:flipswitch id="disabled2" value="#{panelConfirmation.disabled}" singleSubmit="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="message" value="Submit Notification Message:"/>

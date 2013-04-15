@@ -22,15 +22,9 @@
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
 	<title id="title">MenuButton Tests</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
- 
-  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
-   <mobi:deviceStylesheet
-            name="#{themeSwitcher.theme}" media="screen" />
+
+     <mobi:deviceResource
+            name="#{themeSwitcher.theme}" />
 
 </h:head>
 
@@ -52,12 +46,15 @@
       </h:form>
 
       <h:form id="menuBasic">
-        <mobi:menuButton id="menu1" value="#{menu.data}" var="item" selectTitle="#{menu.selTitle}">
-                <mobi:menuButtonItem value="#{item.value}" label="#{item.label}"
+         <mobi:fieldsetGroup>
+             <mobi:fieldsetRow>
+                 <mobi:menuButton id="menu1" value="#{menu.data}" var="item" selectTitle="#{menu.selTitle}">
+                     <mobi:menuButtonItem value="#{item.value}" label="#{item.label}"
                                      singleSubmit="#{item.singleSubmit}"
                                      disabled="#{item.disabled}" actionListener="#{item.actionMethod}"/>
-        </mobi:menuButton>
-
+                 </mobi:menuButton>
+             </mobi:fieldsetRow>
+         </mobi:fieldsetGroup>
       </h:form>
       <br />
     <h:form id="subNotForm">

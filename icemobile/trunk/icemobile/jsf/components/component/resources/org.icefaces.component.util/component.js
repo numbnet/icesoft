@@ -34,9 +34,23 @@ if (!window.console) {
         };
     }
 }
-
+ice.mobi.BUTTON_UNPRESSED = " ui-btn-up-a";
+ice.mobi.BUTTON_PRESSED = " ui-btn-down-a";
 mobi.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
 mobi.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
+/* utilities*/
+ice.mobi.swapClasses = function(aNode, c1, c2){
+    if (!aNode.className){
+        aNode.className = c2;
+    }else if (ice.mobi.hasClass(aNode, c1)) {
+        var tempClass = aNode.className;
+        var temp = tempClass.replace(c1, c2 );
+      //  console.log(" orig class="+ tempClass+" after replace temp="+temp);
+        if (tempClass !== temp){
+           aNode.className= temp;
+        }
+    }
+};
 ice.mobi.ready = function (callback) {
     if (document.addEventListener){
         document.addEventListener('DOMContentLoaded', callback, false);
@@ -65,12 +79,40 @@ ice.mobi.removeListener= function(obj, event, fnc){
         ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
     }
 };
+ice.mobi.hasClass = function(ele, remove_cls) {
+    return ele.className.replace( /(?:^|\s)remove_cls(?!\S)/ , '' );
+};
 mobi.findForm = function (sourceId) {
+    if (!sourceId){
+        console.log("source cannot be null to find form for ajax submit") ;
+        return null;
+    }
     var node = document.getElementById(sourceId);
     while (node.nodeName.toLowerCase() != "form" && node.parentNode) {
         node = node.parentNode;
     }
     ice.log.debug(ice.log, 'parent form node =' + node.name);
+    return node;
+};
+/* copied from icemobile.js in jsp project for menuButton so can use same js */
+ice.formOf = function formOf(element) {
+    var parent = element;
+    while (null != parent) {
+        if ("form" == parent.nodeName.toLowerCase()) {
+            return parent;
+        }
+        parent = parent.parentNode;
+    }
+}
+ice.mobi.findFormFromNode = function (sourcenode) {
+    if (!sourcenode){
+        console.log("source cannot be null to find form for ajax submit") ;
+        return null;
+    }
+    var node = sourcenode;
+    while (node.nodeName.toLowerCase() != "form" && node.parentNode) {
+        node = node.parentNode;
+    }
     return node;
 };
 mobi.AjaxRequest = function (cfg) {
@@ -142,8 +184,131 @@ mobi.AjaxRequest = function (cfg) {
         }
     });
 };
+ice.mobi.extendAjaxArguments = function(callArguments, options) {
+    // Return a modified copy of the original arguments instead of modifying the original.
+    // The cb arguments, being a configured property of the component will live past this request.
+    callArguments = ice.mobi.clone(callArguments);
 
+    var params     = options.params,
+        execute    = options.execute,
+        render     = options.render,
+        node       = options.node,
+        onstart    = options.onstart,
+        onerror    = options.onerror,
+        onsuccess  = options.onsuccess,
+        oncomplete = options.oncomplete;
 
+    if (params) {
+        if (callArguments['params'])
+            ice.mobi.extend(callArguments['params'], params);
+        else
+            callArguments['params'] = params;
+    }
+
+    if (execute) {
+        if (callArguments['execute'])
+            callArguments['execute'] = callArguments['execute'] + " " + execute;
+        else
+            callArguments['execute'] = execute;
+    }
+
+    if (render) {
+        if (callArguments['render'])
+            callArguments['render'] = callArguments['render'] + " " + render;
+        else
+            callArguments['render'] = render;
+    }
+
+    if (node) {
+        callArguments['node'] = node;
+    }
+
+    if (onstart) {
+        if (callArguments['onstart']) {
+            var existingStartCall = callArguments['onstart'];
+            callArguments['onstart'] = function(xhr) {
+                existingStartCall(xhr);
+                onstart(xhr);
+            }
+        } else {
+            callArguments['onstart'] = onstart;
+        }
+    }
+
+    if (onerror) {
+        if (callArguments['onerror']) {
+            var existingErrorCall = callArguments['onerror'];
+            callArguments['onerror'] = function(xhr, status, error) {
+                existingErrorCall(xhr, status, error);
+                onerror(xhr, status, error);
+            }
+        } else {
+            callArguments['onerror'] = onerror;
+        }
+    }
+
+    if (onsuccess) {
+        if (callArguments['onsuccess']) {
+            var existingSuccessCall = callArguments['onsuccess'];
+            callArguments['onsuccess'] = function(data, status, xhr, args) {
+                existingSuccessCall(data, status, xhr, args);
+                onsuccess(data, status, xhr, args);
+            }
+        } else {
+            callArguments['onsuccess'] = onsuccess;
+        }
+    }
+
+    if (oncomplete) {
+        if (callArguments['oncomplete']) {
+            var existingCompleteCall = callArguments['oncomplete'];
+            callArguments['oncomplete'] = function(xhr, status, args) {
+                existingCompleteCall(xhr, status, args);
+                oncomplete(xhr, status, args);
+            }
+        } else {
+            callArguments['oncomplete'] = oncomplete;
+        }
+    }
+
+    return callArguments;
+};
+ice.mobi.clone = function(obj) {
+    // Handle the 3 simple types, and null or undefined
+    if (null == obj || "object" != typeof obj) return obj;
+
+    // Handle Date
+    if (obj instanceof Date) {
+        var copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+        var copy = [];
+        var len;
+        for (var i = 0, len = obj.length; i < len; ++i) {
+            copy[i] = ice.mobi.clone(obj[i]);
+        }
+        return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+        var copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = ice.mobi.clone(obj[attr]);
+        }
+        return copy;
+    }
+
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+};
+ice.mobi.ab = function(cfg) { mobi.AjaxRequest(cfg); };
+ice.mobi.extend = function(targetObject, sourceObject) {
+    for (var attrname in sourceObject) { targetObject[attrname] = sourceObject[attrname]; }
+}
 mobi.registerAuxUpload = function (sessionid, uploadURL) {
     var auxiframe = document.getElementById('auxiframe');
     if (null == auxiframe) {
@@ -351,7 +516,6 @@ function html5handleResponse(context, data) {
 
 }
 
-
 function html5submitFunction(element, event, options) {
     var source = event ? event.target : element;
     source = source ? source : element;
@@ -504,33 +668,78 @@ if (window.addEventListener) {
     }, false);
 }
 /* javascript for mobi:commandButton component put into component.js as per MOBI-200 */
-mobi.button = {
-    select: function(clientId, cfg) {
-        var params = cfg.params || null;
-        if (cfg.snId) {
-            mobi.submitnotify.open(cfg.snId, clientId, cfg.singleSubmit, params);
-            return;
-            //if here, then no panelConfirmation as this action is responsible for submit
+ice.mobi.button = {
+    select: function(clientId, event, cfg) {
+        //get class and add the pressed state
+        var me = document.getElementById(clientId);
+        if (cfg.pDisabled){
+            return; // no change on which button can be selected
         }
+        var curClass = me.className;
+  //      console.log("curClass="+curClass);
+        if (ice.mobi.hasClass(me, ice.mobi.BUTTON_UNPRESSED )){
+            var newCls = me.className.replace('up','down');
+            me.className = newCls;
+        } else {
+            //what to do?  we always will render it this way...
+        }
+        //check if it's part of a commandButtonGroup
+        if (cfg.groupId){
+            var groupElem = document.getElementById(cfg.groupId+"_hidden");
+            if (groupElem){
+            //    console.log("for groupId "+cfg.groupId+" value is "+clientId);
+                groupElem.value = clientId; //update group to this button selected
+            }
+        }
+        var params = cfg.params || null;
+
         //otherwise, just check for behaviors, singleSubmit and go
         var singleSubmit = cfg.singleSubmit || false;
-        var hasBehaviors = cfg.behaviors;
-        if (hasBehaviors) {
-            //show the submitNotification panel
-            if (cfg.behaviors.click) {
-                cfg.behaviors.click();
+        var behaviors = cfg.behaviors || null;
+        var event = event || window.event;
+        var keyCall = function(xhr, status, args) {ice.mobi.button.unSelect(clientId, curClass);};
+        var options = {
+            onsuccess: keyCall,
+            source : clientId
+        };
+        if (behaviors && behaviors.click){
+            /* does not yet support mobi ajax for panelConf or submitNotification need to modify first */
+            /* need to rework AjaxBehaviorRenderer before I can combine the options and cfg */
+             behaviors.click();
+            /* once I rework mobi ajax support will be able to support all the callbacks in next call */
+            //ice.mobi.ab(ice.mobi.extendAjaxArguments(behaviors, options));
+        }else{
+            if (singleSubmit){
+                options.execute="@this";
+            } else {
+                options.execute="@all";
             }
-            return;  //ensure no other submits
+            if (params !=null){
+                options.params = params;
+            }else {
+                options.params = {};
+            }
+            options.render = "@all";
+            if (cfg.pcId) {
+              //  console.log("throw control to panelConfirmation id="+cfg.pcId);
+                ice.mobi.panelConf.init(cfg.pcId, clientId, cfg, options);
+                return;
+             }
+             if (cfg.snId) {
+                 ice.mobi.submitnotify.open(cfg.snId, clientId, cfg, options);
+                 return;
+             }
+            //if here, then no panelConfirmation as this action is responsible for submit
+             else {
+                 mobi.AjaxRequest(options);
+            }
         }
-        var event = cfg.event;
-        if (!event) {
-            event = window.event;
-        }
-        if (singleSubmit) {
-            ice.se(event, clientId, params);
-        } else {
-            ice.s(event, clientId, params);
-        }
+    },
+    unSelect: function(clientId, classNm){
+        var me = document.getElementById(clientId);
+        var oldClass = me.className;
+        me.className=oldClass.replace('down','up');
+      //  console.log('id='+clientId+' unSelect call back -> class='+document.getElementById(clientId).className);
     }
 };
 

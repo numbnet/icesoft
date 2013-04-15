@@ -64,7 +64,23 @@ public abstract class BaseCoreRenderer{
             writer.writeAttribute(STYLE_ATTR, component.getStyle());
         }
     }
-    
+    /**
+     * differs from writeHiddenInput in that it provides an index to the javascript
+     * for update  Used by carousel
+     * @param writer
+     * @param id
+     * @param selectedIndex
+     * @throws IOException
+     */
+    public void encodeHiddenSelected(IResponseWriter writer, String id, Object selectedIndex,
+                                      String name) throws IOException {
+        writer.startElement("input");
+        writer.writeAttribute("id", id + "_hidden");
+        writer.writeAttribute("name", name);
+        writer.writeAttribute("type", "hidden");
+        writer.writeAttribute("value", String.valueOf(selectedIndex));
+        writer.endElement("input");
+    }
     public void writeHiddenInput(IResponseWriter writer, IMobiComponent comp) throws IOException{
         writer.startElement(SPAN_ELEM, comp);
         writer.startElement(INPUT_ELEM, comp);

@@ -16,26 +16,18 @@
 package org.icefaces.mobi.component.menubutton;
 
 
-
-import org.icefaces.ace.meta.annotation.*;
-import org.icefaces.ace.meta.baseMeta.UICommandMeta;
-import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
-import org.icefaces.ace.meta.annotation.ClientEvent;
-import org.icefaces.ace.api.IceClientBehaviorHolder;
+import javax.el.MethodExpression;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.UISeriesBaseMeta;
 import org.icefaces.mobi.utils.TLDConstants;
 
-import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import javax.faces.model.SelectItem;
-import javax.el.MethodExpression;
-import java.util.List;
 
-@ClientBehaviorHolder(events = {
-	@ClientEvent(name="click", javadoc="Fired when a menubutton is clicked",
-            tlddoc="Fired when commandButton is clicked", defaultRender="@all",
-            defaultExecute="@all")}, defaultEvent="close")
+
+
 @Component(
         tagName = "menuButton",
         componentClass = "org.icefaces.mobi.component.menubutton.MenuButton",
@@ -56,7 +48,7 @@ import java.util.List;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 
-public class MenuButtonMeta extends UISeriesBaseMeta{
+public class MenuButtonMeta extends UISeriesBaseMeta {
 
     @Property(tlddoc = TLDConstants.STYLE)
     private String style;
@@ -68,14 +60,17 @@ public class MenuButtonMeta extends UISeriesBaseMeta{
             tlddoc = TLDConstants.DISABLED)
     private boolean disabled;
 
+    @Property(tlddoc = TLDConstants.TABINDEX)
+    private int tabindex;
+
     @Property(defaultValue="Menu", tlddoc="The label on the menu button.")
     private String buttonLabel;
 
-    @Property(defaultValue="Select", tlddoc="The label for the first item in list which cannot be selected " +
+    @Property(defaultValue = "Select", tlddoc="The label for the first item in list which cannot be selected " +
             "but helpful to users to understand how to use the component, ie: that they must select an option in the list.")
     private String selectTitle;
 
-    @Property(defaultValue = "false", tlddoc = TLDConstants.IMMEDIATE_INPUT)
-    private boolean immediate;
-    /** other possible attributes include vertical, scroll increment, circular, numbershown, currentIndex */
+    @Field
+    private String name;
+
 }

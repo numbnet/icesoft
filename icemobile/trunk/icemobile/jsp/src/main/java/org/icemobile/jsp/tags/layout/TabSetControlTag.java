@@ -56,7 +56,6 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
         if (null==this.id){
             id=DEFAULT_ID;
         }
-   //     LOG.info("doStart for id="+this.id);
         if (null == orientation){
             this.orientation = DEFAULT_ORIENTATION;
         }
@@ -64,7 +63,6 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
         PagePanelTag pptag = (PagePanelTag)findAncestorWithClass(this, PagePanelTag.class);
         if (pptag!=null){
             parentHeader = pptag.isHasHeader();
-    //        LOG.info("after setting parentHeader value ="+parentHeader);
         }
         try {
             if (orientation.trim().toLowerCase().equals("bottom")){
@@ -87,16 +85,13 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
 
     public int doEndTag() throws JspTagException {
         try {
-            /* may not have hidden field? */
             if (isTop){
-          //      LOG.info("render tabs first");
+                /* Need to buffer contents only. just write out headers*/
                 encodeTabs();
-           //     LOG.info("before end tab set header encoding");
                 renderer.encodeEndTabSetHeaders(this, writer);
-          //      LOG.info("after end tab set header encoding");
                 encodeContents();
             }else {
-        //        LOG.info("render contents first");
+                /* buffer headers only and write out contents */
                 encodeContents();
                 renderer.encodeTabSetHeaders(this,writer);
                 encodeTabs();
@@ -109,13 +104,11 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
         return EVAL_PAGE;
     }
     private void encodeTabs() throws JspTagException{
-     //   LOG.info("encodeTab labels");
         if (this.tabLabels.isEmpty()){
             throw new JspTagException("Cannot have empty tab labels");
         } else {
             try {
                 for (StringBuilder tab: tabLabels){
-             //       LOG.info("tab markup = "+tab.toString());
                     writer.write(tab.toString());
                 }
             }catch(IOException ioe){

@@ -23,8 +23,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
+import org.icemobile.component.IPanelConfirmation;
+import org.icemobile.renderkit.IResponseWriter;
+import org.icemobile.renderkit.PanelConfirmationCoreRenderer;
 import org.icemobile.util.CSSUtils;
 
 /**
@@ -36,109 +40,13 @@ public class  PanelConfirmationRenderer extends BaseLayoutRenderer {
     private static final String JS_MIN_NAME = "panelconfirmation-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.panelconfirmation";
 
-    public void decode(FacesContext facesContext, UIComponent uiComponent) {
-
-    }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        PanelConfirmation panel = (PanelConfirmation) uiComponent;
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = panel.getClientId(facesContext);
+        IPanelConfirmation panel = (IPanelConfirmation) uiComponent;
+        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        String clientId = panel.getClientId();
         writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-        encodePanel(writer, clientId, uiComponent);
-
+        PanelConfirmationCoreRenderer renderer = new PanelConfirmationCoreRenderer();
+        renderer.encodeEnd(panel, writer);
     }
-
-    private void encodePanel(ResponseWriter writer, String clientId, UIComponent uiComponent) throws IOException {
-        PanelConfirmation panel = (PanelConfirmation) uiComponent;
-        // div that is use to hide/show the popup screen black out--will manipulate using js
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_bg", HTML.ID_ATTR);
-        writer.writeAttribute(HTML.CLASS_ATTR, PanelConfirmation.BLACKOUT_PNL_HIDE_CLASS, HTML.CLASS_ATTR);
-        writer.endElement(HTML.DIV_ELEM);
-        //panel
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_popup", HTML.ID_ATTR);
-        writer.writeAttribute("class", PanelConfirmation.CONTAINER_HIDE_CLASS, "class");
-        writer.writeAttribute("style", panel.getStyle(), "style");
-        //title
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_title", HTML.ID_ATTR);
-        writer.writeAttribute("class", PanelConfirmation.TITLE_CLASS + " " + CSSUtils.STYLECLASS_BAR_A, null);
-        writer.write(panel.getTitle());
-        writer.endElement(HTML.DIV_ELEM);
-        //message
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute("class", PanelConfirmation.SELECT_CONT_CLASS, null);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_msg", HTML.ID_ATTR);
-        writer.write(panel.getMessage());
-        writer.endElement(HTML.DIV_ELEM);
-        //button container
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute("class", PanelConfirmation.BUTTON_CONT_CLASS, null);
-        String type = panel.getType();
-        if (type != null) {
-            if (type.equalsIgnoreCase("acceptOnly")) {
-                renderAcceptButton(writer, uiComponent, panel.getAcceptLabel(), clientId);
-            } else if (type.equalsIgnoreCase("cancelOnly")) {
-                renderCancelButton(writer, uiComponent, panel.getCancelLabel(), clientId);
-            } else {
-                renderAcceptButton(writer, uiComponent, panel.getAcceptLabel(), clientId);
-                renderCancelButton(writer, uiComponent, panel.getCancelLabel(), clientId);
-            }
-        } else {
-            renderAcceptButton(writer, uiComponent, panel.getAcceptLabel(), clientId);
-            renderCancelButton(writer, uiComponent, panel.getCancelLabel(), clientId);
-        }
-        writer.endElement(HTML.DIV_ELEM);
-        writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_script", HTML.ID_ATTR);
-
-        writer.endElement(HTML.SCRIPT_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
-    }
-
-    private void renderAcceptButton(ResponseWriter writer, UIComponent uiComponent, String value, String id) throws IOException {
-        writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", PanelConfirmation.BUTTON_ACCEPT_CLASS, null);
-        writer.writeAttribute(HTML.ID_ATTR, id + "_accept", HTML.ID_ATTR);
-        writer.writeAttribute("type", "button", "type");
-        writer.writeAttribute("value", value, null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "mobi.panelConf.confirm('" + id + "');", null);
-        writer.endElement("input");
-    }
-
-    private void renderCancelButton(ResponseWriter writer, UIComponent uiComponent, String value, String id) throws IOException {
-        writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", PanelConfirmation.BUTTON_CANCEL_CLASS, null);
-        writer.writeAttribute(HTML.ID_ATTR, id + "_cancel", HTML.ID_ATTR);
-        writer.writeAttribute("type", "button", "type");
-        writer.writeAttribute("value", value, null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "mobi.panelConf.close('" + id + "');", null);
-        writer.endElement("input");
-    }
-
-    public static StringBuilder renderOnClickString(UIComponent uiComponent, StringBuilder origOnClickCall) {
-        String panelConfirmationId = String.valueOf(uiComponent.getAttributes().get("panelConfirmation"));
-        String callCompId = uiComponent.getClientId();
-        PanelConfirmation panelConfirmation = (PanelConfirmation) uiComponent.findComponent(panelConfirmationId);
-        if (panelConfirmation ==null){
-            //try again incase it's within a datatable or some other naming container
-            UIComponent uiForm = JSFUtils.findParentForm(uiComponent);
-            if (uiForm !=null){
-                panelConfirmation = (PanelConfirmation)(uiForm.findComponent(panelConfirmationId));
-            }
-        }
-        if (null != panelConfirmation && !panelConfirmation.isDisabled() ) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            panelConfirmationId = panelConfirmation.getClientId(facesContext);
-            StringBuilder sb = new StringBuilder("mobi.panelConf.init('").append(panelConfirmationId).append("','");
-            sb.append(callCompId).append("',").append(origOnClickCall);
-            sb.append("});");
-            return sb;
-        } else {
-            return null;
-        }
-    }
-
 }

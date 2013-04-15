@@ -791,15 +791,81 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Standard button type - button, submit, img, etc
+            <description>Standard button type - button, submit
             </description>
             <name>type</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>Id of panelConfirmation to be used
+            </description>
+            <name>panelConfirmation</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Id of submitNotification to be used
+            </description>
+            <name>submitNotification</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <description>Sets the button style to selected.</description>
             <name>selected</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Mobile Styled Button Group</description>
+        <display-name>commandButtonGroup</display-name>
+        <name>commandButtonGroup</name>
+        <tag-class>org.icemobile.jsp.tags.input.CommandButtonGroupTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>Pagewide unique identifier.</description>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Name of submitted value should correspond to selectedId</description>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Inline style definition.</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>User defined CSS class.</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Orientation of button group. May be horizontal or vertical.
+                default is horizontal.
+            </description>
+            <name>orientation</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The id of the selected-styled button in the group.
+            </description>
+            <name>selectedId</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Determines if control is disabled.</description>
+            <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -1772,9 +1838,9 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
-        </attribute>
+       </attribute>
     </tag>
-   <tag>
+    <tag>
          <description>Tab Pane Tag.</description>
          <display-name>ICEmobile TabPane</display-name>
          <name>tabPane</name>
@@ -1805,6 +1871,220 @@
              <required>false</required>
              <rtexprvalue>true</rtexprvalue>
          </attribute> -->
-     </tag>
-
+    </tag>
+    <tag>
+        <description>Panel Confirmation for commandButton and menuButton</description>
+        <name>panelConfirmation</name>
+        <tag-class>org.icemobile.jsp.tags.input.PanelConfirmationTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>Pagewide unique identifier.</description>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Inline style definition.</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>User defined CSS class.</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <!-- Tag provide a close button, and if so, what label -->
+        <attribute>
+            <description>Title of the confirmation dialogue. Default will be Confirm</description>
+            <name>title</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Message for the body of the confirmation dialogue.</description>
+            <name>message</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Value label for the accept button if type includes accept feature.</description>
+            <name>acceptLabel</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Value label for the cancel button if type includes cancel feature.</description>
+            <name>cancelLabel</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Type of panelConfirmation dialogue. May be acceptOnly, cancelOnly or both
+               Default is both.
+            </description>
+            <name>type</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <description>SubmitNotification for commandButton and menuButton</description>
+        <name>submitNotification</name>
+        <tag-class>org.icemobile.jsp.tags.input.SubmitNotificationTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>Pagewide unique identifier.</description>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Inline style definition.</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>User defined CSS class.</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>When disabled is true, no submitNotification panel appears.
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Menu Button allows users to select a value from the list and then resets
+            itself after every use so that same value can be selected again the next time.
+        </description>
+        <name>menuButton</name>
+        <tag-class>org.icemobile.jsp.tags.input.MenuButtonTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>Pagewide unique identifier.</description>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Name attribute is required for submit purposes.</description>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Menu Button Label.</description>
+            <name>buttonLabel</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Select Label. Non is displayed if not used.</description>
+            <name>selectTitle</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Inline style definition.</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>User defined CSS class.</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>String value of selected menuButtonItem.</description>
+            <name>selectedValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>When disabled is true, no submitNotification panel appears.
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Menu Button Item Group. Can order menu button items by group and disable</description>
+        <name>menuButtonGroup</name>
+        <tag-class>org.icemobile.jsp.tags.input.MenuButtonItemGroupTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>Label of Group heading.</description>
+            <name>label</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>ability to disabled group of menuButton items.</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>Style of menu Button item group</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Item that can be selected from menu button. Can order menu button items by group and disable</description>
+        <name>menuButtonItem</name>
+        <tag-class>org.icemobile.jsp.tags.input.MenuButtonItemTag</tag-class>
+        <body-content>none</body-content>
+        <attribute>
+            <description>Pagewide unique identifier.</description>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Label for menu item.</description>
+            <name>label</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Value of Menu Item.</description>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>ability to disabled group of menuButton items.</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>id of panelConfirmation tag on same form for this item.</description>
+            <name>panelConfirmation</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>id of submitNotification tag on same form for this item.</description>
+            <name>submitNotification</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

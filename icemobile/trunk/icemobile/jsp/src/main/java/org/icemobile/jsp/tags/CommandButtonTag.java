@@ -16,141 +16,106 @@
 
 package org.icemobile.jsp.tags;
 
+import org.icemobile.component.IButton;
+import org.icemobile.jsp.tags.input.CommandButtonGroupTag;
+import org.icemobile.renderkit.ButtonCoreRenderer;
+
+import javax.servlet.jsp.tagext.Tag;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import static org.icemobile.util.HTML.*;
+
 
 /**
  *
  */
-public class CommandButtonTag extends BaseSimpleTag {
+public class CommandButtonTag extends BaseSimpleTag implements IButton{
+    private static Logger logger = Logger.getLogger(CommandButtonTag.class.getName());
 
-    // Default button types.
-    public static final String BUTTON_TYPE_UNIMPORTANT = "unimportant";
-    public static final String BUTTON_TYPE_IMPORTANT = "important";
-    public static final String BUTTON_TYPE_ATTENTION = "attention";
-    public static final String BUTTON_TYPE_BACK = "back";
-
-    // button styles.
-    public static final String BASE_STYLE_CLASS = "mobi-button ui-btn-up-a";
-    public static final String DISABLED_STYLE_CLASS = " mobi-button-dis";
-    public static final String IMPORTANT_STYLE_CLASS = " mobi-button-important";
-    public static final String UNIMPORTANT_STYLE_CLASS = " mobi-button-unimportant";
-    public static final String BACK_STYLE_CLASS = " mobi-button-back";
-    public static final String ATTENTION_STYLE_CLASS = " mobi-button-attention";
-    public static final String SELECTED_STYLE_CLASS = " mobi-button-selected ui-btn-active";
-
-    private String id;
-    private String name;
-    private String style;
-    private String styleClass;
     private String buttonType;
-
-    private boolean disabled;
-    private String value;
+    private String panelConfirmation;
+    private String submitNotification;
+    private String submitNotificationId;
+    private String panelConfirmationId;
+    private Object value;
     private String type = "submit";
-    private boolean selected;
+    private boolean selectedButton;
+    private boolean selected = false;
+    private String groupId;
 
-    public void doTag() throws IOException {
+    private ButtonCoreRenderer renderer;
+    private TagWriter writer;
+    private CommandButtonGroupTag mParent;
+    private StringBuilder jsCall;
+    private boolean parentDisabled = false;
 
-        TagWriter writer = new TagWriter(getContext());
-        StringBuilder baseClass = new StringBuilder(BASE_STYLE_CLASS);
-        if (selected) {
-            baseClass.append(SELECTED_STYLE_CLASS);
+    public void setParent(Tag parent) {
+        logger.info("SETPARENT!!!");
+        if ((parent instanceof CommandButtonGroupTag)) {
+            this.mParent = (CommandButtonGroupTag) parent;
         }
-        if (disabled) {
-            baseClass.append(" ").append(DISABLED_STYLE_CLASS);
-        }
-        if( buttonType != null && !"".equals(buttonType)){
-            if (BUTTON_TYPE_UNIMPORTANT.equals(buttonType)) {
-                baseClass.append(UNIMPORTANT_STYLE_CLASS);
-            } else if (BUTTON_TYPE_BACK.equals(buttonType)) {
-                baseClass.append(BACK_STYLE_CLASS);
-            } else if (BUTTON_TYPE_ATTENTION.equals(buttonType)) {
-                baseClass.append(ATTENTION_STYLE_CLASS);
-            } else if (BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
-                baseClass.append(IMPORTANT_STYLE_CLASS);
-            } 
-        }
-        
-        if (styleClass != null) {
-            baseClass.append(" ").append(styleClass);
-        }
-        
-        if (BUTTON_TYPE_BACK.equals(buttonType) && getClient().isIOS()){
-            writer.startElement(DIV_ELEM);
-            if( id != null ){
-                writer.writeAttribute(ID_ATTR, id+"_ctr");
-            }
-            writer.writeAttribute(CLASS_ATTR, baseClass.toString());
-            // should be auto base though
-            if (style != null ) {
-                writer.writeAttribute(STYLE_ATTR, style);
-            }
-            writer.startElement(SPAN_ELEM);
-            writer.endElement(SPAN_ELEM);
-        }
-        
-        writer.startElement(INPUT_ELEM);
-        if (id != null && !"".equals(id)) {
-            writer.writeAttribute(ID_ATTR, id);
-        }
-        if (name != null && !"".equals(name)) {
-            writer.writeAttribute(NAME_ATTR,name);
-        }
-        // button type for styling purposes
-        writer.writeAttribute(TYPE_ATTR, type);
-        
-        //style and class written to ctr div when back button
-        if (!BUTTON_TYPE_BACK.equals(buttonType) || !getClient().isIOS()){
-            writer.writeAttribute(CLASS_ATTR, baseClass.toString());
-            // should be auto base though
-            if (style != null ) {
-                writer.writeAttribute(STYLE_ATTR, style);
-            }
-        }
-        
-       
-        if (isDisabled()) {
-            writer.writeAttribute(DISABLED_ATTR,DISABLED_ATTR);
-        }
-
-        if (null != value) {
-            writer.writeAttribute(VALUE_ATTR, value);
-        }
-        writer.endElement();
-        
-      //end ctr div for back button
-        if (BUTTON_TYPE_BACK.equals(buttonType) && getClient().isIOS()){
-            writer.startElement("b");
-            writer.writeAttribute(CLASS_ATTR, "mobi-button-placeholder");
-            if (value != null) {
-                writer.writeText(value);
-            }
-            writer.endElement("b");
-            writer.endElement(DIV_ELEM);
-        }
-
     }
 
+    public void doTag() throws IOException {
+        /* set selected if my id is same as the selectedId of the buttonGroup
+        * so application doesn't have ot carry the logic*/
+        if (this.getParent() instanceof CommandButtonGroupTag){
+            mParent = (CommandButtonGroupTag) this.getParent();
+            checkSelected();
+            this.groupId = mParent.getId();
+      //      logger.info("button has groupId = "+this.groupId);
+        }
+        writer = new TagWriter(getContext());
+        renderer = new ButtonCoreRenderer();
+        renderer.encodeEnd(this, writer);
+    }
+
+    public void checkSelected(){
+        //logger.info("parent has selected id =" + mParent.getSelectedId());
+        if (mParent.isDisabled()) { //no changes allowed if parent is disabled
+            this.parentDisabled=true;
+        }
+        if (mParent.getSelectedId()!=null){
+            String selId = mParent.getSelectedId();
+            if (selId.equals(this.id)){
+                this.selectedButton = true;
+                this.selected=true;
+            }else {
+                this.selectedButton = false;
+                this.selected = false;
+            }
+        }else {
+            this.selectedButton = false;
+            this.selected = false;
+        }
+    }
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getStyle() {
-        return style;
+        return this.style;
+    }
+
+    public Boolean isSelectedButton() {
+        return this.selectedButton;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setSelectedButton(Boolean selected) {
+        this.selectedButton = selected;
+    }
+
+    public String getGroupId() {
+        return this.groupId;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public void setStyle(String style) {
@@ -158,7 +123,7 @@ public class CommandButtonTag extends BaseSimpleTag {
     }
 
     public String getStyleClass() {
-        return styleClass;
+        return this.styleClass;
     }
 
     public void setStyleClass(String styleClass) {
@@ -166,7 +131,7 @@ public class CommandButtonTag extends BaseSimpleTag {
     }
 
     public String getButtonType() {
-        return buttonType;
+        return this.buttonType;
     }
 
     public void setButtonType(String buttonType) {
@@ -174,23 +139,23 @@ public class CommandButtonTag extends BaseSimpleTag {
     }
 
     public boolean isDisabled() {
-        return disabled;
+        return this.disabled;
     }
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
 
-    public String getValue() {
-        return value;
+    public Object getValue() {
+        return this.value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {
@@ -198,11 +163,86 @@ public class CommandButtonTag extends BaseSimpleTag {
     }
 
     public boolean isSelected() {
-        return selected;
+        return this.selected;
     }
 
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
+    public boolean isSingleSubmit() {
+        return false;
+    }
+
+    public String getSubmitNotification() {
+        return this.submitNotification;
+    }
+
+    public void setSubmitNotification(String sn){
+        this.submitNotification= sn;
+    }
+
+    public void setPanelConfirmation(String pc){
+        this.panelConfirmation = pc;
+    }
+    public String getPanelConfirmation() {
+        return this.panelConfirmation;
+    }
+
+    public String getParams() {
+        return null;
+    }
+
+    public void setParams(String params) {
+        //no JSP support at this time
+    }
+
+    public String getBehaviors() {
+        return null;  //JSF only at this time
+    }
+
+    public void setBehaviors(String behaviors) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setPanelConfirmationId(String pcId) {
+        //
+    }
+
+    public String getPanelConfirmationId() {
+        return this.panelConfirmation;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setSubmitNotificationId(String snId) {
+        // JSF
+    }
+
+    public String getSubmitNotificationId() {
+        return this.submitNotification;
+    }
+
+    public String getOpenContentPane() {
+        return null;
+    }
+
+    public StringBuilder getJsCall() {
+        return null;
+    }
+
+    public void setJsCall(StringBuilder jsCall) {
+        this.jsCall = jsCall;
+    }
+    public boolean isParentDisabled(){
+        return this.parentDisabled;
+    }
+    public void setParentDisabled(boolean dis){
+        this.parentDisabled = dis;
+    }
+    public void release(){
+        logger.info("button id="+this.id+" RELEASE");
+        super.release();
+        this.mParent = null ;
+        this.writer= null;
+        this.renderer=null;
+    }
 }

@@ -110,13 +110,10 @@ public class TabPaneTag extends BodyTagSupport implements ITabPane {
 
 
     public int doAfterBody() throws JspException {
-  //     LOG.info("doAfterBody");
        BodyContent body = this.getBodyContent();
        try {
-        //   LOG.info("in try doAfterBody");
            if (body!=null){
                StringBuilder sb = new StringBuilder(body.getString());
-               System.out.println(" content of body="+sb.toString());
                mParent.addContents(getClientId(), sb);
            }
            bodyContent.clear();

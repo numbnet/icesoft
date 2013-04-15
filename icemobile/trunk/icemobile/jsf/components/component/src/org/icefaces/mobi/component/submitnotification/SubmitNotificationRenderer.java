@@ -23,8 +23,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
+import org.icemobile.component.ISubmitNotification;
+import org.icemobile.renderkit.IResponseWriter;
+import org.icemobile.renderkit.SubmitNotificationCoreRenderer;
 
 
 public class SubmitNotificationRenderer extends BaseLayoutRenderer {
@@ -35,37 +39,25 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
     private static final String JS_LIBRARY = "org.icefaces.component.submitnotification";
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
         writeJavascriptFile(facesContext, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-        encodeMarkup(facesContext, component);
+        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        SubmitNotificationCoreRenderer renderer = new SubmitNotificationCoreRenderer();
+        ISubmitNotification panel = (ISubmitNotification)component;
+        renderer.encodeBegin(panel, writer);
     }
 
-    protected void encodeMarkup(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        SubmitNotification panelNotify = (SubmitNotification) uiComponent;
-        String clientId = panelNotify.getClientId(facesContext);
-        StringBuilder popupBaseClass = new StringBuilder(SubmitNotification.CONTAINER_HIDE_CLASS);
-        // div that is use to hide/show the popup screen black out--will manipulate using js
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_bg", HTML.ID_ATTR);
-        writer.writeAttribute(HTML.CLASS_ATTR, SubmitNotification.BLACKOUT_PNL_HIDE_CLASS, HTML.CLASS_ATTR);
-        writer.endElement(HTML.DIV_ELEM);
-        // panel
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_popup", HTML.ID_ATTR);
-        writer.writeAttribute("class", popupBaseClass.toString(), "class");
-        writer.writeAttribute("style", panelNotify.getStyle(), "style");
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_popup_inner", HTML.ID_ATTR);
-        renderChildren(facesContext, panelNotify);
-        writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        SubmitNotificationCoreRenderer renderer = new SubmitNotificationCoreRenderer();
+        ISubmitNotification panel = (ISubmitNotification)component;
+        renderer.encodeEnd(panel, writer);
     }
 
 
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-        //Rendering happens on encodeEnd
+        super.encodeChildren(facesContext, component);
     }
 
     @Override

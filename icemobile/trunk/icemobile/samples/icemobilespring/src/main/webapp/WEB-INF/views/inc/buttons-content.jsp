@@ -52,13 +52,21 @@
                 disabled="true"
             />
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow style="text-align:left">
-            <label>Selected Value: </label>
-            <span>${pressed}</span>
+        <mobi:fieldsetRow>
+               <mobi:commandButtonGroup id="group1"
+                                         name="selectedId"
+                                         selectedId="${buttonsBean.selectedId}"
+                                         orientation="horizontal">
+                    <mobi:commandButton value="Yes" id="button1"
+                             type="button"/>
+                    <mobi:commandButton value="No"
+                            type="button"  id="button2"/>
+                    <mobi:commandButton value="Please"
+                            type="button" id="button3" />
+                </mobi:commandButtonGroup>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
-    <input type="hidden" name="submitB" id="hiddenSubmitVal" />
-    
+
     <mobi:fieldsetGroup>
     	<mobi:fieldsetRow group="true">
     		Description
@@ -70,8 +78,10 @@
 
 </form:form>
 <script type="text/javascript">
-	$('input[type=submit]').click(function(e) {
-		$('#hiddenSubmitVal').val(this.value);
-	});
-	MvcUtil.enhanceForm("#buttonsform");
+    MvcUtil.enhanceForm("#buttonsform");
+    mobi.AjaxRequest = function( options){
+        if (options.jspForm){
+            $(options.jspForm).submit();
+        }
+    };
 </script>

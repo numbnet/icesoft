@@ -21,6 +21,9 @@ if (!window['ice']) {
 if (!window['ice.mobi']) {
     window.ice.mobi = {};
 }
+if (!window['mobi']) {
+    window.mobi = {};
+}
 
 if (!window.console) {
     console = {};
@@ -31,7 +34,42 @@ if (!window.console) {
         };
     }
 }
-
+/* utilities*/
+ice.mobi.swapClasses = function(aNode, c1, c2){
+    if (!aNode.className){
+        aNode.className = c2;
+    }else if (ice.mobi.hasClass(aNode, c1)) {
+        var tempClass = aNode.className;
+        var temp = tempClass.replace(c1, c2 );
+      //  console.log(" orig class="+ tempClass+" after replace temp="+temp);
+        if (tempClass !== temp){
+           aNode.className= temp;
+        }
+    }
+};
+ice.mobi.addListener= function(obj, event, fnc){
+    if (obj.addEventListener){
+        obj.addEventListener(event, fnc, false);
+    } else if (obj.attachEvent) {
+        obj.attachEvent(event, fnc);
+    } else {
+        ice.log.debug(ice.log, 'WARNING:- this browser does not support addEventListener or attachEvent');
+    }
+} ;
+ice.mobi.removeListener= function(obj, event, fnc){
+    if (obj.addEventListener){
+        obj.removeEventListener(event, fnc, false);
+    } else if (obj.attachEvent){
+        obj.detachEvent(event, fnc);
+    } else {
+        ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
+    }
+};
+ice.mobi.BUTTON_UNPRESSED = " ui-btn-up-a";
+ice.mobi.BUTTON_PRESSED = " ui-btn-down-a";
+ice.mobi.hasClass = function(ele, remove_cls) {
+    return ele.className.replace( /(?:^|\s)remove_cls(?!\S)/ , '' );
+};
 ice.registerAuxUpload = function registerAuxUpload(sessionid, uploadURL) {
     var auxiframe = document.getElementById('auxiframe');
     if (null == auxiframe) {
@@ -193,6 +231,79 @@ ice.formOf = function formOf(element) {
         parent = parent.parentNode;
     }
 }
+ice.mobi.button = {
+    select: function(clientId, event, cfg) {
+        //get class and add the pressed state
+        var me = document.getElementById(clientId);
+        var curClass = me.className;
+        if (cfg.pDisabled){
+            return; // no change on which button can be selected
+        }
+        if (ice.mobi.hasClass(me, ice.mobi.BUTTON_UNPRESSED )){
+            var newCls = me.className.replace('up','down');
+            me.className = newCls;
+        }
+        //check if it's part of a commandButtonGroup needed for jsp
+        if (cfg.groupId ){
+            var groupElem = document.getElementById(cfg.groupId+"_hidden");
+            if (groupElem){
+            //    console.log("for groupId "+cfg.groupId+" value is "+clientId);
+                groupElem.value = clientId; //update group to this button selected
+            }
+        }
+        var myForm = ice.formOf(document.getElementById(clientId));
+        var params = cfg.params || null;
+
+        //otherwise, just check for behaviors, singleSubmit and go
+        var singleSubmit = cfg.singleSubmit || false;
+        var behaviors = cfg.behaviors || null;
+        var event = event || window.event;
+        var keyCall = function(xhr, status, args) {ice.mobi.button.unSelect(clientId, curClass);};
+        var options = {
+            onsuccess: keyCall,
+            source : clientId,
+            jspForm: myForm
+        };
+        if (behaviors && behaviors.click){
+            /* does not yet support mobi ajax for panelConf or submitNotification need to modify first */
+            /* need to rework AjaxBehaviorRenderer before I can combine the options and cfg */
+             behaviors.click();
+            /* once I rework mobi ajax support will be able to support all the callbacks in next call */
+            //ice.mobi.ab(ice.mobi.extendAjaxArguments(behaviors, options));
+        }else{
+            if (singleSubmit){
+                options.execute="@this";
+            } else {
+                options.execute="@all";
+            }
+            if (params !=null){
+                options.params = params;
+            }else {
+                options.params = {};
+            }
+            options.render = "@all";
+            if (cfg.pcId) {
+              //  console.log("throw control to panelConfirmation id="+cfg.pcId);
+                ice.mobi.panelConf.init(cfg.pcId, clientId, cfg, options);
+                return;
+             }
+             if (cfg.snId) {
+                 ice.mobi.submitnotify.open(cfg.snId, clientId, cfg, options);
+                 return;
+             }
+            //if here, then no panelConfirmation as this action is responsible for submit
+             else {
+                 mobi.AjaxRequest(options);
+            }
+        }
+    },
+    unSelect: function(clientId, classNm){
+        var me = document.getElementById(clientId);
+        var oldClass = me.className;
+        me.className=oldClass.replace('down','up');
+        console.log('id='+clientId+' unSelect call back -> class='+document.getElementById(clientId).className);
+    }
+};
 
 ice.mobi.flipswitch = {
  lastTime: 0
@@ -378,7 +489,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                     ice.mobi.carousel.unloadTest(clientId);
                 };
               //  var node = document.getElementById(clientId);
-                document.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
+                ice.mobi.addEventListener(document, "DOMSubtreeModified", this.unload[clientId]);
             } else {
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId].updateProperties(clientId, cfgIn);
@@ -400,10 +511,11 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         unloadTest: function(clientId){
             if (!document.getElementById(clientId) && this.acarousel[clientId]!=null){
             //   console.log("unloadTest setting id="+clientId+" to null");
-               this.acarousel[clientId].unload();
-               this.acarousel[clientId] = null;
-               this.cfg[clientId] = null;
-               document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
+                this.acarousel[clientId].unload();
+                this.acarousel[clientId] = null;
+                this.cfg[clientId] = null;
+                ice.mobi.removeListener(document,"DOMSubtreeModified", this.unload[clientId]);
+             //  document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
             }
         }
     }
@@ -537,7 +649,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                 removeClass(oldCtrl, clsActiveTab);
                 var isClient = cfgIn.client || false;
                 var currIndex = cfgIn.tIndex;
-             /*   if (!isClient) {
+             /*   if (!isClient) {   JSF stuff
                     if (lastServerIndex==currIndex){
                         cntr= cntr + 1;
                     } else {
@@ -1978,8 +2090,190 @@ ice.mobi.splitpane = {
         }
     }
 };
+ice.mobi.PANELCONF_BG_HIDE = "mobi-panelconf-bg-hide";
+ice.mobi.PANELCONF_BG = "mobi-panelconf-bg";
+ice.mobi.PANELCONF_CONTAINER = "mobi-panelconf-container";
+ice.mobi.PANELCONF_CONTAINER_HIDE = "mobi-panelconf-container-hide";
+ice.mobi.panelConf = {
+    opened:{},
+    cfg:{},
+    options: {},
+    caller:{},
+    centerCalculation:{},
+    scrollEvent:{},
+    init:function (clientId, callerId, cfgIn, options) {
+        this.cfg[clientId] = cfgIn;
+        this.caller[clientId] = callerId;
+        this.options[clientId] = options;
+        var idPanel = clientId + "_bg";
+        var bgNode = document.getElementById(idPanel);
+        ice.mobi.swapClasses(bgNode, ice.mobi.PANELCONF_BG, ice.mobi.PANELCONF_BG_HIDE);
+        this.scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+        this.open(clientId);
+    },
+    confirm:function (clientId) {
+      // does not yet support mobi ajax.  need more work on mobi ajax support first
+        var callerId = this.cfg.source || this.caller[clientId];
+        var snId = this.cfg[clientId].snId || this.options[clientId].snId || null;
+        if (snId ==null && callerId) {
+            this.close(clientId);
+            mobi.AjaxRequest(this.options[clientId]);
+        }
+        else if (snId!=null) {
+            this.close(clientId);
+            ice.mobi.submitnotify.open(snId, callerId, this.cfg[clientId], this.options[clientId]);
+        }
+    },
+    open:function (clientId) {
+        var containerId = clientId + "_popup";
+        var idPanel = clientId + "_bg";
+        var bgNode = document.getElementById(idPanel);
+        var popNode = document.getElementById(containerId);
+        ice.mobi.swapClasses(bgNode, ice.mobi.PANELCONF_BG_HIDE, ice.mobi.PANELCONF_BG);
+        ice.mobi.swapClasses(popNode, ice.mobi.PANELCONF_CONTAINER_HIDE, ice.mobi.PANELCONF_CONTAINER);
+        // add scroll listener
+        this.centerCalculation[clientId] = function () {
+            ice.mobi.panelAutoCenter(containerId);
+        };
+        ice.mobi.addListener(window, this.scrollEvent, this.centerCalculation[clientId]);
+        ice.mobi.addListener(window, 'resize', this.centerCalculation[clientId]);
+        // mark as visible
+        this.opened[clientId] = true;
+        // calculate center for first view
+        ice.mobi.panelAutoCenter(containerId);
+    },
+    close:function (clientId) {
+        var idPanel = clientId + "_bg";
+        var bgNode = document.getElementById(idPanel);
+        var popupId = clientId+"_popup";
+        var pNode = document.getElementById(popupId);
+        // remove scroll listener
+        ice.mobi.removeListener(window, this.scrollEvent, this.centerCalculation[clientId]);
+        ice.mobi.removeListener(window, 'resize', this.centerCalculation[clientId]);
+        // hide panel
+        ice.mobi.swapClasses(bgNode, ice.mobi.PANELCONF_BG, ice.mobi.PANELCONF_BG_HIDE );
+        ice.mobi.swapClasses(pNode, ice.mobi.PANELCONF_CONTAINER, ice.mobi.PANELCONF_CONTAINER_HIDE);
+        this.opened[clientId] = false;
+        this.centerCalculation[clientId] = undefined;
+    },
+    unload:function (clientId) {
+        this.cfg[clientId] = null;
+        this.opened[clientId] = null;
+        this.centerCalculation[clientId]=null;
+        this.caller[clientId] = null;
+    }
 
+};
+ice.mobi.submitnotify = {
+    visible:{},
+    bgClass:"mobi-submitnotific-bg",
+    bgHideClass: "mobi-submitnotific-bg-hide",
+    containerClass:"mobi-submitnotific-container",
+    contHideClass: "mobi-submitnotific-container-hide",
+    centerCalculation:{},
+    cfg:{},
+    open: function (clientId, callerId, cfg, options) {
+        var idPanel = clientId + "_bg";
+        var containerId = clientId + "_popup";
+        var behaviors = cfg.behaviors ||null;
+        var bgNode = document.getElementById(idPanel);
+        var pNode = document.getElementById(containerId);
+        ice.mobi.swapClasses(bgNode, this.bgHideClass, this.bgClass);
+        ice.mobi.swapClasses(pNode, this.contHideClass, this.containerClass);
+        // apply centering code.
+        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+        // add scroll listener
+        this.centerCalculation[clientId] = function () {
+            ice.mobi.panelAutoCenter(containerId);
+        };
+        ice.mobi.addListener(window, scrollEvent, this.centerCalculation[clientId]);
+        ice.mobi.addListener(window, 'resize', this.centerCalculation[clientId]);
+        // calculate center for first view
+        ice.mobi.panelAutoCenter(containerId);
+        var closeCall = function(xhr, status, args) {ice.mobi.submitnotify.close(clientId);};
+        var keyCall = function(xhr, status, args) {ice.mobi.button.unSelect(callerId);};
+        if (behaviors){
+            cfg.oncomplete = closeCall;
+            cfg.onsuccess = options.keyCall || keyCall;
+            mobi.AjaxRequest(cfg);
+        }else{
+            options.oncomplete = closeCall;
+            mobi.AjaxRequest(options);
+        }
+    },
+    close:function (clientId) {
+        var idPanel = clientId + "_bg";
+        var containerId = clientId + "_popup";
+        var bgNode = document.getElementById(idPanel);
+        var pNode = document.getElementById(containerId);
+        ice.mobi.swapClasses(bgNode, this.bgClass, this.bgHideClass);
+        ice.mobi.swapClasses(pNode, this.containerClass, this.contHideClass);
+        // clean up centering listeners.
+        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+        ice.mobi.removeListener(window, scrollEvent, this.centerCalculation[clientId]);
+        ice.mobi.removeListener(window, 'resize', this.centerCalculation[clientId]);
+        this.centerCalculation[clientId] = undefined;
+    }
 
+};
+ice.mobi.menubutton = {
+    select: function(clientId){
+        var myselect = document.getElementById(clientId+'_sel');
+        var myOptions = myselect.options;
+        var index = myselect.selectedIndex;
+        var behaviors = myOptions[index].getAttribute('cfg');
+        var singleSubmit = myOptions[index].getAttribute("singleSubmit") || null;
+        var myForm = ice.formOf(document.getElementById(clientId));
+        var params = myOptions[index].getAttribute("params") || null;
+        var optId = myOptions[index].id || null;
+        if (!optId){
+            console.log(" Problem selecting items in menuButton. See docs.") ;
+            return;
+        }
+        var disabled = myOptions[index].getAttribute("disabled") || false;
+        if (disabled==true){
+            console.log(" option id="+optId+" is disabled no submit");
+            return;
+        }
+        var options = {
+            source: optId,
+            jspForm: myForm
+        };
+        var cfg = {
+            source: optId,
+        }
+        var snId = myOptions[index].getAttribute("snId") || null ;
+        var pcId = myOptions[index].getAttribute("pcId") || null;
+        if (singleSubmit){
+            options.execute="@this";
+        } else {
+            options.execute="@all";
+        }
+        if (behaviors){
+            cfg.behaviors = behaviors;
+        }
+        if (pcId){
+            if (snId){
+                options.snId = snId;
+            }
+            options.pcId = pcId;
+            ice.mobi.panelConf.init(pcId, optId, cfg, options) ;
+            return;
+        }
+        if (snId){
+            ice.mobi.submitnotify.open(snId, optId, cfg, options);
+            return;
+        }
+        mobi.AjaxRequest(options);
+        this.reset(myselect, index);
+    },
+    reset: function reset(myselect, index) {
+        console.log("RESET");
+            myselect.options[index].selected = false;
+       //     myselect.options.index = 0;
+
+    }
+};
 /* add js marker for progressive enhancement */
 document.documentElement.className = document.documentElement.className + ' js';
 

@@ -16,70 +16,69 @@
 if (!window['mobi']) {
     window.mobi = {};
 }
-
-mobi.menubutton = {
-    cfg: {},
-    initmenu: function(clientId, cfgI){
-         var myselect = document.getElementById(clientId+'_sel');
-         var selTitle = cfgI.selectTitle;
-         var option = myselect.options[0];
-         if (option && option.label!=selTitle) {
-             try{
-                var anoption = document.createElement("option");
-                anoption.label=selTitle;
-                myselect.add(new Option(selTitle, "0"), myselect.options[0]);
-             } catch(e) {
-                myselect.add(new Option(selTitle, "0"), 0);
-             }
-            myselect.options[0].selected=true;
-            myselect.render;
-         }
-    },
+ice.mobi.menubutton = {
     select: function(clientId){
-         var myselect = document.getElementById(clientId+'_sel');
-         var index = 0;
-         for (var i=1; i<myselect.options.length; i++){
-             if (myselect.options[i].selected==true){
-                index = i;
-                break
-             }
-         }
-         var optId = myselect.options[index].id;
-         var singleSubmit = false;
-         var disabled = false;
-         if (this.cfg[optId]){
-             singleSubmit = this.cfg[optId].singleSubmit;
-             disabled = this.cfg[optId].disabled;
-         }
-         if (index ==0)return;
-         var snId =this.cfg[optId].snId || null
-         if (this.cfg[optId].pcId){
-            var pcId= this.cfg[optId].pcId;
-            mobi.panelConf.init(pcId, optId, this.cfg[optId], singleSubmit ) ;
-         }
-         else if (singleSubmit){
-             if (snId){
-                 mobi.submitnotify.open(snId, optId, true);
-             }else {
-                 ice.se(null, optId);
-             }
-            // this.reset(myselect, index);
-         } else {
-             if (snId){
-                 mobi.submitnotify.open(snId, optId, false,null);
-             } else {
-                 ice.s(null, optId);
-             }
-         }
-
+        var myselect = document.getElementById(clientId+'_sel');
+        var myOptions = myselect.options;
+        var index = myselect.selectedIndex;
+        if (index==0){
+            return;  //assume index of 0 is select title so no submit happens
+        }
+        var behaviors = myOptions[index].getAttribute('cfg');
+        var singleSubmit = myOptions[index].getAttribute("singleSubmit") || null;
+        var myForm = ice.formOf(document.getElementById(clientId));
+        var params = myOptions[index].getAttribute("params") || null;
+        var optId = myOptions[index].id || null;
+        if (!optId){
+            console.log(" Problem selecting items in menuButton. See docs. index = ") ;
+            return;
+        }
+        var disabled = myOptions[index].getAttribute("disabled") || false;
+        if (disabled==true){
+            console.log(" option id="+optId+" is disabled no submit");
+            return;
+        }
+        var options = {
+            source: optId,
+            jspForm: myForm
+        };
+        var cfg = {
+            source: optId
+        }
+        var snId = myOptions[index].getAttribute("snId") || null ;
+        var pcId = myOptions[index].getAttribute("pcId") || null;
+        if (singleSubmit){
+            options.execute="@this";
+        } else {
+            options.execute="@all";
+        }
+        if (behaviors){
+            cfg.behaviors = behaviors;
+        }
+        if (pcId){
+            if (snId){
+                options.snId = snId;
+            }
+            options.pcId = pcId;
+            ice.mobi.panelConf.init(pcId, optId, cfg, options) ;
+            this.reset(myselect, index);
+            return;
+        }
+        if (snId){
+            var resetCall = function(xhr, status, args) {ice.mobi.menubutton.reset(myselect, index);};
+            options.onsuccess = resetCall;
+            ice.mobi.submitnotify.open(snId, optId, cfg, options);
+       //     this.reset(myselect, index);
+            return;
+        }
+        mobi.AjaxRequest(options);
+        this.reset(myselect, index);
     },
     reset: function reset(myselect, index) {
-            myselect.options[index].selected = false;
-            myselect.options.index = 0;
+        console.log("RESET");
+        myselect.options[index].selected = false;
+        myselect.options[0].selected=true;
+       //     myselect.options.index = 0;
 
-    },
-    initCfg: function(clientId, optionId, cfg){
-        this.cfg[optionId] = cfg;
     }
-
 };
