@@ -56,7 +56,7 @@
 					<ace:ajax execute="@this" render="@all" />
 					<ace:ajax event="blur" execute="@this" render="@all" />
 				</ace:comboBox>
-				<h:message for="selectTextColor" />
+				<ace:message for="selectTextColor" />
 				<br />
 				<ace:comboBox id="selectBackgroundColor" value="#{comboBoxFacetBean.backgroundColor}" listVar="color" listValue="#{comboBoxFacetBean.backgroundColors}" itemValue="#{color.hexValue}" label="Select a color or enter a color code for the background: " labelPosition="top" validator="#{comboBoxFacetBean.colorValidator}" width="300">
 					<f:facet name="row">
@@ -69,7 +69,7 @@
 					<ace:ajax execute="@this" render="@all" />
 					<ace:ajax event="blur" execute="@this" render="@all" />
 				</ace:comboBox>
-				<h:message for="selectBackgroundColor" />
+				<ace:message for="selectBackgroundColor" />
 				</h:panelGroup>
 				<h:panelGroup>
 					<h:outputText value="ICEfaces" style="margin-left:20px;padding:10px; font-size:3em; color: #{comboBoxFacetBean.textColor} ; background-color: #{comboBoxFacetBean.backgroundColor} ;" />
