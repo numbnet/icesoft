@@ -275,8 +275,13 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		String headerClass = submenu.getHeaderClass();
 		headerClass = headerClass == null ? "" : " " + headerClass;
 		writer.writeAttribute("class", "ui-menu-multicolumn-header" + headerClass, null);
-		writer.startElement("div", null);
-		writer.endElement("div");
+		UIComponent header = (UIComponent) submenu.getFacet("header");
+		if (header != null) {
+			encodeParentAndChildren(context, header);
+		} else {
+			writer.startElement("div", null);
+			writer.endElement("div");
+		}
 		writer.endElement("div");
 			
 		for (MenuColumn menuColumn : menuColumns) {
@@ -321,8 +326,13 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		String footerClass = submenu.getFooterClass();
 		footerClass = footerClass == null ? "" : " " + footerClass;
 		writer.writeAttribute("class", "ui-menu-multicolumn-footer" + footerClass, null);
-		writer.startElement("div", null);
-		writer.endElement("div");
+		UIComponent footer = (UIComponent) submenu.getFacet("footer");
+		if (footer != null) {
+			encodeParentAndChildren(context, footer);
+		} else {
+			writer.startElement("div", null);
+			writer.endElement("div");
+		}
 		writer.endElement("div");
 		
 		writer.endElement("div");
@@ -399,4 +409,22 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		
 		return result;
 	}
+	
+	public static void encodeParentAndChildren(FacesContext facesContext, UIComponent parent) throws IOException {
+        parent.encodeBegin(facesContext);
+        if (parent.getRendersChildren()) {
+            parent.encodeChildren(facesContext);
+        } else {
+            if (parent.getChildCount() > 0) {
+                Iterator children = parent.getChildren().iterator();
+                while (children.hasNext()) {
+                    UIComponent nextChild = (UIComponent) children.next();
+                    if (nextChild.isRendered()) {
+                        encodeParentAndChildren(facesContext, nextChild);
+                    }
+                }
+            }
+        }
+        parent.encodeEnd(facesContext);
+    }
 }
