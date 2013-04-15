@@ -170,9 +170,9 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             writer.writeAttribute(CLASS_ATTR, "mobi-button-placeholder");
             Object oVal2 = button.getValue();
             String val = null;
-            if (null != oVal) {
+            if (null != oVal2) {
                 String value = oVal2.toString();
-                writer.writeText(val);
+                writer.writeText(value);
             }
             writer.endElement("b");
             writer.endElement(DIV_ELEM);

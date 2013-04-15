@@ -86,7 +86,6 @@ public class  CommandButtonRenderer extends CoreRenderer {
         if (parent instanceof IButtonGroup)  {
             IButtonGroup cbg = (IButtonGroup)parent;
             button.setGroupId(cbg.getClientId());
-            logger.info("button group has disabled="+cbg.isDisabled());
             if (cbg.isDisabled()){
                 button.setParentDisabled(true);
             }
