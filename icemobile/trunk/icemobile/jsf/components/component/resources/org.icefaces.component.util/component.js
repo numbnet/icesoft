@@ -582,6 +582,7 @@ function html5submitFunction(element, event, options) {
     var context = {
         sourceid: sourceId,
         formid: formId,
+        element: element,
         //'begin' event is not triggered since we do not invoke jsf.ajax.request -- onBeforeSubmit relies on this event
         onevent: options.onevent,
         onerror: options.onerror || function (param) {
