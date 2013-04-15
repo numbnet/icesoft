@@ -17,6 +17,7 @@ package org.icefaces.mobi.component.panelconfirmation;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 import org.icefaces.mobi.utils.TLDConstants;
 
@@ -34,7 +35,9 @@ import javax.faces.application.ResourceDependency;
         componentFamily = "org.icefaces.PanelConfirmation",
         tlddoc = "This mobility component renders a confirmation panel to be used with any mobi " +
                 "commandButton or menuButton component.  See commandButton and menuButton docs " +
-                "for the correct attribute to bind this component to the button components. "
+                "for the correct attribute to bind this component to the button components. " +
+                "This component was modelled after 1.8 panelConfirmation and disabled feature was" +
+                "not part of the functionality of that component so not carried over to this one. "
 )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
@@ -44,8 +47,9 @@ public class PanelConfirmationMeta extends UIPanelMeta {
     @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = TLDConstants.DISABLED)
-    private boolean disabled;
+    /* not part of the 1.8 component that this was modelled after Can just not have a valid panelconfirmation id on the button*/
+ /*   @Property(tlddoc = TLDConstants.DISABLED)
+    private boolean disabled; */
 
     @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
@@ -68,6 +72,5 @@ public class PanelConfirmationMeta extends UIPanelMeta {
 
     @Property(defaultValue = "Confirm?", tlddoc = "The message to appear on the confirmation diablog.")
     private String message;
-
 
 }

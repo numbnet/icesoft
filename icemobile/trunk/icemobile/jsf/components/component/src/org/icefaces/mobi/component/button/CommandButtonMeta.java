@@ -25,6 +25,8 @@ import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIParameter;
+import java.util.List;
 
 @Component(
         tagName = "commandButton",
@@ -68,8 +70,8 @@ public class CommandButtonMeta extends UICommandMeta {
             required = Required.no)
     private String buttonType;
     
-    @Property(tlddoc = "The value of the \"type\" attribute for the input element, \"button\", \"submit\", or " +
-    		"\"image\". The default is \"button\". ",
+    @Property(defaultValue="button", tlddoc = "The value of the \"type\" attribute for the input element, \"button\", or \"submit\"" +
+    		 "The default is \"button\". ",
             required = Required.no)
     private String type;
 
@@ -92,4 +94,27 @@ public class CommandButtonMeta extends UICommandMeta {
     
     @Property(tlddoc="The id of a contentPane in a contentStack that will be displayed when selecting the commandButton. ")
     private String openContentPane;
+
+    @Field
+    private String groupId;
+
+    @Field(defaultValue="false")
+    private Boolean selectedButton;
+
+    @Field(defaultValue="")
+    private String params;
+
+    @Field
+    private String behaviors;
+
+    @Field
+    private String submitNotificationId;
+
+    @Field
+    private String panelConfirmationId;
+
+    @Field
+    private StringBuilder jsCall;
+
+
 }

@@ -16,18 +16,13 @@
 package org.icefaces.mobi.component.panelconfirmation;
 
 import org.icefaces.mobi.utils.Attribute;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IPanelConfirmation;
+import org.icemobile.util.ClientDescriptor;
 
 
-public class PanelConfirmation extends PanelConfirmationBase{
-    public static final String BLACKOUT_PNL_HIDE_CLASS = "mobi-panelconf-bg-hide ";
-    public static final String BLACKOUT_PNL_CLASS = "mobi-panelconf-bg ";
-    public static final String CONTAINER_HIDE_CLASS = "mobi-panelconf-container-hide ";
-    public static final String CONTAINER_CLASS = "mobi-panelconf-container ";
-    public static final String TITLE_CLASS = "mobi-panelconf-title-container ";
-    public static final String SELECT_CONT_CLASS = "mobi-panelconf-body-container ";
-    public static final String BUTTON_CONT_CLASS = "mobi-panelconf-submit-container ";
-    public static final String BUTTON_ACCEPT_CLASS = "mobi-button mobi-button-attention ui-btn-up-a ";
-    public static final String BUTTON_CANCEL_CLASS = "mobi-button mobi-button-important ui-btn-up-a ";
+public class PanelConfirmation extends PanelConfirmationBase implements IPanelConfirmation{
+
 
     private Attribute[] commonAttributeNames = {
             new Attribute("style", null),
@@ -39,5 +34,8 @@ public class PanelConfirmation extends PanelConfirmationBase{
 
     public Attribute[] getCommonAttributeNames() {
         return commonAttributeNames;
+    }
+     public ClientDescriptor getClient() {
+         return MobiJSFUtils.getClientDescriptor();
     }
 }

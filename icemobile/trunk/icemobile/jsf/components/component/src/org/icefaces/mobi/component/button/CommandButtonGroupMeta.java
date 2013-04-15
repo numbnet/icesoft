@@ -19,6 +19,7 @@ package org.icefaces.mobi.component.button;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.mobi.utils.TLDConstants;
 
@@ -46,6 +47,11 @@ public class CommandButtonGroupMeta extends UIComponentBaseMeta {
     @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
+    @Property(defaultValue = "false", tlddoc = "When the commandButtonGroup is disabled, the user can " +
+            "view the button group and see which button is selected, but cannot make any changes to the " +
+            "button group by selecting another in the group.  Similar to a readonly situation.")
+    private boolean disabled;
+
     @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
@@ -53,5 +59,9 @@ public class CommandButtonGroupMeta extends UIComponentBaseMeta {
             tlddoc = "The layout orientation of the button group, \"vertical\" or \"horizontal\". ")
     private String orientation;
 
+    @Field
+    private String selectedId;
 
+    @Field
+    private String name;
 }

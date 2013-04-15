@@ -23,12 +23,12 @@ public interface ISplitPane extends IMobiComponent{
     public static final String SPLITPANE_SCROLLABLE_CSS = "mobi-splitpane-scrollable";
     public static final String SPLITPANE_DIVIDER_CSS = "mobi-splitpane-divider";
     /**
-    * <p>the component id that this thumbnail represents, either camera or camcorder.</p>
+    * <p>the percent distance from left side of splitPane that the divider is located</p>
     */
     public int getColumnDivider();
 
     /**
-     * <p> the thumb base class depends on if an upload has been detected (jsf only)</p>
+     * <p> whether the contents of the splitPane are scrollable</p>
      */
     public boolean isScrollable();
 

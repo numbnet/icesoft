@@ -23,20 +23,25 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.icefaces.mobi.component.contentpane.ContentPane;
 import org.icefaces.mobi.component.contentstack.ContentStack;
-import org.icefaces.mobi.component.panelconfirmation.PanelConfirmationRenderer;
-import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
+import org.icefaces.mobi.component.panelconfirmation.PanelConfirmation;
+import org.icefaces.mobi.component.submitnotification.SubmitNotification;
+
 import org.icefaces.mobi.renderkit.CoreRenderer;
-import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
+
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icemobile.util.ClientDescriptor;
+import org.icemobile.component.IButton;
+import org.icemobile.component.IButtonGroup;
+import org.icemobile.renderkit.IResponseWriter;
+import org.icemobile.renderkit.ButtonCoreRenderer;
 
 
 public class  CommandButtonRenderer extends CoreRenderer {
@@ -48,8 +53,15 @@ public class  CommandButtonRenderer extends CoreRenderer {
         CommandButton commandButton = (CommandButton) uiComponent;
         String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
         String clientId = commandButton.getClientId();
-  //      logger.info("source = "+source);
         if (clientId.equals(source)) {
+            /* if child of commandButtonGroup set to selectedId */
+            Object parent = uiComponent.getParent();
+            if (parent instanceof CommandButtonGroup)  {
+                CommandButtonGroup cbg = (CommandButtonGroup)parent;
+                if (!cbg.isDisabled()){
+                   cbg.setSelectedId(clientId);
+                }
+            }
             try {
                 if (!commandButton.isDisabled()) {
                     uiComponent.queueEvent(new ActionEvent(uiComponent));
@@ -61,216 +73,106 @@ public class  CommandButtonRenderer extends CoreRenderer {
         }
     }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        CommandButton commandButton = (CommandButton) uiComponent;
-        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        String clientId = uiComponent.getClientId(facesContext);
-
-        // apply button type style classes
-        StringBuilder baseClass = new StringBuilder(CommandButton.BASE_STYLE_CLASS);
-        String buttonType = commandButton.getButtonType();
-        // apply selected state if any
-        if (commandButton.isSelected()) {
-            baseClass.append(CommandButton.SELECTED_STYLE_CLASS);
-        }
-        // apply disabled style state if specified.
-        if (commandButton.isDisabled()) {
-            baseClass.append(" ").append(CommandButton.DISABLED_STYLE_CLASS);
-        }
-        String style = commandButton.getStyle();
-        if( style != null ){
-            style = style.trim();
-            if( style.length() == 0){
-                style = null;
-            }
-        }
-        // assign button type
-        if( buttonType != null && !"".equals(buttonType)){
-            if (CommandButton.BUTTON_TYPE_UNIMPORTANT.equals(buttonType)) {
-                baseClass.append(CommandButton.UNIMPORTANT_STYLE_CLASS);
-            } else if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)) {
-                baseClass.append(CommandButton.BACK_STYLE_CLASS);
-            } else if (CommandButton.BUTTON_TYPE_ATTENTION.equals(buttonType)) {
-                baseClass.append(CommandButton.ATTENTION_STYLE_CLASS);
-            } else if (CommandButton.BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
-                baseClass.append(CommandButton.IMPORTANT_STYLE_CLASS);
-            } else if( !"default".equalsIgnoreCase(buttonType) && logger.isLoggable(Level.WARNING)) {
-                logger.warning("unsupported button type: '" + buttonType + "' for "+ clientId);
-            }
-        }
-        
-        String styleClass = commandButton.getStyleClass();
-        if (styleClass != null) {
-            baseClass.append(" ").append(styleClass);
-        }
-
-        String type = commandButton.getType();
-        // button type for styling purposes, otherwise use pass through value.
-        if (type == null){
-            type = "button";
-        }
-
-        ResponseWriter writer = facesContext.getResponseWriter();
-        
-        if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType) && client.isIOS()){
-            writer.startElement(HTML.DIV_ELEM, commandButton);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+"_ctr", HTML.ID_ATTR);
-            writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
-            // should be auto base though
-            if (style != null ) {
-                writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-            }
-            writer.startElement(HTML.SPAN_ELEM, commandButton);
-            writer.endElement(HTML.SPAN_ELEM);
-        }
-        writer.startElement(HTML.INPUT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        //style and class written to ctr div when back button
-        if (!CommandButton.BUTTON_TYPE_BACK.equals(buttonType) || !client.isIOS()){
-            writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
-            // should be auto base though
-            if (style != null ) {
-                writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-            }
-        }
-        writer.writeAttribute(HTML.TYPE_ATTR, type, null);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-        String value = type;
-        Object oVal = commandButton.getValue();
-        if (null != oVal) {
-            value = oVal.toString();
-        }
-        writer.writeAttribute(HTML.VALUE_ATTR, value, HTML.VALUE_ATTR);
-
-    }
-
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        String clientId = uiComponent.getClientId(facesContext);
-        CommandButton commandButton = (CommandButton) uiComponent;
-        uiParamChildren = JSFUtils.captureParameters( commandButton );
-        if (commandButton.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-            writer.endElement(HTML.INPUT_ELEM);
-            //end ctr div for back button
-            if (CommandButton.BUTTON_TYPE_BACK.equals(commandButton.getButtonType()) && client.isIOS()){
-                writer.endElement(HTML.DIV_ELEM);
+        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        IButton button = (IButton)uiComponent;
+        ButtonCoreRenderer renderer = new ButtonCoreRenderer();
+        /*
+          check to see if I am the selectedId if I have parent CommandButtonGroup
+         */
+        String clientId = button.getClientId();
+        Object parent = uiComponent.getParent();
+        if (parent instanceof IButtonGroup)  {
+            IButtonGroup cbg = (IButtonGroup)parent;
+            button.setGroupId(cbg.getClientId());
+            logger.info("button group has disabled="+cbg.isDisabled());
+            if (cbg.isDisabled()){
+                button.setParentDisabled(true);
             }
-            return;
-        }
-        boolean singleSubmit = commandButton.isSingleSubmit();
-        String idAndparams = "'"+clientId+"'";
-        String params="";
-        if (uiParamChildren != null) {
-            params =  MobiJSFUtils.asParameterString(uiParamChildren);
-            idAndparams += ","+ params;
-        }
-        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
-        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
-        StringBuilder seCall = new StringBuilder("ice.se(event, ").append(idAndparams).append(");");
-        StringBuilder sCall = new StringBuilder("ice.s(event, ").append(idAndparams).append(");");
-
-        /**
-             *  panelConfirmation?  Then no singleSubmit
-             *     then add the confirmation panel ID.  panelConfrmation confirm will
-             *  submitNotification?
-             *     if no panelConfirmation then just display it when commandButton does submit
-             *         have behaviors? , ice.se or ice.s doesn't matter.
-             *
-             *
-             *
-        */
-        StringBuilder builder = new StringBuilder(255);
-        String panelConfId=commandButton.getPanelConfirmation();
-        String subNotId = commandButton.getSubmitNotification();
-        String submitNotificationId = null;
-
-     //   builder.append("{ elVal: this");
-        builder.append("{ event: event");
-        if (singleSubmit){
-            builder.append(", singleSubmit:").append(singleSubmit);
-        }
-        if (null != subNotId  && subNotId.length()> 0) {
-            submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent,subNotId);
-            if (null != submitNotificationId ){
-                builder.append(",snId: '").append(submitNotificationId).append("'");
-            } else {
-                logger.warning("no submitNotification id found for commandButton id="+clientId);
-            }
-        }
-        if (uiParamChildren != null){
-           //include params for button
-            builder.append(",params: ").append(params);
-        }
-        if (null != panelConfId && panelConfId.length()>0){
-            ///would never use this with singleSubmit so always false when using with panelConfirmation
-            //panelConf either has ajax request behaviors or regular ice.submit.
-            if (hasBehaviors){
-                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
-                behaviors = behaviors.replace("\"", "\'");
-                builder.append(behaviors);
-            }
-            StringBuilder pcBuilder = PanelConfirmationRenderer.renderOnClickString(uiComponent, builder );
-            if (null != pcBuilder){
-                //has panelConfirmation and it is found
-                writer.writeAttribute(HTML.ONCLICK_ATTR, pcBuilder.toString(),HTML.ONCLICK_ATTR);
-            } else { //no panelConfirmation found so commandButton does the job
-                logger.warning("panelConfirmation of "+panelConfId+" NOT FOUND:- resorting to standard ajax form submit");
-                StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
-                noPanelConf.append("});");     ///this is the cfg if commandButton does the submit
-                writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
-            }
-        } else {  //no panelConfirmation requested so button does job
-            StringBuilder noPanelConf = null;
-            if( commandButton.getOpenContentPane() != null ){
-                UIComponent stack = findParentContentStack(uiComponent);
-                if (stack!=null){
-                    noPanelConf = new StringBuilder("mobi.layoutMenu.showContent('").append(stack.getClientId());
-                    noPanelConf.append("', event");
-                    noPanelConf.append(",{ selectedId: '").append(commandButton.getOpenContentPane()).append("'");
-                    noPanelConf.append(",singleSubmit: ").append(commandButton.isSingleSubmit());
-                    noPanelConf.append(", item: '").append(commandButton.getClientId(facesContext)).append("'");
-                    UIComponent pane = stack.findComponent(commandButton.getOpenContentPane());
-                    if (pane!=null){
-                        String paneId = pane.getClientId(facesContext);
-                        noPanelConf.append(",selClientId: '").append(paneId).append("'");
-                        ContentPane cp = (ContentPane)pane;
-                        noPanelConf.append(",client: ").append(cp.isClient());
-                    }
-                    noPanelConf.append("});");
+            String selectedId = cbg.getSelectedId();
+            if (null != selectedId){
+                if (selectedId.equals(clientId)) {
+                    button.setSelectedButton(true);
+                } else {
+                    button.setSelectedButton(false);
                 }
+              //  logger.info("button selectedId="+selectedId+" myid ="+clientId+" selected="+button.isSelectedButton());
             }
-            else{
-                noPanelConf = this.getCall(clientId, builder.toString());
-                if (hasBehaviors){
-                    String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
-                    behaviors = behaviors.replace("\"", "\'");
-                    noPanelConf.append(behaviors);
+        }
+        /*
+         * if using openContentPane, then can't use any other attributes on this component
+         * unfortunately, the selected css has already been applied.  Not sure how to refactor
+         * that but users will have to made aware that the button group cannot be used with
+         * this feature.
+         */
+        if(button.getOpenContentPane() != null ){
+            UIComponent stack = findParentContentStack(uiComponent);
+            if (stack!=null){
+                StringBuilder noPanelConf = new StringBuilder("mobi.layoutMenu.showContent('").append(stack.getClientId());
+                noPanelConf.append("', event");
+                noPanelConf.append(",{ selectedId: '").append(button.getOpenContentPane()).append("'");
+                noPanelConf.append(",singleSubmit: ").append(button.isSingleSubmit());
+                noPanelConf.append(", item: '").append(uiComponent.getClientId(facesContext)).append("'");
+                UIComponent pane = stack.findComponent(button.getOpenContentPane());
+                if (pane!=null){
+                    String paneId = pane.getClientId(facesContext);
+                    noPanelConf.append(",selClientId: '").append(paneId).append("'");
+                    ContentPane cp = (ContentPane)pane;
+                    noPanelConf.append(",client: ").append(cp.isClient());
                 }
                 noPanelConf.append("});");
+                button.setJsCall(noPanelConf);
+                renderer.encodeEnd(button, writer);
+                return;
             }
-            if( noPanelConf != null ){
-                writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
-			}
         }
-        writer.endElement(HTML.INPUT_ELEM);
-        
-        //end ctr div for back button
-        if (CommandButton.BUTTON_TYPE_BACK.equals(commandButton.getButtonType()) && client.isIOS()){
-            writer.startElement("b", commandButton);
-            writer.writeAttribute(HTML.CLASS_ATTR, "mobi-button-placeholder", null);
-            Object oVal = commandButton.getValue();
-            String value = null;
-            if (null != oVal) {
-                value = oVal.toString();
-                writer.writeText(value, null);
+        // get the params and set into button
+        uiParamChildren = JSFUtils.captureParameters(uiComponent);
+        String params = "";
+        if (null != uiParamChildren) {
+            String paramsAsString = MobiJSFUtils.asParameterString(uiParamChildren);
+            button.setParams(paramsAsString);
+        }
+        //get behaviors and set into button object
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
+        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
+        if (hasBehaviors){
+            String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
+            behaviors = behaviors.replace("\"", "\'");
+            button.setBehaviors(behaviors);
+        }
+        // panelConfirmation, submitNotification or both?
+        if (null!= button.getPanelConfirmation()){
+            String searchId = button.getPanelConfirmation();
+            UIComponent comp = findClientId(facesContext, uiComponent, searchId);
+            if (null != comp){
+                PanelConfirmation pc = (PanelConfirmation)comp;
+                button.setPanelConfirmationId(pc.getClientId(facesContext));
+            }else {
+                logger.log(Level.WARNING,  "PanelConfirmation with id="+searchId+" not found for button id="+button.getClientId());
             }
-            writer.endElement("b");
-            writer.endElement(HTML.DIV_ELEM);
+        } else{
+            button.setPanelConfirmationId(null);
         }
+        if (null != button.getSubmitNotification()){
+            String searchId = button.getSubmitNotification();
+            UIComponent comp = findClientId(facesContext, uiComponent, searchId);
+            if (null != comp){
+                SubmitNotification submitNot = (SubmitNotification)comp;
+                if (!submitNot.isDisabled()){
+                    button.setSubmitNotificationId(submitNot.getClientId(facesContext));
+                } else {
+                    button.setSubmitNotificationId(null);
+                    logger.log(Level.FINE, "submit notification is found but disabled");
+                }
+            } else {
+                logger.log(Level.WARNING,  "SubmitNotification with id="+searchId+" not found for button id="+button.getClientId());
+            }
+        } else {
+            button.setSubmitNotificationId(null);
+        }
+        renderer.encodeEnd(button, writer);
     }
         
     protected static UIComponent findParentContentStack(UIComponent component) {
@@ -282,9 +184,27 @@ public class  CommandButtonRenderer extends CoreRenderer {
         return parent;
     }
 
-    private StringBuilder getCall(String clientId, String builder ) {
-        StringBuilder noPanelConf = new StringBuilder("mobi.button.select('").append(clientId).append("',");
-        noPanelConf.append(builder);
-        return noPanelConf;
+
+    private UIComponent findClientId(FacesContext facesContext, UIComponent button, String id){
+        //the button has to have a form, so look for it and then the panelConfirmation and
+        //submitNotification components are in same form.
+        UIComponent uiForm = JSFUtils.findParentForm(button);
+        UIComponent component;
+        if (null != uiForm){
+            component = uiForm.findComponent(id);
+            if (null!= component){
+               return component;
+            }
+            else { //try UIViewRoot
+                UIViewRoot root = facesContext.getViewRoot();
+                component = root.findComponent(id);
+                if (null!=component){
+                    return component;
+                }
+            }
+        }
+        logger.warning("Cannot find component linked to commandButton with id="+id);
+        return null;
     }
+
 }

@@ -19,16 +19,26 @@ package org.icemobile.samples.spring;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import java.lang.String;
+
 /**
  * This is a sample backing bean for the MVC supported state
  * The properties should be the same
  */
 @SessionAttributes("buttonsBean")
 public class ButtonsBean {
+    private String selectedId = "button2";
 
     @ModelAttribute("buttonsBean")
     public ButtonsBean createBean() {
         return new ButtonsBean();
     }
 
+    public String getSelectedId() {
+        return selectedId;
+    }
+
+    public void setSelectedId(String selectedId1) {
+        this.selectedId = selectedId1;
+    }
 }

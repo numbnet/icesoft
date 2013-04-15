@@ -20,27 +20,35 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.icefaces.mobi.component.panelconfirmation.PanelConfirmation;
 import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
+import org.icefaces.mobi.component.menubutton.MenuButton;
+import org.icefaces.mobi.component.menubutton.MenuButtonGroup;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.JSFUtils;
+
+import org.icemobile.component.IMenuButton;
+import org.icemobile.component.IMenuButtonGroup;
+import org.icemobile.component.IMenuButtonItem;
+import org.icemobile.renderkit.IResponseWriter;
+import org.icemobile.renderkit.MenuButtonItemCoreRenderer;
 
 
 public class MenuButtonItemRenderer extends BaseLayoutRenderer{
-       private static Logger logger = Logger.getLogger(MenuButtonRenderer.class.getName());
+    private static Logger logger = Logger.getLogger(MenuButtonRenderer.class.getName());
 
-       public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
         MenuButtonItem item = (MenuButtonItem) uiComponent;
-        String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
+        String source = String.valueOf(facesContext.getExternalContext().getRequestParameterMap().get("ice.event.captured"));
         String clientId = item.getClientId();
         String parentId = item.getParent().getClientId();
+        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         if (clientId.equals(source) || parentId.equals(source)) {
             try {
                 if (!item.isDisabled()) {
@@ -55,89 +63,60 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
-         ResponseWriter writer = facesContext.getResponseWriter();
-         MenuButtonItem mbi = (MenuButtonItem)uiComponent;
-         String clientId = uiComponent.getClientId(facesContext);
-         boolean disabled = mbi.isDisabled();
-         boolean singleSubmit = mbi.isSingleSubmit();
-         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
-         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
-         String parentId = uiComponent.getParent().getClientId();
-         UIComponent parent = uiComponent.getParent();
-         if (!(parent instanceof MenuButton)){
-             logger.warning("MenuButtonItem must have parent of MenuButton");
-             return;
-         }
-         MenuButton parentMenu = (MenuButton)parent;
-         String subNotId = mbi.getSubmitNotification();
-         String panelConfId = mbi.getPanelConfirmation();
-         String submitNotificationId = null;
-  //       StringBuilder builder = new StringBuilder("mobi.menubutton.initCfg('").append(parentId).append("','").append(clientId).append("',{singleSubmit: ");
-        StringBuilder builder = new StringBuilder(",{singleSubmit: ").append(singleSubmit);
-        builder.append(",disabled: ").append(disabled);
+        UIComponent parent = uiComponent.getParent();
+        if (!(parent instanceof IMenuButton) && !(parent instanceof IMenuButtonGroup)){
+            logger.warning("MenuButtonItem must have parent of MenuButton");
+            return;
+        }
         UIComponent uiForm = JSFUtils.findParentForm(parent);
-         if (null != subNotId && subNotId.length()>0) {
+        setValuesForCoreRendering(facesContext, uiComponent, uiForm);
+        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        MenuButtonItemCoreRenderer renderer = new MenuButtonItemCoreRenderer();
+        IMenuButtonItem item = (IMenuButtonItem)uiComponent;
+        renderer.encodeEnd(item, writer);
+
+    }
+
+    private void setValuesForCoreRendering(FacesContext facesContext, UIComponent uiComponent,
+                        UIComponent form) throws IOException{
+        MenuButtonItem mbi = (MenuButtonItem)uiComponent;
+        String clientId = uiComponent.getClientId(facesContext);
+        String subNotId = mbi.getSubmitNotification();
+        String panelConfId = mbi.getPanelConfirmation();
+        String submitNotificationId = null;
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
+        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
+        if (hasBehaviors){
+                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "change").toString();
+                behaviors = behaviors.replace("\"", "\'");
+                mbi.setBehaviors(behaviors);
+            }
+        if (null != subNotId && subNotId.length()>0) {
             submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent, subNotId);
             if (null == submitNotificationId){
                 //try another way as this above one is limited when finding a namingcontainer
-                if (uiForm!=null){
-                    UIComponent subObj = uiForm.findComponent(subNotId);
+                if (form!=null){
+                    UIComponent subObj = form.findComponent(subNotId);
                     if (null!= subObj)   {
                         submitNotificationId = subObj.getClientId();
                     }
                 }
             }
             if (null != submitNotificationId ){
-                builder.append(",snId: '").append(submitNotificationId).append("'");
+                mbi.setSubmitNotificationId(submitNotificationId);
             } else {
-                logger.warning("no submitNotification id found for commandButton id="+clientId);
+                logger.warning("no submitNotification id found for id="+clientId);
             }
-         }
-        if (null != panelConfId && panelConfId.length()>1){
-            ///would never use this with singleSubmit so always false when using with panelConfirmation
-            //panelConf either has ajax request behaviors or regular ice.submit.
-            if (hasBehaviors){
-                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "change").toString();
-                behaviors = behaviors.replace("\"", "\'");
-                builder.append(behaviors);
-            }
-            PanelConfirmation panelConfirmation = (PanelConfirmation) (parent.findComponent(panelConfId));
-            if (null==panelConfirmation){
-                panelConfirmation = (PanelConfirmation)(uiForm.findComponent(panelConfId));
-               // panelConfirmation = (PanelConfirmation)(uiForm.findComponent(panelConfId+"_popup"));
-            }
-         //   StringBuilder pcBuilder = PanelConfirmationRenderer.renderOnClickString(uiComponent, builder);
-            if (null != panelConfirmation){
-                //has panelConfirmation and it is found
-                String panelConfirmationId = panelConfirmation.getClientId(facesContext);
-                builder.append(",pcId: '").append(panelConfirmationId).append("'");
-                StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
-                noPanelConf.append("});");
-                parentMenu.addMenuItem(clientId, noPanelConf);
-            } else { //no panelConfirmation found so commandButton does the job
-                logger.warning("panelConfirmation of "+panelConfId+" NOT FOUND:- resorting to standard ajax form submit");
-                StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
-                noPanelConf.append("});");
-                parentMenu.addMenuItem(clientId, noPanelConf);
-            }
-        } else {  //no panelConfirmation requested so button does job
-            StringBuilder noPanelConf = getCall(clientId, builder.toString()).append("});");
-            parentMenu.addMenuItem(clientId, noPanelConf);
         }
-         writer.startElement(HTML.OPTION_ELEM, uiComponent);
-         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-         writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
-         if (mbi.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-         }
-         writer.writeAttribute(HTML.VALUE_ATTR, mbi.getValue(), HTML.VALUE_ATTR);
-         writer.write( mbi.getLabel());
-         writer.endElement(HTML.OPTION_ELEM);
-    }
-    private StringBuilder getCall(String clientId, String builder ) {
-        StringBuilder noPanelConf = new StringBuilder("'").append(clientId).append("'");
-        noPanelConf.append(builder);
-        return noPanelConf;
+        PanelConfirmation pc = null;
+        if (null != panelConfId && panelConfId.length()>1){
+            pc = (PanelConfirmation)(form.findComponent(panelConfId));
+            if (null != pc){
+                //has panelConfirmation and it is found
+                String panelConfirmationId = pc.getClientId(facesContext);
+                mbi.setPanelConfirmationId(panelConfirmationId);
+            }
+        }
     }
 
 }

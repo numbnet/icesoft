@@ -16,63 +16,72 @@
 if (!window['mobi']) {
     window.mobi = {};
 }
-mobi.submitnotify = {
+ice.mobi.submitnotify = {
     visible:{},
     bgClass:"mobi-submitnotific-bg",
+    bgHideClass: "mobi-submitnotific-bg-hide",
     containerClass:"mobi-submitnotific-container",
+    contHideClass: "mobi-submitnotific-container-hide",
     centerCalculation:{},
     cfg:{},
-    open:function (clientId, callerId, singleSubmit, params) {
+    open: function (clientId, callerId, cfg, options) {
+        console.log("submitNotif OPEN for clientId="+clientId);
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
-        document.getElementById(idPanel).className = 'mobi-submitnotific-bg';
-        document.getElementById(containerId).className = 'mobi-submitnotific-container';
+        var behaviors = cfg.behaviors ||null;
+        var bgNode = document.getElementById(idPanel);
+        var pNode = document.getElementById(containerId);
+        ice.mobi.swapClasses(bgNode, this.bgHideClass, this.bgClass);
+        ice.mobi.swapClasses(pNode, this.contHideClass, this.containerClass);
         // apply centering code.
         var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
         // add scroll listener
         this.centerCalculation[clientId] = function () {
             mobi.panelAutoCenter(containerId);
         };
-
-        if (window.addEventListener) {
-            window.addEventListener(scrollEvent, this.centerCalculation[clientId], false);
-            window.addEventListener('resize', this.centerCalculation[clientId], false);
-        } else { // older ie event listener
-            window.attachEvent(scrollEvent, this.centerCalculation[clientId]);
-            window.attachEvent("resize", this.centerCalculation[clientId]);
-        }
+        ice.mobi.addListener(window, scrollEvent, this.centerCalculation[clientId]);
+        ice.mobi.addListener(window, 'resize', this.centerCalculation[clientId]);
         // calculate center for first view
         mobi.panelAutoCenter(containerId);
-        var cfg = {};
-        cfg.source = callerId;
-        cfg.execute = "@all";
-        cfg.render = "@all";
-        if (singleSubmit){
-            cfg.execute="@this";
+        var closeCall = function(xhr, status, args) {ice.mobi.submitnotify.close(clientId);};
+      //  var keyCall = function(xhr, status, args) {ice.mobi.button.unSelect(callerId);};
+        if (behaviors){
+            cfg.oncomplete = closeCall;
+            if (options.onsuccess){
+                cfg.onsuccess = options.onsuccess;
+            }
+            mobi.AjaxRequest(cfg);
+        }else{
+            options.oncomplete = closeCall;
+            mobi.AjaxRequest(options);
         }
-        if (params !=null){
-            cfg.params = params;
-        }
-      //  var closeCall = function(xhr, status, args) {alert('close');mobi.submitnotify.close(clientId);};
-        var closeCall = function(xhr, status, args) {mobi.submitnotify.close(clientId);};
-        cfg.oncomplete = closeCall;
-        cfg.onsuccess = closeCall;
-        mobi.AjaxRequest(cfg);
     },
     close:function (clientId) {
+        console.log("submitNotif CLOSE for clientId="+clientId);
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
-        document.getElementById(idPanel).className = 'mobi-submitnotific-bg-hide ';
-        document.getElementById(containerId).className = 'mobi-submitnotific-container-hide ';
-        // clean up centering listeners.
-        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-        if (window.removeEventListener) {
-            window.removeEventListener(scrollEvent, this.centerCalculation[clientId], false);
-            window.removeEventListener('resize', this.centerCalculation[clientId], false);
-        } else { // older ie cleanup
-            window.detachEvent(scrollEvent, this.centerCalculation[clientId], false);
-            window.detachEvent('resize', this.centerCalculation[clientId], false);
+        var bgNode = document.getElementById(idPanel);
+        var pNode = document.getElementById(containerId);
+        if (bgNode==null || pNode == null){
+            console.log("bgNode="+bgNode+" pNode="+pNode);
+            return;
         }
+  //      console.log("bgNode class="+bgNode.className+" pNode class="+pNode.className);
+        var contains = (bgNode.className.indexOf(this.bgHideClass)>-1) ;
+        if (!contains){
+          //  console.log("have to switch to hide class");
+            ice.mobi.swapClasses(bgNode, this.bgClass, this.bgHideClass);
+        }
+        var contains2 = (pNode.className.indexOf(this.contHideClass)>-1) ;
+        if (!contains2){
+       //     console.log("have to switch to container hide class");
+            ice.mobi.swapClasses(pNode, this.containerClass, this.contHideClass);
+        }
+        // clean up centering listeners.
+     //   console.log("end of CLOSE and class for bgNode="+bgNode.className);
+        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+        ice.mobi.removeListener(window, scrollEvent, this.centerCalculation[clientId]);
+        ice.mobi.removeListener(window, 'resize', this.centerCalculation[clientId]);
         this.centerCalculation[clientId] = undefined;
     }
 
