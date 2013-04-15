@@ -27,6 +27,7 @@
 @implementation MainViewController
 
 @synthesize webView;
+@synthesize uploadProgress;
 @synthesize receivedData;
 @synthesize currentRequest;
 @synthesize currentResponse;
@@ -45,6 +46,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.uploadProgress.hidden = YES;
     self.webView.mediaPlaybackRequiresUserAction = NO;
     self.webView.allowsInlineMediaPlayback = YES;
 
@@ -284,7 +286,19 @@ NSLog(@"Warning: register should not be invoked with ICEmobile Container");
 NSLog(@"ICEmobile Container setProgress %d", percent);
     NSString *scriptTemplate = @"ice.progress(%d);";
     NSString *script = [NSString stringWithFormat:scriptTemplate, percent];
-    [self.webView stringByEvaluatingJavaScriptFromString: script];
+    NSString *result = [self.webView 
+        stringByEvaluatingJavaScriptFromString: script];
+    if ([@"false" isEqualToString:result])  {
+        self.uploadProgress.hidden = NO;
+        self.uploadProgress.alpha = 0.8;
+        self.uploadProgress.progress = percent / 100.0;
+        if (100 == percent)  {
+            [UIView animateWithDuration:0.5
+                animations:^ { self.uploadProgress.alpha = 0.0; }
+                completion:^(BOOL finished) 
+                        { self.uploadProgress.hidden = YES; }];
+        }
+    }
 }
 
 - (void) setProgressLabel:(NSString *) labelText {
