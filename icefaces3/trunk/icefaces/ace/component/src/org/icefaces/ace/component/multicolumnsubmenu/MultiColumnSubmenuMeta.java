@@ -28,6 +28,7 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         componentFamily = "org.icefaces.ace.component.Menu",
         componentType = "org.icefaces.ace.component.MultiColumnSubmenu",
         tlddoc = "MultiColumnSubmenu is nested in a menu component and represents a navigation group with one or more MenuColumn's." +
+                 "It supports the 'header' and 'footer' facets to include arbitrary components at the top and bottom of the submenu." +
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/MultiColumnSubmenu\">MultiColumnSubmenu Wiki Documentation</a>."
 )
