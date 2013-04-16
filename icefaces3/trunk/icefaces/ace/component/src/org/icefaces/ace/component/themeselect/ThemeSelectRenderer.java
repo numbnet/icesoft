@@ -118,7 +118,7 @@ public class ThemeSelectRenderer extends InputRenderer {
         }
     }
 
-    private static void renderScript(FacesContext context, ThemeSelect component) throws IOException {
+    private void renderScript(FacesContext context, ThemeSelect component) throws IOException {
         JSONBuilder jb = JSONBuilder.create();
         encodeClientBehaviors(context, component, jb);
 
