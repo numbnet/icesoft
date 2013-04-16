@@ -93,6 +93,8 @@
                           var="car"
                           rows="10">
                <ace:ajax event="select" render="controls @this" execute="@this" />
+               <ace:ajax event="editSubmit" render="facesMsgs"/>
+               <ace:ajax event="editCancel" render="facesMsgs"/>
 
                <ace:column id="selectable" headerText="Selectable">
                    <h:panelGroup id="selectableCheck" style="#{rowState.selectable ? '' : 'display:none'}" styleClass="ui-icon ui-icon-check"/>
@@ -184,5 +186,6 @@
                 </ace:column>
            </ace:dataTable>
         </h:form>
+        <ace:messages id="facesMsgs"/>
     </ui:define>
 </ui:composition>
