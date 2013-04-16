@@ -220,8 +220,12 @@ var ComponentIndicators;
                     var blankOverlay = document.createElement('iframe');
                     blankOverlay.setAttribute('src', 'javascript:document.write("<html></html>");document.close();');
                     blankOverlay.setAttribute('frameborder', '0');
-                    document.body.replaceChild(blankOverlay, overlay);
-                    document.body.removeChild(blankOverlay);
+                    try {
+                        document.body.replaceChild(blankOverlay, overlay);
+                        document.body.removeChild(blankOverlay);
+                    } catch (e) {
+                        //the error will occur when the overlay was removed or replaced by an incoming update
+                    }
                 } else {
                     document.body.removeChild(overlay);
                 }
