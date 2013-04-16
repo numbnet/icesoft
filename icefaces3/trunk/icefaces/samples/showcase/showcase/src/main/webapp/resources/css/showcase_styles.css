@@ -492,17 +492,15 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
 
 .droppableSlot
 {
-    background: #B9B9B9;
+    background: #B9B9B9 !important;
     width: 199px;
     height: 176px;
     display: block;
-	background-color: #B9B9B9 !important;
 }
 
 .activatedSlot
 {
-    background: #0099ff;
-	background-color: #0099ff !important;
+    background: #0099ff !important;
 }
 
 .slot
