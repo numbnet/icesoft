@@ -27,6 +27,7 @@
  */
 package org.icefaces.ace.renderkit;
 
+import org.icefaces.ace.component.themeselect.ThemeSelect;
 import org.icefaces.ace.util.Constants;
 
 import javax.el.ELContext;
@@ -46,7 +47,7 @@ import java.io.IOException;
 import java.util.ListIterator;
 import java.util.Map;
 
-@ListenerFor(systemEventClass=PostAddToViewEvent.class)
+@ListenerFor(systemEventClass=PreRenderComponentEvent.class)
 public class HeadRenderer extends Renderer implements ComponentSystemEventListener {
 
     @Override
@@ -120,6 +121,7 @@ public class HeadRenderer extends Renderer implements ComponentSystemEventListen
     private UIComponent createThemeResource(FacesContext fc, String library, String resourceName) {
         UIComponent resource = fc.getApplication().createComponent("javax.faces.Output");
         resource.setRendererType("javax.faces.resource.Stylesheet");
+        resource.setTransient(true);
 
         Map<String, Object> attrs = resource.getAttributes();
         attrs.put("name", resourceName);
@@ -129,39 +131,29 @@ public class HeadRenderer extends Renderer implements ComponentSystemEventListen
         return resource;
     }
 
-    protected void encodeTheme(FacesContext context, String library, String resource) {
-        Resource themeResource = context.getApplication().getResourceHandler().createResource(resource, library);
-        if (themeResource == null) {
-            throw new FacesException("Error loading theme, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
-        } else {
-            UIComponent resourceComponent = createThemeResource(context, library, resource);
-            context.getViewRoot().addComponentResource(context, resourceComponent);
-        }
-    }
-
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        //Theme
         FacesContext context = FacesContext.getCurrentInstance();
         String theme = (String) context.getExternalContext().getSessionMap().get(Constants.THEME_PARAM);
-        String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
-
-        if (theme == null && themeParamValue != null) {
-            ELContext elContext = context.getELContext();
-            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
-
-            theme = (String) ve.getValue(elContext);
+        if (theme == null) {
+            theme = "";
+        } else {
+            theme = theme.trim();
         }
-
-        if (theme == null) theme = "";
-        else theme = theme.trim();
+        String name;
+        String library;
 
         if ("".equals(theme) || theme.equalsIgnoreCase("sam")) {
-            encodeTheme(context, "icefaces.ace", "themes/sam/theme.css");
+            library = "icefaces.ace";
+            name = "themes/sam/theme.css";
         } else if (theme.equalsIgnoreCase("rime")) {
-            encodeTheme(context, "icefaces.ace", "themes/rime/theme.css");
-        } else if (!theme.equalsIgnoreCase("none")) {
-            encodeTheme(context, "ace-" + theme, "theme.css");
+            library = "icefaces.ace";
+            name = "themes/rime/theme.css";
+        } else {
+            library = "ace-" + theme;
+            name = "theme.css";
         }
+
+        UIComponent resource = createThemeResource(context, library, name);
+        context.getViewRoot().addComponentResource(context, resource);
     }
 }

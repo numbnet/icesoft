@@ -21,45 +21,26 @@ import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
+import java.util.Collection;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @MandatoryResourceComponent(tagName = "themeSelect", value = "org.icefaces.ace.component.themeselect.ThemeSelect")
 public class ThemeSelectRenderer extends InputRenderer {
-
-    private FacesContext context;
-    private ResponseWriter writer;
-    private ThemeSelect component;
-    private String clientId;
-    private String selectedTheme;
-    private Map<String, String> themeList;
-    private boolean ariaEnabled;
-
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        this.context = context;
-        this.component = (ThemeSelect) component;
+        ThemeSelect themeSelectComponent = (ThemeSelect) component;
         super.encodeEnd(context, component);
         if (!component.isRendered()) {
             return;
         }
-        writer = context.getResponseWriter();
-        clientId = component.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = component.getClientId(context);
         String selectId = "select_" + clientId;
-        String styleClass = (styleClass = this.component.getStyleClass()) == null ? "" : styleClass.trim();
+        String styleClass = (styleClass = themeSelectComponent.getStyleClass()) == null ? "" : styleClass.trim();
 
         writer.startElement("span", component);
         writer.writeAttribute("id", clientId, "id");
@@ -69,28 +50,29 @@ public class ThemeSelectRenderer extends InputRenderer {
         writer.writeAttribute("id", selectId, "id");
         writer.writeAttribute("name", selectId, "id");
         String stateClass = "ui-state-default";
-        if (this.component.isDisabled()) {
+        if (themeSelectComponent.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
             stateClass = "ui-state-disabled";
         }
-        writer.writeAttribute("class", "ui-widget " + stateClass + getStateStyleClasses(this.component), null);
-        writeAttributes("accesskey", "dir", "label", "lang", "style", "tabindex", "title", "alt");
-        ariaEnabled = EnvUtils.isAriaEnabled(context);
-        writerSelAriaAttrs();
-        renderOptions();
+        writer.writeAttribute("class", "ui-widget " + stateClass + getStateStyleClasses(themeSelectComponent), null);
+        writeAttributes(context, themeSelectComponent, "accesskey", "dir", "label", "lang", "style", "tabindex", "title", "alt");
+        writerSelAriaAttrs(context, themeSelectComponent);
+        renderOptions(context, themeSelectComponent);
         writer.endElement("select");
 
-        renderScript();
+        renderScript(context, themeSelectComponent);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-helper-hidden", null);
-        writer.write(Integer.toString(selectedTheme.hashCode()) + Integer.toString(themeList.hashCode()));
+        writer.write(Integer.toString(themeSelectComponent.getSelectedTheme(context).hashCode()) + Integer.toString(themeSelectComponent.getThemeList(context).hashCode()));
         writer.endElement("span");
 
         writer.endElement("span");
     }
 
-    private void writerSelAriaAttrs() throws IOException {
+    private static void writerSelAriaAttrs(FacesContext context, ThemeSelect component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
         if (!ariaEnabled) return;
 
         writer.writeAttribute("role", "listbox", null);
@@ -109,124 +91,54 @@ public class ThemeSelectRenderer extends InputRenderer {
         }
     }
 
-    private void writeAttributes(String... keys) throws IOException {
+    private static void writeAttributes(FacesContext context, ThemeSelect component, String... keys) throws IOException {
         Object value;
         for (String key : keys) {
             value = component.getAttributes().get(key);
             if (value != null) {
+                ResponseWriter writer = context.getResponseWriter();
                 writer.writeAttribute(key, value, key);
             }
         }
     }
 
-    private void renderOptions() throws IOException {
-        getThemeList();
-        selectedTheme = (String) component.getValue();
-        selectedTheme = selectedTheme == null ? "" : selectedTheme.trim();
-        if (selectedTheme.equals("")) {
-            selectedTheme = getSelectedTheme();
-        }
-        if (themeList.get(selectedTheme) == null) {
-            selectedTheme = "sam";
-        }
-        context.getExternalContext().getSessionMap().put(Constants.THEME_PARAM, selectedTheme);
+    private static void renderOptions(FacesContext context, ThemeSelect themeSelectComponent) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Collection<String> themeList = themeSelectComponent.getThemeList(context);
+        String selectedTheme = themeSelectComponent.getSelectedTheme(context);
 
-        String theme, href;
-        for (Map.Entry<String, String> entry : themeList.entrySet()) {
-            theme = entry.getKey();
-            href = entry.getValue();
+        for (String theme : themeList) {
             writer.startElement("option", null);
             writer.writeAttribute("value", theme, null);
             if (theme.equals(selectedTheme)) {
                 writer.writeAttribute("selected", "selected", null);
             }
-            writer.writeAttribute("data-href", href, null);
             writer.write(theme);
             writer.endElement("option");
         }
     }
 
-    private void renderScript() throws IOException {
+    private static void renderScript(FacesContext context, ThemeSelect component) throws IOException {
         JSONBuilder jb = JSONBuilder.create();
         encodeClientBehaviors(context, component, jb);
 
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
-        writer.write("ice.ace.ThemeSelect.singleEntry(\"" + clientId + "\",{" + jb + "});");
+        writer.write("ice.ace.ThemeSelect.singleEntry(\"" + component.getClientId(context) + "\",{" + jb + "});");
         writer.endElement("script");
     }
 
-    @SuppressWarnings("unchecked")
-    private void getThemeList() throws IOException {
-        Map<String, Object> appMap = context.getExternalContext().getApplicationMap();
-        String THEME_LIST = Constants.THEME_PARAM + ".list";
-        themeList = (Map<String, String>) appMap.get(THEME_LIST);
-        if (themeList != null) {
-            return;
-        }
-        themeList = new TreeMap<String, String>();
-//        themeList.put("none", "");
-
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        Resource resource;
-        for (String theme : new String[]{"rime", "sam"}) {
-            resource = resourceHandler.createResource("themes/" + theme + "/theme.css", "icefaces.ace");
-            if (resource != null) {
-                themeList.put(theme, resource.getRequestPath());
-            }
-        }
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Enumeration<URL> urls = classLoader.getResources("META-INF/resources");
-        URL url;
-        Matcher matcher = Pattern.compile("jar:.*/WEB-INF/lib/(.+)\\.jar!/META-INF/resources").matcher("");
-        String theme;
-        while (urls.hasMoreElements()) {
-            url = urls.nextElement();
-            if (matcher.reset(url.toString()).matches()) {
-                theme = matcher.group(1);
-                url = classLoader.getResource("META-INF/resources/ace-" + theme);
-                if (url != null) {
-                    resource = resourceHandler.createResource("theme.css", "ace-" + theme);
-                    if (resource != null) {
-                        themeList.put(theme, resource.getRequestPath());
-                    }
-                }
-            }
-        }
-        appMap.put(THEME_LIST, themeList);
-    }
-
-    // Copied from org.icefaces.ace.renderkit.HeadRenderer.processEvent
-    public String getSelectedTheme() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        String theme = null;
-        String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
-
-        if (themeParamValue != null) {
-            ELContext elContext = context.getELContext();
-            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
-
-            theme = (String) ve.getValue(elContext);
-        }
-
-        if (theme == null) theme = "";
-        else theme = theme.trim();
-
-        if ("".equals(theme) || theme.equalsIgnoreCase("sam")) {
-            theme = "sam";
-        }
-        return theme;
-    }
-
-    @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
         String submittedValue = requestParameterMap.get("select_" + component.getClientId(context));
         if (submittedValue != null) {
             ((ThemeSelect) component).setSubmittedValue(submittedValue);
+            //HeadRenderer needs the newly selected theme
+            context.getExternalContext().getSessionMap().put(Constants.THEME_PARAM, submittedValue);
         }
         decodeBehaviors(context, component);
     }
+
 }

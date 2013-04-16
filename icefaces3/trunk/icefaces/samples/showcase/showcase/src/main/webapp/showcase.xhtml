@@ -133,7 +133,7 @@
             <h:form id="frm">
             <h:outputText value="Theme: "/>
             <ace:themeSelect value="#{navigationModel.theme}">
-                <ace:ajax onSuccess="location.reload();"/>
+                <ace:ajax render="@all"/>
             </ace:themeSelect>
             <ul>
             <ui:repeat id="menuLinks" var="menuLink"

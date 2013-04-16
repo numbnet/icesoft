@@ -19,22 +19,6 @@ var ThemeSelect = ice.ace.ThemeSelect = function (clientId, cfg) {
     this.clientId = clientId;
     this.$sel = $(ice.ace.escapeClientId("select_" + clientId));
 
-    this.$sel.change(function (event) {
-            var styleSheet, option, href;
-            option = $(this).children("option:selected");
-            if (option.length > 0) {
-                href = option.attr("data-href");
-                styleSheet = $("link[href*='theme.css.jsf?ln=icefaces.ace'],link[href*='theme.css.jsf?ln=ace-']");
-                if (option.val() == "none") {
-                    styleSheet.remove();
-                } else if (styleSheet.length > 0) {
-                    styleSheet[0].href = href;
-                } else {
-                    $("<link type='text/css' rel='stylesheet' href='" + href + "'/>").prependTo("head");
-                }
-            }
-        }
-    ).change();
     if (cfg.behaviors) {
         ice.ace.attachBehaviors(this.$sel, cfg.behaviors);
     }
