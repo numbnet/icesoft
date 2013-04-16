@@ -38,6 +38,8 @@
            <ace:dataTable id="carTable"
                                     value="#{dataTableRowEditing.cars}"
                                     var="car">
+               <ace:ajax event="editSubmit" render="facesMsgs"/>
+               <ace:ajax event="editCancel" render="facesMsgs"/>
                
                 <ace:column id="name" headerText="Name">
                     <ace:cellEditor>
@@ -75,5 +77,6 @@
                </ace:column>
             </ace:dataTable>
         </h:form>
+        <ace:messages id="facesMsgs"/>
     </ui:define>
 </ui:composition>
