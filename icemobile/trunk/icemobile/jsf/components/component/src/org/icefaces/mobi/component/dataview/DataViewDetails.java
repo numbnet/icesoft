@@ -1,5 +1,7 @@
 package org.icefaces.mobi.component.dataview;
 
+import javax.faces.component.UIComponent;
+
 /**
  * Copyright 2010-2013 ICEsoft Technologies Canada Corp.
  * <p/>
@@ -21,4 +23,29 @@ package org.icefaces.mobi.component.dataview;
  * Time: 10:50 AM
  */
 public class DataViewDetails extends DataViewDetailsBase {
+    DataView view;
+
+    /* keep details unrendered if using server activation and no row is active */
+    @Override
+    public boolean isRendered() {
+        if (ActivationMode.server.equals(getView().getActivationMode())) {
+            Integer index = getView().getActiveRowIndex();
+            if (index != null && index > -1) return super.isRendered();
+            else return false;
+        } else return super.isRendered();
+    }
+
+    private DataView getView() {
+        if (view == null) {
+            UIComponent parent = getParent();
+            while (parent != null && !(parent instanceof DataView)) {
+                parent = parent.getParent();
+            }
+            if (parent != null) view = (DataView)parent;
+        }
+
+        return view;
+    }
+
+
 }

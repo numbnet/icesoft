@@ -1,6 +1,7 @@
 package org.icefaces.mobi.component.dataview;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 
@@ -39,6 +40,14 @@ public class DataViewColumnMeta {
 
     @Property
     String footerText;
+
+    @Property(defaultValue = "org.icefaces.mobi.component.dataview.ColumnType.text",
+              defaultValueType = DefaultValueType.EXPRESSION)
+    ColumnType type;
+
+    @Property(defaultValue = "<a onclick='alert('lol');'>|value|</a>",
+              defaultValueType = DefaultValueType.STRING_LITERAL)
+    String markup;
 
     @Property(expression = Expression.VALUE_EXPRESSION)
     Object value;

@@ -1,6 +1,9 @@
 package org.icefaces.mobi.component.dataview;
 
+import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.mobi.component.inputText.InputText;
+import org.icefaces.mobi.component.inputText.InputTextMeta;
+import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icemobile.component.IDataView;
 import org.icemobile.model.DataViewColumnModel;
@@ -10,13 +13,16 @@ import org.icemobile.model.IndexedIterator;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.ValueHolder;
+import javax.faces.application.ResourceHandler;
+import javax.faces.component.*;
 import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.DateTimeConverter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -44,7 +50,7 @@ public class DataViewRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(DataViewRenderer.class.getName());
 
     private DataView dataView;
-    private List<ValueHolder> detailValueHolders;
+    private List<UIComponent> detailHolders;
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -84,19 +90,26 @@ public class DataViewRenderer extends Renderer {
     }
 
     private void encodeScript(FacesContext context, ResponseWriter writer) throws IOException {
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.ID_ATTR, dataView.getClientId() + "_jswrp", null);
+
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
         writer.writeAttribute(HTML.ID_ATTR, dataView.getClientId() + "_js", null);
 
+        String cfg = "{";
+        cfg += "active:'" + dataView.getActivationMode() + "'";
+        cfg += "}";
+
         String js =
             "ice.mobi.dataView.create("
                 + '"' + dataView.getClientId() + '"'
-                + ", {"
-                + "}"
+                + ", " + cfg
             + ");";
 
         writer.writeText(js, null);
         writer.endElement(HTML.SCRIPT_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
     };
 
     private void encodeColumns(FacesContext context,
@@ -210,17 +223,11 @@ public class DataViewRenderer extends Renderer {
 
             writer.writeAttribute("data-index", dataModelIterator.getIndex(), null);
 
-            for (DataViewColumnModel column : columnModel) {
-                writer.startElement(HTML.TD_ELEM, null);
-                Object value = column.getValue().getValue(elContext);
-                if (value != null) writer.write(value.toString());
-                writer.endElement(HTML.TD_ELEM);
-            }
+            if (ActivationMode.client.equals(dataView.getActivationMode()))
+                writer.writeAttribute("data-state", encodeRowDetailString(context), null);
 
-            writer.startElement(HTML.INPUT_ELEM, null);
-            writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
-            writer.writeAttribute(HTML.VALUE_ATTR, encodeRowDetailString(context), null);
-            writer.endElement(HTML.INPUT_ELEM);
+            for (DataViewColumnModel column : columnModel)
+                writeColumn(writer, elContext, column);
 
             writer.endElement(HTML.TR_ELEM);
         }
@@ -235,55 +242,205 @@ public class DataViewRenderer extends Renderer {
         writer.endElement(HTML.DIV_ELEM);
     }
 
+    private void writeColumn(ResponseWriter writer, ELContext elContext, DataViewColumnModel column) throws IOException {
+        Object value = column.getValue().getValue(elContext);
+        String type = column.getType();
+
+        writer.startElement(HTML.TD_ELEM, null);
+
+        if (type.equals("markup"))
+            writer.write(column.getMarkup().replace("{{value}}", value.toString()));
+        else if (type.equals("bool")) {
+            writer.startElement("i", null);
+            if (value != null) {
+                Boolean bval = (Boolean)value;
+                String resUrl;
+                if (bval) resUrl = "icon-ok";
+                else resUrl = "icon-remove";
+
+                writer.writeAttribute(HTML.CLASS_ATTR, resUrl, null);
+            }
+            writer.endElement("i");
+        }
+        else if (type.equals("date")) {
+            writer.write(getDateFormat(column).format(value));
+        }
+        else if (type.equals("image")) {
+            writer.startElement(HTML.IMG_ELEM, null);
+            if (value != null) writer.writeAttribute(HTML.SRC_ATTR, value.toString(), null);
+            writer.endElement(HTML.IMG_ELEM);
+        }
+        else if (type.equals("list")) {
+            writer.startElement(HTML.UL_ELEM, null);
+            if (value != null && value instanceof List)
+                for (Object i : (List)value) {
+                    writer.startElement(HTML.LI_ELEM, null);
+                    writer.write(i.toString());
+                    writer.endElement(HTML.LI_ELEM);
+                }
+            writer.endElement(HTML.UL_ELEM);
+        }
+        else if (value != null)
+            writer.write(value.toString());
+
+
+        writer.endElement(HTML.TD_ELEM);
+    }
+
+    private DateFormat getDateFormat(DataViewColumnModel column) {
+        String pattern = column.getDatePattern();
+        String type = column.getDateType();
+        TimeZone timeZone = column.getTimeZone();
+        Locale locale = column.getLocale();
+        int dateStyle = column.getTimeStyle();
+        int timeStyle = column.getDateStyle();
+
+        if (pattern == null && type == null) {
+            throw new IllegalArgumentException("Either pattern or type must be specified.");
+        }
+
+        DateFormat df;
+        if (pattern != null) {
+            df = new SimpleDateFormat(pattern, locale);
+        } else if (type.equals("both")) {
+            df = DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
+        } else if (type.equals("date")) {
+            df = DateFormat.getDateInstance(dateStyle, locale);
+        } else if (type.equals("time")) {
+            df = DateFormat.getTimeInstance(timeStyle, locale);
+        } else {
+            // PENDING(craigmcc) - i18n
+            throw new IllegalArgumentException("Invalid type: " + type);
+        }
+        df.setLenient(false);
+        df.setTimeZone(timeZone);
+
+        return (df);
+    }
+
     private String encodeRowDetailString(FacesContext context) {
         StringBuilder detStr = new StringBuilder();
 
-        if (detailValueHolders == null)
-            detailValueHolders = new ArrayList<ValueHolder>(getValueHolders(dataView.getDetails()));
+        if (detailHolders == null)
+            detailHolders = getDetailHolders(dataView.getDetails());
 
-        ELContext elContext = context.getELContext();
-
-        for (Iterator<ValueHolder> valueHolderIterator = detailValueHolders.iterator();
+        for (Iterator<UIComponent> valueHolderIterator = detailHolders.iterator();
                 valueHolderIterator.hasNext();) {
-            ValueHolder valueHolder = valueHolderIterator.next();
-            UIComponent vhComponent = (UIComponent) valueHolder;
-
-            appendUpdateString(detStr, elContext, valueHolderIterator, vhComponent);
+            appendUpdateString(detStr, context, valueHolderIterator);
         }
 
-        return detStr.toString();
+        return DOMUtils.escapeAnsi(detStr.toString());
     }
 
-    private void appendUpdateString(StringBuilder detStr, ELContext elContext, Iterator<ValueHolder> valueHolderIterator, UIComponent vhComponent) {
-        /* future inspections for other dynamic bindings must occur */
-        ValueExpression ve = vhComponent.getValueExpression("value");
+    private void appendUpdateString(StringBuilder detStr, FacesContext context, Iterator<UIComponent> valueHolderIterator) {
+        String dvId = dataView.getClientId() + UINamingContainer.getSeparatorChar(context);
+        ELContext elContext = context.getELContext();
+        UIComponent vhComponent = valueHolderIterator.next();
+        /* getValueExpressions - point for optimization */
+        Set<String> propertyNames = getPropNames(vhComponent);
+        boolean first = true;
 
-        if (ve == null) return; /* If component has no dynamic properties don't change its state */
+        for (Iterator<String> propIterator = propertyNames.iterator(); propIterator.hasNext();) {
+            String value;
+            String prop = propIterator.next();
+            ValueExpression ve = vhComponent.getValueExpression(prop);
 
-        // TOOD : More detailed conversion to string form
-        // TODO : ID / target compression
-        // TODO : '|' & '=' escaping
+            if (ve == null) continue; /* If component property isn't dynamic don't record its state */
 
-        // Write Target Id
-        detStr.append(vhComponent.getClientId()).append("=");
-        // Write Update Directive
-        detStr.append(getDirective(vhComponent)).append("=");
-        // Write Update Value
-        detStr.append(ve.getValue(elContext).toString()); /* will change as directives evolve */
+            if (!first) detStr.append("|");
 
-        if (valueHolderIterator.hasNext()) detStr.append("|");
-    }
+            if (vhComponent instanceof ValueHolder && "value".equals(prop)) {
+                value = BaseInputRenderer.getStringValueToRender(context, vhComponent);
+            } else {
+                value = ve.getValue(elContext).toString();
+            }
 
-    private String getDirective(UIComponent c) {
-        if (c instanceof HtmlInputTextarea || c instanceof HtmlOutputText || c instanceof HtmlOutputLabel) {
-            return "html"; /* swap inner html */
-        } else if (c instanceof HtmlInputSecret || c instanceof InputText || c instanceof HtmlInputText) {
-            return "attr=value";
-        } else if (c instanceof HtmlSelectBooleanCheckbox) {
-            return "attr=checked";
+            // TOOD : More detailed conversion to string form
+            // TODO : Detail id caching
+            // TODO : '|' & '=' escaping
+
+            // Write Target Id
+            detStr.append(vhComponent.getClientId().replaceFirst(dvId,"")).append("=");
+            // Write Update Directive
+            detStr.append(getDirective(vhComponent, prop)).append("=");
+            // Write Update Value
+            detStr.append(value); /* may change as directives evolve */
+
+            first = false;
         }
 
-        return "html";
+        // If we wrote something and there are still more valueHolders
+        if (!first && valueHolderIterator.hasNext()) detStr.append("|");
+    }
+
+    private static HashSet emptySet = new HashSet();
+    private static HashSet mobiInputTextProperties = new HashSet() {{
+        add("value"); add("type"); add("placeholder"); add("readonly"); add("maxlength");
+        add("size"); add("required"); add("results"); add("title"); add("min"); add("max");
+        add("step"); add("disabled"); add("style"); add("styleClass");
+    }};
+    private static HashSet uiCommandProperties = new HashSet() {{ add("value"); }};
+    private static HashSet uiInputProperties = new HashSet() {{ add("value"); }};
+    private static HashSet uiOutputProperties = new HashSet() {{ add("value"); }};
+
+    private static List<Class> htmlValueHolders = new ArrayList<Class>() {{
+        add(HtmlInputTextarea.class);
+        add(HtmlOutputText.class);
+        add(HtmlOutputLabel.class);
+        add(HtmlCommandLink.class);
+    }};
+
+    private static List<Class> attrValueHolders = new ArrayList<Class>() {{
+        add(HtmlInputText.class);
+        add(HtmlInputSecret.class);
+        add(HtmlInputText.class);
+        add(HtmlCommandButton.class);
+        add(InputText.class);
+    }};
+
+    private boolean instanceOf(Object x, List<Class> y) {
+        Class xc = x.getClass();
+
+        for (Class c : y)
+            if (c.isInstance(x)) return true;
+
+        return false;
+    }
+
+    private Set<String> getPropNames(UIComponent vhComponent) {
+        if (vhComponent instanceof InputText) return mobiInputTextProperties;
+        if (vhComponent instanceof UICommand) return uiCommandProperties;
+        if (vhComponent instanceof UIInput) return uiInputProperties;
+        if (vhComponent instanceof UIOutput) return uiOutputProperties;
+
+        return emptySet;
+    }
+
+    private String getDirective(UIComponent c, String propertyName) {
+        if (propertyName == "value") {
+            if (instanceOf(c, htmlValueHolders) || isHtmlValueHolder(c)) {
+                return "html"; /* swap inner html */
+            } else if (instanceOf(c, attrValueHolders)) {
+                return "attr=value";
+            } else if (c instanceof HtmlSelectBooleanCheckbox) {
+                return "attr=checked";
+            }
+        }
+
+        /* if no specified directive set as prop as dom attr */
+        return "attr="+propertyName;
+    }
+
+    /* Check if component is an html value holder by configuration */
+    private boolean isHtmlValueHolder(UIComponent c) {
+        /* Only inspect specific component types */
+        if (c instanceof InputText) {
+            InputText inputText = (InputText)c;
+            if (inputText.getType().equals("textarea"))
+                return true;
+        }
+
+        return false;
     }
 
     private void encodeDetails(FacesContext context,
@@ -293,6 +450,8 @@ public class DataViewRenderer extends Renderer {
         // Init row context
         Integer index = dataView.getActiveRowIndex();
         String var = dataView.getVar();
+        ActivationMode activeMode = dataView.getActivationMode();
+        boolean active = ActivationMode.client.equals(activeMode) || (ActivationMode.server.equals(activeMode) && index != null && index > 0);
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         if (index != null) {
@@ -305,7 +464,8 @@ public class DataViewRenderer extends Renderer {
         writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_DETAIL_CLASS, null);
         writer.writeAttribute("data-index", index, null);
 
-        if (details != null) details.encodeAll(context);
+        if (details != null && active)
+            details.encodeAll(context);
 
         writer.startElement(HTML.INPUT_ELEM, null);
         writer.writeAttribute(HTML.NAME_ATTR, dataView.getClientId() + "_active", null);
@@ -325,12 +485,14 @@ public class DataViewRenderer extends Renderer {
         return true;
     }
 
-    private List<ValueHolder> getValueHolders(UIComponent component) {
+    private List<UIComponent> getDetailHolders(UIComponent component) {
         if (component.getChildCount() > 0) {
-            ArrayList<ValueHolder> valueHolders = new ArrayList<ValueHolder>();
+            ArrayList<UIComponent> valueHolders = new ArrayList<UIComponent>();
+
             for (UIComponent child : component.getChildren()) {
-                if (child instanceof ValueHolder) valueHolders.add((ValueHolder) child);
-                valueHolders.addAll(getValueHolders(child));
+                if (child instanceof ValueHolder) valueHolders.add(child);
+                if (child instanceof UICommand) valueHolders.add(child);
+                valueHolders.addAll(getDetailHolders(child));
             }
             return valueHolders;
         }

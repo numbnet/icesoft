@@ -1,15 +1,22 @@
 package org.icefaces.mobi.component.dataview;
 
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IDataView;
 import org.icemobile.component.IMobiComponent;
 import org.icemobile.model.DataViewDataModel;
 import org.icemobile.model.DataViewLazyDataModel;
 import org.icemobile.model.DataViewListDataModel;
 import org.icemobile.util.ClientDescriptor;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -35,17 +42,92 @@ import java.util.logging.Logger;
  * Date: 2013-04-01
  * Time: 10:47 AM
  */
-public class DataView extends DataViewBase implements IMobiComponent {
+public class DataView extends DataViewBase implements IDataView, NamingContainer {
     private static Logger logger = Logger.getLogger(DataViewRenderer.class.getName());
     protected static final DataViewDataModel EMPTY_DATA_MODEL = new DataViewListDataModel(Collections.EMPTY_LIST);
 
     private Map<String, Object> requestMap;
+    private boolean decodedActive = false;
+
+    @Override
+    public boolean visitTree(VisitContext context,
+                             VisitCallback callback) {
+
+        // First check to see whether we are visitable.  If not
+        // short-circuit out of this subtree, though allow the
+        // visit to proceed through to other subtrees.
+        if (!isVisitable(context))
+            return false;
+
+        // Push ourselves to EL before visiting
+        FacesContext facesContext = context.getFacesContext();
+        pushComponentToEL(facesContext, null);
+
+        /* Decode new index early to alter server state to match sent client state*/
+        if (!decodedActive && ActivationMode.client.equals(getActivationMode())
+                && !context.getFacesContext().getCurrentPhaseId().equals(PhaseId.RESTORE_VIEW)) {
+            String indexStr = facesContext.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
+            if (indexStr != null && indexStr.length() > 0) {
+                Integer newIndex = Integer.parseInt(indexStr);
+                if (newIndex != null) setActiveRowIndex(newIndex);
+            }
+
+            decodedActive = true;
+        }
+
+        try {
+            // Visit ourselves.  Note that we delegate to the
+            // VisitContext to actually perform the visit.
+            VisitResult result = context.invokeVisitCallback(this, callback);
+
+            // If the visit is complete, short-circuit out and end the visit
+            if (result == VisitResult.COMPLETE)
+                return true;
+
+            // Visit children if necessary
+            if (result == VisitResult.ACCEPT) {
+                Iterator<UIComponent> kids = this.getFacetsAndChildren();
+
+                while(kids.hasNext()) {
+                    UIComponent kid = kids.next();
+                    boolean details = kid instanceof DataViewDetails;
+
+                    if (details) initDetailContext(facesContext);
+
+                    boolean done = kid.visitTree(context, callback);
+
+                    if (details) removeDetailContext(facesContext);
+
+                    // If any kid visit returns true, we are done.
+                    if (done)
+                        return true;
+                }
+            }
+        }
+        finally {
+            // Pop ourselves off the EL stack
+            popComponentFromEL(facesContext);
+        }
+
+        // Return false to allow the visit to continue
+        return false;
+    }
 
     @Override
     public void processUpdates(FacesContext context) {
         initDetailContext(context);
         super.processUpdates(context);
         removeDetailContext(context);
+
+        if (!decodedActive) {
+            String indexStr = context.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
+            if (indexStr != null) {
+                Integer newIndex = Integer.parseInt(indexStr);
+                if (newIndex != null) setActiveRowIndex(newIndex);
+            }
+
+            decodedActive = true;
+        }
     }
 
     @Override
@@ -57,12 +139,6 @@ public class DataView extends DataViewBase implements IMobiComponent {
 
     @Override
     public void processDecodes(FacesContext context) {
-        String indexStr = context.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
-        if (indexStr != null) {
-            Integer newIndex = Integer.parseInt(indexStr);
-            if (newIndex != null) setActiveRowIndex(newIndex);
-        }
-
         initDetailContext(context);
         super.processDecodes(context);
         removeDetailContext(context);
@@ -81,6 +157,17 @@ public class DataView extends DataViewBase implements IMobiComponent {
         initDetailContext(context);
         super.processRestoreState(context, state);
         removeDetailContext(context);
+
+        /* if not post-restore restoreState overwrites new active index */
+        if (ActivationMode.client.equals(getActivationMode()) && !decodedActive) {
+            String indexStr = context.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
+            if (indexStr != null) {
+                Integer newIndex = Integer.parseInt(indexStr);
+                if (newIndex != null) setActiveRowIndex(newIndex);
+            }
+
+            decodedActive = true;
+        }
     }
 
     private void removeDetailContext(FacesContext context) {

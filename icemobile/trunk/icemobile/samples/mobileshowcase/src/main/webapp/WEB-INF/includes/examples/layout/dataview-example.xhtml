@@ -25,18 +25,30 @@
         }
     </style>
     <h:form id="frmDataview" styleClass="dataviewpage">
+        <!--<ui:repeat value="#{dataViewBean.cars}" var="car">-->
+            <!--<mobi:inputText value="#{car.releaseDate}" type="date">-->
+                <!--<mobi:ajax execute="@this" render="@form" />-->
+            <!--</mobi:inputText>-->
+        <!--</ui:repeat>-->
         <mobi:dataView value="#{dataViewBean.cars}" var="car">
             <mobi:dataViewDetails>
                 <div style="height:150px; overflow:auto;">
                     <h:panelGrid columns="2">
                         <h:outputText value="Button Value" /><h:commandButton value="#{car.name}" />
                         <h:outputText value="Link Value" /><h:commandLink value="#{car.name}" />
-                        <h:outputText value="Input Text Value" /><h:inputText value="#{car.name}" />
+                            <h:outputText value="Input Text Value" />
+                            <h:inputText value="#{car.name}">
+                                <f:ajax event="blur" execute="@this" render="@form" />
+                            </h:inputText>
                         <h:outputText value="Input Textarea Value" /><h:inputTextarea value="#{car.name}" />
-                        <h:outputText value="Mobi InputText Value" /><mobi:inputText value="#{car.name}" />
+                        <h:outputText value="Mobi InputText Value" />
+                        <mobi:inputText value="#{car.chassisRealname}"
+                                placeholder="#{car.chassisCodename}">
+                            <mobi:ajax render="@form" execute="@this" />
+                        </mobi:inputText>
                         <h:outputText value="Output Label Value" /><h:outputLabel value="#{car.name}" />
                         <h:outputText value="Output Text Value" /><h:outputText value="#{car.name}" />
-                        <h:outputText value="Input Secret Value" /><h:inputSecret value="#{car.name}" />
+                        <!--<h:outputText value="Input Secret Value" /><h:inputSecret value="#{car.name}" />-->
                         <h:outputText value="Boolean Checkbox Value Value" /><h:selectBooleanCheckbox value="#{car.manual}" />
                     </h:panelGrid>
                 </div>
@@ -44,7 +56,11 @@
 
             <mobi:dataViewColumns>
                 <mobi:dataViewColumn headerText="Model" value="#{car.name}" />
-                <mobi:dataViewColumn headerText="Chassis" value="#{car.chassis}" />
+                <mobi:dataViewColumn type="bool" headerText="Manual" value="#{car.manual}" />
+                <mobi:dataViewColumn headerText="Chassis" value="#{car.chassisRealname}" />
+                <mobi:dataViewColumn type="date" headerText="Release" value="#{car.releaseDate}">
+                    <f:convertDateTime type="date" dateStyle="short" />
+                </mobi:dataViewColumn>
                 <mobi:dataViewColumn footerText="Cost" value="#{car.cost}" />
             </mobi:dataViewColumns>
         </mobi:dataView>

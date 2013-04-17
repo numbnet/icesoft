@@ -19,7 +19,7 @@ public interface IDataView extends IMobiComponent {
     public void setVar(String var);
 
     public Object getValue();
-    public void setVar(Object value);
+    public void setValue(Object value);
 
     public Integer getActiveRowIndex();
     public void setActiveRowIndex(Integer index);

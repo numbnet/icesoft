@@ -17,16 +17,22 @@
 package org.icemobile.samples.mobileshowcase.view.examples.layout.dataview;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Random;
 
 public class Car implements Serializable {
 	protected int id = -1;
 	protected String name;
-	protected String chassis;
+	protected String chassisCodename;
+    protected String chassisRealname;
 	protected int weight;
 	protected int acceleration;
 	protected double mpg;
 	protected double cost;
     protected boolean manual = true;
+    protected Date releaseDate;
 	
 	public Car() {
 	}
@@ -37,14 +43,25 @@ public class Car implements Serializable {
 	           double mpg, double cost) {
 		this.id = id;
 		this.name = name;
-		this.chassis = chassis;
+		this.chassisCodename = chassis;
+        this.chassisRealname = "";
 		this.weight = weight;
 		this.acceleration = acceleration;
 		this.mpg = mpg;
 		this.cost = cost;
+        this.releaseDate = getRandomDate();
 	}
-	
-	public int getId() {
+
+    private Date getRandomDate() {
+        Random r = new Random();
+        int day = r.nextInt(31);
+        int month = r.nextInt(12);
+        int year  = r.nextInt(24) + 1990;
+
+        return new GregorianCalendar(year, month, day).getTime();
+    }
+
+    public int getId() {
 		return id;
 	}
 	public void setId(int id) {
@@ -56,13 +73,24 @@ public class Car implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getChassis() {
-		return chassis;
-	}
-	public void setChassis(String chassis) {
-		this.chassis = chassis;
-	}
-	public int getWeight() {
+
+    public String getChassisCodename() {
+        return chassisCodename;
+    }
+
+    public void setChassisCodename(String chassisCodename) {
+        this.chassisCodename = chassisCodename;
+    }
+
+    public String getChassisRealname() {
+        return chassisRealname;
+    }
+
+    public void setChassisRealname(String chassisRealname) {
+        this.chassisRealname = chassisRealname;
+    }
+
+    public int getWeight() {
 		return weight;
 	}
 	public void setWeight(int weight) {
@@ -95,10 +123,18 @@ public class Car implements Serializable {
         this.manual = manual;
     }
 
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
     public void applyValues(Car parent) {
 	    setId(parent.getId());
 	    setName(parent.getName());
-	    setChassis(parent.getChassis());
+	    setChassisCodename(parent.getChassisCodename());
 	    setWeight(parent.getWeight());
 	    setAcceleration(parent.getAcceleration());
 	    setMpg(parent.getMpg());

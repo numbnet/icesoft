@@ -62,7 +62,7 @@ public class VehicleGenerator implements Serializable
             Car copyReference = list.get(position); //this pointer is mostly for code readabllity
             //new car.id =  car list size+position value+id of the 1st element in the predefined car list
             Car car = new Car(currentListSize+position+1, copyReference.getName(),
-                                      copyReference.getChassis(), copyReference.getWeight(),
+                                      copyReference.getChassisCodename(), copyReference.getWeight(),
                                       copyReference.getAcceleration(), copyReference.getMpg(),
                                       copyReference.getCost());
             list.add(car);
@@ -210,7 +210,7 @@ public class VehicleGenerator implements Serializable
     private String generateName() 
     { return namesPool.get(randomizer.nextInt(namesPool.size())); }
 	
-    private String generateChassis() 
+    public String generateChassis()
     { return chassisPool.get(randomizer.nextInt(chassisPool.size())); }
     
     private int generateWeight() 

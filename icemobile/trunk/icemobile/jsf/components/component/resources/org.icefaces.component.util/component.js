@@ -1032,12 +1032,6 @@ ice.mobi.geolocation = {
                 return val.nodeName == "TD"; /* remove hidden input */
             });
 
-            var scrollWidth = ice.mobi.dataView.getScrollWidth();
-
-//            if (scrollWidth) {
-//                head.parentNode.parentNode.style.paddingRight = scrollWidth + "px";
-//            }
-
             var frbcWidths = Array.prototype.map.call(
                 firstRowBodyCells,
                 function(n) {
@@ -1079,12 +1073,6 @@ ice.mobi.geolocation = {
             dupeFoot.style.display = 'none';
 
             recalcScrollHeight(head, foot, bodyDivWrapper);
-
-//            if (scrollWidth) {
-//                head.parentNode.parentNode.style.paddingRight = '';
-//                head.parentNode.style.width = (head.parentNode.clientWidth - scrollWidth + 1) + "px";
-//                foot.parentNode.style.width = (foot.parentNode.clientWidth - scrollWidth + 1) + "px";
-//            }
         }
 
         /* arguments optional to avoid lookup */
@@ -1114,33 +1102,44 @@ ice.mobi.geolocation = {
             if (container) bottomResize();
         }
 
+        //TODO: abstract 4 multitouch
+        var touchedIndex;
+        function rowTouchStart(e) {
+            var row = e.currentTarget;
+            touchedIndex = row.getAttribute("data-index");
+        }
+
+        function rowTouchEnd(e) {
+            var row = e.currentTarget,
+                index = row.getAttribute("data-index");
+
+            if (index == touchedIndex) activateRow(e);
+        }
+
         function initActivationEvents() {
             for (var i = 0; i < bodyRows.length; ++i) {
                 var row = bodyRows[i];
                 row.addEventListener("click", activateRow);
-                row.addEventListener("touchend", function() {alert('touchend');});
+                row.addEventListener("touchend", rowTouchEnd);
+                row.addEventListener("touchend", rowTouchStart);
             }
         }
 
-        function activateRow(event) {
-            var newIndex = event.currentTarget.getAttribute('data-index'),
-                newValue = Array.prototype.filter.call(
-                        event.currentTarget.children,
-                        function(n) { return n.nodeName == "INPUT"; }
-                ),
-                valueParts = newValue[0].getAttribute('value').split('|');
+        function processUpdateStr(dir) {
+            var valueParts = dir.split('|');
 
-
-            /* lookup elem by id and insert value */
+            /* lookup elem by id and apply updates */
             for (var i = 0; i < valueParts.length; i++) {
                 var v = valueParts[i].split('='),
-                    elem = document.getElementById(v[0]),
-                    dir = v[1],
-                    value;
+                        elem = details.querySelector('[id$='+ice.mobi.escapeJsfId(v[0])+']'),
+                        dir = v[1],
+                        value;
 
                 switch (dir) {
                     case 'html':
                         elem.innerHTML = v[2];
+                        break;
+
                     case 'attr':
                         if (v[2] == 'checked') {
                             if (v[3] == 'true') elem.checked = true;
@@ -1148,17 +1147,38 @@ ice.mobi.geolocation = {
                         } else {
                             elem.setAttribute(v[2], v[3]);
                         }
+                        break;
+
                     default :
                         value = '';
+                        break;
                 }
             };
+        }
 
+        function activateRow(event) {
+            var newIndex = event.currentTarget.getAttribute('data-index'),
+                indexIn = getIndexInput();
 
-            getIndexInput().setAttribute("value", newIndex);
+            indexIn.setAttribute("value", newIndex);
             details.setAttribute("data-index", newIndex);
 
-            // if vertical orientation
-            recalcScrollHeight();
+            if (cfg.active == 'client') {
+                var newValue = event.currentTarget.getAttribute('data-state');
+
+                processUpdateStr(newValue);
+
+                // if vertical orientation
+                recalcScrollHeight();
+            } else {
+                var config = {
+                    source : clientId,
+                    execute : '@this',
+                    render : '@this'
+                };
+
+                ice.mobi.ab(config);
+            }
         }
 
         function update(newCfg){
@@ -1172,7 +1192,7 @@ ice.mobi.geolocation = {
 
         /* first alignment needs to occur shortly after script eval
         *  else heights are miscalculated for following elems */
-        setTimeout(initTableAlignment, 100);
+        setTimeout(initTableAlignment, 10);
 
         /* resize height adjust */
         window.addEventListener("resize", function() { self.recalcScrollHeight(); });
@@ -1181,38 +1201,7 @@ ice.mobi.geolocation = {
         return { update: update }
     }
 
-    var width;
-    var getScrollWidth = function() {
-        if (width) return width;
-
-        var inner = document.createElement("p");
-        inner.style.width = '100%';
-        inner.style.height = '100%';
-
-        var outer = document.createElement("div");
-        outer.style.position = 'absolute';
-        outer.style.width = '100px';
-        outer.style.height = '100px';
-        outer.style.top = '0';
-        outer.style.left = '0';
-        outer.style.visibility = 'hidden';
-        outer.style.overflow = 'hidden';
-        outer.appendChild(inner);
-
-        document.body.appendChild(outer);
-
-        var w1 = outer.clientWidth;
-        outer.style.overflow = 'scroll';
-        var w2 = outer.clientWidth;
-
-        document.body.removeChild(outer);
-        width = (w1 - w2);
-
-        return width;
-    };
-
     ice.mobi.dataView = {
-        getScrollWidth : getScrollWidth,
         instances: {},
         create: function(clientId, cfg) {
             if (this.instances[clientId]) this.instances[clientId].update(cfg);
