@@ -1,6 +1,8 @@
 package org.icemobile.model;
 
 import javax.el.ValueExpression;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Copyright 2010-2013 ICEsoft Technologies Canada Corp.
@@ -25,5 +27,13 @@ import javax.el.ValueExpression;
 public interface DataViewColumnModel {
     public String getHeaderText();
     public String getFooterText();
+    public String getMarkup();
+    public String getType();
+    public String getDateType();
+    public String getDatePattern();
     public ValueExpression getValue();
+    public Integer getTimeStyle();
+    public Integer getDateStyle();
+    public TimeZone getTimeZone();
+    public Locale getLocale();
 }
