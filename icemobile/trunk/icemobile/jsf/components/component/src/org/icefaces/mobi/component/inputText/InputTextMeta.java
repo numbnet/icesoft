@@ -54,8 +54,7 @@ import org.icefaces.mobi.utils.TLDConstants;
 public class InputTextMeta extends UIInputMeta {
 
     @Property(defaultValue = "text", tlddoc = "The type attribute for the input element. " +
-    		"Currently supports text, textarea, inputSecret,"+
-    		"phone, url, email, number, date, time, datetime.  Depending " +
+    		"Currently supports text, textarea, phone, url, email, number, date, time, datetime.  Depending " +
     		"on device capability, a type-specific keyboard may be displayed. ")
     private String type;
 
