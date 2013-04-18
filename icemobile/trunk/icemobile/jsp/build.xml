@@ -65,8 +65,14 @@
 	<property name="javascript.dir" location="../resources/javascript"/>
     <!-- component TLD location --> 
     <property name="tld.jar" location="${lib.dir}"/>
+    <property name="tld.header"
+              location="src/main/resources/META-INF/icemobile_tld_header.txt"/>
+    <property name="tld.body"
+              location="src/main/resources/META-INF/icemobile_tld_body.txt"/>
+    <property name="tld.footer"
+              location="src/main/resources/META-INF/icemobile_tld_footer.txt"/>
     <property name="tld.file"
-              location="src/main/resources/META-INF/icemobile.tld"/>
+              location="${build.meta}/icemobile.tld"/>
 	<property name="compile.target" value="1.5"/>
 	<property name="compile.source" value="1.5"/>
 	<property name="compile.debug" value="true"/>
@@ -245,9 +251,11 @@
             <fileset dir="${javascript.dir}" includes="*"/>
         </copy>
 		<delete file="${tmp}"/>
-		<copy todir="${build.meta}">
-            <fileset dir="src/main/resources/META-INF" includes="**/icemobile.tld"/>
-        </copy>
+        <concat destfile="${tld.file}" append="no">
+            <header file="${tld.header}"/>
+            <path path="${tld.body}"/>
+            <footer file="${tld.footer}"/>
+        </concat>
 		<compressjs comp="icemobile" path="${build.web.resources}/javascript" />
 	</target>
 
