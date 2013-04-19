@@ -28,8 +28,13 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+import javax.faces.render.Renderer;
+import javax.faces.event.ValueChangeEvent;
 
-import org.icefaces.ace.util.*;
+import org.icefaces.ace.util.HTML;
+import org.icefaces.ace.util.JSONBuilder;
+import org.icefaces.ace.util.ScriptWriter;
+import org.icefaces.ace.util.Utils;
 
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -73,7 +78,6 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         // Root Container
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
         encodeScript(facesContext, writer, checkbox, clientId, EventType.HOVER);
         encodeRootStyle(writer, checkbox);

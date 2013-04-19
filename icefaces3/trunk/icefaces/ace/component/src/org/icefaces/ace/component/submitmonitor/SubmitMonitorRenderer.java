@@ -17,7 +17,6 @@
 package org.icefaces.ace.component.submitmonitor;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
-import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
@@ -36,7 +35,6 @@ public class SubmitMonitorRenderer extends CoreRenderer {
 
         writer.startElement(HTML.DIV_ELEM, monitor);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
         // Encode Component
         writeComponent(context, writer, monitor, clientId);

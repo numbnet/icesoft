@@ -35,11 +35,9 @@ import javax.faces.application.ProjectStage;
 import javax.faces.component.*;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -364,9 +362,5 @@ public class ComponentUtils {
 
     public static boolean isLiteralText(UIComponent component) {
         return component.getFamily().equalsIgnoreCase("facelets.LiteralText");
-    }
-
-    public static void enableOnElementUpdateNotify(ResponseWriter writer, String id) throws IOException {
-        writer.writeAttribute("data-elementupdate", id, null);
     }
 }
