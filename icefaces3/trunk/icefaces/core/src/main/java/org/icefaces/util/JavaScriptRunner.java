@@ -17,7 +17,10 @@
 package org.icefaces.util;
 
 import javax.faces.context.FacesContext;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Utility API for evaluating Javascript code on the client.
@@ -38,7 +41,7 @@ public class JavaScriptRunner {
             requestMap.put(JavaScriptRunner.class.getName(), scripts);
         }
 
-        scripts.add(escapeJavaScript(script));
+        scripts.add(script);
     }
 
     public static String collateScripts(FacesContext context) {
@@ -59,86 +62,5 @@ public class JavaScriptRunner {
 
             return buffer.toString();
         }
-    }
-
-    public static String escapeJavaScript(String str) {
-        if (str == null) {
-            return null;
-        }
-
-        StringBuffer writer = new StringBuffer();
-
-        int size = str.length();
-        for (int i = 0; i < size; i++) {
-            final char ch = str.charAt(i);
-
-            // handle unicode
-            if (ch > 0xfff) {
-                writer.append("\\u");
-                writer.append(hex(ch));
-            } else if (ch > 0xff) {
-                writer.append("\\u0");
-                writer.append(hex(ch));
-            } else if (ch > 0x7f) {
-                writer.append("\\u00");
-                writer.append(hex(ch));
-            } else if (ch < 32) {
-                switch (ch) {
-                    case '\b':
-                        writer.append('\\');
-                        writer.append('b');
-                        break;
-                    case '\n':
-                        writer.append('\\');
-                        writer.append('n');
-                        break;
-                    case '\t':
-                        writer.append('\\');
-                        writer.append('t');
-                        break;
-                    case '\f':
-                        writer.append('\\');
-                        writer.append('f');
-                        break;
-                    case '\r':
-                        writer.append('\\');
-                        writer.append('r');
-                        break;
-                    default:
-                        if (ch > 0xf) {
-                            writer.append("\\u00");
-                            writer.append(hex(ch));
-                        } else {
-                            writer.append("\\u000");
-                            writer.append(hex(ch));
-                        }
-                        break;
-                }
-            } else {
-                switch (ch) {
-                    case '\'':
-                        writer.append('\\');
-                        writer.append('\'');
-                        break;
-                    case '"':
-                        writer.append('\\');
-                        writer.append('"');
-                        break;
-                    case '\\':
-                        writer.append('\\');
-                        writer.append('\\');
-                        break;
-                    default:
-                        writer.append(ch);
-                        break;
-                }
-            }
-        }
-
-        return writer.toString();
-    }
-
-    private static String hex(char ch) {
-        return Integer.toHexString(ch).toUpperCase(Locale.ENGLISH);
     }
 }
