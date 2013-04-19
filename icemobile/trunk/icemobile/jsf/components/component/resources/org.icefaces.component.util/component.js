@@ -983,26 +983,32 @@ ice.mobi.geolocation = {
 (function() {
     function DataView(clientId, cfg) {
         var self = this,
-            selectorId = '#' + ice.mobi.escapeJsfId(clientId),
-            headSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead',
-            footSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot',
-            bodyDivSelector = selectorId + ' > .mobi-dv-mst > div',
-            element, details, headCells, footCells, bodyRows;
+            selectorId = '#' + ice.mobi.escapeJsfId(clientId)
+            bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr';
 
-        function initElementVars() {
+        function getNode(elem) {
             var headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead > tr > th',
                 footCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot > tr > td',
-                bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
-                detailsSelector = selectorId + ' > .mobi-dv-det';
+                firstRowSelector = bodyRowSelector + ':first-child',
+                detailsSelector = selectorId + ' > .mobi-dv-det',
+                headSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead',
+                footSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot',
+                bodyDivSelector = selectorId + ' > .mobi-dv-mst > div';
 
-            details = document.querySelector(detailsSelector);
-            element = document.getElementById(clientId);
-            headCells = document.querySelectorAll(headCellSelector);
-            bodyRows = document.querySelectorAll(bodyRowSelector);
-            footCells = document.querySelectorAll(footCellSelector);
+            switch (elem) {
+                case 'det': return document.querySelector(detailsSelector);
+                case 'head': return document.querySelector(headSelector);
+                case 'foot': return document.querySelector(footSelector);
+                case 'body': return document.querySelector(bodyDivSelector);
+                case 'elem': return document.getElementById(clientId);
+                case 'headcells': return document.querySelectorAll(headCellSelector);
+                case 'bodyrows': return document.querySelectorAll(bodyRowSelector);
+                case 'firstrow': return document.querySelector(firstRowSelector);
+                case 'footcells': return document.querySelectorAll(footCellSelector);
+            }            
         }
 
-        function getScrollableContainer() {
+        function getScrollableContainer(element) {
             var height = element.clientHeight,
                 parent = element.parentNode;
 
@@ -1012,7 +1018,7 @@ ice.mobi.geolocation = {
             return parent;
         }
 
-        function getIndexInput() {
+        function getIndexInput(details) {
             var r = Array.prototype.filter.call(details.children, function(n) {
                 return n.nodeName == "INPUT";
             });
@@ -1024,11 +1030,14 @@ ice.mobi.geolocation = {
                 dupeHeadCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead > tr > th'),
                 dupeFoot = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tfoot'),
                 dupeFootCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tfoot > tr > td'),
-                head = document.querySelector(headSelector),
-                foot = document.querySelector(footSelector),
-                bodyDivWrapper = document.querySelector(bodyDivSelector);
+                head = getNode('head'),
+                headCells = getNode('headcells'),
+                foot = getNode('foot'),
+                footCells = getNode('footcells'),
+                bodyDivWrapper = getNode('body'),
+                firstrow = getNode('firstrow');
 
-            var firstRowBodyCells = Array.prototype.filter.call(bodyRows[0].children, function(val){
+            var firstRowBodyCells = Array.prototype.filter.call(firstrow.children, function(val){
                 return val.nodeName == "TD"; /* remove hidden input */
             });
 
@@ -1078,9 +1087,10 @@ ice.mobi.geolocation = {
         /* arguments optional to avoid lookup */
         function recalcScrollHeight(inHead, inFoot, inDivWrap) {
             /* set scroll body to maximum height, reserving space for head / foot */
-            var head = inHead ? inHead : document.querySelector(headSelector),
-                foot = inFoot ? inFoot : document.querySelector(footSelector),
-                bodyDivWrapper = inDivWrap ? inDivWrap : document.querySelector(bodyDivSelector),
+            var head = inHead ? inHead : getNode('head'),
+                foot = inFoot ? inFoot : getNode('foot'),
+                bodyDivWrapper = inDivWrap ? inDivWrap : getNode('body'),
+                element = getNode('elem'),
                 dim = element.getBoundingClientRect(),
                 maxHeight = window.innerHeight - dim.top,
                 headHeight = head.clientHeight,
@@ -1093,7 +1103,7 @@ ice.mobi.geolocation = {
 
             /* set height to full visible size of parent minus
              height of all following elements */
-            var container = getScrollableContainer(),
+            var container = getScrollableContainer(element),
                     bottomResize = function() {
                         bodyDivWrapper.style.height = fullHeight
                                 - (container.scrollHeight - container.clientHeight) + 'px';
@@ -1119,12 +1129,12 @@ ice.mobi.geolocation = {
 
         var touchedRowIndex = {};
         function rowTouchStart(e) {
-            var row = e.currentTarget;
+            var row = e.delegateTarget;
             touchedRowIndex[e.identifier] = row.getAttribute("data-index");
         }
 
         function rowTouchEnd(e) {
-            var row = e.currentTarget,
+            var row = e.delegateTarget,
                 index = row.getAttribute("data-index");
 
             if (index == touchedRowIndex[e.identifier]) activateRow(e);
@@ -1133,6 +1143,7 @@ ice.mobi.geolocation = {
         }
 
         function initSortingEvents() {
+            var headCells = getNode('headcells');
             for (var i = 0; i < headCells.length; ++i) {
                 var cell = headCells[i];
                 cell.addEventListener("click", sortColumn);
@@ -1142,16 +1153,27 @@ ice.mobi.geolocation = {
         }
 
         function initActivationEvents() {
-            for (var i = 0; i < bodyRows.length; ++i) {
-                var row = bodyRows[i];
-                row.addEventListener("click", activateRow);
-                row.addEventListener("touchend", rowTouchEnd);
-                row.addEventListener("touchend", rowTouchStart);
-            }
+            var element = getNode('elem'),
+                /* filter events for those bubbled from tr elems */
+                isRowEvent = function(callback) {
+                    function getRow(e) { var row = e; while (row.nodeName != "TR") row = row.parentNode; return row; };
+                    return function(e) {
+                        var tr = getRow(e.srcElement);
+                        if (tr && tr.webkitMatchesSelector(bodyRowSelector)) {
+                            e.delegateTarget = tr;
+                            callback(e);
+                        }
+                    };
+                }
+
+            element.addEventListener("click", isRowEvent(activateRow));
+            element.addEventListener("touchend", isRowEvent(rowTouchEnd));
+            element.addEventListener("touchend", isRowEvent(rowTouchStart));
         }
 
         function processUpdateStr(dir) {
             var valueParts = dir.split('|');
+            var details = getNode('det');
 
             /* lookup elem by id and apply updates */
             for (var i = 0; i < valueParts.length; i++) {
@@ -1194,47 +1216,49 @@ ice.mobi.geolocation = {
             return n == '<i class="icon-ok"></i>' || n == '<i class="icon-remove"></i>';
         }
 
-        function getValueComparator(cri) {
-            var firstRowVal = bodyRows[0].children[cri.index].innerHTML;
-            var ascending = cri.ascending ? 1 : -1;
-
-            if (isNumber(firstRowVal))
-                return function(a,b) {
-                    return a.children[cri.index].innerHTML
-                            - b.children[cri.index].innerHTML * ascending;
-                }
-            if (isDate(firstRowVal))
-                return function(a,b) {
-                    var av = new Date(a.children[cri.index].innerHTML),
-                        bv = new Date(b.children[cri.index].innerHTML);
-
-                    if (av > bv) return 1 * ascending;
-                    else if (bv > av) return -1 * ascending;
-                    return 0;
-                }
-            if (isCheckboxMarkup(firstRowVal))
-                /* checkmark markup is shorter - reverse string sort */
-                return function(a,b) {
-                    var av = a.children[cri.index].innerHTML,
-                        bv =  b.children[cri.index].innerHTML;
-
-                    if (av < bv) return 1 * ascending;
-                    else if (bv < av) return -1 * ascending;
-                    return 0;
-                }
-            else
-                /* fall back to string comparison */
-                return function(a,b) {
-                    var av = a.children[cri.index].innerHTML,
-                        bv =  b.children[cri.index].innerHTML;
-
-                    if (av > bv) return 1 * ascending;
-                    else if (bv > av) return -1 * ascending;
-                    return 0;
-                }
-        }
-
         function getRowComparator() {
+            var firstrow = getNode('firstrow');
+
+            function getValueComparator(cri) {
+                var firstRowVal = firstrow.children[cri.index].innerHTML;
+                var ascending = cri.ascending ? 1 : -1;
+
+                if (isNumber(firstRowVal))
+                    return function(a,b) {
+                        return a.children[cri.index].innerHTML
+                            - b.children[cri.index].innerHTML * ascending;
+                    }
+                if (isDate(firstRowVal))
+                    return function(a,b) {
+                        var av = new Date(a.children[cri.index].innerHTML),
+                            bv = new Date(b.children[cri.index].innerHTML);
+
+                        if (av > bv) return 1 * ascending;
+                        else if (bv > av) return -1 * ascending;
+                        return 0;
+                    }
+                if (isCheckboxMarkup(firstRowVal))
+                /* checkmark markup is shorter - reverse string sort */
+                    return function(a,b) {
+                        var av = a.children[cri.index].innerHTML,
+                            bv =  b.children[cri.index].innerHTML;
+
+                        if (av < bv) return 1 * ascending;
+                        else if (bv < av) return -1 * ascending;
+                        return 0;
+                    }
+                else
+                /* fall back to string comparison */
+                    return function(a,b) {
+                        var av = a.children[cri.index].innerHTML,
+                            bv =  b.children[cri.index].innerHTML;
+
+                        if (av > bv) return 1 * ascending;
+                        else if (bv > av) return -1 * ascending;
+                        return 0;
+                    }
+            }
+
             return sortCriteria.map(getValueComparator)
                     .reduceRight(function(comp1, comp2) {
                 if (comp1 == undefined) return function(a,b) { return comp2(a, b); }
@@ -1248,8 +1272,8 @@ ice.mobi.geolocation = {
 
         function sortColumn(event) {
             var sortedRows, asc,
-                headCell = event.currentTarget
-                indicatorSelector = "i.mobi-dv-si"
+                headCell = event.currentTarget,
+                indicatorSelector = "i.mobi-dv-si",
                 blankClass = 'mobi-dv-si',
                 ascendingClass = blankClass + ' icon-caret-up',
                 descendingClass = blankClass + ' icon-caret-down',
@@ -1266,7 +1290,7 @@ ice.mobi.geolocation = {
             ascIndi.className = asc ? ascendingClass : descendingClass;
 
             /* remove indicator from other cols */
-            Array.prototype.filter.call(headCells, function (c) {return c != headCell;})
+            Array.prototype.filter.call(getNode('headcells'), function (c) {return c != headCell;})
                     .every(function(c) {
                         var indi = c.querySelector(indicatorSelector);
                         indi.className = blankClass;
@@ -1277,11 +1301,9 @@ ice.mobi.geolocation = {
             sortCriteria = [{ascending : asc, index : columnIndex}];
 
             /* return bodyRows NodeList as Array for sorting */
-            sortedRows = Array.prototype.map.call(bodyRows, function(row) {
-                return row;
-            });
-
-            sortedRows = Array.prototype.sort.call(sortedRows, getRowComparator());
+            var bodyRows = getNode('bodyrows');
+            sortedRows = Array.prototype.map.call(bodyRows, function(row) { return row; });
+            sortedRows = sortedRows.sort(getRowComparator());
 
             /* remove previous tbody conent and re-add in new order */
             var tbody = bodyRows[0].parentNode;
@@ -1293,14 +1315,15 @@ ice.mobi.geolocation = {
         }
 
         function activateRow(event) {
-            var newIndex = event.currentTarget.getAttribute('data-index'),
-                indexIn = getIndexInput();
+            var newIndex = event.delegateTarget.getAttribute('data-index'),
+                details = getNode('det'),
+                indexIn = getIndexInput(details);
 
             indexIn.setAttribute("value", newIndex);
             details.setAttribute("data-index", newIndex);
 
             if (cfg.active == 'client') {
-                var newValue = event.currentTarget.getAttribute('data-state');
+                var newValue = event.delegateTarget.getAttribute('data-state');
 
                 processUpdateStr(newValue);
 
@@ -1318,13 +1341,11 @@ ice.mobi.geolocation = {
         }
 
         function update(newCfg){
-            initElementVars();
             initActivationEvents();
             initSortingEvents();
             initTableAlignment();
         }
 
-        initElementVars();
         initActivationEvents();
         initSortingEvents();
 
@@ -1333,7 +1354,9 @@ ice.mobi.geolocation = {
         setTimeout(initTableAlignment, 100);
 
         /* resize height adjust */
-        window.addEventListener("resize", function() { self.recalcScrollHeight(); });
+        window.addEventListener("resize", function() {
+            self.recalcScrollHeight();
+        });
 
         /* Instance API */
         return { update: update }

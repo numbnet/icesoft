@@ -120,6 +120,7 @@ public class DataViewRenderer extends Renderer {
         if (columns == null) encodeEmptyBodyTable(writer);
         else {
             writer.startElement(HTML.DIV_ELEM, null);
+            writer.writeAttribute(HTML.ID_ATTR, dataView.getClientId() + "_mst", null);
             writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_MASTER_CLASS, null);
 
             DataViewColumnsModel columnModel = columns.getModel();
@@ -209,6 +210,7 @@ public class DataViewRenderer extends Renderer {
                             DataViewDataModel dataModel) throws IOException {
         ELContext elContext = context.getELContext();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String clientId = dataView.getClientId();
 
         writer.startElement(HTML.DIV_ELEM, null);
         writer.startElement(HTML.TABLE_ELEM, null);
@@ -225,6 +227,7 @@ public class DataViewRenderer extends Renderer {
 
             writer.startElement(HTML.TR_ELEM, null);
 
+            writer.writeAttribute(HTML.ID_ATTR, clientId + "_" + dataModelIterator.getIndex(), null);
             writer.writeAttribute("data-index", dataModelIterator.getIndex(), null);
 
             if (ActivationMode.client.equals(dataView.getActivationMode()))
@@ -454,6 +457,7 @@ public class DataViewRenderer extends Renderer {
         // Init row context
         Integer index = dataView.getActiveRowIndex();
         String var = dataView.getVar();
+        String clientId = dataView.getClientId();
         ActivationMode activeMode = dataView.getActivationMode();
         boolean active = ActivationMode.client.equals(activeMode) || (ActivationMode.server.equals(activeMode) && index != null && index > 0);
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -465,6 +469,7 @@ public class DataViewRenderer extends Renderer {
 
         // Write detail region
         writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "_det", null);
         writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_DETAIL_CLASS, null);
         writer.writeAttribute("data-index", index, null);
 
