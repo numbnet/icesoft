@@ -21,7 +21,7 @@ import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.context.FacesContext;
 
-public class  InputText extends InputTextBase {
+public class InputText extends InputTextBase {
 
     //passthrough attributes for textArea
     private Attribute[] textAreaAttributeNames = {

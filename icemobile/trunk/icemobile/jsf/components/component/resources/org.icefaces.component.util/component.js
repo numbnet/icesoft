@@ -1102,18 +1102,43 @@ ice.mobi.geolocation = {
             if (container) bottomResize();
         }
 
-        //TODO: abstract 4 multitouch
-        var touchedIndex;
+        var touchedHeadCellIndex = {};
+        function headCellTouchStart(e) {
+            var cell = e.currentTarget;
+            touchedHeadCellIndex[e.identifier] = cell.getAttribute("data-index");
+        }
+
+        function headCellTouchEnd(e) {
+            var cell = e.currentTarget,
+                index = cell.getAttribute("data-index");
+
+            if (index == touchedHeadCellIndex[e.identifier]) sortColumn(e);
+
+            touchedHeadCellIndex[e.identifier] = undefined;
+        }
+
+        var touchedRowIndex = {};
         function rowTouchStart(e) {
             var row = e.currentTarget;
-            touchedIndex = row.getAttribute("data-index");
+            touchedRowIndex[e.identifier] = row.getAttribute("data-index");
         }
 
         function rowTouchEnd(e) {
             var row = e.currentTarget,
                 index = row.getAttribute("data-index");
 
-            if (index == touchedIndex) activateRow(e);
+            if (index == touchedRowIndex[e.identifier]) activateRow(e);
+
+            touchedRowIndex[e.identifier] = null;
+        }
+
+        function initSortingEvents() {
+            for (var i = 0; i < headCells.length; ++i) {
+                var cell = headCells[i];
+                cell.addEventListener("click", sortColumn);
+                cell.addEventListener("touchend", headCellTouchEnd);
+                cell.addEventListener("touchend", headCellTouchStart);
+            }
         }
 
         function initActivationEvents() {
@@ -1156,6 +1181,117 @@ ice.mobi.geolocation = {
             };
         }
 
+        var sortCriteria = [];
+        function isNumber(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        }
+
+        function isDate(n) {
+            return !isNaN(Date.parse(n));
+        }
+
+        function isCheckboxMarkup(n) {
+            return n == '<i class="icon-ok"></i>' || n == '<i class="icon-remove"></i>';
+        }
+
+        function getValueComparator(cri) {
+            var firstRowVal = bodyRows[0].children[cri.index].innerHTML;
+            var ascending = cri.ascending ? 1 : -1;
+
+            if (isNumber(firstRowVal))
+                return function(a,b) {
+                    return a.children[cri.index].innerHTML
+                            - b.children[cri.index].innerHTML * ascending;
+                }
+            if (isDate(firstRowVal))
+                return function(a,b) {
+                    var av = new Date(a.children[cri.index].innerHTML),
+                        bv = new Date(b.children[cri.index].innerHTML);
+
+                    if (av > bv) return 1 * ascending;
+                    else if (bv > av) return -1 * ascending;
+                    return 0;
+                }
+            if (isCheckboxMarkup(firstRowVal))
+                /* checkmark markup is shorter - reverse string sort */
+                return function(a,b) {
+                    var av = a.children[cri.index].innerHTML,
+                        bv =  b.children[cri.index].innerHTML;
+
+                    if (av < bv) return 1 * ascending;
+                    else if (bv < av) return -1 * ascending;
+                    return 0;
+                }
+            else
+                /* fall back to string comparison */
+                return function(a,b) {
+                    var av = a.children[cri.index].innerHTML,
+                        bv =  b.children[cri.index].innerHTML;
+
+                    if (av > bv) return 1 * ascending;
+                    else if (bv > av) return -1 * ascending;
+                    return 0;
+                }
+        }
+
+        function getRowComparator() {
+            return sortCriteria.map(getValueComparator)
+                    .reduceRight(function(comp1, comp2) {
+                if (comp1 == undefined) return function(a,b) { return comp2(a, b); }
+                else return function(a,b) {
+                    var v = comp2(a, b);
+                    if (v != 0) return v;
+                    else return comp1(a, b);
+                }
+            });
+        }
+
+        function sortColumn(event) {
+            var sortedRows, asc,
+                headCell = event.currentTarget
+                indicatorSelector = "i.mobi-dv-si"
+                blankClass = 'mobi-dv-si',
+                ascendingClass = blankClass + ' icon-caret-up',
+                descendingClass = blankClass + ' icon-caret-down',
+                ascIndi = headCell.querySelector(indicatorSelector),
+                ascClass = ascIndi.className;
+
+            /* find col index */
+            var columnIndex = 0, sib = headCell;
+            while( (sib = sib.previousSibling) != null )
+                columnIndex++;
+
+            /* set ascending flag and indicator */
+            asc = ascClass == descendingClass || ascClass == blankClass;
+            ascIndi.className = asc ? ascendingClass : descendingClass;
+
+            /* remove indicator from other cols */
+            Array.prototype.filter.call(headCells, function (c) {return c != headCell;})
+                    .every(function(c) {
+                        var indi = c.querySelector(indicatorSelector);
+                        indi.className = blankClass;
+                        return true;
+                    });
+
+            /* single column sort forced until ui for multi can be impl'd */
+            sortCriteria = [{ascending : asc, index : columnIndex}];
+
+            /* return bodyRows NodeList as Array for sorting */
+            sortedRows = Array.prototype.map.call(bodyRows, function(row) {
+                return row;
+            });
+
+            sortedRows = Array.prototype.sort.call(sortedRows, getRowComparator());
+
+            /* remove previous tbody conent and re-add in new order */
+            var tbody = bodyRows[0].parentNode;
+            tbody.innerHTML = '';
+            Array.prototype.every.call(sortedRows, function(row) {
+                tbody.appendChild(row);
+                return true;
+            });
+        }
+
         function activateRow(event) {
             var newIndex = event.currentTarget.getAttribute('data-index'),
                 indexIn = getIndexInput();
@@ -1184,15 +1320,17 @@ ice.mobi.geolocation = {
         function update(newCfg){
             initElementVars();
             initActivationEvents();
+            initSortingEvents();
             initTableAlignment();
         }
 
         initElementVars();
         initActivationEvents();
+        initSortingEvents();
 
         /* first alignment needs to occur shortly after script eval
         *  else heights are miscalculated for following elems */
-        setTimeout(initTableAlignment, 10);
+        setTimeout(initTableAlignment, 100);
 
         /* resize height adjust */
         window.addEventListener("resize", function() { self.recalcScrollHeight(); });
