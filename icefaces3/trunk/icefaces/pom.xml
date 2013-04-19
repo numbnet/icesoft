@@ -26,7 +26,9 @@
     <version>3.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>ICEfaces</name>
+    <description>ICEfaces Parent Project</description>
     <!--<name>ICEfaces EE</name>-->
+    <!--<description>ICEfaces EE Parent Project</description>-->
     <url>http://www.icesoft.org</url>
 
     <licenses>
@@ -37,8 +39,19 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <name>ICEsoft Technologies, Inc.</name>
+            <email>product.support@icesoft.com</email>
+        </developer>
+    </developers>
+
     <distributionManagement>
 
+        <!-- By default, SNAPSHOT and releases are deployed to the local filesystem for
+             verification and inspection.  To deploy SNAPSHOTS and releases to the
+             remote repositories, specify -DdeployRemote="true" which will trigger the
+             appropriate profile (see below). -->
         <snapshotRepository>
             <id>icefaces-local-snapshot</id>
             <name>Local filesystem repository for testing</name>
@@ -308,6 +321,94 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>signArtifacts</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>signArtifacts</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>deployRemote</id>
+            <activation>
+                <property>
+                    <name>deployRemote</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <distributionManagement>
+
+                <!-- SNAPSHOT releases currently go to our own svn repository but if we can
+                     switch to Sonatype by changing to the entry commented out below. -->
+                <snapshotRepository>
+                    <id>icefaces-remote</id>
+                    <name>ICEsoft Maven Repository</name>
+                    <url>svn:http://10.18.39.25:8888/svn/ossrepo/maven2/snapshots/</url>
+                </snapshotRepository>
+
+                <!--<snapshotRepository>-->
+                    <!--<id>sonatype-nexus-snapshots</id>-->
+                    <!--<name>Sonatype Nexus Snapshots</name>-->
+                    <!--<url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
+                <!--</snapshotRepository>-->
+
+                <repository>
+                    <id>sonatype-nexus-staging</id>
+                    <name>Nexus Release Repository</name>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+
+            </distributionManagement>
+        </profile>
+
     </profiles>
 
 </project>
