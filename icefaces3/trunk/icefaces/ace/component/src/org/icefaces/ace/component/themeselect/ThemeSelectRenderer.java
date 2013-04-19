@@ -16,7 +16,6 @@
 package org.icefaces.ace.component.themeselect;
 
 import org.icefaces.ace.renderkit.InputRenderer;
-import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.Constants;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -45,8 +44,6 @@ public class ThemeSelectRenderer extends InputRenderer {
 
         writer.startElement("span", component);
         writer.writeAttribute("id", clientId, "id");
-        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
-
         writer.writeAttribute("class", "ui-select-theme" + (styleClass.equals("") ? "" : " " + styleClass), null);
 
         writer.startElement("select", component);

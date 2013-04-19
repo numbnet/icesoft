@@ -39,7 +39,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.icefaces.ace.renderkit.InputRenderer;
-import org.icefaces.ace.util.ComponentUtils;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.impl.util.Util;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -96,7 +96,6 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
         writer.startElement("span", dateTimeEntry);
         writer.writeAttribute("id", clientId, null);
-        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
         String style = dateTimeEntry.getStyle();
         if(style != null) writer.writeAttribute("style", style, null);
         String styleClass = dateTimeEntry.getStyleClass();

@@ -139,7 +139,6 @@ public class DataTableRenderer extends CoreRenderer {
         // Container
         writer.startElement(HTML.DIV_ELEM, table);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
         writer.writeAttribute(HTML.CLASS_ATTR, containerClass, "styleClass");
 
         // Container Style

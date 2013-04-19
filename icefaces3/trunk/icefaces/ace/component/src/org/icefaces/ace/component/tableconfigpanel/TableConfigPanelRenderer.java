@@ -20,7 +20,6 @@ import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.datatable.DataTableConstants;
 import org.icefaces.ace.renderkit.CoreRenderer;
-import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 
@@ -54,8 +53,6 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
-
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf ui-widget", null);
         writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
 
