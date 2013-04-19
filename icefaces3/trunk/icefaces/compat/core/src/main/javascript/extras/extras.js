@@ -4575,6 +4575,7 @@ Ice.Calendar.CloseListener = Class.create({
         Event.stopObserving(document, 'click', this.handler);
     },
     submit: function(event) {
+        if (!this.getButton()) return;
         document.forms[this.formId][this.commandLinkId].value = this.getButton().id;
         document.forms[this.formId][this.hiddenFieldId].value = 'toggle';
         iceSubmitPartial(document.forms[this.formId], this.getButton(), event);
