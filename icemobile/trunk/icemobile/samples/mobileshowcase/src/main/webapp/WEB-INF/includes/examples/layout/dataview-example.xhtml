@@ -30,7 +30,7 @@
                 <!--<mobi:ajax execute="@this" render="@form" />-->
             <!--</mobi:inputText>-->
         <!--</ui:repeat>-->
-        <mobi:dataView value="#{dataViewBean.cars}" var="car">
+        <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="client">
             <mobi:dataViewDetails>
                 <div style="height:150px; overflow:auto;">
                     <h:panelGrid columns="2">
