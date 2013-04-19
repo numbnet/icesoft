@@ -165,6 +165,10 @@ public class DataViewRenderer extends Renderer {
             writer.startElement(HTML.TH_ELEM, null);
             if (column.getHeaderText() != null)
                 writer.write(column.getHeaderText());
+
+            writer.startElement("i", null);
+            writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_SORT_INDICATOR_CLASS, null);
+            writer.endElement("i");
             writer.endElement(HTML.TH_ELEM);
         }
 

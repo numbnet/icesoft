@@ -132,6 +132,4 @@ public class InputTextRenderer extends BaseInputRenderer {
         }
         writer.endElement(componentType);
     }
-
-
 }
