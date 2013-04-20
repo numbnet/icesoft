@@ -15,6 +15,7 @@ public interface IDataView extends IMobiComponent {
     public static final String DATAVIEW_FOOT_CLASS = "mobi-dv-foot";
     public static final String DATAVIEW_BODY_CLASS = "mobi-dv-body";
     public static final String DATAVIEW_SORT_INDICATOR_CLASS = "mobi-dv-si";
+    public static final String DATAVIEW_BOOL_COLUMN_CLASS = "mobi-dv-c-b";
 
     public String getVar();
     public void setVar(String var);

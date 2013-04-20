@@ -7,11 +7,12 @@
 
 /* Testing CSS */
 /* rows */
-.mobi-dv-head th, .mobi-dv-body th {
+.mobi-dv-head th, .mobi-dv-body th, .mobi-dv-body tfoot td {
     border: 1px solid black;
 }
-.mobi-dv-body td {
+.mobi-dv-body tbody td {
     border: 1px solid black;
+    padding: .2em;
 }
 .mobi-dv-body tr:first-child td { border-top: none; }
 .mobi-dv-body tr:last-child td { border-bottom: none; }
@@ -23,11 +24,11 @@
     border-bottom: none;
 }
 
-
-
 /* Structural CSS */
 
-.mobi-dv {}
+div.mobi-dv {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
 
 .mobi-dv-mst {
     position: relative;
@@ -64,11 +65,19 @@
 }
 
 .mobi-dv-head > thead > tr, .mobi-dv-body > thead > tr {
-    font-size: 17px;
+    font-size: 16pt;
     font-weight: bold;
-    line-height: 26px;
 }
-.mobi-dv-body > tbody > tr {
-    font-size: 17px;
+
+.mobi-dv-foot > tfoot > tr, .mobi-dv-body > tfoot > tr {
+    font-size: 14pt;
     font-weight: bold;
+}
+
+.mobi-dv-body > tbody > tr {
+    font-size: 14pt;
+}
+
+.mobi-dv-c-b {
+    text-align: center;
 }

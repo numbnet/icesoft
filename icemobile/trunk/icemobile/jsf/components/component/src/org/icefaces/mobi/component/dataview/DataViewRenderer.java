@@ -258,12 +258,13 @@ public class DataViewRenderer extends Renderer {
         if (type.equals("markup"))
             writer.write(column.getMarkup().replace("{{value}}", value.toString()));
         else if (type.equals("bool")) {
+            writer.writeAttribute(HTML.CLASS_ATTR, DataView.DATAVIEW_BOOL_COLUMN_CLASS, null);
             writer.startElement("i", null);
             if (value != null) {
                 Boolean bval = (Boolean)value;
                 String resUrl;
-                if (bval) resUrl = "icon-ok";
-                else resUrl = "icon-remove";
+                if (bval) resUrl = "icon-check";
+                else resUrl = "icon-check-empty";
 
                 writer.writeAttribute(HTML.CLASS_ATTR, resUrl, null);
             }
