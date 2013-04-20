@@ -981,14 +981,17 @@ ice.mobi.geolocation = {
 };
 
 (function() {
+    var isTouchDevice = 'ontouchstart' in document.documentElement,
+        indicatorSelector = "i.mobi-dv-si",
+        blankInicatorClass = 'mobi-dv-si';
     function DataView(clientId, cfg) {
         var self = this,
-            selectorId = '#' + ice.mobi.escapeJsfId(clientId)
-            bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr';
+            selectorId = '#' + ice.mobi.escapeJsfId(clientId),
+            bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
+            headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead > tr > th';
 
         function getNode(elem) {
-            var headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead > tr > th',
-                footCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot > tr > td',
+            var footCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot > tr > td',
                 firstRowSelector = bodyRowSelector + ':first-child',
                 detailsSelector = selectorId + ' > .mobi-dv-det',
                 headSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead',
@@ -1006,6 +1009,14 @@ ice.mobi.geolocation = {
                 case 'firstrow': return document.querySelector(firstRowSelector);
                 case 'footcells': return document.querySelectorAll(footCellSelector);
             }            
+        }
+
+        function closestElem(start, target) {
+            var t = start;
+            while (t.nodeName != target)
+                t = t.parentNode;
+
+            return t;
         }
 
         function getScrollableContainer(element) {
@@ -1113,42 +1124,65 @@ ice.mobi.geolocation = {
         }
 
         var touchedHeadCellIndex = {};
+        var touchedFirstCell = false;
         function headCellTouchStart(e) {
             var cell = e.currentTarget;
-            touchedHeadCellIndex[e.identifier] = cell.getAttribute("data-index");
+            /* targetTouches[0] - ignore multi touch starting here */
+            touchedHeadCellIndex[e.targetTouches[0].identifier] = getIndex(cell);
+            if (cell.webkitMatchesSelector(headCellSelector+":first-child"))
+                touchedFirstCell = true;
         }
 
         function headCellTouchEnd(e) {
-            var cell = e.currentTarget,
-                index = cell.getAttribute("data-index");
+            var cell = closestElem(document.elementFromPoint(e.changedTouches[0].pageX, e.changedTouches[0].pageY), 'TH'),
+                index = getIndex(cell);
 
-            if (index == touchedHeadCellIndex[e.identifier]) sortColumn(e);
+            if (touchedFirstCell && cell.webkitMatchesSelector(headCellSelector+":last-child")) {
+                clearSort();
+            } else if (e.changedTouches[0].identifier && index == touchedHeadCellIndex[e.changedTouches[0].identifier])
+                sortColumn(e);
 
-            touchedHeadCellIndex[e.identifier] = undefined;
+            touchedFirstCell = false;
+            touchedHeadCellIndex[e.changedTouches[0].identifier] = undefined;
         }
 
         var touchedRowIndex = {};
         function rowTouchStart(e) {
             var row = e.delegateTarget;
-            touchedRowIndex[e.identifier] = row.getAttribute("data-index");
+
+            touchedRowIndex[e.targetTouches[0].identifier] = {
+                i : row.getAttribute("data-index"),
+                y : e.targetTouches[0].pageY,
+                x : e.targetTouches[0].pageX
+            };
         }
 
         function rowTouchEnd(e) {
-            var row = e.delegateTarget,
-                index = row.getAttribute("data-index");
+            var row = closestElem(document.elementFromPoint(e.changedTouches[0].pageX, e.changedTouches[0].pageY), 'TR'),
+                index = row.getAttribute("data-index"),
+                y = touchedRowIndex[e.changedTouches[0].identifier].y - e.changedTouches[0].pageY ,
+                x = touchedRowIndex[e.changedTouches[0].identifier].x - e.changedTouches[0].pageX;
 
-            if (index == touchedRowIndex[e.identifier]) activateRow(e);
+            /* prevent input when scrolling rows or drag in wide cell*/
+            y = y > -25 && y < 25;
+            x = x > -25 && y < 25;
 
-            touchedRowIndex[e.identifier] = null;
+            if (index == touchedRowIndex[e.changedTouches[0].identifier].i && y && x)
+                activateRow(e);
+
+            touchedRowIndex[e.changedTouches[0].identifier] = null;
         }
 
         function initSortingEvents() {
             var headCells = getNode('headcells');
             for (var i = 0; i < headCells.length; ++i) {
                 var cell = headCells[i];
-                cell.addEventListener("click", sortColumn);
-                cell.addEventListener("touchend", headCellTouchEnd);
-                cell.addEventListener("touchend", headCellTouchStart);
+                if (isTouchDevice) {
+                    cell.addEventListener("touchend", headCellTouchEnd);
+                    cell.addEventListener("touchstart", headCellTouchStart);
+                } else {
+                    cell.addEventListener("click", sortColumn);
+                }
             }
         }
 
@@ -1156,9 +1190,8 @@ ice.mobi.geolocation = {
             var element = getNode('elem'),
                 /* filter events for those bubbled from tr elems */
                 isRowEvent = function(callback) {
-                    function getRow(e) { var row = e; while (row.nodeName != "TR") row = row.parentNode; return row; };
                     return function(e) {
-                        var tr = getRow(e.srcElement);
+                        var tr = closestElem(e.srcElement, "TR");
                         if (tr && tr.webkitMatchesSelector(bodyRowSelector)) {
                             e.delegateTarget = tr;
                             callback(e);
@@ -1166,9 +1199,10 @@ ice.mobi.geolocation = {
                     };
                 }
 
-            element.addEventListener("click", isRowEvent(activateRow));
-            element.addEventListener("touchend", isRowEvent(rowTouchEnd));
-            element.addEventListener("touchend", isRowEvent(rowTouchStart));
+            if (isTouchDevice) {
+                element.addEventListener("touchend", isRowEvent(rowTouchEnd));
+                element.addEventListener("touchstart", isRowEvent(rowTouchStart));
+            } else element.addEventListener("click", isRowEvent(activateRow));
         }
 
         function processUpdateStr(dir) {
@@ -1212,8 +1246,8 @@ ice.mobi.geolocation = {
             return !isNaN(Date.parse(n));
         }
 
-        function isCheckboxMarkup(n) {
-            return n == '<i class="icon-ok"></i>' || n == '<i class="icon-remove"></i>';
+        function isCheckboxCol(n) {
+            return n.className == 'mobi-dv-c-b';
         }
 
         function getRowComparator() {
@@ -1225,8 +1259,8 @@ ice.mobi.geolocation = {
 
                 if (isNumber(firstRowVal))
                     return function(a,b) {
-                        return a.children[cri.index].innerHTML
-                            - b.children[cri.index].innerHTML * ascending;
+                        return (a.children[cri.index].innerHTML
+                            - b.children[cri.index].innerHTML) * ascending;
                     }
                 if (isDate(firstRowVal))
                     return function(a,b) {
@@ -1237,7 +1271,7 @@ ice.mobi.geolocation = {
                         else if (bv > av) return -1 * ascending;
                         return 0;
                     }
-                if (isCheckboxMarkup(firstRowVal))
+                if (isCheckboxCol(firstrow.children[cri.index]))
                 /* checkmark markup is shorter - reverse string sort */
                     return function(a,b) {
                         var av = a.children[cri.index].innerHTML,
@@ -1270,38 +1304,64 @@ ice.mobi.geolocation = {
             });
         }
 
+        function getIndex(elem) {
+            var columnIndex = 0, sib = elem;
+            while( (sib = sib.previousSibling) != null )
+                columnIndex++;
+            return columnIndex;
+        }
+
+        function clearSort() {
+            sortCriteria = [];
+            Array.prototype.every.call(getNode('headcells'), function(c) {
+                    var indi = c.querySelector(indicatorSelector);
+                    indi.className = blankInicatorClass;
+                    return true;
+                });
+
+            var bodyRows = getNode('bodyrows'),
+                tbody = bodyRows[0].parentNode;
+
+            /* return rows to 'natural ordering' */
+            bodyRows = Array.prototype.map.call(bodyRows, function(r) {return r;})
+                .sort(function(a,b) { return a.getAttribute('data-index') - b.getAttribute('data-index');});
+
+            tbody.innerHTML = '';
+            bodyRows.every(function(row) {
+                tbody.appendChild(row);
+                return true;
+            });
+        }
+
         function sortColumn(event) {
             var sortedRows, asc,
                 headCell = event.currentTarget,
-                indicatorSelector = "i.mobi-dv-si",
-                blankClass = 'mobi-dv-si',
-                ascendingClass = blankClass + ' icon-caret-up',
-                descendingClass = blankClass + ' icon-caret-down',
+                ascendingClass = blankInicatorClass + ' icon-caret-up',
+                descendingClass = blankInicatorClass + ' icon-caret-down',
                 ascIndi = headCell.querySelector(indicatorSelector),
                 ascClass = ascIndi.className;
 
             /* find col index */
-            var columnIndex = 0, sib = headCell;
-            while( (sib = sib.previousSibling) != null )
-                columnIndex++;
+            var columnIndex = getIndex(headCell);
 
             /* set ascending flag and indicator */
-            asc = ascClass == descendingClass || ascClass == blankClass;
+            asc = ascClass == descendingClass || ascClass == blankInicatorClass;
             ascIndi.className = asc ? ascendingClass : descendingClass;
 
+            sortCriteria = sortCriteria.filter(function(c) { return c.index != columnIndex});
+            sortCriteria.push({ascending : asc, index : columnIndex});
+
             /* remove indicator from other cols */
-            Array.prototype.filter.call(getNode('headcells'), function (c) {return c != headCell;})
-                    .every(function(c) {
-                        var indi = c.querySelector(indicatorSelector);
-                        indi.className = blankClass;
-                        return true;
-                    });
+            var sortedIndexes = sortCriteria.map(function(c) {return c.index});
+            Array.prototype.filter.call(getNode('headcells'), function (c) {return sortedIndexes.indexOf(getIndex(c)) == -1;})
+                .every(function(c) {
+                    var indi = c.querySelector(indicatorSelector);
+                    indi.className = blankInicatorClass;
+                    return true;
+                });
 
-            /* single column sort forced until ui for multi can be impl'd */
-            sortCriteria = [{ascending : asc, index : columnIndex}];
-
-            /* return bodyRows NodeList as Array for sorting */
             var bodyRows = getNode('bodyrows');
+            /* return bodyRows NodeList as Array for sorting */
             sortedRows = Array.prototype.map.call(bodyRows, function(row) { return row; });
             sortedRows = sortedRows.sort(getRowComparator());
 
