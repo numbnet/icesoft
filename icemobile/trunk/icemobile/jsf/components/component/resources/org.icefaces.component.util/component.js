@@ -1008,15 +1008,15 @@ ice.mobi.geolocation = {
                 case 'bodyrows': return document.querySelectorAll(bodyRowSelector);
                 case 'firstrow': return document.querySelector(firstRowSelector);
                 case 'footcells': return document.querySelectorAll(footCellSelector);
-            }            
+            }
         }
 
-        function closestElem(start, target) {
+        function closest(start, target) {
             var t = start;
-            while (t.nodeName != target)
+            while (t && t != document&& !t.webkitMatchesSelector(target))
                 t = t.parentNode;
 
-            return t;
+            return t == document ? null : t;
         }
 
         function getScrollableContainer(element) {
@@ -1125,25 +1125,40 @@ ice.mobi.geolocation = {
 
         var touchedHeadCellIndex = {};
         var touchedFirstCell = false;
+
         function headCellTouchStart(e) {
             var cell = e.currentTarget;
             /* targetTouches[0] - ignore multi touch starting here */
             touchedHeadCellIndex[e.targetTouches[0].identifier] = getIndex(cell);
             if (cell.webkitMatchesSelector(headCellSelector+":first-child"))
                 touchedFirstCell = true;
+
+            /*prevent scrolling due to drags */
+            e.preventDefault();
         }
 
         function headCellTouchEnd(e) {
-            var cell = closestElem(document.elementFromPoint(e.changedTouches[0].pageX, e.changedTouches[0].pageY), 'TH'),
-                index = getIndex(cell);
+            var touch = e.changedTouches[0],
+                cell = closest(document.elementFromPoint(touch.pageX, touch.pageY), 'th');
 
-            if (touchedFirstCell && cell.webkitMatchesSelector(headCellSelector+":last-child")) {
-                clearSort();
-            } else if (e.changedTouches[0].identifier && index == touchedHeadCellIndex[e.changedTouches[0].identifier])
-                sortColumn(e);
+            if (cell) {
+                var index = getIndex(cell);
+                if (touchedFirstCell && cell.webkitMatchesSelector(headCellSelector+":last-child")) {
+                    clearSort();
+                } else if (touch.identifier && index == touchedHeadCellIndex[touch.identifier])
+                    sortColumn(e);
+            } else {
+                var detTop = getNode('det').getBoundingClientRect().top;
+
+                if (touch.pageY < detTop + 25) {
+                    deactivateDetail();
+
+                    recalcScrollHeight();
+                }
+            }
 
             touchedFirstCell = false;
-            touchedHeadCellIndex[e.changedTouches[0].identifier] = undefined;
+            touchedHeadCellIndex[touch.identifier] = undefined;
         }
 
         var touchedRowIndex = {};
@@ -1158,7 +1173,7 @@ ice.mobi.geolocation = {
         }
 
         function rowTouchEnd(e) {
-            var row = closestElem(document.elementFromPoint(e.changedTouches[0].pageX, e.changedTouches[0].pageY), 'TR'),
+            var row = closest(document.elementFromPoint(e.changedTouches[0].pageX, e.changedTouches[0].pageY), 'tr'),
                 index = row.getAttribute("data-index"),
                 y = touchedRowIndex[e.changedTouches[0].identifier].y - e.changedTouches[0].pageY ,
                 x = touchedRowIndex[e.changedTouches[0].identifier].x - e.changedTouches[0].pageX;
@@ -1191,7 +1206,7 @@ ice.mobi.geolocation = {
                 /* filter events for those bubbled from tr elems */
                 isRowEvent = function(callback) {
                     return function(e) {
-                        var tr = closestElem(e.srcElement, "TR");
+                        var tr = closest(e.srcElement, "tr");
                         if (tr && tr.webkitMatchesSelector(bodyRowSelector)) {
                             e.delegateTarget = tr;
                             callback(e);
@@ -1311,6 +1326,12 @@ ice.mobi.geolocation = {
             return columnIndex;
         }
 
+        function deactivateDetail() {
+            var det = getNode('det');
+            det.removeAttribute('data-index');
+            getIndexInput(det).setAttribute('data-index', '');
+        }
+
         function clearSort() {
             sortCriteria = [];
             Array.prototype.every.call(getNode('headcells'), function(c) {
@@ -1378,6 +1399,12 @@ ice.mobi.geolocation = {
             var newIndex = event.delegateTarget.getAttribute('data-index'),
                 details = getNode('det'),
                 indexIn = getIndexInput(details);
+
+            event.delegateTarget.style.backgroundColor = '#194FDB';
+
+            setTimeout(function() {
+                event.delegateTarget.style.backgroundColor = '';
+            }, 100);
 
             indexIn.setAttribute("value", newIndex);
             details.setAttribute("data-index", newIndex);

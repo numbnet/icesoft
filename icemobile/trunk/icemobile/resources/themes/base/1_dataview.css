@@ -68,6 +68,12 @@ div.mobi-dv {
     font-size: 16pt;
     font-weight: bold;
 }
+.mobi-dv-head .mobi-dv-si {
+    padding: .2em;
+}
+.mobi-dv-head .mobi-dv-si:not([class*='icon']) {
+    display: none;
+}
 
 .mobi-dv-foot > tfoot > tr, .mobi-dv-body > tfoot > tr {
     font-size: 14pt;
