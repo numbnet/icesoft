@@ -52,9 +52,10 @@ public class ComponentArtifact extends Artifact{
     }
 
     private void startComponentClass(ComponentContext compCtx, Class clazz, Component component) {
-        //initialize
+        String generatedClassName = Utility.getGeneratedClassName(component);
+
         writer.append("package ");
-        writer.append(Utility.getPackageNameOfClass(Utility.getGeneratedClassName(component)));
+        writer.append(Utility.getPackageNameOfClass(generatedClassName));
         writer.append(";\n\n");
         writer.append("import java.io.IOException;\n");
         writer.append("import java.util.List;\n");
@@ -127,8 +128,14 @@ public class ComponentArtifact extends Artifact{
             writer.append("@ICEResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n");
         }
 
-        writer.append("public class ");
-        writer.append(Utility.getSimpleNameOfClass(Utility.getGeneratedClassName(component)));
+        component.componentClass();
+        writer.append("public ");
+        if (!component.componentClass().equals(generatedClassName)) {
+            writer.append("abstract ");
+        }
+        writer.append("class ");
+        String generatedSimpleClassName = Utility.getSimpleNameOfClass(generatedClassName);
+        writer.append(generatedSimpleClassName);
         writer.append(" extends ");
         writer.append(component.extendsClass());
         StringBuilder interfaceNames = new StringBuilder();
@@ -155,7 +162,7 @@ public class ComponentArtifact extends Artifact{
         writer.append("\n\tpublic static final String RENDERER_TYPE = "+ rendererType + ";\n");
 
         writer.append("\n\tpublic ");
-        writer.append(Utility.getSimpleNameOfClass(Utility.getGeneratedClassName(component)));
+        writer.append(generatedSimpleClassName);
         writer.append("() {\n\t\tsuper();\n\t\tsetRendererType(RENDERER_TYPE);\n\t}\n");
 
         writer.append("\n\tpublic String getFamily() {\n\t\treturn \"");
