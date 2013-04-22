@@ -62,8 +62,6 @@ public class DataViewBean extends ExampleImpl<DataViewBean>
 
     private List<Car> cars = new ArrayList<Car>() {{
         VehicleGenerator vg = new VehicleGenerator();
-        add(new Car(0, "Zoom<br/>Zoom<br/>Zoom<br/>Zoom",
-                    "Sports", 1000, 10, 5, 10000));
         addAll(vg.getRandomCars(200));
     }};
 

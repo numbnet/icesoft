@@ -76,6 +76,7 @@ div.mobi-dv {
 }
 
 .mobi-dv-foot > tfoot > tr, .mobi-dv-body > tfoot > tr {
+    text-align: center;
     font-size: 14pt;
     font-weight: bold;
 }

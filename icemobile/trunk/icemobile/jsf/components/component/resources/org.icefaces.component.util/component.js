@@ -985,8 +985,7 @@ ice.mobi.geolocation = {
         indicatorSelector = "i.mobi-dv-si",
         blankInicatorClass = 'mobi-dv-si';
     function DataView(clientId, cfg) {
-        var self = this,
-            selectorId = '#' + ice.mobi.escapeJsfId(clientId),
+        var selectorId = '#' + ice.mobi.escapeJsfId(clientId),
             bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
             headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead > tr > th';
 
@@ -1123,8 +1122,10 @@ ice.mobi.geolocation = {
             if (container) bottomResize();
         }
 
-        var touchedHeadCellIndex = {};
-        var touchedFirstCell = false;
+        var touchedHeadCellIndex = {},
+            touchedFirstCell = false,
+            pendingSortClick,
+            lastTouchTime;
 
         function headCellTouchStart(e) {
             var cell = e.currentTarget;
@@ -1141,22 +1142,34 @@ ice.mobi.geolocation = {
             var touch = e.changedTouches[0],
                 cell = closest(document.elementFromPoint(touch.pageX, touch.pageY), 'th');
 
-            if (cell) {
-                var index = getIndex(cell);
-                if (touchedFirstCell && cell.webkitMatchesSelector(headCellSelector+":last-child")) {
-                    clearSort();
-                } else if (touch.identifier && index == touchedHeadCellIndex[touch.identifier])
-                    sortColumn(e);
+            /* do jump scroll to top */
+            if (lastTouchTime && (new Date().getTime() - lastTouchTime < 500)) {
+                clearTimeout(pendingSortClick);
+                getNode('body').scrollTop = 0;
             } else {
-                var detTop = getNode('det').getBoundingClientRect().top;
+                console.log(new Date().getTime() - lastTouchTime);
+                /* do sorting or drag behaviors */
+                if (cell) {
+                    var index = getIndex(cell);
+                    // clear sort if dragged from first to last cell
+                    if (touchedFirstCell && cell.webkitMatchesSelector(headCellSelector+":last-child")) {
+                        clearSort();
+                    } else if (touch.identifier && index == touchedHeadCellIndex[touch.identifier])
+                        // delay sort to see if jump scroll tap occurs
+                        var sort = sortColumn;
+                        pendingSortClick = setTimeout(function () {sort(e);}, 600);
+                } else {
+                    // dragged from header cell to top 25 px of detail region - close region
+                    var detTop = getNode('det').getBoundingClientRect().top;
 
-                if (touch.pageY < detTop + 25) {
-                    deactivateDetail();
-
-                    recalcScrollHeight();
+                    if (touch.pageY < detTop + 25) {
+                        deactivateDetail();
+                        recalcScrollHeight();
+                    }
                 }
             }
 
+            lastTouchTime = new Date().getTime();
             touchedFirstCell = false;
             touchedHeadCellIndex[touch.identifier] = undefined;
         }
@@ -1329,7 +1342,7 @@ ice.mobi.geolocation = {
         function deactivateDetail() {
             var det = getNode('det');
             det.removeAttribute('data-index');
-            getIndexInput(det).setAttribute('data-index', '');
+            getIndexInput(det).setAttribute('value', '-1');
         }
 
         function clearSort() {
@@ -1356,7 +1369,7 @@ ice.mobi.geolocation = {
 
         function sortColumn(event) {
             var sortedRows, asc,
-                headCell = event.currentTarget,
+                headCell = event.target,
                 ascendingClass = blankInicatorClass + ' icon-caret-up',
                 descendingClass = blankInicatorClass + ' icon-caret-down',
                 ascIndi = headCell.querySelector(indicatorSelector),
@@ -1442,7 +1455,7 @@ ice.mobi.geolocation = {
 
         /* resize height adjust */
         window.addEventListener("resize", function() {
-            self.recalcScrollHeight();
+            recalcScrollHeight();
         });
 
         /* Instance API */
