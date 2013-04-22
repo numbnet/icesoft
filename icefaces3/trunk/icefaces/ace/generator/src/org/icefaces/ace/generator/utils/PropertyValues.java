@@ -64,8 +64,9 @@ public class PropertyValues {
      * fields were modified, then add to component class
      */
     public boolean isGeneratingProperty() {
-        return (implementation != Implementation.EXISTS_IN_SUPERCLASS) &&
-               (definedInEndClass || modifiesDefaultValueOrMethodExpression || modifiesJavadoc);
+        return (implementation == Implementation.GENERATE) ||
+               ( (implementation != Implementation.EXISTS_IN_SUPERCLASS) &&
+                 (definedInEndClass || modifiesDefaultValueOrMethodExpression || modifiesJavadoc) );
     }
 
     /**

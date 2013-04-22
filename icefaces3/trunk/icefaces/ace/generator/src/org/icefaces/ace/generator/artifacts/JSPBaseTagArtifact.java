@@ -38,6 +38,7 @@ public class JSPBaseTagArtifact extends Artifact {
 		generatedTagClass = new StringBuilder();
 
         Class metaClass = getMetaContext().getActiveClass();
+        String tagClassName = Utility.getTagClassName(metaClass, jsp);
         String generatedTagClassName = Utility.getGeneratedTagClassName(
             metaClass, jsp);
         String generatedTagExtendsClassName =
@@ -54,7 +55,11 @@ public class JSPBaseTagArtifact extends Artifact {
         generatedTagClass.append("import ").append(interfaceClassName).append(";\n");
 		generatedTagClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
         generatedTagClass.append(Utility.getJavaDocComment(jsp.javadoc(), jsp.tlddoc()));
-		generatedTagClass.append("public class ");
+		generatedTagClass.append("public ");
+        if (!tagClassName.equals(generatedTagClassName)) {
+            generatedTagClass.append("abstract ");
+        }
+        generatedTagClass.append("class ");
 		generatedTagClass.append(Utility.getSimpleNameOfClass(generatedTagClassName));
 		generatedTagClass.append(" extends ");
         generatedTagClass.append(Utility.getSimpleNameOfClass(generatedTagExtendsClassName));
