@@ -36,18 +36,15 @@ public class VehicleGenerator implements Serializable
         this.numberFormatter = makeFormatter();
     }
     
-    public ArrayList<Car> getRandomCars(int quantity)
+    public ArrayList<Car> getRandomCars(final int quantity)
     {
-        ArrayList<Car> listWithCars = getPredefinedCars();
-        
-        if(quantity<listWithCars.size())
-            return new ArrayList<Car>(listWithCars.subList(0, quantity));
-        
-        if(quantity>listWithCars.size())
-            return addCarsToList(quantity - listWithCars.size(), listWithCars);
-        
-        //if quantity == listWithCars.size()
-        return listWithCars;
+        return new ArrayList<Car>() {{
+            int size = quantity;
+            while (size > 0) {
+                size--;
+                add(getRandomCar());
+            }
+        }};
     }
     
     public ArrayList<Car> addCarsToList(int quantityToAdd, ArrayList<Car> list)
@@ -83,49 +80,6 @@ public class VehicleGenerator implements Serializable
     public ArrayList<Car> removeCarsFromList(int quantityToRemove, ArrayList<Car> list)
     {
         return new ArrayList<Car>(list.subList(0, list.size()-quantityToRemove-1));
-    }
-    
-    private ArrayList<Car> getPredefinedCars()
-    {
-        ArrayList<Car> listWithCars = new ArrayList<Car>();
-        
-        listWithCars.add(new Car(1,"Enduro","Van",15383,10,17.86,6617.17));
-        listWithCars.add(new Car(2,"Tomcat","Bus",7331,15,16.65,31464.24));
-        listWithCars.add(new Car(3,"Doublecharge","Pickup",5333,15,17.84,10922.73));
-        listWithCars.add(new Car(4,"Swordfish","Bus",10956,5,5.17,6019.83));
-        listWithCars.add(new Car(5,"Iguana","Pickup",1696,10,9.43,19736.16));
-        listWithCars.add(new Car(6,"Dart","Motorcycle",9261,15,12.85,37947.84));
-        listWithCars.add(new Car(7,"Pisces","Luxury",7846,10,15.13,19235.2));
-        listWithCars.add(new Car(8,"Flash","Mid-Size",11499,10,12.74,29942.38));
-        
-        listWithCars.add(new Car(9,"Tomcat","Mid-Size",10766,15,7.04,14342.74));
-        listWithCars.add(new Car(10,"Pisces","Subcompact",2082,10,13.38,8015.01));
-        listWithCars.add(new Car(11,"Superflash","Subcompact",14959,5,3.91,31941.1));
-        listWithCars.add(new Car(12,"Husky","Mid-Size",14334,15,13.98,9303.69));
-        listWithCars.add(new Car(13,"Gazelle","Semi-Truck",14248,5,8.64,9285.57));
-        
-        listWithCars.add(new Car(14,"Superflash","Luxury",3037,15,8.44,36154.13));
-        listWithCars.add(new Car(15,"Enduro","Subcompact",4997,5,6.02,31221.48));
-        listWithCars.add(new Car(16,"Tomcat","Pickup",4555,10,4.06,35895.53));
-        listWithCars.add(new Car(17,"Courier","Pickup",9848,10,16.15,27343.38));
-        listWithCars.add(new Car(18,"Enduro","Motorcycle",5725,5,14.17,34430.44));
-        
-        listWithCars.add(new Car(19,"Swordfish","Luxury",1466,10,11.72,19266.56));
-        listWithCars.add(new Car(20,"Tomcat","Station Wagon",15576,10,15.3,16844.05));
-        listWithCars.add(new Car(21,"Iguana","Van",10973,15,3.77,33369.32));
-        listWithCars.add(new Car(22,"Doublecharge","Pickup",9414,10,6.37,19370.61));
-        listWithCars.add(new Car(23,"Hawk","Motorcycle",8545,5,7.98,39124.1));
-        
-        listWithCars.add(new Car(24,"Hawk","Subcompact",1853,10,12.54,36068.19));
-        listWithCars.add(new Car(25,"Tomcat","Subcompact",12785,10,12.97,26141.79));
-        listWithCars.add(new Car(26,"Hawk","Semi-Truck",12453,10,10.4,13654.1));
-        listWithCars.add(new Car(27,"Doublecharge","Van",11952,10,17.58,22599.82));
-        listWithCars.add(new Car(28,"Flash","Semi-Truck",6107,5,8.48,26096.26));
-        
-        listWithCars.add(new Car(29,"Courier","Bus",8187,5,4.25,25470.63));
-        listWithCars.add(new Car(30,"Dart","Motorcycle",7177,10,12.16,35394.23));
-
-        return listWithCars;
     }
     
     public ArrayList<Car> getCarsForLazyLoading(int quantity)
