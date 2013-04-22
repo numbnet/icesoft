@@ -29,8 +29,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @ICEResourceDependencies({
-    @ICEResourceDependency(name = "gmap/gmap.js"),
-    @ICEResourceDependency(name = "gmap/main.js")
+    @ICEResourceDependency(name = "gmap/gmap.js")
 })
 public class GMap extends UIPanel {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.GMap";

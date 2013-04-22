@@ -42,7 +42,6 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
     private ResourceHandler handler;
     private String gmapKey;
     private Resource gmapJS;
-    private Resource mainJS;
 
     public GMapResourceHandler(ResourceHandler handler) {
         this.handler = handler;
@@ -75,15 +74,6 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
                 return gmapJS;
             }
         } 
-		else if (GMAP_MAIN_JS.equals(resourceName)) {
-            if (mainJS == null) {
-                //change returned resource to point to a different URI
-                return mainJS = recreateResource(resource, "http://maps.gstatic.com/intl/en_ALL/mapfiles/400d/maps3.api/main.js");
-            } else {
-                //return cached resource
-                return mainJS;
-            }
-        }
 		else {
             return resource;
         }
