@@ -50,16 +50,16 @@ public class DataViewRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(DataViewRenderer.class.getName());
 
     private DataView dataView;
-    private List<UIComponent> detailHolders;
+    private String dvId = null;
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         dataView = (DataView) component;
+        dvId = dataView.getClientId();
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = dataView.getClientId();
 
         writer.startElement(HTML.DIV_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        writer.writeAttribute(HTML.ID_ATTR, dvId, null);
 
         String styleClass = IDataView.DATAVIEW_CLASS;
         String userClass = dataView.getStyleClass();
@@ -91,11 +91,11 @@ public class DataViewRenderer extends Renderer {
 
     private void encodeScript(FacesContext context, ResponseWriter writer) throws IOException {
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, dataView.getClientId() + "_jswrp", null);
+        writer.writeAttribute(HTML.ID_ATTR, dvId + "_jswrp", null);
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        writer.writeAttribute(HTML.ID_ATTR, dataView.getClientId() + "_js", null);
+        writer.writeAttribute(HTML.ID_ATTR, dvId + "_js", null);
 
         String cfg = "{";
         cfg += "active:'" + dataView.getActivationMode() + "'";
@@ -103,7 +103,7 @@ public class DataViewRenderer extends Renderer {
 
         String js =
             "ice.mobi.dataView.create("
-                + '"' + dataView.getClientId() + '"'
+                + '"' + dvId + '"'
                 + ", " + cfg
             + ");";
 
@@ -120,7 +120,7 @@ public class DataViewRenderer extends Renderer {
         if (columns == null) encodeEmptyBodyTable(writer);
         else {
             writer.startElement(HTML.DIV_ELEM, null);
-            writer.writeAttribute(HTML.ID_ATTR, dataView.getClientId() + "_mst", null);
+            writer.writeAttribute(HTML.ID_ATTR, dvId + "_mst", null);
             writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_MASTER_CLASS, null);
 
             DataViewColumnsModel columnModel = columns.getModel();
@@ -210,15 +210,17 @@ public class DataViewRenderer extends Renderer {
                             DataViewDataModel dataModel) throws IOException {
         ELContext elContext = context.getELContext();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String clientId = dataView.getClientId();
+        String clientId = dvId;
 
         writer.startElement(HTML.DIV_ELEM, null);
         writer.startElement(HTML.TABLE_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_BODY_CLASS, null);
 
-        encodeHeaders(writer, columnModel, dataModel, false);
+        if (columnModel.hasHeaders()) encodeHeaders(writer, columnModel, dataModel, false);
 
         writer.startElement(HTML.TBODY_ELEM, null);
+
+        List<UIComponent> detailHolders = getDetailHolders(dataView.getDetails());
 
         for (IndexedIterator<Object> dataModelIterator = dataModel.iterator(); dataModelIterator.hasNext();) {
             Object rowData = dataModelIterator.next();
@@ -231,7 +233,7 @@ public class DataViewRenderer extends Renderer {
             writer.writeAttribute("data-index", dataModelIterator.getIndex(), null);
 
             if (ActivationMode.client.equals(dataView.getActivationMode()))
-                writer.writeAttribute("data-state", encodeRowDetailString(context), null);
+                writer.writeAttribute("data-state", encodeRowDetailString(context, detailHolders), null);
 
             for (DataViewColumnModel column : columnModel)
                 writeColumn(writer, elContext, column);
@@ -243,7 +245,7 @@ public class DataViewRenderer extends Renderer {
 
         writer.endElement(HTML.TBODY_ELEM);
 
-        encodeFooters(writer, columnModel, dataModel, false);
+        if (columnModel.hasFooters()) encodeFooters(writer, columnModel, dataModel, false);
 
         writer.endElement(HTML.TABLE_ELEM);
         writer.endElement(HTML.DIV_ELEM);
@@ -326,11 +328,8 @@ public class DataViewRenderer extends Renderer {
         return (df);
     }
 
-    private String encodeRowDetailString(FacesContext context) {
+    private String encodeRowDetailString(FacesContext context, List<UIComponent> detailHolders) {
         StringBuilder detStr = new StringBuilder();
-
-        if (detailHolders == null)
-            detailHolders = getDetailHolders(dataView.getDetails());
 
         for (Iterator<UIComponent> valueHolderIterator = detailHolders.iterator();
                 valueHolderIterator.hasNext();) {
@@ -341,7 +340,7 @@ public class DataViewRenderer extends Renderer {
     }
 
     private void appendUpdateString(StringBuilder detStr, FacesContext context, Iterator<UIComponent> valueHolderIterator) {
-        String dvId = dataView.getClientId() + UINamingContainer.getSeparatorChar(context);
+        String cId = dvId + UINamingContainer.getSeparatorChar(context);
         ELContext elContext = context.getELContext();
         UIComponent vhComponent = valueHolderIterator.next();
         /* getValueExpressions - point for optimization */
@@ -368,7 +367,7 @@ public class DataViewRenderer extends Renderer {
             // TODO : '|' & '=' escaping
 
             // Write Target Id
-            detStr.append(vhComponent.getClientId().replaceFirst(dvId,"")).append("=");
+            detStr.append(vhComponent.getClientId().replaceFirst(cId,"")).append("=");
             // Write Update Directive
             detStr.append(getDirective(vhComponent, prop)).append("=");
             // Write Update Value
@@ -458,7 +457,6 @@ public class DataViewRenderer extends Renderer {
         // Init row context
         Integer index = dataView.getActiveRowIndex();
         String var = dataView.getVar();
-        String clientId = dataView.getClientId();
         ActivationMode activeMode = dataView.getActivationMode();
         boolean active = ActivationMode.client.equals(activeMode) || (ActivationMode.server.equals(activeMode) && index != null && index > 0);
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -470,7 +468,7 @@ public class DataViewRenderer extends Renderer {
 
         // Write detail region
         writer.startElement(HTML.DIV_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_det", null);
+        writer.writeAttribute(HTML.ID_ATTR, dvId + "_det", null);
         writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_DETAIL_CLASS, null);
         writer.writeAttribute("data-index", index, null);
 
@@ -478,7 +476,7 @@ public class DataViewRenderer extends Renderer {
             details.encodeAll(context);
 
         writer.startElement(HTML.INPUT_ELEM, null);
-        writer.writeAttribute(HTML.NAME_ATTR, dataView.getClientId() + "_active", null);
+        writer.writeAttribute(HTML.NAME_ATTR, dvId + "_active", null);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
         if (index == null)
             writer.writeAttribute(HTML.VALUE_ATTR, "", null);
