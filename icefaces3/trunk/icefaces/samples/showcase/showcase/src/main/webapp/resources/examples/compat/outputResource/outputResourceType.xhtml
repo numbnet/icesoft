@@ -51,12 +51,14 @@
                                 label="Download PDF"
                                 image="resources/css/images/download-material.gif"
                                 type="#{outputResourceType.type}"
-                                rendered="#{outputResourceType.typeImage}"/>
+                                rendered="#{outputResourceType.typeImage}"
+								fileName="Training.pdf"/>
             <ice:outputResource resource="#{outputResource.pdfResource}"
                                 attachment="true"
                                 label="Download PDF"
                                 type="#{outputResourceType.type}"
-                                rendered="#{!outputResourceType.typeImage}"/>
+                                rendered="#{!outputResourceType.typeImage}"
+								fileName="Training.pdf"/>
         </h:form>
     </ui:define>
 </ui:composition>

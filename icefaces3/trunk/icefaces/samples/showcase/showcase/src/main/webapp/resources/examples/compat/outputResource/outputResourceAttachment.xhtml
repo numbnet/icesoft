@@ -49,28 +49,32 @@
                                     attachment="#{outputResourceAttachment.attachment}"
                                     label="Download PDF"
                                     image="resources/css/images/download-material.gif"
-                                    type="image"/>
+                                    type="image"
+									fileName="Training.pdf"/>
                                     
                 <h:outputLabel for="downButton" value="PDF resource displayed with a button:"/>
                 <ice:outputResource id="downButton"
                                     resource="#{outputResource.pdfResource}"
                                     attachment="#{outputResourceAttachment.attachment}"
                                     label="Download PDF"
-                                    type="button"/>
+                                    type="button"
+									fileName="Training.pdf"/>
                                     
                 <h:outputLabel for="downTextPDF" value="PDF resource displayed with plain text:"/>
                 <ice:outputResource id="downTextPDF"
                                     resource="#{outputResource.pdfResource}"
                                     attachment="#{outputResourceAttachment.attachment}"
                                     label="Download PDF"
-                                    type="text"/>
+                                    type="text"
+									fileName="Training.pdf"/>
                                     
                 <h:outputLabel for="downTextImg" value="Image resource displayed with plain text:"/>
                 <ice:outputResource id="downTextImg"
                                     resource="#{outputResource.imageResource}"
                                     attachment="#{outputResourceAttachment.attachment}"
                                     label="Download Image"
-                                    type="text"/>
+                                    type="text"
+									fileName="ICEfaces-2.gif"/>
             </h:panelGrid>
         </h:form>
     </ui:define>
