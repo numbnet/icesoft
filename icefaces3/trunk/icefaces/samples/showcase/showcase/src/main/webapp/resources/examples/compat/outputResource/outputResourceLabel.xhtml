@@ -53,12 +53,14 @@
                 <ice:outputResource id="downText"
                                     resource="#{outputResource.pdfResource}"
                                     label="#{outputResourceLabel.label}"
-                                    type="text"/>
+                                    type="text"
+									fileName="Training.pdf"/>
                 <h:outputLabel for="downButton" value="Resource displayed with a custom button:"/>
                 <ice:outputResource id="downButton"
                                     resource="#{outputResource.pdfResource}"
                                     label="#{outputResourceLabel.label}"
-                                    type="button"/>
+                                    type="button"
+									fileName="Training.pdf"/>
             </h:panelGrid>
         </h:form>
     </ui:define>
