@@ -1088,8 +1088,8 @@ ice.mobi.geolocation = {
             }
 
             /* hide duplicate header */
-            dupeHead.style.display = 'none';
-            dupeFoot.style.display = 'none';
+            if (dupeHead) dupeHead.style.display = 'none';
+            if (dupeFoot) dupeFoot.style.display = 'none';
 
             recalcScrollHeight(head, foot, bodyDivWrapper);
         }
@@ -1103,8 +1103,8 @@ ice.mobi.geolocation = {
                 element = getNode('elem'),
                 dim = element.getBoundingClientRect(),
                 maxHeight = window.innerHeight - dim.top,
-                headHeight = head.clientHeight,
-                footHeight = foot.clientHeight,
+                headHeight = head ? head.clientHeight : 0,
+                footHeight = foot ? foot.clientHeight : 0,
                 fullHeight = maxHeight - headHeight - footHeight - 1;
 
             /* set height to full visible size of parent */
@@ -1143,11 +1143,10 @@ ice.mobi.geolocation = {
                 cell = closest(document.elementFromPoint(touch.pageX, touch.pageY), 'th');
 
             /* do jump scroll to top */
-            if (lastTouchTime && (new Date().getTime() - lastTouchTime < 500)) {
+            if (lastTouchTime && (new Date().getTime() - lastTouchTime < 300)) {
                 clearTimeout(pendingSortClick);
                 getNode('body').scrollTop = 0;
             } else {
-                console.log(new Date().getTime() - lastTouchTime);
                 /* do sorting or drag behaviors */
                 if (cell) {
                     var index = getIndex(cell);
@@ -1157,7 +1156,7 @@ ice.mobi.geolocation = {
                     } else if (touch.identifier && index == touchedHeadCellIndex[touch.identifier])
                         // delay sort to see if jump scroll tap occurs
                         var sort = sortColumn;
-                        pendingSortClick = setTimeout(function () {sort(e);}, 600);
+                        pendingSortClick = setTimeout(function () {sort(e);}, 320);
                 } else {
                     // dragged from header cell to top 25 px of detail region - close region
                     var detTop = getNode('det').getBoundingClientRect().top;

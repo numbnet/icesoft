@@ -28,12 +28,6 @@
 .mobi-pagePanel-body, .mobi-pagePanel-body-nofooter {
     background: #c8c8c8 url('pinstripes.png');
 }
-.mobi-pagePanel-body{
-    min-height: 440px; /* TODO hack for height issue, use flexbox */
-}
-.mobi-pagePanel-body-nofooter {
-    min-height: 480px;
-}
 .mobi-pagePanel-footer{
     border-top-color: #C7C6C6;
 }
