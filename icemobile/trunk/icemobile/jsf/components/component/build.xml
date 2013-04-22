@@ -35,7 +35,8 @@
 
 
 	<property name="lib.dir" location="../../../lib" />
-	<property name="core.dir" location="../../../core/src/main/java"/>
+    <property name="core.build" location="../../../core/build"/>
+    <property name="core.exploded" location="${core.build}/exploded"/>
     <property name="conf.dir" location="./conf"/>
 	<property name="src" location="src" />
 	<property name="resources" location="resources" />
@@ -73,11 +74,11 @@
 	<property name="javadoc.header" value="${product} ${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
 	<property name="tld.title" value="${product} ${product.lib} ${version.string} Tag Library Reference" />
 	<property name="meta-include" location="resources/icefaces.ace/META-INCLUDE" />
-	<property name="faces-config.host" location="${exploded}/META-INF/faces-config.xml" />
-	<property name="faces-config.merge" location="${meta-include}/faces-config.xml" />
-	<property name="generator.faces-config.host" value="${faces-config.host}" />
-	<property name="generator.faces-config.merge" value="${faces-config.merge}" />
-	<property name="generator.faces-config.output" value="${faces-config.host}" />
+    <property name="faces-config.generated.core" location="${core.exploded}/META-INF/faces-config.xml" />
+	<property name="faces-config.generated.jsf" location="${exploded}/META-INF/faces-config.xml" />
+	<property name="faces-config.manual" location="${meta-include}/faces-config.xml" />
+    <property name="taglib.generated.core" location="${core.exploded}/META-INF/icefaces.taglib.xml" />
+	<property name="taglib.generated.jsf" location="${exploded}/META-INF/icefaces.taglib.xml" />
 	<tstamp>
 		<format property="build.time" pattern="yyyy-mm-dd hh:mm:ss" />
 	</tstamp>
@@ -106,8 +107,10 @@
 		<fileset dir="${lib.dir}/generator" includes="*.jar" />
 		<pathelement path="../component/src" />
 		<pathelement path="../component/build/meta" />
-		<!--     <pathelement path="./build/generated/base"/> -->
-		<pathelement path="./build/exploded" />
+        <pathelement path="../component/build/generated/base"/>
+        <pathelement path="../component/build/generated-jsp/base"/>
+        <pathelement path="../component/build/generated-interfaces"/>
+		<pathelement path="../component/build/exploded" />
 
 	</path>
 
@@ -219,13 +222,13 @@
 		</sequential>
 	</macrodef>
 	
-	<target name="compile-core" description="compile the sharedsource ">
-		<javac srcdir="${core.dir}" destdir="${exploded}" source="${compile.source}" target="${compile.target}" debug="${compile.debug}" verbose="false" includeantruntime="false">
-            <classpath refid="core.classpath" />
-        </javac>
+    <target name="copy-core" description="copy the compiled core classed">
+        <copy todir="${exploded}">
+            <fileset dir="${core.exploded}" includes="**/*.class"/>
+        </copy>
     </target>
 
-	<target name="compile" depends="prepare, compile-meta, generate, compile-base, compile-manual, compile-support,
+	<target name="compile" depends="prepare, copy-core, compile-meta, generate, compile-interfaces, compile-base, compile-manual, compile-support,
         min-js-compress, skins, compress-skins" description="compile the source ">
 		<copy todir="${exploded}/META-INF/resources">
 			<fileset dir="${resources}" />
@@ -235,20 +238,42 @@
 		</copy>
 	</target>
 
-	<target name="compile-base" depends="compile-core">
-		<javac srcdir="${build}/generated/base" destdir="${exploded}" source="${compile.source}" target="${compile.target}" debug="${compile.debug}" verbose="false" includeantruntime="false">
+    <target name="compile-interfaces">
+        <javac srcdir="${build}/generated-interfaces:${core.build}/generated-interfaces"
+               destdir="${exploded}"
+               source="${compile.source}" target="${compile.target}"
+               debug="${compile.debug}" verbose="false"
+               includeantruntime="false" failonerror="true">
+            <classpath refid="compile.run.classpath"/>
+        </javac>
+    </target>
+
+	<target name="compile-base">
+		<javac srcdir="${build}/generated/base:${core.build}/generated/base"
+               destdir="${exploded}"
+               source="${compile.source}" target="${compile.target}"
+               debug="${compile.debug}" verbose="false"
+               includeantruntime="false" failonerror="true">
 			<classpath refid="compile.run.classpath" />
 		</javac>
 	</target>
 
 	<target name="compile-manual">
-		<javac srcdir="${src}" destdir="${build}/exploded" source="${compile.source}" target="${compile.target}" debug="${compile.debug}" excludes="**/*Meta.java" verbose="false" failonerror="true" includeantruntime="false">
+		<javac srcdir="${src}" destdir="${build}/exploded"
+               excludes="**/*Meta.java"
+               source="${compile.source}" target="${compile.target}"
+               debug="${compile.debug}" verbose="false"
+               includeantruntime="false" failonerror="true">
 			<classpath refid="compile.run.classpath" />
 		</javac>
 	</target>
 
 	<target name="compile-support">
-		<javac srcdir="${build}/generated/support" destdir="${exploded}" source="${compile.source}" target="${compile.target}" debug="${compile.debug}" verbose="false" includeantruntime="false">
+		<javac srcdir="${build}/generated/support:${core.build}/generated/support"
+               destdir="${exploded}"
+               source="${compile.source}" target="${compile.target}"
+               debug="${compile.debug}" verbose="false"
+               includeantruntime="false" failonerror="true">
 			<classpath refid="compile.run.classpath" />
 		</javac>
 	</target>
@@ -260,30 +285,56 @@
 		<mkdir dir="${build}/generated" />
 		<mkdir dir="${build}/generated/base" />
 		<mkdir dir="${build}/generated/support" />
+        <mkdir dir="${build}/generated-jsp"/>
+        <mkdir dir="${build}/generated-jsp/base"/>
+        <mkdir dir="${build}/generated-interfaces"/>
 		<antcall target="product.info"/>
 	</target>
 
 	<target name="compile-meta">
 		<!-- Add these to javac if getting funky compilation errors: optimize="false"
               verbose="true" -->
-		<javac srcdir="${src}" destdir="${build}/meta" source="${compile.source}" target="${compile.target}" debug="${compile.debug}" includes="**/*Meta.java" includeantruntime="false">
+		<javac srcdir="${src}" destdir="${build}/meta"
+               includes="**/*Meta.java"
+               source="${compile.source}" target="${compile.target}"
+               debug="${compile.debug}" verbose="true"
+               includeantruntime="false" failonerror="true">
 			<classpath refid="compile.run.classpath" />
 		</javac>
 	</target>
 
 	<target name="generate">
 		<tstamp />
-		<java classname="org.icefaces.ace.generator.Generator" classpathref="compile.run.classpath" fork="true" classpath="${build}">
+		<java classname="org.icefaces.ace.generator.Generator" classpathref="compile.run.classpath" fork="true" classpath="${build}" failonerror="true">
 			<!-- the short name of the library is specified as the first attribute, the namespace as the second -->
 			<arg line="mobi http://www.icesoft.com/icefaces/mobile/component" />
-			<sysproperty key="generator.tld.doc.display.name" value="Mobile Components" />
-			<sysproperty key="generator.tld.doc.version" value="${version.string}" />
+			<sysproperty key="generator.tld.doc.display.name"
+                         value="Mobile Components" />
+			<sysproperty key="generator.tld.doc.version"
+                         value="${version.string}" />
+            <sysproperty key="generator.build.dir"
+                         value="${build}"/>
+            <sysproperty key="generator.jsp.tld.merge"
+                         value="${jsp.tld.merge}"/>
 		</java>
-		<java classname="org.icefaces.ace.generator.xmlbuilder.FacesConfigMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}">
-			<arg value="${generator.faces-config.host}" />
-			<arg value="${generator.faces-config.merge}" />
-			<arg value="${generator.faces-config.output}" />
+		<java classname="org.icefaces.ace.generator.merge.FacesConfigMerge"
+              classpathref="compile.run.classpath" fork="true" classpath="${build}">
+			<arg value="${faces-config.generated.jsf}" />
+			<arg value="${faces-config.generated.core}" />
+			<arg value="${faces-config.generated.jsf}" />
 		</java>
+        <java classname="org.icefaces.ace.generator.merge.FacesConfigMerge"
+              classpathref="compile.run.classpath" fork="true" classpath="${build}">
+            <arg value="${faces-config.generated.jsf}" />
+            <arg value="${faces-config.manual}" />
+            <arg value="${faces-config.generated.jsf}" />
+        </java>
+        <java classname="org.icefaces.ace.generator.merge.TaglibMerge"
+              classpathref="compile.run.classpath" fork="true" classpath="${build}" >
+          <arg value="${taglib.generated.jsf}" />
+          <arg value="${taglib.generated.core}" />
+          <arg value="${taglib.generated.jsf}" />
+        </java>
 	</target>
 
 	<target name="lib" depends="compile" description="Generate the icefaces-mobi.jar">
