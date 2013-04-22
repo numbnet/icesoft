@@ -17,10 +17,7 @@
 package org.icefaces.util;
 
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Utility API for evaluating Javascript code on the client.
@@ -41,7 +38,7 @@ public class JavaScriptRunner {
             requestMap.put(JavaScriptRunner.class.getName(), scripts);
         }
 
-        scripts.add(script);
+        scripts.add(escapeJavaScript(script));
     }
 
     public static String collateScripts(FacesContext context) {
@@ -62,5 +59,45 @@ public class JavaScriptRunner {
 
             return buffer.toString();
         }
+    }
+
+    public static String escapeJavaScript(String str) {
+        if (str == null) {
+            return null;
+        }
+
+        StringBuffer writer = new StringBuffer();
+
+        int size = str.length();
+        for (int i = 0; i < size; i++) {
+            final char ch = str.charAt(i);
+            switch (ch) {
+                case '\b':
+                    writer.append('\\');
+                    writer.append('b');
+                    break;
+                case '\n':
+                    writer.append('\\');
+                    writer.append('n');
+                    break;
+                case '\t':
+                    writer.append('\\');
+                    writer.append('t');
+                    break;
+                case '\f':
+                    writer.append('\\');
+                    writer.append('f');
+                    break;
+                case '\r':
+                    writer.append('\\');
+                    writer.append('r');
+                    break;
+                default:
+                    writer.append(ch);
+                    break;
+            }
+        }
+
+        return writer.toString();
     }
 }
