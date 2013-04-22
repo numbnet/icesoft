@@ -14,10 +14,11 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.mobi.utils;
+package org.icemobile.util;
 
 public class TLDConstants {
     
+    public static final String ID = "Page-wide unique identifier.";
     public static final String STYLE = "Sets the CSS style definition to be applied to this component.";
     public static final String STYLECLASS = "Sets the CSS class to apply to this component.";
     public static final String DISABLED = "Disables this component, so it does not receive focus or get submitted.";

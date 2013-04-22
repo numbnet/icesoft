@@ -70,6 +70,9 @@
 
     <target name="build.all" description="Build ICEmobile project and samples.">
         <ice:subant target="all">
+            <fileset dir="./core" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
             <fileset dir="./jsp" includes="build.xml" />
         </ice:subant>
     	<ice:subant target="all">
@@ -134,13 +137,13 @@
         <delete dir="${docs.jsf.dir}"/>
     	<delete dir="${docs.jsp.dir}"/>
         <ice:subant target="clean">
-            <filelist dir="." files="jsf, jsp, spring, samples, resources"/>
+            <filelist dir="." files="core, jsf, jsp, spring, samples, resources"/>
         </ice:subant>
     </target>
 
     <target name="clean.bin">
         <ice:subant target="clean">
-            <filelist dir="." files="jsf, jsp, spring, samples"/>
+            <filelist dir="." files="core, jsf, jsp, spring, samples"/>
         </ice:subant>
     </target>
 
