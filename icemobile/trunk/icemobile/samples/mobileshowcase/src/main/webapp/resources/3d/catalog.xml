@@ -1,7 +1,8 @@
 <targets database="mobileshowcase.xml">
   <target name="page3" >
     <model name="groovy" src="mobi.obj" offset="10,20,30" />
-    <toggle name="lamp" value="off" on="groovy" off="" location="-20.0, -5.0, 7.0, 6.0" />
+    <toggle name="lamp" value="off" on="smarties.obj" off="aero.obj" scale="0.5" location="-20.0, -5.0, 7.0, 6.0" />
+    <toggle name="couch" value="off" on="coffeecrisp.obj" off="kitkat.obj" scale="0.5" location="20.0, -5.0, 30.0, 6.0" />
     <button name="buy" />
   </target>
 </targets>
