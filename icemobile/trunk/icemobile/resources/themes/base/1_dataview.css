@@ -7,18 +7,18 @@
 
 /* Testing CSS */
 /* rows */
-.mobi-dv-head th, .mobi-dv-body th, .mobi-dv-body tfoot td {
+.mobi-dv-head th, .mobi-dv-body th{
     border: 1px solid black;
 }
+.mobi-dv-foot td, .mobi-dv-body tfoot td { border: 1px solid black; }
+.mobi-dv-foot tr:first-child td { border-top: none; }
+
 .mobi-dv-body tbody td {
     border: 1px solid black;
     padding: .2em;
 }
 .mobi-dv-body tr:first-child td { border-top: none; }
 .mobi-dv-body tr:last-child td { border-bottom: none; }
-.mobi-dv-foot td {
-    border: 1px solid black;
-}
 .mobi-dv-det {
     border:1px solid black;
     border-bottom: none;
@@ -36,6 +36,7 @@ div.mobi-dv {
 
 .mobi-dv-mst > div {
     overflow:auto;
+    border-bottom: 1px solid black;
 }
 
 /* details */
