@@ -47,8 +47,7 @@ import java.io.IOException;
 import java.util.ListIterator;
 import java.util.Map;
 
-@ListenerFor(systemEventClass=PreRenderComponentEvent.class)
-public class HeadRenderer extends Renderer implements ComponentSystemEventListener {
+public class HeadRenderer extends Renderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -118,7 +117,7 @@ public class HeadRenderer extends Renderer implements ComponentSystemEventListen
         writer.endElement("head");
     }
 
-    private UIComponent createThemeResource(FacesContext fc, String library, String resourceName) {
+    private static UIComponent createThemeResource(FacesContext fc, String library, String resourceName) {
         UIComponent resource = fc.getApplication().createComponent("javax.faces.Output");
         resource.setRendererType("javax.faces.resource.Stylesheet");
         resource.setTransient(true);
@@ -131,29 +130,35 @@ public class HeadRenderer extends Renderer implements ComponentSystemEventListen
         return resource;
     }
 
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        String theme = (String) context.getExternalContext().getSessionMap().get(Constants.THEME_PARAM);
-        if (theme == null) {
-            theme = "";
-        } else {
-            theme = theme.trim();
-        }
-        String name;
-        String library;
+    public static class AddTheme implements SystemEventListener {
+        public void processEvent(SystemEvent event) throws AbortProcessingException {
+            FacesContext context = FacesContext.getCurrentInstance();
+            String theme = (String) context.getExternalContext().getSessionMap().get(Constants.THEME_PARAM);
+            if (theme == null) {
+                theme = "";
+            } else {
+                theme = theme.trim();
+            }
+            String name;
+            String library;
 
-        if ("".equals(theme) || theme.equalsIgnoreCase("sam")) {
-            library = "icefaces.ace";
-            name = "themes/sam/theme.css";
-        } else if (theme.equalsIgnoreCase("rime")) {
-            library = "icefaces.ace";
-            name = "themes/rime/theme.css";
-        } else {
-            library = "ace-" + theme;
-            name = "theme.css";
+            if ("".equals(theme) || theme.equalsIgnoreCase("sam")) {
+                library = "icefaces.ace";
+                name = "themes/sam/theme.css";
+            } else if (theme.equalsIgnoreCase("rime")) {
+                library = "icefaces.ace";
+                name = "themes/rime/theme.css";
+            } else {
+                library = "ace-" + theme;
+                name = "theme.css";
+            }
+
+            UIComponent resource = createThemeResource(context, library, name);
+            context.getViewRoot().addComponentResource(context, resource);
         }
 
-        UIComponent resource = createThemeResource(context, library, name);
-        context.getViewRoot().addComponentResource(context, resource);
+        public boolean isListenerForSource(Object source) {
+            return source instanceof UIViewRoot;
+        }
     }
 }

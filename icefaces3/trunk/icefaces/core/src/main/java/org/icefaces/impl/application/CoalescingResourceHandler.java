@@ -103,8 +103,6 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
             CoalescingResource.Infos previousResourceInfos = (CoalescingResource.Infos) sessionMap.get(CoalescingResourceHandler.class.getName() + extension);
 
-            boolean isFirstGETRequest = previousResourceInfos == null && !context.isPostback();
-
             CoalescingResource.Infos resourceInfos = new CoalescingResource.Infos();
             List children = resourceContainer.getChildren();
             ArrayList<UIComponent> toBeReAdded = new ArrayList<UIComponent>();
@@ -114,14 +112,14 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                 String nextLibrary = (String) nextAttributes.get("library");
                 String iceType = (String) nextAttributes.get("ice.type");
                 Resource nextResource = null;
-                if(iceType == null){
+                if(iceType == null) {
                     nextResource = resourceHandler.createResource(nextName, nextLibrary);
                 }
                 if (nextName.endsWith(extension) && !"jsf.js".equals(nextName) &&
                         nextResource != null && !URI.create(nextResource.getRequestPath()).isAbsolute()) {
                     CoalescingResource.Info info = new CoalescingResource.Info(nextName, nextLibrary);
 
-                    if (isFirstGETRequest || previousResourceInfos.resources.contains(info)) {
+                    if (!context.isPostback() || previousResourceInfos.resources.contains(info)) {
                         resourceInfos.resources.add(info);
                     } else {
                         toBeReAdded.add(next);

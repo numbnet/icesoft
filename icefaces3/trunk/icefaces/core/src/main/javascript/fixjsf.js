@@ -120,7 +120,6 @@
 
                 var styleElement = document.createElement('style');
                 styleElement.type = 'text/css';
-                styleElement.media = extractAttributeValue(link, 'media', 'screen');
                 headElement.appendChild(styleElement);
                 if (styleElement.styleSheet) {   // IE
                     styleElement.styleSheet.cssText = code;
@@ -130,7 +129,7 @@
                 }
 
                 //remove text nodes added to avoid memory usage increase
-                headElement.removeChild(styleElement);
+   //             headElement.removeChild(styleElement);
             });
 
             linkRefs = newLinkRefs;

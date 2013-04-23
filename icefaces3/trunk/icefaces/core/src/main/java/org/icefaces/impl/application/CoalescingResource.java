@@ -22,10 +22,7 @@ import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -109,7 +106,8 @@ public class CoalescingResource extends Resource {
     }
 
     public boolean userAgentNeedsUpdate(FacesContext context) {
-        return resourceInfos.modified;
+        Map<String,String> requestHeaders = context.getExternalContext().getRequestHeaderMap();
+        return !requestHeaders.containsKey("If-Modified-Since") || resourceInfos.modified;
     }
 
     private String eTag() {
@@ -141,13 +139,22 @@ public class CoalescingResource extends Resource {
         }
     }
 
-    public static class Infos implements Serializable {
+    public static class Infos implements Externalizable {
         public boolean modified = true;
         public ArrayList<Info> resources;
 
         public Infos() {
             this.modified = true;
             this.resources = new ArrayList<Info>();
+        }
+
+        public void writeExternal(ObjectOutput objectOutput) throws IOException {
+            //do nothing
+        }
+
+        public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
+            modified = true;
+            resources = new ArrayList<Info>();
         }
     }
 
@@ -158,4 +165,6 @@ public class CoalescingResource extends Resource {
         }
         return Long.toString(Math.abs(digest.toString().hashCode()), 36);
     }
+
+
 }
