@@ -36,11 +36,4 @@ public class SplitPane extends SplitPaneBase implements ISplitPane{
     public ClientDescriptor getClient() {
          return MobiJSFUtils.getClientDescriptor();
     }
-
-    public boolean isDisabled(){
-        return false;
-    }
-    public void setDisabled(boolean anything){
-        //na
-    }
 }

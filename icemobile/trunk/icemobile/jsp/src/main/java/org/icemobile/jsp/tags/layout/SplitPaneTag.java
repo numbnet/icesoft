@@ -16,10 +16,9 @@
 
 package org.icemobile.jsp.tags.layout;
 
-import org.icemobile.component.ISplitPane;
 import org.icemobile.renderkit.SplitPaneCoreRenderer;
-import org.icemobile.jsp.tags.BaseBodyTag;
 import org.icemobile.jsp.tags.TagWriter;
+import org.icemobile.util.ClientDescriptor;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -27,15 +26,13 @@ import java.util.logging.Logger;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 
-/**
-     *
-     */
-public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class SplitPaneTag extends SplitPaneBaseTag {
 
     private static final Logger logger = Logger.getLogger(SplitPaneTag.class.getName());
 
-    private int columnDivider;
-    private boolean scrollable;
     private TagWriter writer;
     private SplitPaneCoreRenderer renderer;
     private String leftStyle;
@@ -53,9 +50,9 @@ public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
         leftStyle = "'width:" + String.valueOf(columnDivider)+"%'";
         rightStyle = "'width:"+String.valueOf(100-columnDivider) + "%'";
         //  this.setLeftStyle("style='width:" + String.valueOf(columnDivider)+"%'");
-        paneClass = ISplitPane.SPLITPANE_SCROLLABLE_CSS;
+        paneClass = SplitPaneCoreRenderer.SPLITPANE_SCROLLABLE_CSS;
         if (!scrollable){
-            paneClass = ISplitPane.SPLITPANE_NONSCROLL_CSS;
+            paneClass = SplitPaneCoreRenderer.SPLITPANE_NONSCROLL_CSS;
         }
         if (getStyleClass()!=null){
             paneClass += " "+getStyleClass();
@@ -92,26 +89,6 @@ public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
         }
         return EVAL_PAGE;
     }
-    public void setColumnDivider(int columnDivider){
-        this.columnDivider = columnDivider;
-    }
-    public int getColumnDivider(){
-        if (columnDivider == Integer.MIN_VALUE){
-            return 30;
-        } else {
-            return columnDivider;
-        }
-    }
-    public void setScrollable(boolean scrollable){
-        this.scrollable = scrollable;
-    }
-    public boolean isScrollable(){
-        if (this.scrollable){
-            return true;
-        } else {
-            return false;
-        }
-    }
     
     public SplitPaneCoreRenderer getRenderer() {
         return new SplitPaneCoreRenderer();
@@ -136,13 +113,26 @@ public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
         return paneClass;
     }
 
+    public String getClientId() {
+        return getId();
+    }
+
+    public ClientDescriptor getClient(){
+        return ClientDescriptor.getInstance(getRequest());
+    }
+
+    protected HttpServletRequest getRequest(){
+        return (HttpServletRequest)pageContext.getRequest();
+    }
+
+    protected HttpServletResponse getResponse(){
+        return (HttpServletResponse)pageContext.getResponse();
+    }
+
     public void release() {
 		super.release();
-		id = null;
-		style = null;
-		styleClass = null;
         renderer = null;
-		//scrollable = null;
-		//columnDivider = null;
+        leftStyle = null;
+        rightStyle = null;
 	}
 }
