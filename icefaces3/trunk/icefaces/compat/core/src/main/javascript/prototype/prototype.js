@@ -2593,47 +2593,49 @@ if (Prototype.Browser.Opera) {
 }
 
 else if (Prototype.Browser.IE) {
-    Element.Methods.getStyle = function(element, style) {
-        element = $(element);
-        style = (style == 'float' || style == 'cssFloat') ? 'styleFloat' : style.camelize();
-        var value = element.style[style];
-        if (!value && element.currentStyle) value = element.currentStyle[style];
+	if (navigator.appVersion.match(/MSIE\s+(?:6|7|8)\./)) { // avoid applying to IE9 and IE10
+		Element.Methods.getStyle = function(element, style) {
+			element = $(element);
+			style = (style == 'float' || style == 'cssFloat') ? 'styleFloat' : style.camelize();
+			var value = element.style[style];
+			if (!value && element.currentStyle) value = element.currentStyle[style];
 
-        if (style == 'opacity') {
-            if (value = (element.getStyle('filter') || '').match(/alpha\(opacity=(.*)\)/))
-                if (value[1]) return parseFloat(value[1]) / 100;
-            return 1.0;
-        }
+			if (style == 'opacity') {
+				if (value = (element.getStyle('filter') || '').match(/alpha\(opacity=(.*)\)/))
+					if (value[1]) return parseFloat(value[1]) / 100;
+				return 1.0;
+			}
 
-        if (value == 'auto') {
-            if ((style == 'width' || style == 'height') && (element.getStyle('display') != 'none'))
-                return element['offset' + style.capitalize()] + 'px';
-            return null;
-        }
-        return value;
-    };
+			if (value == 'auto') {
+				if ((style == 'width' || style == 'height') && (element.getStyle('display') != 'none'))
+					return element['offset' + style.capitalize()] + 'px';
+				return null;
+			}
+			return value;
+		};
 
-    Element.Methods.setOpacity = function(element, value) {
-        function stripAlpha(filter) {
-            return filter.replace(/alpha\([^\)]*\)/gi, '');
-        }
+		Element.Methods.setOpacity = function(element, value) {
+			function stripAlpha(filter) {
+				return filter.replace(/alpha\([^\)]*\)/gi, '');
+			}
 
-        element = $(element);
-        var currentStyle = element.currentStyle;
-        if ((currentStyle && !currentStyle.hasLayout) ||
-                (!currentStyle && element.style.zoom == 'normal'))
-            element.style.zoom = 1;
+			element = $(element);
+			var currentStyle = element.currentStyle;
+			if ((currentStyle && !currentStyle.hasLayout) ||
+					(!currentStyle && element.style.zoom == 'normal'))
+				element.style.zoom = 1;
 
-        var filter = element.getStyle('filter'), style = element.style;
-        if (value == 1 || value === '') {
-            (filter = stripAlpha(filter)) ?
-                    style.filter = filter : style.removeAttribute('filter');
-            return element;
-        } else if (value < 0.00001) value = 0;
-        style.filter = stripAlpha(filter) +
-                'alpha(opacity=' + (value * 100) + ')';
-        return element;
-    };
+			var filter = element.getStyle('filter'), style = element.style;
+			if (value == 1 || value === '') {
+				(filter = stripAlpha(filter)) ?
+						style.filter = filter : style.removeAttribute('filter');
+				return element;
+			} else if (value < 0.00001) value = 0;
+			style.filter = stripAlpha(filter) +
+					'alpha(opacity=' + (value * 100) + ')';
+			return element;
+		};
+	}
 
     Element._attributeTranslations = (function() {
 
