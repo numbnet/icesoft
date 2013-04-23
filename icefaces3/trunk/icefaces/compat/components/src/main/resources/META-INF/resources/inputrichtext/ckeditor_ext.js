@@ -103,8 +103,6 @@ function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _cus
             var updateElement = function(e) {
                 document.getElementById(editor).value = editorInstance.getData();
             };
-            var htmlNode = document.getElementById(editor + 'container');
-            htmlNode.onmouseout = updateElement;
             editorInstance.on('blur', updateElement);
         }
     } catch(e) {

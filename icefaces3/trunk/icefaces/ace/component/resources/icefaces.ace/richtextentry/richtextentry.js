@@ -106,8 +106,6 @@ ice.ace.richtextentry.renderEditor = function(editor, defaultToolbar, lang, _ski
             var updateElement = function(e) {
                 document.getElementById(editor).value = editorInstance.getData();
             };
-            var htmlNode = document.getElementById(editor + 'container');
-            htmlNode.onmouseout = updateElement;
             editorInstance.on('blur', updateElement);
         }
         if (behaviors) {
