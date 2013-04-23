@@ -26,18 +26,23 @@ import java.util.logging.Logger;
 import static org.icemobile.util.HTML.*;
 
 public class SplitPaneCoreRenderer extends BaseCoreRenderer {
+    public static final String SPLITPANE_BASE_CSS = "mobi-splitpane" ;
+    public static final String SPLITPANE_NONSCROLL_CSS = "mobi-splitpane-nonScrollable";
+    public static final String SPLITPANE_SCROLLABLE_CSS = "mobi-splitpane-scrollable";
+    public static final String SPLITPANE_DIVIDER_CSS = "mobi-splitpane-divider";
+
     private static final Logger logger =
             Logger.getLogger(SplitPaneCoreRenderer.class.toString());
     private static final int DEFAULT_COLUMN_WIDTH = 25;
     private String leftwidth;
     private String rightwidth;
-    private StringBuilder paneClass = new StringBuilder(ISplitPane.SPLITPANE_SCROLLABLE_CSS); //default
-    private StringBuilder spltClass = new StringBuilder(ISplitPane.SPLITPANE_DIVIDER_CSS);
+    private StringBuilder paneClass = new StringBuilder(SPLITPANE_SCROLLABLE_CSS); //default
+    private StringBuilder spltClass = new StringBuilder(SPLITPANE_DIVIDER_CSS);
 
     public void encodeBegin(ISplitPane component, IResponseWriter writer)
             throws IOException {;
         if (!component.isScrollable()) {
-            this.paneClass = new StringBuilder(ISplitPane.SPLITPANE_NONSCROLL_CSS) ;
+            this.paneClass = new StringBuilder(SPLITPANE_NONSCROLL_CSS) ;
         }
         int leftWidth = component.getColumnDivider();
         if (leftWidth < 1 || leftWidth>99){
@@ -56,7 +61,7 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
         }
         writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, component.getClientId());
-        writeStandardLayoutAttributes(writer, component, ISplitPane.SPLITPANE_BASE_CSS );
+        writeStandardLayoutAttributes(writer, component, SPLITPANE_BASE_CSS );
     }
 
     /**

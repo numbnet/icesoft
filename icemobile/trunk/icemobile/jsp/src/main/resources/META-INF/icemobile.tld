@@ -1686,54 +1686,6 @@
         <body-content>JSP</body-content>
     </tag>
     <tag>
-        <description>SplitPane must be used with 2 children that are
-            fragment.  The first will represent the left and the
-            second the right side, as only vertical split is currently
-            supported.  The user may determine the width of the first or
-            left column with an integer % value with the remainder
-            being assigned to the right column or inner div. both
-            inner children will be scrollable by default unless
-            scrollable attribute is set to false.
-        </description>
-        <name>splitPane</name>
-        <tag-class>org.icemobile.jsp.tags.layout.SplitPaneTag</tag-class>
-        <body-content>JSP</body-content>
-        <attribute>
-            <description>Pagewide unique identifier.</description>
-            <name>id</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-       <attribute>
-            <description>Sets the class attribute.</description>
-            <name>styleClass</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>Sets the style attribute.</description>
-            <name>style</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-       <attribute>
-            <description>determines if both splitPaneInner children
-                 are scrollable.  default is true.
-            </description>
-            <name>scrollable</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>The integer percent value width of the first or
-                  left div in the split pane.  Default is 30.</description>
-            <name>columnDivider</name>
-            <required>no</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>int</type>
-        </attribute>
-    </tag>
-    <tag>
       <description>Fragment is the child of the splitPane
           tag (maybe others too?).  This component just defines
           a fragment of jsp markup whose parent will determine
