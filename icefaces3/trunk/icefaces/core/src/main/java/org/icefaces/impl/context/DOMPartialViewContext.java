@@ -271,7 +271,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     }
 
     private void generateElementUpdateNotifications(DOMUtils.EditOperation op, PartialResponseWriter partialWriter, Document oldDOM) throws IOException {
-        long start = System.currentTimeMillis();
         final String id = ((Element) op.element).getAttribute("id");
         final Element e = oldDOM.getElementById(id);
         if (e == null) {
@@ -318,8 +317,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             partialWriter.writeText("ice.notifyOnElementUpdateCallbacks(['" + join(collectedIDs, "','") + "']);", null);
             partialWriter.endEval();
         }
-        long end = System.currentTimeMillis();
-        System.out.println("generateElementUpdateNotifications(...) > " + (end - start) + "ms");
     }
 
     private static void collectIDsOfUpdatedElements(Element e, Document oldDOM, ArrayList<String> collectedIDs) {
