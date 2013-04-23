@@ -115,29 +115,7 @@ if (!window.ice.icefaces) {
         var elementUpdateListeners = [];
         namespace.onElementUpdate = function(id, callback) {
             var element = lookupElementById(id);
-            var ancestorIDs = [];
-            var cursor = element;
-            while (cursor) {
-                var cursorID;
-                if (cursor == document.body) {
-                    cursorID = 'javax.faces.ViewBody';
-                } else if (cursor == document.documentElement) {
-                    cursorID = 'javax.faces.ViewRoot';
-                } else if (cursor == document.getElementsByTagName('head')[0]) {
-                    cursorID = 'javax.faces.ViewHead';
-                } else {
-                    cursorID = cursor.id;
-                }
-
-                if (cursorID) {
-                    ancestorIDs.push(cursorID);
-                }
-                cursor = cursor.parentNode;
-            }
-            append(elementUpdateListeners, {identifier: id, handler: callback, ancestors: ('*' + ancestorIDs.join('*') + '*')});
-            return removeCallbackCallback(elementUpdateListeners, function(c) {
-                return id == c.id;
-            });
+            element.data_onElementUpdate = callback;
         };
 
         function configurationOf(element) {
@@ -988,6 +966,43 @@ if (!window.ice.icefaces) {
                         return false;
                     }
                 });
+            }
+        }
+
+        namespace.notifyOnElementUpdateCallbacks = function(ids) {
+            each(ids, function(id) {
+                var e = lookupElementById(id);
+                if (e) {
+                    var callback = e.data_onElementUpdate;
+                    if (callback) {
+                        try {
+                            callback(id);
+                        } catch (ex) {
+                            warn(logger, 'onElementUpdate callback for [' + id + '] failed to run properly', ex);
+                        } finally {
+                            e.data_onElementUpdate = null;
+                        }
+                    }
+                }
+            });
+        }
+
+        namespace.notifyAllOnElementUpdateCallbacks = function() {
+            var elements = document.body.getElementsByTagName('*');
+            //use for loop for speed
+            for (var i = 0, l = elements.length; i < l; i++) {
+                var e = elements[i];
+                var callback = e.data_onElementUpdate;
+                if (callback) {
+                    var id = e.id;
+                    try {
+                        callback(id);
+                    } catch (ex) {
+                        warn(logger, 'onElementUpdate callback for [' + id + '] failed to run properly', ex);
+                    } finally {
+                        e.data_onElementUpdate = null;
+                    }
+                }
             }
         }
 

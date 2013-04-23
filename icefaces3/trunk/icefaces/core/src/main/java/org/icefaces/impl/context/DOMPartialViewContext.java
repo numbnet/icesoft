@@ -195,6 +195,9 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                         target = JAVAX_FACES_VIEW_ROOT;
                     }
 
+                    partialWriter.startEval();
+                    partialWriter.writeText("ice.notifyAllOnElementUpdateCallbacks();", null);
+                    partialWriter.endEval();
                     partialWriter.startUpdate(target);
                     DOMUtils.printNodeCDATA(body, outputWriter);
                     partialWriter.endUpdate();
@@ -227,6 +230,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                             DOMUtils.printNodeCDATA(op.element, outputWriter);
                             partialWriter.endInsert();
                         } else if (op instanceof DOMUtils.DeleteOperation) {
+                            generateElementUpdateNotifications((DOMUtils.DeleteOperation) op, partialWriter, oldDOM);
                             partialWriter.delete(op.id);
                         } else if (op instanceof DOMUtils.AttributeOperation) {
                             partialWriter.updateAttributes(op.id, op.attributes);
@@ -237,6 +241,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                             if (null == op.id) {
                                 updateId = getUpdateId((Element) op.element);
                             }
+                            generateElementUpdateNotifications((DOMUtils.ReplaceOperation) op, partialWriter, oldDOM);
                             partialWriter.startUpdate(updateId);
                             DOMUtils.printNodeCDATA(op.element, outputWriter);
                             partialWriter.endUpdate();
@@ -263,6 +268,84 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         } else {
             super.processPartial(phaseId);
         }
+    }
+
+    private void generateElementUpdateNotifications(DOMUtils.EditOperation op, PartialResponseWriter partialWriter, Document oldDOM) throws IOException {
+        long start = System.currentTimeMillis();
+        final String id = ((Element) op.element).getAttribute("id");
+        final Element e = oldDOM.getElementById(id);
+        if (e == null) {
+            //give up early since since there's not much we can do without the updated element
+            return;
+        }
+        final ArrayList<String> collectedIDs = new ArrayList<String>();
+
+        //search up from the element for parents marked with data-elementupdate
+        //collect element's child ID-ed elements if marked parent found
+        Element cursor = e;
+        while (cursor != null) {
+            if (cursor.hasAttribute("data-elementupdate")) {
+                collectIDsOfUpdatedElements(e, oldDOM, collectedIDs);
+                return;
+            }
+            Node parent = cursor.getParentNode();
+            cursor = parent instanceof Element ? (Element) parent : null;
+        }
+        // ... or ...
+        //search DFS for elements that have data-elementupdate marker
+        //collect all ID-ed elements under the marked elements
+        LinkedList<Element> queue = new LinkedList<Element>();
+        queue.add(e);
+        while (!queue.isEmpty()) {
+            Element element = queue.removeFirst();
+            if (element.hasAttribute("data-elementupdate")) {
+                //stop the search in this tree branch and collect the IDs
+                collectIDsOfUpdatedElements(element, oldDOM, collectedIDs);
+            } else {
+                //continue the search deeper
+                NodeList children = element.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node node = children.item(i);
+                    if (node instanceof Element) {
+                        queue.add((Element) node);
+                    }
+                }
+            }
+        }
+        //create eval update with code that invokes ice.notifyOnElementUpdateCallbacks with all the IDs that were collected
+        if (!collectedIDs.isEmpty()) {
+            partialWriter.startEval();
+            partialWriter.writeText("ice.notifyOnElementUpdateCallbacks(['" + join(collectedIDs, "','") + "']);", null);
+            partialWriter.endEval();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("generateElementUpdateNotifications(...) > " + (end - start) + "ms");
+    }
+
+    private static void collectIDsOfUpdatedElements(Element e, Document oldDOM, ArrayList<String> collectedIDs) {
+        String id = e.getAttribute("id");
+        collectedIDs.add(id);
+        Element element = oldDOM.getElementById(id);
+        NodeList elements = element.getElementsByTagName("*");
+        for (int i = 0; i < elements.getLength(); i++) {
+            Element child = (Element) elements.item(i);
+            String childID = child.getAttribute("id");
+            if (childID != null && !"".equals(childID)) {
+                collectedIDs.add(childID);
+            }
+        }
+    }
+
+    private static String join(Collection collection, String delimiter) {
+        StringBuilder sb = new StringBuilder();
+        Iterator iter = collection.iterator();
+        if (iter.hasNext())
+            sb.append(iter.next().toString());
+        while (iter.hasNext()) {
+            sb.append(delimiter);
+            sb.append(iter.next().toString());
+        }
+        return sb.toString();
     }
 
     protected Writer getResponseOutputWriter() throws IOException {

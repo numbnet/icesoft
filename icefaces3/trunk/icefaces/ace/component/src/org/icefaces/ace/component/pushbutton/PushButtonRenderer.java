@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.String;
-import java.lang.StringBuilder;
 import java.util.*;
 import javax.el.MethodExpression;
 import javax.faces.event.ActionEvent;
@@ -30,13 +29,9 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionListener;
-import javax.faces.render.Renderer;
 
 
-import org.icefaces.ace.util.HTML;
-import org.icefaces.ace.util.JSONBuilder;
-import org.icefaces.ace.util.ScriptWriter;
-import org.icefaces.ace.util.Utils;
+import org.icefaces.ace.util.*;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.renderkit.CoreRenderer;
@@ -76,6 +71,7 @@ public class PushButtonRenderer extends CoreRenderer {
 		// root element
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
         if (!disabled) encodeScript(facesContext, writer, pushButton,
                                     clientId, HTML.ONMOUSEOVER_ATTR);
