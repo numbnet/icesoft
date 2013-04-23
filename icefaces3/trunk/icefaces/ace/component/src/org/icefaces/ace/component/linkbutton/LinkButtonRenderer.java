@@ -19,19 +19,14 @@ package org.icefaces.ace.component.linkbutton;
 import java.io.IOException;
 import java.util.*;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
 
 
-import org.icefaces.ace.util.HTML;
-import org.icefaces.ace.util.JSONBuilder;
-import org.icefaces.ace.util.ScriptWriter;
-import org.icefaces.ace.util.Utils;
+import org.icefaces.ace.util.*;
 
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -76,6 +71,8 @@ public class LinkButtonRenderer extends CoreRenderer {
 
         writer.startElement(HTML.DIV_ELEM, uiComponent );
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
+
         encodeRootStyle(linkButton, writer);
 
         // first span

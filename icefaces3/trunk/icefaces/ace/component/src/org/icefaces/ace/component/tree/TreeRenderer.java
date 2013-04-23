@@ -18,6 +18,7 @@ package org.icefaces.ace.component.tree;
 
 import org.icefaces.ace.model.tree.*;
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -326,7 +327,11 @@ public class TreeRenderer extends CoreRenderer {
 
     private void openContainerElement(ResponseWriter writer, FacesContext context, TreeRendererContext renderContext) throws IOException {
         writer.startElement(HTML.SPAN_ELEM, renderContext.getTree());
-        writer.writeAttribute(HTML.ID_ATTR, renderContext.getTree().getClientId(context), null);
+
+        String clientId = renderContext.getTree().getClientId(context);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
+
         writer.writeAttribute(HTML.CLASS_ATTR, TREE_CONTAINER_CLASS, null);
     }
 }
