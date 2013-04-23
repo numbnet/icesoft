@@ -2,24 +2,23 @@ package org.icemobile.component.baseMeta;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UISelectBooleanMeta;
-import org.icemobile.util.TLDConstants;
 
 @JSPBaseMeta(tagClass = "javax.servlet.jsp.tagext.SimpleTagSupport")
 public class SimpleSelectBooleanMeta extends UISelectBooleanMeta {
-    @Property(tlddoc=TLDConstants.DISABLED,
+    @Property(tlddoc=ConstantsMeta.DISABLED,
         implementation=Implementation.GENERATE)
     private boolean disabled;
 
     @Only(OnlyType.JSP)
-    @Property(tlddoc=TLDConstants.ID,
+    @Property(tlddoc=ConstantsMeta.ID,
         implementation=Implementation.GENERATE)
     private String id;
 
-    @Property(tlddoc=TLDConstants.STYLE,
+    @Property(tlddoc=ConstantsMeta.STYLE,
         implementation=Implementation.GENERATE)
     private String style;
 
-    @Property(tlddoc=TLDConstants.STYLECLASS,
+    @Property(tlddoc=ConstantsMeta.STYLECLASS,
         implementation=Implementation.GENERATE)
     private String styleClass;
 }
