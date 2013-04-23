@@ -106,7 +106,7 @@
                 function(linkTag) {
                     return extractAttributeValue(linkTag, 'type') == 'text/css';
             }), function(linkTag) {
-                    return extractAttributeValue(linkTag, 'href');
+                    return replace(extractAttributeValue(linkTag, 'href'), '&amp;', '&');
             });
 
             var headElement = document.getElementsByTagName("head")[0];
@@ -129,7 +129,7 @@
                 }
 
                 //remove text nodes added to avoid memory usage increase
-   //             headElement.removeChild(styleElement);
+                headElement.removeChild(styleElement);
             });
 
             linkRefs = newLinkRefs;
