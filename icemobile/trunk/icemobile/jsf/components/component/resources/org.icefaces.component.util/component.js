@@ -653,20 +653,6 @@ if (window.addEventListener) {
             }
 	}
     }, false);
-
-    window.addEventListener("blur", function () {
-        if (ice.push) {
-            ice.log.debug(ice.log, 'PAUSING from blur');
-            ice.push.connection.pauseConnection();
-        }
-    }, false);
-
-    window.addEventListener("focus", function () {
-        if (ice.push) {
-            ice.log.debug(ice.log, 'RESUMING from focus');
-            ice.push.connection.resumeConnection();
-        }
-    }, false);
 }
 /* javascript for mobi:commandButton component put into component.js as per MOBI-200 */
 ice.mobi.button = {
