@@ -93,13 +93,13 @@
    
     <target name="build.jsp" description="Build JSP library.">
         <ice:subant target="all">
-            <fileset dir="./jsp" includes="build.xml" />
+            <filelist dir="." files="core, jsp"/>
         </ice:subant>
     </target>
 
     <target name="build.jsf" description="Build JSF library.">
         <ice:subant target="all">
-            <fileset dir="./jsf" includes="build.xml" />
+            <filelist dir="." files="core, jsf"/>
         </ice:subant>
     </target>
     
@@ -118,7 +118,7 @@
 
     <target name="build.common">
         <ice:subant>
-            <filelist dir="." files="jsf, samples"/>
+            <filelist dir="." files="core, jsf, samples"/>
         </ice:subant>
     </target>
 
@@ -200,6 +200,10 @@
 
         <sequential>
 
+            <ice:subant target="all">
+                <fileset dir="./core" includes="build.xml" />
+                <propertyset refid="product.info"/>
+            </ice:subant>
             <ice:subant target="build">
                 <fileset dir="./jsf" includes="build.xml" />
                 <propertyset refid="product.info"/>

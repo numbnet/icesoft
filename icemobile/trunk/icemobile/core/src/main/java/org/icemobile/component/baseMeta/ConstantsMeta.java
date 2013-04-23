@@ -14,9 +14,9 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.util;
+package org.icemobile.component.baseMeta;
 
-public class TLDConstants {
+public class ConstantsMeta {
     
     public static final String ID = "Page-wide unique identifier.";
     public static final String STYLE = "Sets the CSS style definition to be applied to this component.";
