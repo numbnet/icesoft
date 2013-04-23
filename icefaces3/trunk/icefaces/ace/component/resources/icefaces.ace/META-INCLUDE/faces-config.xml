@@ -22,6 +22,10 @@
         <resource-handler>org.icefaces.ace.component.fileentry.FileEntryResourceHandler</resource-handler>
         <resource-handler>org.icefaces.ace.component.richtextentry.RichTextEntryResourceHandler</resource-handler>
 		<resource-handler>org.icefaces.ace.component.gmap.GMapResourceHandler</resource-handler>
+        <system-event-listener>
+            <system-event-listener-class>org.icefaces.ace.renderkit.HeadRenderer$AddTheme</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
+        </system-event-listener>
     </application>
    <factory>
         <partial-view-context-factory>
