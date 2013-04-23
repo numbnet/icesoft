@@ -35,11 +35,20 @@
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     </servlet>
+    <servlet>
+         <servlet-name>Changing Content Servlet</servlet-name>
+         <servlet-class>org.icefaces.tutorials.ChangingContentServlet</servlet-class>
+         <load-on-startup>1</load-on-startup>
+     </servlet>
 
     <!-- Faces Servlet Mapping -->
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Changing Content Servlet</servlet-name>
+        <url-pattern>/changing-content/*</url-pattern>
     </servlet-mapping>
 
     <!-- Resolve the missing PNG entry issue on old servers such as WAS7 -->

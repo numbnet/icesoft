@@ -62,8 +62,8 @@
                                 <br/>
                                 <iframe id="iframe_dynamicA"
                                         org.icefaces.ace.component.tabset.deferred_src="./changing-content/dynamicA/#{caching.alwaysIncrement}"/>
-                                <h:commandButton id="submit" value="#{msgs['content.button.submit']}"/>
-                                <h:commandButton id="update" value="#{msgs['content.button.update']}"
+                                <h:commandButton id="submitTabDynamic" value="#{msgs['content.button.submit']}"/>
+                                <h:commandButton id="updateTabDynamic" value="#{msgs['content.button.update']}"
                                                  actionListener="#{caching.increment}"/>
                                 <iframe id="iframe_dynamicB"
                                         org.icefaces.ace.component.tabset.deferred_src="./changing-content/dynamicB/#{caching.conditionallyIncrement}"/>
@@ -129,8 +129,8 @@
                     </ace:tabPane>
                 </ace:tabSet>
             </h:panelGroup>
-            <h:commandButton id="submit" value="#{msgs['content.button.submit']}"/>
-            <h:commandButton id="dynamic" value="#{msgs['content.button.dynamicRevertStaticAuto']}"
+            <h:commandButton id="submitForm" value="#{msgs['content.button.submit']}"/>
+            <h:commandButton id="dynamicForm" value="#{msgs['content.button.dynamicRevertStaticAuto']}"
                              actionListener="#{caching.dynamicRevertStaticAutoActionListener}"/>
         </h:form>
     </ui:define>
