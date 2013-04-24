@@ -107,7 +107,10 @@ public class PushButtonRenderer extends CoreRenderer {
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
 
         writeButtonValue(writer, pushButton);
-
+    }
+	
+	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.BUTTON_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
