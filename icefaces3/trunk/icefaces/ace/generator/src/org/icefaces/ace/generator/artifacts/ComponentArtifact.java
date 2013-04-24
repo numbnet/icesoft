@@ -76,13 +76,22 @@ public class ComponentArtifact extends Artifact{
         writer.append("import javax.faces.component.UINamingContainer;\n");
         writer.append("import javax.faces.component.UniqueIdVendor;\n");
         writer.append("import javax.faces.component.UIViewRoot;\n\n");
-//        writer.append("import org.icefaces.ace.util.PartialStateHolderImpl;\n\n");
 
-        writer.append("import org.icefaces.resources.ICEResourceDependencies;\n");
-        writer.append("import org.icefaces.resources.ICEResourceDependency;\n\n");
-        writer.append("import org.icefaces.resources.ICEResourceLibrary;\n\n");
-        writer.append("import org.icefaces.resources.ICEBrowserDependency;\n\n");
-        writer.append("import org.icefaces.resources.BrowserType;\n\n");
+        if (clazz.isAnnotationPresent(ICEResourceDependencies.class) ||
+            clazz.isAnnotationPresent(ICEResourceDependency.class)) {
+            writer.append("import org.icefaces.resources.ICEResourceDependencies;\n");
+            writer.append("import org.icefaces.resources.ICEResourceDependency;\n\n");
+            writer.append("import org.icefaces.resources.ICEBrowserDependency;\n\n");
+            writer.append("import org.icefaces.resources.BrowserType;\n\n");
+        }
+        if (clazz.isAnnotationPresent(ICEResourceLibrary.class)) {
+            writer.append("import org.icefaces.resources.ICEResourceLibrary;\n\n");
+        }
+        if (clazz.isAnnotationPresent(ResourceDependencies.class) ||
+            clazz.isAnnotationPresent(ResourceDependency.class)) {
+            writer.append("import javax.faces.application.ResourceDependencies;\n");
+            writer.append("import javax.faces.application.ResourceDependency;\n\n");
+        }
 
         String interfaceClassName = Utility.getGeneratedInterfaceClassName(clazz);
         if (interfaceClassName != null && interfaceClassName.length() > 0) {
