@@ -29,6 +29,9 @@ import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -128,6 +131,29 @@ public class ComponentArtifact extends Artifact{
             writer.append("@ICEResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n");
         }
 
+        // copy @ResourceDependency annotations
+        if (clazz.isAnnotationPresent(ResourceDependencies.class)) {
+            writer.append("\n");
+            writer.append("@ResourceDependencies({\n");
+
+            ResourceDependencies rd = (ResourceDependencies) clazz.getAnnotation(ResourceDependencies.class);
+            ResourceDependency[] rds = rd.value();
+            int rdsLength = rds.length;
+            for (int i = 0; i < rdsLength; i++) {
+                writer.append("\t@ResourceDependency(name=\"" + rds[i].name() + "\",library=\"" + rds[i].library() + "\",target=\"" + rds[i].target() + "\")");
+                if (i < (rdsLength-1)) {
+                    writer.append(",");
+                }
+                writer.append("\n");
+            }
+
+            writer.append("})");
+            writer.append("\n\n");
+        } else if (clazz.isAnnotationPresent(ResourceDependency.class)) {
+            ResourceDependency rd = (ResourceDependency) clazz.getAnnotation(ResourceDependency.class);
+            writer.append("@ResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n\n");
+        }
+        
         component.componentClass();
         writer.append("public ");
         if (!component.componentClass().equals(generatedClassName)) {
