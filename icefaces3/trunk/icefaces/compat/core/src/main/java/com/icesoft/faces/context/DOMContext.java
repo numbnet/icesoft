@@ -281,9 +281,7 @@ public class DOMContext implements java.io.Serializable {
      * @return the created element
      */
     public Element createElement(String name) {
-        Element e = document.createElement(name);
-        e.setIdAttribute("id", true);
-        return e;
+        return document.createElement(name);
     }
 
     /**
