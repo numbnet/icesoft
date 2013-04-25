@@ -25,15 +25,15 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class TabsetBean {
 
 
-    private Integer tabsetOneIndex = Integer.valueOf(0);
+    private String selectedTab = "pane1";
 
-    public Integer getTabsetOne() {
-        return tabsetOneIndex;
+    public String getSelectedTab() {
+        return selectedTab;
     }
 
-    public void setTabsetOne(Integer tabsetOneIndex) {
-    	if( tabsetOneIndex != null ){
-    		this.tabsetOneIndex = tabsetOneIndex;
-    	}
+    public void setSelectedTab(String selectedTab) {
+        this.selectedTab = selectedTab;
     }
+
+    
 }
