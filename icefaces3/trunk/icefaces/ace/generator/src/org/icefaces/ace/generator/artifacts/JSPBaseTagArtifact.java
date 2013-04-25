@@ -25,6 +25,7 @@ import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.meta.annotation.JSP;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class JSPBaseTagArtifact extends Artifact {
@@ -69,7 +70,7 @@ public class JSPBaseTagArtifact extends Artifact {
 	}
 
 	private void endBaseTagClass(JSP jsp) {
-		addRelease();
+		addRelease(jsp);
 		generatedTagClass.append("}\n");
 	}
 
@@ -175,7 +176,23 @@ public class JSPBaseTagArtifact extends Artifact {
         generatedTagClass.append(";\n\t}\n");
     }
 
-	private void addRelease() {
+	private void addRelease(JSP jsp) {
+        // Don't add a release method unless it exists in a super-class
+        // BodyTagSupport has it but SimpleTagSupport does not, and who knows
+        // about generatedTagExtendsClass, which could inherit from anything.
+        try {
+            String generatedTagExtendsClassName =
+                Utility.getGeneratedTagExtendsClassName(
+                    getMetaContext().getActiveClass(), jsp);
+            Class extendsClass = Class.forName(generatedTagExtendsClassName);
+            Method releaseMethod = extendsClass.getMethod("release", new Class[0]);
+            if (releaseMethod.getReturnType() != Void.TYPE) {
+                return;
+            }
+        } catch(Exception e) {
+            return;
+        }
+
 		generatedTagClass.append("\n\tpublic void release() {\n");
 		generatedTagClass.append("\t\tsuper.release();\n");
 
