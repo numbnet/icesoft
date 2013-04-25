@@ -56,4 +56,15 @@ public @interface JSPBaseMeta {
      * @return fully qualified class name of the interface.
      */
     String interfaceClass() default EMPTY;
+
+    /**
+     * Specify which body-content value to use in the TLD file.
+     *
+     * When a Meta class, with a @JSP annotation, extends a baseMeta class,
+     * with this @JSPBaseMeta annotation, this field acts as a default value
+     * for the @JSP annotation's bodyContent.
+     *
+     * @return value for the tag's body-content in the generated TLD file.
+     */
+    BodyContent bodyContent();
 }
