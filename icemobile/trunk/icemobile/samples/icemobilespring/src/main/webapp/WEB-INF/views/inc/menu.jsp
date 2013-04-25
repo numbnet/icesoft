@@ -25,6 +25,7 @@
     <mobi:outputListItem><a href="<c:url value="/carousel"/>">Carousel</a></mobi:outputListItem>
     <mobi:outputListItem><a href="<c:url value="/fieldset"/>">Fieldset</a></mobi:outputListItem>
     <mobi:outputListItem><a href="<c:url value="/list"/>">Lists</a></mobi:outputListItem>
+    <mobi:outputListItem><a href="<c:url value="/panelconfirmation"/>">Confirmation Panel</a></mobi:outputListItem>
     <mobi:outputListItem><a href="<c:url value="/panelPopup"/>">Panel Popup</a></mobi:outputListItem>
     <mobi:outputListItem><a href="<c:url value="/tabset"/>">Tab Set</a></mobi:outputListItem>
     
