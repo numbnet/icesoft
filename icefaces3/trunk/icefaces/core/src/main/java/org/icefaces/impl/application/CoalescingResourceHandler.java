@@ -36,7 +36,9 @@ import java.util.*;
 public class CoalescingResourceHandler extends ResourceHandlerWrapper {
     public static final String COALESCED = "coalesced";
     public static final String CSS_EXTENSION = ".css";
+    public static final String COALESCED_CSS = COALESCED + CSS_EXTENSION;
     public static final String JS_EXTENSION = ".js";
+    public static final String COALESCED_JS = COALESCED + JS_EXTENSION;
     public static final String ICE_CORE_LIBRARY = "ice.core";
     private ResourceHandler handler;
     private String mapping;
@@ -52,12 +54,12 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         FacesContext context = FacesContext.getCurrentInstance();
         if (EnvUtils.isCoallesceResources(context)) {
-            if (resourceName.equals(COALESCED + CSS_EXTENSION) && libraryName.equals(ICE_CORE_LIBRARY)) {
+            if (ICE_CORE_LIBRARY.equals(libraryName) && COALESCED_CSS.equals(resourceName)) {
                 CoalescingResource.Infos resourceInfos = (CoalescingResource.Infos) context.getExternalContext().getSessionMap().get(CoalescingResourceHandler.class.getName() + CSS_EXTENSION);
-                return new CoalescingResource(COALESCED + CSS_EXTENSION, ICE_CORE_LIBRARY, getMapping(context), isExtensionMapping(context), resourceInfos);
-            } else if (resourceName.equals(COALESCED + JS_EXTENSION) && libraryName.equals(ICE_CORE_LIBRARY)) {
+                return new CoalescingResource(COALESCED_CSS, ICE_CORE_LIBRARY, getMapping(context), isExtensionMapping(context), resourceInfos);
+            } else if (ICE_CORE_LIBRARY.equals(libraryName) && COALESCED_JS.equals(resourceName)) {
                 CoalescingResource.Infos resourceInfos = (CoalescingResource.Infos) context.getExternalContext().getSessionMap().get(CoalescingResourceHandler.class.getName() + JS_EXTENSION);
-                return new CoalescingResource(COALESCED + JS_EXTENSION, ICE_CORE_LIBRARY, getMapping(context), isExtensionMapping(context), resourceInfos);
+                return new CoalescingResource(COALESCED_JS, ICE_CORE_LIBRARY, getMapping(context), isExtensionMapping(context), resourceInfos);
             } else {
                 return super.createResource(resourceName, libraryName, contentType);
             }
@@ -109,22 +111,27 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             for (UIComponent next : new ArrayList<UIComponent>(children)) {
                 Map<String, Object> nextAttributes = next.getAttributes();
                 String nextName = (String) nextAttributes.get("name");
-                String nextLibrary = (String) nextAttributes.get("library");
-                String iceType = (String) nextAttributes.get("ice.type");
-                Resource nextResource = null;
-                if(iceType == null) {
-                    nextResource = resourceHandler.createResource(nextName, nextLibrary);
-                }
-                if (nextName.endsWith(extension) && !"jsf.js".equals(nextName) &&
-                        nextResource != null && !URI.create(nextResource.getRequestPath()).isAbsolute()) {
-                    CoalescingResource.Info info = new CoalescingResource.Info(nextName, nextLibrary);
-
-                    if (!context.isPostback() || previousResourceInfos.resources.contains(info)) {
-                        resourceInfos.resources.add(info);
-                    } else {
-                        toBeReAdded.add(next);
+                if (nextName == null) {
+                    //cannot process component resources without names
+                    continue;
+                } else {
+                    String nextLibrary = (String) nextAttributes.get("library");
+                    String iceType = (String) nextAttributes.get("ice.type");
+                    Resource nextResource = null;
+                    if (iceType == null) {
+                        nextResource = resourceHandler.createResource(nextName, nextLibrary);
                     }
-                    root.removeComponentResource(context, next);
+                    if (nextName.endsWith(extension) && !"jsf.js".equals(nextName) &&
+                            nextResource != null && !URI.create(nextResource.getRequestPath()).isAbsolute()) {
+                        CoalescingResource.Info info = new CoalescingResource.Info(nextName, nextLibrary);
+
+                        if (!context.isPostback() || previousResourceInfos.resources.contains(info)) {
+                            resourceInfos.resources.add(info);
+                        } else {
+                            toBeReAdded.add(next);
+                        }
+                        root.removeComponentResource(context, next);
+                    }
                 }
             }
 
