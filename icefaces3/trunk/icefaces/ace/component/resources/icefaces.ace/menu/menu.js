@@ -494,3 +494,12 @@ ice.ace.ContextMenu.shouldDisplayLeft = function(left, width, itemWidth) {
 	}
 	return leftside;
 }
+
+ice.ace.Breadcrumbs = function (id, cfg) {
+    var $ul = ice.ace.jq(ice.ace.escapeClientId(id + "_ul"));
+    $ul.wijmenu({
+        orientation: "horizontal",
+//        mode: "sliding",
+        backLink: false
+    });
+};
