@@ -209,6 +209,7 @@ if (!window.ice.mobile) {
 
             context.sourceid = sourceId;
             context.formid = formId;
+            context.element = element;
             context.onevent = options.onevent;
             context.onerror = options.onerror;
             //context.serialized = ice.serialize(form.id);
@@ -243,17 +244,9 @@ if (!window.ice.mobile) {
                 var parser = new DOMParser();
                 var xmlDoc = parser.parseFromString(unescape(data), "text/xml");
 
-                if (isSimulator) {
-                    icefaces.logInContainer("handleResponse - response Parsed");
-                }
                 jsfResponse.responseXML = xmlDoc;
-                if (isSimulator) {
-                    icefaces.logInContainer("handleResponse - Response set in jsfResponse");
-                }
                 jsf.ajax.response(jsfResponse, context);
-                if (isSimulator) {
-                    icefaces.logInContainer("handleResponse - Response processed!");
-                }
+
                 var form = document.getElementById(context.formid);
 
                 if (form != null) {
@@ -262,12 +255,10 @@ if (!window.ice.mobile) {
                         form.removeChild(tempInputs[i]);
                     }
                 }
-                if (isSimulator) {
-                    icefaces.logInContainer("Done inputs, clearing locals");
-                }
                 context.sourceid = "";
                 context.formid = "";
                 context.serialized = "";
+                context.element = null;
                 context.onevent = null;
                 context.onerror = null;
             } catch (e) {
@@ -396,4 +387,5 @@ if (!window.ice.mobile) {
     init();
 
 }
+
 
