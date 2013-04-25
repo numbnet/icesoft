@@ -85,6 +85,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			if (isHardSubmit(facesContext, autoCompleteEntry)) {
 				autoCompleteEntry.setPopulateList(false);
 				autoCompleteEntry.setSubmittedValue(text);
+				autoCompleteEntry.setSubmittedText(text);
 			} else if (keyEvent.getKeyCode() == KeyEvent.UP_ARROW_KEY || keyEvent.getKeyCode() == KeyEvent.DOWN_ARROW_KEY) {
 				autoCompleteEntry.setPopulateList(true);
 			} else if (textChanged) {
@@ -93,6 +94,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         } else {
 			autoCompleteEntry.setPopulateList(false);
 			autoCompleteEntry.setSubmittedValue(text);
+			autoCompleteEntry.setSubmittedText(text);
 		}
 		if (keyEvent.getKeyCode() == KeyEvent.TAB) {
 			autoCompleteEntry.setPopulateList(false);
@@ -266,6 +268,19 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		}
 
         writer.endElement("script");
+		
+		String renderedValue = null;
+		String value = (String) autoCompleteEntry.getValue();
+		String submittedText = (String) autoCompleteEntry.getSubmittedText();
+		if (value != null) {
+			if (text == null) renderedValue = value;
+		}
+		if (submittedText != null && !submittedText.equals(value)) {
+			autoCompleteEntry.setText(value);
+			text = value;
+		}
+		if (renderedValue == null) renderedValue = text;
+		autoCompleteEntry.setSubmittedText(null);
 
         // field update script
         writer.startElement("span", null);
@@ -274,7 +289,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.writeText("(function() {", null);
         writer.writeText("var instance = ice.ace.Autocompleters[\"" + clientId + "\"];", null);
-        writer.writeText("instance.updateField('" + escapeJavascriptString(text) + "', " + focus + ");", null);
+        writer.writeText("instance.updateField('" + escapeJavascriptString(renderedValue) + "', " + focus + ");", null);
         writer.writeText("})();", null);
         writer.endElement("script");
         writer.endElement("span");
