@@ -23,20 +23,30 @@
 <form id="panelconfirmation" class="form">
 
     <h3>Panel Confirmation</h3>
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
-                    <mobi:commandButton value="Open the confirmation panel" 
-                             type="button"
-                             panelConfirmation="panelConfirmation"
-                             buttonType="important"/>
-                             
-            </mobi:fieldsetRow>
-        </mobi:fieldsetGroup>
-        <mobi:panelConfirmation id="panelConfirmation"
-                title="Please confirm"
-                message="Please select 'Yes' to proceed or 'Cancel' to not."
-                type="both"
-                acceptLabel="Yes"
-                cancelLabel="Cancel"/>
+    
+    <mobi:fieldsetGroup styleClass="intro">
+        <mobi:fieldsetRow>
+            The panelConfirmation component will be dipsplayed when the
+            execute button is pressed. The user then has the choice to
+            veto execution or let it proceed.
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+    
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+                <mobi:commandButton value="Open the confirmation panel" 
+                         type="button"
+                         panelConfirmation="panelConfirmation"
+                         buttonType="important"/>
+                         
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+    
+    <mobi:panelConfirmation id="panelConfirmation"
+            title="Please confirm"
+            message="Please select 'Yes' to proceed or 'Cancel' to not."
+            type="both"
+            acceptLabel="Yes"
+            cancelLabel="Cancel"/>
                 
 </form>
