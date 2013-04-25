@@ -96,6 +96,7 @@ if (!window.ice.mobile) {
             context.sourceid = "";
             context.formid = "";
             context.serialized = "";
+            context.element = null;
             context.onevent = null;
             context.onerror = null;
         }
@@ -142,6 +143,7 @@ if (!window.ice.mobile) {
 
             context.sourceid = sourceId;
             context.formid = formId;
+            context.element = element;
             context.onevent = options.onevent;
             context.onerror = options.onerror;
             ice.upload(formId, serialTail);
