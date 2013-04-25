@@ -20,6 +20,12 @@ var ThemeSelect = ice.ace.ThemeSelect = function (clientId, cfg) {
     this.$sel = $(ice.ace.escapeClientId("select_" + clientId));
 
     if (cfg.behaviors) {
+        var changeBehaviour = cfg.behaviors['change'];
+        if (changeBehaviour) {
+            changeBehaviour.onsuccess = function() {
+                window.location.reload();
+            };
+        }
         ice.ace.attachBehaviors(this.$sel, cfg.behaviors);
     }
 };

@@ -23,15 +23,25 @@ import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.*;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
 @MandatoryResourceComponent(tagName = "themeSelect", value = "org.icefaces.ace.component.themeselect.ThemeSelect")
 public class ThemeSelectRenderer extends InputRenderer {
-    @Override
+
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        super.encodeBegin(context, component);
+        //keep the theme updated in case the value binding changes its value
+        String selectedTheme = ((ThemeSelect) component).getSelectedTheme(context);
+        context.getExternalContext().getSessionMap().put(Constants.THEME_PARAM, selectedTheme);
+    }
+
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ThemeSelect themeSelectComponent = (ThemeSelect) component;
         super.encodeEnd(context, component);
@@ -138,10 +148,56 @@ public class ThemeSelectRenderer extends InputRenderer {
         String submittedValue = requestParameterMap.get("select_" + component.getClientId(context));
         if (submittedValue != null) {
             ((ThemeSelect) component).setSubmittedValue(submittedValue);
-            //HeadRenderer needs the newly selected theme
+            //AddTheme needs the newly selected theme
             context.getExternalContext().getSessionMap().put(Constants.THEME_PARAM, submittedValue);
         }
         decodeBehaviors(context, component);
     }
 
+    public static class AddTheme implements SystemEventListener {
+        public void processEvent(SystemEvent event) throws AbortProcessingException {
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            String theme = (String) externalContext.getSessionMap().get(Constants.THEME_PARAM);
+            if (theme == null) {
+                String defaultTheme = externalContext.getInitParameter(Constants.THEME_PARAM);
+                theme = defaultTheme == null ? "sam" : defaultTheme;
+            } else {
+                theme = theme.trim();
+            }
+
+            String name;
+            String library;
+            if (theme.equalsIgnoreCase("sam")) {
+                library = "icefaces.ace";
+                name = "themes/sam/theme.css";
+            } else if (theme.equalsIgnoreCase("rime")) {
+                library = "icefaces.ace";
+                name = "themes/rime/theme.css";
+            } else {
+                library = "ace-" + theme;
+                name = "theme.css";
+            }
+
+            UIComponent resource = createThemeResource(context, library, name);
+            context.getViewRoot().addComponentResource(context, resource);
+        }
+
+        public boolean isListenerForSource(Object source) {
+            return source instanceof UIViewRoot;
+        }
+
+        private static UIComponent createThemeResource(FacesContext fc, String library, String resourceName) {
+            UIComponent resource = fc.getApplication().createComponent("javax.faces.Output");
+            resource.setRendererType("javax.faces.resource.Stylesheet");
+            resource.setTransient(true);
+
+            Map<String, Object> attrs = resource.getAttributes();
+            attrs.put("name", resourceName);
+            attrs.put("library", library);
+            attrs.put("target", "head");
+
+            return resource;
+        }
+    }
 }
