@@ -23,6 +23,7 @@ import org.icemobile.samples.spring.FlipSwitchBean;
 import org.icemobile.samples.spring.ButtonsBean;
 import org.icemobile.samples.spring.InputTextBean;
 import org.icemobile.samples.spring.ListBean;
+import org.icemobile.samples.spring.MenuButtonBean;
 import org.icemobile.samples.spring.PanelConfirmationBean;
 import org.icemobile.samples.spring.PanelPopupBean;
 import org.icemobile.samples.spring.TabsetBean;
@@ -107,6 +108,10 @@ public class EchoController extends ICEmobileBaseController{
     
     @RequestMapping(value = "/panelconfirmation")
     public void doRequest(@ModelAttribute("tabsetBean") PanelConfirmationBean model) {
+    }
+    
+    @RequestMapping(value = "/menubutton")
+    public void doRequest(@ModelAttribute("menuButtonBean") MenuButtonBean model) {
     }
 
 }
