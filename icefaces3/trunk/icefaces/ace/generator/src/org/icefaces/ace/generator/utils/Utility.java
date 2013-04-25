@@ -266,7 +266,27 @@ public class Utility {
         }
         return generatedInterfaceExtendsClass;
     }
-    
+
+    /**
+     * @see org.icefaces.ace.meta.annotation.JSP#bodyContent()
+     * @see org.icefaces.ace.meta.annotation.JSPBaseMeta#bodyContent()
+     * @return JSP.bodyContent(), or if not specified, then see if
+     * the Meta class' superclass has a @JSPBaseMeta annotation, and use its
+     * bodyContent, otherwise fallback to BodyContent.JSP.
+     */
+    public static String getBodyContentString(Class metaClass, JSP jsp) {
+        BodyContent bodyContent = jsp.bodyContent();
+        if (bodyContent.equals(BodyContent.UNSET)) {
+            Class superClass = metaClass.getSuperclass();
+            if (superClass.isAnnotationPresent(JSPBaseMeta.class)) {
+                JSPBaseMeta jspBaseMeta = (JSPBaseMeta)
+                    superClass.getAnnotation(JSPBaseMeta.class);
+                bodyContent = jspBaseMeta.bodyContent();
+            }
+        }
+        return bodyContent.toString();
+    }
+
     protected static String getSpecifiedOrAlternate(String specified,
             String unspecified, String alternate, String removeSuffix,
             String insertSimpleNamePrefix, String addSuffix) {

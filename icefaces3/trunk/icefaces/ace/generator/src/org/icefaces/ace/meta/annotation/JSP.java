@@ -124,4 +124,15 @@ public @interface JSP {
      * @return javadoc for the generated base tag class.
      */
     String javadoc() default EMPTY;
+
+    /**
+     * Specify which body-content value to use in the TLD file.
+     *
+     * If not specified, but the Meta class extends a @JSPBaseMeta annotated
+     * baseMeta class, then the @JSPBaseMeta bodyContent will be used,
+     * otherwise "JSP".
+     *
+     * @return value for the tag's body-content in the generated TLD file.
+     */
+    BodyContent bodyContent() default BodyContent.UNSET;
 }

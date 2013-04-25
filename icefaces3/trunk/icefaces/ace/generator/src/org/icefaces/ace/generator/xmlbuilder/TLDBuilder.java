@@ -107,7 +107,7 @@ public class TLDBuilder extends XMLBuilder{
         tag.appendChild(description);
         addNode(tag, "name", Utility.getTagName(clazz, jsp));
         addNode(tag, "tag-class", Utility.getTagClassName(clazz, jsp));
-        addNode(tag, "body-content", "JSP");
+        addNode(tag, "body-content", Utility.getBodyContentString(clazz, jsp));
     }
 
     public void addTagInfo(Class clazz, Component component) {
@@ -153,7 +153,7 @@ public class TLDBuilder extends XMLBuilder{
         String propertyName = propertyValues.resolvePropertyName();
         addNode(attribute, "name", propertyName);
         addNode(attribute, "required", String.valueOf(propertyValues.required));
-        addNode(attribute, "rtexprvalue", "false");
+        addNode(attribute, "rtexprvalue", "true");
         addNode(attribute, "type", propertyValues.getArrayAwareType());
     }       
 	
