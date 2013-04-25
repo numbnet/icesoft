@@ -16,6 +16,8 @@
 
 package org.icefaces.mobi.component.timespinner;
 
+import static org.icemobile.util.HTML.CLASS_ATTR;
+
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
@@ -327,6 +329,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         int ampm = spinner.getAmpm();
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId + "_script", "id");
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("mobi.timespinner.init('" + clientId + "'," + hourInt +

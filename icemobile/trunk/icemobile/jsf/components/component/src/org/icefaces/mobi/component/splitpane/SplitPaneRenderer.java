@@ -16,6 +16,8 @@
 package org.icefaces.mobi.component.splitpane;
 
 
+import static org.icemobile.util.HTML.CLASS_ATTR;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -82,6 +84,7 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
         SplitPane pane = (SplitPane) uiComponent;
         String clientId = pane.getClientId(facesContext);
         writer.startElement("span", uiComponent);
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden", null);
         writer.startElement("script", uiComponent);
         writer.writeAttribute("type", "text/javascript", null);
         StringBuilder sb = new StringBuilder("ice.mobi.splitpane.initClient('").append(clientId).append("'");

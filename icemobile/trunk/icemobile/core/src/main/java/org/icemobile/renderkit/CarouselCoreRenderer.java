@@ -125,14 +125,7 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
     public void encodeIScrollLib(ICarousel carousel, IResponseWriter writer)
             throws IOException{
         String src = carousel.getIScrollSrc();
-        String clientId = carousel.getClientId();
-        writer.startElement(SPAN_ELEM, carousel);
-        writer.writeAttribute(ID_ATTR, clientId+"_libIScr");
-        writer.startElement("script", carousel);
-        writer.writeAttribute("text", "text/javascript");
-        writer.writeAttribute("src", src);
-        writer.endElement("script");
-        writer.endElement(SPAN_ELEM);
+        super.writeExternalScript(carousel, writer, src);
     }
 
     /**
@@ -146,8 +139,9 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
         writer.startElement(SPAN_ELEM, carousel);
         String clientId= carousel.getClientId();
         writer.writeAttribute(ID_ATTR, clientId + "_script");
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden");
         writer.startElement(SCRIPT_ELEM, null);
-        writer.writeAttribute("text", "text/javascript");
+        writer.writeAttribute("type", "text/javascript");
         StringBuilder scriptSB = new StringBuilder("setTimeout(function () {ice.mobi.carousel.loaded('");
         scriptSB.append(clientId).append("'");
         StringBuilder cfg = carousel.getJSConfigOptions();

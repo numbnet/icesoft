@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import static org.icemobile.util.HTML.*;
+
 import org.icemobile.component.IMenuButton;
 
 public class MenuButtonCoreRenderer extends BaseCoreRenderer {
@@ -90,6 +91,7 @@ public class MenuButtonCoreRenderer extends BaseCoreRenderer {
         String clientId = button.getClientId();
         writer.startElement(SPAN_ELEM, button);
         writer.writeAttribute(ID_ATTR, clientId+"_initScr");
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden");
         writer.startElement(SCRIPT_ELEM, button);
         writer.writeAttribute(TYPE_ATTR, "text/javascript");
         StringBuilder sb = new StringBuilder("ice.mobi.menubutton.initmenu('");

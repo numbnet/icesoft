@@ -115,8 +115,9 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
     public void encodeEnd(ISplitPane pane, IResponseWriter writer)
             throws IOException{
         writer.startElement(SPAN_ELEM, pane);
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden");
         writer.startElement(SCRIPT_ELEM, pane);
-        writer.writeAttribute("text", "text/javascript");
+        writer.writeAttribute("type", "text/javascript");
         StringBuilder sb = new StringBuilder("ice.mobi.splitpane.initClient('").append(pane.getClientId()).append("'");
         sb.append(",{ scrollable: '").append(pane.isScrollable()).append("'");
      //   sb.append(", resize: ").append(pane.isResizable());

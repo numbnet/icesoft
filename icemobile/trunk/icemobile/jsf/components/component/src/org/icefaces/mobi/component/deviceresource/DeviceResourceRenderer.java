@@ -169,7 +169,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         
         String library = deriveLibrary( facesContext.getAttributes());
         Resource resource = facesContext.getApplication().getResourceHandler()
-                .createResource(cssFile, library);
+                .createResource(cssFile, library, "text/css");
         String resourceUrl = RESOURCE_URL_ERROR;
         if (resource != null) {
             resourceUrl = facesContext.getExternalContext().encodeResourceURL(resource.getRequestPath());
@@ -193,7 +193,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
 
         Resource simulatorCss = facesContext.getApplication()
             .getResourceHandler().createResource(
-                CSS_SIMULATOR, CSS_LOCATION );
+                CSS_SIMULATOR, CSS_LOCATION, "text/css");
         writer.startElement(HTML.LINK_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.LINK_TYPE_TEXT_CSS,
                 HTML.TYPE_ATTR);

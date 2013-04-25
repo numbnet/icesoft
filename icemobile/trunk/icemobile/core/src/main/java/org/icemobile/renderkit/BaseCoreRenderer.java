@@ -100,6 +100,18 @@ public abstract class BaseCoreRenderer{
         writer.endElement(INPUT_ELEM);
         writer.endElement(SPAN_ELEM);
     }
+    public void writeExternalScript(IMobiComponent component, IResponseWriter writer, String url)
+            throws IOException {
+        
+            writer.startElement(SPAN_ELEM, null);
+            writer.writeAttribute(ID_ATTR, component.getClientId() +"_libJS");
+            writer.writeAttribute(CLASS_ATTR, "mobi-hidden");
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript");
+            writer.writeAttribute("src", url);
+            writer.endElement("script");
+            writer.endElement(SPAN_ELEM);
+    }
     protected boolean isTouchEventEnabled(ClientDescriptor client) {
         // commenting out Blackberry at this time as support of touch events is
         // problematic
