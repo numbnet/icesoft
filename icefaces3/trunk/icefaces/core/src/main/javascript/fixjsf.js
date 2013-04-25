@@ -129,7 +129,7 @@
                 }
 
                 //remove text nodes added to avoid memory usage increase
-                headElement.removeChild(styleElement);
+                //headElement.removeChild(styleElement);
             });
 
             linkRefs = newLinkRefs;
