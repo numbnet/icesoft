@@ -91,10 +91,11 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
         String clientId = panelPopup.getClientId();
         writer.startElement(DIV_ELEM, panelPopup);
         writer.writeAttribute(ID_ATTR, clientId+"_scrDiv");
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden");
         writer.startElement(SPAN_ELEM, panelPopup);
         writer.writeAttribute(ID_ATTR, clientId + "_scrSpan");
         writer.startElement("script", null);
-        writer.writeAttribute("text", "text/javascript");
+        writer.writeAttribute("type", "text/javascript");
         StringBuilder builder = new StringBuilder(255);
         String hashString = String.valueOf(panelPopup.isClientSide()) + String.valueOf(panelPopup.isVisible())+
                 String.valueOf(panelPopup.isAutoCenter());

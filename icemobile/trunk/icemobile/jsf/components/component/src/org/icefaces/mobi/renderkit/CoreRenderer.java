@@ -18,6 +18,8 @@ package org.icefaces.mobi.renderkit;
 
 
 
+import static org.icemobile.util.HTML.CLASS_ATTR;
+
 import org.icefaces.mobi.utils.HTML;
 
 import javax.faces.application.ProjectStage;
@@ -179,6 +181,7 @@ public class CoreRenderer extends MobileBaseRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
         writer.startElement(HTML.SPAN_ELEM, component);
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_libJS", HTML.ID_ATTR);
         if (!isScriptLoaded(facesContext, JS_NAME)) {
             String jsFname = JS_NAME;
@@ -218,6 +221,7 @@ public class CoreRenderer extends MobileBaseRenderer {
         String clientId = component.getClientId(facesContext);
         writer.startElement(HTML.SPAN_ELEM, component);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_libJS", HTML.ID_ATTR);
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden", null);
         if (!isScriptLoaded(facesContext, JS_NAME)) {
             String jsFname = JS_NAME;
             if (facesContext.isProjectStage(ProjectStage.Production)){

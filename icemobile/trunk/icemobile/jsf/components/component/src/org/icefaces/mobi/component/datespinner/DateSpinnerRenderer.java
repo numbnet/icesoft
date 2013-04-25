@@ -16,6 +16,8 @@
 
 package org.icefaces.mobi.component.datespinner;
 
+import static org.icemobile.util.HTML.CLASS_ATTR;
+
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.Utils;
@@ -308,6 +310,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         int mnthInt = spinner.getMonthInt();
         int dateInt = spinner.getDayInt();
         writer.startElement("span", uiComponent);
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden", null);
         writer.writeAttribute("id", clientId + "_script", "id");
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);

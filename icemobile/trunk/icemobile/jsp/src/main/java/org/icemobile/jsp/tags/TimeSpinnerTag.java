@@ -236,6 +236,7 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         //separate the value into yrInt, mthInt, timeInt for now just use contstants
         writer.write(tu.SPAN_TAG);
         tu.writeAttribute(writer, "id", id + "_script");
+        tu.writeAttribute(writer, "class", "mobi-hidden");
         writer.write(">" + tu.SCRIPT_TAG);
         tu.writeAttribute(writer, "text", "text/javascript");
         writer.write(">ice.mobi.timespinner.init('" + id + "'," + hourInt + ","

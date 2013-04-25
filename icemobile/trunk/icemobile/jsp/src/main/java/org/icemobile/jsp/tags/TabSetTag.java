@@ -92,7 +92,7 @@ public class TabSetTag extends TagSupport {
         String clientId = getId();
 
         StringBuilder sb = new StringBuilder(TagUtil.SPAN_TAG);
-        sb.append(" id=\"").append(clientId).append("_script\">");
+        sb.append(" id=\"").append(clientId).append("_script\" class='mobi-hidden'>");
         sb.append(TagUtil.SCRIPT_TAG);
         sb.append(" type=\"text/javascript\">");
 

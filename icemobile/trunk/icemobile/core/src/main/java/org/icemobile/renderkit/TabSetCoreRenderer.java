@@ -38,7 +38,8 @@ public class TabSetCoreRenderer extends BaseCoreRenderer {
         String clientId = tabset.getClientId();
         /* JSF comp writes script into 1st span */
         if (!tabset.isScriptLoaded() && !isJSP)  {
-            writeJSFile(writer, tabset, clientId);
+            super.writeExternalScript(component, writer, tabset.getJavascriptFileRequestPath());
+            tabset.setScriptLoaded();
         }
         writer.startElement(DIV_ELEM, tabset);
         writer.writeAttribute(ID_ATTR, clientId);
@@ -96,19 +97,6 @@ public class TabSetCoreRenderer extends BaseCoreRenderer {
         writer.endElement(DIV_ELEM);//end of wrapper
         writer.endElement(DIV_ELEM); //end of tabPane
     }
-    private void writeJSFile(IResponseWriter writer, ITabSet tabset, String clientId) throws IOException {
-        writer.startElement(DIV_ELEM);
-        writer.writeAttribute(ID_ATTR, clientId +"_libJSDiv");
-        writer.startElement(SPAN_ELEM, tabset);
-        writer.writeAttribute(ID_ATTR, clientId +"_libJS");
-        writer.startElement("script", tabset);
-        writer.writeAttribute("text", "text/javascript");
-        writer.writeAttribute("src", tabset.getJavascriptFileRequestPath());
-        writer.endElement("script");
-        tabset.setScriptLoaded();
-        writer.endElement(SPAN_ELEM);
-        writer.endElement(DIV_ELEM);
-    }
 
     public void encodeEndContents(IMobiComponent component, IResponseWriter writer)
             throws IOException{
@@ -146,6 +134,7 @@ public class TabSetCoreRenderer extends BaseCoreRenderer {
         String clientId = tabset.getClientId();
         String height = tabset.getHeight();
         writer.startElement(SPAN_ELEM);
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden");
         writer.writeAttribute(ID_ATTR, clientId + "_script");
         writer.startElement(SCRIPT_ELEM);
         writer.writeAttribute(TYPE_ATTR, "text/javascript");

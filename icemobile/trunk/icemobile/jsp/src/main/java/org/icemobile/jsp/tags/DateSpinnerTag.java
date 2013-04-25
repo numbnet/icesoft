@@ -16,6 +16,8 @@
 
 package org.icemobile.jsp.tags;
 
+import static org.icemobile.util.HTML.CLASS_ATTR;
+
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
@@ -278,8 +280,9 @@ public class DateSpinnerTag extends SimpleTagSupport {
         //separate the value into yrInt, mthInt, dateInt for now just use contstants
         writer.write(tu.SPAN_TAG);
         tu.writeAttribute(writer, "id", id + "_script");
+        tu.writeAttribute(writer, CLASS_ATTR, "mobi-hidden");
         writer.write(">" + tu.SCRIPT_TAG);
-        tu.writeAttribute(writer, "text", "text/javascript");
+        tu.writeAttribute(writer, "type", "text/javascript");
         writer.write(">ice.mobi.datespinner.init('" + id + "'," + yearInt + ","
                          + monthInt + "," + dayInt + ",'" + pattern + "');");
         writer.write(tu.SCRIPT_TAG_END);

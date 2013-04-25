@@ -15,6 +15,8 @@
  */
 package org.icefaces.mobi.component.contentstack;
 
+import static org.icemobile.util.HTML.CLASS_ATTR;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -138,6 +140,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         ContentStack stack = (ContentStack) uiComponent;
         String clientId = stack.getClientId(facesContext);
         writer.startElement("span", uiComponent);
+        writer.writeAttribute(CLASS_ATTR, "mobi-hidden", null);
         writer.writeAttribute("id", clientId+"_initScr", "id");
         writer.startElement("script", uiComponent);
         writer.writeAttribute("type", "text/javascript", null);
