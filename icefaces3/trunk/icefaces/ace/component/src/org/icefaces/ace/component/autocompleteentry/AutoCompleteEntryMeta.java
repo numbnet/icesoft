@@ -160,4 +160,7 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
 	@Field()
 	private String text;
+	
+    @Field()
+    private String submittedText;
 }
