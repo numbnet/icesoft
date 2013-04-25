@@ -147,8 +147,9 @@ public class SelectMenuRenderer extends InputRenderer {
 
 		writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("name", inputClientId, null);
-		writer.endElement("input");
+        writer.writeAttribute("name", inputClientId, null);
+        writer.writeAttribute("value", value, null);
+        writer.endElement("input");
 
         String divId = clientId + AUTOCOMPLETE_DIV;
 
