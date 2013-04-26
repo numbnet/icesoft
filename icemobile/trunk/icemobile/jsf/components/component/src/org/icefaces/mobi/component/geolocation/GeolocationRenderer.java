@@ -164,6 +164,6 @@ public class GeolocationRenderer extends CoreRenderer {
 
     private boolean sniffDevices() {
         ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        return (client.isAndroidOS() & client.isTabletBrowser()) || client.isBlackBerryOS();
+        return (client.isAndroidOS() & client.isTabletBrowser()) || client.isBlackBerryOS() || client.isBlackBerry10OS();
     }
 }
