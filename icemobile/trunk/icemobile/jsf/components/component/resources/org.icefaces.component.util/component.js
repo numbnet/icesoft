@@ -1016,7 +1016,7 @@ ice.mobi.geolocation = {
 
         function getIndexInput(details) {
             var r = Array.prototype.filter.call(details.children, function(n) {
-                return n.nodeName == "INPUT";
+                return n.nodeName == "INPUT" && n.getAttribute('name') == clientId+'_active';
             });
             return r[0];
         }
@@ -1069,9 +1069,10 @@ ice.mobi.geolocation = {
             }
 
             /* copy foot col widths from duplicate footer */
-            for (var i = 0; i < dupeFootCellWidths.length; i++) {
-                footCells[i].style.width = dupeFootCellWidths[i] + 'px';
-            }
+            if (footCells.length > 0)
+                for (var i = 0; i < dupeFootCellWidths.length; i++) {
+                    footCells[i].style.width = dupeFootCellWidths[i] + 'px';
+                }
 
             /* hide duplicate header */
             if (dupeHead) dupeHead.style.display = 'none';
