@@ -223,8 +223,8 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.writeText(String.format("document.documentElement.className == '' ? " +
-        		"document.documentElement.className = '%1$s' : " +
-        		"document.documentElement.className = document.documentElement.className+' %1$s';", 
+        		"document.documentElement.className = '%1$s ui-mobile' : " +
+        		"document.documentElement.className = document.documentElement.className+' %1$s ui-mobile';",
         		theme.fileName()),null);
         writer.endElement("script");
     }

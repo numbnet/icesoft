@@ -1463,4 +1463,18 @@ ice.mobi.geolocation = {
 /* touch active state support */
 document.addEventListener("touchstart", function(){}, true);
 
-
+function hideAddressBar()
+{   //todo: add device / browser specificity
+    if(!window.location.hash) {
+        if(document.documentElement.clientHeight <= 416) {
+            document.body.style.height = '416px';
+        }
+        setTimeout( function(){
+            window.scrollTo(0, 1);
+        }, 1);
+    }
+}
+if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
+    window.addEventListener("load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
+    window.addEventListener("orientationchange", hideAddressBar );
+}

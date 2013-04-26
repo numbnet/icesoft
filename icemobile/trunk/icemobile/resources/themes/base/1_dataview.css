@@ -1,30 +1,32 @@
-/* Theme CSS */
-.mobi-dv > table > thead > tr {
-}
-
-.mobi-dv > table > tbody > tr {
-}
-
-/* Testing CSS */
-/* rows */
-.mobi-dv-head th, .mobi-dv-body th{
+.mobi-dv-head th, .mobi-dv-body th, .mobi-dv-foot td, .mobi-dv-body tfoot td {
     border: 1px solid black;
 }
-.mobi-dv-foot td, .mobi-dv-body tfoot td { border: 1px solid black; }
-.mobi-dv-foot tr:first-child td { border-top: none; }
-
-.mobi-dv-body tbody td {
-    border: 1px solid black;
-    padding: .2em;
+.mobi-dv-foot tr:first-child td {
+    border-top: none;
 }
-.mobi-dv-body tr:first-child td { border-top: none; }
-.mobi-dv-body tr:last-child td { border-bottom: none; }
+.mobi-dv-body tr:first-child td {
+    border-top: none;
+}
+.mobi-dv-body tr:last-child td {
+    border-bottom: none;
+}
 .mobi-dv-det {
     border:1px solid black;
     border-bottom: none;
 }
+.mobi-dv-body tbody tr {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+.mobi-dv-mst > div {
+    overflow:auto;
+    border-bottom: 1px solid black;
+}
 
-/* Structural CSS */
+.mobi-dv-body tbody td {
+    padding: .2em;
+}
+
 
 div.mobi-dv {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -34,12 +36,6 @@ div.mobi-dv {
     position: relative;
 }
 
-.mobi-dv-mst > div {
-    overflow:auto;
-    border-bottom: 1px solid black;
-}
-
-/* details */
 .mobi-dv > .mobi-dv-det {
     border: 1px solid black;
     border-bottom: none;
@@ -48,7 +44,6 @@ div.mobi-dv {
     display: none;
 }
 
-/* rows */
 .mobi-dv-head {
     width:100%;
     border-spacing: 0;
@@ -65,15 +60,16 @@ div.mobi-dv {
     border-collapse: collapse;
 }
 
-.mobi-dv-head > thead > tr, .mobi-dv-body > thead > tr {
-    font-size: 16pt;
-    font-weight: bold;
-}
 .mobi-dv-head .mobi-dv-si {
     padding: .2em;
 }
 .mobi-dv-head .mobi-dv-si:not([class*='icon']) {
     display: none;
+}
+
+.mobi-dv-head > thead > tr, .mobi-dv-body > thead > tr {
+    font-size: 16pt;
+    font-weight: bold;
 }
 
 .mobi-dv-foot > tfoot > tr, .mobi-dv-body > tfoot > tr {
@@ -86,6 +82,6 @@ div.mobi-dv {
     font-size: 14pt;
 }
 
-.mobi-dv-c-b {
+.mobi-dv-body.ui-table td.mobi-dv-c-b {
     text-align: center;
 }
