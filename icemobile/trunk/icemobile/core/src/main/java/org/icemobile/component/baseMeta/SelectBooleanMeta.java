@@ -1,10 +1,11 @@
 package org.icemobile.component.baseMeta;
 
 import org.icefaces.ace.meta.annotation.*;
-import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.ace.meta.baseMeta.UISelectBooleanMeta;
 
-@JSPBaseMeta(tagClass = "javax.servlet.jsp.tagext.BodyTagSupport")
-public class BodyPanelMeta extends UIPanelMeta {
+@JSPBaseMeta(tagClass=ConstantsMeta.SIMPLE_TAG_SUPPORT,
+             bodyContent=BodyContent.EMPTY)
+public class SelectBooleanMeta extends UISelectBooleanMeta {
     @Property(tlddoc=ConstantsMeta.DISABLED,
         implementation=Implementation.GENERATE)
     private boolean disabled;

@@ -3,8 +3,9 @@ package org.icemobile.component.baseMeta;
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UISelectManyMeta;
 
-@JSPBaseMeta(tagClass = "javax.servlet.jsp.tagext.SimpleTagSupport")
-public class SimpleSelectManyMeta extends UISelectManyMeta {
+@JSPBaseMeta(tagClass=ConstantsMeta.BODY_TAG_SUPPORT,
+             bodyContent=BodyContent.JSP)
+public class SelectManyMeta extends UISelectManyMeta {
     @Property(tlddoc=ConstantsMeta.DISABLED,
         implementation=Implementation.GENERATE)
     private boolean disabled;
