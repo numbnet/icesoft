@@ -115,7 +115,11 @@ if (!window.ice.icefaces) {
         var elementUpdateListeners = [];
         namespace.onElementUpdate = function(id, callback) {
             var element = lookupElementById(id);
-            element.data_onElementUpdate = callback;
+            if (element) {
+                element.data_onElementUpdate = callback;
+            } else {
+                warn(logger, 'Cannot find element [' + id + '] to assign onElementUpdate callback.');
+            }
         };
 
         function configurationOf(element) {
