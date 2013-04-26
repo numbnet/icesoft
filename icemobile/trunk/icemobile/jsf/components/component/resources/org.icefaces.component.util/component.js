@@ -1041,7 +1041,7 @@ ice.mobi.geolocation = {
                 firstRowBodyCells,
                 function(n) {
                     var compd = document.defaultView.getComputedStyle(n, null);
-                    return n.clientWidth - parseInt(compd.paddingLeft) - parseInt(compd.paddingRight);
+                    return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
             });
 
             /* fix body column widths */
@@ -1053,14 +1053,14 @@ ice.mobi.geolocation = {
                 dupeHeadCells,
                 function(n) {
                     var compd = document.defaultView.getComputedStyle(n, null);
-                    return n.clientWidth - parseInt(compd.paddingLeft) - parseInt(compd.paddingRight);
+                    return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
             });
 
             var dupeFootCellWidths = Array.prototype.map.call(
                 dupeFootCells,
                 function(n) {
                     var compd = document.defaultView.getComputedStyle(n, null);
-                    return n.clientWidth - parseInt(compd.paddingLeft) - parseInt(compd.paddingRight);
+                    return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
                 });
 
             /* copy head col widths from duplicate header */
@@ -1139,7 +1139,7 @@ ice.mobi.geolocation = {
                     // clear sort if dragged from first to last cell
                     if (touchedFirstCell && cell.webkitMatchesSelector(headCellSelector+":last-child")) {
                         clearSort();
-                    } else if (touch.identifier && index == touchedHeadCellIndex[touch.identifier])
+                    } else if (index == touchedHeadCellIndex[touch.identifier])
                         // delay sort to see if jump scroll tap occurs
                         var sort = sortColumn;
                         pendingSortClick = setTimeout(function () {sort(e);}, 320);
