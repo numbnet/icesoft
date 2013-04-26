@@ -1,10 +1,11 @@
 package org.icemobile.component.baseMeta;
 
 import org.icefaces.ace.meta.annotation.*;
-import org.icefaces.ace.meta.baseMeta.UIOutputMeta;
+import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 
-@JSPBaseMeta(tagClass = "javax.servlet.jsp.tagext.SimpleTagSupport")
-public class SimpleOutputMeta extends UIOutputMeta {
+@JSPBaseMeta(tagClass=ConstantsMeta.SIMPLE_TAG_SUPPORT,
+             bodyContent=BodyContent.EMPTY)
+public class CommandMeta extends UICommandMeta {
     @Property(tlddoc=ConstantsMeta.DISABLED,
         implementation=Implementation.GENERATE)
     private boolean disabled;

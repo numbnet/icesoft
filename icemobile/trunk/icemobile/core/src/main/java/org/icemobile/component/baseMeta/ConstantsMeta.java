@@ -36,4 +36,8 @@ public class ConstantsMeta {
     public static final String IMMEDIATE_INPUT = "Flag indicating that this component's value must be converted and " +
     		"validated immediately (that is, during Apply Request Values phase), rather than waiting until Process " +
     		"Validations phase. ";
+
+
+    public static final String BODY_TAG_SUPPORT = "javax.servlet.jsp.tagext.BodyTagSupport";
+    public static final String SIMPLE_TAG_SUPPORT = "javax.servlet.jsp.tagext.SimpleTagSupport";
 }

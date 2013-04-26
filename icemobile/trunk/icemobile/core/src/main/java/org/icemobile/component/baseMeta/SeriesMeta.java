@@ -3,8 +3,9 @@ package org.icemobile.component.baseMeta;
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UISeriesBaseMeta;
 
-@JSPBaseMeta(tagClass = "javax.servlet.jsp.tagext.BodyTagSupport")
-public class BodySeriesMeta extends UISeriesBaseMeta {
+@JSPBaseMeta(tagClass=ConstantsMeta.BODY_TAG_SUPPORT,
+             bodyContent=BodyContent.JSP)
+public class SeriesMeta extends UISeriesBaseMeta {
     @Property(tlddoc=ConstantsMeta.DISABLED,
         implementation=Implementation.GENERATE)
     private boolean disabled;

@@ -1,10 +1,11 @@
 package org.icemobile.component.baseMeta;
 
 import org.icefaces.ace.meta.annotation.*;
-import org.icefaces.ace.meta.baseMeta.UIInputMeta;
+import org.icefaces.ace.meta.baseMeta.UISelectOneMeta;
 
-@JSPBaseMeta(tagClass = "javax.servlet.jsp.tagext.SimpleTagSupport")
-public class SimpleInputMeta extends UIInputMeta {
+@JSPBaseMeta(tagClass=ConstantsMeta.BODY_TAG_SUPPORT,
+             bodyContent=BodyContent.JSP)
+public class SelectOneMeta extends UISelectOneMeta {
     @Property(tlddoc=ConstantsMeta.DISABLED,
         implementation=Implementation.GENERATE)
     private boolean disabled;

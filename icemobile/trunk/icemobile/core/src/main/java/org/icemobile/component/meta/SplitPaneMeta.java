@@ -20,7 +20,7 @@ import org.icefaces.ace.meta.annotation.Facet;
 import org.icefaces.ace.meta.annotation.Facets;
 import org.icefaces.ace.meta.annotation.JSP;
 import org.icefaces.ace.meta.annotation.Property;
-import org.icemobile.component.baseMeta.BodyPanelMeta;
+import org.icemobile.component.baseMeta.PanelMeta;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -52,7 +52,7 @@ import javax.faces.component.UIComponent;
               "inner children will be scrollable by default unless " +
               "scrollable attribute is set to false.")
 @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
-public class SplitPaneMeta extends BodyPanelMeta {
+public class SplitPaneMeta extends PanelMeta {
     @Property(defaultValue="true",
              tlddoc="Determines if the contents of this panel are both scrollable.")
     private boolean scrollable;
