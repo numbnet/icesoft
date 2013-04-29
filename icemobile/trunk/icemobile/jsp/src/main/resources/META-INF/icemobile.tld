@@ -28,6 +28,11 @@
     <listener>
         <listener-class>org.icemobile.jsp.servlet.ICEmobileServletContextListener</listener-class>
     </listener>
+    
+     <listener>
+        <listener-class>org.icemobile.jsp.servlet.MobiClientListener</listener-class>
+    </listener>
+    
 
     <tag>
         <description>Show augmented reality video overlay.</description>
@@ -2000,7 +2005,7 @@
         <description>Item that can be selected from menu button. Can order menu button items by group and disable</description>
         <name>menuButtonItem</name>
         <tag-class>org.icemobile.jsp.tags.input.MenuButtonItemTag</tag-class>
-        <body-content>none</body-content>
+        <body-content>empty</body-content>
         <attribute>
             <description>Pagewide unique identifier.</description>
             <name>id</name>
