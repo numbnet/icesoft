@@ -430,10 +430,8 @@
 	<!-- 'skin' is the name of the skin these resources will be part of -->
 
 	<includeBaseResources dir="${theme.build.path}/archaic" skin="archaic" />
-	<includeBase3Resources dir="${theme.build.path}/android" skin="android" />
 	<includeBase3Resources dir="${theme.build.path}/bberry" skin="bberry" />
 	<includeBase3Resources dir="${theme.build.path}/bb10" skin="bb10" />
-	<includeBase3Resources dir="${theme.build.path}/honeycomb" skin="honeycomb" />
 	<includeBase3Resources dir="${theme.build.path}/ipad" skin="ipad" />
 	<includeBase3Resources dir="${theme.build.path}/iphone" skin="iphone" />
 	<includeBase3Resources dir="${theme.build.path}/android_light" skin="android_light" />
@@ -445,9 +443,7 @@
     </replaceregexp>
 
 	<!-- Generate a single CSS file per skin -->
-    <concatskin name="android" inputdir="${build}/skins/in" outputdir="${build}/skins/out"/>
-    <concatskin name="honeycomb" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-    <concatskin name="iphone" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+   <concatskin name="iphone" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
     <concatskin name="bberry" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="bb10" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
@@ -508,8 +504,8 @@
               included above. -->
 	<generatesprites skin="iphone" />
 	<generatesprites skin="ipad" />
-	<generatesprites skin="android" />
-	<generatesprites skin="honeycomb" />
+	<generatesprites skin="android_light" />
+	<generatesprites skin="android_dark" />
 	<generatesprites skin="bberry" />
 	<generatesprites skin="bb10" />
 	<generatesprites skin="archaic" />
@@ -518,10 +514,8 @@
 <target name="compress-skins" unless="skins.skip">
 	<compresscssmacro name="iphone" />
 	<compresscssmacro name="ipad" />
-	<compresscssmacro name="android" />
 	<compresscssmacro name="android_light" />
 	<compresscssmacro name="android_dark" />
-	<compresscssmacro name="honeycomb" />
 	<compresscssmacro name="bberry" />
 	<compresscssmacro name="bb10" />
 	<compresscssmacro name="archaic" />

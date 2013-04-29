@@ -119,12 +119,7 @@ public class CSSUtils {
             theme = Theme.BBERRY;
         } 
         else if (client.isAndroidOS()) {
-            if (view == View.SMALL) {
-                theme = Theme.ANDROID;
-            }
-            else if( view == View.LARGE ){
-                theme = Theme.HONEYCOMB;
-            }
+            theme = Theme.ANDROID_LIGHT;
         } 
         else if (client.isIOS()) {
             if (view == View.SMALL) {

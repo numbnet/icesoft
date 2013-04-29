@@ -166,10 +166,8 @@
         <mkdir dir="${build.dir}/skins/out"/>
 
     	<buildSkin skin="archaic" />
-    	<buildCSS3Skin skin="android" />
-		<buildCSS3Skin skin="bberry" />
+    	<buildCSS3Skin skin="bberry" />
     	<buildCSS3Skin skin="bb10" />
-		<buildCSS3Skin skin="honeycomb" />
 		<buildCSS3Skin skin="ipad" />
 		<buildCSS3Skin skin="iphone" />
         <buildCSS3Skin skin="android_light" />
@@ -183,10 +181,6 @@
         
         <!-- concatenate -->
         <!-- Generate a single CSS file per skin -->
-        <concatskin name="android" inputdir="${build.dir}/skins/in"
-                    outputdir="${build.dir}/skins/out"/>
-        <concatskin name="honeycomb" inputdir="${build.dir}/skins/in"
-                    outputdir="${build.dir}/skins/out"/>
         <concatskin name="iphone" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
         <concatskin name="bberry" inputdir="${build.dir}/skins/in"
@@ -215,8 +209,6 @@
             unless="no-compress">
         <compresscss name="iphone"/>
         <compresscss name="ipad"/>
-        <compresscss name="android"/>
-        <compresscss name="honeycomb"/>
         <compresscss name="bberry"/>
     	<compresscss name="bb10"/>
     	<compresscss name="simulator"/>

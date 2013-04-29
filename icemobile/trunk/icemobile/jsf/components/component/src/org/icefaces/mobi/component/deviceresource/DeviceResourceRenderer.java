@@ -127,6 +127,10 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
             String targetView = (String)comp.getAttributes().get("view");
             theme = CSSUtils.deriveTheme(targetView, JSFUtils.getRequest());
         }
+        //android and honeycomb themes deprecated
+        if( theme == Theme.ANDROID || theme == Theme.HONEYCOMB ){
+            theme = Theme.ANDROID_DARK;
+        }
         writeOutDeviceStyleSheets(context,comp,theme);
         if (isSimulated)  {
             writeSimulatorResources(context, comp, theme);
