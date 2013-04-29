@@ -138,6 +138,7 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
 }
 
 - (void) doCancel  {
+NSLog(@"doCancel reloadCurrentURL %d", self.launchedFromApp);
     if (!self.launchedFromApp)  {
         [self reloadCurrentURL];
     }
@@ -175,6 +176,7 @@ NSLog(@"hideControls");
 
 - (void) handleResponse:(NSString *)responseString  {
     LogDebug(@"handleResponse received %@", responseString);
+NSLog(@"handleResponse reloadCurrentURL");
     [self reloadCurrentURL];
 }
 

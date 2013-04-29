@@ -93,6 +93,7 @@
 - (void)augMarkerView:(NSString*)augId withMarkers:(NSDictionary*)markers;
 - (void)augHide;
 - (void)augDone;
+- (void)augFormDone:(NSString*)result;
 - (void)augDismiss;
 - (void)augMarkerDismiss;
 - (void)startMotionManager;
