@@ -558,6 +558,12 @@ NSLog(@"Found record %@", result);
 - (BOOL)aug: (NSString*)augId locations:(NSDictionary *)places {
     self.activeDOMElementId = augId;
     NSLog(@"NativeInterface aug ");
+    NSString *viewer = [places objectForKey:@"v"];
+    NSLog(@"NativeInterface aug VIEWER %@", viewer);
+    if ([viewer isEqualToString:@"vuforia"])  {
+        [self augMarkerView:augId withMarkers:places];
+        return YES;
+    }
     if (nil == self.augController)  {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
             self.augController = [[ARViewController alloc] 
@@ -568,13 +574,6 @@ NSLog(@"Found record %@", result);
         }
         augController.nativeInterface = self;
     }
-    NSString *viewer = [places objectForKey:@"v"];
-    NSLog(@"NativeInterface aug VIEWER %@", viewer);
-    if ([viewer isEqualToString:@"vuforia"])  {
-        [self augMarkerView:augId withMarkers:places];
-        return YES;
-    }
-
 
     NSString *urlBase = [places objectForKey:@"ub"];
 	NSMutableArray *placeLabels = [NSMutableArray array];
@@ -705,11 +704,13 @@ NSLog(@"Found record %@", result);
 }
 
 - (void)augMarkerDismiss  {
+    NSLog(@"augMarkerDismiss");
     [self augMarkerHide];
     [self.controller doCancel];
 }
 
 - (void)augDismiss  {
+    NSLog(@"augDismiss");
     [self.augController stop];
     [self augHide];
     [self.controller doCancel];
@@ -723,6 +724,15 @@ NSLog(@"Found record %@", result);
     [controller completePost:augResult forComponent:augName
             withName:augName];
 }
+
+- (void)augFormDone:(NSString*)augResult {
+    [self augMarkerHide];
+    NSString *augName = self.activeDOMElementId;
+    LogDebug(@"NativeInterface augFormDone selected %@", augResult);
+    [controller completePost:augResult forComponent:augName
+            withName:augName];
+}
+
 
 - (BOOL)geospy:(NSString*) geoId withStrategy:(NSString*) strategy  {
     self.geospyName = geoId;
