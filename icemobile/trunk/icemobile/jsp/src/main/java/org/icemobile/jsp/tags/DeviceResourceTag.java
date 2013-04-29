@@ -33,6 +33,7 @@ import org.icemobile.util.Constants;
 import org.icemobile.util.MobiEnvUtils;
 import org.icemobile.util.SXUtils;
 import org.icemobile.util.Utils;
+import org.icemobile.util.CSSUtils.Theme;
 
 /**
  * This is the Device specific detection and script writing tag.
@@ -168,6 +169,10 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		if( theme == null || "".equals(theme) ){
 		    theme = CSSUtils.deriveTheme((HttpServletRequest)pageContext.getRequest()).fileName();
 		}
+		//android and honeycomb themes deprecated
+		else if( theme.toLowerCase().equals("android") || theme.toLowerCase().equals("honeycomb") ){
+            theme = "android_dark";
+        }
 		
 		String fileName = theme;
 		

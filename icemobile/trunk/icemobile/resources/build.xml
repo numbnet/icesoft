@@ -103,19 +103,16 @@
 	
 		<echo>${basedir}</echo>
 		<property name="themes.build.dir" location="./build/themes"/>
-		<mkdir dir="${themes.build.dir}/android" />
-        <mkdir dir="${themes.build.dir}/android_dark" />
+		<mkdir dir="${themes.build.dir}/android_dark" />
         <mkdir dir="${themes.build.dir}/android_light" />
         <mkdir dir="${themes.build.dir}/archaic" />
         <mkdir dir="${themes.build.dir}/base" />
         <mkdir dir="${themes.build.dir}/base3" />
         <mkdir dir="${themes.build.dir}/bberry" />
 		<mkdir dir="${themes.build.dir}/bb10" />
-        <mkdir dir="${themes.build.dir}/honeycomb" />
         <mkdir dir="${themes.build.dir}/ipad" />
         <mkdir dir="${themes.build.dir}/iphone" />
         <mkdir dir="${themes.build.dir}/simulator" />
-        <copy.theme.resources build.dir="${themes.build.dir}" name="android"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="android_dark"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="android_light"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="archaic"/>
@@ -123,7 +120,6 @@
         <copy.theme.resources build.dir="${themes.build.dir}" name="base3"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="bberry"/>
 		<copy.theme.resources build.dir="${themes.build.dir}" name="bb10"/>
-        <copy.theme.resources build.dir="${themes.build.dir}" name="honeycomb"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="ipad"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="iphone"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="simulator"/>

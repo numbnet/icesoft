@@ -11,13 +11,13 @@ as follows:
  |
  |--- base3 - CSS 3 common component classes
     |
-    |-- android - CSS 3 Android 2.x theme
+    |-- android_light - CSS 3 Android Light theme 
+    |
+    |-- android_dark - CSS 3 Android Dark theme 
     |
     |-- bberry - CSS 3 BlackBerry 6 & 7 theme
     |
     |-- bb10 - CSS 3 BlackBerry 10 Theme
-    |
-    |-- honeycomb - CSS 3 Android 3.x theme
     |
     |-- ipad - CSS 3 iPad component theme
     |
