@@ -32,5 +32,41 @@
             <resource name="override_styles.css" library="css"/>
         </depends-on>
     </resource>
+    <resource name="override_styles.css" library="css">
+        <depends-on>
+            <resource name="./xmlhttp/css/rime/rime.css" library="css"/>
+        </depends-on>
+    </resource>
+
+    <!-- These entries ensure that the .css files load before the .js ones in the head -->
+    <resource name="jsf.js" library="javax.faces">
+        <depends-on>
+			<!-- REPLACE these entries with the actual CSS files used in YOUR application
+			     (these are specifc to the ICEfaces Showcase sample app. )	           -->
+            <resource name="override_styles.css" library="css"/>
+        </depends-on>
+    </resource>
+    <resource name="bridge.js">
+        <depends-on>
+            <resource name="jsf.js" library="javax.faces"/>
+        </depends-on>
+    </resource>
+    <resource name="bridge.uncompressed.js">
+        <depends-on>
+            <resource name="jsf.js" library="javax.faces"/>
+        </depends-on>
+    </resource>
+    <resource name="util/ace-yui.js" library="icefaces.ace">
+        <depends-on>
+            <resource name="jsf.js" library="javax.faces"/>
+        </depends-on>
+    </resource>
+    <resource name="util/ace-jquery.js" library="icefaces.ace">
+        <depends-on>
+            <resource name="jsf.js" library="javax.faces"/>
+        </depends-on>
+    </resource>
+
+
 </dependencies>
 
