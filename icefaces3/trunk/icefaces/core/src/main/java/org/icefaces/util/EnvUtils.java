@@ -72,6 +72,7 @@ public class EnvUtils {
     public static String VERSIONABLE_TYPES = "org.icefaces.versionableTypes";
     public static String COALESCE_RESOURCES = "org.icefaces.coalesceResources";
     public static String WARN_BEFORE_SESSION_EXPIRY_INTERVAL = "org.icefaces.warnBeforeSessionExpiryInterval";
+    public static String CLIENT_SIDE_ELEMENT_UPDATE_DETERMINATION = "org.icefaces.clientSideElementUpdateDetermination";
 
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -184,6 +185,7 @@ public class EnvUtils {
      * A set of Strings representing all of the reserved words in Java
      */
     public static final HashSet<String> JAVA_RESERVED_WORDS;
+
     static{
         JAVA_RESERVED_WORDS = new HashSet(53);
         JAVA_RESERVED_WORDS.add("abstract");
@@ -1020,7 +1022,12 @@ public class EnvUtils {
 
     public static long getWarnBeforeExpiryInterval(FacesContext context) {
         return EnvConfig.getEnvConfig(context).warnBeforeExpiryInterval;
-    }}
+    }
+
+    public static boolean isClientSideElementupdateDetermination(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).clientSideElementupdateDetermination;
+    }
+}
 
 class EnvConfig {
     private static Logger log = Logger.getLogger(EnvConfig.class.getName());
@@ -1059,6 +1066,7 @@ class EnvConfig {
     public boolean reloadOnUpdateFailure;
     public boolean coalesceResources;
     public long warnBeforeExpiryInterval;
+    public boolean clientSideElementupdateDetermination;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -1098,6 +1106,7 @@ class EnvConfig {
         versionableTypes = decodeString(initMap, EnvUtils.VERSIONABLE_TYPES, DEFAULT_VERSIONABLE_TYPES, info);
         coalesceResources = decodeBoolean(initMap, EnvUtils.COALESCE_RESOURCES, false, info);
         warnBeforeExpiryInterval = decodeLong(initMap, EnvUtils.WARN_BEFORE_SESSION_EXPIRY_INTERVAL, -1L, info);
+        clientSideElementupdateDetermination = decodeBoolean(initMap, EnvUtils.CLIENT_SIDE_ELEMENT_UPDATE_DETERMINATION, false, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }
