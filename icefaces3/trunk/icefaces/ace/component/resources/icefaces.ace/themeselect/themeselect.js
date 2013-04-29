@@ -20,14 +20,17 @@ var ThemeSelect = ice.ace.ThemeSelect = function (clientId, cfg) {
     this.$sel = $(ice.ace.escapeClientId("select_" + clientId));
 
     if (cfg.behaviors) {
-        var changeBehaviour = cfg.behaviors['change'];
-        if (changeBehaviour) {
-            changeBehaviour.onsuccess = function() {
-                window.location.reload();
-            };
-        }
         ice.ace.attachBehaviors(this.$sel, cfg.behaviors);
     }
+
+    ice.onBeforeUpdate(function(response) {
+        var updates = response.getElementsByTagName('update');
+        for (var i = 0, l = updates.length; i < l; i++) {
+            if (updates[i].getAttribute('id') == clientId) {
+                window.location.reload();
+            }
+        }
+    });
 };
 
 ThemeSelect.prototype.destroy = function () {
