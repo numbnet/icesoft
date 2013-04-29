@@ -93,7 +93,6 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
                     boolean details = kid instanceof DataViewDetails;
 
                     if (details) initDetailContext(facesContext);
-
                     boolean done = kid.visitTree(context, callback);
 
                     if (details) removeDetailContext(facesContext);
@@ -167,6 +166,17 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
         initDetailContext(context);
         super.processRestoreState(context, state);
         removeDetailContext(context);
+
+        /* if not post-restore restoreState overwrites new active index */
+        if (ActivationMode.client.equals(getActivationMode()) && !decodedActive) {
+            String indexStr = context.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
+            if (indexStr != null) {
+                Integer newIndex = Integer.parseInt(indexStr);
+                if (newIndex != null) setActiveRowIndex(newIndex);
+            }
+
+            decodedActive = true;
+        }
     }
 
     private void removeDetailContext(FacesContext context) {
