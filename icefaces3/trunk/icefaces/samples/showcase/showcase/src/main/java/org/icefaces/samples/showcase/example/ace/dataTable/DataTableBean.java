@@ -63,6 +63,7 @@ import java.util.List;
             @MenuLink(title = "menu.ace.dataTable.subMenu.columnReordering", exampleBeanName = DataTableColumnReordering.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.columnResizing", exampleBeanName = DataTableColumnResizing.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.stackable", exampleBeanName = DataTableStackable.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dataTable.subMenu.dynamicColumns", exampleBeanName = DataTableDynamicColumns.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.filtering", exampleBeanName = DataTableFiltering.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.find", exampleBeanName = DataTableFind.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.grouping", exampleBeanName = DataTableGrouping.BEAN_NAME),
