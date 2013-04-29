@@ -176,6 +176,10 @@ public class ClientDescriptor implements Serializable{
         return icemobileContainer;
     }
     
+    public boolean isEnhancedBrowser(){
+        return isICEmobileContainer() || isSXRegistered();
+    }
+    
     public boolean isDesktopBrowser(){
         return formFactor == FORM_FACTOR.DESKTOP;
     }
