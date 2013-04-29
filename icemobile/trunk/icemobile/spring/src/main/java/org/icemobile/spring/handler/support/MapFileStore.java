@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.icemobile.application.FileResource;
 import org.icemobile.application.ResourceAdapter;
 import org.icemobile.application.ResourceStore;
+import org.icemobile.spring.handler.FileResourceAdapter;
 
 /**
  * A simple map-based ResourceStore of FileResources. 
@@ -37,7 +38,7 @@ public class MapFileStore implements ResourceStore<FileResource> {
     
     private Map<String,Map<String, FileResource>> wrappedMap;
     private Map<String,FileResource> uuidMap;
-    private ResourceAdapter<FileResource> resourceAdapter;
+    private ResourceAdapter<FileResource> resourceAdapter = new FileResourceAdapter();
     
     /**
      * Create a MapFileStore with a wrapped HashMap.
