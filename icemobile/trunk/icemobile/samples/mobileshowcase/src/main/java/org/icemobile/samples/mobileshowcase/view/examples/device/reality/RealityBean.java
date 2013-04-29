@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -105,6 +106,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     List<HashMap> markerList;
     private String selectedModel1 = "icemobile";
     private String selectedModel2 = "icemobile";
+    private HashMap bought = new HashMap();
 
     // upload error message
     private String uploadMessage;
@@ -279,7 +281,28 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         return selection;
     }
 
+    public Map getBought()  {
+        return bought;
+    }
+
     public void setSelection(String selection)  {
+        if (selection.contains("buy=buy"))  {
+            bought = new HashMap();
+            List parts = Arrays.asList(selection.split("&"));
+            if (parts.contains("icebreaker=on"))  {
+                bought.put("icebreaker", Boolean.TRUE);
+            } 
+            if (parts.contains("icecar=on"))  {
+                bought.put("icecar", Boolean.TRUE);
+            }
+            if (parts.contains("iceskate=on"))  {
+                bought.put("iceskate", Boolean.TRUE);
+            }
+            if (parts.contains("icesailer=on"))  {
+                bought.put("icesailer", Boolean.TRUE);
+            }
+            return;
+        }
         RealityMessage msg = messages.get(selection);
 		if( msg != null ){
 			this.selection = selection;
@@ -357,6 +380,5 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         fs.close();
     }
     
-
 }
 
