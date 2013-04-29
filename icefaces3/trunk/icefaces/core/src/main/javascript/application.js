@@ -522,6 +522,9 @@ if (!window.ice.icefaces) {
                     monitorFocusChanges(container);
                     restoreMonitorFocusChangesOnUpdate(container);
                 }
+                if (configuration.clientSideElementUpdateDetermination) {
+                    switchToClientSideElementUpdateDetermination();
+                }
                 setupDefaultIndicators(container, configuration);
                 //clear the event handlers on the elements that will most likely create a memory leak
                 onUnload(window, function() {
@@ -934,6 +937,43 @@ if (!window.ice.icefaces) {
             });
         });
 
+        function clientSideOnElementUpdate(id, callback) {
+            var element = lookupElementById(id);
+            var ancestorIDs = [];
+            var cursor = element;
+            while (cursor) {
+                var cursorID;
+                if (cursor == document.body) {
+                    cursorID = 'javax.faces.ViewBody';
+                } else if (cursor == document.documentElement) {
+                    cursorID = 'javax.faces.ViewRoot';
+                } else if (cursor == document.getElementsByTagName('head')[0]) {
+                    cursorID = 'javax.faces.ViewHead';
+                } else {
+                    cursorID = cursor.id;
+                }
+
+                if (cursorID) {
+                    ancestorIDs.push(cursorID);
+                }
+                cursor = cursor.parentNode;
+            }
+            append(elementUpdateListeners, {identifier: id, handler: callback, ancestors: ('*' + ancestorIDs.join('*') + '*')});
+            return removeCallbackCallback(elementUpdateListeners, function(c) {
+                return id == c.id;
+            });
+        }
+
+        function switchToClientSideElementUpdateDetermination() {
+            namespace.onElementUpdate = clientSideOnElementUpdate;
+            // determine which elements are about to be removed by an update,
+            // and clean them up while they're still in place
+            namespace.onBeforeUpdate(function(updates) {
+                each(updates.getElementsByTagName('update'), findAndNotifyUpdatedElements);
+                each(updates.getElementsByTagName('delete'), findAndNotifyUpdatedElements);
+            });
+        }
+
         function isAncestorOf(ancestor, element) {
             return ancestor == element || contains(parents(element), ancestor);
         }
@@ -1009,13 +1049,6 @@ if (!window.ice.icefaces) {
                 }
             }
         }
-
-        // determine which elements are about to be removed by an update,
-        // and clean them up while they're still in place
-        namespace.onBeforeUpdate(function(updates) {
-            each(updates.getElementsByTagName('update'), findAndNotifyUpdatedElements);
-            each(updates.getElementsByTagName('delete'), findAndNotifyUpdatedElements);
-        });
 
         //MyFaces uses a linked list of view state keys to track the changes in the view state -- the participating
         //forms need to have their view state key updated so that the next submit will work with the latest saved state
