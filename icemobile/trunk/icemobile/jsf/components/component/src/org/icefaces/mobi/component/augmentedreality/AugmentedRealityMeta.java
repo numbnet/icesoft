@@ -56,7 +56,11 @@ public class AugmentedRealityMeta extends UIComponentBaseMeta  {
     @Property(tlddoc = "The current value, typically the user-selected location or marker.", required = Required.no)
     private String value;
 	
-	@Property(tlddoc = "The label to display on the augmented reality button.", defaultValue="Augmented Reality", required = Required.no)
+	@Property(tlddoc = "The label to display on the augmented reality button.", defaultValue="Reality", required = Required.no)
     private String buttonLabel;
+
+    @Property(defaultValue="Reality Captured", tlddoc = "The button label displayed when Augmented Reality input has been captured.",
+        required = Required.no)
+    private String captureMessageLabel;
 
 }
