@@ -144,7 +144,7 @@
                 <mobi:augmentedReality  buttonLabel="3D Augmented Reality"
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}"
-                    disabled="#{not realityBean.ios}">
+                    disabled="#{not mobiClient.iOS}">
                     <mobi:augmentedRealityMarkers
                         value="#{realityBean.markers}" var="marker"
                         markerLabel="#{marker.label}"

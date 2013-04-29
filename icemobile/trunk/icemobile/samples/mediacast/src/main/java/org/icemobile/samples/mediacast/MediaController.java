@@ -283,10 +283,5 @@ public class MediaController implements Serializable {
 		showHelpPopup = val;
 	}
 	
-	public boolean isEnhancedBrowser(){
-	    ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-	    return client.isICEmobileContainer() || client.isSXRegistered();
-	}
-	
 
 }

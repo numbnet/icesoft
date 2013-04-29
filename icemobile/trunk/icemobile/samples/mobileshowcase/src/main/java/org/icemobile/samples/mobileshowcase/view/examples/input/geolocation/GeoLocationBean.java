@@ -163,10 +163,4 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
         this.altitude = 0;
         this.direction = 0;
     }
-    
-    public boolean isAndroidContainer(){
-        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        boolean result = client.isAndroidOS() && client.isICEmobileContainer();
-        return result;
-    }
 }

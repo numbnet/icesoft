@@ -357,9 +357,6 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         fs.close();
     }
     
-    public boolean isIos(){
-        return MobiJSFUtils.getClientDescriptor().isIOS();
-    }
 
 }
 
