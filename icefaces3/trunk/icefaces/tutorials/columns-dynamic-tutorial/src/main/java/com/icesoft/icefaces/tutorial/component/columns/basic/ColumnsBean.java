@@ -19,13 +19,15 @@ package com.icesoft.icefaces.tutorial.component.columns.basic;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.io.Serializable;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
-public class ColumnsBean
+public class ColumnsBean implements Serializable
 {
+	private static final long serialVersionUID = 1L;
     private List users = new ArrayList();
     private DataModel rowModel;
     private DataModel columnsModel = null;
