@@ -1097,7 +1097,6 @@ ice.mobi.geolocation = {
 
             /* set height to full visible size of parent */
             bodyDivWrapper.style.height = fullHeight + 'px';
-            bodyDivWrapper.style.overflow = 'auto';
 
             /* set height to full visible size of parent minus
              height of all following elements */
@@ -1151,7 +1150,6 @@ ice.mobi.geolocation = {
 
                     if (touch.pageY < detTop + 25) {
                         deactivateDetail();
-                        recalcScrollHeight();
                     }
                 }
             }
@@ -1182,8 +1180,13 @@ ice.mobi.geolocation = {
             y = y > -25 && y < 25;
             x = x > -25 && y < 25;
 
-            if (index == touchedRowIndex[e.changedTouches[0].identifier].i && y && x)
-                activateRow(e);
+            if (index == touchedRowIndex[e.changedTouches[0].identifier].i && y && x){
+                tapFlash(e.delegateTarget);
+
+                if (e.delegateTarget.classList.contains('ui-bar-e'))
+                    deactivateDetail()
+                else activateRow(e);
+            }
 
             touchedRowIndex[e.changedTouches[0].identifier] = null;
         }
@@ -1330,6 +1333,11 @@ ice.mobi.geolocation = {
             var det = getNode('det');
             det.removeAttribute('data-index');
             getIndexInput(det).setAttribute('value', '-1');
+            Array.prototype.every.call(getNode('bodyrows'), function(e) {
+                e.classList.remove('ui-bar-e');
+                return true
+            });
+            recalcScrollHeight();
         }
 
         function clearSort() {
@@ -1369,8 +1377,10 @@ ice.mobi.geolocation = {
             asc = ascClass == descendingClass || ascClass == blankInicatorClass;
             ascIndi.className = asc ? ascendingClass : descendingClass;
 
-            sortCriteria = sortCriteria.filter(function(c) { return c.index != columnIndex});
-            sortCriteria.push({ascending : asc, index : columnIndex});
+            // sortCriteria = sortCriteria.filter(function(c) { return c.index != columnIndex});
+
+            // forced single sort
+            sortCriteria = [{ascending : asc, index : columnIndex}];
 
             /* remove indicator from other cols */
             var sortedIndexes = sortCriteria.map(function(c) {return c.index});
@@ -1395,16 +1405,28 @@ ice.mobi.geolocation = {
             });
         }
 
+        function tapFlash(elem) {
+            elem.style.backgroundColor = '#194FDB';
+            elem.style.backgroundImage = 'none';
+            setTimeout(function() {
+                elem.style.backgroundColor = '';
+                elem.style.backgroundImage = '';
+            }, 100);
+        }
+
         function activateRow(event) {
             var newIndex = event.delegateTarget.getAttribute('data-index'),
                 details = getNode('det'),
                 indexIn = getIndexInput(details);
 
-            event.delegateTarget.style.backgroundColor = '#194FDB';
+            event.delegateTarget.classList.add('ui-bar-e');
 
-            setTimeout(function() {
-                event.delegateTarget.style.backgroundColor = '';
-            }, 100);
+            var sib = event.delegateTarget.nextElementSibling,
+                removeActiveClass = function (s) { s.classList.remove('ui-bar-e'); };
+
+            while (sib != null) {removeActiveClass(sib); sib = sib.nextElementSibling;};
+            sib = event.delegateTarget.previousElementSibling;
+            while (sib != null) {removeActiveClass(sib); sib = sib.previousElementSibling;};
 
             indexIn.setAttribute("value", newIndex);
             details.setAttribute("data-index", newIndex);

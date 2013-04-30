@@ -10,12 +10,13 @@ package org.icemobile.component;
 public interface IDataView extends IMobiComponent {
     public static final String DATAVIEW_CLASS = "mobi-dv ui-body-c";
     public static final String DATAVIEW_MASTER_CLASS = "mobi-dv-mst";
-    public static final String DATAVIEW_DETAIL_CLASS = "mobi-dv-det";
-    public static final String DATAVIEW_HEAD_CLASS = "mobi-dv-head ui-table";
-    public static final String DATAVIEW_FOOT_CLASS = "mobi-dv-foot ui-table";
-    public static final String DATAVIEW_BODY_CLASS = "mobi-dv-body ui-table table-stroke";
+    public static final String DATAVIEW_DETAIL_CLASS = "mobi-dv-det ui-body-c";
+    public static final String DATAVIEW_HEAD_CLASS = "mobi-dv-head";
+    public static final String DATAVIEW_FOOT_CLASS = "mobi-dv-foot";
+    public static final String DATAVIEW_BODY_CLASS = "mobi-dv-body";
     public static final String DATAVIEW_SORT_INDICATOR_CLASS = "mobi-dv-si";
     public static final String DATAVIEW_BOOL_COLUMN_CLASS = "mobi-dv-c-b";
+    public static final String DATAVIEW_ROW_ACTIVE_CLASS = "ui-bar-e";
 
     public String getVar();
     public void setVar(String var);

@@ -20,35 +20,29 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <h:form id="frmDataview" styleClass="dataviewpage">
-        <!--<ui:repeat value="#{dataViewBean.cars}" var="car">-->
-            <!--<mobi:inputText value="#{car.releaseDate}" type="date">-->
-                <!--<mobi:ajax execute="@this" render="@form" />-->
-            <!--</mobi:inputText>-->
-        <!--</ui:repeat>-->
-        <div>
-            <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="client">
-                <mobi:dataViewDetails>
-                    <h:inputText value="#{car.name}">
-                        <f:ajax execute="@this" render="@form" />
-                    </h:inputText>
-                    <h:outputText value="Manual:"
-                            style="margin-left: 2em;"/>
-                    <h:selectBooleanCheckbox value="#{car.manual}">
-                        <f:ajax execute="@this" render="@form" />
-                    </h:selectBooleanCheckbox>
-                </mobi:dataViewDetails>
+        <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="client"
+                rowStripe="true">
+            <mobi:dataViewDetails>
+                <h:inputText value="#{car.name}">
+                    <f:ajax execute="@this" render="@form" />
+                </h:inputText>
+                <h:outputText value="Manual:"
+                        style="margin-left: 2em;"/>
+                <h:selectBooleanCheckbox value="#{car.manual}">
+                    <f:ajax execute="@this" render="@form" />
+                </h:selectBooleanCheckbox>
+            </mobi:dataViewDetails>
 
-                <mobi:dataViewColumns>
-                    <mobi:dataViewColumn headerText="Model" value="#{car.name}" />
-                    <mobi:dataViewColumn type="bool" headerText="Manual" value="#{car.manual}" />
-                    <!--<mobi:dataViewColumn headerText="Chassis" value="#{car.chassisRealname}" />-->
-                    <!--<mobi:dataViewColumn type="date" headerText="Release" value="#{car.releaseDate}">-->
-                        <!--<f:convertDateTime type="date" dateStyle="short" />-->
-                    <!--</mobi:dataViewColumn>-->
-                    <mobi:dataViewColumn headerText="Cost" value="#{car.cost}" />
-                </mobi:dataViewColumns>
-            </mobi:dataView>
-        </div>
+            <mobi:dataViewColumns>
+                <mobi:dataViewColumn headerText="Model" value="#{car.name}" />
+                <mobi:dataViewColumn type="bool" headerText="Manual" value="#{car.manual}" />
+                <!--<mobi:dataViewColumn headerText="Chassis" value="#{car.chassisRealname}" />-->
+                <mobi:dataViewColumn type="date" headerText="Release" value="#{car.releaseDate}">
+                    <f:convertDateTime type="date" dateStyle="short" />
+                </mobi:dataViewColumn>
+                <mobi:dataViewColumn headerText="Cost" value="#{car.cost}" />
+            </mobi:dataViewColumns>
+        </mobi:dataView>
     </h:form>
     <h:outputText value="Subfooter component." />
 </ui:composition>
