@@ -57,6 +57,12 @@ public class DataViewMeta extends UIComponentBaseMeta {
     boolean disabled;
 
     @Property
+    boolean rowStripe;
+
+    @Property(defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    boolean rowStroke;
+
+    @Property
     String style;
 
     @Property

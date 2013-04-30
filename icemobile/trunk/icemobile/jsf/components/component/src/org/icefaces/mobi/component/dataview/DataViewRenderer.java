@@ -211,26 +211,35 @@ public class DataViewRenderer extends Renderer {
         ELContext elContext = context.getELContext();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String clientId = dvId;
+        String bodyClass = IDataView.DATAVIEW_BODY_CLASS;
+
+        if (dataView.isRowStroke()) bodyClass += " stroke";
+        if (dataView.isRowStripe()) bodyClass += " stripe";
 
         writer.startElement(HTML.DIV_ELEM, null);
         writer.startElement(HTML.TABLE_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_BODY_CLASS, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, bodyClass, null);
 
         if (columnModel.hasHeaders()) encodeHeaders(writer, columnModel, dataModel, false);
 
         writer.startElement(HTML.TBODY_ELEM, null);
 
         List<UIComponent> detailHolders = getDetailHolders(dataView.getDetails());
+        Integer activeIndex = dataView.getActiveRowIndex();
 
         for (IndexedIterator<Object> dataModelIterator = dataModel.iterator(); dataModelIterator.hasNext();) {
             Object rowData = dataModelIterator.next();
+            int index = dataModelIterator.getIndex();
             // Init row context
             requestMap.put(var, rowData);
 
             writer.startElement(HTML.TR_ELEM, null);
 
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_" + dataModelIterator.getIndex(), null);
-            writer.writeAttribute("data-index", dataModelIterator.getIndex(), null);
+            writer.writeAttribute("data-index", index, null);
+
+            if (activeIndex != null && activeIndex.equals(index))
+                writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_ROW_ACTIVE_CLASS, null);
 
             if (ActivationMode.client.equals(dataView.getActivationMode()))
                 writer.writeAttribute("data-state", encodeRowDetailString(context, detailHolders), null);
