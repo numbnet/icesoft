@@ -6,7 +6,7 @@
  * License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ *  
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
@@ -150,7 +150,7 @@ fieldset {
     display: inline;
     text-decoration: none;
     background-color: transparent;
-    background-image: url( "./css-images/cal_button.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/cal_button.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -162,7 +162,7 @@ fieldset {
     display: inline;
     text-decoration: none;
     background-color: transparent;
-    background-image: url( "./css-images/cal_off.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/cal_off.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -172,7 +172,7 @@ fieldset {
 
 .iceSelInpDateMonthYear,  .iceSelInpDateTime{
     background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/table_col_header.gif" );
     background-position: bottom;
     background-repeat: repeat-x;
     font-weight: normal;
@@ -204,7 +204,7 @@ fieldset {
     text-decoration: none;
     display: inline;
     background-color: transparent;
-    background-image: url( "./css-images/cal_arrow_left.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/cal_arrow_left.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -216,7 +216,7 @@ fieldset {
     text-decoration: none;
     display: inline;
     background-color: transparent;
-    background-image: url( "./css-images/cal_arrow_right.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/cal_arrow_right.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -299,7 +299,7 @@ fieldset {
 .iceDatTblColHdr , .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr{ 
 /* was iceTblHeader */
     background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/table_col_header.gif" );
     background-position: bottom;
     background-repeat: repeat-x;
     font-weight: normal;
@@ -364,7 +364,7 @@ fieldset {
 }
 
 .iceDatTblScrlSpr{ 
-    background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
+    background: url( '../xmlhttp/css/xp/css-images/table_col_header.gif' ) repeat-x bottom left; 
     background-color: #EFEFEF;
     border-top: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;
@@ -495,7 +495,7 @@ fieldset {
 
 .icePnlTbOn .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -504,7 +504,7 @@ fieldset {
 
 .icePnlTbOn .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -513,7 +513,7 @@ fieldset {
 
 .icePnlTbOn .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -522,7 +522,7 @@ fieldset {
 
 .icePnlTbOn .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -531,7 +531,7 @@ fieldset {
 
 .icePnlTbOn .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -560,7 +560,7 @@ fieldset {
 
 .icePnlTbOn .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -569,21 +569,21 @@ fieldset {
 
 .icePnlTbOn .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOn .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOn .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -601,7 +601,7 @@ fieldset {
 
 .icePnlTbOff .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -610,7 +610,7 @@ fieldset {
 
 .icePnlTbOff .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -619,7 +619,7 @@ fieldset {
 
 .icePnlTbOff .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -628,7 +628,7 @@ fieldset {
 
 .icePnlTbOff .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-mid.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -637,7 +637,7 @@ fieldset {
 
 .icePnlTbOff .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-mid-mid.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -660,7 +660,7 @@ fieldset {
 
 .icePnlTbOff .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-mid.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -669,21 +669,21 @@ fieldset {
 
 .icePnlTbOff .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOff .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOff .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -702,7 +702,7 @@ fieldset {
 
 .icePnlTbOver .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -711,7 +711,7 @@ fieldset {
 
 .icePnlTbOver .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -720,7 +720,7 @@ fieldset {
 
 .icePnlTbOver .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -729,7 +729,7 @@ fieldset {
 
 .icePnlTbOver .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -738,7 +738,7 @@ fieldset {
 
 .icePnlTbOver .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -767,7 +767,7 @@ fieldset {
 
 .icePnlTbOver .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -776,21 +776,21 @@ fieldset {
 
 .icePnlTbOver .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOver .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOver .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -844,7 +844,7 @@ fieldset {
 
 .icePnlTbOnBtm .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-left-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-on-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -852,7 +852,7 @@ fieldset {
 
 .icePnlTbOnBtm .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-on-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -860,7 +860,7 @@ fieldset {
 
 .icePnlTbOnBtm .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-right-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-on-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -868,7 +868,7 @@ fieldset {
 
 .icePnlTbOnBtm .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -877,7 +877,7 @@ fieldset {
 
 .icePnlTbOnBtm .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -900,7 +900,7 @@ fieldset {
 
 .icePnlTbOnBtm .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/on-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -909,7 +909,7 @@ fieldset {
 
 .icePnlTbOnBtm .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-on-left-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -917,7 +917,7 @@ fieldset {
 
 .icePnlTbOnBtm .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-on-mid-bot.gif" );
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -925,7 +925,7 @@ fieldset {
 
 .icePnlTbOnBtm .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-on-right-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -944,7 +944,7 @@ fieldset {
 
 .icePnlTbOffBtm .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-left-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-off-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -952,7 +952,7 @@ fieldset {
 
 .icePnlTbOffBtm .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-off-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -960,7 +960,7 @@ fieldset {
 
 .icePnlTbOffBtm .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-right-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-off-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -968,7 +968,7 @@ fieldset {
 
 .icePnlTbOffBtm .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-mid.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -977,7 +977,7 @@ fieldset {
 
 .icePnlTbOffBtm .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-mid-mid.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -1000,7 +1000,7 @@ fieldset {
 
 .icePnlTbOffBtm .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-mid.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -1009,7 +1009,7 @@ fieldset {
 
 .icePnlTbOffBtm .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-off-left-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1017,7 +1017,7 @@ fieldset {
 
 .icePnlTbOffBtm .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-off-mid-bot.gif" );
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -1025,7 +1025,7 @@ fieldset {
 
 .icePnlTbOffBtm .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-off-right-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1045,7 +1045,7 @@ fieldset {
 
 .icePnlTbOverBtm .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-left-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-over-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -1053,7 +1053,7 @@ fieldset {
 
 .icePnlTbOverBtm .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-over-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -1061,7 +1061,7 @@ fieldset {
 
 .icePnlTbOverBtm .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-right-top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-over-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -1069,7 +1069,7 @@ fieldset {
 
 .icePnlTbOverBtm .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -1078,7 +1078,7 @@ fieldset {
 
 .icePnlTbOverBtm .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -1101,7 +1101,7 @@ fieldset {
 
 .icePnlTbOverBtm .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/over-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -1110,7 +1110,7 @@ fieldset {
 
 .icePnlTbOverBtm .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-over-left-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1118,7 +1118,7 @@ fieldset {
 
 .icePnlTbOverBtm .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-over-mid-bot.gif" );
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -1126,7 +1126,7 @@ fieldset {
 
 .icePnlTbOverBtm .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/tbot-over-right-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1269,7 +1269,7 @@ fieldset {
     width: 100%;
     background-color: #2A6CC2;
     color: #FFFFFF;
-    background-image: url( ./css-images/cal_arrow_right.gif );
+    background-image: url( ../xmlhttp/css/xp/css-images/cal_arrow_right.gif );
     background-position: center right;
     background-repeat: no-repeat;
 }
@@ -1297,7 +1297,7 @@ fieldset {
 }
 
 .iceOutProgFill {
-    background-color: #026AFF; /* background-image:url(./css-images/window_top.gif);*/
+    background-color: #026AFF; /* background-image:url(../xmlhttp/css/xp/css-images/window_top.gif);*/
     background-position: top left;
     background-repeat: repeat-x;
     display: block;
@@ -1788,7 +1788,7 @@ fieldset {
 
 .icePnlPopHdr, .icePnlTlTipHdr {
     background-color: #DEDEDE;
-    background-image: url( "./css-images/window_top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/window_top.gif" );
     background-position: top;
     background-repeat: repeat-x;
     height: 2.0em;
@@ -2008,7 +2008,7 @@ fieldset {
 
 .icePnlTbOff .LftTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2019,7 +2019,7 @@ fieldset {
 
 .icePnlTbOff .MidTop-dis {
     background-color: #DEDEDE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url( '../xmlhttp/css/xp/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2028,7 +2028,7 @@ fieldset {
 
 .icePnlTbOff .RtTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2038,7 +2038,7 @@ fieldset {
 
 .icePnlTbOff .LftMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2047,7 +2047,7 @@ fieldset {
 
 .icePnlTbOff .MidMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2067,7 +2067,7 @@ fieldset {
 
 .icePnlTbOff .RtMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2076,21 +2076,21 @@ fieldset {
 
 .icePnlTbOff .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOff .MidBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOff .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2098,7 +2098,7 @@ fieldset {
 /* disabled bottom tab off */
 .icePnlTbOffBtm .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2109,7 +2109,7 @@ fieldset {
 
 .icePnlTbOffBtm .MidBtm-dis {
     background-color: #DEDEDE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url( '../xmlhttp/css/xp/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2118,7 +2118,7 @@ fieldset {
 
 .icePnlTbOffBtm .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2128,7 +2128,7 @@ fieldset {
 
 .icePnlTbOffBtm .LftMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2137,7 +2137,7 @@ fieldset {
 
 .icePnlTbOffBtm .MidMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2157,7 +2157,7 @@ fieldset {
 
 .icePnlTbOffBtm .RtMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2166,21 +2166,21 @@ fieldset {
 
 .icePnlTbOffBtm .LftTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOffBtm .MidTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOffBtm .RtTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2189,7 +2189,7 @@ fieldset {
 
 .icePnlTbOnBtm .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2200,7 +2200,7 @@ fieldset {
 
 .icePnlTbOnBtm .MidBtm-dis {
     background-color: #DEDEDE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url( '../xmlhttp/css/xp/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2209,7 +2209,7 @@ fieldset {
 
 .icePnlTbOnBtm .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2219,7 +2219,7 @@ fieldset {
 
 .icePnlTbOnBtm .LftMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2228,7 +2228,7 @@ fieldset {
 
 .icePnlTbOnBtm .MidMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2247,7 +2247,7 @@ fieldset {
 
 .icePnlTbOnBtm .RtMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2256,21 +2256,21 @@ fieldset {
 
 .icePnlTbOnBtm .LftTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOnBtm .MidTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOnBtm .RtTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2282,7 +2282,7 @@ fieldset {
 
 .icePnlTbOn .LftTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2293,7 +2293,7 @@ fieldset {
 
 .icePnlTbOn .MidTop-dis {
     background-color: #DEDEDE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url( '../xmlhttp/css/xp/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2302,7 +2302,7 @@ fieldset {
 
 .icePnlTbOn .RtTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2312,7 +2312,7 @@ fieldset {
 
 .icePnlTbOn .LftMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2321,7 +2321,7 @@ fieldset {
 
 .icePnlTbOn .MidMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2340,7 +2340,7 @@ fieldset {
 
 .icePnlTbOn .RtMid-dis {
     background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2349,21 +2349,21 @@ fieldset {
 
 .icePnlTbOn .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOn .MidBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOn .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2427,7 +2427,7 @@ Disabled classes for the calendar controls
 
 .iceSelInpDateMonthYear-dis {
     background-color: #EFEFEF;
-    /*    background-image: url("./css-images/table_col_header.gif");
+    /*    background-image: url("../xmlhttp/css/xp/css-images/table_col_header.gif");
     background-position:bottom;
     background-repeat:repeat-x;*/
     font-weight: normal;
@@ -2527,10 +2527,10 @@ Disabled classes for the calendar controls
     height:10px;
 }
 .iceCmdSrtHdrAsc{
-    background-image: url('./css-images/column_sort_asc.gif');
+    background-image: url('../xmlhttp/css/xp/css-images/column_sort_asc.gif');
 }
 .iceCmdSrtHdrDesc{
-    background-image: url('./css-images/column_sort_desc.gif');
+    background-image: url('../xmlhttp/css/xp/css-images/column_sort_desc.gif');
 }
 
 .iceCmdSrtHdr td {
@@ -2761,7 +2761,7 @@ Disabled classes for the calendar controls
 /* common accordion headers */
 .icePnlClpsblHdr, .icePnlClpsblColpsdHdr {
     background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/table_col_header.gif" );
     background-position: bottom;
     background-repeat: repeat-x;
     font-weight: bold;
@@ -2791,7 +2791,7 @@ Disabled classes for the calendar controls
 }
 
 .icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis {
-    background: #EFEFEF url( './css-images/table_col_header_dis.gif' ) repeat-x bottom;
+    background: #EFEFEF url( '../xmlhttp/css/xp/css-images/table_col_header_dis.gif' ) repeat-x bottom;
     font-weight: bold;
     text-align: left;
     color: #999;
@@ -2901,7 +2901,7 @@ Disabled classes for the calendar controls
 
 .icePnlCnfHdr {
     background-color: #DEDEDE;
-    background-image: url( "./css-images/window_top.gif" );
+    background-image: url( "../xmlhttp/css/xp/css-images/window_top.gif" );
     background-position: top;
     background-repeat: repeat-x;
     height: auto;

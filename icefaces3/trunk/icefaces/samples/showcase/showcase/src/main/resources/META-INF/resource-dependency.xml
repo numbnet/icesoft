@@ -34,7 +34,12 @@
     </resource>
     <resource name="override_styles.css" library="css">
         <depends-on>
-            <resource name="./xmlhttp/css/rime/rime.css" library="css"/>
+            <resource name="rime.css" library="ice.compat/rime"/>
+            <resource name="rime.css" library="ice.compat/rime-accessible"/>
+            <resource name="royale.css" library="ice.compat/royale"/>
+            <resource name="royale.css" library="ice.compat/royale-accessible"/>
+            <resource name="xp.css" library="ice.compat/xp"/>
+            <resource name="xp.css" library="ice.compat/xp-accessible"/>
         </depends-on>
     </resource>
 

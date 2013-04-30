@@ -1,42 +1,83 @@
 /*
- * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the
- * License. You may obtain a copy of the License at
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS
- * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ *
  */
 
 /* Basic CSS styles This stylesheet is intended to match the style of the default Windows XP UI */
 /* Default CSS styles. These styles override the basic HTML tags on the page  */
-/* Version received from KF Apr 01 2006 v1.2   */
+/* Updated Mar 2006 to include styles for new components  */
 
 /*
 =================== Font Family, Size and Color ==============
 */
 
+/* set the attributes for the font family, size and color for ALL elements on the page */
+/* make the fonts inside tables and forms == the default size of the page */
+body, table {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .95em;
+    color: #000000;
+}
+
+/* now set the size and other attributes of the fonts for any of the form elements for non-ICE form elements. (note this will also affect any ICE components that render out any of the following HTML tags  */
+input, textarea, select {
+
+}
 
 /*
 =================== HTML Form Element Appearence ==============
 */
+/* set the style elements for any of the textarea form elements   */
+textarea {
+}
 
 fieldset {
     border: 0px none ;  
+}
+
+/* set the style elements for any of the select form elements   */
+select {
+}
+
+/* set the style elements for any of the input form elements   */
+input {
 }
 
 /*
 =================== Style class definitions for ICE Standard Extended Component Appearance ==============
 */
 .iceInpTxt, .iceInpSecrt, .iceInpTxtArea {
-    border: 1px solid #ABABAB;
-    margin: 0px;
+    border: 1px solid #0056EA;
+    background-color: #FFFFFF;
+    margin: 2px;
     padding: 2px;
 }
 
@@ -55,35 +96,46 @@ fieldset {
 
 .iceInpTxt, .iceInpSecrt {
     font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
     padding: 2px;
+
 }
 
 .iceSelOneMnu, .iceSelMnyLb, .iceSelMnyMnu, .iceSelOneLb {
     font-family: Arial, Helvetica, sans-serif;
-    padding: 1px;
+    color: #000000;
+    padding: 2px;
     margin: 2px;
 }
 
 .iceInpTxtArea {
     font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+    padding: 2px;
+}
+
+.iceOutTxt, .iceOutLbl {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.iceCmdBtn {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+    background-color: #DEDEDE;
+    border: 1px solid #0056EA;
+    margin: 2px;
     padding: 2px;
 }
 
 .iceCmdLnk, .iceOutLnk {
     text-decoration: none;
     font-weight: normal;
-}
-
-.iceOutTxt, .iceOutLbl {
-    font-family: Arial, Helvetica, sans-serif;
-    padding-left: 0px;
-    padding-right: 4px;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-.iceCmdBtn {
-    font-family: Arial, Helvetica, sans-serif;
+    color: #000033;
 }
 
 /*
@@ -94,8 +146,8 @@ fieldset {
 */
 .iceSelInpDate {
 /* calendar outline & background color */
-    background-color: #FFFFFF;
-    border: 1px solid #ABABAB; /* removed margin from calendar outline - better absolute positioning of popup */
+    background-color: #DEDEDE;
+    border: 2px solid #0056EA; /* removed margin from calendar outline - better absolute positioning of popup */
 /*margin:10px;*/
 }
 
@@ -106,47 +158,19 @@ fieldset {
    filter: mask();
 } 
 
-.iceSelInpDatePopup {
-    min-width: 172px;
-}
-
 .iceSelInpDateInput {
     width: 150px;
     margin: 2px;
 }
 
-input.iceSelInpDateOpenPopup, input.iceSelInpDateOpenPopup-dis {
-    display: inline;
-    text-decoration: none;
-    background-color: transparent;
-    background-image: url(css-images/cal_button.gif);
-    background-repeat: no-repeat;
-    text-align: center;
-    border: none;
-    width: 16px;
-    height: 16px;
-}
-
-input.iceSelInpDateClosePopup {
-    display: inline;
-    text-decoration: none;
-    background-color: transparent;
-    background-image: url(css-images/cal_off.gif);
-    background-repeat: no-repeat;
-    text-align: center;
-    border: none;
-    width: 16px;
-    height: 16px;
-}
-
 .iceSelInpDateMonthYear, .iceSelInpDateTime{
-    background-color: #EFEFEF;
-    background-image: url(css-images/table_col_header.gif);
-    background-position: bottom;
+    background-color: #026AFF;
+    background-image: url( "../xmlhttp/css/royale/css-images/table_col_header.gif" );
+    background-position: top;
     background-repeat: repeat-x;
     font-weight: normal;
     text-align: center;
-    color: #000000;
+    color: #FFFFFF;
     padding-left: 1px;
     padding-right: 1px;
     padding-top: 4px;
@@ -154,53 +178,26 @@ input.iceSelInpDateClosePopup {
 }
 
 .iceSelInpDateTime{
-    border-left: 1px solid #d9d9d9;
-    border-bottom: 1px solid #d9d9d9;
-    border-right: 1px solid #d9d9d9;        
+    border-left: 1px solid #2A6CC2;
+    border-bottom: 1px solid #2A6CC2;
+    border-right: 1px solid #2A6CC2;       
 }
 
 .iceSelInpDateMoYrDropdown, .iceSelInpDateTimeDropDown {
-    background-color: #EFEFEF;
+    background-color: #026AFF;
     font-weight: bold;
-    color: #000000;
-}
-
-.iceSelInpDateMonthYear img {
-    border: none;
-}
-
-.iceSelInpDateMovePrev {
-    text-decoration: none;
-    display: inline;
-    background-color: transparent;
-    background-image: url(css-images/cal_arrow_left.gif);
-    background-repeat: no-repeat;
-    text-align: center;
-    border: none;
-    width: 17px;
-    height: 16px;
-}
-
-.iceSelInpDateMoveNext {
-    text-decoration: none;
-    display: inline;
-    background-color: transparent;
-    background-image: url(css-images/cal_arrow_right.gif);
-    background-repeat: no-repeat;
-    text-align: center;
-    border: none;
-    width: 17px;
-    height: 16px;
+    color: #FFFFFF;
 }
 
 .iceSelInpDateWeek, .iceSelInpDateWeekNumHdr {
 /* the days of the week row */
     font-weight: normal;
-    color: #2A6CC2;
+    color: #FFFFFF;
     text-align: center;
     padding-left: 5px;
     padding-right: 5px;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #2A6CC2;
+    background-color: #2A6CC2;
 }
 
 .iceSelInpDateWeekNum, .iceSelInpDateWeekNum-dis {
@@ -222,10 +219,9 @@ input.iceSelInpDateClosePopup {
 .iceSelInpDateDay a {
 /* the day text */
     text-decoration: none;
-    background-color: #FFFFFF;
-    /*border: 1px solid #FFFFFF;*/
+    background-color: #DEDEDE;
     color: #000000;
-    width: 100%;
+    width: auto;
     height: 100%;
     padding: 0px;
     display: block;
@@ -237,7 +233,7 @@ input.iceSelInpDateClosePopup {
 .iceSelInpDateCur a {
     text-decoration: none;
     background-color: #2A6CC2;
-    border: 1px solid #2A6CC2;
+    border: 0px;
     color: #FFFFFF;
     width: 100%;
     height: 100%;
@@ -252,67 +248,141 @@ input.iceSelInpDateClosePopup {
     color: #2A6CC2;
 }
 
+#calendarForm {
+    padding: 0px;
+    margin: 0px;
+}
+
+.iceSelInpDatePopup {
+    min-width: 172px;
+}
+
+.iceSelInpDateOpenPopup, .iceSelInpDateOpenPopup-dis {
+    display: inline;
+    text-decoration: none;
+    background-color: transparent;
+    background-image: url( "../xmlhttp/css/royale/css-images/cal_button.gif" );
+    background-repeat: no-repeat;
+    text-align: center;
+    border: none;
+    width: 16px;
+    height: 16px;
+}
+.iceSelInpDateClosePopup {
+    display: inline;
+    text-decoration: none;
+    background-color: transparent;
+    background-image: url( "../xmlhttp/css/royale/css-images/cal_off.gif" );
+    background-repeat: no-repeat;
+    text-align: center;
+    border: none;
+    width: 16px;
+    height: 16px;
+}
+.iceSelInpDateMovePrev {
+    text-decoration: none;
+    display: inline;
+    background-color: transparent;
+    background-image: url( "../xmlhttp/css/royale/css-images/cal_arrow_left.gif" );
+    background-repeat: no-repeat;
+    text-align: center;
+    border: none;
+    width: 17px;
+    height: 16px;
+}
+.iceSelInpDateMoveNext {
+    text-decoration: none;
+    display: inline;
+    background-color: transparent;
+    background-image: url( "../xmlhttp/css/royale/css-images/cal_arrow_right.gif" );
+    background-repeat: no-repeat;
+    text-align: center;
+    border: none;
+    width: 17px;
+    height: 16px;
+}
+
 /*
 ----------- Data Table Component classes
 */
 .iceDatTbl { /* was iceDataTblOutline */
-    border: 1px solid #ABABAB;
-    margin: 0px;
+    background-color: #FFFFFF;
+    border: 2px solid #0056EA;
+    margin: 10px;
 }
 
 .iceDatTbl table{
 	border-collapse:collapse;
 }
 
-.iceDatTblColHdr , .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr{ 
-/* was iceTblHeader */
-    background-color: #EFEFEF;
-    background-image: url(css-images/table_col_header.gif);
-    background-position: bottom;
+.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr { /* was iceTblHeader */
+/*the header of a data tables */
+    background-color: #026AFF;
+    background-image: url( "../xmlhttp/css/royale/css-images/table_col_header.gif" );
+    background-position: top;
     background-repeat: repeat-x;
     font-weight: normal;
     text-align: center;
-    color: #000000;
-    border-right: 1px solid #CCCCCC;
-    border-top: 1px solid #CCCCCC;
+    color: #FFFFFF;
+    border-right: 1px solid #026AFF;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-top: 1px solid #0056EA; /*border-right:1px solid #CCCCCC;*/
+}
+
+.iceDatTblColHdr .iceOutTxt, .iceDatTblColHdr1 .iceOutTxt, .iceDatTblColHdr2 .iceOutTxt {
+    color: #FFFFFF;
+}
+
+.iceDatTblColHdr .iceOutLbl, .iceDatTblColHdr1 iceOutLbl, .iceDatTblColHdr2 .iceOutLbl {
+    color: #FFFFFF;
 }
 
 /* data tables are rendered with alternating row colors */
 .iceDatTblRow1 { /* was iceTblRow1 */
+    background-color: #DEDEDE;
 }
 
 .iceDatTblRow2 { /* was iceTblRow2 */
+    background-color: #FFFFFF;
 }
 
 /* set the common attributes for the column classes */
 .iceDatTblCol, .iceDatTblCol1, .iceDatTblCol2{
 /*was column, column1, column2, column3*/
-    border-right: 1px solid #CCCCCC;
-    border-bottom: 1px solid #CCCCCC;
-	text-align:left;    
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-right: 1px solid #0056EA;
+    border-bottom: 1px solid #0056EA;
 }
 
 .iceDatTblHdr{} /*was iceTblHeader */
 .iceDatTblFtr {
     background: none;
-    border-top: 1px solid #CCCCCC;  
+    border-top: 1px solid #026AFF;  
 }
 
 .iceDatTblScrlSpr{ 
-    background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
-    background-color: #EFEFEF;
-    border-top: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;
+    background: url( '../xmlhttp/css/royale/css-images/table_col_header.gif' ) repeat-x top left; 
+    background-color: #026AFF;
+    border-top: 1px solid #026AFF;
+    border-right: 1px solid #026AFF;
 }
 
 .iceDatTblScrlSprFtr{ 
-    border-bottom: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;        
+    border-bottom: 1px solid #026AFF;
+    border-right: 1px solid #026AFF;        
 }
 
 .iceDatTblScrlSprFtr .iceDatTblFtr{ 
     border-bottom: none;     
 }
+
 
 .iceDatTblScrlSpr .iceDatTblColHdr1, .iceDatTblScrlSpr .iceDatTblColHdr2 {
     border-left-style: none;
@@ -323,7 +393,7 @@ input.iceSelInpDateClosePopup {
     margin:0px;; 
     padding:0px;
     border-width: 0px;
-    width:1px;
+    width:2px;
     background-color:transparent;
  
 }
@@ -332,32 +402,24 @@ input.iceSelInpDateClosePopup {
     margin:0px;; 
     padding:0px;
     width:1px;
-    background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-color: #026AFF;
     background-position: bottom;
     background-repeat: repeat-x;
 }
 
-.iceDatTblActvSrtHdr{}
-
 .iceDatTblBlkTd {
-   border-bottom: 1px solid #CCCCCC;    
+   border-bottom: 1px solid #0056EA; 
+   background-color: #026AFF;   
 }
 
-.portlet-section-header .iceDatTblResBor {
-   padding:0px;
-}
-
-.portlet-section-body .iceDatTblBlkTd {
-   padding:0px;	
-}
+.iceDatTblActvSrtHdr{}
 /*
 ----- for datatable when cell content length exceeds-----
 */
 .iceDatTbl td span.iceOutTxt{
-  display:block;
-  overflow:hidden;
-  padding:2px 0; 
+	overflow: hidden;
+	display: block;
+	padding: 2px 0px;	
 }
 /* etc */
 
@@ -370,34 +432,43 @@ input.iceSelInpDateClosePopup {
     margin: 10px;
 }
 
-
-
-.iceDatPgrTbl {
-/* the container for the pagination*/
+.iceDatPgrScrBtn {
+/* the cells behind the scroll buttons */
+    background-color: #FFFFFF;
+    padding: 2px;
 }
 
 .iceDatPgrScrBtn .iceCmdLnk-dis {
        border-bottom:none;
 }
 
-.iceDatTblScrlSpr{ 
-    background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
-    border-top: 1px solid #CCCCCC; 
-    border-right: 1px solid #CCCCCC;
-}
-.iceDatTblScrlSpr .iceDatTblColHdr1, .iceDatTblScrlSpr .iceDatTblColHdr2 {
-    border-left-style: none;
-    border-top-style: none;
+.iceDatPgrTbl {
+/* the container for the pagination*/
+    background-color: #CCCCCC;
 }
 
 /* set the common attributes for the pagination numbers */
 .iceDatPgrScrCol a, .iceDatPgrCol a {
     text-decoration: none;
     font-weight: normal;
-    display: block;
+    background-color: #CCCCCC;
+    color: #666666;
+    /*display: block;*/
     padding-left: 5px;
     padding-right: 5px;
-    border: 1px solid #FFFFFF;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border: 1px solid #CCCCCC;
+}
+
+/* set the common attributes for the pagination numbers */
+.iceDatPgrScrCol input, .iceDatPgrCol input, .iceDatPgrScrBtn input {
+    text-decoration: none;
+    font-weight: normal;
+    background-color: #CCCCCC;
+    color: #666666;
+    /*display: block;*/
+    border: 1px solid #CCCCCC;
 }
 
 * html .iceDatPgrCol a {
@@ -411,12 +482,24 @@ input.iceSelInpDateClosePopup {
     background-color: #2A6CC2;
 }
 
+.iceDatPgrScrCol input {
+    color: #FFFFFF;
+    border: 1px solid #2A6CC2;
+    background-color: #2A6CC2;
+}
+
 * html .iceDatPgrScrCol a {
     width: 1%;
 }
 
 /* set the attributes for the mouseover on none-current pages */
 .iceDatPgrCol a:hover {
+    color: #000000;
+    border: 1px solid #2A6CC2;
+}
+
+.iceDatPgrCol input.iceCmdLnkJSDis:hover, .iceDatPgrScrBtn input.iceCmdLnkJSDis:hover {
+    color: #000000;
     border: 1px solid #2A6CC2;
 }
 
@@ -425,7 +508,7 @@ input.iceSelInpDateClosePopup {
 */
 .fileTreeOutlineClass {
     background-color: #FFFFFF;
-    border: 1px solid #ABABAB;
+    border: 2px solid #0056EA;
     margin: 10px;
 }
 
@@ -440,28 +523,24 @@ input.iceSelInpDateClosePopup {
     padding: 4px;
 }
 
-.treeTableHdrClass {
-
-}
-
 /*
 ----------- Tabbed Pane Component classes
 */
 
 /* tabOn style classes */
 
-.icePnlTbOn { /* was iceTabSetTabOn */
+.icePnlTbOn { /*was iceTabSetTabOn*/
+
 }
 
 .icePnlTbOn .MidMid td{
-	font-weight: bold;
     white-space: nowrap;
     text-align: center;    	
 }
 
 .icePnlTbOn .LftTop {
     background-color: transparent;
-    background-image: url(css-images/on-left-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -470,7 +549,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOn .MidTop {
     background-color: transparent;
-    background-image: url(css-images/on-mid-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -479,7 +558,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOn .RtTop {
     background-color: transparent;
-    background-image: url(css-images/on-right-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -488,7 +567,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOn .LftMid {
     background-color: transparent;
-    background-image: url(css-images/on-left-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -497,14 +576,14 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOn .MidMid {
     background-color: transparent;
-    background-image: url(css-images/on-mid-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
     white-space: nowrap;
 }
 
-.icePnlTbOn .MidMid a {
+.icePnlTbOn .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -512,16 +591,16 @@ input.iceSelInpDateClosePopup {
     padding-top: 5px;
     padding-right: 15px;
     padding-left: 15px;
+
 }
 
-
-* html .icePnlTbOn .MidMid a {
-    height: 1%;
+* html .icePnlTbOn .MidMid>a {
+    width: 1%;
 }
 
 .icePnlTbOn .RtMid {
     background-color: transparent;
-    background-image: url(css-images/on-right-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -530,28 +609,28 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOn .LftBtm {
     background-color: transparent;
-    background-image: url(css-images/on-left-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOn .MidBtm {
     background-color: transparent;
-    background-image: url(css-images/on-mid-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOn .RtBtm {
     background-color: transparent;
-    background-image: url(css-images/on-right-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 /* tabOff style classes */
 
-.icePnlTbOff { /* was iceTabSetTabOff*/
+.icePnlTbOff { /* was iceTabSetTabOff */
 
 }
 
@@ -562,7 +641,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOff .LftTop {
     background-color: transparent;
-    background-image: url(css-images/off-left-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -571,7 +650,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOff .MidTop {
     background-color: transparent;
-    background-image: url(css-images/off-mid-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -580,7 +659,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOff .RtTop {
     background-color: transparent;
-    background-image: url(css-images/off-right-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -589,8 +668,8 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOff .LftMid {
     background-color: transparent;
-    background-image: url(css-images/off-left-mid.gif);
-    background-repeat: no-repeat;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-mid.gif" );
+    background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
     border: none;
@@ -598,14 +677,14 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOff .MidMid {
     background-color: transparent;
-    background-image: url(css-images/off-mid-mid.gif);
-    background-repeat: repeat-x;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-mid.gif" );
+    background-repeat: repeat;
     text-align: center;
     border: none;
     white-space: nowrap;
 }
 
-.icePnlTbOff .MidMid a {
+.icePnlTbOff .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -615,14 +694,14 @@ input.iceSelInpDateClosePopup {
     padding-left: 15px;
 }
 
-* html .icePnlTbOff .MidMid a {
-    height: 1%;
+* html .icePnlTbOff .MidMid>a {
+    width: 1%;
 }
 
 .icePnlTbOff .RtMid {
     background-color: transparent;
-    background-image: url(css-images/off-right-mid.gif);
-    background-repeat: no-repeat;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-mid.gif" );
+    background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
     border: none;
@@ -630,28 +709,28 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOff .LftBtm {
     background-color: transparent;
-    background-image: url(css-images/off-left-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOff .MidBtm {
     background-color: transparent;
-    background-image: url(css-images/off-mid-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOff .RtBtm {
     background-color: transparent;
-    background-image: url(css-images/off-right-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 /* tabOver style classes */
 
-.icePnlTbOver { /* was iceTabSetTabOver */
+.icePnlTbOver { /* was iceTabSetTabOver*/
 
 }
 
@@ -660,10 +739,9 @@ input.iceSelInpDateClosePopup {
     text-align: center;    	
 }
 
-
 .icePnlTbOver .LftTop {
     background-color: transparent;
-    background-image: url(css-images/over-left-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -672,7 +750,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOver .MidTop {
     background-color: transparent;
-    background-image: url(css-images/over-mid-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -681,7 +759,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOver .RtTop {
     background-color: transparent;
-    background-image: url(css-images/over-right-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -690,7 +768,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOver .LftMid {
     background-color: transparent;
-    background-image: url(css-images/over-left-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -699,14 +777,14 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOver .MidMid {
     background-color: transparent;
-    background-image: url(css-images/over-mid-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
     white-space: nowrap;
 }
 
-.icePnlTbOver .MidMid a {
+.icePnlTbOver .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -716,13 +794,13 @@ input.iceSelInpDateClosePopup {
     padding-left: 15px;
 }
 
-* html .icePnlTbOver .MidMid a {
-    height: 1%;
+* html .icePnlTbOver .MidMid>a {
+    width: 1%;
 }
 
 .icePnlTbOver .RtMid {
     background-color: transparent;
-    background-image: url(css-images/over-right-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -731,21 +809,21 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOver .LftBtm {
     background-color: transparent;
-    background-image: url(css-images/over-left-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOver .MidBtm {
     background-color: transparent;
-    background-image: url(css-images/over-mid-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOver .RtBtm {
     background-color: transparent;
-    background-image: url(css-images/over-right-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -754,24 +832,10 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbSetSpcr {
     width: 100%;
-    border-bottom: 1px solid #ABABAB;
+    border-bottom: 1px solid #0056EA;
 }
-
-/* tabPanel */
-.icePnlTbSet { /* was iceTabSet*/
+.icePnlTbSet { /* was iceTabSet */
     width: 100%;
-    background: transparent;
-    border-collapse: separate;
-}
-
-.icePnlTbSetCnt { /*newly added class*/
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    border-right: 1px solid #ABABAB;
-    border-bottom: 1px solid #ABABAB;
-    border-left: 1px solid #ABABAB;
 }
 
 .icePnlTbSetCntBtm { /*was iceTabSetBottom*/
@@ -779,28 +843,38 @@ input.iceSelInpDateClosePopup {
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 10px;
-    border-right: 1px solid #ABABAB;
-    border-top: 1px solid #ABABAB;
-    border-left: 1px solid #ABABAB;
+    border-right: 2px solid #0056EA;
+    border-top: 2px solid #0056EA;
+    border-left: 2px solid #0056EA;
+    background-color: #FFFFFF;
+}
+
+.icePnlTbSetCnt { /* newly added class*/
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    border-right: 2px solid #0056EA;
+    border-bottom: 2px solid #0056EA;
+    border-left: 2px solid #0056EA;
     background-color: #FFFFFF;
 }
 
 /* TABS ON BOTTOM STYLE CLASSES */
 /* tabOn style classes */
 
-.icePnlTbOnBtm {
+.icePnlTbOnBtm { /* was iceTabSetTabOnBottom*/
 
 }
 
 .icePnlTbOnBtm .MidMid td{
-	font-weight: bold;
     white-space: nowrap;
     text-align: center;    	
 }
 
 .icePnlTbOnBtm .LftTop {
     background-color: transparent;
-    background-image: url(css-images/tbot-on-left-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -808,7 +882,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOnBtm .MidTop {
     background-color: transparent;
-    background-image: url(css-images/tbot-on-mid-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -816,7 +890,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOnBtm .RtTop {
     background-color: transparent;
-    background-image: url(css-images/tbot-on-right-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -824,7 +898,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOnBtm .LftMid {
     background-color: transparent;
-    background-image: url(css-images/on-left-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -833,14 +907,14 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOnBtm .MidMid {
     background-color: transparent;
-    background-image: url(css-images/on-mid-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
     white-space: nowrap;
 }
 
-.icePnlTbOnBtm .MidMid a {
+.icePnlTbOnBtm .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -850,13 +924,13 @@ input.iceSelInpDateClosePopup {
     padding-left: 15px;
 }
 
-* html .icePnlTbOnBtm .MidMid a {
-    height: 1%;
+* html .icePnlTbOnBtm .MidMid>a {
+    width: 1%;
 }
 
 .icePnlTbOnBtm .RtMid {
     background-color: transparent;
-    background-image: url(css-images/on-right-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/on-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -865,7 +939,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOnBtm .LftBtm {
     background-color: transparent;
-    background-image: url(css-images/tbot-on-left-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-left-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -873,7 +947,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOnBtm .MidBtm {
     background-color: transparent;
-    background-image: url(css-images/tbot-on-mid-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-mid-bot.gif" );
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -881,7 +955,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOnBtm .RtBtm {
     background-color: transparent;
-    background-image: url(css-images/tbot-on-right-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-right-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -900,31 +974,31 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOffBtm .LftTop {
     background-color: transparent;
-    background-image: url(css-images/tbot-off-left-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-left-top.gif" );
     background-repeat: no-repeat;
-    text-align: center;
+    text-align: center; /*padding-top:5px;    */
     border: none;
 }
 
 .icePnlTbOffBtm .MidTop {
     background-color: transparent;
-    background-image: url(css-images/tbot-off-mid-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-mid-top.gif" );
     background-repeat: repeat-x;
-    text-align: center;
+    text-align: center; /*padding-top:5px;  */
     border: none;
 }
 
 .icePnlTbOffBtm .RtTop {
     background-color: transparent;
-    background-image: url(css-images/tbot-off-right-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-right-top.gif" );
     background-repeat: no-repeat;
-    text-align: center;
+    text-align: center; /*padding-top:5px;    */
     border: none;
 }
 
 .icePnlTbOffBtm .LftMid {
     background-color: transparent;
-    background-image: url(css-images/off-left-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-mid.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -933,14 +1007,14 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOffBtm .MidMid {
     background-color: transparent;
-    background-image: url(css-images/off-mid-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-mid.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
     white-space: nowrap;
 }
 
-.icePnlTbOffBtm .MidMid a {
+.icePnlTbOffBtm .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -950,13 +1024,13 @@ input.iceSelInpDateClosePopup {
     padding-left: 15px;
 }
 
-* html .icePnlTbOffBtm .MidMid a {
-    height: 1%;
+* html .icePnlTbOffBtm .MidMid>a {
+    width: 1%;
 }
 
 .icePnlTbOffBtm .RtMid {
     background-color: transparent;
-    background-image: url(css-images/off-right-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-mid.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -965,7 +1039,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOffBtm .LftBtm {
     background-color: transparent;
-    background-image: url(css-images/tbot-off-left-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-left-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -973,7 +1047,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOffBtm .MidBtm {
     background-color: transparent;
-    background-image: url(css-images/tbot-off-mid-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-mid-bot.gif" );
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -981,7 +1055,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOffBtm .RtBtm {
     background-color: transparent;
-    background-image: url(css-images/tbot-off-right-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-right-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -998,10 +1072,9 @@ input.iceSelInpDateClosePopup {
     text-align: center;    	
 }
 
-
 .icePnlTbOverBtm .LftTop {
     background-color: transparent;
-    background-image: url(css-images/tbot-over-left-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -1009,7 +1082,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOverBtm .MidTop {
     background-color: transparent;
-    background-image: url(css-images/tbot-over-mid-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -1017,7 +1090,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOverBtm .RtTop {
     background-color: transparent;
-    background-image: url(css-images/tbot-over-right-top.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -1025,7 +1098,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOverBtm .LftMid {
     background-color: transparent;
-    background-image: url(css-images/over-left-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -1034,14 +1107,14 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOverBtm .MidMid {
     background-color: transparent;
-    background-image: url(css-images/over-mid-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
     white-space: nowrap;
 }
 
-.icePnlTbOverBtm .MidMid a {
+.icePnlTbOverBtm .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -1051,13 +1124,13 @@ input.iceSelInpDateClosePopup {
     padding-left: 15px;
 }
 
-* html .icePnlTbOverBtm .MidMid a {
-    height: 1%;
+* html .icePnlTbOverBtm .MidMid>a {
+    width: 1%;
 }
 
 .icePnlTbOverBtm .RtMid {
     background-color: transparent;
-    background-image: url(css-images/over-right-mid.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/over-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -1066,7 +1139,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOverBtm .LftBtm {
     background-color: transparent;
-    background-image: url(css-images/tbot-over-left-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-left-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1074,7 +1147,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOverBtm .MidBtm {
     background-color: transparent;
-    background-image: url(css-images/tbot-over-mid-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-mid-bot.gif" );
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -1082,16 +1155,17 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOverBtm .RtBtm {
     background-color: transparent;
-    background-image: url(css-images/tbot-over-right-bot.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-right-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
 }
 
 /* tabSpacer */
-.icePnlTbSetSpcrBtm {
+
+.icePnlTbSetSpcrBtm { /* was iceTabSetTabSpacerBottom*/
     width: 100%;
-    border-top: 1px solid #ABABAB;
+    border-top: 1px solid #0056EA;
 }
 
 /* tabPanel */
@@ -1101,9 +1175,9 @@ input.iceSelInpDateClosePopup {
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 10px;
-    border-right: 1px solid #ABABAB;
-    border-top: 1px solid #ABABAB;
-    border-left: 1px solid #ABABAB;
+    border-right: 2px solid #0056EA;
+    border-top: 2px solid #0056EA;
+    border-left: 2px solid #0056EA;
     background-color: #FFFFFF;
 }
 
@@ -1144,11 +1218,9 @@ input.iceSelInpDateClosePopup {
     color: #666666;
     padding: 4px;
 }
-
 /*
-------------- PanelLayout
+----------- Page Panel Component classes
 */
-
 .pageHdr {
     font-weight: bold;
     height: 80px;
@@ -1185,22 +1257,22 @@ input.iceSelInpDateClosePopup {
 }
 
 /*
------------- PanelNavigation
+----------- Panel Navigation Component classes
 */
-
 .navFormOutline {
     background-color: #DEDEDE;
-    margin: 0px;
+    margin: 0px auto;
     width: 100%;
     padding: 0px;
 }
 
+/* set all the common attributes for the nav items */
 .navItem, .navActvItem, .navOpenItem {
     color: #333333;
     text-decoration: none;
-    background-color: #CDCDCD;
+    background-color: #D0D4EE;
     width: 100%;
-    border: 1px solid #CDCDCD;
+    border: 1px solid #FFFFFF;
     border-bottom: 1px solid #FFFFFF;
     padding-top: 3px;
     padding-bottom: 3px;
@@ -1225,7 +1297,7 @@ input.iceSelInpDateClosePopup {
     width: 100%;
     background-color: #2A6CC2;
     color: #FFFFFF;
-    background-image: url(css-images/cal_arrow_right.gif);
+    background-image: url( ../xmlhttp/css/royale/css-images/cal_arrow_right.gif );
     background-position: center right;
     background-repeat: no-repeat;
 }
@@ -1234,26 +1306,27 @@ input.iceSelInpDateClosePopup {
     width: 100%;
     height: 1px;
     padding: 0px;
-    margin: 0px;
-    background-color: #CDCDCD;
-    border-bottom: 1px solid #DEDEDE;
+    margin: 0px auto;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #FFFFFF;
 }
 
 /*
---------------- Progress bar
+----------- Progress Bar Component classes
 */
 .iceOutProg {
     margin: 10px;
 }
 
 .iceOutProgBg {
-    border: 1px solid #ABABAB;
+    border: 2px solid #0056EA;
     width: 300px;
+    background-color: #D0D4EE;
     height: 13px;
 }
 
 .iceOutProgFill {
-    background-color: #026AFF; /* background-image:url(./css-images/window_top.gif);*/
+    background-color: #026AFF;
     background-position: top left;
     background-repeat: repeat-x;
     display: block;
@@ -1264,33 +1337,29 @@ input.iceSelInpDateClosePopup {
 }
 
 /*
---------------- autoComplete classes ------
+----------- Autocomplete Component classes
 */
-
 .iceSelInpTxtTxt {
-    border: 1px solid #ABABAB;
-    background-color: #FFFFFF;
+    border: 1px solid #0056EA;
     margin: 2px;
     padding: 2px;
+    background-color: #FFFFFF;
 }
 
 .iceSelInpTxtList {
     position: absolute;
     display: block;
-    border-top: 1px solid #ABABAB;
-    border-right: 1px solid #666666;
-    border-left: 1px solid #ABABAB;
-    border-bottom: 1px solid #333333;
-    z-index: 1000;
+    border: 1px solid #0056EA;
+
 }
 
 .iceSelInpTxtRow {
     display: block;
-    background-color: #FFFFFF;
+    background-color: #D0D4EE;
     color: #333333;
     padding: 2px;
     padding-left: 10px;
-    border-bottom: 1px solid #DEDEDE;
+    border-bottom: 1px solid #FFFFFF;
     position: relative;
 }
 
@@ -1308,7 +1377,6 @@ input.iceSelInpDateClosePopup {
     color: #FFFFFF;
 }
 
-
 /*
 --------------- autoComplete disable class ------
 */
@@ -1316,34 +1384,30 @@ input.iceSelInpDateClosePopup {
 .iceSelInpTxtTxt-dis {
     font-family: Arial, Helvetica, sans-serif;
     font-size: .95em;
-    color: #ABABAB;
-    border: 1px dotted #CCCCCC;
+    color: #D0D4EE;
+    border: 1px dotted #D0D4EE;
     cursor: default;
 }
 
 /*
 ----------- FileUpload Component classes
 */
-.iceInpFile {
-	overflow: hidden;
-}
+.iceInpFile {}
 .iceInpFileTxt {
-    border: 1px solid #ABABAB;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+    border: 1px solid #0056EA;
     background-color: #FFFFFF;
     margin: 2px;
     padding: 2px;
-    font-family: Arial, Helvetica, sans-serif;
-
-    color: #000000;
 }
 
 .iceInpFileBtn {
-    border: 1px solid #ABABAB;
     background-color: #FFFFFF;
     margin: 2px;
     padding: 2px;
     font-family: Arial, Helvetica, sans-serif;
-
+    border: 1px solid #0056EA;
     color: #000000;
 }
 
@@ -1396,25 +1460,25 @@ input.iceSelInpDateClosePopup {
 
 .iceTreeRow {
     white-space: nowrap;
-    padding: 0px;
 }
 
 .iceTreeRow a {
     text-decoration: none;
+    color: #000000;
     cursor: pointer;
     padding: 0px;
     vertical-align: middle;
 }
 
 .iceTreeRow a:hover {
-    text-decoration: underline;
+    background: #B6CAEA;
+    color: #FFFFFF;
 }
 
 .iceTreeRow img {
     border: 0px;
-    vertical-align: top;
+    vertical-align: middle;
     background-repeat: repeat-y;
-    padding: 0px;
 }
 
 .iceTreeRow div {
@@ -1425,10 +1489,9 @@ input.iceSelInpDateClosePopup {
 /* vertical-align: top; - Bug in FF, when img has focus it is not highlighted with a box.*/
     background-repeat: repeat-y;
     border: 0px;
-    padding: 0px;
 }
 
-/* ------------ Menu Classes --
+/* ---------------------New Menu
 */
 
 .iceMnuBar { /*no change*/
@@ -1443,7 +1506,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .iceMnuBarItem a { /* was iceMenu */
-    background-color: #DDDDDD;
+    border-right: 1px solid #FFFFFF;
+    background-color: #D0D4EE;
     height: auto;
     padding-left: 10px;
     padding-right: 10px;
@@ -1452,7 +1516,6 @@ input.iceSelInpDateClosePopup {
     color: #333333; /* Must be >1.01em to avoid layout artifacts on Macs */
     font-size: 1.1em;
     margin: 0px;
-    border-right: 1px solid #FFFFFF;
     width: auto;
     float: left;
     display: block;
@@ -1465,7 +1528,7 @@ input.iceSelInpDateClosePopup {
     border-right: 1px solid #FFFFFF;
 }
 
-.iceMnuBarItem hr { /* was iceMenu */
+.iceMnuBarItem hr, .subiceMenu hr { /* was iceMenu */
     border: none 0;
     border-top: 1px solid #999999;
     width: 100%;
@@ -1477,12 +1540,12 @@ input.iceSelInpDateClosePopup {
 
 .iceMnuBarSubMenu { /* was iceSubMenu */
     position: absolute;
-    background-color: #EFEFEF;
+    background-color: #D0D4EE;
     width: 160px;
-    border-top: 1px solid #999999;
-    border-left: 1px solid #999999;
-    border-bottom: 1px solid #999999;
-    border-right: 1px solid #999999;
+    border-top: 1px solid #0056EA;
+    border-left: 1px solid #0056EA;
+    border-bottom: 1px solid #0056EA;
+    border-right: 1px solid #0056EA;
     padding: 1px;
     height: auto;
     display: block;
@@ -1502,7 +1565,7 @@ input.iceSelInpDateClosePopup {
     padding-left: 3px;
     padding-right: 3px;
     padding-top: 3px;
-    padding-bottom: 3px;    
+    padding-bottom: 3px;        
 }
 
 .iceMnuItm a:hover { /* was iceSubMenuRow*/
@@ -1513,7 +1576,20 @@ input.iceSelInpDateClosePopup {
     color: #FFFFFF;
 }
 
-.iceMnuItmLabel, .iceMnuBarItemLabel { /* was iceSubMenuRowLabel */
+.iceMnuItmLabel {}
+.iceMnuItmImage{}
+
+.iceMnuBarItemLabel {} 
+.iceMnuBarItemImage {
+	width:0px;
+}
+
+.iceMnuItmImage, .iceMnuBarItemImage{ /* was iceSubMenuRowImage */
+    display:inline;
+    vertical-align: middle;
+}
+
+.iceMnuItmLabel, .iceMnuBarItemLabel { /*was iceSubMenuRowLabel */
     font-family: Arial, Helvetica, sans-serif;
     padding-top: 4px;
     font-size: 1.0em;
@@ -1521,20 +1597,17 @@ input.iceSelInpDateClosePopup {
     vertical-align: middle;
 }
 
-.iceMnuBarItemImage {
-	width:0px;
+.iceDatTbl td span.iceMnuItmLabel {
+    display: inline;
+    padding: 4px 0 0 0;
 }
 
-.iceMnuItmImage, .iceMnuBarItemImage {  /* was iceSubMenuRowImage */
-    display:inline;
-    vertical-align: middle;    
-}
-
-.iceMnuBarSubMenuInd { /* was iceSubMenuRowSubMenuIndicator */
+.iceMnuBarSubMenuInd, .iceMnuBarVrtSubMenuInd { 
+/* were iceSubMenuRowSubMenuIndicator */
+    padding-top: 3px;
+    padding-right: 1px;
     display:inline;
     float:right;
-    padding-top: 3px;
-    padding-right: 1px;    
 }
 
 /* classes for the vertical version of the iceMenu*/
@@ -1555,7 +1628,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .iceMnuBarVrtItem a { /* was iceMenu_verticalItem */
-    background-color: #DDDDDD;
+    background-color: #D0D4EE;
     height: auto;
     padding-left: 3px;
     padding-right: 3px;    
@@ -1580,11 +1653,8 @@ input.iceSelInpDateClosePopup {
 .iceMnuBarVrtSubMenu { /* was iceSubMenu_vertical*/
     padding: 1px;
     width: 160px;
-    background-color: #EFEFEF;
-    border-top: 1px solid #999999;
-    border-right: 1px solid #999999;
-    border-left: 1px solid #999999;
-    border-bottom: 1px solid #999999;
+    background-color: #D0D4EE;
+    border: 1px solid #0056EA;
     position: absolute;
     height: auto;
     display: block;
@@ -1592,30 +1662,25 @@ input.iceSelInpDateClosePopup {
 }
 
 .iceMnuItmVrt a { /* was iceMenu_vertical_subItem */
-    background-color: #EFEFEF; 
+    background-color: #D0D4EE; 
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;    
     font-family: Arial, Helvetica, sans-serif;
     color: #333333;
     font-size: 1.1em; 
     width: auto;
     display: block;
     text-decoration: none; 
-    padding-left: 3px;
-    padding-right: 3px;
-    padding-top: 3px;
-    padding-bottom: 3px;    
+    border: 0px;
 }
 
 .iceMnuItmVrt a:hover { /* was iceMenu_vertical_subItem */
     background-color: #2A6CC2;
     color: #FFFFFF;
     text-decoration: none;
-}
-
-.iceMnuBarVrtSubMenuInd { /* was iceSubMenuDividerVert */
-    display:inline;
-    float:right;
-    padding-top: 3px;
-    padding-right: 1px;    
+    border: 0px;
 }
 
 .iceMnuPopVrtItemLabel {
@@ -1639,8 +1704,8 @@ input.iceSelInpDateClosePopup {
 .iceMnuPopVrtTopSubMenu {
     padding: 1px;
     width: 160px;
-    background-color: #EFEFEF;
-    border: 1px solid #999999;
+    background-color: #D0D4EE;
+    border: 1px solid #0056EA;
     position: absolute;
     height: auto;
     display: block;
@@ -1677,11 +1742,8 @@ input.iceSelInpDateClosePopup {
 .iceMnuPopVrtSubMenu { /* was iceSubMenu_vertical*/
     padding: 1px;
     width: 160px;
-    background-color: #EFEFEF;
-    border-top: 1px solid #999999;
-    border-right: 1px solid #999999;
-    border-left: 1px solid #999999;
-    border-bottom: 1px solid #999999;
+    background-color: #D0D4EE;
+    border: 1px solid #0056EA;
     position: absolute;
     height: auto;
     display: block;
@@ -1694,51 +1756,31 @@ input.iceSelInpDateClosePopup {
     padding-right: 1px;
 }
 
-.iceMnuItm-dis .iceLink-dis{
-   text-decoration:none;
-   pointer:normal;
-}
-
-.iceMnuItm-dis .iceLink-dis:hover {
-   text-decoration:none;
-   pointer:normal;
-
-}
-
-.iceMnuItmLabel-dis{
-   color:gray;
-   font-style:italic;
-   text-decoration: line-through;
-}
-
-.iceMnuItm-dis .iceCmdLnk-dis, .iceMnuItm-dis .iceOutLnk-dis  {
-	border-bottom:none;
-}
 /*
 ----------- PanelPopup & panelTooltip ----------
 */
 
 .icePnlPop, .icePnlTlTip {
     color: #666666;
-    border-right: 2px solid #ABABAB;
-    border-top: 1px solid #ABABAB;
-    border-left: 1px solid #ABABAB;
-    border-bottom: 2px solid #ABABAB;
-    background-color: #DDDDDD;
+    border-right: 2px solid #0056EA;
+    border-top: 0px solid #0056EA;
+    border-left: 2px solid #0056EA;
+    border-bottom: 2px solid #0056EA;
+    background-color: #D0D4EE;
     padding: 0px;
     z-index: 1000;
 }
 
 .icePnlPop .icePnlPopBody {
-    background-color: #DDDDDD;
+    background-color: #D0D4EE;
 }
 
 .icePnlPopHdr, .icePnlTlTipHdr {
-    background-color: #DEDEDE;
-    background-image: url(css-images/window_top.gif);
+    background-color: #026AFF;
+    background-image: url( "../xmlhttp/css/royale/css-images/window_top.gif" );
     background-position: top;
     background-repeat: repeat-x;
-    height: 2.0em;
+    height: 2em;
 }
 
 .icePnlPopHdr .iceOutTxt, .icePnlTlTipHdr .iceOutTxt {
@@ -1757,7 +1799,7 @@ input.iceSelInpDateClosePopup {
 .icePnlPopFtr, .icePnlTlTipFtr {
     float: right;
     height: auto;
-    background-color: #DDDDDD;
+    background-color: #D0D4EE;
 }
 
 /*
@@ -1766,14 +1808,14 @@ input.iceSelInpDateClosePopup {
 
 .iceOutProgIndetActv {
     background-color: #EFEFEF;
-    background-image: url(css-images/in_progress.gif);
+    background-image: url( css-images/in_progress.gif );
     background-position: center;
     background-repeat: repeat-x;
 }
 
 .iceOutProgIndetInactv {
     background-color: #EFEFEF;
-    background-image: url(css-images/in_progress_inactive.gif);
+    background-image: url( css-images/in_progress_inactive.gif );
     background-position: center;
     background-repeat: repeat-x;
 }
@@ -1783,72 +1825,81 @@ input.iceSelInpDateClosePopup {
 */
 
 .iceOutConStat {
-    margin: 0px;
-    width: 25px;
+    margin: 10px;
+    width: 60px;
     height: 25px;
     border: none;
-    font-size: .5em;
 }
 
 .iceOutConStatInactv {
     position: absolute;
-    background-image: url(css-images/connect_idle.gif);
+    background-image: url( css-images/connect_idle.gif );
     background-position: top;
     background-repeat: no-repeat;
-    width: 25px;
+    width: 60px;
     height: 25px;
+
 }
 
 .iceOutConStatActv {
     position: absolute;
-    background-image: url(css-images/connect_active.gif);
+    background-image: url( css-images/connect_active.gif );
     background-position: top;
     background-repeat: no-repeat;
-    width: 25px;
+    width: 60px;
     height: 25px;
+
 }
 
 .iceOutConStatCaution {
     position: absolute;
-    background-image: url(css-images/connect_caution.gif);
+    background-image: url( css-images/connect_caution.gif );
     background-position: top;
     background-repeat: no-repeat;
-    width: 25px;
+    width: 60px;
     height: 25px;
+
 }
 
 .iceOutConStatDisconnect {
     position: absolute;
-    background-image: url(css-images/connect_disconnected.gif);
+    background-image: url( css-images/connect_disconnected.gif );
     background-position: top;
     background-repeat: no-repeat;
-    width: 25px;
+    width: 60px;
     height: 25px;
+
 }
 
-/* XP Disabled styles CSS Document  v1.0 mar 31 2006 */
+/* Royale Disabled styles CSS Document  v1.0 mar 31 2006 */
 
 .iceCmdBtn-dis {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #D0D4EE;
+    background-color: #FFFFFF;
+    border: 1px solid #D0D4EE;
+    margin: 2px;
+    padding: 2px;
 }
 
 .iceCmdLnk-dis, .iceOutLnk-dis {
-    color: #ABABAB;
+    color: #D0D4EE;
     text-decoration: none;
-    border-bottom: 1px dotted #CCCCCC;
+    border-bottom: 1px dotted #D0D4EE;
     cursor: default;
 }
 
 .iceOutTxt-dis, .iceOutLbl-dis {
-    color: #ABABAB;
+    color: #D0D4EE;
     text-decoration: none;
-    border-bottom: 1px dotted #CCCCCC;
+    border-bottom: 1px dotted #D0D4EE;
     cursor: default;
 }
 
 .iceInpTxt-dis, .iceInpSecrt-dis {
     font-family: Arial, Helvetica, sans-serif;
-    color: #ABABAB;
-    border: 1px dotted #CCCCCC;
+    color: #D0D4EE;
+    border: 1px dotted #D0D4EE;
     cursor: default;
     margin: 2px;
     padding: 2px;
@@ -1857,15 +1908,15 @@ input.iceSelInpDateClosePopup {
 .iceInpTxtArea-dis {
     font-family: Arial, Helvetica, sans-serif;
     font-size: .95em;
-    color: #ABABAB;
-    border: 1px dotted #CCCCCC;
+    color: #D0D4EE;
+    border: 1px dotted #D0D4EE;
     cursor: default;
     margin: 2px;
     padding: 2px;
 }
 
 .iceSelMnyCb-dis {
-    background-color: #CCCCCC;
+    background-color: #D0D4EE;
     padding: 2px;
     margin: 2px;
     cursor: default;
@@ -1875,7 +1926,7 @@ input.iceSelInpDateClosePopup {
 
 .iceSelOneMnu-dis, .iceSelMnyLb-dis, .iceSelMnyMnu-dis, .iceSelOneLb-dis {
     font-family: Arial, Helvetica, sans-serif;
-    color: #CCCCCC;
+    color: #D0D4EE;
     padding: 2px;
     font-size: .95em;
     cursor: default;
@@ -1883,7 +1934,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .iceSelOneRb-dis {
-    background-color: #CCCCCC;
+    background-color: #D0D4EE;
     padding: 2px;
     margin: 2px;
     cursor: default;
@@ -1897,17 +1948,17 @@ input.iceSelInpDateClosePopup {
     margin: 2px;
     padding: 2px;
     font-family: Arial, Helvetica, sans-serif;
-    color: #CCCCCC;
+    color: #D0D4EE;
     cursor: default;
 }
 
 .iceInpFileBtn-dis {
-    border: 1px solid #CCCCCC;
+    border: 1px solid #D0D4EE;
     background-color: #FFFFFF;
     margin: 2px;
     padding: 2px;
     font-family: Arial, Helvetica, sans-serif;
-    color: #CCCCCC;
+    color: #D0D4EE;
     cursor: default;
 }
 
@@ -1949,13 +2000,13 @@ input.iceSelInpDateClosePopup {
 
 /* panel tabs disabled style classes */
 
-.icePnlTbOff { /* was iceTabSetTabOff*/
+.icePnlTbOff { /* was iceTabSetTabOff */
 
 }
 
 .icePnlTbOff .LftTop-dis {
     background-color: transparent;
-    background-image: url(css-images/off-left-top-dis.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -1965,8 +2016,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .MidTop-dis {
-    background-color: #DEDEDE;
-    background-image: url(css-images/off-mid-top-dis.gif);
+    background-color: #D0D4EE;
+    background-image: url( '../xmlhttp/css/royale/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -1975,7 +2026,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOff .RtTop-dis {
     background-color: transparent;
-    background-image: url(css-images/off-right-top-dis.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -1984,8 +2035,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .LftMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -1993,8 +2044,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .MidMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2007,14 +2058,13 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOff .MidMid-dis a {
     text-decoration: none;
-    color: #ABABAB;
+    color: #FFFFFF;
     cursor: default;
-    
 }
 
 .icePnlTbOff .RtMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2022,22 +2072,22 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .LftBtm-dis {
-    background-color: transparent;
-    background-image: url(css-images/off-left-bot.gif);
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOff .MidBtm-dis {
-    background-color: transparent;
-    background-image: url(css-images/off-mid-bot.gif);
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOff .RtBtm-dis {
-    background-color: transparent;
-    background-image: url(css-images/off-right-bot.gif);
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2045,7 +2095,7 @@ input.iceSelInpDateClosePopup {
 /* disabled bottom tab off */
 .icePnlTbOffBtm .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2055,8 +2105,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .MidBtm-dis {
-    background-color: #DEDEDE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-color: #D0D4EE;
+    background-image: url( '../xmlhttp/css/royale/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2065,7 +2115,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOffBtm .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2074,8 +2124,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .LftMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2083,8 +2133,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .MidMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2097,14 +2147,13 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOffBtm .MidMid-dis a {
     text-decoration: none;
-    color: #ABABAB;
+    color: #FFFFFF;
     cursor: default;
-
 }
 
 .icePnlTbOffBtm .RtMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2112,31 +2161,30 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .LftTop-dis {
-    background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOffBtm .MidTop-dis {
-    background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOffBtm .RtTop-dis {
-    background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 /* disabled bottom tab on */
-
 .icePnlTbOnBtm .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2146,8 +2194,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .MidBtm-dis {
-    background-color: #DEDEDE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-color: #D0D4EE;
+    background-image: url( '../xmlhttp/css/royale/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2156,7 +2204,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOnBtm .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2165,8 +2213,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .LftMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2174,8 +2222,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .MidMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2188,13 +2236,13 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOnBtm .MidMid-dis a {
     text-decoration: none;
-    color: #ABABAB;
+    color: #FFFFFF;
     cursor: default;
 }
 
 .icePnlTbOnBtm .RtMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2202,34 +2250,30 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .LftTop-dis {
-    background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOnBtm .MidTop-dis {
-    background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOnBtm .RtTop-dis {
-    background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
-/* tab on disabled */
-.icePnlTbOn {
-
-}
-
+/** Disabled style for active tabs */
 .icePnlTbOn .LftTop-dis {
     background-color: transparent;
-    background-image: url(css-images/off-left-top-dis.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2239,8 +2283,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .MidTop-dis {
-    background-color: #DEDEDE;
-    background-image: url(css-images/off-mid-top-dis.gif);
+    background-color: #D0D4EE;
+    background-image: url( '../xmlhttp/css/royale/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2249,7 +2293,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOn .RtTop-dis {
     background-color: transparent;
-    background-image: url(css-images/off-right-top-dis.gif);
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2258,8 +2302,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .LftMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2267,8 +2311,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .MidMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2281,13 +2325,13 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbOn .MidMid-dis a {
     text-decoration: none;
-    color: #ABABAB;
+    color: #FFFFFF;
     cursor: default;
 }
 
 .icePnlTbOn .RtMid-dis {
-    background-color: #DEDEDE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2295,22 +2339,22 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .LftBtm-dis {
-    background-color: transparent;
-    background-image: url(css-images/off-left-bot.gif);
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOn .MidBtm-dis {
-    background-color: transparent;
-    background-image: url(css-images/off-mid-bot.gif);
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOn .RtBtm-dis {
-    background-color: transparent;
-    background-image: url(css-images/off-right-bot.gif);
+    background-color: #D0D4EE;
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2348,7 +2392,7 @@ data scroller classes disabled styles
 
 /* override the attributes for the currently selected page */
 .icePaginatorAtvCol-dis a {
-    color: #ABABAB;
+    color: #FFFFFF;
     /*    border:1px solid #2A6CC2;
         background-color:#2A6CC2;
     */
@@ -2362,19 +2406,19 @@ data scroller classes disabled styles
 }
 
 /*
-Disabled classes for the calendar controls
+Disabeld classes for the calendar controls
 */
 
 .iceSelInpDate-dis {
 /* calendar outline & background color */
-    background-color: #FFFFFF;
-    border: 1px solid #DEDEDE; /* removed margin from calendar outline - better absolute positioning of popup */
+    background-color: #D0D4EE;
+    border: 1px solid #D0D4EE; /* removed margin from calendar outline - better absolute positioning of popup */
 /*margin:10px;*/
 }
 
 .iceSelInpDateMonthYear-dis {
-    background-color: #EFEFEF;
-    /*    background-image: url("./css-images/table_col_header.gif");
+    background-color: #D0D4EE;
+    /*    background-image: url("../xmlhttp/css/royale/css-images/table_col_header.gif");
     background-position:bottom;
     background-repeat:repeat-x;*/
     font-weight: normal;
@@ -2387,7 +2431,7 @@ Disabled classes for the calendar controls
 }
 
 .iceSelInpDateMoYrDropdown-dis {
-    background-color: #EFEFEF;
+    background-color: #D0D4EE;
     color: #999999;
 }
 
@@ -2399,7 +2443,7 @@ Disabled classes for the calendar controls
 /* the days of the week row */
     font-weight: normal;
     color: #999999;
-    background-color: #EFEFEF;
+    background-color: #D0D4EE;
     text-align: center;
     padding-left: 5px;
     padding-right: 5px;
@@ -2417,8 +2461,8 @@ Disabled classes for the calendar controls
 .iceSelInpDateDay-dis a {
 /* the day text */
     text-decoration: none;
-    background-color: #FFFFFF;
-    border: 1px solid #FFFFFF;
+    background-color: #D0D4EE;
+    border: 1px solid #D0D4EE;
     color: #ABABAB;
     width: 100%;
     height: 100%;
@@ -2440,16 +2484,13 @@ Disabled classes for the calendar controls
 }
 
 /*
------------ commandSortHeader ----------
+----------- commandSortHeader classes
 */
 .iceCmdSrtHdr {
     text-decoration: none;
-    /*border: 1px solid #ABABAB;*/
-    color: #333333;
-    /*width: 100%;*/
-    height: 100%;
-    padding: 0px;
-    display: block;
+    font-weight: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #FFFFFF;
 }
 
 .iceCmdSrtHdr table {
@@ -2457,13 +2498,9 @@ Disabled classes for the calendar controls
 }
 
 .iceCmdSrtHdr-dis {
-    text-decoration: none;
-    /*border: 1px solid #ABABAB;*/
     color: #999999;
-    /*width: 100%;*/
-    height: 100%;
-    padding: 0px;
-    display: block;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
     cursor: default;
 }
 
@@ -2474,10 +2511,10 @@ Disabled classes for the calendar controls
     height:10px;
 }
 .iceCmdSrtHdrAsc{
-    background-image: url('./css-images/column_sort_asc.gif');
+    background-image: url('../xmlhttp/css/royale/css-images/column_sort_asc.gif');
 }
 .iceCmdSrtHdrDesc{
-    background-image: url('./css-images/column_sort_desc.gif');
+    background-image: url('../xmlhttp/css/royale/css-images/column_sort_desc.gif');
 }
 
 .iceCmdSrtHdr td {
@@ -2554,7 +2591,7 @@ Disabled classes for the calendar controls
 ----------- panelGrid ----------
 */
 .icePnlGrd {
-    
+
 }
 
 .icePnlGrdHdr {
@@ -2630,30 +2667,32 @@ Disabled classes for the calendar controls
 .icePnlStk {}
 .icePnlStkRow {}
 .icePnlStkCol {}
+
 /*
 ----------- panelTab header ----------
 */
-.icePnlTbSetHdrIconLft {
+.icePnlTbSetHdrIconLft { /*was iceTabSetHdrIconLeft*/
     width: 14px;
     height: 13px;
 
 }
 
-.icePnlTbSetHdrIconRt {
+.icePnlTbSetHdrIconRt { /* was iceTabSetHdrIconRight*/
     width: 14px;
     height: 13px;
 }
 
-.icePnlTbSetHdrLbl {
+.icePnlTbSetHdrLbl { /* was iceTabSetHdrLabel*/
     padding-top: 2px;
     padding-bottom: 2px;
     white-space: nowrap;
 }
 
+
 /*
 ----------- Table Row Selection --------
 */
-.iceRowSelSelected, .iceRowSelSelected td {
+.iceRowSelSelected {
     background-color: #316AC5;
 }
 .iceRowSelSelected span {
@@ -2664,9 +2703,6 @@ Disabled classes for the calendar controls
     background-color: #0D4092;
 }
 
-.portlet-section-body-hover .iceRowSelSelectedMouseOver {
-    background-color: #0D4092;
-}
 .iceRowSelSelectedMouseOver span {
     color: #FFFFFF;
 }
@@ -2675,10 +2711,6 @@ Disabled classes for the calendar controls
 .iceRowSelMouseOver {
     background-color: #B2CDF9;
 }
-
-.portlet-section-alternate-hover td, .portlet-section-body-hover td {
-    background-color: #B2CDF9;   
- }
 
 .iceRowSelMouseOver span{
     color: #000000;
@@ -2693,8 +2725,9 @@ Disabled classes for the calendar controls
 }
 
 /*
------------ Panel Accordion --------
+----------- Panel Collapsible --------
 */
+
 /* opened accordion styles */
 .icePnlClpsbl, .icePnlClpsblHdr, .icePnlClpsblCnt {
 }
@@ -2714,12 +2747,12 @@ Disabled classes for the calendar controls
 /* common accordion headers */
 .icePnlClpsblHdr, .icePnlClpsblColpsdHdr {
     background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/table_col_header.gif" );
     background-position: bottom;
     background-repeat: repeat-x;
     font-weight: bold;
     text-align: left;
-    color: #000;
+    color: #FFF;
     border: 1px solid #CCCCCC;
     border-bottom: none;
     padding-left: 2px;
@@ -2727,10 +2760,25 @@ Disabled classes for the calendar controls
     padding-top: 4px;
     padding-bottom: 4px;
     cursor: pointer;
+    position: relative;
+}
+
+.icePnlClpsblHdrBtn, .icePnlClpsblColpsdHdrBtn {
+    position: absolute;
+    left: 0;
+    top: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity = 0);
+    opacity: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    border-style: none;
+    cursor: pointer;
 }
 
 .icePnlClpsblHdr .iceOutTxt, .icePnlClpsblColpsdHdr .iceOutTxt {
-	color: #000;
+	color:#FFF;
 }
 
 .icePnlClpsblCnt, .icePnlClpsblColpsdCnt,
@@ -2744,10 +2792,10 @@ Disabled classes for the calendar controls
 }
 
 .icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis {
-    background: #EFEFEF url( './css-images/table_col_header_dis.gif' ) repeat-x bottom;
+    background: #EFEFEF url( '../xmlhttp/css/royale/css-images/table_col_header_dis.gif' ) repeat-x bottom;
     font-weight: bold;
     text-align: left;
-    color: #999;
+    color: #CCC;
     border: 1px solid #CCCCCC;
     border-bottom: none;
     padding-left: 2px;
@@ -2758,7 +2806,7 @@ Disabled classes for the calendar controls
 }
 
 .icePnlClpsblHdr-dis .iceOutTxt, .icePnlClpsblColpsdHdr-dis .iceOutTxt {
-    color: #999;
+    color: #CCC;
 }
 
 .icePnlClpsblColpsdCnt-dis, .icePnlClpsblCnt-dis,
@@ -2840,21 +2888,21 @@ Disabled classes for the calendar controls
 */
 
 .icePnlCnf {
-    border-top: 1px solid #ABABAB;
-    border-right: 2px solid #ABABAB;
-    border-left: 1px solid #ABABAB;
-    border-bottom: 2px solid #ABABAB;
-    background-color: #DDDDDD;
+    border-top: 0px solid #0056EA;
+    border-right: 2px solid #0056EA;
+    border-left: 2px solid #0056EA;
+    border-bottom: 2px solid #0056EA;
+    background-color: #D0D4EE;
     padding: 0;
     width: 300px;
     z-index: 1000;
-    color: #000000;
+    color: #666666;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 .icePnlCnfHdr {
-    background-color: #DEDEDE;
-    background-image: url( "./css-images/window_top.gif" );
+    background-color: #026AFF;
+    background-image: url( "../xmlhttp/css/royale/css-images/window_top.gif" );
     background-position: top;
     background-repeat: repeat-x;
     height: auto;
@@ -2868,21 +2916,25 @@ Disabled classes for the calendar controls
 
 .icePnlCnfBody {
     padding: 10px 10px 5px 10px;
-    background-color: #DDDDDD;
+    background-color: #D0D4EE;
     font-size: 1em;
     font-weight: normal;
 }
 
 .icePnlCnfBtns {
     padding: 5px 10px 10px 10px;
-    background-color: #DDDDDD;
+    background-color: #D0D4EE;
     text-align: center;
     font-size: 1em;
     font-weight: normal;
 }
 
 .icePnlCnfBtns input {
+    background-color: #DEDEDE;
+    border: 1px solid #0056EA;
     margin: 0 20px 0 20px;
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /*
@@ -2911,6 +2963,57 @@ Disabled classes for the calendar controls
 }
 
 .iceHdnLnk img{
-    border: 0;
-    width:0px;
+    border:0; 
+    width:0px;    
+}
+
+.iceCmdLnkJSDis{
+	border:none;
+	background:none;
+	cursor:pointer; 
+	cursor:hand;
+}
+
+.iceSelInpDateCur .iceCmdLnkJSDis{
+	color:#FFFFFF;
+	background-color:#2A6CC2;
+}
+
+.iceJSDISPnlCnf {
+	background-color: #7F7F7F;   
+	width: 100%; 
+	height: 100%; 
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+
+.iceJSDISPnlCnf table {
+	width:300px;
+	margin-top:25%;
+	margin-left:50%;			
+}
+
+.JSDISPnlPnlpopBg{
+	position:absolute;
+	top:0px;
+	background-color:#7F7F7F;
+	width:100%;
+	height:100%;
+	opacity:0.2;
+	filter: alpha(opacity = 20);
+	z-index:10000;
+}
+
+.JSDISPnlPop {
+	position:absolute;
+	margin-top:100px;
+	margin-left:300px;
+	z-index:11000;	
+}
+
+.iceCmdSrtHdrJSDIS {
+	background-position:right center;
+	width:100%;
+	height:auto;
 }
