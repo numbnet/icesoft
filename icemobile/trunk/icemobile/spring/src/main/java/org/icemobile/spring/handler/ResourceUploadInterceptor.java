@@ -76,7 +76,13 @@ public class ResourceUploadInterceptor extends HandlerInterceptorAdapter{
             Class beanClass = handlerMethod.getBean().getClass();
             ResourceStore store = storeLocator.getStore(beanClass, request);
             LOG.info("beanClass: " + beanClass.getName() + ", store: " + store);
-            processUploads(request, store);
+            if( store != null ){
+                processUploads(request, store);
+            }
+            else{
+                LOG.warn("missing @ICEmobileResourceStore annotation on " + beanClass.getName() +
+                		"controller class, cannot process uploads");
+            }
         }
         return true;
     }
