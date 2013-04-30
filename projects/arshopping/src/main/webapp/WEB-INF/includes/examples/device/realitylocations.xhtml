@@ -14,10 +14,14 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="arshopping" default="servlet-profile">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <import file="../build/common-jsf.xml"/>
-   
-</project>
+    <util:exampleTabset exampleBean="#{realityLocationsBean}"
+            autoWidth="#{viewSize ne 'large'}"/>
+
+</ui:composition>

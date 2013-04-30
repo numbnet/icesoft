@@ -19,25 +19,24 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-    <!-- display device links. -->
-    <h:form>
-        <mobi:outputList inset="false" style="">
-            <!-- native components menu links. -->
-            <mobi:outputListItem
-                    group="true">Augmented Reality</mobi:outputListItem>
-            <ui:repeat value="#{nativeCompsMenu.menuLinks}" var="menuLinks">
-                <mobi:outputListItem>
-                    <h:commandLink
-                            value="#{mmsgs[menuLinks.title]}"
-                            action="#{navigationModel.navigateToParam}">
-                        <f:param name="panelID" 
-                            value="#{menuLinks.examplePanelId}" />
-                        <f:param name="beanName" 
-                            value="#{menuLinks.exampleBeanName}" />
-                    </h:commandLink>
-                </mobi:outputListItem>
-            </ui:repeat>
 
-        </mobi:outputList>
-    </h:form>
+    <mobi:fieldsetGroup styleClass="exampleDescription">
+
+        <p>The augmented reality component displays a set of labeled icons
+        with latitude-longitude locations via an overlay on the camera view.
+        The selected icon label is set as the component value.
+        </p>
+
+
+<pre>
+&lt;mobi:augmentedReality
+    value="#{'#'}{bean.selection}"/&gt;
+</pre>
+
+        <p>augmentedReality is only accessible for
+             ICEmobile device containers. In non-container environments
+            the component displays a text field input component. </p>
+
+    </mobi:fieldsetGroup>
+
 </ui:composition>
