@@ -37,27 +37,15 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 @org.icemobile.samples.mobileshowcase.view.metadata.annotation.Menu(
         title = "menu.native.title",
         menuLinks = {
-                @MenuLink(title = "menu.native.reality.title",
+                @MenuLink(title = "menu.native.realityshopping.title",
                         exampleBeanName = RealityBean.BEAN_NAME,
-                        examplePanelId = "reality"),
-                @MenuLink(title = "menu.native.camcorder.title",
-                        exampleBeanName = CamcorderBean.BEAN_NAME,
-                        examplePanelId = "camcorder"),
-                @MenuLink(title = "menu.native.camera.title",
-                        exampleBeanName = CameraBean.BEAN_NAME,
-                        examplePanelId = "camera"),
-                @MenuLink(title = "menu.native.notification.title",
-                        exampleBeanName = NotificationBean.BEAN_NAME,
-                        examplePanelId = "notification"),
-                @MenuLink(title = "menu.native.contacts.title",
-                        exampleBeanName = ContactsBean.BEAN_NAME,
-                        examplePanelId = "contacts"),
-                @MenuLink(title = "menu.native.microphone.title",
-                        exampleBeanName = MicrophoneBean.BEAN_NAME,
-                        examplePanelId = "microphone"),
-                @MenuLink(title = "menu.native.qrcode.title",
-                        exampleBeanName = QrCodeBean.BEAN_NAME,
-                        examplePanelId = "qrcode")
+                        examplePanelId = "realityshopping"),
+                @MenuLink(title = "menu.native.realitylocations.title",
+                        exampleBeanName = RealityBean.BEAN_NAME,
+                        examplePanelId = "realitylocations"),
+                @MenuLink(title = "menu.native.realitymarkers.title",
+                        exampleBeanName = RealityBean.BEAN_NAME,
+                        examplePanelId = "realitytargets"),
                 
                 
         })

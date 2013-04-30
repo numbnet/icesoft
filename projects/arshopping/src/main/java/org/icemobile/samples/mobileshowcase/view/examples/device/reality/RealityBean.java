@@ -247,6 +247,11 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         return selectedModel1;
     }
 
+    public String getConfigShopping()  {
+        setSelectedModel1("ice.arform");
+        return "";
+    }
+
     public void setSelectedModel1(String selectedModel) {
         this.selectedModel1 = selectedModel;
         HashMap marker = allMarkers.get(selectedModel);
@@ -256,8 +261,10 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
             markerList = new ArrayList();
             markerList.add(marker);
         } else {
-            if (markerList.size() == 1)  {
+            if (markerList.size() != 2)  {
                 markerList = new ArrayList(2);
+                markerList.add(allMarkers.get(selectedModel1));
+                markerList.add(allMarkers.get(selectedModel2));
             }
             markerList.set(0, allMarkers.get(selectedModel1));
             markerList.set(1, allMarkers.get(selectedModel2));

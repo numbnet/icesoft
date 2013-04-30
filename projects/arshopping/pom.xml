@@ -24,9 +24,9 @@
         <artifactId>samples-parent</artifactId>
         <version>1.2.0</version>
     </parent>
-    <artifactId>mobileshowcase</artifactId>
+    <artifactId>arshopping</artifactId>
     <packaging>war</packaging>
-    <name>ICEmobile Component Showcase sample</name>
+    <name>ICEmobile Augmented Reality Shopping</name>
 
     <dependencies>
         <dependency>

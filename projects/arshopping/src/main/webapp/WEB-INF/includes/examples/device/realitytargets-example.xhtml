@@ -1,0 +1,93 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    
+        <mobi:fieldsetGroup styleClass="intro">
+            <mobi:fieldsetRow>
+            Augmented Reality makes use of the camera and video overlays to allow mobile applications 
+            to mix virtual and real world objects.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:getEnhanced/>
+
+    <h:form styleClass="form">
+
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <p>Print, cut-out, then view the <a href="resources/images/markers.html">Augmented Reality Markers</a> 
+                with 3D overlays. (This is an alpha level feature on iOS only.
+                Note that the view may take 30 seconds to display.)</p>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <h3>Markers</h3>
+
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow >
+                <p>Select your desired 3D models:</p>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-center">
+                <h:selectOneMenu id="dynamicMarker1"
+                        value="#{realityBean.selectedModel1}">
+                    <f:selectItem itemLabel="ICEmobile Logo"
+                            itemValue="icemobile"/>
+                    <f:selectItem itemLabel="Puzzle Block 1"
+                            itemValue="puz1"/>
+                    <f:selectItem itemLabel="Puzzle Block 2"
+                            itemValue="puz2"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+                 <h:selectOneMenu id="dynamicMarker2"
+                        value="#{realityBean.selectedModel2}">
+                    <f:selectItem itemLabel="ICEmobile Logo"
+                            itemValue="icemobile"/>
+                    <f:selectItem itemLabel="Puzzle Block 1"
+                            itemValue="puz1"/>
+                    <f:selectItem itemLabel="Puzzle Block 2"
+                            itemValue="puz2"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+           </mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-center">
+                <mobi:augmentedReality  buttonLabel="3D Augmented Reality"
+                    urlBase="#{realityBean.baseURL}"
+                    value="#{realityBean.selection}"
+                    disabled="#{not mobiClient.iOS}">
+                    <mobi:augmentedRealityMarkers
+                        value="#{realityBean.markers}" var="marker"
+                        markerLabel="#{marker.label}"
+                        markerModel="#{marker.model}" />
+                </mobi:augmentedReality>
+                
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-center">
+                <mobi:commandButton
+                    styleClass="submit" buttonType="important"
+                    value="Submit"/>
+            </mobi:fieldsetRow>
+
+        </mobi:fieldsetGroup>
+    </h:form>
+
+
+</ui:composition>

@@ -23,7 +23,7 @@
       xmlns:icecore="http://www.icefaces.org/icefaces/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
-    <title>ICEfaces Mobile Showcase</title>
+    <title>Augmented Reality</title>
     <mobi:deviceResource theme="#{themeBean.currentTheme}"/>
     <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
     <c:if test="#{navigationModel.selectedPanel eq 'gmap'}">
@@ -70,35 +70,6 @@
                     </ui:include>
                 </f:facet>
         
-                <f:facet name="footer">
-                    <h:form styleClass="theme">
-                        <icecore:singleSubmit rendered="false"/>
-        
-                        <span style="font-size:14px;font-weight:bold;">
-                            <i class="icon-eye-open" style="padding:3px"/>
-                            Theme: 
-                        </span>
-                        <h:selectOneMenu value="#{themeBean.currentTheme}"
-                                         onchange="ice.s(event, this);"
-                                         style="font-size:13px;">
-                            <f:selectItem itemLabel="Auto" itemValue=""/>
-                            <f:selectItem itemLabel="iPhone"
-                                          itemValue="iphone"/>
-                            <f:selectItem itemLabel="Android Light"
-                                          itemValue="android_light"/>
-                            <f:selectItem itemLabel="Android Dark"
-                                          itemValue="android_dark"/>
-                            <f:selectItem itemLabel="BlackBerry"
-                                          itemValue="bberry"/>
-                            <f:selectItem itemLabel="BlackBerry 10"
-                                  itemValue="bb10"/>
-                            <f:ajax disabled="true"/>
-                        </h:selectOneMenu>
-                    </h:form>
-                    <a href="http://www.icemobile.org/demos.html" class="icon">
-                        <h:graphicImage library="images" name="icemobile_thumb.png"/>
-                    </a>
-                </f:facet>
             </mobi:pagePanel>
         </mobi:smallView>
         <script type="text/javascript">

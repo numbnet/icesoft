@@ -1,0 +1,114 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    
+        <mobi:fieldsetGroup styleClass="intro">
+            <mobi:fieldsetRow>
+            Augmented Reality Shopping allows users to interact with a
+            computer-generated interface overlaid on a physical catalog page.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:getEnhanced/>
+        <h:outputText value="#{realityBean.configShopping}" />
+
+    <h:form styleClass="form">
+
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <p>First print out or display the <a href="resources/images/icecatalog.jpg">catalog page</a>. 
+                </p>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:fieldsetGroup>
+
+            <mobi:fieldsetRow styleClass="mobi-center">
+                <mobi:augmentedReality  buttonLabel="3D Augmented Reality"
+                    urlBase="#{realityBean.baseURL}"
+                    value="#{realityBean.selection}"
+                    disabled="#{not mobiClient.iOS}">
+                    <mobi:augmentedRealityMarkers
+                        value="#{realityBean.markers}" var="marker"
+                        markerLabel="#{marker.label}"
+                        markerModel="#{marker.model}" />
+                </mobi:augmentedReality>
+                
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-center">
+                <mobi:commandButton
+                    styleClass="submit" buttonType="important"
+                    value="Submit"/>
+            </mobi:fieldsetRow>
+        <mobi:outputList inset="true">
+            <mobi:outputListItem group="true">Items</mobi:outputListItem>
+            <mobi:outputListItem styleClass="aritem">
+                <h:graphicImage library="images/auction" 
+                    name="icebreaker.png"/>
+                <p><strong>ICEbreaker</strong><br/>
+                <h:graphicImage library="images" style="width:20px"
+                    rendered="#{realityBean.bought.icebreaker}"
+                    name="button_bid_accept.gif"/>
+                <h:graphicImage library="images" style="width:20px"
+                    rendered="#{!realityBean.bought.icebreaker}"
+                    name="button_bid_decline.gif"/></p>
+            </mobi:outputListItem>
+            <mobi:outputListItem styleClass="aritem">
+                <h:graphicImage library="images/auction" 
+                    name="icecar.png"/>
+                <p><strong>ICEcar</strong><br/>
+                <h:graphicImage library="images" style="width:20px"
+                    rendered="#{realityBean.bought.icecar}"
+                    name="button_bid_accept.gif"/>
+                <h:graphicImage library="images" style="width:20px"
+                    rendered="#{!realityBean.bought.icecar}"
+                    name="button_bid_decline.gif"/></p>
+            </mobi:outputListItem>
+            <mobi:outputListItem styleClass="aritem">
+                <h:graphicImage library="images/auction" 
+                    name="iceskate.png"/>
+                <p><strong>ICEskate</strong><br/>
+                <h:graphicImage library="images" style="width:20px"
+                    rendered="#{realityBean.bought.iceskate}"
+                    name="button_bid_accept.gif"/>
+                <h:graphicImage library="images" style="width:20px"
+                    rendered="#{!realityBean.bought.iceskate}"
+                    name="button_bid_decline.gif"/></p>
+            </mobi:outputListItem>
+            <mobi:outputListItem styleClass="aritem">
+                <h:graphicImage library="images/auction" 
+                    name="icesailor.png"/>
+                <p><strong>ICEsailer</strong><br/>
+                <h:graphicImage library="images" style="width:20px"
+                    rendered="#{realityBean.bought.icesailer}"
+                    name="button_bid_accept.gif"/>
+                <h:graphicImage library="images" style="width:20px"
+                    rendered="#{!realityBean.bought.icesailer}"
+                    name="button_bid_decline.gif"/></p>
+            </mobi:outputListItem>
+        </mobi:outputList>
+
+        </mobi:fieldsetGroup>
+    </h:form>
+
+
+</ui:composition>
