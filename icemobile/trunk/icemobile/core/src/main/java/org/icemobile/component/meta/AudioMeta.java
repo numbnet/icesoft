@@ -22,7 +22,6 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.annotation.Only;
 import org.icefaces.ace.meta.annotation.OnlyType;
-import org.icefaces.mobi.utils.TLDConstants;
 import org.icefaces.ace.meta.annotation.JSP;
 import org.icemobile.component.baseMeta.SimpleMeta;
 
@@ -72,8 +71,8 @@ public class AudioMeta {
     @Property(defaultValue = "false", tlddoc = "If \"true\", will play the the audio file repeatedly. ")
     private boolean loop;
 
-    @Property(tlddoc = TLDConstants.TABINDEX)
-    private Integer tabindex;
+ /*   @Property(tlddoc = TLDConstants.TABINDEX)
+    private Integer tabindex; */
 
     @Property (defaultValue="false",
                tlddoc="Will cause the audio to automatically play when the page is load. This may be required " +

@@ -18,7 +18,6 @@ package org.icemobile.component.meta;
 
 
 import org.icefaces.ace.meta.annotation.*;
-import org.icefaces.mobi.utils.TLDConstants;
 import org.icemobile.component.baseMeta.SimpleMeta;
 
 import javax.faces.application.ResourceDependencies;
@@ -68,19 +67,9 @@ public class VideoPlayerMeta extends SimpleMeta {
     @Property(tlddoc = "Allows webkit supported browsers to play back the video inline rather than a new window.")
     private boolean playsinline;
 
- /*   @Property(defaultValue = "false",
-             tlddoc = org.icefaces.mobi.utils.TLDConstants.DISABLED)
-    private boolean disabled;*/
-
-    @Only(OnlyType.JSF)
+  /*  @Only(OnlyType.JSF)
     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
-    private int tabindex;
-
- /*   @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
-    private String style;
-
-    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
-    private String styleClass;   */
+    private int tabindex;   */
 
     @Only(OnlyType.JSF)
     @Property(tlddoc = "The name used for registering JSF resources.")
