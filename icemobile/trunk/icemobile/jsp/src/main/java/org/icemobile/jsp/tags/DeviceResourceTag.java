@@ -119,7 +119,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 				}
 			}
 		}
-		writeOutDeviceStyleSheets();
+		writeOutDeviceStyleSheets(client);
 		boolean prod = MobiEnvUtils.isProductionStage(getServletContext());
 		if (prod)  {
 		    out.write(String.format(SCRIPT_ICEMOBILE_PROD, contextRoot, MobiJspConstants.RESOURCE_BASE_URL));
@@ -160,7 +160,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
         return (includeIOSSmartAppBanner && !client.isSXRegistered());
     }
 
-	private void writeOutDeviceStyleSheets() throws IOException {
+	private void writeOutDeviceStyleSheets(ClientDescriptor client) throws IOException {
 		
 		PageContext pageContext = getContext();
 		JspWriter out = pageContext.getOut();
@@ -181,7 +181,12 @@ public class DeviceResourceTag extends BaseSimpleTag {
         }
 		
 		String contextRoot = Util.getContextRoot(pageContext.getRequest());
-		out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+' "+theme+"';</script>");
+		out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+' "+theme+"';");
+		
+		if( client.isBlackBerry10OS() && client.isICEmobileContainer()){
+            out.write("document.documentElement.className = document.documentElement.className + ' bb10ctr';");
+        }
+		out.write("</script>");
 
 		String cssLink = String.format("<link type='text/css' rel='stylesheet' href='%s%s/%s/%s/%s.css' />", 
 				contextRoot, MobiJspConstants.RESOURCE_BASE_URL, DEFAULT_LIBRARY, theme, fileName);

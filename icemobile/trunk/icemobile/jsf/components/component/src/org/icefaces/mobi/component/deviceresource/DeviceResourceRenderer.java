@@ -135,7 +135,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         if (isSimulated)  {
             writeSimulatorResources(context, comp, theme);
         }
-        encodeThemeMarker(writer,theme);
+        encodeMarkers(writer,theme, client);
 
     }
 
@@ -223,13 +223,15 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.endElement("script");
     }
 
-    public void encodeThemeMarker(ResponseWriter writer, Theme theme) throws IOException {
+    public void encodeMarkers(ResponseWriter writer, Theme theme, ClientDescriptor client) throws IOException {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
-        writer.writeText(String.format("document.documentElement.className == '' ? " +
-        		"document.documentElement.className = '%1$s ui-mobile' : " +
-        		"document.documentElement.className = document.documentElement.className+' %1$s ui-mobile';",
+        writer.writeText(
+                String.format("document.documentElement.className = document.documentElement.className+' %1$s ui-mobile';",
         		theme.fileName()),null);
+        if( client.isBlackBerry10OS() && client.isICEmobileContainer() ){
+            writer.writeText("document.documentElement.className = document.documentElement.className + ' bb10ctr';", null);
+        }
         writer.endElement("script");
     }
     

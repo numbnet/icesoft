@@ -26,3 +26,8 @@ img{ border:none; }
 .mobi-hidden{
     display:none !important;
 }
+/* bb10 container does not support fixed positioning */ 
+html.bb10ctr .ui-header-fixed, html.bb10ctr .ui-footer-fixed{
+    position: relative !important; 
+}
+html.bb10ctr .mobi-pagePanel-body{ padding: 0 !important; }
