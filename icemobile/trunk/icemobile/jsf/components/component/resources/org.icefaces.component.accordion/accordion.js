@@ -71,7 +71,7 @@
         if (opened && fht){
            // opened.setAttribute("style", "height:"+fht+"; maxHeight: "+fht+";");
             opened.style.height=fht;
-           // opened.style.maxHeight = fht;
+            opened.style.maxHeight = fht;
         }
     }
     function openPane(elem, h){
@@ -118,7 +118,7 @@
         origHeight = fixedHeight =  cfgIn.fixedHeight || null;
         var fHtVal = cfgIn.fHtVal || null;
         if (!openElem){
-            ice.log.debug(ice.log,"Accordion has no children");
+            console.log("Accordion has no children");
             this.setDisabled(true);
         }
         var handleheight = getHandleHeight(accordRoot);
@@ -175,7 +175,7 @@
                 }
                 if (autoheight && openElem && (maxHeight > 0)){
                     fixedHeight = maxHeight+"px";
-                   // console.log("\t updated fixedHeight="+fixedHeight);
+                 //   console.log("\t updated fixedHeight="+fixedHeight);
                 }
                 if (paneOpId && paneOpId == theParent.id){
                     if (openElem.className=="open"){
@@ -185,12 +185,14 @@
                         if (cached!=true){
                             ice.se(null, clientId);
                         }
+                    //    console.log(" CLIENT and fixedHeight="+fixedHeight+" openElem id="+openElem.id);
                         openPane( openElem, fixedHeight);
                     }
                 }
                 else {//panel has changed
                     closePane(openElem, handleht);
-                    if (cached==true){
+                    if (cached){
+                       // console.log(" PANE CHANGED  fixedHeight="+fixedHeight);
                         openPane(theParent,fixedHeight);
                         paneOpId = theParent.id;
                         openElem = theParent;
