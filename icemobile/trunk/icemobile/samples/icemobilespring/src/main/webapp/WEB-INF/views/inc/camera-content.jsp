@@ -23,9 +23,7 @@
 <form:form id="camform" method="POST" enctype="multipart/form-data"
 	modelAttribute="cameraBean" cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>Camera</h3>
-	</c:if>
+	<mobi:largeView><h3>Camera</h3></mobi:largeView>
 
 	<mobi:getEnhanced />
 

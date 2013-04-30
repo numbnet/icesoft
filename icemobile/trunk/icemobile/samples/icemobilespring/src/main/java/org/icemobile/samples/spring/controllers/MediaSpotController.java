@@ -34,6 +34,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.samples.spring.MediaSpotBean;
+import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.icemobile.util.Utils;
 import org.springframework.stereotype.Controller;
@@ -47,6 +48,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @SessionAttributes({"augmentedRealityMessage", "augmentedRealityUpload", "mediaspotBean"})
+@ICEmobileResourceStore(bean="icemobileResourceStore")
 public class MediaSpotController extends ICEmobileBaseController{
     HashMap<String,MediaSpotBean> messages = new HashMap<String,MediaSpotBean>();
     MediaSpotBean selectedMessage = null;

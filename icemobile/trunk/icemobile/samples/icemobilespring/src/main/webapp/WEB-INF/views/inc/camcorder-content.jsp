@@ -24,9 +24,7 @@
 	enctype="multipart/form-data" modelAttribute="camcorderBean"
 	cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>Camcorder</h3>
-	</c:if>
+	<mobi:largeView><h3>Camcorder</h3></mobi:largeView>
 
 	<mobi:getEnhanced />
 
@@ -46,8 +44,8 @@
 				placeholder="Your name" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<mobi:thumbnail for="camvid" />
-			<mobi:camcorder id="camvid" style="margin-left:20px" />
+			<mobi:thumbnail for="video" />
+			<mobi:camcorder id="video" style="margin-left:20px" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -74,11 +72,9 @@
 			</mobi:fieldsetRow>
 		</mobi:fieldsetGroup>
 	</c:if>
-	<s:bind path="*">
-		<c:if test="${status.error}">
-			<div id="message" class="error">Form has errors</div>
-		</c:if>
-	</s:bind>
+	<c:if test="${not empty camcorderError}">
+        <div id="message" class="error">${camcorderError}</div>
+    </c:if>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow group="true">
