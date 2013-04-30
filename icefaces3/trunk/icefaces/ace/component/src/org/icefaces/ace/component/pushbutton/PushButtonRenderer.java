@@ -94,7 +94,7 @@ public class PushButtonRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
 
         if (disabled)
-            writer.writeAttribute(HTML.STYLE_CLASS_ATTR, "ui-state-disabled", null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-disabled", null);
         else
             encodeScript(facesContext, writer, pushButton, clientId, HTML.ONFOCUS_ATTR);
 
