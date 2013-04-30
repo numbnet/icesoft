@@ -56,7 +56,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             encodeTabSetPage(facesContext, uiComponent);
         } else {  //plain old contentStack parent
             ContentStack stack = (ContentStack)parent;
-            stack.addPaneInfo(pane.getId(), pane.getClientId());
+     //       stack.addPaneInfo(pane.getId(), pane.getClientId());
             ContentPaneCoreRenderer renderer = new ContentPaneCoreRenderer();
             renderer.encodeBegin(pane, writer, amSelected);
         }
