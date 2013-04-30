@@ -175,16 +175,17 @@ public class SelectMenu extends SelectMenuBase implements NamingContainer {
 					disabled = (Boolean) itemDisabled.getValue(elContext);
 				} catch (Exception e) {}
 			
-				String convertedValue;
-				try {
-					convertedValue = (String) getRenderer(facesContext).getConvertedValue(facesContext, this, value);
-				} catch (Exception e) {
-					convertedValue = (String) value;
+				if (value != null) {
+					try {
+						value = getRenderer(facesContext).getConvertedValue(facesContext, this, value);
+					} catch (Exception e) {
+						value = value.toString();
+					}
 				}
 				
 				requestMap.remove(listVar);
 				
-				if (!disabled && convertedValue != null && convertedValue.equals(submittedValue.toString())) {
+				if (!disabled && value != null && value.equals(submittedValue.toString())) {
 					found = true;
 					break;
 				}
@@ -195,14 +196,15 @@ public class SelectMenu extends SelectMenuBase implements NamingContainer {
 				item = (SelectItem) matches.next();
 				Object value = item.getValue();
 				
-				String convertedValue;
-				try {
-					convertedValue = (String) getRenderer(facesContext).getConvertedValue(facesContext, this, value);
-				} catch (Exception e) {
-					convertedValue = (String) value;
+				if (value != null) {
+					try {
+						value = getRenderer(facesContext).getConvertedValue(facesContext, this, value);
+					} catch (Exception e) {
+						value = value.toString();
+					}
 				}
 				
-				if (!item.isDisabled() && convertedValue != null && convertedValue.equals(submittedValue.toString())) {
+				if (!item.isDisabled() && value != null && value.equals(submittedValue.toString())) {
 					found = true;
 					break;
 				}
