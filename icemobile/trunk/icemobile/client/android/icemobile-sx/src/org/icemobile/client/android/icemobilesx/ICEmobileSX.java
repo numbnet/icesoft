@@ -56,8 +56,10 @@ import org.icemobile.client.android.video.VideoInterface;
 import org.icemobile.client.android.video.VideoHandler;
 
 import org.icemobile.client.android.util.UtilInterface;
+import org.icemobile.client.android.util.SubmitProgressListener;
+
 public class ICEmobileSX extends Activity 
-    implements C2dmRegistrationHandler {
+    implements C2dmRegistrationHandler, SubmitProgressListener {
 
     private static final String LOG_TAG = "ICEmobileSX";
 
@@ -421,6 +423,9 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
     public void handleC2dmNotification() {
 	Log.d(LOG_TAG, "handleC2dmNotification ");
         pendingCloudPush = true;
+    }
+
+    public void submitProgress(int progress) {
     }
 
     protected String getCloudNotificationId() {
