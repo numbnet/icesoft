@@ -18,6 +18,7 @@ package org.icemobile.renderkit;
 
 import java.io.IOException;
 
+import org.icemobile.component.IBaseComponent;
 import org.icemobile.component.IMobiComponent;
 import org.icemobile.util.ClientDescriptor;
 
@@ -52,7 +53,7 @@ public abstract class BaseCoreRenderer{
     }
 
     public void writeStandardLayoutAttributes(IResponseWriter writer,
-                    IMobiComponent component, String baseClass) throws IOException  {
+                    IBaseComponent component, String baseClass) throws IOException  {
         StringBuilder inputStyle = new StringBuilder(baseClass);
         if (null != component.getStyleClass())  {
             inputStyle.append(SPACE).append(component.getStyleClass());
