@@ -26,9 +26,7 @@
         modelAttribute="geolocationBean" cssClass="form geolocpage"
     >
 
-        <c:if test="${viewSize eq 'large'}">
-            <h3>GeoLocation</h3>
-        </c:if>
+        <mobi:largeView><h3>GeoLocation</h3></mobi:largeView>
 
         <mobi:geolocation id="geo1" name="geolocation"
             timeout="${geolocationBean.timeout}"

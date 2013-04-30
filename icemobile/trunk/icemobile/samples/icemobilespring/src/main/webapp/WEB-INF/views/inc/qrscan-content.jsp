@@ -23,9 +23,7 @@
 <form:form id="qrscanform" method="POST" modelAttribute="QRScanBean"
 	cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>QR Codes</h3>
-	</c:if>
+	<mobi:largeView><h3>QR Codes</h3></mobi:largeView>
 
 	<mobi:getEnhanced />
 
@@ -43,7 +41,7 @@
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow styleClass="qr">
 			<label>Scanned:</label>
-			<div style="overflow:hidden;max-width:${viewSize eq 'small' ? '190px' : '400px'};display:inline-block;text-overflow:ellipsis">${QRScanBean.scanOne}</div>
+			<div style="overflow:hidden;max-width:${mobiClient.handheldBrowser ? '190px' : '400px'};display:inline-block;text-overflow:ellipsis">${QRScanBean.scanOne}</div>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 

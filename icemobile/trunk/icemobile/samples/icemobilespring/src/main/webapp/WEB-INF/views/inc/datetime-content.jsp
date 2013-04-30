@@ -23,9 +23,7 @@
 <form:form id="datetimeform" method="POST"
 	modelAttribute="dateTimeSpinnerBean">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>Date & Time Spinners</h3>
-	</c:if>
+	<mobi:largeView><h3>Date & Time Spinners</h3></mobi:largeView>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>

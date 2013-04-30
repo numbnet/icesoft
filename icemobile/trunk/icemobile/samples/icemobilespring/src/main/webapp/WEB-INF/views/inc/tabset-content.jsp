@@ -35,9 +35,7 @@
         </mobi:tabPane>
     </mobi:tabSetControl>
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>Tabset</h3>
-	</c:if>
+	<mobi:largeView><h3>Tabset</h3></mobi:largeView>
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow styleClass="intro">

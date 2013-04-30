@@ -22,9 +22,7 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form id="fieldset" class="form fieldsetpage">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>FieldSets</h3>
-	</c:if>
+	<mobi:largeView><h3>FieldSets</h3></mobi:largeView>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>

@@ -24,9 +24,7 @@
 	enctype="multipart/form-data" cssClass="form"
 	modelAttribute="notificationsBean">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>Cloud Push</h3>
-	</c:if>
+	<mobi:largeView><h3>Cloud Push</h3></mobi:largeView>
 
 	<mobi:getEnhanced />
 

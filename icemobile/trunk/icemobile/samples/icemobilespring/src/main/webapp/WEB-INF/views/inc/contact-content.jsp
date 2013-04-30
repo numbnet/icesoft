@@ -23,9 +23,7 @@
 <form:form id="conform" method="POST" enctype="multipart/form-data"
 	modelAttribute="contactBean" cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>Contact List</h3>
-	</c:if>
+	<mobi:largeView><h3>Contact List</h3></mobi:largeView>
 
 	<mobi:getEnhanced />
 
