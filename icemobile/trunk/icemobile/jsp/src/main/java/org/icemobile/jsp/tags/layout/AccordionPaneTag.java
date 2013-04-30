@@ -27,14 +27,14 @@ import java.util.logging.Logger;
 
 import org.icemobile.component.IContentPane;
 import org.icemobile.jsp.tags.TagWriter;
-import org.icemobile.renderkit.ContentPaneCoreRenderer;
+import org.icemobile.renderkit.AccordionPaneCoreRenderer;
 
 public class AccordionPaneTag extends BaseBodyTag implements IContentPane {
 
     private static Logger LOG = Logger.getLogger(AccordionPaneTag.class.getName());
 
     private AccordionTag mParent;
-    private ContentPaneCoreRenderer renderer;
+    private AccordionPaneCoreRenderer renderer;
     private boolean accordionPane;
     private TagWriter writer;
 
@@ -48,7 +48,7 @@ public class AccordionPaneTag extends BaseBodyTag implements IContentPane {
     }
 
     public int doStartTag() throws JspTagException {
-        renderer = new ContentPaneCoreRenderer();
+        renderer = new AccordionPaneCoreRenderer();
         writer = new TagWriter(pageContext);
          try {
             renderer.encodeBegin(this, writer, true, false);
