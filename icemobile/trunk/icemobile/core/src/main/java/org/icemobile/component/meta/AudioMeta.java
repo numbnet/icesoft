@@ -54,7 +54,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 
-public class AudioMeta {
+public class AudioMeta extends SimpleMeta{
 
     @Property(defaultValue = "auto", tlddoc = "Options for preloading the audio file. Accepted values are " +
     		"\"auto\" (allow the browser to decide), \"none\" or \"metadata\" (preload only the metadata). ")
