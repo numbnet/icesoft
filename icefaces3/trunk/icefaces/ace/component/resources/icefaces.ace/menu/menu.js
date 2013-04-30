@@ -308,10 +308,12 @@ ice.ace.MenuButton = function(id, cfg) {
 	
     //crete button and menu
     this.jqbutton.button({icons:{primary:'ui-icon-triangle-1-s'}});
+	var disabled = this.cfg.disabled;
+	delete this.cfg.disabled; // avoid passing parameter to menu widget
     this.jqMenu.wijmenu(this.cfg);
 	this.root.attr('style', '');
 
-    if(this.cfg.disabled) {
+    if(disabled) {
         this.jqbutton.button('disable');
     }
 
