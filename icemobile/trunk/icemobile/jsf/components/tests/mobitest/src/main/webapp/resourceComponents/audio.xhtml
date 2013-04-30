@@ -22,46 +22,104 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
-	<meta charset="UTF-8"></meta>
+    <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
+    <title>ContentPane transition support</title>
 	<title>audio</title>
-    <mobi:deviceStylesheet
-            name="#{themeSwitcher.theme}" media="screen" />
 </h:head>
 <h:body>
   <h:panelGroup id="resourcebackedsamples">
-    <h3>fixed URL audio</h3>
-       <h:panelGroup id="mp3panelId" >
-            <h:outputText value="generic mp3 file:-"/>
-            <mobi:audioPlayer id="genericmp3" value="../audio/audio_clip.mp3"
-                               styleClass="imageViewer"
-                               linkLabel="Play"
-                               style="margin-bottom:10px;"/>
-       </h:panelGroup>
+    <h3>audio</h3>
        <br />
        <h:panelGroup id="ipadpanel">
             <h:outputText value="iPadSample file:-"/>
-            <mobi:audioPlayer id="ipadSample" value="../audio/sampleIPad.mp4"
-                               styleClass="imageViewer"
-                    linkLabel="Play"
-                    style="margin-bottom:10px;"/>
+            <mobi:audioPlayer id="ipadSample" value="#{audio.value}"
+                    type="#{audio.type}"
+                    loop="#{audio.loop}"
+                    preload="#{audio.preload}"
+                    muted="#{audio.muted}"
+                    autoPlay = "#{audio.autoPlay}"
+                    styleClass="#{audio.styleClass}"
+                    linkLabel="#{audio.linkLabel}"
+                    style="#{audio.style}"/>
        </h:panelGroup> 
-       <br />    
-       <h:panelGroup id="androidPanel">
-            <h:outputText value="android recorded audio file:-"/>
-            <mobi:audioPlayer id="androidSample" value="../audio/sampleAndroid.mp4"
-                                linkLabel="Play"
-                               style="margin-bottom:10px;"/>
-       </h:panelGroup> 
-       <br />  
-       <h:panelGroup id="bberryPanel">
-            <h:outputText value="bberry audio file:-"/>
-            <mobi:audioPlayer id="bberrySample" value="../audio/sampleBberry.amr"
-                               linkLabel="Play"
-                               style="margin-bottom:10px;"/>
-       </h:panelGroup>                 
-       
-  </h:panelGroup>
- 
+    </h:panelGroup>
+   <h3>DYNAMIC UPDATES</h3>
+   <h:form id="inputForm">
+       <mobi:fieldsetGroup>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="src" value="File:"/>
+               <h:selectOneMenu id="src" value="#{audio.value}" >
+                   <f:selectItem itemValue="none" itemLabel="none"/>
+                   <f:selectItem itemValue="metadata" itemLabel="metadata"/>
+                   <f:selectItem itemValue="auto" itemLabel="auto"/>
+               </h:selectOneMenu>
+           </mobi:fieldsetRow>
+               <h:outputLabel for="url" value="Url:"/>
+               <h:selectOneMenu id="url" value="#{audio.url}" >
+                   <f:selectItem itemValue="../audio/audio_clip.mp3" itemLabel="mpeg"/>
+                   <f:selectItem itemValue="../audio/sampleIPad.mp4" itemLabel="iPad"/>
+                   <f:selectItem itemValue="../audio/sampleAndroid.mp4" itemLabel="android"/>
+                   <f:selectItem itemValue="../audio/sampleBberry.amr" itemlabel="bberry"/>
+               </h:selectOneMenu>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="preload" value="preload:"/>
+               <h:selectOneMenu id="preload" value="#{audio.preload}" >
+                   <f:selectItem itemValue="none" itemLabel="none"/>
+                   <f:selectItem itemValue="metadata" itemLabel="metadata"/>
+                   <f:selectItem itemValue="auto" itemLabel="auto"/>
+               </h:selectOneMenu>
+           </mobi:fieldsetRow>
+          <mobi:fieldsetRow>
+               <h:outputLabel for="type" value="type:"/>
+               <h:selectOneMenu id="type" value="#{audio.type}" >
+                   <f:selectItem itemValue="mp4" itemLabel="audio/mp4"/>
+                   <f:selectItem itemValue="mpeg" itemLabel="audio/mpeg"/>
+                   <f:selectItem itemValue="wav" itemLabel="audio/wav"/>
+                   <f:selectItem itemValue="ogg" itemLabel="audio/ogg"/>
+                   <f:selectItem itemValue="aac" itemLabel="audio/aac"/>
+               </h:selectOneMenu>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="style" value="style:"/>
+               <h:selectOneMenu id="style" value="#{audio.style}" >
+                   <f:selectItem itemValue="none" itemLabel=""/>
+                   <f:selectItem itemValue="margin-bottom:10px;" itemLabel="margin-bottom:10px"/>
+               </h:selectOneMenu>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="styleClass" value="styleClass:"/>
+               <h:selectOneMenu id="styleClass" value="#{audio.styleClass}" >
+                   <f:selectItem itemValue="none" itemLabel=""/>
+                   <f:selectItem itemValue="imageViewer" itemLabel="imageViewer"/>
+               </h:selectOneMenu>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="controls" value="controls:"/>
+               <mobi:flipswitch id="controls" value="#{audio.controls}" singleSubmit="true"/>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="loop" value="loop:"/>
+               <mobi:flipswitch id="loop" value="#{audio.loop}" singleSubmit="true"/>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="muted" value="muted:"/>
+               <mobi:flipswitch id="muted" value="#{audio.muted}" singleSubmit="true"/>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="autoplay" value="autoplay:"/>
+               <mobi:flipswitch id="autoplay" value="#{audio.autoPlay}" singleSubmit="true"/>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="linkLabel" value="linkLabel:"/>
+               <mobi:inputText id="linkLabel" value="#{autio.linkLabel}" singleSubmit="true"/>
+           </mobi:fieldsetRow>
+      <!--     <mobi:fieldsetRow>
+               <h:outputLabel for="height" value="Height:"/>
+               <mobi:inputText id="height" value="#{popup.height}" singleSubmit="true" type="number"/>
+           </mobi:fieldsetRow>  -->
+       </mobi:fieldsetGroup>
+    </h:form>
 	<li><a href="../resourceComponents.html">index page</a>
 	</li>
 </h:body>

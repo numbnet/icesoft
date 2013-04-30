@@ -24,9 +24,13 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.component.video.VideoPlayer;
 import org.icefaces.mobi.renderkit.BaseResourceRenderer;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icemobile.renderkit.AudioCoreRenderer;
+import org.icemobile.renderkit.IResponseWriter;
+import org.icemobile.component.IAudio;
 import org.icemobile.util.ClientDescriptor;
 
 
@@ -34,75 +38,12 @@ public class AudioRenderer extends BaseResourceRenderer {
     private static Logger log = Logger.getLogger(AudioRenderer.class.getName());
 
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        
-        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
+        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         Audio audio = (Audio) uiComponent;
-        boolean disabled = audio.isDisabled();  //haven't done check to see if it's disabled
-
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        // apply style class
-        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent,
-                audio.getSpanPassThruAttributes());
-        // apply component style class and append any user defined classes.
-        StringBuilder styleClass = new StringBuilder(VideoPlayer.VIDEO_CLASS);
-        if (audio.getStyleClass() != null){
-            styleClass.append(" ").append(audio.getStyleClass());
-        }
-        writer.writeAttribute("class", styleClass.toString(), null);
-        String srcAttribute;
-        if ( client.isBlackBerryOS()) {
-            writer.startElement("audio", uiComponent);
-            if (disabled) {
-                writer.writeAttribute("disabled", "disabled", null);
-            }
-            if (audio.isAutoPlay()){
-                writer.writeAttribute("autoplay", "true", null);
-            }
-            srcAttribute = writeCommonAttributes(writer, audio, facesContext, clientId);
-            writer.endElement("audio");
-        } else {
-            writer.startElement("video", uiComponent);
-            srcAttribute = writeCommonAttributes(writer, audio, facesContext, clientId);
-            if (audio.isAutoPlay()){
-                writer.writeAttribute("autoplay", "true", null);
-            }
-            if (disabled) {
-                writer.writeAttribute("disabled", "disabled", null);
-            }
-            writer.writeAttribute("height", "45", null);
-            writer.writeAttribute("width", "260", null);
-            writer.endElement("video");
-        }
-        // write inline image link
-        if (!client.isIOS() && audio.getLinkLabel() != null)  {
-            writer.startElement("br", uiComponent);
-            writer.endElement("br");
-            writer.startElement("a", uiComponent);
-            writer.writeAttribute("target", "_blank", null);
-            writer.writeAttribute("href", srcAttribute, null);
-            writer.writeText(audio.getLinkLabel(), null);
-            writer.endElement("a");
-        }
-    }
-
-
-    private String writeCommonAttributes(ResponseWriter writer, Audio audio, FacesContext facesContext,
-                                       String clientId)
-            throws IOException {
-        PassThruAttributeWriter.renderNonBooleanAttributes(writer, audio, audio.getAttributesNames());
-
-        if (audio.isControls())
-            writer.writeAttribute("controls", "controls", null);
-        String mimeType = audio.getType();
-        if (null == mimeType)
-            mimeType = "audio/mpeg"; //do we want a default type this seems to work best???
-        writer.writeAttribute("type", mimeType, null);
+        String clientId = audio.getClientId();
+        Object audioObject = audio.getValue();
         String scope = audio.getScope().toLowerCase().trim();
         if (!scope.equals("flash") && !(scope.equals("window")) && !(scope.equals("application"))
                 && (!scope.equals("request")) && (!scope.equals("view"))) {
@@ -110,20 +51,21 @@ public class AudioRenderer extends BaseResourceRenderer {
         }
         String name = audio.getName();
         if (null == name || name.equals("")) name = "audio" + clientId;
-        Object audioObject = audio.getValue();
-        String srcAttribute = "null";
-        if (null != audioObject) {
-            srcAttribute = processSrcAttribute(facesContext, audioObject, name, mimeType, scope, audio.getUrl());
+        String mimeType = audio.getType();
+        if (null == mimeType){
+            mimeType = "audio/mpeg"; //do we want a default type this seems to work best???
         }
-        writer.writeAttribute("src", srcAttribute, null);
-        return srcAttribute;
-    }
-
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-
-        writer.endElement(HTML.SPAN_ELEM);
+        String srcAttribute = null;
+        if (null != audioObject) {
+            srcAttribute = processSrcAttribute(facesContext, audioObject, name, mimeType,
+                    scope, audio.getUrl());
+            if (srcAttribute!=null){
+                audio.setSrcAttribute(srcAttribute);
+            }
+        }
+        //IAudio icomp = IAudio(uiComponent);
+        AudioCoreRenderer renderer = new AudioCoreRenderer();
+        renderer.encodeEnd(audio, writer);
     }
 
 

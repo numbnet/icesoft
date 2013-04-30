@@ -14,20 +14,16 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.mobi.component.video;
+package org.icemobile.component;
 
-import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.util.ClientDescriptor;
-import org.icemobile.component.IVideoPlayer;
 
-import java.util.logging.Logger;
+public interface IBaseComponent {
 
+    public void setStyle(String style) ;
+    public String getStyle() ;
+    public void setStyleClass(String styleClass);
+    public String getStyleClass() ;
+    public String getClientId();
 
-public class VideoPlayer extends VideoPlayerBase implements IVideoPlayer{
-    private static final Logger logger =
-            Logger.getLogger(VideoPlayer.class.toString());
-
-    public ClientDescriptor getClient() {
-         return MobiJSFUtils.getClientDescriptor();
-    }
 }

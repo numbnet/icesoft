@@ -16,50 +16,22 @@
 
 package org.icefaces.mobi.component.audio;
 
-import org.icefaces.mobi.utils.Attribute;
-
 import java.util.logging.Logger;
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IAudio;
+import org.icemobile.util.ClientDescriptor;
 
-public class Audio extends AudioBase {
+
+public class Audio extends AudioBase implements IAudio{
     private static final Logger logger =
             Logger.getLogger(Audio.class.toString());
 
-    public static final String AUDIO_CLASS = "mobi-audio";
 
-    // string pass through attributes for wrapping span
-    private Attribute[] spanPassThruAttributes = {
-            new Attribute("style", null)};
-
-    private Attribute[] attributesNames = {new Attribute("url", null),
-            new Attribute("loops", null),
-            new Attribute("tabindex", null),
-            new Attribute("name", null),
-            new Attribute("library", null),
-            new Attribute("preload", null)};
-
-//	   private Attribute[] booleanAttNames={new Attribute("readonly", null),
-//			                                new Attribute("disabled", null)};
-
-    public Attribute[] getAttributesNames() {
-        return attributesNames;
+    public ClientDescriptor getClient() {
+         return MobiJSFUtils.getClientDescriptor();
     }
 
-    public void setAttributesNames(Attribute[] attributesNames) {
-        this.attributesNames = attributesNames;
-    }
-
-    public Attribute[] getSpanPassThruAttributes() {
-        return spanPassThruAttributes;
-    }
-
-    //	public Attribute[] getBooleanAttNames() {
-//		return booleanAttNames;
-//	}
-//
-//	public void setBooleanAttNames(Attribute[] booleanAttNames) {
-//		this.booleanAttNames = booleanAttNames;
-//	}	   
 
 
 }
