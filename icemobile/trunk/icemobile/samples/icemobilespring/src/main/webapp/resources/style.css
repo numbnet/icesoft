@@ -189,6 +189,9 @@ html.ipad #splash fieldset, html.honeycomb #splash fieldset{
     margin-left:20px;
     width:auto;
 }
+#splash .mobi-fieldset h3, #splash .mobi-fieldset h4, #splash .mobi-fieldset h5 {
+    border-bottom: none;
+}
 @media screen and (min-width: 445px) {  
     #splash .intro{ position: relative; padding-left: 125px; }
     #splash figure{ position: absolute; left: 10px }
