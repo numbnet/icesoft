@@ -18,8 +18,10 @@ package org.icemobile.samples.spring.controllers;
 
 import java.io.IOException;
 
-import org.icemobile.samples.spring.FileUploadUtils;
+import org.icemobile.application.Resource;
 import org.icemobile.samples.spring.ModelBean;
+import org.icemobile.spring.annotation.ICEmobileResource;
+import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +29,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @SessionAttributes({"camcorderBean","camcorderUploadReady","camcorderMessage","camcorderUpload"})
+@ICEmobileResourceStore(bean="icemobileResourceStore")
 public class CamcorderController extends ICEmobileBaseController{
 
 	@ModelAttribute("camcorderBean")
@@ -56,14 +57,30 @@ public class CamcorderController extends ICEmobileBaseController{
 
 	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
 	public void processVideo(HttpServletRequest request, ModelBean modelBean,
-                             @RequestParam(value = "camvid", required = false) MultipartFile file,
-                             Model model) throws IOException {
-	    if( file != null || request.getParameter("camvid") != null ){
-    	    String videoFilename = FileUploadUtils.saveVideo(request, "camvid", file, null);
-            model.addAttribute("camcorderUploadReady", true);
-    		model.addAttribute("camcorderMessage", "Hello " + modelBean.getName() +
-                    ", your video was uploaded successfully.");
-    		model.addAttribute("camcorderUpload", "./"+videoFilename);
+	        @ICEmobileResource("video") Resource videoUpload, Model model) throws IOException {
+	    if( videoUpload != null ){
+	     // if the uploaded file is not a video display an error
+            if (!videoUpload.getContentType().startsWith("video")) {
+                model.addAttribute("camcorderError",
+                        "Sorry " + modelBean.getName()
+                                + ", only video uploads are allowed.");
+            } else {
+                try {
+                    String videoUrl = "icemobile-store/"+ videoUpload.getUuid();
+                    model.addAttribute("camcorderUpload", videoUrl);
+                    model.addAttribute("camcorderUploadReady", true);
+                    // tell the user their photo has been uploaded
+                    model.addAttribute("camcorderMessage",
+                            "Hello " + modelBean.getName()
+                                    + ", your video was uploaded successfully.");
+                } catch (Exception e) {
+                    //there was some problem opening the uploaded file or 
+                    //creating a new one for the media dir
+                    model.addAttribute("camcorderError",
+                            "Sorry " + modelBean.getName()
+                                    + ", there was a problem saving the image file.");
+                }
+            }
 	    }
 	    model.addAttribute("camcorderBean",modelBean);
     }

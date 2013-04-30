@@ -23,9 +23,7 @@
 <form:form id="micform" method="POST" enctype="multipart/form-data"
 	modelAttribute="microphoneBean" cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>Microphone</h3>
-	</c:if>
+	<mobi:largeView><h3>Microphone</h3></mobi:largeView>
 
 	<mobi:getEnhanced />
 
@@ -68,11 +66,9 @@
 			</mobi:fieldsetRow>
 		</mobi:fieldsetGroup>
 	</c:if>
-	<s:bind path="*">
-		<c:if test="${status.error}">
-			<div id="message" class="error">Form has errors</div>
-		</c:if>
-	</s:bind>
+	<c:if test="${not empty micError}">
+        <div id="message" class="error">${micError}</div>
+    </c:if>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow group="true">

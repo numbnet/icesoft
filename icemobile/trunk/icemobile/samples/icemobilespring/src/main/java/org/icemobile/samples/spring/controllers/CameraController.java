@@ -28,7 +28,6 @@ import org.icemobile.samples.spring.ModelBean;
 import org.icemobile.spring.annotation.ICEmobileResource;
 import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.icemobile.spring.controller.ICEmobileBaseController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;

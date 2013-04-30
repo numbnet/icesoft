@@ -23,8 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icemobile.application.Resource;
 import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.samples.spring.ModelBean;
+import org.icemobile.spring.annotation.ICEmobileResource;
+import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @SessionAttributes({"microphoneBean","micUploadReady","micMessage","micUpload"})
+@ICEmobileResourceStore(bean="icemobileResourceStore")
 public class MicrophoneController extends ICEmobileBaseController{
     
     private static final Log log = LogFactory
@@ -53,8 +57,9 @@ public class MicrophoneController extends ICEmobileBaseController{
     }
     
 	@RequestMapping(value = "/jqmmic", method=RequestMethod.POST)
-	public void processJqmmic(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic", required = false) MultipartFile file, Model model) throws IOException {
-        this.processMicrophone(request, modelBean, file, model);
+	public void processJqmmic(HttpServletRequest request, ModelBean modelBean, 
+	        @ICEmobileResource("mic") Resource audioUpload, Model model) throws IOException {
+        this.processMicrophone(request, modelBean, audioUpload, model);
     }
 
 	@RequestMapping(value = "/microphone", method=RequestMethod.GET)
@@ -72,35 +77,35 @@ public class MicrophoneController extends ICEmobileBaseController{
 
 	@RequestMapping(value = "/microphone", method=RequestMethod.POST)
 	public void processMicrophone(HttpServletRequest request, ModelBean microphoneBean, 
-            @RequestParam(value = "mic", required = false) MultipartFile file, 
+	        @ICEmobileResource("mic") Resource audioUpload, 
             Model model){
 	    
-	    if( file != null || request.getParameter("mic") != null ){
-            processUpload(request,microphoneBean,file,model);
+	    if( audioUpload != null ){
+	     // if the uploaded file is not an audio file display an error
+            if (!audioUpload.getContentType().startsWith("audio")) {
+                model.addAttribute("micError",
+                        "Sorry " + microphoneBean.getName()
+                                + ", only audio uploads are allowed.");
+            } else {
+                try {
+                    String videoUrl = "icemobile-store/"+ audioUpload.getUuid();
+                    model.addAttribute("micUpload", videoUrl);
+                    model.addAttribute("micUploadReady", true);
+                    // tell the user their photo has been uploaded
+                    model.addAttribute("micMessage",
+                            "Hello " + microphoneBean.getName()
+                                    + ", your recording was uploaded successfully.");
+                } catch (Exception e) {
+                    //there was some problem opening the uploaded file or 
+                    //creating a new one for the media dir
+                    model.addAttribute("micError",
+                            "Sorry " + microphoneBean.getName()
+                                    + ", there was a problem saving the image file.");
+                }
+            }
         }
         model.addAttribute("microphoneBean",microphoneBean);
 
-    }
-
-    public void processUpload(
-            HttpServletRequest request, 
-            ModelBean microphoneBean,
-            MultipartFile file,
-            Model model) {
-        log.info("processUpload() "+ microphoneBean);
-        String newFileName;
-        try {
-            newFileName = FileUploadUtils.saveAudio(request, "mic", file, null);
-            model.addAttribute("micMessage", "Hello " + microphoneBean.getName() 
-                    + ", your file was uploaded successfully.");
-            if (null != newFileName) {
-                model.addAttribute("micUpload", newFileName);
-                model.addAttribute("micUploadReady", true);
-            } 
-        } catch (IOException e) {
-            e.printStackTrace();
-            model.addAttribute("micMessage","There was an error uploading the file.");
-        }
     }
 
 
