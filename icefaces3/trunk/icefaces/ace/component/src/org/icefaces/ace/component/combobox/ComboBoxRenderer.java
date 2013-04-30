@@ -81,7 +81,8 @@ public class ComboBoxRenderer extends InputRenderer {
 
 		String inputClientId = clientId + "_input";
 
-		String value = (String) comboBox.getValue();		
+		Object _value = comboBox.getValue();
+		String value = _value != null ? _value.toString() : null;
 		if (isValueBlank(value)) value = null;
 		boolean labelIsInField = false;
 
@@ -294,14 +295,15 @@ public class ComboBoxRenderer extends InputRenderer {
 				writer.startElement("span", null); // value span
 				writer.writeAttribute("class", VALUE_CLASS, null);
 				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
-				String itemLabel;
-				try {
-					itemLabel = (String) getConvertedValue(facesContext, comboBox, value);
-				} catch (Exception e) {
-					itemLabel = (String) value;
+				if (value != null) {
+					try {
+						value = getConvertedValue(facesContext, comboBox, value);
+					} catch (Exception e) {
+						value = value.toString();
+					}
 				}
-				if (itemLabel != null) {
-					writer.writeText(itemLabel, null);
+				if (value != null) {
+					writer.writeText(value, null);
 				}
 				writer.endElement("span");
 				comboBox.resetId(facet);
@@ -324,17 +326,17 @@ public class ComboBoxRenderer extends InputRenderer {
 				SelectItem item = null;
 				while (matches.hasNext()) {
 					item = (SelectItem) matches.next();
-					Object value = item.getValue();
-					
-					String convertedValue;
-					try {
-						convertedValue = (String) getConvertedValue(facesContext, comboBox, value);
-					} catch (Exception e) {
-						convertedValue = (String) value;
+					String itemLabel = item.getLabel();
+					Object itemValue = item.getValue();
+					if (itemValue != null) {
+						try {
+							itemValue = getConvertedValue(facesContext, comboBox, itemValue);
+						} catch (Exception e) {
+							itemValue = itemValue.toString();
+						}
 					}
 					
-					String itemLabel = item.getLabel();
-					if (itemLabel == null) itemLabel = convertedValue;
+					itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
 					
 					writer.startElement("div", null);
 					writer.writeAttribute("style", "border: 0;", null);
@@ -352,7 +354,7 @@ public class ComboBoxRenderer extends InputRenderer {
 					writer.startElement("span", null);
 					writer.writeAttribute("class", VALUE_CLASS, null);
 					writer.writeAttribute("style", "visibility:hidden;display:none;", null);
-					writer.writeText(convertedValue, null);
+					writer.writeText(itemValue, null);
 					writer.endElement("span");
 					
 					writer.endElement("div");

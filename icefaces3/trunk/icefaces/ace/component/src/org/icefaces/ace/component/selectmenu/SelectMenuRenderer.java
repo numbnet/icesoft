@@ -81,7 +81,8 @@ public class SelectMenuRenderer extends InputRenderer {
 
 		String inputClientId = clientId + "_input";
 
-		String value = (String) selectMenu.getValue();		
+		Object _value = selectMenu.getValue();
+		String value = _value != null ? _value.toString() : null;
         if (isValueBlank(value)) value = null;
         boolean labelIsInField = false;
 
@@ -279,14 +280,15 @@ public class SelectMenuRenderer extends InputRenderer {
 				writer.startElement("span", null); // value span
 				writer.writeAttribute("class", VALUE_CLASS, null);
 				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
-				String itemLabel;
-				try {
-					itemLabel = (String) getConvertedValue(facesContext, selectMenu, value);
-				} catch (Exception e) {
-					itemLabel = (String) value;
+				if (value != null) {
+					try {
+						value = getConvertedValue(facesContext, selectMenu, value);
+					} catch (Exception e) {
+						value = value.toString();
+					}
 				}
-                if (itemLabel != null) {
-                    writer.writeText(itemLabel, null);
+                if (value != null) {
+                    writer.writeText(value, null);
                 }
                 writer.endElement("span");
 				selectMenu.resetId(facet);
@@ -309,17 +311,17 @@ public class SelectMenuRenderer extends InputRenderer {
 				if (ariaEnabled) role = " role=\"option\"";
                 while (matches.hasNext()) {
                     item = (SelectItem) matches.next();
-                    Object value = item.getValue();
-					
-					String convertedValue;
-					try {
-						convertedValue = (String) getConvertedValue(facesContext, selectMenu, value);
-					} catch (Exception e) {
-						convertedValue = (String) value;
+					String itemLabel = item.getLabel();
+					Object itemValue = item.getValue();
+					if (itemValue != null) {
+						try {
+							itemValue = getConvertedValue(facesContext, selectMenu, itemValue);
+						} catch (Exception e) {
+							itemValue = itemValue.toString();
+						}
 					}
 					
-					String itemLabel = item.getLabel();
-                    if (itemLabel == null) itemLabel = convertedValue;
+					itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
 					
 					if (item.isDisabled()) {
 						sb.append("<div style=\"border: 0;\" class=\"ui-state-disabled\"" + role + ">");
@@ -330,7 +332,7 @@ public class SelectMenuRenderer extends InputRenderer {
 					// label span
 					sb.append("<span class=\"" + LABEL_CLASS + "\">").append(itemLabel).append("</span>");
 					// value span
-					sb.append("<span class=\"" + VALUE_CLASS + "\" style=\"visibility:hidden;display:none;\">").append(convertedValue).append("</span>");
+					sb.append("<span class=\"" + VALUE_CLASS + "\" style=\"visibility:hidden;display:none;\">").append(itemValue).append("</span>");
 					
 					sb.append("</div>");
                 }
