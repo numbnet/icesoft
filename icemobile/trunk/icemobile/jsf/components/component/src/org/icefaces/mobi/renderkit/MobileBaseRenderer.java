@@ -15,6 +15,7 @@
  */
 package org.icefaces.mobi.renderkit;
 
+import javax.faces.application.ResourceHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
@@ -30,5 +31,13 @@ public class MobileBaseRenderer extends Renderer  {
         long extendedHash = clientId.hashCode();
         return Long.toString(extendedHash, 36);
     }
+    protected String getResourceURL(FacesContext facesContext, String value) {
+        if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
+            return value;
+        } else {
+            String url = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
 
+            return facesContext.getExternalContext().encodeResourceURL(url);
+        }
+    }
 }

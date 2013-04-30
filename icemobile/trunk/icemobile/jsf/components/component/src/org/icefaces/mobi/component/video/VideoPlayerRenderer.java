@@ -14,15 +14,17 @@
  * governing permissions and limitations under the License.
  */
 
-
 package org.icefaces.mobi.component.video;
 
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.renderkit.BaseResourceRenderer;
 import org.icefaces.mobi.utils.Utils;
+import org.icemobile.renderkit.IResponseWriter;
 import org.icemobile.util.ClientDescriptor;
+import org.icemobile.renderkit.VideoPlayerCoreRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,16 +37,28 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
     private static Logger log = Logger.getLogger(VideoPlayerRenderer.class.getName());
 
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         String clientId = uiComponent.getClientId(facesContext);
         VideoPlayer video = (VideoPlayer) uiComponent;
-
-        // root element
-//        boolean disabled = video.isDisabled();
-
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        String mimeType = video.getType();
+        String scope = video.getScope().toLowerCase().trim();
+        if (!scope.equals("flash") && !(scope.equals("window")) && !(scope.equals("application"))
+                && (!scope.equals("request")) && (!scope.equals("view"))) {
+            scope = "session";
+        }
+        String name = video.getName();
+        if (null == name || name.equals("")) name = "video" + clientId;
+        Object videoObject = video.getValue();
+        String srcAttribute = "null";
+        if (null != videoObject) {
+            srcAttribute = processSrcAttribute(facesContext, videoObject, name, mimeType, scope, video.getUrl());
+        }
+        if (srcAttribute!=null){
+            video.setSrcAttribute(srcAttribute);
+        }
+ /*       writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
         // apply component style class and append any user defined classes.
@@ -71,18 +85,7 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
         if (video.isPlaysinline()) {
             writer.writeAttribute("webkit-playsinline", "yes", null);
         }
-        String scope = video.getScope().toLowerCase().trim();
-        if (!scope.equals("flash") && !(scope.equals("window")) && !(scope.equals("application"))
-                && (!scope.equals("request")) && (!scope.equals("view"))) {
-            scope = "session";
-        }
-        String name = video.getName();
-        if (null == name || name.equals("")) name = "video" + clientId;
-        Object videoObject = video.getValue();
-        String srcAttribute = "null";
-        if (null != videoObject) {
-            srcAttribute = processSrcAttribute(facesContext, videoObject, name, mimeType, scope, video.getUrl());
-        }
+
         writer.writeAttribute("src", srcAttribute, null);
         writer.endElement("video");
         ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
@@ -94,15 +97,11 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
             writer.writeAttribute("href", srcAttribute, null);
             writer.writeText(video.getLinkLabel(), null);
             writer.endElement("a");
-        }
+        } */
+        VideoPlayerCoreRenderer renderer = new VideoPlayerCoreRenderer();
+        renderer.encodeEnd(video, writer);
     }
 
-
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.endElement(HTML.SPAN_ELEM);
-    }
 
 
 }
