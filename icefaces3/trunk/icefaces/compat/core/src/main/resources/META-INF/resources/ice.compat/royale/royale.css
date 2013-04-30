@@ -6,7 +6,7 @@
  * License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ *  
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
@@ -148,7 +148,7 @@ input {
 
 .iceSelInpDateMonthYear, .iceSelInpDateTime{
     background-color: #026AFF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/table_col_header.gif" );
     background-position: top;
     background-repeat: repeat-x;
     font-weight: normal;
@@ -244,7 +244,7 @@ input {
     display: inline;
     text-decoration: none;
     background-color: transparent;
-    background-image: url( "./css-images/cal_button.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/cal_button.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -255,7 +255,7 @@ input {
     display: inline;
     text-decoration: none;
     background-color: transparent;
-    background-image: url( "./css-images/cal_off.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/cal_off.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -266,7 +266,7 @@ input {
     text-decoration: none;
     display: inline;
     background-color: transparent;
-    background-image: url( "./css-images/cal_arrow_left.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/cal_arrow_left.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -277,7 +277,7 @@ input {
     text-decoration: none;
     display: inline;
     background-color: transparent;
-    background-image: url( "./css-images/cal_arrow_right.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/cal_arrow_right.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -301,7 +301,7 @@ input {
 .iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr { /* was iceTblHeader */
 /*the header of a data tables */
     background-color: #026AFF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/table_col_header.gif" );
     background-position: top;
     background-repeat: repeat-x;
     font-weight: normal;
@@ -351,7 +351,7 @@ input {
 }
 
 .iceDatTblScrlSpr{ 
-    background: url( './css-images/table_col_header.gif' ) repeat-x top left; 
+    background: url( '../xmlhttp/css/royale/css-images/table_col_header.gif' ) repeat-x top left; 
     background-color: #026AFF;
     border-top: 1px solid #026AFF;
     border-right: 1px solid #026AFF;
@@ -503,7 +503,7 @@ input {
 
 .icePnlTbOn .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -512,7 +512,7 @@ input {
 
 .icePnlTbOn .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -521,7 +521,7 @@ input {
 
 .icePnlTbOn .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -530,7 +530,7 @@ input {
 
 .icePnlTbOn .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -539,7 +539,7 @@ input {
 
 .icePnlTbOn .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -563,7 +563,7 @@ input {
 
 .icePnlTbOn .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -572,21 +572,21 @@ input {
 
 .icePnlTbOn .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOn .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOn .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -604,7 +604,7 @@ input {
 
 .icePnlTbOff .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -613,7 +613,7 @@ input {
 
 .icePnlTbOff .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -622,7 +622,7 @@ input {
 
 .icePnlTbOff .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -631,7 +631,7 @@ input {
 
 .icePnlTbOff .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -640,7 +640,7 @@ input {
 
 .icePnlTbOff .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -663,7 +663,7 @@ input {
 
 .icePnlTbOff .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -672,21 +672,21 @@ input {
 
 .icePnlTbOff .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOff .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOff .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -704,7 +704,7 @@ input {
 
 .icePnlTbOver .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -713,7 +713,7 @@ input {
 
 .icePnlTbOver .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -722,7 +722,7 @@ input {
 
 .icePnlTbOver .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -731,7 +731,7 @@ input {
 
 .icePnlTbOver .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -740,7 +740,7 @@ input {
 
 .icePnlTbOver .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -763,7 +763,7 @@ input {
 
 .icePnlTbOver .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -772,21 +772,21 @@ input {
 
 .icePnlTbOver .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOver .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOver .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -837,7 +837,7 @@ input {
 
 .icePnlTbOnBtm .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-left-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -845,7 +845,7 @@ input {
 
 .icePnlTbOnBtm .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -853,7 +853,7 @@ input {
 
 .icePnlTbOnBtm .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-right-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -861,7 +861,7 @@ input {
 
 .icePnlTbOnBtm .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -870,7 +870,7 @@ input {
 
 .icePnlTbOnBtm .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -893,7 +893,7 @@ input {
 
 .icePnlTbOnBtm .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/on-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -902,7 +902,7 @@ input {
 
 .icePnlTbOnBtm .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-left-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -910,7 +910,7 @@ input {
 
 .icePnlTbOnBtm .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-mid-bot.gif" );
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -918,7 +918,7 @@ input {
 
 .icePnlTbOnBtm .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-on-right-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -937,7 +937,7 @@ input {
 
 .icePnlTbOffBtm .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-left-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center; /*padding-top:5px;    */
     border: none;
@@ -945,7 +945,7 @@ input {
 
 .icePnlTbOffBtm .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center; /*padding-top:5px;  */
     border: none;
@@ -953,7 +953,7 @@ input {
 
 .icePnlTbOffBtm .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-right-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center; /*padding-top:5px;    */
     border: none;
@@ -961,7 +961,7 @@ input {
 
 .icePnlTbOffBtm .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-mid.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -970,7 +970,7 @@ input {
 
 .icePnlTbOffBtm .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-mid.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -993,7 +993,7 @@ input {
 
 .icePnlTbOffBtm .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-mid.gif" );
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -1002,7 +1002,7 @@ input {
 
 .icePnlTbOffBtm .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-left-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1010,7 +1010,7 @@ input {
 
 .icePnlTbOffBtm .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-mid-bot.gif" );
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -1018,7 +1018,7 @@ input {
 
 .icePnlTbOffBtm .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-off-right-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1037,7 +1037,7 @@ input {
 
 .icePnlTbOverBtm .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-left-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-left-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -1045,7 +1045,7 @@ input {
 
 .icePnlTbOverBtm .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-mid-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-mid-top.gif" );
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -1053,7 +1053,7 @@ input {
 
 .icePnlTbOverBtm .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-right-top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-right-top.gif" );
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -1061,7 +1061,7 @@ input {
 
 .icePnlTbOverBtm .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-left-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -1070,7 +1070,7 @@ input {
 
 .icePnlTbOverBtm .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-mid-mid.gif" );
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -1093,7 +1093,7 @@ input {
 
 .icePnlTbOverBtm .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-mid.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/over-right-mid.gif" );
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -1102,7 +1102,7 @@ input {
 
 .icePnlTbOverBtm .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-left-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1110,7 +1110,7 @@ input {
 
 .icePnlTbOverBtm .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-mid-bot.gif" );
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -1118,7 +1118,7 @@ input {
 
 .icePnlTbOverBtm .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/tbot-over-right-bot.gif" );
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1260,7 +1260,7 @@ input {
     width: 100%;
     background-color: #2A6CC2;
     color: #FFFFFF;
-    background-image: url( ./css-images/cal_arrow_right.gif );
+    background-image: url( ../xmlhttp/css/royale/css-images/cal_arrow_right.gif );
     background-position: center right;
     background-repeat: no-repeat;
 }
@@ -1760,7 +1760,7 @@ input {
 
 .icePnlPopHdr, .icePnlTlTipHdr {
     background-color: #026AFF;
-    background-image: url( "./css-images/window_top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/window_top.gif" );
     background-position: top;
     background-repeat: repeat-x;
     height: 2em;
@@ -1989,7 +1989,7 @@ input {
 
 .icePnlTbOff .LftTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2000,7 +2000,7 @@ input {
 
 .icePnlTbOff .MidTop-dis {
     background-color: #D0D4EE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url( '../xmlhttp/css/royale/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2009,7 +2009,7 @@ input {
 
 .icePnlTbOff .RtTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2019,7 +2019,7 @@ input {
 
 .icePnlTbOff .LftMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2028,7 +2028,7 @@ input {
 
 .icePnlTbOff .MidMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2047,7 +2047,7 @@ input {
 
 .icePnlTbOff .RtMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2056,21 +2056,21 @@ input {
 
 .icePnlTbOff .LftBtm-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOff .MidBtm-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOff .RtBtm-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2078,7 +2078,7 @@ input {
 /* disabled bottom tab off */
 .icePnlTbOffBtm .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2089,7 +2089,7 @@ input {
 
 .icePnlTbOffBtm .MidBtm-dis {
     background-color: #D0D4EE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url( '../xmlhttp/css/royale/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2098,7 +2098,7 @@ input {
 
 .icePnlTbOffBtm .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2108,7 +2108,7 @@ input {
 
 .icePnlTbOffBtm .LftMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2117,7 +2117,7 @@ input {
 
 .icePnlTbOffBtm .MidMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2136,7 +2136,7 @@ input {
 
 .icePnlTbOffBtm .RtMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2145,21 +2145,21 @@ input {
 
 .icePnlTbOffBtm .LftTop-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOffBtm .MidTop-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOffBtm .RtTop-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2167,7 +2167,7 @@ input {
 /* disabled bottom tab on */
 .icePnlTbOnBtm .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2178,7 +2178,7 @@ input {
 
 .icePnlTbOnBtm .MidBtm-dis {
     background-color: #D0D4EE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url( '../xmlhttp/css/royale/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2187,7 +2187,7 @@ input {
 
 .icePnlTbOnBtm .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2197,7 +2197,7 @@ input {
 
 .icePnlTbOnBtm .LftMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2206,7 +2206,7 @@ input {
 
 .icePnlTbOnBtm .MidMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2225,7 +2225,7 @@ input {
 
 .icePnlTbOnBtm .RtMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2234,21 +2234,21 @@ input {
 
 .icePnlTbOnBtm .LftTop-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOnBtm .MidTop-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOnBtm .RtTop-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2256,7 +2256,7 @@ input {
 /** Disabled style for active tabs */
 .icePnlTbOn .LftTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2267,7 +2267,7 @@ input {
 
 .icePnlTbOn .MidTop-dis {
     background-color: #D0D4EE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url( '../xmlhttp/css/royale/css-images/off-mid-top-dis.gif' );
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -2276,7 +2276,7 @@ input {
 
 .icePnlTbOn .RtTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-top-dis.gif" );
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2286,7 +2286,7 @@ input {
 
 .icePnlTbOn .LftMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-left-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-left-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2295,7 +2295,7 @@ input {
 
 .icePnlTbOn .MidMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-mid-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-mid-mid.gif");
     background-repeat:repeat-x;*/
     text-align: center;
     padding-top: 5px;
@@ -2314,7 +2314,7 @@ input {
 
 .icePnlTbOn .RtMid-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/off-right-mid.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/off-right-mid.gif");
     background-repeat:no-repeat;*/
     text-align: center;
     padding-top: 15px;
@@ -2323,21 +2323,21 @@ input {
 
 .icePnlTbOn .LftBtm-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-left-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOn .MidBtm-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-mid-bot.gif" );
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOn .RtBtm-dis {
     background-color: #D0D4EE;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/off-right-bot.gif" );
     background-repeat: no-repeat;
     border: none;
 }
@@ -2401,7 +2401,7 @@ Disabeld classes for the calendar controls
 
 .iceSelInpDateMonthYear-dis {
     background-color: #D0D4EE;
-    /*    background-image: url("./css-images/table_col_header.gif");
+    /*    background-image: url("../xmlhttp/css/royale/css-images/table_col_header.gif");
     background-position:bottom;
     background-repeat:repeat-x;*/
     font-weight: normal;
@@ -2494,10 +2494,10 @@ Disabeld classes for the calendar controls
     height:10px;
 }
 .iceCmdSrtHdrAsc{
-    background-image: url('./css-images/column_sort_asc.gif');
+    background-image: url('../xmlhttp/css/royale/css-images/column_sort_asc.gif');
 }
 .iceCmdSrtHdrDesc{
-    background-image: url('./css-images/column_sort_desc.gif');
+    background-image: url('../xmlhttp/css/royale/css-images/column_sort_desc.gif');
 }
 
 .iceCmdSrtHdr td {
@@ -2730,7 +2730,7 @@ Disabeld classes for the calendar controls
 /* common accordion headers */
 .icePnlClpsblHdr, .icePnlClpsblColpsdHdr {
     background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/table_col_header.gif" );
     background-position: bottom;
     background-repeat: repeat-x;
     font-weight: bold;
@@ -2760,7 +2760,7 @@ Disabeld classes for the calendar controls
 }
 
 .icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis {
-    background: #EFEFEF url( './css-images/table_col_header_dis.gif' ) repeat-x bottom;
+    background: #EFEFEF url( '../xmlhttp/css/royale/css-images/table_col_header_dis.gif' ) repeat-x bottom;
     font-weight: bold;
     text-align: left;
     color: #CCC;
@@ -2870,7 +2870,7 @@ Disabeld classes for the calendar controls
 
 .icePnlCnfHdr {
     background-color: #026AFF;
-    background-image: url( "./css-images/window_top.gif" );
+    background-image: url( "../xmlhttp/css/royale/css-images/window_top.gif" );
     background-position: top;
     background-repeat: repeat-x;
     height: auto;
