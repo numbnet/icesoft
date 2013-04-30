@@ -23,7 +23,7 @@
 %>
 <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean">
 
-    <c:if test="${viewSize eq 'large'}"><h3>Buttons</h3></c:if>
+    <mobi:largeView><h3>Buttons</h3></mobi:largeView>
 
     <mobi:fieldsetGroup styleClass="intro">
         <mobi:fieldsetRow>

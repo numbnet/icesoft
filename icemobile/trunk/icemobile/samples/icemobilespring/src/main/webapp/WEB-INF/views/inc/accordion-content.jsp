@@ -25,9 +25,9 @@
     modelAttribute="accordionBean" cssStyle="min-height:1000px"
 >
 
-    <c:if test="${viewSize eq 'large'}">
+    <mobi:largeView>
         <h3>Accordion</h3>
-    </c:if>
+    </mobi:largeView>
 
     <mobi:fieldsetGroup styleClass="intro">
         <mobi:fieldsetRow>

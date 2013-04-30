@@ -22,9 +22,7 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <div class="panelContent">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>Panel Popup</h3>
-	</c:if>
+	<mobi:largeView><h3>Panel Popup</h3></mobi:largeView>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
@@ -48,7 +46,7 @@
 
 		<mobi:panelPopup id="popup" width="260"
 			headerText="Group of popup items" autoCenter="false"
-			style="top:100px;${viewSize eq 'large' ? 'top:50px;left:32%' : 'top:50px;left:10px'}">
+			style="${mobiClient.handheldBrowser ? 'top:50px;left:10px' : 'top:50px;left:32%'}">
 			<mobi:outputList inset="false" id="itemList">
 				<mobi:outputListItem group="true">
                 Panel Popup Links (select one)

@@ -23,9 +23,7 @@
 <form:form id="inputtextform" method="POST"
 	modelAttribute="inputTextBean" cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>HTML5 Input</h3>
-	</c:if>
+	<mobi:largeView><h3>HTML5 Input</h3></mobi:largeView>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>

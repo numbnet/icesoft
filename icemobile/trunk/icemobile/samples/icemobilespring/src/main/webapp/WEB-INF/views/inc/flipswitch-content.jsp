@@ -23,9 +23,7 @@
 <form:form id="flipswitchform" method="POST"
 	modelAttribute="flipSwitchBean">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>FlipSwitch</h3>
-	</c:if>
+	<mobi:largeView><h3>FlipSwitch</h3></mobi:largeView>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>

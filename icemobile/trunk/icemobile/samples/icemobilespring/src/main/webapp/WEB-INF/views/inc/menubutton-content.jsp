@@ -22,9 +22,7 @@
     uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="menubutton" method="POST" enctype="multipart/form-data" cssClass="form">
 
-    <c:if test="${viewSize eq 'large'}">
-        <h3>Menu Button</h3>
-    </c:if>
+    <mobi:largeView><h3>Menu Button</h3></mobi:largeView>
 
     <mobi:fieldsetGroup styleClass="intro">
         <mobi:fieldsetRow>

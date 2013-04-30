@@ -22,9 +22,7 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="carouselForm" method="POST" modelAttribute="carouselBean">
 
-	<c:if test="${viewSize eq 'large'}">
-		<h3>Carousel</h3>
-	</c:if>
+	<mobi:largeView><h3>Carousel</h3></mobi:largeView>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
