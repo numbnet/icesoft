@@ -101,7 +101,7 @@ public class LinkButtonRenderer extends CoreRenderer {
                          linkButton, uiParams, clientId, doAction);
             encodeHref(linkButton, writer, uiParams);
         } else
-            writer.writeAttribute(HTML.STYLE_CLASS_ATTR, "ui-state-disabled", null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-disabled", null);
 
         writer.write(value);
 
