@@ -23,8 +23,7 @@
     
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
-            Augmented Reality Shopping allows users to interact with a
-            computer-generated interface overlaid on a physical catalog page.
+            Augmented Reality Shopping allows a physical catalog overlaid with an interactive view.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
@@ -32,18 +31,11 @@
         <h:outputText value="#{realityBean.configShopping}" />
 
     <h:form styleClass="form">
-
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
-                <p>First print out or display the <a href="resources/images/icecatalog.jpg">catalog page</a>. 
-                </p>
-            </mobi:fieldsetRow>
-        </mobi:fieldsetGroup>
         
         <mobi:fieldsetGroup>
 
             <mobi:fieldsetRow styleClass="mobi-center">
-                <mobi:augmentedReality  buttonLabel="3D Augmented Reality"
+                <mobi:augmentedReality  buttonLabel="View Augmented Catalog"
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}"
                     disabled="#{not mobiClient.iOS}">
@@ -54,15 +46,10 @@
                 </mobi:augmentedReality>
                 
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-center">
-                <mobi:commandButton
-                    styleClass="submit" buttonType="important"
-                    value="Submit"/>
-            </mobi:fieldsetRow>
         <mobi:outputList inset="true">
             <mobi:outputListItem group="true">Items</mobi:outputListItem>
             <mobi:outputListItem styleClass="aritem">
-                <h:graphicImage library="images/auction" 
+                <h:graphicImage library="images/auction" style="width:40px"
                     name="icebreaker.png"/>
                 <p><strong>ICEbreaker</strong><br/>
                 <h:graphicImage library="images" style="width:20px"
@@ -70,10 +57,12 @@
                     name="button_bid_accept.gif"/>
                 <h:graphicImage library="images" style="width:20px"
                     rendered="#{!realityBean.bought.icebreaker}"
-                    name="button_bid_decline.gif"/></p>
+                    name="button_bid_decline.gif"/>
+                <h:outputText value="#{realityBean.cost.icebreaker}"
+                        style="float:right" /></p>
             </mobi:outputListItem>
             <mobi:outputListItem styleClass="aritem">
-                <h:graphicImage library="images/auction" 
+                <h:graphicImage library="images/auction" style="width:40px"
                     name="icecar.png"/>
                 <p><strong>ICEcar</strong><br/>
                 <h:graphicImage library="images" style="width:20px"
@@ -81,10 +70,11 @@
                     name="button_bid_accept.gif"/>
                 <h:graphicImage library="images" style="width:20px"
                     rendered="#{!realityBean.bought.icecar}"
-                    name="button_bid_decline.gif"/></p>
+                    name="button_bid_decline.gif"/>
+                <h:outputText value="#{realityBean.cost.icecar}" style="float:right" /></p>
             </mobi:outputListItem>
             <mobi:outputListItem styleClass="aritem">
-                <h:graphicImage library="images/auction" 
+                <h:graphicImage library="images/auction" style="width:40px"
                     name="iceskate.png"/>
                 <p><strong>ICEskate</strong><br/>
                 <h:graphicImage library="images" style="width:20px"
@@ -92,10 +82,12 @@
                     name="button_bid_accept.gif"/>
                 <h:graphicImage library="images" style="width:20px"
                     rendered="#{!realityBean.bought.iceskate}"
-                    name="button_bid_decline.gif"/></p>
+                    name="button_bid_decline.gif"/>
+                <h:outputText value="#{realityBean.cost.iceskate}"
+                      style="float:right" /></p>
             </mobi:outputListItem>
             <mobi:outputListItem styleClass="aritem">
-                <h:graphicImage library="images/auction" 
+                <h:graphicImage library="images/auction" style="width:40px"
                     name="icesailor.png"/>
                 <p><strong>ICEsailer</strong><br/>
                 <h:graphicImage library="images" style="width:20px"
@@ -103,10 +95,27 @@
                     name="button_bid_accept.gif"/>
                 <h:graphicImage library="images" style="width:20px"
                     rendered="#{!realityBean.bought.icesailer}"
-                    name="button_bid_decline.gif"/></p>
+                    name="button_bid_decline.gif"/>
+                <h:outputText value="#{realityBean.cost.icesailer}"
+                     style="float:right" /></p>
+            </mobi:outputListItem>
+            <mobi:outputListItem styleClass="aritem">
+                <p><strong>Total:</strong><span style="padding-left:20px"></span>
+                <h:outputText value="#{realityBean.total}" /></p>
             </mobi:outputListItem>
         </mobi:outputList>
+            <mobi:fieldsetRow styleClass="mobi-center">
+                <mobi:commandButton
+                    styleClass="submit" buttonType="important"
+                    value="Update Cart"/>
+            </mobi:fieldsetRow>
 
+        </mobi:fieldsetGroup>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <p>Print or display the <a href="resources/images/icecatalog.jpg">catalog page</a>. 
+                </p>
+            </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
     </h:form>
 

@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -298,6 +299,20 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         return cost;
     }
 
+    public String getTotal()  {
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        float total = 0;
+        for (Object key : cost.keySet())  {
+            try {
+                String value = (String) cost.get(key);
+                total += currencyFormat.parse(value).floatValue();
+            } catch (Exception e)  {
+                e.printStackTrace();
+            }
+        }
+        return currencyFormat.format(total);
+    }
+
     public void initCost()  {
         cost = new HashMap();
         cost.put("icebreaker", "$0.00");
@@ -309,6 +324,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     public void setSelection(String selection)  {
         if (selection.contains("buy=buy"))  {
             bought = new HashMap();
+            initCost();
             List parts = Arrays.asList(selection.split("&"));
             if (parts.contains("icebreaker=on"))  {
                 bought.put("icebreaker", Boolean.TRUE);
