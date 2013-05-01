@@ -36,3 +36,5 @@ html.bb10ctr .mobi-tabset.mobi-tabset-tabs-top-header{ padding-top: 0 !important
 html.bb10ctr .mobi-tabset.mobi-tabset-tabs-bottom-footer{ padding-bottom: 0 !important; }
 html.bb10ctr .mobi-date-bg, html.bb10ctr .mobi-time-bg, html.bb10ctr .mobi-panelconf-bg, 
 html.bb10ctr .mobi-panelpopup-bg, html.bb10ctr .mobi-submitnotific-bg{ display: none !important; }
+
+html.ie10 *{ filter: none !important; } /* turn off filters for ie10 */
