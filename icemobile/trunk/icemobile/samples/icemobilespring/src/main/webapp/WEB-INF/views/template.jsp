@@ -49,8 +49,9 @@
             <c:when test="${!ajaxRequest}">
                 <mobi:pagePanel>
                     <mobi:pagePanelHeader>
-                        <a id="menuLink" class="mobi-button ui-icon ui-icon-home ui-icon-shadow"
-                        href='<c:url value="/"/>'> </a>
+                        <a href="<c:url value="/"/>" style="position: absolute;left: 0.5em;top: 3px;">
+                            <img src="resources/images/icemobile_thumb.png"/>
+                        </a>
                         ICEmobile Spring MVC Showcase
                     </mobi:pagePanelHeader>
                     <mobi:pagePanelBody noFooter="true">
