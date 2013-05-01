@@ -376,8 +376,8 @@ public abstract class DomBasicRenderer extends Renderer {
                                         Element rootElement,
                                         UIComponent uiComponent) {
         if (idNotNull(uiComponent)) {
-            rootElement
-                    .setAttribute("id", uiComponent.getClientId(facesContext));
+            rootElement.setAttribute("id", uiComponent.getClientId(facesContext));
+            rootElement.setIdAttribute("id", true);
         }
     }
 
