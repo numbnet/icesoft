@@ -28,6 +28,7 @@
 package org.icefaces.ace.util;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.impl.context.DOMPartialViewContext;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -367,6 +368,6 @@ public class ComponentUtils {
     }
 
     public static void enableOnElementUpdateNotify(ResponseWriter writer, String id) throws IOException {
-        writer.writeAttribute("data-elementupdate", id, null);
+        writer.writeAttribute(DOMPartialViewContext.DATA_ELEMENTUPDATE, id, null);
     }
 }
