@@ -233,6 +233,9 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         if( client.isIE10Browser() ){
             markers += " ie10";
         }
+        if( client.isAndroidOS() && client.isICEmobileContainer()){
+            markers += " android-ctr";
+        }
         writer.writeText("document.documentElement.className = document.documentElement.className+'" 
                 + markers + "';", null);
         

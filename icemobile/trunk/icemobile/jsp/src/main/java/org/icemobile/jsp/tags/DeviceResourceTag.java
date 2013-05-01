@@ -189,6 +189,9 @@ public class DeviceResourceTag extends BaseSimpleTag {
         if( client.isIE10Browser() ){
             markers += " ie10";
         }
+        if( client.isAndroidOS() && client.isICEmobileContainer()){
+            markers += " android-ctr";
+        }
         out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+'" 
                 + markers + "';</script>");
 		

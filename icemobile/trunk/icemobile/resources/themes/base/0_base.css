@@ -38,3 +38,5 @@ html.bb10ctr .mobi-date-bg, html.bb10ctr .mobi-time-bg, html.bb10ctr .mobi-panel
 html.bb10ctr .mobi-panelpopup-bg, html.bb10ctr .mobi-submitnotific-bg{ display: none !important; }
 
 html.ie10 *{ filter: none !important; } /* turn off filters for ie10 */
+
+html.android-ctr .ice-status-indicator-overlay{ display: none !important; } /* avoid android container rendering issues on session expiry */
