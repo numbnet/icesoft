@@ -25,6 +25,7 @@ import javax.servlet.jsp.JspException;
 
 import org.icemobile.component.IDevice;
 import org.icemobile.renderkit.DeviceCoreRenderer;
+import org.icemobile.util.CSSUtils;
 import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.SXUtils;
 
@@ -63,7 +64,7 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
     }
     
     public void writeStandardAttributes(TagWriter writer, boolean enhancedOrIOS) throws IOException  {
-    	StringBuilder inputStyle = new StringBuilder(enhancedOrIOS ? CommandButtonTag.BASE_STYLE_CLASS : "");
+    	StringBuilder inputStyle = new StringBuilder(enhancedOrIOS ? CSSUtils.STYLECLASS_BUTTON : "");
         if (disabled){
             inputStyle.append(CommandButtonTag.DISABLED_STYLE_CLASS);
         }

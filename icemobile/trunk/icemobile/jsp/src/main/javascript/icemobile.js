@@ -65,8 +65,8 @@ ice.mobi.removeListener= function(obj, event, fnc){
         ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
     }
 };
-ice.mobi.BUTTON_UNPRESSED = " ui-btn-up-a";
-ice.mobi.BUTTON_PRESSED = " ui-btn-down-a";
+ice.mobi.BUTTON_UNPRESSED = " ui-btn-up-c";
+ice.mobi.BUTTON_PRESSED = " ui-btn-down-c";
 ice.mobi.hasClass = function(ele, remove_cls) {
     return ele.className.replace( /(?:^|\s)remove_cls(?!\S)/ , '' );
 };

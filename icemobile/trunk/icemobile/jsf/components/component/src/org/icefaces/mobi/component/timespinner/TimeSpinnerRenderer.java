@@ -23,6 +23,7 @@ import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.Utils;
+import org.icemobile.util.CSSUtils;
 import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.UIComponent;
@@ -288,7 +289,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("div", uiComponent);                          //button container for set or cancel
         writer.writeAttribute("class", "mobi-time-submit-container", null);
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", "mobi-button ui-btn-up-a", null);
+        writer.writeAttribute("class", CSSUtils.STYLECLASS_BUTTON, null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Set", null);
         //prep for singleSubmit
@@ -308,7 +309,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         }
         writer.endElement("input");
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", "mobi-button ui-btn-up-a", null);
+        writer.writeAttribute("class", CSSUtils.STYLECLASS_BUTTON, null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Cancel", null);
         writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.close('" + clientId + "');", null);

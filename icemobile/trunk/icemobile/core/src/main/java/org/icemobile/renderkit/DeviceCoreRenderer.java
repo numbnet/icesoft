@@ -19,6 +19,7 @@ package org.icemobile.renderkit;
 import java.io.IOException;
 
 import org.icemobile.component.IDevice;
+import org.icemobile.util.CSSUtils;
 import org.icemobile.util.ClientDescriptor;
 
 import java.lang.StringBuilder;
@@ -33,7 +34,7 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
     public void encode(IDevice component, IResponseWriter writer, boolean isJSP)
             throws IOException {
         String clientId = component.getClientId();
-        StringBuilder baseClass = new StringBuilder(IDevice.CSS_CLASS);
+        StringBuilder baseClass = new StringBuilder(CSSUtils.STYLECLASS_BUTTON);
         String comptype = component.getComponentType();
         ClientDescriptor cd = component.getClient();
         boolean isEnhanced = cd.isICEmobileContainer()  || cd.isSXRegistered();

@@ -19,6 +19,7 @@ package org.icemobile.renderkit;
 import org.icemobile.component.IButton;
 import org.icemobile.component.IFragment;
 import org.icemobile.component.ISplitPane;
+import org.icemobile.util.CSSUtils;
 import org.icemobile.util.ClientDescriptor;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         String clientId = button.getClientId();
      //   logger.info("clientId for button="+clientId);
         // apply button type style classes
-        StringBuilder baseClass = new StringBuilder(IButton.BASE_STYLE_CLASS);
+        StringBuilder baseClass = new StringBuilder(CSSUtils.STYLECLASS_BUTTON);
         String buttonType = button.getButtonType();
         /* apply selected state if any
          * if openContentPane is used, then this may not work correctly as

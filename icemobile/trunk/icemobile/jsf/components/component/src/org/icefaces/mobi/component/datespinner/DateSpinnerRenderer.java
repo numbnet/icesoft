@@ -22,6 +22,7 @@ import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.utils.HTML;
+import org.icemobile.util.CSSUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -279,7 +280,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("div", uiComponent);                          //button container for set or cancel
         writer.writeAttribute("class", "mobi-date-submit-container", null);
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", "mobi-button ui-btn-up-a", null);
+        writer.writeAttribute("class", CSSUtils.STYLECLASS_BUTTON, null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Set", null);
         if (!dateSpinner.isDisabled() && !dateSpinner.isReadonly()) {
@@ -288,7 +289,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("input");
 
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", "mobi-button ui-btn-up-a", null);
+        writer.writeAttribute("class", CSSUtils.STYLECLASS_BUTTON, null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Cancel", null);
         writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.close('" + clientId + "');", null);

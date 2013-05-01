@@ -21,8 +21,6 @@ package org.icemobile.component;
   and for ajax submit
  */
 public interface IMenuButton extends IMobiComponent  {
-  /*  public static final String BUTTON_PRESSED = "ui-btn-up-a";
-    public static final String BUTTON_UNPRESSED = "ui-btn-down-a"; */
     public static final String BASE_STYLE_CLASS = "mobi-menu-btn";
     public static final String BUTTON_STYLE_CLASS = "mobi-menu-btn-btn";
     public static final String DISABLED_STYLE_CLASS = "mobi-button-dis";
