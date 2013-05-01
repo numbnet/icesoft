@@ -498,7 +498,8 @@ ice.ace.ContextMenu.shouldDisplayLeft = function(left, width, itemWidth) {
 }
 
 ice.ace.Breadcrumbs = function (id, cfg) {
-    var $ul = ice.ace.jq(ice.ace.escapeClientId(id + "_ul"));
+//    var $ul = ice.ace.jq(ice.ace.escapeClientId(id + "_ul"));
+    var $ul = ice.ace.jq(document.getElementById(id + "_ul"));
     $ul.wijmenu({
         orientation: "horizontal",
 //        mode: "sliding",
