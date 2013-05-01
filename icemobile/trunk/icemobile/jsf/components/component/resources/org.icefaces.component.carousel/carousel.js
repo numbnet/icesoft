@@ -25,7 +25,9 @@ if (!window.ice['mobi']) {
 (function() {
     //functions that do not encapsulate any state, they just work with the provided parameters
     //and globally accessible variables
-
+    function is_firefox(){
+        return navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+    }
     function enhance(clientId, key)  {
         var carouselId = clientId+'_carousel';
         var page = key || 0;
@@ -37,7 +39,12 @@ if (!window.ice['mobi']) {
                         bounce: false,
                         zoom: true,
 	                    onScrollEnd: function () {
-                            ice.mobi.carousel.scrollUpd(event, clientId, this.currPageX);
+                            if (is_firefox){
+                                var myevent = window.event || null;
+                                ice.mobi.carousel.scrollUpd(myevent, clientId, this.currPageX);
+                            } else {
+                                ice.mobi.carousel.scrollUpd(event, clientId, this.currPageX);
+                            }
     	                }
 	    });
         return iscroller;
@@ -143,8 +150,10 @@ if (!window.ice['mobi']) {
                   this.setActive(hid);
                }
                if (!myScroll.wrapper)  {
-                //   console.log('WARNING:_ reinitialized scroller');
                    enhance(clientId);
+               }
+               if (is_firefox()){
+                   ice.mobi.carousel.acarousel[clientId] = Carousel(clientId, cfgIn.key);
                }
            },
            disable: function(){
@@ -168,7 +177,7 @@ if (!window.ice['mobi']) {
                 this.unload[clientId] = function () {
                     ice.mobi.carousel.unloadTest(clientId);
                 };
-            //    var node = document.getElementById(clientId);
+            //  var node = document.getElementById(clientId);
                 document.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
             } else {
                 this.cfg[clientId] = cfgIn;
@@ -186,12 +195,14 @@ if (!window.ice['mobi']) {
             this.acarousel[clientId].scrollToPage(key);
         },
         refreshCall: function(clientId, key){
-            this.acarousel[clientId].refreshMe(key);
+            if (this.acarousel[clientId]){
+                this.acarousel[clientId].refreshMe(key);
+            }
         },
         unloadTest: function(clientId){
             if (!document.getElementById(clientId) && this.acarousel[clientId]!=null){
                 this.acarousel[clientId].unload();
-              //  console.log("unloadTest disable and then setting id ="+clientId+" to null");
+                //  console.log("unloadTest disable and then setting id ="+clientId+" to null");
                 this.acarousel[clientId] = null;
                 this.cfg[clientId] = null;
                 document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
