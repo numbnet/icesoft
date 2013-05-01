@@ -27,15 +27,15 @@
 <h:head>
     <title id="title">#{msgs['showcase.title']}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <h:outputStylesheet name="rime.css" library="ice.compat/rime"/>
-    <ice:outputStyle href="./resources/css/override_header.css"/>
+    <h:outputStylesheet library="ice.compat/rime" name="rime.css"/>
+    <h:outputStylesheet library="ice.samples.showcase" name="override_header.css"/>
+    <h:outputStylesheet library="ice.samples.showcase" name="demo_template.css"/>
+    <h:outputStylesheet library="ice.samples.showcase" name="override_styles.css"/>
+    <h:outputStylesheet library="ice.samples.showcase" name="showcase_styles.css"/>
     <icecore:config mandatoryResource="dataTable" />
 </h:head>
 
 <h:body styleClass="suite ice-skin-rime">
-    <h:outputStylesheet library="css" name="demo_template.css" target="head"/>
-    <h:outputStylesheet library="css" name="override_styles.css" target="head"/>
-    <h:outputStylesheet library="css" name="showcase_styles.css" target="head"/>
     <f:view contentType="text/html">
         <h:panelGroup styleClass="header" layout="block">
             <ui:insert name="suite-select-menu"/>

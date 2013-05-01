@@ -16,24 +16,10 @@
   -->
 
 <dependencies>
-	  <!-- Load the ACE component theme css before the custom app. override styles -->
-	  <resource name="override_styles.css" library="css">
+    <!-- Load the ACE component theme css before the custom app. override styles -->
+    <resource name="override_styles.css" library="ice.samples.showcase">
         <depends-on>
-			    <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="demo_template.css" library="css">
-        <depends-on>
-            <resource name="override_styles.css" library="css"/>
-        </depends-on>
-    </resource>
-    <resource name="showcase_styles.css" library="css">
-        <depends-on>
-            <resource name="override_styles.css" library="css"/>
-        </depends-on>
-    </resource>
-    <resource name="override_styles.css" library="css">
-        <depends-on>
+            <resource name="util/combined.css" library="icefaces.ace"/>
             <resource name="rime.css" library="ice.compat/rime"/>
             <resource name="rime.css" library="ice.compat/rime-accessible"/>
             <resource name="royale.css" library="ice.compat/royale"/>
@@ -42,13 +28,28 @@
             <resource name="xp.css" library="ice.compat/xp-accessible"/>
         </depends-on>
     </resource>
+    <resource name="override_header.css" library="ice.samples.showcase">
+        <depends-on>
+            <resource name="override_styles.css" library="ice.samples.showcase"/>
+        </depends-on>
+    </resource>
+    <resource name="demo_template.css" library="ice.samples.showcase">
+        <depends-on>
+            <resource name="override_header.css" library="ice.samples.showcase"/>
+        </depends-on>
+    </resource>
+    <resource name="showcase_styles.css" library="ice.samples.showcase">
+        <depends-on>
+            <resource name="override_header.css" library="ice.samples.showcase"/>
+        </depends-on>
+    </resource>
 
     <!-- These entries ensure that the .css files load before the .js ones in the head -->
     <resource name="jsf.js" library="javax.faces">
         <depends-on>
-			<!-- REPLACE these entries with the actual CSS files used in YOUR application
-			     (these are specifc to the ICEfaces Showcase sample app. )	           -->
-            <resource name="override_styles.css" library="css"/>
+            <!-- REPLACE these entries with the actual CSS files used in YOUR application
+                    (these are specifc to the ICEfaces Showcase sample app. )	           -->
+            <resource name="showcase_styles.css" library="ice.samples.showcase"/>
         </depends-on>
     </resource>
     <resource name="bridge.js">
