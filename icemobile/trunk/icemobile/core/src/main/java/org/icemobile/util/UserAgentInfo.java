@@ -37,6 +37,8 @@ public class UserAgentInfo implements Serializable{
     public static final String MSIE6 = "msie 6.0";
     public static final String MSIE7 = "msie 7.0";
     public static final String MSIE8 = "msie 8.0";
+    public static final String MSIE9 = "msie 9";
+    public static final String MSIE10 = "msie 10";
     public static final String ANDROID = "android";
     public static final String MOBILE = "mobile";
     public static final String BLACKBERRY = "blackberry";
@@ -183,6 +185,14 @@ public class UserAgentInfo implements Serializable{
    
    public boolean isIE8orLess(){
        return userAgentString.contains(MSIE6) || userAgentString.contains(MSIE7) || userAgentString.contains(MSIE8);
+   }
+   
+   public boolean isIE9(){
+       return userAgentString.contains(MSIE9);
+   }
+   
+   public boolean isIE10(){
+       return userAgentString.contains(MSIE10);
    }
 
 }

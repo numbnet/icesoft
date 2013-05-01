@@ -226,12 +226,16 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     public void encodeMarkers(ResponseWriter writer, Theme theme, ClientDescriptor client) throws IOException {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
-        writer.writeText(
-                String.format("document.documentElement.className = document.documentElement.className+' %1$s ui-mobile';",
-        		theme.fileName()),null);
+        String markers = " " + theme.fileName() + " ui-mobile";
         if( client.isBlackBerry10OS() && client.isICEmobileContainer() ){
-            writer.writeText("document.documentElement.className = document.documentElement.className + ' bb10ctr';", null);
+            markers += " bb10ctr";
         }
+        if( client.isIE10Browser() ){
+            markers += " ie10";
+        }
+        writer.writeText("document.documentElement.className = document.documentElement.className+'" 
+                + markers + "';", null);
+        
         writer.endElement("script");
     }
     

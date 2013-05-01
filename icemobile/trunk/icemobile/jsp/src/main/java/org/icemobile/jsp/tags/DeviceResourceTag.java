@@ -181,13 +181,17 @@ public class DeviceResourceTag extends BaseSimpleTag {
         }
 		
 		String contextRoot = Util.getContextRoot(pageContext.getRequest());
-		out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+' "+theme+"';");
 		
-		if( client.isBlackBerry10OS() && client.isICEmobileContainer()){
-            out.write("document.documentElement.className = document.documentElement.className + ' bb10ctr';");
+		String markers = " " + theme + " ui-mobile";
+		if( client.isBlackBerry10OS() && client.isICEmobileContainer() ){
+            markers += " bb10ctr";
         }
-		out.write("</script>");
-
+        if( client.isIE10Browser() ){
+            markers += " ie10";
+        }
+        out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+'" 
+                + markers + "';</script>");
+		
 		String cssLink = String.format("<link type='text/css' rel='stylesheet' href='%s%s/%s/%s/%s.css' />", 
 				contextRoot, MobiJspConstants.RESOURCE_BASE_URL, DEFAULT_LIBRARY, theme, fileName);
 		out.write(cssLink);
