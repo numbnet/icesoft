@@ -41,7 +41,6 @@ public class InputText extends InputTextBase {
 
     //passthrough attributes for input text
     private Attribute[] inputtextAttributeNames = {
-            new Attribute("type", null),
             new Attribute("autocomplete", null),
             new Attribute("autocapitalize", null),
             new Attribute("autocorrect", null),

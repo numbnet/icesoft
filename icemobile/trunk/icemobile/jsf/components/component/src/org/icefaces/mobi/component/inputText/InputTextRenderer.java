@@ -17,8 +17,10 @@ package org.icefaces.mobi.component.inputText;
 
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icemobile.util.ClientDescriptor;
 
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -98,6 +100,12 @@ public class InputTextRenderer extends BaseInputRenderer {
         } else if (isNumberType) {
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getNumberAttributeNames());
         } else {
+            ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+            String typeVal = (String)uiComponent.getAttributes().get("type");
+            if( isDateType && client.isAndroidOS() && client.isICEmobileContainer() ){ //Android container borks date types
+                typeVal = "text";
+            }
+            writer.writeAttribute("type", typeVal, null);
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getInputtextAttributeNames());
         }
         if (!isDateType) writer.writeAttribute("autocorrect", "off", null);
