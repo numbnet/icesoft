@@ -16,5 +16,10 @@
 
 <project name="portlet-dnd-tutorial" default="servlet-profile">
     <property file="build.properties"/>
+	<property name="build.compiler" value="extJavac"/>
     <import file="../common.xml"/>
+	
+    <target name="clean-mvn" depends="clean">
+        <delete dir="target"/>
+    </target>
 </project>

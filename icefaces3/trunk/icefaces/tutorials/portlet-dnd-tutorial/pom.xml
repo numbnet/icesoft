@@ -23,21 +23,43 @@
 	<groupId>org.icefaces.tutorial</groupId>
 	<artifactId>portlet-dnd-tutorial</artifactId>
 	<version>1.0</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
     <name>ICEfaces Inter-Portlet Drag and Drop Tutorial</name>
     <url>http://www.icesoft.org/wiki/display/ICE/Inter-portlet+Drag+and+Drop</url>
 	
-    <repositories>
-        <repository>
-            <id>ICEsoft Release Repository</id>
-            <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
-        </repository>
-    </repositories>
-
-    <parent>
-        <groupId>org.icefaces.tutorial.ace-push</groupId>
-        <artifactId>base</artifactId>
-        <version>1.0</version>
-    </parent>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>package-ant</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <ant antfile="./build.xml" target="servlet-profile"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>clean-all</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <target>
+                                <ant antfile="./build.xml" target="clean-mvn"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
