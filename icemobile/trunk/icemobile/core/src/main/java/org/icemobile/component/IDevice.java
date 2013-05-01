@@ -20,7 +20,6 @@ import java.lang.String;
 
 public interface IDevice extends IMobiComponent{
     
-    public static final String CSS_CLASS = "mobi-button ui-btn-up-a";
     public static final String DISABLED_STYLE_CLASS = " mobi-button-dis";
     public static final String FOR_MSG = "for component was not detected. ";
     /*

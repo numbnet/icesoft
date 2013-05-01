@@ -34,8 +34,8 @@ if (!window.console) {
         };
     }
 }
-ice.mobi.BUTTON_UNPRESSED = " ui-btn-up-a";
-ice.mobi.BUTTON_PRESSED = " ui-btn-down-a";
+ice.mobi.BUTTON_UNPRESSED = " ui-btn-up-c";
+ice.mobi.BUTTON_PRESSED = " ui-btn-down-c";
 mobi.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
 mobi.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
 /* utilities*/

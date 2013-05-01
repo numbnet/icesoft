@@ -26,7 +26,7 @@ public class CSSUtils {
     public static final String HIDDEN = "ui-screen-hidden";
     
     /* Mobi Style Classes */
-    public static final String STYLECLASS_BUTTON = "mobi-button ui-btn-up-a";
+    public static final String STYLECLASS_BUTTON = "mobi-button ui-btn-up-c";
     public static final String STYLECLASS_BUTTON_DISABLED = " mobi-button-dis";
     public static final String STYLECLASS_BUTTON_ATTENTION = "mobi-button-attention";
     public static final String STYLECLASS_BUTTON_IMPORTANT = "mobi-button-important";
@@ -52,9 +52,7 @@ public class CSSUtils {
     public static final String STYLECLASS_BAR_B = "ui-bar-b"; //default for list group headers
     /* body */
     public static final String STYLECLASS_BODY_A = "ui-body-a"; //default for body
-    /* clickable region */
-    public static final String STYLECLASS_BTN_UP_A = "ui-btn-up-a"; 
-    public static final String STYLECLASS_BTN_DOWN_A = "ui-btn-down-a"; //default pressed state
+
     /* globals */
     public static final String STYLECLASS_ACTIVE = "ui-btn-active";
     
