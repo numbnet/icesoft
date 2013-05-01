@@ -16,8 +16,12 @@
 
 package org.icemobile.jsp.tags;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
+
+import org.icemobile.util.ClientDescriptor;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Logger;
@@ -92,14 +96,19 @@ public class InputTextTag extends SimpleTagSupport {
 
         // apply textarea passthough attributes.
         if (rows > 0) {
-            out.write(" rows=\"" + this.type + "\"");
+            out.write(" rows=\"" + this.rows + "\"");
         }
         if (cols > 0) {
-            out.write(" cols=\"" + this.type + "\"");
+            out.write(" cols=\"" + this.cols + "\"");
         }
         String value = getValue();
         if (!isTextArea) {
-            out.write(" type=\"" + this.type + "\"");
+            ClientDescriptor client = ClientDescriptor.getInstance((HttpServletRequest)pageContext.getRequest());
+            String typeVal = this.type;
+            if( "date".equals(typeVal) && client.isAndroidOS() && client.isICEmobileContainer()){
+                typeVal = "text"; //Android container borks type="date"
+            }
+            out.write(" type=\"" + typeVal + "\"");
             if (value != null) {
                 out.write(" value=\"" + value + "\"");
             }
