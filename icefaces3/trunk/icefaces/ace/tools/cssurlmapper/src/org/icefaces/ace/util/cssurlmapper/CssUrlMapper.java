@@ -102,7 +102,7 @@ public class CssUrlMapper {
 
 		String path = url.getUrlChars().trim();
 		
-		if (path.startsWith("http://") || path.startsWith("#{resource")) { 
+		if (path.startsWith("http://") || path.startsWith("data:") || path.startsWith("#{resource")) { 
 			return url.toString(); // not a local resource or already in JSF format, do not modify
 		}
 		
