@@ -65,6 +65,9 @@
 		9CA51B7714730D120065F681 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA51B7614730D120065F681 /* ViewController.m */; };
 		9CA51B7A14730D120065F681 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7814730D120065F681 /* ViewController_iPhone.xib */; };
 		9CA51B7D14730D120065F681 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7B14730D120065F681 /* ViewController_iPad.xib */; };
+		9CB2A1311731A5200049C135 /* Default-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB2A12F1731A5200049C135 /* Default-568h.png */; };
+		9CB2A1321731A5200049C135 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB2A1301731A5200049C135 /* Default.png */; };
+		9CB2A1351731AA3C0049C135 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB2A1341731AA3C0049C135 /* Default-568h@2x.png */; };
 		9CBF5ACD1638AB1E0015E267 /* IceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBF5ACC1638AB1E0015E267 /* IceUtil.m */; };
 		9CE8327416443D7D00F6C270 /* contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8327216443D7D00F6C270 /* contacts.png */; };
 		9CE8327516443D7D00F6C270 /* contacts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8327316443D7D00F6C270 /* contacts@2x.png */; };
@@ -154,6 +157,9 @@
 		9CA51B7614730D120065F681 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		9CA51B7914730D120065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		9CA51B7C14730D120065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
+		9CB2A12F1731A5200049C135 /* Default-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h.png"; sourceTree = "<group>"; };
+		9CB2A1301731A5200049C135 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		9CB2A1341731AA3C0049C135 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		9CBF5ACB1638AB1E0015E267 /* IceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IceUtil.h; path = Shared/IceUtil.h; sourceTree = "<group>"; };
 		9CBF5ACC1638AB1E0015E267 /* IceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IceUtil.m; path = Shared/IceUtil.m; sourceTree = "<group>"; };
 		9CE8327216443D7D00F6C270 /* contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contacts.png; sourceTree = "<group>"; };
@@ -290,6 +296,9 @@
 		9CA51B6914730D110065F681 /* ICEmobile-SX */ = {
 			isa = PBXGroup;
 			children = (
+				9CB2A1341731AA3C0049C135 /* Default-568h@2x.png */,
+				9CB2A12F1731A5200049C135 /* Default-568h.png */,
+				9CB2A1301731A5200049C135 /* Default.png */,
 				9C5324B4160B8F5700F9580D /* bar.png */,
 				9C5324B2160B8C8900F9580D /* stripes.png */,
 				9C7A1E87156C24E70013D23D /* ar.png */,
@@ -429,6 +438,9 @@
 				9CE8327416443D7D00F6C270 /* contacts.png in Resources */,
 				9CE8327516443D7D00F6C270 /* contacts@2x.png in Resources */,
 				9CFDBD41164D865100D1F041 /* license.txt in Resources */,
+				9CB2A1311731A5200049C135 /* Default-568h.png in Resources */,
+				9CB2A1321731A5200049C135 /* Default.png in Resources */,
+				9CB2A1351731AA3C0049C135 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
