@@ -62,6 +62,7 @@ public class ThemeSelectRenderer extends InputRenderer {
         writer.startElement("select", component);
         writer.writeAttribute("id", selectId, "id");
         writer.writeAttribute("name", selectId, "id");
+        ComponentUtils.enableOnElementUpdateNotify(writer, selectId);
         String stateClass = "ui-state-default";
         if (themeSelectComponent.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
