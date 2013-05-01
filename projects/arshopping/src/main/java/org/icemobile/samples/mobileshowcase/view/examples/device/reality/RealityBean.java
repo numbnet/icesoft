@@ -107,6 +107,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     private String selectedModel1 = "icemobile";
     private String selectedModel2 = "icemobile";
     private HashMap bought = new HashMap();
+    private HashMap cost = new HashMap();
 
     // upload error message
     private String uploadMessage;
@@ -154,6 +155,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         markerList.set(0, allMarkers.get(selectedModel1));
         markerList.set(1, allMarkers.get(selectedModel2));
 
+        initCost();
     }
 
     public void processUploadedImage(ActionEvent event) {
@@ -292,21 +294,37 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         return bought;
     }
 
+    public Map getCost()  {
+        return cost;
+    }
+
+    public void initCost()  {
+        cost = new HashMap();
+        cost.put("icebreaker", "$0.00");
+        cost.put("icecar", "$0.00");
+        cost.put("iceskate", "$0.00");
+        cost.put("icesailer", "$0.00");
+    }
+
     public void setSelection(String selection)  {
         if (selection.contains("buy=buy"))  {
             bought = new HashMap();
             List parts = Arrays.asList(selection.split("&"));
             if (parts.contains("icebreaker=on"))  {
                 bought.put("icebreaker", Boolean.TRUE);
+                cost.put("icebreaker", "$5.00");
             } 
             if (parts.contains("icecar=on"))  {
                 bought.put("icecar", Boolean.TRUE);
+                cost.put("icecar", "$2.00");
             }
             if (parts.contains("iceskate=on"))  {
                 bought.put("iceskate", Boolean.TRUE);
+                cost.put("iceskate", "$1.00");
             }
             if (parts.contains("icesailer=on"))  {
                 bought.put("icesailer", Boolean.TRUE);
+                cost.put("icesailer", "$3.00");
             }
             return;
         }
