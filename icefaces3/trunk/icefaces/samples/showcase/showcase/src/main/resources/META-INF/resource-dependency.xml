@@ -20,12 +20,12 @@
     <resource name="override_styles.css" library="ice.samples.showcase">
         <depends-on>
             <resource name="util/combined.css" library="icefaces.ace"/>
-            <resource name="rime.css" library="ice.compat/rime"/>
-            <resource name="rime.css" library="ice.compat/rime-accessible"/>
-            <resource name="royale.css" library="ice.compat/royale"/>
-            <resource name="royale.css" library="ice.compat/royale-accessible"/>
-            <resource name="xp.css" library="ice.compat/xp"/>
-            <resource name="xp.css" library="ice.compat/xp-accessible"/>
+            <resource name="rime/rime.css" library="ice.compat"/>
+            <resource name="rime-accessible/rime.css" library="ice.compat"/>
+            <resource name="royale/royale.css" library="ice.compat"/>
+            <resource name="royale-accessible/royale.css" library="ice.compat"/>
+            <resource name="xp/xp.css" library="ice.compat"/>
+            <resource name="xp-accessible/xp.css" library="ice.compat"/>
         </depends-on>
     </resource>
     <resource name="override_header.css" library="ice.samples.showcase">
