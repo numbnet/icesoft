@@ -402,6 +402,9 @@ html.iphone .form .mobi-fieldset-row > span.mobi-thumb, html.iphone .form .mobi-
         max-width: 35%;
         clear:both;
     }
+    #splash fieldset{ 
+        padding: 20px;
+    }
 }
 /* SMALL SCREEN */
 @media screen and (max-width: 579px) {  
@@ -411,8 +414,9 @@ html.iphone .form .mobi-fieldset-row > span.mobi-thumb, html.iphone .form .mobi-
         width: 100%;
         max-width: 300px;
     }
-    .qr div{
-        max-width: 172px;
+    #splash figure{
+        display:block;
+        text-align:center;
     }
 }
 html.android .back{
