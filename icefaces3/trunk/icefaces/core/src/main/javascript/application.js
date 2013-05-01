@@ -116,7 +116,7 @@ if (!window.ice.icefaces) {
         namespace.onElementUpdate = function(id, callback) {
             var element = lookupElementById(id);
             if (element) {
-                element.data_onElementUpdate = callback;
+                element['data-onElementUpdate'] = callback;
             } else {
                 warn(logger, 'Cannot find element [' + id + '] to assign onElementUpdate callback.');
             }
@@ -1017,14 +1017,14 @@ if (!window.ice.icefaces) {
             each(ids, function(id) {
                 var e = lookupElementById(id);
                 if (e) {
-                    var callback = e.data_onElementUpdate;
+                    var callback = e['data-onElementUpdate'];
                     if (callback) {
                         try {
                             callback(id);
                         } catch (ex) {
                             warn(logger, 'onElementUpdate callback for [' + id + '] failed to run properly', ex);
                         } finally {
-                            e.data_onElementUpdate = null;
+                            e['data-onElementUpdate'] = null;
                         }
                     }
                 }
@@ -1036,7 +1036,7 @@ if (!window.ice.icefaces) {
             //use for loop for speed
             for (var i = 0, l = elements.length; i < l; i++) {
                 var e = elements[i];
-                var callback = e.data_onElementUpdate;
+                var callback = e['data-onElementUpdate'];
                 if (callback) {
                     var id = e.id;
                     try {
@@ -1044,7 +1044,7 @@ if (!window.ice.icefaces) {
                     } catch (ex) {
                         warn(logger, 'onElementUpdate callback for [' + id + '] failed to run properly', ex);
                     } finally {
-                        e.data_onElementUpdate = null;
+                        e['data-onElementUpdate'] = null;
                     }
                 }
             }

@@ -58,7 +58,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     private static final Pattern OPTION_SELECTED =
             Pattern.compile("(selected=\"[^\"]*\")");
     public static final String CUSTOM_UPDATE = "ice.customUpdate";
-    public static final String DATA_ELEMENTUPDATE = "data_elementupdate";
+    public static final String DATA_ELEMENTUPDATE = "data-elementupdate";
 
     private PartialViewContext wrapped;
     protected FacesContext facesContext;
