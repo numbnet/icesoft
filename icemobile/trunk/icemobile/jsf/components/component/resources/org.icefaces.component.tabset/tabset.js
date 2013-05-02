@@ -93,6 +93,7 @@
         var autoWidth = cfgIn.autoWidth;
         if (autoWidth){
             setWidthStyle(tabContainer);
+            ice.mobi.addListener(window, 'resize', function(){ setWidthStyle(tabContainer); });
         }
         var lastServerIndex = tabIndex;
         var height = cfgIn.height || -1;
@@ -170,6 +171,7 @@
                 var autoWidth = cfgUpd.autoWidth;
                 if (autoWidth){
                     setWidthStyle(document.getElementById(clientId));
+                    ice.mobi.addListener(window, 'resize', function(){ setWidthStyle(document.getElementById(clientId)); });
                 }
                 var oldIdx = tabIndex;
                 tabIndex = cfgUpd.tIndex;

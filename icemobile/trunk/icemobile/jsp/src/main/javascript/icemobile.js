@@ -604,6 +604,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         var autoWidth = cfgIn.autoWidth;
         if (autoWidth){
             setWidthStyle(tabContainer);
+            ice.mobi.addListener(window, 'resize', function(){setWidthStyle(tabContainer);});
         }
         var lastServerIndex = tabIndex; //only for jsf decode
         var height = cfgIn.height || -1;
@@ -692,6 +693,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                 var autoWidth = cfgUpd.autoWidth;
                 if (autoWidth){
                     setWidthStyle(document.getElementById(clientId));
+                    ice.mobi.addListener(window, 'resize', function(){setWidthStyle(document.getElementById(clientId));});
                 }
                 //check to see if pages have been added or removed
                 var contents = tabContent.children;
