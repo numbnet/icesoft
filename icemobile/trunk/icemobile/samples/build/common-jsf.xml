@@ -18,6 +18,10 @@
 		
 	<import file="common.xml"/>
 
+    <condition property="jsf.implementation" value="myfaces" else="mojarra">
+        <isset property="myfaces"/>
+    </condition>
+
    <patternset id="pattern.distribute.jsf">
         <include name="${icepush.lib.name}.jar"        unless="no-icepush"/>
     	<include name="${icefaces.lib.name}.jar" />
