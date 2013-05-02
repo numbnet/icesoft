@@ -21,7 +21,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Logger;
-import org.icemobile.util.CSSUtils;
 
 /**
  *
@@ -42,7 +41,6 @@ public class PagePanelTag extends TagSupport {
         if (id != null && !"".equals(id)) {
             tag.append(" id=\"").append(getId()).append("_pgPnl\"");
         }
-        tag.append(" class=\""+CSSUtils.STYLECLASS_BODY_A+"\"");
         tag.append(">");
 
         try {
