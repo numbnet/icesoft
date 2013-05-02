@@ -704,7 +704,9 @@ public class TableRenderer
             }
             Iterator childs = uiData.getChildren().iterator();
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
+           if (uiData.isRenderRowTabindex()) {
             tr.setAttribute(HTML.TABINDEX_ATTR, "0");
+           }
             if (rowSelectorFound) {
                 if (toggleOnClick) {
                     String toggleClass = ""; // Don't change the row style before the server round-trip
