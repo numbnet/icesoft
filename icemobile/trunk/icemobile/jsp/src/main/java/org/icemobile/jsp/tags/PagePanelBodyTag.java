@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  */
 public class PagePanelBodyTag extends TagSupport {
 
-    public static final String BODY_CLASS = "mobi-pagePanel-body";
+    public static final String BODY_CLASS = "mobi-pagePanel-body ui-body-c";
     public static final String BODY_NO_HEADER_CLASS = "mobi-pagePanel-body-noheader";
     public static final String BODY_NO_FOOTER_CLASS = "mobi-pagePanel-body-nofooter";
     public PagePanelTag mParent;
