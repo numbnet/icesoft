@@ -82,6 +82,7 @@ public class HtmlDataTable
     private String headerClasses = null;
     private Boolean clientOnly = null;
     private Boolean scrollFooter = null;
+    private Boolean renderRowTabindex = null;
 
     public HtmlDataTable() {
         super();
@@ -173,7 +174,7 @@ public class HtmlDataTable
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[15];
+        Object values[] = new Object[16];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = columnWidths;
@@ -189,6 +190,7 @@ public class HtmlDataTable
         values[12] = new Integer(resizableTblColumnsWidthIndex);
         values[13] = scrollable;
         values[14] = Boolean.valueOf(isResizableColumnWidthsSet);
+        values[15] = renderRowTabindex;
         return ((Object) (values));
     }
 
@@ -213,6 +215,7 @@ public class HtmlDataTable
         resizableTblColumnsWidthIndex = ((Integer) values[12]).intValue();
         scrollable = (Boolean) values[13];
         isResizableColumnWidthsSet = ((Boolean) values[14]).booleanValue();
+        renderRowTabindex = (Boolean)values[15];
     }
 
     public String getComponentType() {
@@ -559,6 +562,20 @@ public class HtmlDataTable
 
     public void setScrollFooter(boolean scrollFooter) {
         this.scrollFooter = Boolean.valueOf(scrollFooter);
+    }
+
+    public boolean isRenderRowTabindex() {
+        if (renderRowTabindex != null) {
+            return renderRowTabindex.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("renderRowTabindex");
+        Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setRenderRowTabindex(boolean renderRowTabindex) {
+        this.renderRowTabindex = Boolean.valueOf(renderRowTabindex);
     }
 
     public String getResizableColumnWidths() {
