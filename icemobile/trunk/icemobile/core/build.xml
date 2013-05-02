@@ -55,6 +55,7 @@
 	<path id="compile.run.classpath">
 		<fileset dir="${lib.dir}" includes="*.jar" />
 		<fileset dir="${lib.dir}/generator" includes="*.jar" />
+		<fileset dir="${lib.dir}/${jsf.implementation}" includes="*.jar" />
         <!--
 		<pathelement path="../component/src" />
 		<pathelement path="../component/src/org/icefaces/ace/api/" />
