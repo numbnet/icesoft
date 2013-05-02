@@ -20,7 +20,7 @@ package org.icemobile.model;
  * Date: 2013-04-01
  * Time: 2:12 PM
  */
-public interface DataViewColumnsModel extends Iterable<DataViewColumnModel> {
+public interface DataViewColumnsModel extends IndexedIterable<DataViewColumnModel> {
     boolean hasHeaders();
     boolean hasFooters();
 }

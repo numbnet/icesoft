@@ -1055,7 +1055,7 @@ ice.mobi.geolocation = {
                 function(n) {
                     var compd = document.defaultView.getComputedStyle(n, null);
                     return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
-            });
+                });
 
             var dupeFootCellWidths = Array.prototype.map.call(
                 dupeFootCells,
@@ -1080,6 +1080,24 @@ ice.mobi.geolocation = {
             if (dupeFoot) dupeFoot.style.display = 'none';
 
             recalcScrollHeight(head, foot, bodyDivWrapper);
+            setupColumnVisibiltyRules(firstrow.children);
+        }
+
+        function setupColumnVisibiltyRules(firstRowCells) {
+            var minDevWidth = 0;
+            for (var i = 0; i < firstRowCells.length; i++) {
+                var columnClassname = Array.prototype.filter.call(
+                        firstRowCells[i].classList,
+                        function(name) {if (name.contains('mobi-dv-c')) return true;})[0];
+
+                minDevWidth += firstRowCells[i].clientWidth;
+                setColumnWidthRule(columnClassname, minDevWidth);
+            }
+        }
+
+
+        function setColumnWidthRule(colClass, minWidth) {
+
         }
 
         /* arguments optional to avoid lookup */
@@ -1101,10 +1119,10 @@ ice.mobi.geolocation = {
             /* set height to full visible size of parent minus
              height of all following elements */
             var container = getScrollableContainer(element),
-                    bottomResize = function() {
-                        bodyDivWrapper.style.height = fullHeight
-                                - (container.scrollHeight - container.clientHeight) + 'px';
-                    };
+                bottomResize = function() {
+                    bodyDivWrapper.style.height = fullHeight
+                            - (container.scrollHeight - container.clientHeight) + 'px';
+                };
 
             if (container) bottomResize();
         }
@@ -1265,7 +1283,7 @@ ice.mobi.geolocation = {
         }
 
         function isCheckboxCol(n) {
-            return n.className == 'mobi-dv-c-b';
+            return n.className.indexOf('mobi-dv-bool') != -1;
         }
 
         function getRowComparator() {
@@ -1467,6 +1485,10 @@ ice.mobi.geolocation = {
             recalcScrollHeight();
         });
 
+        window.addEventListener("orientationchange", function() {
+            setTimeout(function() {recalcScrollHeight();}, 100);
+        });
+
         /* Instance API */
         return { update: update }
     }
@@ -1488,10 +1510,21 @@ document.addEventListener("touchstart", function(){}, true);
 
 function hideAddressBar()
 {   //todo: add device / browser specificity
+    var minDeviceDocHeight;
+    switch(window.orientation)
+    {
+        case -90:
+        case 90:
+            minDeviceDocHeight = 320;
+            break;
+        default:
+            // minDeviceDocHeight = window.innerHeight + 60;
+            minDeviceDocHeight = 416;
+            break;
+    }
+
     if(!window.location.hash) {
-        if(document.documentElement.clientHeight <= 416) {
-           document.body.style.height = '416px';
-        }
+        document.body.style.minHeight = minDeviceDocHeight+'px';
         window.scrollTo(0, 0);
     }
 }

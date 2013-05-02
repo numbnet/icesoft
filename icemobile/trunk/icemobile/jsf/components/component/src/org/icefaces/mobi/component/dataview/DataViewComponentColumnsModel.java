@@ -2,6 +2,7 @@ package org.icefaces.mobi.component.dataview;
 
 import org.icemobile.model.DataViewColumnModel;
 import org.icemobile.model.DataViewColumnsModel;
+import org.icemobile.model.IndexedIterator;
 
 import javax.faces.component.UIComponent;
 import java.util.ArrayList;
@@ -39,8 +40,8 @@ public class DataViewComponentColumnsModel implements DataViewColumnsModel {
                 columns.add(((DataViewColumn)child).getModel());
     }
 
-    public Iterator<DataViewColumnModel> iterator() {
-        return columns.iterator();
+    public IndexedIterator<DataViewColumnModel> iterator() {
+        return new IndexedIterator(columns.iterator());
     }
 
     public boolean hasHeaders() {

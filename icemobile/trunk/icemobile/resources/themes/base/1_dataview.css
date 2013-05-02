@@ -1,12 +1,78 @@
 /**************************** JQuery Mobi Overrides ***************************/
-.mobi-dv.ui-body-c, .mobi-dv-det.ui-body-c {
+.mobi-dv.ui-body-c, .mobi-dv .mobi-dv-det.ui-body-c {
     border-left: 0;
     border-right: 0;
     border-top: 0;
 }
 .mobi-dv-body tbody tr.ui-bar-e  {
     font-weight: normal;
+    border-left:0;
+    border-right:0;
 }
+/******************************************************************************/
+
+/************************ JQuery Derived Dynamic Column CSS *******************/
+/* Hide all prioritized columns by default */
+/*@media only all {*/
+    /*th.ui-table-priority-6,*/
+    /*td.ui-table-priority-6,*/
+    /*th.ui-table-priority-5,*/
+    /*td.ui-table-priority-5,*/
+    /*th.ui-table-priority-4,*/
+    /*td.ui-table-priority-4,*/
+    /*th.ui-table-priority-3,*/
+    /*td.ui-table-priority-3,*/
+    /*th.ui-table-priority-2,*/
+    /*td.ui-table-priority-2,*/
+    /*th.ui-table-priority-1,*/
+    /*td.ui-table-priority-1 {*/
+        /*display: none;*/
+    /*}*/
+/*}*/
+/* Preset breakpoints if ".ui-responsive" class added to table */
+/* Show priority 1 at 320px (20em x 16px) */
+/*@media screen and (min-width: 20em) {*/
+    /*.ui-table-columntoggle.ui-responsive th.ui-table-priority-1,*/
+    /*.ui-table-columntoggle.ui-responsive td.ui-table-priority-1 {*/
+        /*display: table-cell;*/
+    /*}*/
+/*}*/
+/* Show priority 2 at 480px (30em x 16px) */
+/*@media screen and (min-width: 30em) {*/
+    /*.ui-table-columntoggle.ui-responsive th.ui-table-priority-2,*/
+    /*.ui-table-columntoggle.ui-responsive td.ui-table-priority-2 {*/
+        /*display: table-cell;*/
+    /*}*/
+/*}*/
+/* Show priority 3 at 640px (40em x 16px) */
+/*@media screen and (min-width: 40em) {*/
+    /*.ui-table-columntoggle.ui-responsive th.ui-table-priority-3,*/
+    /*.ui-table-columntoggle.ui-responsive td.ui-table-priority-3 {*/
+        /*display: table-cell;*/
+    /*}*/
+/*}*/
+/* Show priority 4 at 800px (50em x 16px) */
+/*@media screen and (min-width: 50em) {*/
+    /*.ui-table-columntoggle.ui-responsive th.ui-table-priority-4,*/
+    /*.ui-table-columntoggle.ui-responsive td.ui-table-priority-4 {*/
+        /*display: table-cell;*/
+    /*}*/
+/*}*/
+/* Show priority 5 at 960px (60em x 16px) */
+/*@media screen and (min-width: 60em) {*/
+    /*.ui-table-columntoggle.ui-responsive th.ui-table-priority-5,*/
+    /*.ui-table-columntoggle.ui-responsive td.ui-table-priority-5 {*/
+        /*display: table-cell;*/
+    /*}*/
+/*}*/
+/* Show priority 6 at 1,120px (70em x 16px) */
+/*@media screen and (min-width: 70em) {*/
+    /*.ui-table-columntoggle.ui-responsive th.ui-table-priority-6,*/
+    /*.ui-table-columntoggle.ui-responsive td.ui-table-priority-6 {*/
+        /*display: table-cell;*/
+    /*}*/
+/*}*/
+/******************************************************************************/
 
 /******************* Derived form JQuery Mobi Structural CSS ******************/
 .mobi-dv table {
@@ -31,10 +97,6 @@
     opacity: .5;
 }
 /* Add strokes between each row */
-.mobi-dv table thead th {
-    border-bottom: 1px solid #d6d6d6; /* non-RGBA fallback */
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-}
 .mobi-dv table.stroke tbody th,
 .mobi-dv table.stroke tbody td {
     border-bottom: 1px solid #e6e6e6; /* non-RGBA fallback  */
@@ -89,3 +151,4 @@
 .mobi-dv-head .mobi-dv-si:not([class*='icon']) {
     display: none;
 }
+/******************************************************************************/
