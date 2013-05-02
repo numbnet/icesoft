@@ -24,17 +24,17 @@ import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.icemobile.util.HTML;
-import org.icemobile.util.CSSUtils;
 
 /**
  *
  */
 public class PagePanelFooterTag extends TagSupport {
 
-    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ui-footer ui-footer-fixed " + CSSUtils.STYLECLASS_BAR_A;;
+    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ui-footer ui-footer-fixed ";
 
     private static Logger LOG = Logger.getLogger(PagePanelFooterTag.class.getName());
     public PagePanelTag mParent;
+    private String swatch = "a";
 
     public void setParent(Tag parent) {
        if (!(parent instanceof PagePanelTag)) {
@@ -43,7 +43,7 @@ public class PagePanelFooterTag extends TagSupport {
        mParent = (PagePanelTag) parent;
    }
     public int doStartTag() throws JspTagException {
-        StringBuilder footerClass = new StringBuilder(FOOTER_CLASS);
+        StringBuilder footerClass = new StringBuilder(FOOTER_CLASS + "ui-bar-"+swatch);
         if (mParent != null) {
             mParent.setHasHeader(true);
             if (mParent.getStyleClass() !=null){
@@ -75,5 +75,8 @@ public class PagePanelFooterTag extends TagSupport {
         }
         return EVAL_PAGE;
     }
+    
+    public String getSwatch(){ return swatch; }
+    public void setSwatch(String swatch){ this.swatch = swatch; }
 
 }

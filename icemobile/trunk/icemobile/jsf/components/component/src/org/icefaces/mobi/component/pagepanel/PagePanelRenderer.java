@@ -46,11 +46,9 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         if (pagePanel.getStyle()!=null){
             writer.writeAttribute(HTML.STYLE_ATTR, pagePanel.getStyle(), HTML.STYLE_ATTR);
         }
-        StringBuilder headerClass = new StringBuilder(PagePanel.HEADER_CLASS);
-        headerClass.append(" ").append(CSSUtils.STYLECLASS_BAR_A);
-        StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS);
-        StringBuilder footerClass = new StringBuilder(PagePanel.FOOTER_CLASS);
-        footerClass.append(" ").append(CSSUtils.STYLECLASS_BAR_A);
+        StringBuilder headerClass = new StringBuilder(PagePanel.HEADER_CLASS+"ui-bar-"+component.getAttributes().get("headerSwatch"));
+        StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS+"ui-body-"+component.getAttributes().get("bodySwatch"));
+        StringBuilder footerClass = new StringBuilder(PagePanel.FOOTER_CLASS+"ui-bar-"+component.getAttributes().get("footerSwatch"));
         StringBuilder headerFooterContentsClass = new StringBuilder(PagePanel.CTR_CLASS);
 
         // find out if header and/or footer facets are present as this will directly 

@@ -1402,6 +1402,12 @@
         <name>pagePanelHeader</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelHeaderTag</tag-class>
         <body-content>JSP</body-content>
+        <attribute>
+            <description>jQuery Mobile ThemeRoller Swatch (a-e)</description>
+            <name>swatch</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
     <tag>
         <description>Page Panel Body.</description>
@@ -1430,12 +1436,24 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <description>jQuery Mobile ThemeRoller Swatch (a-e)</description>
+            <name>swatch</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
     <tag>
         <description>Page Panel Footer.</description>
         <name>pagePanelFooter</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelFooterTag</tag-class>
         <body-content>JSP</body-content>
+        <attribute>
+            <description>jQuery Mobile ThemeRoller Swatch (a-e)</description>
+            <name>swatch</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
     <tag>
         <description>Popup panel of content on device.</description>

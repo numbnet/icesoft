@@ -31,9 +31,11 @@ import org.icemobile.util.CSSUtils;
  */
 public class PagePanelHeaderTag extends BaseBodyTag {
 
-    public static final String HEADER_CLASS = "mobi-pagePanel-header ui-header ui-header-fixed " + CSSUtils.STYLECLASS_BAR_A;
+    public static final String HEADER_CLASS = "mobi-pagePanel-header ui-header ui-header-fixed ";
     private static Logger LOG = Logger.getLogger(PagePanelHeaderTag.class.getName());
     public PagePanelTag mParent;
+    
+    private String swatch = "a";
 
     public void setParent(Tag parent) {
        if (!(parent instanceof PagePanelTag)) {
@@ -43,7 +45,7 @@ public class PagePanelHeaderTag extends BaseBodyTag {
    }
 
     public int doStartTag() throws JspTagException {
-        StringBuilder headerClass = new StringBuilder(HEADER_CLASS);
+        StringBuilder headerClass = new StringBuilder(HEADER_CLASS+"ui-bar-"+swatch);
         if (mParent != null) {
             mParent.setHasHeader(true);
             if (mParent.getStyleClass() !=null){
@@ -75,4 +77,7 @@ public class PagePanelHeaderTag extends BaseBodyTag {
         }
         return EVAL_PAGE;
     }
+    
+    public String getSwatch(){ return swatch; }
+    public void setSwatch(String swatch){ this.swatch = swatch; }
 }
