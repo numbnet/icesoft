@@ -81,7 +81,9 @@ public class DataTableRowRenderer {
             parentIndex = (parentIndex != null) ? parentIndex + "." : "";
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_row_" + parentIndex + rowIndex, null);
             writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass + " " + expandedClass + " " + unselectableClass, null);
-            writer.writeAttribute(HTML.TABINDEX_ATTR, tableContext.getTabIndex(), null);
+            if (table.isRenderRowTabindex()) {
+                writer.writeAttribute(HTML.TABINDEX_ATTR, tableContext.getTabIndex(), null);
+            }
 
             boolean innerTdDivRequired = ((tableContext.isScrollable() || tableContext.isResizableColumns()) & !topVisibleRowRendered);
 
