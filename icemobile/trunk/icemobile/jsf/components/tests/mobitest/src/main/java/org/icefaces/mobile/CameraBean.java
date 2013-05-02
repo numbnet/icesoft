@@ -46,7 +46,6 @@ import javax.imageio.ImageIO;
 import org.icefaces.mobi.utils.IceOutputResource;
 import java.io.*;
 import java.util.Formatter;
-import com.sun.faces.el.ResourceELResolver;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.application.PushMessage;
 import org.icefaces.impl.util.CoreUtils;

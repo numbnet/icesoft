@@ -45,6 +45,10 @@
     <property name="compile.target" value="1.5"/>
     <property name="compile.debug" value="true"/>
 
+    <condition property="jsf.implementation" value="myfaces" else="mojarra">
+        <isset property="myfaces"/>
+    </condition>
+
     <propertyset id="product.info">
         <propertyref name="company"/>
         <propertyref name="product"/>
@@ -61,7 +65,9 @@
     </presetdef>
 
     <presetdef name="subant" uri="urn:ICEsoft">
-        <subant inheritall="false" failonerror="true" verbose="true"/>
+        <subant inheritall="false" failonerror="true" verbose="true">
+            <property name="jsf.implementation" value="${jsf.implementation}"/>
+        </subant>
     </presetdef>
 
     <presetdef name="zip" uri="urn:ICEsoft">
