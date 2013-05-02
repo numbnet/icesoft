@@ -57,6 +57,8 @@ public class UserAgentInfo implements Serializable{
     public static final String PHONE_HTC_SENSATION = "sensation_4g";
     public static final String ANDROID_CONTAINER = "apache-httpclient";
     public static final String PLAYBOOK = "playbook";
+    public static final String FIREFOX_ANDROID_TABLET = "android; tablet;";
+    public static final String FIREFOX_ANDROID_MOBILE = "android; mobile;";
     
 
     public UserAgentInfo(String userAgent) {
@@ -161,7 +163,8 @@ public class UserAgentInfo implements Serializable{
                && !userAgentString.contains(TABLET_GALAXY) 
                && !userAgentString.contains(TABLET_TRANSORMER_PRIME)
                && !userAgentString.contains(TABLET_IDEATAB)
-               && !userAgentString.contains(TABLET_KINDLE_FIRE);
+               && !userAgentString.contains(TABLET_KINDLE_FIRE)
+               && !userAgentString.contains(FIREFOX_ANDROID_TABLET);
        
    }
 
@@ -175,6 +178,7 @@ public class UserAgentInfo implements Serializable{
               && !userAgentString.contains(MOBILE_SAFARI) 
               && !userAgentString.contains(PHONE_DROID2)
               && !userAgentString.contains(PHONE_HTC_SENSATION)
+              && !userAgentString.contains(FIREFOX_ANDROID_MOBILE)
               || userAgentString.contains(TABLET_IDEATAB)
               || userAgentString.contains(TABLET_KINDLE_FIRE);
    }
