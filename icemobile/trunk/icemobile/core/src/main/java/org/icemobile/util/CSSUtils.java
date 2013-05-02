@@ -50,9 +50,7 @@ public class CSSUtils {
     /* Bar */
     public static final String STYLECLASS_BAR_A = "ui-bar-a"; //default for headers, footers
     public static final String STYLECLASS_BAR_B = "ui-bar-b"; //default for list group headers
-    /* body */
-    public static final String STYLECLASS_BODY_A = "ui-body-a"; //default for body
-
+    
     /* globals */
     public static final String STYLECLASS_ACTIVE = "ui-btn-active";
     

@@ -43,7 +43,6 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, pagePanel,
                 pagePanel.getCommonAttributeNames());
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnl", HTML.ID_ATTR);
-        writer.writeAttribute(HTML.CLASS_ATTR, CSSUtils.STYLECLASS_BODY_A, null);
         if (pagePanel.getStyle()!=null){
             writer.writeAttribute(HTML.STYLE_ATTR, pagePanel.getStyle(), HTML.STYLE_ATTR);
         }
