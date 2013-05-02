@@ -82,6 +82,7 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
                 .item(autocomplete.getWindowOptions())
                 .item(autocomplete.getOffset())
                 .item(autocomplete.isWindow())
+				.item(isSource(context, clientId))
                 .endFunction();
         writer.write(jb.toString());
         writer.write("});");
@@ -98,4 +99,10 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         writer.writeAttribute("name", clientId + "_" + fieldName, null);
         writer.endElement("input");
     }
+	
+	public boolean isSource(FacesContext context, String clientId) {
+		Map requestMap = context.getExternalContext().getRequestParameterMap();
+		Object sourceId = requestMap.get("ice.event.captured");
+        return (sourceId != null && sourceId.toString().equals(clientId));
+	}
 }

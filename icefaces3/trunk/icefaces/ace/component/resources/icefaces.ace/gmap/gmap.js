@@ -305,9 +305,25 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         map.setOptions(eval(fullOps));
     }
 
-    ice.ace.gMap.addAutoComplete = function(mapId, autoId, windowOptions, offset, windowRender){
+    ice.ace.gMap.addAutoComplete = function(mapId, autoId, windowOptions, offset, windowRender,focus){
 
         var input = ice.ace.jq(ice.ace.escapeClientId(autoId)).children().get(0);
+		if (focus) {
+			if (input.createTextRange) { // IE
+				input.focus();
+				if (input.value.length > 0) {
+					var fieldRange = input.createTextRange();  
+					fieldRange.moveStart('character', input.value.length);  
+					fieldRange.collapse(false);  
+					fieldRange.select();
+				}
+			}
+			else {
+				input.focus();
+				var length = input.value.length;  
+				input.setSelectionRange(length, length);  
+			}
+		}
 		ice.ace.jq(input).on('keypress', function(e) {if (e.keyCode == 13 || e.which == 13) return false;});
         var autocomplete = new google.maps.places.Autocomplete(input);
         var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
