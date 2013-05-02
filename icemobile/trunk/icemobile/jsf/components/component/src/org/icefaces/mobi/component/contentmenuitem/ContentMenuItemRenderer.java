@@ -268,7 +268,8 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
              }
              writer.startElement(HTML.DIV_ELEM, uiComponent);
              writer.writeAttribute("class", baseClass, "class");
-             writer.startElement(HTML.ANCHOR_ELEM, uiComponent);;
+             writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
+             writer.writeAttribute(HTML.CLASS_ATTR, "ui-link-inherit", null);
              //verify location of panel and get proper id of the contentPane for onclick
              // if url or target then put that in the onclick  otherwise use the value lmi.getValue()
              if (!lmi.isDisabled() && lmi.getUrl() != null){

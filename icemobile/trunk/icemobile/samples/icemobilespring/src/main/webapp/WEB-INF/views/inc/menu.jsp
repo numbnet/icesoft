@@ -21,29 +21,29 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <mobi:outputList id="menu" inset="false">
     <mobi:outputListItem group="true">Layout and Navigation</mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/accordion"/>">Accordion</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/carousel"/>">Carousel</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/fieldset"/>">Fieldset</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/list"/>">Lists</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/panelconfirmation"/>">Confirmation Panel</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/panelPopup"/>">Panel Popup</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/tabset"/>">Tab Set</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/accordion"/>">Accordion</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/carousel"/>">Carousel</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/fieldset"/>">Fieldset</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/list"/>">Lists</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/panelconfirmation"/>">Confirmation Panel</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/panelPopup"/>">Panel Popup</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/tabset"/>">Tab Set</a></mobi:outputListItem>
     
     <mobi:outputListItem group="true">Input & Selection</mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/buttons"/>">Buttons</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/datetime"/>">Date Time</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/flipswitch"/>">Flip Switch</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/geolocation"/>">Geolocation</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/inputtext"/>">HTML5 Input</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/menubutton"/>">Menu Button</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/buttons"/>">Buttons</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/datetime"/>">Date Time</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/flipswitch"/>">Flip Switch</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/geolocation"/>">Geolocation</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/inputtext"/>">HTML5 Input</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/menubutton"/>">Menu Button</a></mobi:outputListItem>
     
     <mobi:outputListItem group="true">Native Integration</mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/mediaspot"/>">Augmented Reality</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/camera"/>">Camera</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/camcorder"/>">Camcorder</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/notifications"/>">Cloud Push</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/contact"/>">Contact List</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/microphone"/>">Microphone</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="<c:url value="/qrscan"/>">QR Codes</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/mediaspot"/>">Augmented Reality</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/camera"/>">Camera</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/camcorder"/>">Camcorder</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/notifications"/>">Cloud Push</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/contact"/>">Contact List</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/microphone"/>">Microphone</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/qrscan"/>">QR Codes</a></mobi:outputListItem>
     
 </mobi:outputList>
