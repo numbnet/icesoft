@@ -20,27 +20,41 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <h:form id="frmDataview" styleClass="dataviewpage">
+        <style type="text/css">
+            table.innerBorder { border-collapse: collapse; }
+            table.innerBorder td, table.innerBorder th { border: 1px solid black; }
+            table.innerBorder tr:first-child th { border-top: 0; }
+            table.innerBorder tr:last-child td { border-bottom: 0; }
+            table.innerBorder tr td:first-child,
+            table.innerBorder tr th:first-child { border-left: 0; }
+            table.innerBorder tr td:last-child,
+            table.innerBorder tr th:last-child { border-right: 0; }
+        </style>
+
         <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="client"
                 rowStripe="true">
             <mobi:dataViewDetails>
-                <h:inputText value="#{car.name}">
-                    <f:ajax execute="@this" render="@form" />
-                </h:inputText>
-                <h:outputText value="Manual:"
-                        style="margin-left: 2em;"/>
-                <h:selectBooleanCheckbox value="#{car.manual}">
-                    <f:ajax execute="@this" render="@form" />
-                </h:selectBooleanCheckbox>
+                <h:panelGrid columns="3" styleClass="innerBorder">
+                    <h:outputText value="Name"/>
+                    <h:outputText value="Manual"/>
+                    <h:outputText value="Cost"/>
+
+                    <h:outputText value="#{car.name}"/>
+                    <h:selectBooleanCheckbox value="#{car.manual}">
+                        <f:ajax execute="@this" render="@form" />
+                    </h:selectBooleanCheckbox>
+                    <h:inputText value="#{car.cost}">
+                        <f:ajax execute="@this" render="@form" />
+                    </h:inputText>
+                </h:panelGrid>
             </mobi:dataViewDetails>
 
             <mobi:dataViewColumns>
                 <mobi:dataViewColumn headerText="Model" value="#{car.name}" />
                 <mobi:dataViewColumn type="bool" headerText="Manual" value="#{car.manual}" />
-                <!--<mobi:dataViewColumn headerText="Chassis" value="#{car.chassisRealname}" />-->
                 <mobi:dataViewColumn type="date" headerText="Release" value="#{car.releaseDate}">
                     <f:convertDateTime type="date" dateStyle="short" />
                 </mobi:dataViewColumn>
-                <mobi:dataViewColumn headerText="Cost" value="#{car.cost}" />
             </mobi:dataViewColumns>
         </mobi:dataView>
     </h:form>

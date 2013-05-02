@@ -35,6 +35,11 @@ public class IndexedIterator<K> implements Iterator<K> {
         backing = iterator;
     }
 
+    public IndexedIterator(Iterator<K> iterator) {
+        curIndex = -1; /* Decremented to provide 0 based indexing */
+        backing = iterator;
+    }
+
     /**
      * Return the row index of the last object returned from next() or throw
      * an IllegalStateException if next() has not yet been called.

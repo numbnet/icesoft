@@ -161,6 +161,7 @@ public class DataViewRenderer extends Renderer {
 
         writer.startElement(HTML.THEAD_ELEM, null);
         writer.startElement(HTML.TR_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_HEADER_ROW_CLASS, null);
 
         for (DataViewColumnModel column : columnModel) {
             writer.startElement(HTML.TH_ELEM, null);
@@ -244,8 +245,8 @@ public class DataViewRenderer extends Renderer {
             if (ActivationMode.client.equals(dataView.getActivationMode()))
                 writer.writeAttribute("data-state", encodeRowDetailString(context, detailHolders), null);
 
-            for (DataViewColumnModel column : columnModel)
-                writeColumn(writer, elContext, column);
+            for (IndexedIterator<DataViewColumnModel> columnModelIterator = columnModel.iterator(); columnModelIterator.hasNext();)
+                writeColumn(writer, elContext, columnModelIterator.next(), columnModelIterator.getIndex());
 
             writer.endElement(HTML.TR_ELEM);
         }
@@ -260,16 +261,17 @@ public class DataViewRenderer extends Renderer {
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    private void writeColumn(ResponseWriter writer, ELContext elContext, DataViewColumnModel column) throws IOException {
+    private void writeColumn(ResponseWriter writer, ELContext elContext, DataViewColumnModel column, int index) throws IOException {
         Object value = column.getValue().getValue(elContext);
         String type = column.getType();
+        String colClass = IDataView.DATAVIEW_COLUMN_CLASS + "-" + index;
 
         writer.startElement(HTML.TD_ELEM, null);
 
         if (type.equals("markup"))
             writer.write(column.getMarkup().replace("{{value}}", value.toString()));
         else if (type.equals("bool")) {
-            writer.writeAttribute(HTML.CLASS_ATTR, DataView.DATAVIEW_BOOL_COLUMN_CLASS, null);
+            colClass += " " + DataView.DATAVIEW_BOOL_COLUMN_CLASS;
             writer.startElement("i", null);
             if (value != null) {
                 Boolean bval = (Boolean)value;
@@ -302,6 +304,7 @@ public class DataViewRenderer extends Renderer {
         else if (value != null)
             writer.write(value.toString());
 
+        writer.writeAttribute(HTML.CLASS_ATTR, colClass, null);
 
         writer.endElement(HTML.TD_ELEM);
     }
