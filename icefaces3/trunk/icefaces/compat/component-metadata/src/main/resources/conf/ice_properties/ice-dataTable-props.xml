@@ -331,3 +331,16 @@
     </property-extension>
 </property>
 
+<property>
+    <description>
+        Row tabindex is required for dataTable Find feature. If Find feature is not used and
+        the tabindex interferes with tabbing through inputs in the table, set this to false.
+    </description>
+    <property-name>renderRowTabindex</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>true</default-value>
+    </property-extension>
+</property>
+

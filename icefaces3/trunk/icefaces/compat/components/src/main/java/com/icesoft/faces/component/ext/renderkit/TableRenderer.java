@@ -699,7 +699,9 @@ public class TableRenderer
             Iterator childs = uiData.getChildren().iterator();
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
 
+           if (uiData.isRenderRowTabindex()) {
             tr.setAttribute("tabindex", "0");
+           }
 
             if (rowSelectorFound) {
                 if (toggleOnClick) {

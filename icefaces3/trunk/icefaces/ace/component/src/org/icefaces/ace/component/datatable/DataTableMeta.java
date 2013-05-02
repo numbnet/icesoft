@@ -377,4 +377,8 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc = "Enabling makes the entire header container the clickable region for sort events.",
             defaultValue =  "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean clickableHeaderSorting;
+
+    @Property(tlddoc = "Row tabindex is required for dataTable Find feature. If Find feature is not used and the tabindex interferes with tabbing through inputs in the table, set this to false.",
+            defaultValue =  "true")
+    private boolean renderRowTabindex;
 }
