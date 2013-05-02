@@ -105,6 +105,7 @@
 		<property name="themes.build.dir" location="./build/themes"/>
 		<mkdir dir="${themes.build.dir}/android_dark" />
         <mkdir dir="${themes.build.dir}/android_light" />
+		<mkdir dir="${themes.build.dir}/jqm" />
         <mkdir dir="${themes.build.dir}/archaic" />
         <mkdir dir="${themes.build.dir}/base" />
         <mkdir dir="${themes.build.dir}/base3" />
@@ -115,6 +116,7 @@
         <mkdir dir="${themes.build.dir}/simulator" />
         <copy.theme.resources build.dir="${themes.build.dir}" name="android_dark"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="android_light"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="jqm"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="archaic"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="base"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="base3"/>
