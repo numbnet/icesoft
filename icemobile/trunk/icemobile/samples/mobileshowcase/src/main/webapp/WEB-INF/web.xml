@@ -53,8 +53,23 @@
         <param-name>org.icefaces.mandatoryResourceConfiguration</param-name>
         <param-value>all</param-value>
     </context-param>
+    
+    <context-param>
+        <param-name>org.apache.myfaces.REFRESH_TRANSIENT_BUILD_ON_PSS</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
-    <!-- Servlet declarations and mappings -->
+    <context-param>
+        <param-name>org.apache.myfaces.REFRESH_TRANSIENT_BUILD_ON_PSS_PRESERVE_STATE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>org.apache.myfaces.SERIALIZE_STATE_IN_SESSION</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    
+   <!-- Servlet declarations and mappings -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

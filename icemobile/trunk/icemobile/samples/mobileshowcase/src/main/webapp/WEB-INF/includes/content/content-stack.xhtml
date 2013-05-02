@@ -18,7 +18,8 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+             xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <mobi:contentStack currentId="#{selectedPanel}" id="contentStack">
 
@@ -27,9 +28,11 @@
             <ui:include src="/WEB-INF/includes/content/splash.xhtml" />
         </mobi:contentPane>
         
-        <mobi:contentPane id="menu" >
-            <ui:include src="/WEB-INF/includes/content/menu.xhtml" />
-        </mobi:contentPane>
+        <c:if test="#{mobiClient.handheldBrowser}">
+            <mobi:contentPane id="menu" >
+                <ui:include src="/WEB-INF/includes/content/menu.xhtml" />
+            </mobi:contentPane>
+        </c:if>
 
         <!-- Device input examples -->
         <mobi:contentPane id="camcorder" facelet="true" client="false" >
