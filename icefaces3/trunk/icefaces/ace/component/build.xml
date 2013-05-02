@@ -402,7 +402,7 @@
     <target name="compile-interfaces">
         <javac srcdir="${build}/generated-interfaces" destdir="${exploded}"
                debug="true" verbose="true" includeantruntime="false"
-               failonerror="true">
+               failonerror="true" source="1.5" target="1.5">
             <classpath refid="compile.run.classpath"/>
         </javac>
     </target>
@@ -410,7 +410,7 @@
     <target name="compile-base">
         <javac srcdir="${build}/generated/base" destdir="${exploded}"
                debug="true" verbose="true" includeantruntime="false"
-               failonerror="true">
+               failonerror="true" source="1.5" target="1.5">
             <classpath refid="compile.run.classpath"/>
         </javac>
     </target>
@@ -423,7 +423,7 @@
         -->
         <javac srcdir="${src}:${build}/generated-jsp/base" destdir="${exploded}" debug="true"
                excludes="**/*Meta.java" verbose="true" failonerror="true"
-               includeantruntime="false">
+               includeantruntime="false" source="1.5" target="1.5">
             <classpath refid="compile.run.classpath"/>
         </javac>
     </target>
@@ -431,7 +431,7 @@
     <target name="compile-support">
         <javac srcdir="${build}/generated/support" destdir="${exploded}"
                debug="true" verbose="true" includeantruntime="false"
-               failonerror="true">
+               failonerror="true" source="1.5" target="1.5">
             <classpath refid="compile.run.classpath"/>
         </javac>
     </target>
@@ -456,7 +456,7 @@
         <!-- Add these to javac if getting funky compilation errors: optimize="false" verbose="true" -->
         <javac srcdir="${src}" destdir="${build}/meta" debug="true"
                verbose="true" failonerror="true"
-               includes="**/*Meta.java" includeantruntime="false">
+               includes="**/*Meta.java" includeantruntime="false" source="1.5" target="1.5">
             <classpath refid="compile.run.classpath"/>
         </javac>
     </target>
