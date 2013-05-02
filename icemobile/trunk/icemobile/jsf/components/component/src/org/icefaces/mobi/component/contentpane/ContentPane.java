@@ -32,9 +32,9 @@ import org.icemobile.component.IContentPane;
 import org.icemobile.util.ClientDescriptor;
 
 public class ContentPane extends ContentPaneBase implements IContentPane{
-    public static final String CONTENT_BASE_CLASS = "mobi-contentpane ";
+    public static final String CONTENT_BASE_CLASS = "mobi-contentpane ui-body-c ";
     public static final String CONTENT_HIDDEN_CLASS = "mobi-contentpane-hidden ";
-    public static final String CONTENT_SINGLE_BASE_CLASS = "mobi-contentpane-single";
+    public static final String CONTENT_SINGLE_BASE_CLASS = "mobi-contentpane-single ui-body-c ";
     public static final String CONTENT_SINGLE_HIDDEN_CLASS = "mobi-contentpane-single-hidden";
     public static final String CONTENT_SINGLE_MENUPANE_CLASS = "mobi-contentpane-single-menu-hidden";
 
