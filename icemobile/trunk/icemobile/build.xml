@@ -231,6 +231,7 @@
             <!-- Create the JSF component JavaDocs and TLD documentation -->
             <subant target="docs" failonerror="true" verbose="true">
                 <fileset dir="./jsf" includes="build.xml"/>
+                <property name="jsf.implementation" value="${jsf.implementation}"/>
             </subant> 
             <!-- copy the jsf -->
             <mkdir dir="${docs.jsf.dir}/tld/"/>

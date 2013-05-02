@@ -105,6 +105,7 @@
 
 	<path id="javadoc.classpath">
 		<fileset dir="${lib.dir}" includes="*.jar" />
+		<fileset dir="${lib.dir}/${jsf.implementation}" includes="*.jar" />
 		<fileset dir="${lib.dir}/generator" includes="*.jar" />
 		<pathelement path="../component/src" />
 		<pathelement path="../component/build/meta" />
