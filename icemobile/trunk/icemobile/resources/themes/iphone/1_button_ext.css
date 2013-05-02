@@ -80,6 +80,8 @@ div.mobi-button-back{
     
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
+}
+.mobi-pagePanel-header .mobi-button.mobi-button-back{
     left: 1.2em;
 }
 div.mobi-button-back > span {
@@ -109,6 +111,7 @@ div.mobi-button-back > input {
     font-weight:bold;
 }
 div.mobi-button-back{
+    left: 1.2em;
     line-height:18px; /* button height matches before point */
     margin: 0.5em 5px 0.5em 15px;
     padding: 5px 6px 5px 0px;
@@ -140,6 +143,7 @@ div.mobi-button-back input{
     padding: 0;
 }
 .mobi-button-placeholder{
+    display: inline-block;
     color: transparent;
     text-shadow: none;
     padding-right: 5px;

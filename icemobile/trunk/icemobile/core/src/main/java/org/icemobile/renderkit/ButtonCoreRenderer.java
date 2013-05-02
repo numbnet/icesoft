@@ -99,17 +99,13 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         }
         writer.startElement(INPUT_ELEM, component);
         writer.writeAttribute(ID_ATTR, clientId);
-        Object oVal = button.getValue();
+        writer.writeAttribute(VALUE_ATTR, button.getValue());
         //style and class written to ctr div when back button
         if (!IButton.BUTTON_TYPE_BACK.equals(buttonType) || !client.isIOS()){
             writer.writeAttribute(CLASS_ATTR, baseClass.toString());
             // should be auto base though
             if (style != null ) {
                 writer.writeAttribute(STYLE_ATTR, style);
-            }
-            if (null != oVal) {
-                String value = oVal.toString();
-                writer.writeAttribute(VALUE_ATTR, value);
             }
         }
         /*
@@ -170,7 +166,6 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             writer.startElement("b", button);
             writer.writeAttribute(CLASS_ATTR, "mobi-button-placeholder");
             Object oVal2 = button.getValue();
-            String val = null;
             if (null != oVal2) {
                 String value = oVal2.toString();
                 writer.writeText(value);
