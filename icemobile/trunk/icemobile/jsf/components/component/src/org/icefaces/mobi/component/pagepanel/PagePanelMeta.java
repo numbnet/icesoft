@@ -44,6 +44,15 @@ public class PagePanelMeta extends UIPanelMeta {
 
     @Property(tlddoc = "Space-separated list of CSS style class(es) to be applied when this element is rendered.")
     private String styleClass;
+    
+    @Property(tlddoc = "", defaultValue="a")
+    private String headerSwatch;
+    
+    @Property(tlddoc = "", defaultValue="c")
+    private String bodySwatch;
+    
+    @Property(tlddoc = "", defaultValue="a")
+    private String footerSwatch;
 
     /**
      * The page component defines three sections headr, body and footer which
