@@ -2278,11 +2278,12 @@ textarea.ui-mini { height: 45px; }
 		vertical-align: top; display: inline-block; width: 20%; margin: 0 2% 0 0;
 		line-height: 1.8em;
 		text-align: left;
+		@include border-box;
 	}
 	.ui-field-contain input.ui-input-text, 
 	.ui-field-contain input, /* mobi */
 	.ui-field-contain textarea.ui-input-text, 
-	.ui-field-contain textara, /* mobi */
+	.ui-field-contain textarea, /* mobi */
 	.ui-field-contain .ui-input-search { width: 78%; display: inline-block; } 
 	.ui-hide-label input.ui-input-text, 
 	.ui-hide-label textarea.ui-input-text, 
@@ -2406,7 +2407,7 @@ span.ui-slider-label-a { z-index: 1; left: 0; text-indent: -1.5em; }
 span.ui-slider-label-b { z-index: 0; right: 0; text-indent: 1.5em;}
 .ui-slider-inline { width: 120px; display: inline-block; }
 /* mobi */
-.ui-input-text{
+input.ui-input-text, textarea.ui-input-text{
     border: 1px solid #D8D6D9;
     border-radius: 3px;
     color: #202020;

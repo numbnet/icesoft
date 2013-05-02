@@ -13,11 +13,16 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
+ @import "../mixins";
 
 .mobi-input-text, .mobi-input-secret, .mobi-input-textarea {
     background-color: white;
     border: 1px solid #999999;
     padding: 3px 3px;
+}
+.mobi-input-text, .mobi-input-secret, .mobi-input-textarea, .mobi-fieldset-row label{
+    @include border-box;
 }
 
 .mobi-input-text {}

@@ -208,7 +208,7 @@ html.android_dark #splash header{
     html.iphone #splash figure img, html.ipad #splash figure img{ 
         -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(white)); 
     }
-    html.android_dark #splash figure img{
+    html.android_light #splash figure img, html.android_dark #splash figure img{
         box-shadow: 0px 0px 98px rgb(117, 117, 117);
     }
     html.bb10 #splash figure img{
