@@ -27,9 +27,9 @@ public class PagePanelCoreRenderer {
     private static Logger logger = Logger.getLogger(PagePanelCoreRenderer.class.getName());
     
     // base styles for the three page sections
-    public static final String HEADER_CLASS = "mobi-pagePanel-header";
-    public static final String FOOTER_CLASS = "mobi-pagePanel-footer";
-    public static final String BODY_CLASS = "mobi-pagePanel-body";
+    public static final String HEADER_CLASS = "mobi-pagePanel-header ui-header ui-header-fixed";
+    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ui-footer ui-footer-fixed";
+    public static final String BODY_CLASS = "mobi-pagePanel-body ui-body-c";
     public static final String CTR_CLASS = "mobi-pagePanel-ctr";
 
     // style classes to remove header footer margins
