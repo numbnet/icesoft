@@ -222,7 +222,7 @@
                 <div style="border: dotted 1px #999;display: inline-block; float: left; clear: both;" id="phoneView">
                     <div class="phone">
                         <div class="device-frame">
-                            <iframe src="./showcase-small.jsf?theme=iphone&simulator=true" id="phone_iframe"></iframe>
+                            <iframe src="./showcase-small.jsf?theme=jqm&simulator=true" id="phone_iframe"></iframe>
                         </div>
                     </div>
                 </div>
@@ -230,7 +230,7 @@
                 <div style="border: dotted 1px #999;display: inline-block;" id="tabletView">
                     <div class="tablet">
                         <div class="device-frame">
-                            <iframe src="./showcase-large.jsf?theme=iphone&simulator=true" id="tablet_iframe"
+                            <iframe src="./showcase-large.jsf?theme=jqm&simulator=true" id="tablet_iframe"
                                 onload="TR.tabletIframeLoadCallback();"></iframe>
                         </div>
                     </div>
