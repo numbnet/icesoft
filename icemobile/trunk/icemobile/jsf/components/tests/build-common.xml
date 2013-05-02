@@ -86,13 +86,13 @@
 	            <lib dir="${lib.dir}"  erroronmissingdir="false">
 	            	 <include name="${icefaces.lib.name}.jar"/>
 	            	 <include name="${icefaces-mobi.lib.name}.jar"/>
-	                 <include name="javax.faces.jar"/>
                     <include name="${icepush.lib.name}.jar"/>
                     <include name="mobi.jar"/>
                     <include name="mail.jar"/>
                     <include name="jstl-1.2.jar"/>
 	            </lib>
-	     
+	            <lib dir="${lib.dir}/${jsf.implementation}"  includes="*.jar" />
+
 	            <classes dir="${classes.dir}"/>
 	        </war>
 	        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
