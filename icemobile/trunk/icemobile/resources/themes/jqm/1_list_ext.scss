@@ -14,17 +14,18 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.mobi.component.list;
-
-
-public class OutputListItem extends OutputListItemBase {
-	public static final String OUTPUTLISTITEM_CLASS = "mobi-list-item ui-li ";
-    public static final String OUTPUTLISTITEMGROUP_CLASS="mobi-list-item mobi-list-item-group ui-li ui-li-divider ui-bar-b ";
-    public static final String OUTPUTLISTITEMDEFAULT_CLASS="mobi-list-item-default ";
-    
-    public OutputListItem() {
-        super();
-    }
- 
-
+.mobi-list-item-group {
+    padding: 12px 10px;
 }
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
+    padding: 10px 25px;
+    background-image: url("next.png");
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    background-size: 20px;
+    color: #5E5E5E;
+    text-shadow: 1px 1px 1px #E2E2E2;
+}
+
+
+

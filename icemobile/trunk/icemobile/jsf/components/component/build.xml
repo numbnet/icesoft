@@ -436,6 +436,7 @@
 	<includeBase3Resources dir="${theme.build.path}/iphone" skin="iphone" />
 	<includeBase3Resources dir="${theme.build.path}/android_light" skin="android_light" />
 	<includeBase3Resources dir="${theme.build.path}/android_dark" skin="android_dark" />
+	<includeBase3Resources dir="${theme.build.path}/jqm" skin="jqm" />
 	<buildSimulatorSkin/>
 
     <replaceregexp match="(\/\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="">
@@ -451,6 +452,7 @@
 	<concatskin name="simulator" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="android_light" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="android_dark" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	<concatskin name="jqm" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
     
 	<!-- Copy all resources to the skins resource library -->
 	<copy todir="${resources}/${skins.lib}">
@@ -506,6 +508,7 @@
 	<generatesprites skin="ipad" />
 	<generatesprites skin="android_light" />
 	<generatesprites skin="android_dark" />
+	<generatesprites skin="jqm" />
 	<generatesprites skin="bberry" />
 	<generatesprites skin="bb10" />
 	<generatesprites skin="archaic" />
@@ -516,6 +519,7 @@
 	<compresscssmacro name="ipad" />
 	<compresscssmacro name="android_light" />
 	<compresscssmacro name="android_dark" />
+	<compresscssmacro name="jqm" />
 	<compresscssmacro name="bberry" />
 	<compresscssmacro name="bb10" />
 	<compresscssmacro name="archaic" />

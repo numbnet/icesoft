@@ -172,6 +172,7 @@
 		<buildCSS3Skin skin="iphone" />
         <buildCSS3Skin skin="android_light" />
         <buildCSS3Skin skin="android_dark" />
+		<buildCSS3Skin skin="jqm" />
     	<buildSimulatorSkin/>
 
         <replaceregexp match="(\/\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="">
@@ -195,6 +196,8 @@
                     outputdir="${build.dir}/skins/out"/>
     	<concatskin name="android_dark" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
+    	<concatskin name="jqm" inputdir="${build.dir}/skins/in"
+    	                    outputdir="${build.dir}/skins/out"/>
         <!-- compress -->
         <ant target="compress-css"/>
 
@@ -214,6 +217,7 @@
     	<compresscss name="simulator"/>
         <compresscss name="android_light"/>
         <compresscss name="android_dark"/>
+        <compresscss name="jqm"/>
     </target>
 
     <macrodef name="compresscss">

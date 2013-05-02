@@ -37,9 +37,7 @@
 </h:head>
     <h:body>
         <mobi:largeView>
-            <ui:include src="WEB-INF/includes/view/large.xhtml">
-                <ui:param name="viewSize" value="large" />
-            </ui:include>
+            <ui:include src="WEB-INF/includes/view/large.xhtml"/>
         </mobi:largeView>
         <mobi:smallView>
             <mobi:pagePanel>
@@ -92,6 +90,8 @@
                                           itemValue="bberry"/>
                             <f:selectItem itemLabel="BlackBerry 10"
                                   itemValue="bb10"/>
+                            <f:selectItem itemLabel="jQuery Mobile"
+                                      itemValue="jqm"/>
                             <f:ajax disabled="true"/>
                         </h:selectOneMenu>
                     </h:form>
