@@ -68,7 +68,7 @@ public class DataViewMeta extends UIComponentBaseMeta {
     @Property
     String styleClass;
 
-    @Property
+    @Property()
     Integer activeRowIndex;
 
     @Property(defaultValue = "org.icefaces.mobi.component.dataview.ActivationMode.server",
