@@ -81,7 +81,7 @@ div.mobi-button-back{
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
 }
-.mobi-pagePanel-header .mobi-button.mobi-button-back{
+.mobi-pagePanel-header div.mobi-button.mobi-button-back{
     left: 1.2em;
 }
 div.mobi-button-back > span {
