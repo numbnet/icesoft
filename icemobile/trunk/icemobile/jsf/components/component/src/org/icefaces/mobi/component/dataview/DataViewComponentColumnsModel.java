@@ -37,7 +37,8 @@ public class DataViewComponentColumnsModel implements DataViewColumnsModel {
     public DataViewComponentColumnsModel(DataViewColumns uiColumns) {
         for (UIComponent child : uiColumns.getChildren())
             if (child instanceof DataViewColumn)
-                columns.add(((DataViewColumn)child).getModel());
+                if (child.isRendered())
+                    columns.add(((DataViewColumn)child).getModel());
     }
 
     public IndexedIterator<DataViewColumnModel> iterator() {

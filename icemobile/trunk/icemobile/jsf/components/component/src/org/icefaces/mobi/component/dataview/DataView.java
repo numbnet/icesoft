@@ -66,13 +66,7 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
         /* Decode new index early to alter server state to match sent client state*/
         if (!decodedActive && ActivationMode.client.equals(getActivationMode())
                 && !context.getFacesContext().getCurrentPhaseId().equals(PhaseId.RESTORE_VIEW)) {
-            String indexStr = facesContext.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
-            if (indexStr != null && indexStr.length() > 0) {
-                Integer newIndex = Integer.parseInt(indexStr);
-                if (newIndex != null) setActiveRowIndex(newIndex);
-            }
-
-            decodedActive = true;
+            decodeIndex(facesContext);
         }
 
         try {
@@ -119,13 +113,7 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
         removeDetailContext(context);
 
         if (!decodedActive) {
-            String indexStr = context.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
-            if (indexStr != null) {
-                Integer newIndex = Integer.parseInt(indexStr);
-                if (newIndex != null) setActiveRowIndex(newIndex);
-            }
-
-            decodedActive = true;
+            decodeIndex(context);
         }
     }
 
@@ -139,13 +127,7 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
     @Override
     public void processDecodes(FacesContext context) {
         if (ActivationMode.client.equals(getActivationMode()) && !decodedActive) {
-            String indexStr = context.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
-            if (indexStr != null) {
-                Integer newIndex = Integer.parseInt(indexStr);
-                if (newIndex != null) setActiveRowIndex(newIndex);
-            }
-
-            decodedActive = true;
+            decodeIndex(context);
         }
 
         initDetailContext(context);
@@ -169,14 +151,19 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
 
         /* if not post-restore restoreState overwrites new active index */
         if (ActivationMode.client.equals(getActivationMode()) && !decodedActive) {
-            String indexStr = context.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
-            if (indexStr != null) {
-                Integer newIndex = Integer.parseInt(indexStr);
-                if (newIndex != null) setActiveRowIndex(newIndex);
-            }
-
-            decodedActive = true;
+            decodeIndex(context);
         }
+    }
+
+    private void decodeIndex(FacesContext context) {
+        String indexStr = context.getExternalContext().getRequestParameterMap().get(getClientId() + "_active");
+        if (indexStr != null && indexStr.length() > 0) {
+            int newIndex = Integer.parseInt(indexStr);
+            if (newIndex >= 0) setActiveRowIndex(newIndex);
+            else setActiveRowIndex(null);
+        }
+
+        decodedActive = true;
     }
 
     private void removeDetailContext(FacesContext context) {
@@ -186,9 +173,8 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
     private void initDetailContext(FacesContext context) {
         Integer index = getActiveRowIndex();
 
-        if (index != null) {
+        if (index != null &&index >= 0)
             getRequestMap(context).put(getVar(), getDataModel().getDataByIndex(index));
-        }
     }
 
     private Map<String,Object> getRequestMap(FacesContext context) {

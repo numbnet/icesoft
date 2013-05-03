@@ -1,6 +1,8 @@
 package org.icefaces.mobi.component.dataview;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 
 /**
  * Copyright 2010-2013 ICEsoft Technologies Canada Corp.
@@ -28,11 +30,12 @@ public class DataViewDetails extends DataViewDetailsBase {
     /* keep details unrendered if using server activation and no row is active */
     @Override
     public boolean isRendered() {
-        if (ActivationMode.server.equals(getView().getActivationMode())) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (!context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
             Integer index = getView().getActiveRowIndex();
-            if (index != null && index > -1) return super.isRendered();
-            else return false;
-        } else return super.isRendered();
+            return super.isRendered() && index != null && index > -1;
+        }
+        return super.isRendered();
     }
 
     private DataView getView() {
