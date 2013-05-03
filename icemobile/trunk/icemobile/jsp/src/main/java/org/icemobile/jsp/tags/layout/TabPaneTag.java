@@ -16,27 +16,20 @@
 
 package org.icemobile.jsp.tags.layout;
 
-import org.icemobile.component.ITabPane;
-import org.icemobile.component.ITabSet;
-import org.icemobile.jsp.tags.BaseBodyTag;
-import org.icemobile.jsp.tags.TagUtil;
-import org.icemobile.jsp.tags.TagWriter;
-import org.icemobile.jsp.util.MobiJspConstants;
-import org.icemobile.jsp.util.Util;
-import org.icemobile.renderkit.TabPaneCoreRenderer;
-import org.icemobile.util.ClientDescriptor;
-import sun.rmi.runtime.Log;
+import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Vector;
-import java.util.List;
-import java.util.logging.Logger;
+import javax.servlet.jsp.tagext.Tag;
+
+import org.icemobile.component.ITabPane;
+import org.icemobile.component.ITabSet;
+import org.icemobile.jsp.tags.TagWriter;
+import org.icemobile.renderkit.TabPaneCoreRenderer;
+import org.icemobile.util.ClientDescriptor;
 
 public class TabPaneTag extends BodyTagSupport implements ITabPane {
 
