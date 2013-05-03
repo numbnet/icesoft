@@ -58,7 +58,7 @@ public class CSSUtils {
     public static final String STYLECLASS_FIELDCONTAIN = "ui-field-contain";
 
     
-    public enum Theme{ IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, ARCHAIC, ANDROID_LIGHT, ANDROID_DARK, BB10, JQM;
+    public enum Theme{ BASE, IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, ARCHAIC, ANDROID_LIGHT, ANDROID_DARK, BB10, JQM;
         public String fileName(){
             return this.name().toLowerCase();
         }

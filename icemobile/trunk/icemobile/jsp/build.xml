@@ -166,6 +166,7 @@
         <mkdir dir="${build.dir}/skins/out"/>
 
     	<buildSkin skin="archaic" />
+    	<buildBaseSkin />
     	<buildCSS3Skin skin="bberry" />
     	<buildCSS3Skin skin="bb10" />
 		<buildCSS3Skin skin="ipad" />
@@ -188,6 +189,8 @@
                     outputdir="${build.dir}/skins/out"/>
     	<concatskin name="bb10" inputdir="${build.dir}/skins/in"
     	                    outputdir="${build.dir}/skins/out"/>
+    	<concatskin name="base" inputdir="${build.dir}/skins/in"
+    	                            outputdir="${build.dir}/skins/out"/>
         <concatskin name="ipad" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
 		<concatskin name="archaic" inputdir="${build.dir}/skins/in"
@@ -212,6 +215,7 @@
             unless="no-compress">
         <compresscss name="iphone"/>
         <compresscss name="ipad"/>
+    	<compresscss name="base"/>
         <compresscss name="bberry"/>
     	<compresscss name="bb10"/>
     	<compresscss name="simulator"/>
@@ -430,6 +434,25 @@
             </copy>
         </sequential>
     </macrodef>
+	
+	<macrodef name="buildBaseSkin">
+	        <sequential>
+	            <mkdir dir="build/skins/in/base" />
+	            <copy todir="build/skins/in/base/">
+	                <fileset dir="${theme.build.dir}/base" includes="**" />
+	            </copy>
+	            <copy todir="build/skins/in/base/">
+	                <fileset dir="${theme.build.dir}/base3" includes="**" />
+	            </copy>
+	            <copy todir="build/skins/in/base/" overwrite="true">
+	                <fileset dir="${theme.build.dir}/base" includes="**" />
+	            </copy>
+	            <mkdir dir="build/skins/out/base/" />
+	            <copy todir="build/skins/out/base/">
+	                <fileset dir="build/skins/in/base/" excludes="**/*.css" />
+	            </copy>
+	        </sequential>
+	    </macrodef>
 
 	<macrodef name="compressjs">
 	    <attribute name="comp" />

@@ -172,6 +172,24 @@
         </sequential>
     </macrodef>
 	
+	<macrodef name="createBaseSkin">
+	        <sequential>
+	            <mkdir dir="${root.dir.path}/base" />
+	            <!-- Copy all resources to the input directory for SmartSprites. -->
+	            <mkdir dir="${root.dir.path}/base/" />
+	            <!-- copy base styles -->
+	            <copy todir="${root.dir.path}/base/">
+	                <fileset dir="${theme.build.path}/${theme.base.dir}" includes="**" />
+	            </copy>
+	            <!-- At the same time, copy all resources to the SmartSprites output directory.
+	                          with the exclusion of the the .css files -->
+	            <mkdir dir="${output.dir.path}/base/" />
+	            <copy todir="${output.dir.path}/base/">
+	                <fileset dir="${root.dir.path}/base/" excludes="**/*.css" />
+	            </copy>
+	        </sequential>
+	    </macrodef>
+	
 	<macrodef name="buildSimulatorSkin">
         <sequential>
             <mkdir dir="${root.dir.path}/simulator" />
@@ -432,6 +450,7 @@
 	<!-- 'skin' is the name of the skin these resources will be part of -->
 
 	<includeBaseResources dir="${theme.build.path}/archaic" skin="archaic" />
+	<createBaseSkin/>
 	<includeBase3Resources dir="${theme.build.path}/bberry" skin="bberry" />
 	<includeBase3Resources dir="${theme.build.path}/bb10" skin="bb10" />
 	<includeBase3Resources dir="${theme.build.path}/ipad" skin="ipad" />
@@ -447,6 +466,7 @@
 
 	<!-- Generate a single CSS file per skin -->
    <concatskin name="iphone" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	<concatskin name="base" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
     <concatskin name="bberry" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="bb10" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
@@ -517,6 +537,7 @@
 </target>
 
 <target name="compress-skins" unless="skins.skip">
+	<compresscssmacro name="base" />
 	<compresscssmacro name="iphone" />
 	<compresscssmacro name="ipad" />
 	<compresscssmacro name="android_light" />
