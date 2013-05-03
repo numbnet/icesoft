@@ -66,8 +66,12 @@ public class DataViewColumn extends DataViewColumnBase implements ValueHolder {
                 return null;
             }
 
-            public ValueExpression getValue() {
+            public ValueExpression getValueExpression() {
                 return DataViewColumn.this.getValueExpression("value");
+            }
+
+            public Object getValue() {
+                return DataViewColumn.this.getValue();
             }
 
             public Integer getTimeStyle() {

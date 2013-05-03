@@ -2,7 +2,6 @@ package org.icefaces.mobi.component.dataview;
 
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.mobi.component.inputText.InputText;
-import org.icefaces.mobi.component.inputText.InputTextMeta;
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icemobile.component.IDataView;
@@ -13,12 +12,10 @@ import org.icemobile.model.IndexedIterator;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.*;
 import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.DateTimeConverter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -120,7 +117,6 @@ public class DataViewRenderer extends Renderer {
         if (columns == null) encodeEmptyBodyTable(writer);
         else {
             writer.startElement(HTML.DIV_ELEM, null);
-            writer.writeAttribute(HTML.ID_ATTR, dvId + "_mst", null);
             writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_MASTER_CLASS, null);
 
             DataViewColumnsModel columnModel = columns.getModel();
@@ -163,8 +159,13 @@ public class DataViewRenderer extends Renderer {
         writer.startElement(HTML.TR_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_HEADER_ROW_CLASS, null);
 
-        for (DataViewColumnModel column : columnModel) {
+        for (IndexedIterator<DataViewColumnModel> columnIter = columnModel.iterator(); columnIter.hasNext();) {
+            DataViewColumnModel column = columnIter.next();
+            int index = columnIter.getIndex();
+
             writer.startElement(HTML.TH_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_COLUMN_CLASS + "-" + index, null);
+
             if (column.getHeaderText() != null)
                 writer.write(column.getHeaderText());
 
@@ -262,7 +263,8 @@ public class DataViewRenderer extends Renderer {
     }
 
     private void writeColumn(ResponseWriter writer, ELContext elContext, DataViewColumnModel column, int index) throws IOException {
-        Object value = column.getValue().getValue(elContext);
+        ValueExpression ve = column.getValueExpression();
+        Object value = ve == null ? column.getValue() : ve.getValue(elContext); // use value expression if available, value will have been pre-evaluated
         String type = column.getType();
         String colClass = IDataView.DATAVIEW_COLUMN_CLASS + "-" + index;
 

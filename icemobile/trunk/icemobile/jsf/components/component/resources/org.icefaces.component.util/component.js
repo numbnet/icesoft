@@ -973,6 +973,21 @@ ice.mobi.geolocation = {
     }
 };
 
+ice.mobi.getStyleSheet = function (sheetId) {
+    return Array.prototype.filter.call(document.styleSheets, function(s) {
+        return s.title == sheetId;
+    })[0];
+};
+
+ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
+    var s = document.createElement('style');
+    s.type = 'text/css';
+    s.rel = 'stylesheet';
+    s.title = sheetId;
+    document.querySelectorAll(parentSelector || "head")[0].appendChild(s);
+    return ice.mobi.getStyleSheet(sheetId);
+};
+
 (function(im) {
     var isTouchDevice = 'ontouchstart' in document.documentElement,
         indicatorSelector = "i.mobi-dv-si",
@@ -1081,29 +1096,38 @@ ice.mobi.geolocation = {
                     footCells[i].style.width = dupeFootCellWidths[i] + 'px';
                 }
 
+            setupColumnVisibiltyRules(firstrow.children);
+
             /* hide duplicate header */
             if (dupeHead) dupeHead.style.display = 'none';
             if (dupeFoot) dupeFoot.style.display = 'none';
 
             recalcScrollHeight(head, foot, bodyDivWrapper);
-            setupColumnVisibiltyRules(firstrow.children);
         }
 
         function setupColumnVisibiltyRules(firstRowCells) {
-            var minDevWidth = 0;
+            var minDevWidth = firstRowCells[0].getBoundingClientRect().left;
+            var colVisSheet = im.getStyleSheet(clientId + '_colvis') || im.addStyleSheet(clientId + '_colvis', selectorId);
+
             for (var i = 0; i < firstRowCells.length; i++) {
                 var columnClassname = Array.prototype.filter.call(
                         firstRowCells[i].classList,
-                        function(name) {if (name.contains('mobi-dv-c')) return true;})[0];
+                        function(name) {if (name.indexOf('mobi-dv-c') != -1) return true;}
+                    )[0];
 
                 minDevWidth += firstRowCells[i].clientWidth;
-                setColumnWidthRule(columnClassname, minDevWidth);
+
+                // add column conditional visibility rule
+                colVisSheet.insertRule('@media screen and (min-width: '+minDevWidth+'px) { td.'+columnClassname+', th.'+columnClassname+' { display: table-cell; }}', 0);
             }
-        }
 
-
-        function setColumnWidthRule(colClass, minWidth) {
-
+            var hideRule = '@media only all {';
+            for (var i = 0; i < firstRowCells.length; i++) {
+                hideRule += 'th.mobi-dv-c-'+i+', td.mobi-dv-c-'+i;
+                if (i != (firstRowCells.length - 1)) hideRule += ', ';
+            }
+            hideRule += '{ display:none; }}';
+            colVisSheet.insertRule(hideRule, 0);
         }
 
         /* arguments optional to avoid lookup */
