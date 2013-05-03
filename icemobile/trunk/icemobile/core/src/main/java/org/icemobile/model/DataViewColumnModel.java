@@ -31,7 +31,8 @@ public interface DataViewColumnModel {
     public String getType();
     public String getDateType();
     public String getDatePattern();
-    public ValueExpression getValue();
+    public ValueExpression getValueExpression();
+    public Object getValue();
     public Integer getTimeStyle();
     public Integer getDateStyle();
     public TimeZone getTimeZone();

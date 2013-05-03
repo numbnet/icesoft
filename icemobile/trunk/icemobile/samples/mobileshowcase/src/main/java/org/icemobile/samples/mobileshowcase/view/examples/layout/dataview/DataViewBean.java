@@ -60,6 +60,8 @@ public class DataViewBean extends ExampleImpl<DataViewBean>
 
     public static final String BEAN_NAME = "dataViewBean";
 
+    public boolean colVis = false;
+
     private List<Car> cars = new ArrayList<Car>() {{
         VehicleGenerator vg = new VehicleGenerator();
         addAll(vg.getRandomCars(200));
@@ -73,4 +75,12 @@ public class DataViewBean extends ExampleImpl<DataViewBean>
         return cars;
     }
 
+
+    public boolean isColVis() {
+        return colVis;
+    }
+
+    public void setColVis(boolean colVis) {
+        this.colVis = colVis;
+    }
 }

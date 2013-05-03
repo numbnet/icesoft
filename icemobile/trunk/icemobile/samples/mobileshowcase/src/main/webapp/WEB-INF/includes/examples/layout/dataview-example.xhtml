@@ -29,6 +29,10 @@
             table.innerBorder tr th:first-child { border-left: 0; }
             table.innerBorder tr td:last-child,
             table.innerBorder tr th:last-child { border-right: 0; }
+
+            .mobi-dv-c-4 {
+                min-width: 150px;
+            }
         </style>
 
         <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="client"
@@ -52,11 +56,21 @@
             <mobi:dataViewColumns>
                 <mobi:dataViewColumn headerText="Model" value="#{car.name}" />
                 <mobi:dataViewColumn type="bool" headerText="Manual" value="#{car.manual}" />
+                <mobi:dataViewColumn headerText="Cost" value="#{car.cost}" rendered="#{dataViewBean.colVis}" />
                 <mobi:dataViewColumn type="date" headerText="Release" value="#{car.releaseDate}">
                     <f:convertDateTime type="date" dateStyle="short" />
                 </mobi:dataViewColumn>
+                <mobi:dataViewColumn headerText="Lorem"
+                                     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
+                                     rendered="#{dataViewBean.colVis}" />
+                <mobi:dataViewColumn headerText="Lorem"
+                                     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
+                                     rendered="#{dataViewBean.colVis}" />
+                <mobi:dataViewColumn headerText="Lorem"
+                                     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
+                                     rendered="#{dataViewBean.colVis}" />
             </mobi:dataViewColumns>
         </mobi:dataView>
+        <h:commandButton value="#{dataViewBean.colVis ? 'Remove Cols' : 'Add Cols'}" actionListener="#{dataViewBean.setColVis(not(dataViewBean.colVis))}" />
     </h:form>
-    <h:outputText value="Subfooter component." />
 </ui:composition>
