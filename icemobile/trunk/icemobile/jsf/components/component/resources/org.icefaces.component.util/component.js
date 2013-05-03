@@ -1511,7 +1511,7 @@ ice.mobi.geolocation = {
 })(ice.mobi);
 
 /* touch active state support */
-document.addEventListener("touchstart", function(){}, true);
+ice.mobi.addListener(document, "touchstart", function(){});
 
 function hideAddressBar()
 {   //todo: add device / browser specificity

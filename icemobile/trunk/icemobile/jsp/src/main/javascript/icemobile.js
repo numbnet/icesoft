@@ -2281,7 +2281,7 @@ document.documentElement.className = document.documentElement.className + ' js';
 
 /* touch active state support */
 ice.mobi.noop = function(){};
-document.addEventListener("touchstart", ice.mobi.noop, true);
+ice.mobi.addListener(document, "touchstart", ice.mobi.noop);
 
 if (window.addEventListener) {
 
