@@ -48,7 +48,7 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
         String clientId = component.getClientId();
         writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, clientId);
-        writer.writeAttribute(NAME_ATTR, clientId);
+        writer.writeAttribute(STYLE_ATTR, "overflow-x: hidden");
         writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, clientId+"_carousel");
         writeStandardLayoutAttributes(writer, component, baseClass.toString() );
