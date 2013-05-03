@@ -36,6 +36,7 @@
         <mobi:fieldsetRow>
                 <mobi:commandButton value="Open the confirmation panel" 
                          type="button"
+                         id="pcButton"
                          panelConfirmation="panelConfirmation"
                          buttonType="important"/>
                          
