@@ -43,7 +43,7 @@ public class PagePanelBodyTag extends TagSupport {
     }
 
     public int doStartTag() throws JspTagException {
-        StringBuilder bodyClass = new StringBuilder(BODY_CLASS+"ui-body-"+swatch);
+        StringBuilder bodyClass = new StringBuilder(BODY_CLASS+"ui-panel-content-wrap ui-body-"+swatch);
         if (this.noHeader || !mParent.isHasHeader()){
             bodyClass.append(" ").append(BODY_NO_HEADER_CLASS);
         }
