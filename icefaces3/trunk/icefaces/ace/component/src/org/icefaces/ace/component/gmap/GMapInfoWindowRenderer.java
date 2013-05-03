@@ -18,7 +18,7 @@ package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
-
+import org.icefaces.ace.util.JSONBuilder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -61,7 +61,7 @@ public class GMapInfoWindowRenderer extends CoreRenderer {
             }
         if (!infoWindow.isDisabled()) {
             if (infoWindow.getChildCount() == 0) {
-                writer.write("ice.ace.gMap.addGWindow('" + mapId + "', '" + clientId + "','" + infoWindow.getContent() + "', new google.maps.LatLng(" + infoWindow.getLatitude() + ","
+                writer.write("ice.ace.gMap.addGWindow('" + mapId + "', '" + clientId + "','" + JSONBuilder.escapeString(infoWindow.getContent()) + "', new google.maps.LatLng(" + infoWindow.getLatitude() + ","
                         + infoWindow.getLongitude() + "), \"" + infoWindow.getOptions() + "\", '" + markerId + "','" + infoWindow.isShowOnClick() + "','" + infoWindow.isStartOpen() + "');");
                 writer.write("});");
                 writer.endElement("script");
@@ -72,7 +72,7 @@ public class GMapInfoWindowRenderer extends CoreRenderer {
                     writer.write("});");
                     writer.endElement("script");
                 } else {
-                    writer.write("ice.ace.gMap.addGWindow('" + mapId + "', '" + clientId + "','" + infoWindow.getContent() + "', new google.maps.LatLng(" + infoWindow.getLatitude() + ","
+                    writer.write("ice.ace.gMap.addGWindow('" + mapId + "', '" + clientId + "','" + JSONBuilder.escapeString(infoWindow.getContent()) + "', new google.maps.LatLng(" + infoWindow.getLatitude() + ","
                             + infoWindow.getLongitude() + "), \"" + infoWindow.getOptions() + "\", '" + markerId + "','" + infoWindow.isShowOnClick() + "','" + infoWindow.isStartOpen() + "');");
                     writer.write("});");
                     writer.endElement("script");
