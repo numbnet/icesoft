@@ -17,7 +17,7 @@
 package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Logger;
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 /**
  *
  */
-public class PagePanelTag extends TagSupport {
+public class PagePanelTag extends BodyTagSupport {
     
     public static final String CTR_CLASS = "mobi-pagePanel-ctr";
 

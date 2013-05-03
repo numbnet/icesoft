@@ -97,6 +97,12 @@ public class TabSetMeta extends UIPanelMeta {
     @Property(defaultValue = "true")
     private boolean autoWidth;
 
+    @Property(defaultValue = "false", tlddoc="This attribute, when true, will allow the tabs of the component " +
+            "to nest immediately at the top of the page. If a pagePanelHeader is present, then it will " +
+            "render directly under that.  If false, then the headers will appear at the top of the div defined " +
+            "for the tabSet component. ")
+    private boolean fixedPosition;
+
     @Field
     private String hashVal;
 

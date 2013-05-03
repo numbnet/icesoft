@@ -85,7 +85,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        ITabSet tabset = (ITabSet) uiComponent;
+        TabSet tabset = (TabSet) uiComponent;
         String clientId = tabset.getClientId();
         IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         TabSetCoreRenderer renderer = new TabSetCoreRenderer();

@@ -803,14 +803,16 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Id of panelConfirmation to be used
+            <description>Id of panelConfirmation to be used. If this is used then button must have
+                an id.
             </description>
             <name>panelConfirmation</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Id of submitNotification to be used
+            <description>Id of submitNotification to be used. If this is used then button must have
+                an id.
             </description>
             <name>submitNotification</name>
             <required>false</required>
@@ -830,7 +832,7 @@
         <tag-class>org.icemobile.jsp.tags.input.CommandButtonGroupTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier.</description>
+            <description>Pagewide unique identifier. The commandButtons in the group must have unique id on the page</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1729,7 +1731,7 @@
     </tag>
     <tag>
         <description>ICEmobile TabSet buffered version</description>
-        <display-name>tabSetController</display-name>
+        <display-name>tabSetControl</display-name>
         <name>tabSetControl</name>
         <tag-class>org.icemobile.jsp.tags.layout.TabSetControlTag</tag-class>
         <body-content>JSP</body-content>
@@ -1792,6 +1794,16 @@
             <type>boolean</type>
         </attribute>
         <attribute>
+            <description>When true, tab controls are rendered at top most available position in page
+                if orientation is top and at bottom most available position if orientation is bottom.
+                When false, the tab controls are placed at the top of the div for tabSetControl.
+            </description>
+            <name>fixedPosition</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
             <description>If height attribute is not used, this attribute may be used to calculate
                 the largest height of all tabPanes.
             </description>
@@ -1809,7 +1821,17 @@
        <attribute>
             <description> PagePanel is present with footer facet following this component
             </description>
-            <name>hasParentFooter</name>
+            <name>parentFooter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+       </attribute>
+       <attribute>
+            <description> PagePanel is present with header facet above this component.  This component
+                will attempt to find the PagePanelTag but if other non tag divs are present it may have
+                difficulty in which case the developer will have to use this attribute.
+            </description>
+            <name>parentHeader</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
