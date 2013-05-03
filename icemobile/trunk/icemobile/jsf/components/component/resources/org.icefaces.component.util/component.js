@@ -115,6 +115,12 @@ ice.mobi.findFormFromNode = function (sourcenode) {
     }
     return node;
 };
+
+ice.mobi.matches = function(elem, selector) {
+    var impl = elem.webkitMatchesSelector || elem.msMatchesSelector || elem.mozMatchesSelector;
+    return (impl.bind(elem))(selector);
+};
+
 mobi.AjaxRequest = function (cfg) {
 
     if (cfg.onstart && !cfg.onstart.call(this)) {
@@ -967,12 +973,12 @@ ice.mobi.geolocation = {
     }
 };
 
-(function() {
+(function(im) {
     var isTouchDevice = 'ontouchstart' in document.documentElement,
         indicatorSelector = "i.mobi-dv-si",
         blankInicatorClass = 'mobi-dv-si';
     function DataView(clientId, cfg) {
-        var selectorId = '#' + ice.mobi.escapeJsfId(clientId),
+        var selectorId = '#' + im.escapeJsfId(clientId),
             bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
             headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead > tr > th';
 
@@ -999,7 +1005,7 @@ ice.mobi.geolocation = {
 
         function closest(start, target) {
             var t = start;
-            while (t && t != document&& !t.webkitMatchesSelector(target))
+            while (t && t != document&& !im.matches(t,target))
                 t = t.parentNode;
 
             return t == document ? null : t;
@@ -1136,7 +1142,7 @@ ice.mobi.geolocation = {
             var cell = e.currentTarget;
             /* targetTouches[0] - ignore multi touch starting here */
             touchedHeadCellIndex[e.targetTouches[0].identifier] = getIndex(cell);
-            if (cell.webkitMatchesSelector(headCellSelector+":first-child"))
+            if (im.matches(cell,headCellSelector+":first-child"))
                 touchedFirstCell = true;
 
             /*prevent scrolling due to drags */
@@ -1156,7 +1162,7 @@ ice.mobi.geolocation = {
                 if (cell) {
                     var index = getIndex(cell);
                     // clear sort if dragged from first to last cell
-                    if (touchedFirstCell && cell.webkitMatchesSelector(headCellSelector+":last-child")) {
+                    if (touchedFirstCell && im.matches(cell,headCellSelector+":last-child")) {
                         clearSort();
                     } else if (index == touchedHeadCellIndex[touch.identifier])
                         // delay sort to see if jump scroll tap occurs
@@ -1228,7 +1234,7 @@ ice.mobi.geolocation = {
                 isRowEvent = function(callback) {
                     return function(e) {
                         var tr = closest(e.srcElement, "tr");
-                        if (tr && tr.webkitMatchesSelector(bodyRowSelector)) {
+                        if (tr && im.matches(tr, bodyRowSelector)) {
                             e.delegateTarget = tr;
                             callback(e);
                         }
@@ -1248,7 +1254,7 @@ ice.mobi.geolocation = {
             /* lookup elem by id and apply updates */
             for (var i = 0; i < valueParts.length; i++) {
                 var v = valueParts[i].split('='),
-                        elem = details.querySelector('[id$='+ice.mobi.escapeJsfId(v[0])+']'),
+                        elem = details.querySelector('[id$='+im.escapeJsfId(v[0])+']'),
                         dir = v[1],
                         value;
 
@@ -1463,7 +1469,7 @@ ice.mobi.geolocation = {
                     render : '@this'
                 };
 
-                ice.mobi.ab(config);
+                im.ab(config);
             }
         }
 
@@ -1493,7 +1499,7 @@ ice.mobi.geolocation = {
         return { update: update }
     }
 
-    ice.mobi.dataView = {
+    im.dataView = {
         instances: {},
         create: function(clientId, cfg) {
             if (this.instances[clientId]) this.instances[clientId].update(cfg);
@@ -1502,8 +1508,7 @@ ice.mobi.geolocation = {
             return this.instances[clientId];
         }
     }
-
-})();
+})(ice.mobi);
 
 /* touch active state support */
 document.addEventListener("touchstart", function(){}, true);
