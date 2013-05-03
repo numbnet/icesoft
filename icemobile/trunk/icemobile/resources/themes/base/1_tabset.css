@@ -32,6 +32,11 @@
     z-index: 496;
     border: none;
 }
+
+.mobi-tabset > .mobi-tabset-tabs-nonfixed{
+    position: static;
+}
+
 .mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs{
     top: 0;
 }
@@ -41,9 +46,11 @@
 .mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
     top: 40px;
 }
+
 .mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
     bottom: 40px;
 }
+
 .mobi-tabset > .mobi-tabset-tabs > ul{
     margin: 0;
     padding: 0;

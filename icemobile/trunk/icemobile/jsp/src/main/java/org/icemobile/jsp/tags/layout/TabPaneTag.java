@@ -51,6 +51,7 @@ public class TabPaneTag extends BodyTagSupport implements ITabPane {
     protected String styleClass;
     // Values for tabset inherited content
     private String mMyIndex;
+  //  private boolean client;
 
     public void setParent(Tag parent) {
         if (!(parent instanceof TabSetControlTag)) {
@@ -91,33 +92,32 @@ public class TabPaneTag extends BodyTagSupport implements ITabPane {
      //   LOG.info("id="+id+" selectedId="+ selId+" amSelected="+amSelected+" index ="+this.getIndex());
         renderer = new TabPaneCoreRenderer();
         mParent.incrementChildren();
-       try {
-           StringBuilder tabPaneHeader = renderer.encodeBegin(this, writer, true, mParent.getId());
+            try {
+                StringBuilder tabPaneHeader = renderer.encodeBegin(this, writer, true, mParent.getId());
       //     LOG.info(" tabPaneHeader markup="+tabPaneHeader.toString());
-           mParent.addTabHeader(tabPaneHeader);
-        } catch (Exception e) {
-            throw new JspTagException("problem in doStart of TabPaneTag exception="+e) ;
-        }
+                mParent.addTabHeader(tabPaneHeader);
+            } catch (Exception e) {
+                throw new JspTagException("problem in doStart of TabPaneTag exception="+e) ;
+            }
         return EVAL_BODY_BUFFERED;
-    }
-
+        }
 
     public int doAfterBody() throws JspException {
-       BodyContent body = this.getBodyContent();
-       try {
-           if (body!=null){
-               StringBuilder sb = new StringBuilder(body.getString());
-               mParent.addContents(getClientId(), sb);
-           }
-           bodyContent.clear();
-       } catch (Exception e) {
-           throw new JspException("ERROR in "
-               + this.getClass().getName()
-               + "for id="+this.getClientId()
-               + " getting tabSet content: (" + e.getClass()
-               + "): " + e);
-       }
-       return SKIP_BODY;
+            BodyContent body = this.getBodyContent();
+            try {
+               if (body!=null){
+                   StringBuilder sb = new StringBuilder(body.getString());
+                   mParent.addContents(getClientId(), sb);
+               }
+               bodyContent.clear();
+            } catch (Exception e) {
+               throw new JspException("ERROR in "
+                   + this.getClass().getName()
+                   + "for id="+this.getClientId()
+                   + " getting tabSet content: (" + e.getClass()
+                   + "): " + e);
+            }
+        return SKIP_BODY;
     }
 
     public String getTitle() {
@@ -170,6 +170,9 @@ public class TabPaneTag extends BodyTagSupport implements ITabPane {
         this.styleClass = styleClass;
     }
 
+    public boolean isClient(){
+        return false;
+    }
     public ClientDescriptor getClient(){
        return ClientDescriptor.getInstance(getRequest());
     }
@@ -187,4 +190,5 @@ public class TabPaneTag extends BodyTagSupport implements ITabPane {
         this.renderer = null;
         this.writer = null;
     }
+
 }

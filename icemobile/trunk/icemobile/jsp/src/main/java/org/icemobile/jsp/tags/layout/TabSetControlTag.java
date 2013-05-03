@@ -19,6 +19,7 @@ package org.icemobile.jsp.tags.layout;
 import org.icemobile.jsp.tags.*;
 
 import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.tagext.Tag;
 import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
@@ -30,18 +31,20 @@ import org.icemobile.renderkit.TabPaneCoreRenderer;
 import org.icemobile.renderkit.TabSetCoreRenderer;
 
 /**
- * This component controlls the tabPanes and ensures that only a single tab pane shown by the
+ * This component controls the tabPanes and ensures that only a single tab pane shown by the
  * highlighted tab is showing at any give time
  * if no id is present on the markup for this component, it will be given a default name of tabset1
  * If more than one tabset is present on a page, it is up to the developer to specify distinct id for
  * each of the tabset components on the page.
  */
 public class TabSetControlTag extends BaseBodyTag implements ITabSet{
+    private static Logger LOG = Logger.getLogger(TabSetControlTag.class.getName());
+
     private static final String DEFAULT_ID = "tabset1";
     private static final String DEFAULT_ORIENTATION = "top";
+    private PagePanelTag pptag;
     private TabSetCoreRenderer renderer = new TabSetCoreRenderer();
     private TabPaneCoreRenderer paneRenderer = new TabPaneCoreRenderer();
-    private static Logger LOG = Logger.getLogger(TabSetControlTag.class.getName());
     private TagWriter writer;
     private List<StringBuilder> tabLabels;
     private Map<String, StringBuilder> contents = new LinkedHashMap<String, StringBuilder>();
@@ -49,7 +52,16 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
     private boolean parentFooter;
     private boolean isTop = true;
     private int index;
+    private boolean fixedPosition=true ; //default like samples currently use
 
+    /**
+     * note that the PagePanelTag does not seem to want to be found using findAncestorClass
+     * the PagePanelBody can be found so workaround for now is to use reference from there to
+     * parent and get the value set.  Still have to find out why findAncestorWithClass does
+     * not appear to work when it obviously is in the heirarchy
+     * @return
+     * @throws JspTagException
+     */
     public int doStartTag() throws JspTagException {
         // default orientation
         this.tabLabels = new Vector<StringBuilder>();
@@ -60,9 +72,23 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
             this.orientation = DEFAULT_ORIENTATION;
         }
         numberChildren = 0;
-        PagePanelTag pptag = (PagePanelTag)findAncestorWithClass(this, PagePanelTag.class);
+        pptag = (PagePanelTag)BaseBodyTag.findAncestorWithClass(this, PagePanelTag.class);
+        PagePanelBodyTag ppBODYTag = (PagePanelBodyTag)BaseBodyTag.findAncestorWithClass(this, PagePanelBodyTag.class) ;
         if (pptag!=null){
-            parentHeader = pptag.isHasHeader();
+            this.parentHeader = pptag.isHasHeader();
+        }else if (ppBODYTag!= null){
+         //   LOG.info("NOT FINDING pagePanelTag try body");
+            pptag = (PagePanelTag)findAncestorWithClass(ppBODYTag,  PagePanelTag.class);
+            if (pptag ==null ){
+                pptag = ppBODYTag.getMParent();
+            }
+            if (pptag!=null){
+       //         LOG.info("got it second try from body tag");
+                this.parentHeader = pptag.isHasHeader();
+            }
+            else {
+                LOG.warning("UNABLE TO FIND PagePanelTag to set parentHeader attribute. Developer should do so with attribute");
+            }
         }
         try {
             if (orientation.trim().toLowerCase().equals("bottom")){
@@ -70,7 +96,6 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
             }else {
                 this.isTop = true;
             }
-         //   LOG.info("isTop="+isTop+"  orientation="+orientation);
             writer = new TagWriter(pageContext);
             renderer.encodeBegin(this, writer, true, isTop);
             writer.closeOffTag();
@@ -158,7 +183,7 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
     private String style;
     private String styleClass;
     private String selectedId;
-    private boolean autoWidth;
+    private boolean autoWidth=true;
     private boolean autoHeight=false;
     private String height;
     private int numberChildren;
@@ -317,6 +342,9 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
         return this.parentHeader;
     }
 
+    public void setParentHeader(boolean parentHeader){
+        this.parentHeader = parentHeader;
+    }
     /**
      * not used for JSP
      */
@@ -335,6 +363,25 @@ public class TabSetControlTag extends BaseBodyTag implements ITabSet{
         this.autoHeight = autoHeight;
     }
 
+    public boolean isFixedPosition(){
+        return this.fixedPosition;
+    }
+
+    public void setFixedPosition(boolean fixedHeader) {
+        this.fixedPosition = fixedHeader;
+    }
+
+    public PagePanelTag findAncestor(){
+        Tag parent = this.getParent();
+        while (parent != null){
+            LOG.info(" current parent="+parent.getClass().getName());
+            if (parent instanceof PagePanelTag){
+                return  (PagePanelTag)parent;
+            }
+            parent = parent.getParent();
+        }
+        return null;
+    }
     public void release(){
         this.renderer = null;
         this.paneRenderer = null;

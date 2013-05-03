@@ -110,7 +110,9 @@ public class PagePanelBodyTag extends TagSupport {
     public void setStyle(String style) {
         this.style = style;
     }
-    
+    public PagePanelTag getMParent(){
+        return this.mParent;
+    }   
     public String getSwatch(){ return swatch; }
     public void setSwatch(String swatch){ this.swatch = swatch; }
 

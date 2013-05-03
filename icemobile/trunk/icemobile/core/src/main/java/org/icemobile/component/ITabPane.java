@@ -26,4 +26,5 @@ public interface ITabPane extends IMobiComponent{
     public void setTitle(String title);
     public StringBuilder getContents();
     public int getIndex();
+    public boolean isClient();
 }

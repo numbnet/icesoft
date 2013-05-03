@@ -11,6 +11,7 @@ public class TabSetBean {
     private boolean autoWidth;
     private String style;
     private String styleClass;
+    private boolean fixedPosition;
 
 
     public TabSetBean(){
@@ -18,7 +19,8 @@ public class TabSetBean {
         this.index = 0;
         this.orientation = "top";
         this.autoHeight = false;
-        this.autoWidth = false;
+        this.autoWidth = true;
+        this.fixedPosition = true;
     }
 
     public String getSelectedId() {
@@ -93,4 +95,11 @@ public class TabSetBean {
         this.styleClass = styleClass;
     }
 
+    public boolean isFixedPosition() {
+        return this.fixedPosition;
+    }
+
+    public void setFixedPosition(boolean fixedPosition) {
+        this.fixedPosition = fixedPosition;
+    }
 }

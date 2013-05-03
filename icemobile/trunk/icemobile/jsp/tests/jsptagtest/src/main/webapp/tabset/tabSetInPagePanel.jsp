@@ -20,7 +20,7 @@
 <!DOCTYPE html >
 <html >
 <head>
-    <title>JSP tabSet Basic</title>
+    <title>JSP tabSet in PagePanel Basic</title>
     <mobi:deviceResource/>
 </head>
 <body>
@@ -38,18 +38,7 @@
   <li>fixedPosition: <%= tabInfo.isFixedPosition() %></li>
 </ul>
 </p>
- <p>
-     <B>TabSet bean: </B>
-<% if (tabInfo.getSelectedId().equals("")) { %>
-  no selectedId
-<% } else {
-       if ((request.getParameter("selectedId") == null) ||
-           (request.getParameter("selectedId").equals(""))) { %>
-         selectedId is null or empty
-<%     } %>
-       selectedId is <%= tabInfo.getSelectedId() %>.
-<% } %>
-</p>
+
 <form method="post">
     <mobi:fieldsetGroup>
        <mobi:fieldsetRow>
@@ -108,8 +97,14 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 </form>
-<form >
-    	<mobi:tabSetControl id="tabsetOne"
+
+    <mobi:pagePanel >
+       <mobi:pagePanelHeader >
+           TEST FOR TABSET IN PAGEPANEL
+       </mobi:pagePanelHeader>
+       <mobi:pagePanelBody noFooter="true">
+           <form >
+    	  <mobi:tabSetControl id="tabsetOne"
                             orientation="${tabInfo.orientation}"
                             autoWidth="${tabInfo.autoWidth}"
                             disabled="${tabInfo.disabled}"
@@ -119,17 +114,20 @@
                             styleClass="${tabInfo.styleClass}"
                             fixedPosition="${tabInfo.fixedPosition}"
                             selectedId="${tabInfo.selectedId}">
-		<mobi:tabPane id="pane1" title="Sailor">
-		    <%@ include file="../includes/pane1.jsp"%>
-		</mobi:tabPane>
-	    <mobi:tabPane id="pane2" title="Breaker">
-		    <%@ include file="../includes/pane2.jsp"%>
-	    </mobi:tabPane>
-	    <mobi:tabPane id="pane3" title="Skate">
-			<%@ include file="../includes/pane3.jsp"%>
-	    </mobi:tabPane>
-	</mobi:tabSetControl>
-</form>
+		    <mobi:tabPane id="pane1" title="Sailor">
+		        <%@ include file="../includes/pane1.jsp"%>
+		    </mobi:tabPane>
+	        <mobi:tabPane id="pane2" title="Breaker">
+		        <%@ include file="../includes/pane2.jsp"%>
+	        </mobi:tabPane>
+	        <mobi:tabPane id="pane3" title="Skate">
+		    	<%@ include file="../includes/pane3.jsp"%>
+	        </mobi:tabPane>
+	      </mobi:tabSetControl>
+              </form>
+       </mobi:pagePanelBody>
+   </mobi:pagePanel>
+
    <p>
        <ul>
          	<li><a href="../layoutComponents.html">Layout and Navigation Tags</a></li>

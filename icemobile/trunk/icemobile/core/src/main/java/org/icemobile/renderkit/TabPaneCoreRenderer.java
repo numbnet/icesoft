@@ -16,6 +16,7 @@
 
 package org.icemobile.renderkit;
 
+import org.icefaces.mobi.component.tabset.ITabSet;
 import org.icemobile.component.IMobiComponent;
 import org.icemobile.component.ITabPane;
 
@@ -46,20 +47,30 @@ public class TabPaneCoreRenderer extends BaseCoreRenderer {
         int index = tabPane.getIndex();
         sb.append(ID_ATTR).append("=").append(STRING_QUOTE).append(parentId).append("tab_");
         sb.append(tabPane.getIndex()).append(STRING_QUOTE);
-        sb.append(ONCLICK_ATTR).append("=").append(STRING_QUOTE).append("ice.mobi.tabsetController.showContent('").append(parentId);
-        sb.append("', this, ").append("{");
-        sb.append("singleSubmit: true, tIndex: ").append(index);
-        if (isJSP) {
-            sb.append(",client: ").append(false);
-        } else {
-            sb.append(",client: ").append(tabPane.getClient());
-        }
-        sb.append("});").append(STRING_QUOTE);
+        sb.append(ONCLICK_ATTR).append("=").append(STRING_QUOTE).append(getScript(tabPane, parentId, index)).append(STRING_QUOTE);
         sb.append(RIGHT_ANCHOR_TAG);
         sb.append(tabPane.getTitle());
-        sb.append(SPAN_END_TAG);
-    //    logger.info(" script tag update="+sb.toString());
+        sb.append(LI_TAG_END);
         return sb;
+    }
+    public void encodeBegin(IMobiComponent component, IResponseWriter writer, String parentId)
+         throws IOException{
+        ITabPane tabPane = (ITabPane)component;
+        int index = tabPane.getIndex();
+        writer.startElement(LI_ELEM, component);
+        writer.writeAttribute(ID_ATTR, parentId+"tab_"+index);
+        writer.writeAttribute(ONCLICK_ATTR, getScript(tabPane, parentId, index));
+        writer.writeText(tabPane.getTitle());
+        writer.endElement(LI_ELEM);
+    }
+
+    public StringBuilder getScript(ITabPane tabPane, String parentId, int index){
+        StringBuilder script = new StringBuilder("ice.mobi.tabsetController.showContent('");
+        script.append(parentId).append("', this, ").append("{");
+        script.append("singleSubmit: true, tIndex: ").append(index);
+        script.append(",client: ").append(tabPane.isClient());
+        script.append("});") ;
+        return script;
     }
     /*
        wrapper for tab pane content used by JSP
@@ -78,5 +89,9 @@ public class TabPaneCoreRenderer extends BaseCoreRenderer {
         writer.writeAttribute(ID_ATTR, clientId);
     }
 
+    public void encodeContentEnd(IMobiComponent component, IResponseWriter writer) throws IOException{
+        writer.endElement(DIV_ELEM);
+        writer.endElement(DIV_ELEM);
+    }
 
 }

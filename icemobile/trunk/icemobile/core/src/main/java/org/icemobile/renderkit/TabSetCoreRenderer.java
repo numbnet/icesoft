@@ -117,7 +117,11 @@ public class TabSetCoreRenderer extends BaseCoreRenderer {
         ITabSet tabset = (ITabSet) component;
         writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, tabset.getClientId() + "_tabs");
-        writer.writeAttribute("class", ITabSet.TABSET_TABS_CLASS.toString());
+        String baseTabsClass = ITabSet.TABSET_TABS_CLASS.toString();
+        if (!tabset.isFixedPosition()){
+            baseTabsClass += " mobi-tabset-tabs-nonfixed";
+        }
+        writer.writeAttribute("class", baseTabsClass);
         writer.startElement(UL_ELEM, component);
         writer.writeAttribute(ID_ATTR, tabset.getClientId()+"_dc");
     }
