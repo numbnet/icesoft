@@ -4,4 +4,3 @@
 body, #splitPane_right{
     overflow-y: scroll;
 }
-html.iphone .mobi-pagePanel-header .mobi-button.mobi-button-back{ left: 4px; }
