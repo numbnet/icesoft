@@ -16,7 +16,6 @@
 
 package org.icemobile.renderkit;
 
-import org.icefaces.mobi.component.tabset.ITabSet;
 import org.icemobile.component.IMobiComponent;
 import org.icemobile.component.ITabPane;
 
