@@ -30,9 +30,11 @@ import org.icefaces.ace.meta.annotation.Property;
         componentType = "org.icefaces.DataViewColumns",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.DataViewColumns",
-        tlddoc = ""
+        tlddoc = "The DataViewColumns component defines the table region of the DataView component " +
+                "either by its DataViewColumn child components or by attaching an implementation" +
+                "of DataViewColumnsModel to the 'value' attribute of this component."
 )
 public class DataViewColumnsMeta {
-    @Property
+    @Property(tlddoc = "Define the table model of the DataView component programatically with an implementation of DataViewColumnsModel.")
     Object value;
 }
