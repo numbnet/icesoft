@@ -22,19 +22,14 @@
 .mobi-fieldset-inset {
     margin: 10px !important;
 }
-.mobi-fieldset-row-group {
+.mobi-fieldset .mobi-fieldset-row-group {
     font-weight: bold;
 }
-.mobi-fieldset-row {
+.mobi-fieldset .mobi-fieldset-row {
     border-bottom-width: 1px;
     border-bottom-style: solid;
     padding: 10px;
 }
-.mobi-fieldset-row:last-child {
+.mobi-fieldset .mobi-fieldset-row:last-child {
     border-bottom: none;
-}
-.mobi-fieldset-row > label {
-    font-weight: bold;
-    font-size: 15px; /* TODO needed? */
-    padding-right: 10px;
 }
