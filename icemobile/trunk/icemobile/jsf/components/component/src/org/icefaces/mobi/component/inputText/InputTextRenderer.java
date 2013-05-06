@@ -63,6 +63,16 @@ public class InputTextRenderer extends BaseInputRenderer {
         String clientId = uiComponent.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         InputText inputText = (InputText) uiComponent;
+        
+        String label = inputText.getLabel();
+        if( label != null ){
+            writer.startElement(HTML.LABEL_ELEM, null);
+            writer.writeAttribute(HTML.ID_ATTR, inputText.getClientId()+"_lbl", null);
+            writer.writeAttribute(HTML.FOR_ATTR, inputText.getClientId(), null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-input-text", null);
+            writer.writeText(label, null);
+            writer.endElement(HTML.LABEL_ATTR);
+        }
 
         String type = inputText.validateType(inputText.getType());
         String componentType = "input";
