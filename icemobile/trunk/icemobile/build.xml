@@ -142,6 +142,7 @@
         <delete dir="${dist.dir}"/>
         <delete dir="${docs.jsf.dir}"/>
     	<delete dir="${docs.jsp.dir}"/>
+    	<delete dir=".sass-cache"/>
         <ice:subant target="clean">
             <filelist dir="." files="core, jsf, jsp, spring, samples, resources"/>
         </ice:subant>
