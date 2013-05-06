@@ -14,13 +14,13 @@
  * governing permissions and limitations under the License.
  */
 .mobi-list {
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
 }
 .mobi-list-inset > .mobi-list-item {
     border-left: 1px solid #B5B9C0;
     border-right: 1px solid #B5B9C0;
 }
-.mobi-list-item a:active, .mobi-list-item a[selected] {
+.mobi-list .mobi-list-item a:active, .mobi-list .mobi-list-item a[selected] {
     background-color: #0099ff !important;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #4286F5), color-stop(1, #194FDB));
     background-image: -moz-linear-gradient(top, #4286F5, #194FDB);
@@ -30,9 +30,8 @@
     color: #FFFFFF !important;
     text-shadow: 0 1px 0 #666666;
 }
-.mobi-list-item {
+.mobi-list .mobi-list-item {
     background-color: #fff;
-    border: 1px solid #aaa;
     padding: 8px 0 8px 10px;
     margin: 0;
     font-size: 17px;
@@ -41,14 +40,13 @@
     line-height: 26px;
     color: black;
     text-shadow: 0 1px 0 white;
-    border-top: 1px solid #d3d6db;
     border-bottom: 1px solid #b5b9c0;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #e8eaed), color-stop(1, #e6e8eb));
     background-image: -moz-linear-gradient(top, #e8eaed, #e6e8eb);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#e8eaed', EndColorStr = '#e6e8eb');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#e8eaed', EndColorStr='#e6e8eb')";
 }
-.mobi-list-item-group {
+.mobi-list .mobi-list-item-group {
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #909faa), color-stop(1, #b8c1c8));
     background-image: -moz-linear-gradient(top, #909faa, #b8c1c8);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#909faa', EndColorStr = '#b8c1c8');
