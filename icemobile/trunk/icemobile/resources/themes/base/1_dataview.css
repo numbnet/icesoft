@@ -55,7 +55,8 @@
 
 /******************************* ICEsoft Styles *******************************/
 .mobi-dv-mst > div {
-    overflow:auto;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobi-dv > .mobi-dv-det:not([data-index]){
