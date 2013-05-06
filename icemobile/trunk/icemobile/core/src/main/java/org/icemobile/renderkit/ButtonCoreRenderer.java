@@ -136,7 +136,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             sb.append(clientId).append("', event, {");
             sb.append("singleSubmit: ").append(button.isSingleSubmit());
             if (null !=button.getParams()) {
-                sb.append(", params: '").append(button.getParams()).append("'");
+                sb.append(", params: ").append(button.getParams());
             }
             if (null != button.getGroupId()){
                 sb.append(", groupId: '").append(button.getGroupId()).append("'");
