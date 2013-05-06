@@ -50,11 +50,9 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         String indexStr = params.get(clientId + "_hidden");
         // with some panes having client cacheType, the oldIndex on server
         // may not match that of the client, so decode the last
-  //      logger.info("indexStr="+indexStr);
         if (null != indexStr) {
             try {
                  String submittedStr = indexStr;
-        //         logger.info("submitted string="+submittedStr);
                  int ind = indexStr.indexOf(",");
                  if (ind > -1){
                      String [] split = indexStr.split(",");
@@ -66,7 +64,6 @@ public class TabSetRenderer extends BaseLayoutRenderer {
                      if (oldIndex != index) {
                         String oldId = tabset.getSelectedId();
                         String newId = component.getChildren().get(index).getId();
-                     //   logger.info("setting newId to="+newId+" oldId="+oldId);
                         tabset.setSelectedId(newId);
                         component.queueEvent(new ValueChangeEvent(component, oldId, newId));
                        // tabset.setUpdatePropScriptTag(true);
@@ -91,7 +88,6 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         TabSetCoreRenderer renderer = new TabSetCoreRenderer();
         if (tabset.getSelectedId()==null && tabset.getDefaultId()!=null){
              tabset.setSelectedId(tabset.getDefaultId());
-          //  logger.info("SET selectedId to default id="+tabset.getSelectedId());
         }
         String orientation = tabset.getOrientation();
         boolean top = tabset.setIsTop(orientation);

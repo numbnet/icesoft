@@ -30,6 +30,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.mobi.api.ContentPaneController;
+import org.icemobile.component.IPagePanel;
 import org.icefaces.mobi.component.pagepanel.PagePanel;
 import org.icefaces.mobi.renderkit.InlineScriptEventListener;
 import org.icefaces.mobi.utils.MobiJSFUtils;
@@ -168,25 +169,29 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
      */
     public void setParentHeaderFooter(){
         UIComponent parent = getParent();
-        //
-        do {
-            if (parent instanceof PagePanel) {
-               if (parent.getChildCount() > 0) {
-                   if (null != parent.getFacet(PagePanel.HEADER_FACET)) {
-                       this.setParentHeader(true);
-                   } else {
-                       this.setParentHeader(false);
-                   }
-                   if (null != parent.getFacet(PagePanel.FOOTER_FACET)){
-                       this.setParentFooter(true);
-                   }else {
-                       this.setParentFooter(false);
-                   }
-               }
+        do  {
+            if (parent instanceof org.icefaces.mobi.component.pagepanel.PagePanel) {
+                setHeaderFooter(parent);
+                return;
             }
-        parent =  parent.getParent();
+            parent =  parent.getParent();
         }
         while (parent !=null);
+    }
+
+    private void setHeaderFooter(UIComponent parent) {
+        if (parent.getFacetCount() > 0) {
+            if (null != parent.getFacet(IPagePanel.HEADER_FACET)) {
+                this.setParentHeader(true);
+            } else {
+                this.setParentHeader(false);
+            }
+            if (null != parent.getFacet(IPagePanel.FOOTER_FACET)){
+                this.setParentFooter(true);
+            }else {
+                this.setParentFooter(false);
+            }
+        }
     }
 
     public ClientDescriptor getClient() {
