@@ -122,7 +122,6 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         if (!controller.isFixedPosition()){
             baseTabsClass += " mobi-tabset-tabs-nonfixed";
         }
-        logger.info("baseTabsClass="+baseTabsClass);
         writer.writeAttribute("class", baseTabsClass, "class");
         int tabsNum = uiComponent.getChildCount();
         if (tabsNum <= 0) {
