@@ -259,7 +259,7 @@ public class MobiJSFUtils {
     
     /**
      * Return the name value pairs parameters as a ANSI escaped string formatted
-     * in query string parameter format. used by commandButton for f:param
+     * in query string parameter format for ice.s or ice.se calls for f:param
      * support
      * 
      * @param children
@@ -276,6 +276,29 @@ public class MobiJSFUtils {
                             .replace(' ', '+')).append("');");
         }
 
+        builder.append("}");
+        return builder.toString();
+    }
+
+    /**
+     * use this one for mobi:ajaxRequest until JSON builder replaces this stuff
+     * @param children
+     * @return
+     */
+    public static String asParameterStringForMobiAjax(List<UIParameter> children){
+        StringBuffer builder = new StringBuffer();
+        builder.append("{");
+        boolean first = true;
+        for (UIParameter param : children){
+            if (!first){
+                builder.append(", ");
+            }
+            builder.append("'").append(DOMUtils.escapeAnsi(param.getName())).append("'");
+            builder.append(": '")
+                    .append(DOMUtils.escapeAnsi((String) param.getValue())
+                            .replace(' ', '+')).append("'");
+            first = false;
+        }
         builder.append("}");
         return builder.toString();
     }
