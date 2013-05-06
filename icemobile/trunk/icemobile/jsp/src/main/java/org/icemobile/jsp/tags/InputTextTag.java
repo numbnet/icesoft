@@ -49,11 +49,20 @@ public class InputTextTag extends SimpleTagSupport {
     private String autoCapitalize = "off";
     private String autoComplete = "off";
     private String placeholder;
+    private String label;
 
     public void doTag() throws IOException {
 
         PageContext pageContext = (PageContext) getJspContext();
         Writer out = pageContext.getOut();
+        
+        if( label != null ){
+            out.write("<label ");
+            if( id != null ){
+                out.write("id='" + id + "_lbl' for='" + id + "' ");
+            }
+            out.write("class='ui-input-text'>" + label + "</label>");
+        }
 
         String element = "input";
         String type = getType();
@@ -231,5 +240,13 @@ public class InputTextTag extends SimpleTagSupport {
 
     public void setReadOnly(boolean readonly) {
         this.readOnly = readonly;
+    }
+    
+    public void setLabel(String label){ 
+        this.label = label;
+    }
+    
+    public String getLabel(){
+        return label;
     }
 }

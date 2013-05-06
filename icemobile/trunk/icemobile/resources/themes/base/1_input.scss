@@ -24,6 +24,13 @@
 .mobi-input-text, .mobi-input-secret, .mobi-input-textarea, .mobi-fieldset-row label{
     @include border-box;
 }
+input[type='date'].mobi-input-text, 
+input[type='time'].mobi-input-text, 
+input[type='datetime'].mobi-input-text, 
+input[type='phone'].mobi-input-text, 
+input[type='number'].mobi-input-text{ 
+    max-width: 150px; 
+}
 
 .mobi-input-text {}
 

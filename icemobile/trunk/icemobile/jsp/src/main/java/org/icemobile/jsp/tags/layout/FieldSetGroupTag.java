@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.jsp.tags;
+package org.icemobile.jsp.tags.layout;
 
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -26,7 +26,7 @@ import java.io.Writer;
  */
 public class FieldSetGroupTag extends TagSupport {
 
-    public static final String FIELDSET_CLASS = "mobi-fieldset";
+    public static final String FIELDSET_CLASS = "mobi-fieldset ui-field-contain";
     public static final String FIELDSETINSET_CLASS = "mobi-fieldset-inset";
 
 

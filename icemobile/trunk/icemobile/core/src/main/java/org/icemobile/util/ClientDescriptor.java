@@ -268,5 +268,14 @@ public class ClientDescriptor implements Serializable{
             }
         }
     }
+    
+    public boolean isChromeBrowser(){
+        return _userAgentInfo.isChrome();
+    }
+    
+    public boolean isHasNativeDatePicker() {
+        return isIOS5() || isIOS6() || isBlackBerryOS() 
+                || ( isDesktopBrowser() && isChromeBrowser());
+    }
 
 }

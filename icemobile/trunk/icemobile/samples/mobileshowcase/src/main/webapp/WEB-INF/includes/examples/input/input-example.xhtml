@@ -19,9 +19,10 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+             xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-    <h:form id="inputForm" styleClass="form">
+    <h:form id="inputForm">
     
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
@@ -34,8 +35,7 @@
         
             <!-- Text input -->
             <mobi:fieldsetRow>
-                <h:outputLabel for="textInput" value="Text:"/>
-                <mobi:inputText id="textInput"
+                <mobi:inputText id="textInput" label="Text:"
                                 autocorrect="on"
                                 singleSubmit="false"
                                 type="text"
@@ -45,8 +45,7 @@
 
             <!-- Number input -->
             <mobi:fieldsetRow>
-                <h:outputLabel for="numberInput" value="Number:"/>
-                <mobi:inputText id="numberInput"
+                <mobi:inputText id="numberInput" label="Number:" 
                                 type="number"
                                 singleSubmit="false"
                                 placeholder="Number input"
@@ -56,8 +55,7 @@
 
             <!-- textarea input -->
             <mobi:fieldsetRow>
-                <h:outputLabel for="textAreaInput" value="Text area:"/>
-                <mobi:inputText id="textAreaInput"
+                <mobi:inputText id="textAreaInput" label="Text area:"
                                 type="textarea"
                                 singleSubmit="false"
                                 placeholder="Text area"
@@ -67,8 +65,7 @@
 
             <!-- Password input -->
             <mobi:fieldsetRow>
-                <h:outputLabel for="passwordInput" value="Password:"/>
-                <mobi:inputText id="passwordInput"
+                <mobi:inputText id="passwordInput" label="Password:"
                                 type="password"
                                 singleSubmit="false"
                                 placeholder="Password input"
@@ -78,7 +75,11 @@
 
             <!-- Date input -->
             <mobi:fieldsetRow>
-                <label for="dateInput">Date: <span style="font-size:10px">(yyyy-mm-dd)</span></label>
+                <label for="dateInput" class="ui-input-text">Date: 
+                    <c:if test="#{!mobiClient.hasNativeDatePicker}">
+                        <span style="font-size:10px">(yyyy-mm-dd)</span>
+                    </c:if>
+                </label>
                 <mobi:inputText id="dateInput"
                                 type="date"
                                 placeholder="yyyy-mm-dd"
@@ -90,7 +91,7 @@
 
         </mobi:fieldsetGroup>
         
-        <mobi:commandButton value="Submit" styleClass="submit"/>
+        <mobi:commandButton value="Submit" styleClass="submit" buttonType="important"/>
 
     </h:form>
 

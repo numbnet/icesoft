@@ -43,8 +43,6 @@ public class FieldSetRowRenderer extends Renderer {
         // apply default style
         String userDefinedClass = field.getStyleClass();
         StringBuilder styleClass = new StringBuilder(FieldSetRow.FIELDSETROW_CLASS);
-        styleClass.append(" ");
-        styleClass.append(CSSUtils.STYLECLASS_FIELDCONTAIN);
         // apply group stying if any, header look to group rows.
         if (field.isGroup()) {
             styleClass.append(" ").append(FieldSetRow.FIELDSETGROUP_CLASS).append(" ui-bar-b");
