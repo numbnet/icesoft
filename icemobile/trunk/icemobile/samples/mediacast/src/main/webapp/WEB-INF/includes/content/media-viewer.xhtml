@@ -44,10 +44,10 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow rendered="#{not empty mediaView.media.tags}">
                 <label>Tags: </label>
-                <c:forEach items="#{mediaView.media.tags}" var="tag">
+                <ui:repeat items="#{mediaView.media.tags}" var="tag">
                      <mobi:graphicImage value="./resources/images/tag.gif"/>
                     <h:outputText value="#{tag}&#160;" style="vertical-align:top;display:inline-block;margin-right:10px;"/>
-                </c:forEach>
+                </ui:repeat>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
     </h:panelGroup>
