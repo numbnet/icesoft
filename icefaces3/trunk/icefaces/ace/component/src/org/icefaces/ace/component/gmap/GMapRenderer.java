@@ -29,6 +29,28 @@ import java.util.Map;
 @MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapRenderer extends CoreRenderer {
 
+	public void decode(FacesContext context, UIComponent component) {
+        Map requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        GMap map = (GMap) component;
+        String clientId = map.getClientId(context);
+        String lat = String.valueOf(requestParameterMap.get(clientId + "_lat"));
+        String lng = String.valueOf(requestParameterMap.get(clientId + "_lng"));
+        String zoom = String.valueOf(requestParameterMap.get(clientId + "_zoom"));
+        String type = String.valueOf(requestParameterMap.get(clientId + "_type"));
+        if (lat != null && !lat.equals("") && !lat.equals("null")) {
+            map.setLatitude(lat);
+        }
+        if (lng != null && !lng.equals("") && !lng.equals("null")) {
+            map.setLongitude(lng);
+        }
+        if (zoom != null && !zoom.equals("") && !zoom.equals("null")) {
+            map.setZoomLevel(zoom);
+        }
+        if (type != null && !type.equals("") && !type.equals("null")) {
+            map.setType(type);
+        }
+	}
+
     public void encodeBegin(FacesContext context, UIComponent component)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -47,7 +69,6 @@ public class GMapRenderer extends CoreRenderer {
         makeFields(writer, clientId, "lng");
         makeFields(writer, clientId, "type");
         makeFields(writer, clientId, "zoom");
-        updateValues(context, component);
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_script", null);
         writer.startElement("script", null);
@@ -72,52 +93,6 @@ public class GMapRenderer extends CoreRenderer {
         writer.endElement("script");
         writer.endElement("span");
         gmap.setIntialized(true);
-    }
-
-    public void updateValues(FacesContext context, UIComponent component) {
-        Map requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        GMap map = (GMap) component;
-        String clientId = map.getClientId(context);
-        String lat = String.valueOf(requestParameterMap.get(clientId + "_lat"));
-        String lng = String.valueOf(requestParameterMap.get(clientId + "_lng"));
-        String zoom = String.valueOf(requestParameterMap.get(clientId + "_zoom"));
-        String type = String.valueOf(requestParameterMap.get(clientId + "_type"));
-        if (!map.getLatitude().equalsIgnoreCase(map.getOldLatitude())) {
-            if (map.getLatitude() != null && !map.getLatitude().equalsIgnoreCase("null")) {
-                lat = map.getLatitude();
-                map.setOldLatitude(lat);
-            }
-        }
-        if (!map.getLongitude().equalsIgnoreCase(map.getOldLongitude())) {
-            if (map.getLongitude() != null && !map.getLongitude().equalsIgnoreCase("null")) {
-                lng = map.getLongitude();
-                map.setOldLongitude(lng);
-            }
-        }
-        if (!map.getZoomLevel().equalsIgnoreCase(map.getOldZoomLevel())) {
-            if (map.getZoomLevel() != null && !map.getZoomLevel().equalsIgnoreCase("null")) {
-                zoom = map.getZoomLevel();
-                map.setOldZoomLevel(zoom);
-            }
-        }
-        if (!map.getType().equalsIgnoreCase(map.getOldType())) {
-            if (map.getType() != null && !map.getType().equalsIgnoreCase("null")) {
-                type = map.getType();
-                map.setOldType(type);
-            }
-        }
-        if (lat != null && !lat.equals("") && !lat.equals("null")) {
-            map.setLatitude(lat);
-        }
-        if (lng != null && !lng.equals("") && !lng.equals("null")) {
-            map.setLongitude(lng);
-        }
-        if (zoom != null && !zoom.equals("") && !zoom.equals("null")) {
-            map.setZoomLevel(zoom);
-        }
-        if (type != null && !type.equals("") && !type.equals("null")) {
-            map.setType(type);
-        }
     }
 
     @Override
