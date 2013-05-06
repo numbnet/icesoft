@@ -993,7 +993,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         indicatorSelector = "i.mobi-dv-si",
         blankInicatorClass = 'mobi-dv-si';
     function DataView(clientId, cfg) {
-        var selectorId = '#' + im.escapeJsfId(clientId),
+        var config = cfg,
+            selectorId = '#' + im.escapeJsfId(clientId),
             bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
             headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead > tr > th';
 
@@ -1099,7 +1100,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                     footCells[i].style.width = dupeFootCellWidths[i] + 'px';
                 }
 
-            if (cfg.colvispri) setupColumnVisibiltyRules(firstrow.children);
+            if (config.colvispri) setupColumnVisibiltyRules(firstrow.children);
 
             /* hide duplicate header */
             if (dupeHead) dupeHead.style.display = 'none';
@@ -1113,8 +1114,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             var colVisSheet = im.getStyleSheet(clientId + '_colvis');
             if (!colVisSheet) colVisSheet = im.addStyleSheet(clientId + '_colvis', selectorId);
 
-            var prioritizedCells = cfg.colvispri.map(function(pri, i) {
-               var index = cfg.colvispri.indexOf(i);
+            var prioritizedCells = config.colvispri.map(function(pri, i) {
+               var index = config.colvispri.indexOf(i);
                return index > -1 ? firstRowCells[index] : undefined;
             }).filter(function(cell) { return cell != undefined});
 
@@ -1488,7 +1489,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             indexIn.setAttribute("value", newIndex);
             details.setAttribute("data-index", newIndex);
 
-            if (cfg.active == 'client') {
+            if (config.active == 'client') {
                 var newValue = event.delegateTarget.getAttribute('data-state');
 
                 processUpdateStr(newValue);
@@ -1496,17 +1497,18 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 // if vertical orientation
                 recalcScrollHeight();
             } else {
-                var config = {
+                var options = {
                     source : clientId,
                     execute : '@this',
                     render : '@this'
                 };
 
-                im.ab(config);
+                im.ab(options);
             }
         }
 
         function update(newCfg){
+            config = newCfg;
             initActivationEvents();
             initSortingEvents();
             initTableAlignment();
