@@ -37,8 +37,7 @@ public class DataViewComponentColumnsModel implements DataViewColumnsModel {
     public DataViewComponentColumnsModel(DataViewColumns uiColumns) {
         for (UIComponent child : uiColumns.getChildren())
             if (child instanceof DataViewColumn)
-                if (child.isRendered())
-                    columns.add(((DataViewColumn)child).getModel());
+                columns.add(((DataViewColumn)child).getModel());
     }
 
     public IndexedIterator<DataViewColumnModel> iterator() {
@@ -57,5 +56,9 @@ public class DataViewComponentColumnsModel implements DataViewColumnsModel {
             if (column.getFooterText() != null) return true;
 
         return false;
+    }
+
+    public int size() {
+        return columns.size();
     }
 }

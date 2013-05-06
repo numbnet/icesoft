@@ -1096,7 +1096,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                     footCells[i].style.width = dupeFootCellWidths[i] + 'px';
                 }
 
-            setupColumnVisibiltyRules(firstrow.children);
+            if (cfg.colvispri) setupColumnVisibiltyRules(firstrow.children);
 
             /* hide duplicate header */
             if (dupeHead) dupeHead.style.display = 'none';
@@ -1108,14 +1108,18 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         function setupColumnVisibiltyRules(firstRowCells) {
             var minDevWidth = firstRowCells[0].getBoundingClientRect().left;
             var colVisSheet = im.getStyleSheet(clientId + '_colvis') || im.addStyleSheet(clientId + '_colvis', selectorId);
+            var prioritizedCells = cfg.colvispri.map(function(pri, i) {
+               var index = cfg.colvispri.indexOf(i);
+               return index > -1 ? firstRowCells[index] : undefined;
+            }).filter(function(cell) { return cell != undefined});
 
-            for (var i = 0; i < firstRowCells.length; i++) {
+            for (var i = 0; i < prioritizedCells.length; i++) {
                 var columnClassname = Array.prototype.filter.call(
-                        firstRowCells[i].classList,
+                        prioritizedCells[i].classList,
                         function(name) {if (name.indexOf('mobi-dv-c') != -1) return true;}
                     )[0];
 
-                minDevWidth += firstRowCells[i].clientWidth;
+                minDevWidth += prioritizedCells[i].clientWidth;
 
                 // add column conditional visibility rule
                 colVisSheet.insertRule('@media screen and (min-width: '+minDevWidth+'px) { td.'+columnClassname+', th.'+columnClassname+' { display: table-cell; }}', 0);

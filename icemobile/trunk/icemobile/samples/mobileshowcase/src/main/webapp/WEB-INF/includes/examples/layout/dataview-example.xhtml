@@ -36,7 +36,8 @@
         </style>
 
         <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="client"
-                rowStripe="true">
+                       reactiveColumnVisibility="true"
+                       rowStripe="true">
             <mobi:dataViewDetails>
                 <h:panelGrid columns="3" styleClass="innerBorder">
                     <h:outputText value="Name"/>
@@ -60,7 +61,8 @@
                 <mobi:dataViewColumn type="date" headerText="Release" value="#{car.releaseDate}">
                     <f:convertDateTime type="date" dateStyle="short" />
                 </mobi:dataViewColumn>
-                <mobi:dataViewColumn headerText="Lorem"
+                <mobi:dataViewColumn reactivePriority="0"
+                                     headerText="Lorem"
                                      value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
                                      rendered="#{dataViewBean.colVis}" />
                 <mobi:dataViewColumn headerText="Lorem"

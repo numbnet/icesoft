@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
+import java.io.OptionalDataException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -94,9 +95,11 @@ public class DataViewRenderer extends Renderer {
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
         writer.writeAttribute(HTML.ID_ATTR, dvId + "_js", null);
 
+        boolean reactive = dataView.isReactiveColumnVisibility();
+
         String cfg = "{";
         cfg += "active:'" + dataView.getActivationMode() + "'";
-        cfg += "}";
+        if (reactive) cfg = encodeColumnPriorities(cfg);
 
         String js =
             "ice.mobi.dataView.create("
@@ -107,7 +110,19 @@ public class DataViewRenderer extends Renderer {
         writer.writeText(js, null);
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
-    };
+    }
+
+    private String encodeColumnPriorities(String cfg) {
+        cfg += ", colvispri:[";
+        Integer[] priorities = dataView.getReactiveColumnPriorities();
+        for (int i = 0; i < priorities.length; i++) {
+            cfg += priorities[i];
+            if (i != priorities.length - 1) cfg += ',';
+        }
+        cfg += "]";
+        cfg += "}";
+        return cfg;
+    }
 
     private void encodeColumns(FacesContext context,
                                ResponseWriter writer) throws IOException {
@@ -163,16 +178,18 @@ public class DataViewRenderer extends Renderer {
             DataViewColumnModel column = columnIter.next();
             int index = columnIter.getIndex();
 
-            writer.startElement(HTML.TH_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_COLUMN_CLASS + "-" + index, null);
+            if (column.isRendered()) {
+                writer.startElement(HTML.TH_ELEM, null);
+                writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_COLUMN_CLASS + "-" + index, null);
 
-            if (column.getHeaderText() != null)
-                writer.write(column.getHeaderText());
+                if (column.getHeaderText() != null)
+                    writer.write(column.getHeaderText());
 
-            writer.startElement("i", null);
-            writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_SORT_INDICATOR_CLASS, null);
-            writer.endElement("i");
-            writer.endElement(HTML.TH_ELEM);
+                writer.startElement("i", null);
+                writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_SORT_INDICATOR_CLASS, null);
+                writer.endElement("i");
+                writer.endElement(HTML.TH_ELEM);
+            }
         }
 
         writer.endElement(HTML.TR_ELEM);
@@ -192,12 +209,20 @@ public class DataViewRenderer extends Renderer {
         writer.startElement(HTML.TFOOT_ELEM, null);
         writer.startElement(HTML.TR_ELEM, null);
 
-        for (DataViewColumnModel column : columnModel) {
-            writer.startElement(HTML.TD_ELEM, null);
-            if (column.getFooterText() != null)
-                writer.write(column.getFooterText());
-            writer.endElement(HTML.TD_ELEM);
+        for (IndexedIterator<DataViewColumnModel> columnIter = columnModel.iterator(); columnIter.hasNext();) {
+            DataViewColumnModel column = columnIter.next();
+            int index = columnIter.getIndex();
+
+            if (column.isRendered()) {
+                writer.startElement(HTML.TD_ELEM, null);
+                writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_COLUMN_CLASS + "-" + index, null);
+
+                if (column.getFooterText() != null)
+                    writer.write(column.getFooterText());
+                writer.endElement(HTML.TD_ELEM);
+            }
         }
+
 
         writer.endElement(HTML.TR_ELEM);
         writer.endElement(HTML.TFOOT_ELEM);
@@ -263,6 +288,8 @@ public class DataViewRenderer extends Renderer {
     }
 
     private void writeColumn(ResponseWriter writer, ELContext elContext, DataViewColumnModel column, int index) throws IOException {
+        if (!column.isRendered()) return;
+
         ValueExpression ve = column.getValueExpression();
         Object value = ve == null ? column.getValue() : ve.getValue(elContext); // use value expression if available, value will have been pre-evaluated
         String type = column.getType();
