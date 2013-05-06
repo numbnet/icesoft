@@ -343,8 +343,8 @@ public class DataViewRenderer extends Renderer {
         String type = column.getDateType();
         TimeZone timeZone = column.getTimeZone();
         Locale locale = column.getLocale();
-        int dateStyle = column.getTimeStyle();
-        int timeStyle = column.getDateStyle();
+        Integer dateStyle = column.getTimeStyle();
+        Integer timeStyle = column.getDateStyle();
 
         if (pattern == null && type == null) {
             throw new IllegalArgumentException("Either pattern or type must be specified.");

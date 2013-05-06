@@ -1,9 +1,8 @@
 package org.icefaces.mobi.component.dataview;
 
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.DefaultValueType;
-import org.icefaces.ace.meta.annotation.Expression;
-import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.*;
+
+import javax.faces.convert.Converter;
 
 /**
  * Copyright 2010-2013 ICEsoft Technologies Canada Corp.
@@ -66,4 +65,7 @@ public class DataViewColumnMeta {
               tlddoc = "Define a ValueExpression whose resulting Object will be iteratively rendered in the table " +
                       "region of the DataView according to the 'type' of this column.")
     Object value;
+
+    @Field // MyFaces -  converter must be state saved, cannot cache at component instance level
+    Converter converter;
 }

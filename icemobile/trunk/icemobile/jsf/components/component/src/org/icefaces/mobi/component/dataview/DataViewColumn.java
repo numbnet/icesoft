@@ -32,9 +32,9 @@ import java.util.TimeZone;
  * Time: 10:49 AM
  */
 public class DataViewColumn extends DataViewColumnBase implements ValueHolder {
-    Converter converter;
 
     public DataViewColumnModel getModel() {
+        Converter converter = getConverter();
         final DateTimeConverter dtc = (converter != null && converter instanceof DateTimeConverter)
             ? (DateTimeConverter) converter : null;
 
@@ -123,13 +123,5 @@ public class DataViewColumn extends DataViewColumnBase implements ValueHolder {
 
     public Object getLocalValue() {
         return getValue();
-    }
-
-    public Converter getConverter() {
-        return converter;
-    }
-
-    public void setConverter(Converter converter) {
-        this.converter = converter;
     }
 }
