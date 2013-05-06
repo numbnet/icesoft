@@ -222,9 +222,9 @@ public class UploadModel implements Serializable {
     	this.direction = -1.0;
     	this.latitude = 0.0;
     	this.longitude = 0.0;
-    	this.photoUploadMap = null;
-    	this.videoUploadMap = null;
-    	this.audioUploadMap = null;
+    	this.photoUploadMap = new HashMap<String, Object>();;
+    	this.videoUploadMap = new HashMap<String, Object>();;
+    	this.audioUploadMap = new HashMap<String, Object>();;
     	this.selectedLocation = null;
     	this.tags = null;
     	this.uploadFeedbackMessage = null;
