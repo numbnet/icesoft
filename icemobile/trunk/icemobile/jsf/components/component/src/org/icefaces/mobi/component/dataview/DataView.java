@@ -254,8 +254,12 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
                 finalPri[finalIndex++] = priorities[i];
 
         //Truncate
-        return Arrays.copyOf(finalPri, finalIndex);
+        Integer[] trimPri = new Integer[finalIndex];
+        for (int i = 0; i < finalPri.length; i++)
+            if (finalPri[i] != null)
+                trimPri[i] = finalPri[i];
+            else break;
 
-
+        return trimPri;
     }
 }
