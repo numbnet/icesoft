@@ -107,6 +107,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     private String selectedModel1 = "icemobile";
     private String selectedModel2 = "icemobile";
     private HashMap bought = new HashMap();
+    private boolean isShopping = false;
 
     // upload error message
     private String uploadMessage;
@@ -141,11 +142,12 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
                 "/resources/3d/catalog.xml" );
         markerList.add(marker);
 
-        marker = new HashMap();
-        marker.put("label", "ice.targets");
-        marker.put("model", getContextURL() +
-                "/resources/3d/mobileshowcase.xml" );
-        markerList.add(marker);
+        //general targets feature requires more client testing 
+//        marker = new HashMap();
+//        marker.put("label", "ice.targets");
+//        marker.put("model", getContextURL() +
+//                "/resources/3d/mobileshowcase.xml" );
+//        markerList.add(marker);
 
         for (HashMap theMarker : markerList)  {
             allMarkers.put((String) theMarker.get("label"), theMarker);
@@ -255,6 +257,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
              ("ice.arform".equals(selectedModel)) )  {
             markerList = new ArrayList();
             markerList.add(marker);
+            isShopping = true;
         } else {
             if (markerList.size() == 1)  {
                 markerList = new ArrayList(2);
@@ -283,6 +286,10 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
 
     public Map getBought()  {
         return bought;
+    }
+
+    public boolean isShopping()  {
+        return isShopping;
     }
 
     public void setSelection(String selection)  {

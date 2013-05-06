@@ -123,8 +123,10 @@
                             itemValue="puz1"/>
                     <f:selectItem itemLabel="Puzzle Block 2"
                             itemValue="puz2"/>
+<!--
                     <f:selectItem itemLabel="Image Targets"
                             itemValue="ice.targets"/>
+-->
                     <f:selectItem itemLabel="AR Form"
                             itemValue="ice.arform"/>
                     <f:ajax execute="@this" render="@all"/>
@@ -157,7 +159,7 @@
                     styleClass="submit" buttonType="important"
                     value="Submit"/>
             </mobi:fieldsetRow>
-        <mobi:outputList inset="true">
+        <mobi:outputList rendered="#{realityBean.shopping}" inset="true">
             <mobi:outputListItem group="true">Items</mobi:outputListItem>
             <mobi:outputListItem styleClass="aritem">
                 <h:graphicImage library="images/auction" 
