@@ -610,7 +610,6 @@ function html5submitFunction(element, event, options) {
 if (window.addEventListener) {
     window.addEventListener("load",
             function () {
-                jsf.getViewState = html5getViewState;
                 if ((undefined !== window.FormData) &&
                         (undefined === window.ice.mobile) &&
                         ((undefined === window.clientInformation) ||
