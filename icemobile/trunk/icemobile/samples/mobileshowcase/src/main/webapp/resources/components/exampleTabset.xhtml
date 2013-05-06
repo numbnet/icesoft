@@ -34,10 +34,6 @@
                          type="org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl"
                          shortDescription="Manged bean used for this component example"/>
 
-    <composite:attribute name="autoWidth" default="true"
-                         displayName="Passthough attirbue for tabset which when true
-                         enabled the component to set the width in percent of the child
-                         tabs. "/>
     <composite:attribute name="parentFooter" default="true"
                          displayName="Passthough attirbue for tabset which when true
                          enables the component changes the style for fixed parent header. "/>
@@ -49,9 +45,6 @@
                          default the 'example' pane is set by default. Valud values
                          are desc|example|docs"/>
                          
-     <composite:attribute name="viewSize" required="false"
-                         default="small"
-                         shortDescription="large|small"/>
 
 </composite:interface>
 
@@ -59,7 +52,6 @@
 
     <mobi:tabSet defaultId="#{cc.attrs.exampleBean.defaultId}"
                  parentFooter="#{cc.attrs.parentFooter}"
-                 autoWidth="#{cc.attrs.autoWidth}"
                  orientation="top" id="#{cc.id}_tabs">
         <mobi:contentPane
                 facelet="false" client="true"
