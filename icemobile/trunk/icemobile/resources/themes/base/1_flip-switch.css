@@ -41,7 +41,7 @@
     text-align: center;
     font-weight: normal;
     padding: 3px;
-    width: 45px;
+    min-width: 45px;
     border-bottom:none;
     border-top:none;
     -webkit-touch-callout: none;
