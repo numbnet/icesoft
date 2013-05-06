@@ -2,7 +2,6 @@ package org.icefaces.mobi.component.dataview;
 
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IDataView;
-import org.icemobile.component.IMobiComponent;
 import org.icemobile.model.DataViewDataModel;
 import org.icemobile.model.DataViewLazyDataModel;
 import org.icemobile.model.DataViewListDataModel;
@@ -89,7 +88,7 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
                     if (details) initDetailContext(facesContext);
                     boolean done = kid.visitTree(context, callback);
 
-                    if (details) removeDetailContext(facesContext);
+                    if (details) clearDetailContext(facesContext);
 
                     // If any kid visit returns true, we are done.
                     if (done)
@@ -110,7 +109,7 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
     public void processUpdates(FacesContext context) {
         initDetailContext(context);
         super.processUpdates(context);
-        removeDetailContext(context);
+        clearDetailContext(context);
 
         if (!decodedActive) {
             decodeIndex(context);
@@ -121,7 +120,7 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
     public void processValidators(FacesContext context) {
         initDetailContext(context);
         super.processValidators(context);
-        removeDetailContext(context);
+        clearDetailContext(context);
     }
 
     @Override
@@ -132,14 +131,14 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
 
         initDetailContext(context);
         super.processDecodes(context);
-        removeDetailContext(context);
+        clearDetailContext(context);
     }
 
     @Override
     public Object processSaveState(FacesContext context) {
         initDetailContext(context);
         Object o = super.processSaveState(context);
-        removeDetailContext(context);
+        clearDetailContext(context);
         return o;
     }
 
@@ -147,7 +146,7 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
     public void processRestoreState(FacesContext context, Object state) {
         initDetailContext(context);
         super.processRestoreState(context, state);
-        removeDetailContext(context);
+        clearDetailContext(context);
 
         /* if not post-restore restoreState overwrites new active index */
         if (ActivationMode.client.equals(getActivationMode()) && !decodedActive) {
@@ -166,11 +165,11 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
         decodedActive = true;
     }
 
-    private void removeDetailContext(FacesContext context) {
+    public void clearDetailContext(FacesContext context) {
         getRequestMap(context).remove(getVar());
     }
 
-    private void initDetailContext(FacesContext context) {
+    public void initDetailContext(FacesContext context) {
         Integer index = getActiveRowIndex();
 
         if (index != null &&index >= 0)
