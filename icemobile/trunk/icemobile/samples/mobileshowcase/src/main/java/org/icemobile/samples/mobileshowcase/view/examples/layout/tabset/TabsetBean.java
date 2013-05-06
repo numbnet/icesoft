@@ -57,7 +57,10 @@ public class TabsetBean extends ExampleImpl<TabsetBean> implements
 
     public static final String BEAN_NAME = "tabsetBean";
 
-    private String currentId = "tab1";
+    private String currentId = "tab0";
+    
+    private boolean fixedPosition = false;
+    private boolean orientationTop = false;
 
     public TabsetBean() {
         super(TabsetBean.class);
@@ -69,5 +72,21 @@ public class TabsetBean extends ExampleImpl<TabsetBean> implements
 
     public void setCurrentId(String currentId) {
         this.currentId = currentId;
+    }
+
+    public boolean isFixedPosition() {
+        return fixedPosition;
+    }
+
+    public void setFixedPosition(boolean fixedPosition) {
+        this.fixedPosition = fixedPosition;
+    }
+
+    public boolean isOrientationTop() {
+        return orientationTop;
+    }
+
+    public void setOrientationTop(boolean orientationTop) {
+        this.orientationTop = orientationTop;
     }
 }
