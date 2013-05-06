@@ -118,7 +118,12 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         String clientId = controller.getClientId(facesContext);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_tabs", HTML.ID_ATTR);
-        writer.writeAttribute("class", TabSet.TABSET_TABS_CLASS.toString(), "class");
+        String baseTabsClass = ITabSet.TABSET_TABS_CLASS.toString();
+        if (!controller.isFixedPosition()){
+            baseTabsClass += " mobi-tabset-tabs-nonfixed";
+        }
+        logger.info("baseTabsClass="+baseTabsClass);
+        writer.writeAttribute("class", baseTabsClass, "class");
         int tabsNum = uiComponent.getChildCount();
         if (tabsNum <= 0) {
             if (logger.isLoggable(Level.FINER)) {
