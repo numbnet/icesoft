@@ -54,10 +54,7 @@ public class CSSUtils {
     /* globals */
     public static final String STYLECLASS_ACTIVE = "ui-btn-active";
     
-    /* structure */
-    public static final String STYLECLASS_FIELDCONTAIN = "ui-field-contain";
-
-    
+        
     public enum Theme{ BASE, IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, ARCHAIC, ANDROID_LIGHT, ANDROID_DARK, BB10, JQM;
         public String fileName(){
             return this.name().toLowerCase();

@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.jsp.tags;
+package org.icemobile.jsp.tags.layout;
 
 
 import javax.servlet.jsp.JspTagException;

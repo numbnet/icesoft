@@ -20,7 +20,7 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form id="frmFieldset" styleClass="form fieldsetpage">
+    <h:form id="frmFieldset">
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
                 The fieldsetGroup component can be used to
@@ -33,31 +33,25 @@
                 Information
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="songs" value="Songs"/>
-                <mobi:inputText id="songs" value="2500"/>
+                <mobi:inputText id="songs" value="2500" label="Songs"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow >
-                <h:outputLabel for="videos" value="Videos"/>
-                <mobi:inputText id="videos" value="5"/>
+                <mobi:inputText id="videos" value="5" label="Videos"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="photos" value="Photos"/>
-                <mobi:inputText id="photos" value="621"/>
+                <mobi:inputText id="photos" value="621" label="Photos"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow >
-                <h:outputLabel for="first" value="First Name" />
-                <mobi:inputText id="first" value="John"/>
+                <mobi:inputText id="first" value="John" label="First Name"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow >
-                <h:outputLabel for="last" value="Last Name"/>
-                <mobi:inputText id="last" value="Doe"/>
+                <mobi:inputText id="last" value="Doe" label="Last Name"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="address" value="Address" />
-                <mobi:inputText id="address" value="123 Fake St."/>
+                <mobi:inputText id="address" value="123 Fake St." label="Address"/>
             </mobi:fieldsetRow>
 
         </mobi:fieldsetGroup>

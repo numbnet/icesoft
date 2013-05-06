@@ -268,7 +268,7 @@ html.ipad #splash > h5, html.iphone #splash > h5{
     font-weight:normal;
 }
 
-.form .mobi-fieldset{
+.form .mobi-fieldset, html.ipad #inputForm .mobi-fieldset{
     text-align:center;
     clear:both;
 }
@@ -304,7 +304,7 @@ html.bb10 .form .mobi-fieldset-row{
     position: relative;
     min-width:100%;
 }
-.form .mobi-fieldset.intro{
+.form .mobi-fieldset.intro, html.ipad #inputForm .mobi-fieldset.intro{
     text-align:left;
 }
 html.ipad .form .mobi-fieldset.intro .mobi-fieldset-row,
@@ -324,8 +324,8 @@ html.iphone .form .mobi-fieldset-row .mobi-getenhanced .mobi-button,
 html.bb10 .form .mobi-fieldset-row .mobi-getenhanced .mobi-button{
     box-sizing: content-box;
 }
-html.ipad .form label,
-html.iphone .form label{
+html.ipad .form label, html.ipad #inputForm label,
+html.iphone .form label, html.iphone #inputForm label{
     width:105px;
     text-align:left;
     -webkit-box-flex: 1;
@@ -372,11 +372,11 @@ html.bb10 .form .mobi-fieldset-row > textarea{
     float: none!important;
 }
 
-.form .mobi-fieldset-row.mobi-fieldset-row-group{
+.form .mobi-fieldset-row.mobi-fieldset-row-group, html.ipad #inputForm .mobi-fieldset-row.mobi-fieldset-row-group{
     text-align:left;
 }
-html.iphone .form .results .mobi-fieldset-row > span,
-html.ipad .form .results .mobi-fieldset-row > span,
+html.iphone .form .results .mobi-fieldset-row > span, html.iphone #inputForm .results .mobi-fieldset-row > span, 
+html.ipad .form .results .mobi-fieldset-row > span, html.ipad #inputForm .results .mobi-fieldset-row > span,
 html.bb10 .form .results .mobi-fieldset-row > span{
     text-align:right;
 }
@@ -495,4 +495,7 @@ html.bberry .mobi-center{
     text-align:center;
 }
 .accordionpage{ min-height:1000px;}
+
+.results label{ display: inline-block; width: 50%; }
+.results span{ display: inline-block; width: 48%; text-align: right; }
 

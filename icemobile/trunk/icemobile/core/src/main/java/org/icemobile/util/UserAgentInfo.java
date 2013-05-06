@@ -59,6 +59,7 @@ public class UserAgentInfo implements Serializable{
     public static final String PLAYBOOK = "playbook";
     public static final String FIREFOX_ANDROID_TABLET = "android; tablet;";
     public static final String FIREFOX_ANDROID_MOBILE = "android; mobile;";
+    public static final String CHROME = "chrome";
     
 
     public UserAgentInfo(String userAgent) {
@@ -197,6 +198,10 @@ public class UserAgentInfo implements Serializable{
    
    public boolean isIE10(){
        return userAgentString.contains(MSIE10);
+   }
+   
+   public boolean isChrome(){
+       return userAgentString.contains(CHROME);
    }
 
 }

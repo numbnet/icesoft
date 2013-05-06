@@ -21,7 +21,7 @@
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="inputtextform" method="POST"
-	modelAttribute="inputTextBean" cssClass="form">
+	modelAttribute="inputTextBean">
 
 	<mobi:largeView><h3>HTML5 Input</h3></mobi:largeView>
 
@@ -34,29 +34,25 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<label>Text:</label>
-			<mobi:inputText name="text" type="text" autoCorrect="off"
+			<mobi:inputText id="text" name="text" type="text" label="Text:" autoCorrect="off"
 				placeholder="Text input" value="${inputTextBean.text}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label>Number:</label>
-			<mobi:inputText name="number" type="number" autoCorrect="off"
+			<mobi:inputText id="number" name="number" type="number" label="Number:" autoCorrect="off"
 				placeholder="Number" value="${inputTextBean.number}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label>Text area:</label>
-			<mobi:inputText name="textarea" type="textarea" autoCorrect="off"
+			<mobi:inputText id="textarea" name="textarea" type="textarea" label="Text area:" autoCorrect="off"
 				placeholder="Text area" value="${inputTextBean.textarea}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label>Password:</label>
-			<mobi:inputText name="password" type="password" autoCorrect="off"
+			<mobi:inputText id="password" name="password" type="password" label="Password:" autoCorrect="off"
 				placeholder="Password input" value="${inputTextBean.password}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label>Date: (yyyy-mm-dd)</label>
-			<mobi:inputText name="date" type="date" autoCorrect="off"
-				placeholder="yyyy-mm-dd" value="${inputTextBean.date}" />
+			<mobi:inputText id="date" name="date" type="date" 
+                label="Date: ${!mobiClient.hasNativeDatePicker ? '(yyyy-mm-dd)' : ''}" 
+                autoCorrect="off" placeholder="yyyy-mm-dd" value="${inputTextBean.date}" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
