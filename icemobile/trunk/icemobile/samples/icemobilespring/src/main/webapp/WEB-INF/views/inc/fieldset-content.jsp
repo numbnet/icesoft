@@ -35,33 +35,25 @@
             Information
         </mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label for="songs">Songs</label>
-			<mobi:inputText id="songs" name="songs" value="2500"/>
+			<mobi:inputText id="songs" name="songs" value="2500" label="Songs"/>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label for="videos">Videos</label>
-			<mobi:inputText id="videos" name="videos" value="5"/>
+			<mobi:inputText id="videos" name="videos" value="5" label="Videos"/>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label for="photos">Photos</label>
-			<mobi:inputText id="photos" name="photos" value="621"/>
+			<mobi:inputText id="photos" name="photos" value="621" label="Photos"/>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
 	<mobi:fieldsetGroup styleClass="form">
 		<mobi:fieldsetRow>
-			<label for="first">First
-				Name</label>
-			<mobi:inputText id="first" name="first" value="John"/>
+			<mobi:inputText id="first" name="first" value="John" label="First Name"/>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label for="last">Last
-				Name</label>
-			<mobi:inputText id="last" name="last" value="Doe"/>
+			<mobi:inputText id="last" name="last" value="Doe" label="Last Name"/>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label for="address">Address</label>
-			<mobi:inputText id="address" name="address" value="123 Fake St."/>
+			<mobi:inputText id="address" name="address" value="123 Fake St." label="Address"/>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
