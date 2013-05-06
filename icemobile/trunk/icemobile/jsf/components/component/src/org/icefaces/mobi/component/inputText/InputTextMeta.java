@@ -136,4 +136,7 @@ public class InputTextMeta extends UIInputMeta {
 
     @Property(defaultValue = "false", tlddoc = TLDConstants.SINGLESUBMIT)
     private boolean singleSubmit;
+    
+    @Property(tlddoc = "The rendered label for the input field.")
+    private String label;
 }
