@@ -2,9 +2,7 @@ package org.icefaces.mobi.component.dataview;
 
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IDataView;
-import org.icemobile.model.DataViewDataModel;
-import org.icemobile.model.DataViewLazyDataModel;
-import org.icemobile.model.DataViewListDataModel;
+import org.icemobile.model.*;
 import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.NamingContainer;
@@ -14,10 +12,7 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -223,5 +218,44 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
 
     public ClientDescriptor getClient() {
         return MobiJSFUtils.getClientDescriptor();
+    }
+
+    protected Integer[] getReactiveColumnPriorities() {
+        DataViewColumnsModel model = getColumns().getModel();
+        Integer[] priorities = new Integer[model.size()];
+        Integer highest = null;
+        List<Integer> unrenderedIntegers = new ArrayList<Integer>();
+
+        //Explicit priorities
+        for (IndexedIterator<DataViewColumnModel> columnIter = model.iterator(); columnIter.hasNext();) {
+            DataViewColumnModel columnModel = columnIter.next();
+            Integer pri = columnModel.getReactivePriority();
+            int index = columnIter.getIndex();
+            if (columnModel.isRendered()) {
+                priorities[index] = pri;
+                if (highest == null || (pri != null && pri > highest))
+                    highest = pri;
+            } else unrenderedIntegers.add(index);
+        }
+
+        //Second pass priorities
+        if (highest == null) highest = -1;
+        for (int i = 0; i < priorities.length; i++) {
+            Integer pri = priorities[i];
+            if (pri == null && !unrenderedIntegers.contains(i))
+                priorities[i] = ++highest;
+        }
+
+        //Remove null gaps if any
+        Integer[] finalPri = new Integer[model.size()];
+        int finalIndex = 0;
+        for (int i = 0; i < priorities.length; i++)
+            if (priorities[i] != null)
+                finalPri[finalIndex++] = priorities[i];
+
+        //Truncate
+        return Arrays.copyOf(finalPri, finalIndex);
+
+
     }
 }

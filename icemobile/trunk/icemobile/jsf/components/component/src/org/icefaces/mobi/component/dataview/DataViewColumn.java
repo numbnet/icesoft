@@ -93,6 +93,14 @@ public class DataViewColumn extends DataViewColumnBase implements ValueHolder {
                 if (dtc != null) return  dtc.getLocale();
                 return null;
             }
+
+            public boolean isRendered() {
+                return DataViewColumn.this.isRendered();
+            }
+
+            public Integer getReactivePriority() {
+                return DataViewColumn.this.getReactivePriority();
+            }
         };
     }
 

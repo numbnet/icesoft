@@ -23,4 +23,5 @@ package org.icemobile.model;
 public interface DataViewColumnsModel extends IndexedIterable<DataViewColumnModel> {
     boolean hasHeaders();
     boolean hasFooters();
+    int size();
 }
