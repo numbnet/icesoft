@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
 import org.icefaces.application.PortableRenderer;
@@ -40,7 +40,7 @@ import org.icemobile.util.Utils;
  * via the new ICEfaces mobi components.
  */
 @ManagedBean(name = MediaController.BEAN_NAME)
-@ViewScoped
+@SessionScoped
 public class MediaController implements Serializable {
 
 	public static final String BEAN_NAME = "mediaController";
