@@ -27,7 +27,9 @@
 	<property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
-   
+    <condition property="jsf.implementation" value="myfaces" else="mojarra">
+        <isset property="myfaces"/>
+    </condition>
 	<target name="clean">
         <delete dir="${build.dir}"/>
     </target>
