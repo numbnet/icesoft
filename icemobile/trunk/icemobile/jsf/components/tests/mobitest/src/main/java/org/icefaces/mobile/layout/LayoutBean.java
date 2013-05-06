@@ -59,6 +59,7 @@ public class LayoutBean implements Serializable {
     private long timestamp;
     private long headTimestamp;
     private String orientation="top";
+    private boolean fixedPosition=true;
 
 	public LayoutBean(){
         this.selectedPane = FIRSTPANE;
@@ -119,6 +120,14 @@ public class LayoutBean implements Serializable {
     }
     public void changeToPane3(){
         this.selectedPane = THIRDPANE;
+    }
+
+    public boolean isFixedPosition() {
+        return fixedPosition;
+    }
+
+    public void setFixedPosition(boolean fixedPosition) {
+        this.fixedPosition = fixedPosition;
     }
 
     public boolean isAutoHeight() {
