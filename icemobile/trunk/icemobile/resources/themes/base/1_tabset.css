@@ -35,6 +35,14 @@
 
 .mobi-tabset > .mobi-tabset-tabs-nonfixed{
     position: static;
+    top: 0 !important;
+    bottom: 0!important;
+}
+.mobi-tabset.mobi-tabset-tabs-top-header > .mobi-tabset-tabs-nonfixed{
+    margin-top: -39px !important;
+}
+.mobi-tabset.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs-nonfixed{
+    margin-bottom: -40px !important;
 }
 
 .mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs{
