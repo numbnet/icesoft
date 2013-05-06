@@ -1053,7 +1053,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 foot = getNode('foot'),
                 footCells = getNode('footcells'),
                 bodyDivWrapper = getNode('body'),
-                firstrow = getNode('firstrow');
+                firstrow = getNode('firstrow'),
+                sheet = im.getStyleSheet(clientId + '_colvis');
+
+            if (!sheet) sheet = im.addStyleSheet(clientId + '_colvis', selectorId);;
 
             var firstRowBodyCells = Array.prototype.filter.call(firstrow.children, function(val){
                 return val.nodeName == "TD"; /* remove hidden input */
@@ -1067,8 +1070,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             });
 
             /* fix body column widths */
-            for (var i = 0; i < firstRowBodyCells.length; i++) {
-                firstRowBodyCells[i].style.width = frbcWidths[i] + 'px';
+            for (var i = 0; i < frbcWidths.length; i++) {
+                sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { width: "+frbcWidths[i] + 'px'+"; }", 0);
             }
 
             var dupeHeadCellWidths = Array.prototype.map.call(
@@ -1107,7 +1110,9 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
         function setupColumnVisibiltyRules(firstRowCells) {
             var minDevWidth = firstRowCells[0].getBoundingClientRect().left;
-            var colVisSheet = im.getStyleSheet(clientId + '_colvis') || im.addStyleSheet(clientId + '_colvis', selectorId);
+            var colVisSheet = im.getStyleSheet(clientId + '_colvis');
+            if (!colVisSheet) colVisSheet = im.addStyleSheet(clientId + '_colvis', selectorId);
+
             var prioritizedCells = cfg.colvispri.map(function(pri, i) {
                var index = cfg.colvispri.indexOf(i);
                return index > -1 ? firstRowCells[index] : undefined;
