@@ -92,8 +92,17 @@
         var tabIndex = cfgIn.tIndex;
         var autoWidth = cfgIn.autoWidth;
         if (autoWidth){
-            setWidthStyle(tabContainer);
-            ice.mobi.addListener(window, 'resize', function(){ setWidthStyle(tabContainer); });
+            setTimeout( function(){
+                setWidthStyle(tabContainer);
+            }, 1);
+            var setWidthStyleListener = function(){ 
+                if( !tabContainer ){
+                    ice.mobi.removeListener(window,"resize", this);
+                    return;
+                };
+                setWidthStyle(tabContainer); 
+            }
+            ice.mobi.addListener(window, 'resize', setWidthStyleListener);
         }
         var lastServerIndex = tabIndex;
         var height = cfgIn.height || -1;
@@ -170,8 +179,17 @@
                 }
                 var autoWidth = cfgUpd.autoWidth;
                 if (autoWidth){
-                    setWidthStyle(document.getElementById(clientId));
-                    ice.mobi.addListener(window, 'resize', function(){ setWidthStyle(document.getElementById(clientId)); });
+                    setTimeout( function(){
+                        setWidthStyle(document.getElementById(clientId));
+                    }, 1);
+                    var setWidthStyleListener = function(){ 
+                        if( !document.getElementById(clientId) ){
+                            ice.mobi.removeListener(window,"resize", this);
+                            return;
+                        };
+                        setWidthStyle(document.getElementById(clientId)); 
+                    }
+                    ice.mobi.addListener(window, 'resize', setWidthStyleListener);
                 }
                 var oldIdx = tabIndex;
                 tabIndex = cfgUpd.tIndex;
