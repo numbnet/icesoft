@@ -22,8 +22,7 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 
 <form:form id="mediaspotform" method="POST"
-	enctype="multipart/form-data" modelAttribute="mediaspotBean"
-	cssClass="form">
+	enctype="multipart/form-data" modelAttribute="mediaspotBean">
 
 	<mobi:largeView><h3>Augmented Reality</h3></mobi:largeView>
 
@@ -43,8 +42,8 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<label>Title: </label>
-			<mobi:inputText id="title" name="title" placeholder="Title"
+			<mobi:inputText id="title" name="title" 
+                placeholder="Title" label="Title:"
 				value="${mediaspotBean.title}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
@@ -72,7 +71,7 @@
 	<h3>Augmented Reality</h3>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow styleClass="mobi-center">
+		<mobi:fieldsetRow>
 			<mobi:augmentedReality id="selection"
 				buttonLabel="Enter Augmented Reality">
 				<c:forEach items="${locations}" var="location">
@@ -96,7 +95,7 @@
             with 3D overlays. (This is an alpha level feature on iOS only.
                 Note that the view may take 30 seconds to display.)
         </mobi:fieldsetRow>
-		<mobi:fieldsetRow styleClass="mobi-center">
+		<mobi:fieldsetRow>
 			<mobi:augmentedReality id="selection"
 				buttonLabel="Augmented Reality Markers">
 				<c:forEach items="${markers}" var="marker">
