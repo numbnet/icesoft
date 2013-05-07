@@ -603,8 +603,17 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         var tabIndex = cfgIn.tIndex;
         var autoWidth = cfgIn.autoWidth;
         if (autoWidth){
-            setWidthStyle(tabContainer);
-            ice.mobi.addListener(window, 'resize', function(){setWidthStyle(tabContainer);});
+            setTimeout( function(){
+                setWidthStyle(tabContainer);
+            }, 1);
+            var setWidthStyleListener = function(){ 
+                if( !tabContainer ){
+                    ice.mobi.removeListener(window,"resize", this);
+                    return;
+                };
+                setWidthStyle(tabContainer); 
+            }
+            ice.mobi.addListener(window, 'resize', setWidthStyleListener);
         }
         var lastServerIndex = tabIndex; //only for jsf decode
         var height = cfgIn.height || -1;
@@ -650,28 +659,13 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                 removeClass(oldCtrl, clsActiveTab);
                 var isClient = cfgIn.client || false;
                 var currIndex = cfgIn.tIndex;
-             /*   if (!isClient) {   JSF stuff
-                    if (lastServerIndex==currIndex){
-                        cntr= cntr + 1;
-                    } else {
-                        cntr = 0;
-                        lastServerIndex = currIndex;
-                    }
-                    var submitted = currIndex +","+cntr;
-                    console.log(" submitted="+submitted);
-                    updateHidden(clientId, submitted);
-                    contents[cfgIn.tIndex].className = classHid;
-                    ice.se(null, clientId);
-                } else { */
-                    var submitted = currIndex +","+cntr;
-                    console.log(" submitted="+submitted);
-                    updateHidden(clientId, submitted);
-                    contents[cfgIn.tIndex].className = classHid;
-                    tabIndex = cfgIn.tIndex || 0;
-                    var newPage = contents[tabIndex];
-                    newPage.className = classVis;
-              //  }
-                //remove class of activetabheader and hide old contents
+                var submitted = currIndex +","+cntr;
+                console.log(" submitted="+submitted);
+                updateHidden(clientId, submitted);
+                contents[cfgIn.tIndex].className = classHid;
+                tabIndex = cfgIn.tIndex || 0;
+                var newPage = contents[tabIndex];
+                newPage.className = classVis;
                 el.setAttribute("class", clsActiveTab);
             },
             updateProperties: function (clientId, cfgUpd) {
@@ -683,6 +677,21 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                     tabContainer.style.maxHeight = newHt;
                     tabContainer.style.height = newHt;
                 }
+                var autoWidth = cfgUpd.autoWidth;
+                if (autoWidth){
+                    setTimeout( function(){
+                        setWidthStyle(document.getElementById(clientId));
+                    }, 1);
+                    var setWidthStyleListener = function(){ 
+                        if( !document.getElementById(clientId) ){
+                            ice.mobi.removeListener(window,"resize", this);
+                            return;
+                        };
+                        setWidthStyle(document.getElementById(clientId)); 
+                    }
+                    ice.mobi.addListener(window, 'resize', setWidthStyleListener);
+                }
+                setTabActive(tabCtrl + tabIndex, clsActiveTab);
                 if (oldIdx == tabIndex){
                     return;
                 }
@@ -690,15 +699,11 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                 if (oldCtrl) {
                     removeClass(oldCtrl, clsActiveTab);
                 }
-                var autoWidth = cfgUpd.autoWidth;
-                if (autoWidth){
-                    setWidthStyle(document.getElementById(clientId));
-                    ice.mobi.addListener(window, 'resize', function(){setWidthStyle(document.getElementById(clientId));});
-                }
+                
                 //check to see if pages have been added or removed
                 var contents = tabContent.children;
                 var tabsId = clientId + "_tabs";
-                setTabActive(tabCtrl + tabIndex, clsActiveTab);
+                
                 var tabElem = document.getElementById(tabsId);
                 if (tabElem) {
                     if (oldIdx != tabIndex) {
