@@ -55,7 +55,6 @@
     position: static;
     overflow: auto;
     width: 100%;
-    min-height:400px;
 }
 .mobi-pagePanel-body-noheader {
     padding-top: 0;

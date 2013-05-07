@@ -13,7 +13,10 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
- 
+
+body {
+    background: #c8c8c8 url('pinstripes.png');
+}
 .mobi-pagePanel-header, .mobi-pagePanel-footer {
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#AAB8C9), to(#6E84A2), color-stop(.5,#6E84A2));
     background: -moz-linear-gradient(0% 65% 90deg,#6E84A2, #AAB8C9, #AAB8C9 100%);
@@ -24,9 +27,6 @@
     border-bottom: 1px solid #2D3642;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
     color: #FFFFFF;
-}
-.mobi-pagePanel-body, .mobi-pagePanel-body-nofooter {
-    background: #c8c8c8 url('pinstripes.png');
 }
 .mobi-pagePanel-footer{
     border-top-color: #C7C6C6;
