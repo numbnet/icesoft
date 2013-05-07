@@ -463,3 +463,5 @@ html.bberry .geolocpage .timeout div, html.bberry .geolocpage .maxage div{
 
 .results label{ display: inline-block; width: 48%; }
 .results span{ display: inline-block; width: 48%; text-align: right; }
+
+.span-2{ display: inline-block; width: 45%; margin: 0 1%; }

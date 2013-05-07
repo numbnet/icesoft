@@ -34,13 +34,13 @@
 
 	<form:form id="panelform" method="POST">
 		<mobi:fieldsetGroup id="groupOne">
-			<mobi:fieldsetRow styleClass="mobi-center">
+			<mobi:fieldsetRow style="text-align:center">
 				<input type="button" value="Popup"
 					onclick="ice.mobi.panelPopup.openClient('popup');"
-					class="mobi-button mobi-button-important" />
+					class="mobi-button mobi-button-important ui-btn-up-c span-2" />
 				<input type="button" value="Auto-center Popup"
 					onclick="ice.mobi.panelPopup.openClient('autoCenterPopup');"
-					class="mobi-button mobi-button-important" />
+					class="mobi-button mobi-button-important ui-btn-up-c span-2" />
 			</mobi:fieldsetRow>
 		</mobi:fieldsetGroup>
 

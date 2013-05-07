@@ -39,7 +39,7 @@
 			<mobi:inputText id="name" name="name" label="Author:"
                 value="${microphoneBean.name}" />
 		</mobi:fieldsetRow>
-		<mobi:fieldsetRow styleClass="mobi-center">
+		<mobi:fieldsetRow>
 			<mobi:microphone id="mic" buttonLabel="Record Audio" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
