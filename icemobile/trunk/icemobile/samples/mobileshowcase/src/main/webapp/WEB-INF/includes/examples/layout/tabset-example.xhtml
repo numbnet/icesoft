@@ -19,36 +19,51 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+             
 
-        <!--
-          The large and small views use the tabset slightly differnetly.  Large
-          views assome only top orientation of the tabs. And becuase of the
-          two column layout of a large view the footer and header parent
-          properties are set to false to disable the padding offset.
-        -->
-        <mobi:tabSet selectedId="#{tabsetBean.currentId}"
-                autoWidth="true"
-                orientation="bottom"
-                fixedHeight="300"
-                styleClass="exampleTabs">
-
-            <mobi:contentPane title="Ice Sailer" id="tab1"
+        <h:form id="tabset"> 
+            <mobi:tabSet selectedId="#{tabsetBean.currentId}"
+                    fixedPosition="#{tabsetBean.fixedPosition}"
+                    parentFooter="#{viewSize ne 'large'}"
+                    orientation="#{tabsetBean.orientationTop ? 'top' : 'bottom'}"
+                    height="200px"
+                    styleClass="exampleTabs">
+                    
+                    
+                <mobi:contentPane title="Settings" id="tab0"
+                                  facelet="false" client="true" >
+                    <mobi:fieldsetGroup>
+                        <mobi:fieldsetRow>
+                            <h:outputLabel for="fixedPosition" value="Fixed:" styleClass="ui-input-text"/>
+                            <mobi:flipswitch id="fixedPosition" value="#{tabsetBean.fixedPosition}"
+                                singleSubmit="true"/>
+                        </mobi:fieldsetRow>
+                        <mobi:fieldsetRow>
+                            <h:outputLabel for="orientation" value="Orientation:" styleClass="ui-input-text"/>
+                            <mobi:flipswitch id="orientation" value="#{tabsetBean.orientationTop}"
+                                singleSubmit="true" labelOff="Bottom" labelOn="Top"/>
+                        </mobi:fieldsetRow>
+                    </mobi:fieldsetGroup>
+                </mobi:contentPane>
+    
+                <mobi:contentPane title="Sailer" id="tab1"
+                                  facelet="false" client="true" >
+                    <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
+                </mobi:contentPane>
+    
+                <mobi:contentPane title="Breaker" id="tab2"
                               facelet="false" client="true" >
-                <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
-            </mobi:contentPane>
-
-            <mobi:contentPane title="Ice Breaker" id="tab2"
-                          facelet="false" client="true" >
-
-                 <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
-
-            </mobi:contentPane>
-
-            <mobi:contentPane title="Ice Skater" id="tab3"
-                              facelet="false" client="true" >
-                 <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
-            </mobi:contentPane>
-
-        </mobi:tabSet>
+    
+                     <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
+    
+                </mobi:contentPane>
+    
+                <mobi:contentPane title="Skate" id="tab3"
+                                  facelet="false" client="true" >
+                     <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
+                </mobi:contentPane>
+    
+            </mobi:tabSet>
+        </h:form>
 
 </ui:composition>
