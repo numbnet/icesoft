@@ -1,6 +1,7 @@
 package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
@@ -51,7 +52,17 @@ public class GMapEventRenderer extends CoreRenderer {
 		if (mapContext == null) {
 			throw new FacesException("ace:gMapEvent component '" + gMapEvent.getId() + "' is not nested inside an ace:gMap component.");
 		}
-        writer.write("ice.ace.gMap.addEvent('" + mapContext + "','" + gMapEvent.getParent().getClientId(context) + "', '" + clientId + "','" + gMapEvent.getParent().getClass().getName() + "','" + gMapEvent.getEventType() + "','" + gMapEvent.getRendererType() + "',\"" + gMapEvent.getScriptToUse() + "\");");
+		JSONBuilder jb = JSONBuilder.create();
+		jb.beginFunction("ice.ace.gMap.addEvent")
+			.item(mapContext)
+			.item(gMapEvent.getParent().getClientId(context))
+			.item(clientId)
+			.item(gMapEvent.getParent().getClass().getName())
+			.item(gMapEvent.getEventType())
+			.item(gMapEvent.getRendererType())
+			.item(gMapEvent.getScriptToUse())
+		.endFunction();
+        writer.write(jb.toString());
         writer.write("});");
         writer.endElement("script");
         writer.endElement("span");

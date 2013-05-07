@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
@@ -74,14 +75,23 @@ public class GMapRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        if ((gmap.isLocateAddress() || !gmap.isIntialized()) && (gmap.getAddress() != null && gmap.getAddress().length() > 2))
-            writer.write("ice.ace.gMap.locateAddress('" + clientId + "', '" + gmap.getAddress() + "');");
-        else
+		JSONBuilder jb;
+        if ((gmap.isLocateAddress() || !gmap.isIntialized()) && (gmap.getAddress() != null && gmap.getAddress().length() > 2)) {
+			jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.gMap.locateAddress").item(clientId).item(gmap.getAddress()).endFunction();
+            writer.write(jb.toString());
+        } else {
             writer.write("ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().setCenter(new google.maps.LatLng(" + gmap.getLatitude() + "," + gmap.getLongitude() + "));");
+		}
         writer.write("ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().setZoom(" + gmap.getZoomLevel() + ");");
-        writer.write("ice.ace.gMap.setMapType('" + clientId + "','" + gmap.getType().toUpperCase() + "');");
-        if (gmap.getOptions() != null && gmap.getOptions().length() > 1)
-            writer.write("ice.ace.gMap.addOptions('" + clientId + "',\"" + gmap.getOptions() + "\");");
+		jb = JSONBuilder.create();
+		jb.beginFunction("ice.ace.gMap.setMapType").item(clientId).item(gmap.getType().toUpperCase()).endFunction();
+        writer.write(jb.toString());
+        if (gmap.getOptions() != null && gmap.getOptions().length() > 1) {
+			jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.gMap.addOptions").item(clientId).item(gmap.getOptions()).endFunction();
+            writer.write(jb.toString());
+		}
         if (gmap.getParent().getClass().getSimpleName().equalsIgnoreCase("HtmlPanelGrid")) {
             writer.write("google.maps.event.addDomListener(ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap(),'bounds_changed', " +
                     "function(){" +
@@ -111,28 +121,6 @@ public class GMapRenderer extends CoreRenderer {
             kid.encodeEnd(context);
         }
 
-    }
-
-    private void addHiddenField(FacesContext context,
-                                String clientId,
-                                String name) throws IOException {
-        addHiddenField(context, clientId, name, null);
-    }
-
-
-    private void addHiddenField(FacesContext context,
-                                String clientId,
-                                String name,
-                                String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", null);
-        writer.writeAttribute("id", clientId + name, null);
-        writer.writeAttribute("name", clientId + name, null);
-        writer.writeAttribute("type", "hidden", null);
-        if (value != null) {
-            writer.writeAttribute("value", value, null);
-        }
-        writer.endElement("div");
     }
 
     @Override

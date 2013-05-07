@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
@@ -41,8 +42,21 @@ public class GMapOverlayRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
         if (overlay.getPoints() != null && overlay.getShape() != null) {
-            writer.write("ice.ace.gMap.removeGOverlay('" + overlay.getParent().getClientId(context) + "', '" + clientId + "');");
-            writer.write("ice.ace.gMap.gOverlay('" + overlay.getParent().getClientId(context) + "', '" + clientId + "' , '" + overlay.getShape() + "' , '" + overlay.getPoints() + "' , \"" + overlay.getOptions() + "\");");
+			JSONBuilder jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.gMap.removeGOverlay")
+				.item(overlay.getParent().getClientId(context))
+				.item(clientId)
+			.endFunction();
+            writer.write(jb.toString());
+			jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.gMap.gOverlay")
+				.item(overlay.getParent().getClientId(context))
+				.item(clientId)
+				.item(overlay.getShape())
+				.item(overlay.getPoints())
+				.item(overlay.getOptions())
+			.endFunction();
+            writer.write(jb.toString());
         }
         writer.write("});");
         writer.endElement("script");

@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
@@ -37,11 +38,20 @@ public class GMapControlRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        if (control.isDisabled())
-            writer.write("ice.ace.gMap.removeControl('" + control.getParent().getClientId(context) + "', '" + control.getName() + "');");
-        else {
-            writer.write("ice.ace.gMap.addControl('" + control.getParent().getClientId(context) + "', '" + control.getName() +
-                    "', '" + control.getPosition() + "', '" + control.getControlStyle() + "');");
+		JSONBuilder jb;
+        if (control.isDisabled()) {
+			jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.gMap.removeControl").item(control.getParent().getClientId(context)).item(control.getName()).endFunction();
+            writer.write(jb.toString());
+        } else {
+			jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.gMap.addControl")
+				.item(control.getParent().getClientId(context))
+				.item(control.getName())
+				.item(control.getPosition())
+				.item(control.getControlStyle())
+			.endFunction();
+            writer.write(jb.toString());
         }
         writer.write("});");
         writer.endElement("script");

@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
@@ -42,6 +43,7 @@ public class GMapMarkerRenderer extends CoreRenderer {
         String oldLongitude = "";
         String currentLat = marker.getLatitude();
         String currentLon = marker.getLongitude();
+		JSONBuilder jb;
         //create a marker if lat and lon defined on the component itself
         if (!marker.isDisabled()) {
             if (currentLat != null && currentLon != null
@@ -49,21 +51,52 @@ public class GMapMarkerRenderer extends CoreRenderer {
                 if (!currentLat.equals(oldLatitude) ||
                         !currentLon.equals(oldLongitude)) {
                     //to dynamic support first to remove if any
-                    writer.write("ice.ace.gMap.removeMarker('" + marker.getParent().getClientId(context) + "', '" + clientId + "');");
-                    if (marker.getOptions() != null)
-                        writer.write("ice.ace.gMap.addMarker('" + marker.getParent().getClientId(context) + "', '" + clientId +
-                                "', '" + currentLat + "', '" + currentLon + "', \"" + marker.getOptions() + "\");");
-                    else
-                        writer.write("ice.ace.gMap.addMarker('" + marker.getParent().getClientId(context) + "', '" + clientId +
-                                "', '" + currentLat + "', '" + currentLon + "');");
+					jb = JSONBuilder.create();
+					jb.beginFunction("ice.ace.gMap.removeMarker")
+						.item(marker.getParent().getClientId(context))
+						.item(clientId)
+					.endFunction();
+                    writer.write(jb.toString());
+                    if (marker.getOptions() != null) {
+						jb = JSONBuilder.create();
+						jb.beginFunction("ice.ace.gMap.addMarker")
+							.item(marker.getParent().getClientId(context))
+							.item(clientId)
+							.item(currentLat)
+							.item(currentLon)
+							.item(marker.getOptions())
+						.endFunction();
+                        writer.write(jb.toString());
+                    } else {
+						jb = JSONBuilder.create();
+						jb.beginFunction("ice.ace.gMap.addMarker")
+							.item(marker.getParent().getClientId(context))
+							.item(clientId)
+							.item(currentLat)
+							.item(currentLon)
+						.endFunction();
+                        writer.write(jb.toString());
+					}
                 }
                 oldLatitude = currentLat;
                 oldLongitude = currentLon;
             }
-            if (marker.getAnimation() != null)
-                writer.write("ice.ace.gMap.animateMarker('" + marker.getParent().getClientId(context) + "', '" + clientId + "','" + marker.getAnimation() + "');");
+            if (marker.getAnimation() != null) {
+				jb = JSONBuilder.create();
+				jb.beginFunction("ice.ace.gMap.animateMarker")
+					.item(marker.getParent().getClientId(context))
+					.item(clientId)
+					.item(marker.getAnimation())
+				.endFunction();
+				writer.write(jb.toString());				
+			}
         } else {
-            writer.write("ice.ace.gMap.removeMarker('" + marker.getParent().getClientId(context) + "', '" + clientId + "');");
+			jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.gMap.removeMarker")
+				.item(marker.getParent().getClientId(context))
+				.item(clientId)
+			.endFunction();
+			writer.write(jb.toString());
         }
         writer.write("});");
         writer.endElement("script");

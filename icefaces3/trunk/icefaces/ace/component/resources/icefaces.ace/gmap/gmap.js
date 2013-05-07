@@ -46,6 +46,7 @@ function GMapWrapper(eleId, realGMap) {
     this.directions = new Object();
     var options = "";
     this.services = new Object();
+	this.events = new Object();
     this.layer = null;
     this.getElementId = ice.ace.gMap.getElementId;
     this.getRealGMap = ice.ace.gMap.getRealGMap;
@@ -324,7 +325,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 				input.setSelectionRange(length, length);  
 			}
 		}
-		ice.ace.jq(input).on('keypress', function(e) {if (e.keyCode == 13 || e.which == 13) return false;});
+		ice.ace.jq(input).off('keypress').on('keypress', function(e) {if (e.keyCode == 13 || e.which == 13) return false;});
         var autocomplete = new google.maps.places.Autocomplete(input);
         var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
         if(windowRender){
@@ -702,13 +703,13 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         if (markerId != "none")
         {
             var marker = wrapper.markers[markerId];
-            if(showOnClick=="true")
+            if(showOnClick)
             {
               google.maps.event.addDomListener(marker,"click",function(){
                   var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
                   win.open(map,marker);
               });
-              if(startOpen=="true")
+              if(startOpen)
                   win.open(map,marker);
             }
             else
@@ -717,11 +718,11 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         else
         {
             win.open(map);
-            google.maps.event.addDomListener(win,"closeclick",function(){
-                ice.ace.gMap.removeGWindow(ele,winId)
-            });
             ice.ace.gMap.getGMapWrapper(ele).freeWindows[winId]=win;
         }
+		google.maps.event.addDomListener(win,"closeclick",function(){
+			ice.ace.gMap.removeGWindow(ele,winId)
+		});
         ice.ace.gMap.getGMapWrapper(ele).infoWindows[winId]=win;
     }
 
@@ -791,8 +792,11 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             parent = wrapper.getRealGMap();
             componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').getRealGMap()";
         }
-        event = [];
-        google.maps.event.addDomListener(parent,eventType,function(){
+        var event = wrapper.events[eventId];
+		if (event) {
+			google.maps.event.removeListener(event);
+		}
+        wrapper.events[eventId] = google.maps.event.addDomListener(parent,eventType,function(){
             var map = eval("ice.ace.gMap.getGMapWrapper('" + mapId + "').getRealGMap()");
             var component = eval(componentToUse);
             eval(script);
