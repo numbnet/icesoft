@@ -237,7 +237,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
             markers += " android-ctr";
         }
         writer.writeText("document.documentElement.className = document.documentElement.className+'" 
-                + markers + "';", null);
+                + markers + "'; setTimeout(function() {document.body.className = 'ui-body-c';},10);", null);
         
         writer.endElement("script");
     }
