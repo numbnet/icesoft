@@ -52,10 +52,11 @@
                 value="${notificationsBean.message}"/>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<form:label path="delay" cssClass="ui-select">
+			<form:label path="delay">
                 Delay: <form:errors path="delay" cssClass="error" />
 			</form:label>
-			<form:select path="delay" cssClass="mobi-input-text">
+			<form:select path="delay" cssClass="mobi-input-text"
+                style="float:right;margin-top: -2px;">
 				<form:option value="5" label="5s" />
 				<form:option value="10" label="10s" />
 				<form:option value="15" label="15s" />
