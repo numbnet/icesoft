@@ -286,6 +286,9 @@ public class MobiJSFUtils {
      * @return
      */
     public static String asParameterStringForMobiAjax(List<UIParameter> children){
+        if (children.isEmpty()){
+            return "{}";
+        }
         StringBuffer builder = new StringBuffer();
         builder.append("{");
         boolean first = true;

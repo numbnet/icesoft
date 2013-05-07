@@ -128,7 +128,6 @@ public class  CommandButtonRenderer extends CoreRenderer {
         }
         // get the params and set into button
         uiParamChildren = JSFUtils.captureParameters(uiComponent);
-        String params = "";
         if (null != uiParamChildren) {
             String paramsAsString = MobiJSFUtils.asParameterStringForMobiAjax(uiParamChildren);
             button.setParams(paramsAsString);
