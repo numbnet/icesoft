@@ -57,7 +57,7 @@ public class TabsetBean extends ExampleImpl<TabsetBean> implements
 
     public static final String BEAN_NAME = "tabsetBean";
 
-    private String currentId = "tab0";
+    private String currentId = "tab1";
     
     private boolean fixedPosition = true;
     private boolean orientationTop = false;
