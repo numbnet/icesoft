@@ -20,8 +20,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi"%>
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<form:form id="qrscanform" method="POST" modelAttribute="QRScanBean"
-	cssClass="form">
+<form:form id="qrscanform" method="POST" modelAttribute="QRScanBean">
 
 	<mobi:largeView><h3>QR Codes</h3></mobi:largeView>
 
@@ -36,11 +35,11 @@
 	<h3>QR Code Scanner</h3>
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<label  style="width:80px">Scan QR code:</label>
+			<label class="ui-input-text">Scan QR code:</label>
 			<mobi:scan id="scanOne" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow styleClass="qr">
-			<label>Scanned:</label>
+			<label class="ui-input-text">Scanned:</label>
 			<div style="overflow:hidden;max-width:${mobiClient.handheldBrowser ? '190px' : '400px'};display:inline-block;text-overflow:ellipsis">${QRScanBean.scanOne}</div>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
@@ -53,12 +52,11 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<label>Enter plain text:</label>
 			<mobi:inputText value="${QRScanBean.plaintextOne}"
-				name="plaintextOne" />
+				id="plaintextOne" name="plaintextOne" label="Enter plain text:"/>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow styleClass="qr">
-			<label style="width:80px">QR Code:</label>
+			<label class="ui-input-text">QR Code:</label>
 			<div>
 				<mobi:qrcode value="${QRScanBean.plaintextOne}" />
 			</div>
@@ -68,8 +66,6 @@
 	<mobi:commandButton buttonType="important" styleClass="submit"
 		value="Create QRCode" type="submit" />
 
-	<br />
-	<br />
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow group="true">
 			Description

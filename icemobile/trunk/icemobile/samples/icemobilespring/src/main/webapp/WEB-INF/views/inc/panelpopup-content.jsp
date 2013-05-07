@@ -32,7 +32,7 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<form:form id="panelform" method="POST" cssClass="form">
+	<form:form id="panelform" method="POST">
 		<mobi:fieldsetGroup id="groupOne">
 			<mobi:fieldsetRow styleClass="mobi-center">
 				<input type="button" value="Popup"
