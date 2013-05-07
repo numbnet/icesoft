@@ -21,7 +21,7 @@
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="notificationsform" method="POST"
-	enctype="multipart/form-data" cssClass="form"
+	enctype="multipart/form-data" 
 	modelAttribute="notificationsBean">
 
 	<mobi:largeView><h3>Cloud Push</h3></mobi:largeView>
@@ -44,35 +44,29 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<form:label path="title">
-                Title: <form:errors path="title" cssClass="error" />
-			</form:label>
-			<form:input path="title" />
+			<mobi:inputText name="title" id="title" label="Title:" 
+                value="${notificationsBean.title}"/>
 		</mobi:fieldsetRow>
-
 		<mobi:fieldsetRow>
-			<form:label path="message">
-                Message: <form:errors path="message" cssClass="error" />
-			</form:label>
-			<form:input path="message" />
+			<mobi:inputText name="message" id="message" label="Message:"
+                value="${notificationsBean.message}"/>
 		</mobi:fieldsetRow>
-
 		<mobi:fieldsetRow>
-			<form:label path="delay">
+			<form:label path="delay" cssClass="ui-select">
                 Delay: <form:errors path="delay" cssClass="error" />
 			</form:label>
-			<form:select path="delay">
+			<form:select path="delay" cssClass="mobi-input-text">
 				<form:option value="5" label="5s" />
 				<form:option value="10" label="10s" />
 				<form:option value="15" label="15s" />
 			</form:select>
 		</mobi:fieldsetRow>
 
-		<mobi:fieldsetRow styleClass="mobi-center">
+		<mobi:fieldsetRow style="text-align:right">
 			<mobi:commandButton buttonType='important' 
-				value="Simple Push" type="submit" />
+				value="Simple Push" type="submit" style="width:45%"/>
 			<mobi:commandButton buttonType='attention' 
-				value="Priority Push" type="submit" />
+				value="Priority Push" type="submit" style="width:45%"/>
              <input type="hidden" name="pushType" id="hiddenSubmitVal" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
