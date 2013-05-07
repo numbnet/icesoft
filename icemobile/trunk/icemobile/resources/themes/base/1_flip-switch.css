@@ -40,8 +40,7 @@
     display: inline-block;
     text-align: center;
     font-weight: normal;
-    padding: 3px;
-    min-width: 45px;
+    padding: 5px;
     border-bottom:none;
     border-top:none;
     -webkit-touch-callout: none;

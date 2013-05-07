@@ -59,7 +59,7 @@ public class TabsetBean extends ExampleImpl<TabsetBean> implements
 
     private String currentId = "tab0";
     
-    private boolean fixedPosition = false;
+    private boolean fixedPosition = true;
     private boolean orientationTop = false;
 
     public TabsetBean() {
