@@ -25,7 +25,7 @@
 
             <mobi:fieldsetRow>
                 <h:outputLabel for="cap" value="Auto-Capitalization" class="ui-input-text"/>
-                <mobi:flipswitch id="cap" 
+                <mobi:flipswitch id="cap" style="float:right"
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  valueChangeListener="#{flipSwitchBean.autoCapitalizationChange}"
@@ -33,21 +33,21 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="cor" value="Auto-Correction" class="ui-input-text"/>
-                <mobi:flipswitch id="cor" 
+                <mobi:flipswitch id="cor" style="float:right"
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  value="#{flipSwitchBean.autoCorrection}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="spell" value="Check Spelling" class="ui-input-text"/>
-                <mobi:flipswitch id="spell" 
+                <mobi:flipswitch id="spell" style="float:right"
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  value="#{flipSwitchBean.checkSpelling}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="lock" value="Enable Caps Lock" class="ui-input-text"/>
-                <mobi:flipswitch id="lock" 
+                <mobi:flipswitch id="lock" style="float:right"
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  value="#{flipSwitchBean.enableCapsLock}"/>
@@ -57,11 +57,11 @@
 
     </h:form>
 
-    <h4><h:outputText value="Switch Value Echo"/></h4>
+    <h4><h:outputText value="Flip Switch Value Echo"/></h4>
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <h:outputLabel value="Auto-Capitalization" class="ui-input-text"/>
-            <h:outputText  value="&#160;#{flipSwitchBean.autoCapitalization}"/>
+            <h:outputText  value="#{flipSwitchBean.autoCapitalization}&#160;"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <h:outputLabel value="Auto-Correction" class="ui-input-text"/>
