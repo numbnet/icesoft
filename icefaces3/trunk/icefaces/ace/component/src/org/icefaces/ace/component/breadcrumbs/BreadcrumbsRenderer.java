@@ -26,6 +26,7 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @MandatoryResourceComponent(tagName = "breadcrumbs", value = "org.icefaces.ace.component.breadcrumbs.Breadcrumbs")
 public class BreadcrumbsRenderer extends BaseMenuRenderer {
@@ -79,7 +80,7 @@ public class BreadcrumbsRenderer extends BaseMenuRenderer {
 
         writer.startElement("script", component);
         writer.writeAttribute("type", "text/javascript", null);
-        writer.write("ice.ace.create('Breadcrumbs',['" + clientId + "',{}]);");
+        writer.write("ice.ace.create('Breadcrumbs',['" + clientId + "',{}]);//" + UUID.randomUUID());
         writer.endElement("script");
 
         writer.endElement("div");

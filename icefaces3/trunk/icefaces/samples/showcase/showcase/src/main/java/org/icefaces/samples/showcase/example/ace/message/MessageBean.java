@@ -129,7 +129,7 @@ public class MessageBean extends ComponentExampleImpl<MessageBean> implements Se
         if (textEntry.getValue().toString().trim().equals("")) {
             String label = textEntry.getLabel();
             int index = severityMap.get(label);
-            String message = "Please enter " + label + ". (Sample " + severityNames[index] + " message.)";
+            String message = severityNames[index] + ": " + label + " missing.";
             FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(index), message, message);
             FacesContext.getCurrentInstance().addMessage(textEntry.getClientId(), facesMessage);
         }

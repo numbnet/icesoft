@@ -34,10 +34,10 @@ import org.icefaces.resources.ICEResourceLibrary;
         componentFamily = "org.icefaces.ace.component.Menu",
         componentType = "org.icefaces.ace.component.Breadcrumbs",
         rendererType = "org.icefaces.ace.component.BreadcrumbsRenderer",
-        tlddoc = "Breadcrumbs is a horizontal bar of breadcrumb links. The links are encoded by child menuItem tags." +
-                "The menu items should have a url attribute and a value attribute. The icon attribute is not used. The " +
-                "icon will be forced to a home page icon for the first item and a right arrow icon for the rest. " +
-                "The last (or only) link will also forced to be disabled."
+        tlddoc = "Breadcrumbs is a horizontal bar of breadcrumb menu items. The crumbs are encoded by child menuItem tags. " +
+                "The menu items can be encoded inline or dynamically using a menu model (org.icefaces.ace.model.MenuModel). The icon attribute is not used. " +
+                "The icon will be forced to a home page icon for the first item and a right arrow icon for the rest. " +
+                "The last (or only) item will also be forced to be disabled."
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
