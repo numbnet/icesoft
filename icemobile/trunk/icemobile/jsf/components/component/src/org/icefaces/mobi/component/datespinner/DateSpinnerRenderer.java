@@ -88,14 +88,14 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         String initialValue = getStringValueToRender(context, component);
         // detect if an iOS device
         if (shouldUseNative(spinner)) {
-            writer.startElement(HTML.SPAN_ELEM, component);
             if (spinner.getStyle()!=null){
                 writer.writeAttribute(HTML.STYLE_ATTR, spinner.getStyle(), HTML.STYLE_ATTR);
             }
             writer.startElement("input", component);
             writer.writeAttribute("type", "date", "type");
-            writer.writeAttribute("id", clientId, "id");
-            writer.writeAttribute("name", clientId, "name");
+            writer.writeAttribute("id", clientId, null);
+            writer.writeAttribute("name", clientId, null);
+            writer.writeAttribute("class", "ui-input-text", null);
             boolean disabled = spinner.isDisabled();
             boolean readonly = spinner.isReadonly();
 
@@ -121,7 +121,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
                 writer.writeAttribute("onblur", "ice.se(event, this);", null);
             }
             writer.endElement("input");
-            writer.endElement(HTML.SPAN_ELEM);
         } else {
             writeJavascriptFile(context, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
             String value = encodeValue(spinner, initialValue);
