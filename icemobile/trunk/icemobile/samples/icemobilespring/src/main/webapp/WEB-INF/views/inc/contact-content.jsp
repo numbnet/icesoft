@@ -21,7 +21,7 @@
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="conform" method="POST" enctype="multipart/form-data"
-	modelAttribute="contactBean" cssClass="form">
+	modelAttribute="contactBean">
 
 	<mobi:largeView><h3>Contact List</h3></mobi:largeView>
 
@@ -35,7 +35,7 @@
 	</mobi:fieldsetGroup>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow styleClass="mobi-center">
+		<mobi:fieldsetRow>
 			<mobi:fetchContact id="rawContact" buttonLabel="Fetch Contact"
 				fields="name, phone, email" />
 		</mobi:fieldsetRow>

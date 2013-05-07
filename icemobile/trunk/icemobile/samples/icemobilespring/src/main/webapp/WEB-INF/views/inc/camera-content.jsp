@@ -21,7 +21,7 @@
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camform" method="POST" enctype="multipart/form-data"
-	modelAttribute="cameraBean" cssClass="form">
+	modelAttribute="cameraBean">
 
 	<mobi:largeView><h3>Camera</h3></mobi:largeView>
 
@@ -35,11 +35,8 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<form:label path="name">
-                Author: <form:errors path="name" cssClass="error" />
-			</form:label>
 			<mobi:inputText id="name" name="name" value="${cameraBean.name}"
-				placeholder="Your name" />
+				placeholder="Your name" label="Author:"/>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
 			<mobi:thumbnail for="cam" />

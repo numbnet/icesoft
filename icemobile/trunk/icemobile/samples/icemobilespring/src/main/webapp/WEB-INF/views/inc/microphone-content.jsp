@@ -21,7 +21,7 @@
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="micform" method="POST" enctype="multipart/form-data"
-	modelAttribute="microphoneBean" cssClass="form">
+	modelAttribute="microphoneBean">
 
 	<mobi:largeView><h3>Microphone</h3></mobi:largeView>
 
@@ -36,10 +36,8 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<form:label path="name">
-                Author: <form:errors path="name" cssClass="error" />
-			</form:label>
-			<form:input path="name" />
+			<mobi:inputText id="name" name="name" label="Author:"
+                value="${microphoneBean.name}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow styleClass="mobi-center">
 			<mobi:microphone id="mic" buttonLabel="Record Audio" />

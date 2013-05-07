@@ -21,8 +21,7 @@
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camcorderform" method="POST"
-	enctype="multipart/form-data" modelAttribute="camcorderBean"
-	cssClass="form">
+	enctype="multipart/form-data" modelAttribute="camcorderBean">
 
 	<mobi:largeView><h3>Camcorder</h3></mobi:largeView>
 
@@ -37,10 +36,8 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<form:label path="name">
-                Author: <form:errors path="name" cssClass="error" />
-			</form:label>
-			<mobi:inputText id="name" name="name" value="${camcorderBean.name}"
+			<mobi:inputText id="name" name="name" label="Author: "
+                value="${camcorderBean.name}"
 				placeholder="Your name" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
@@ -64,7 +61,7 @@
 	</c:if>
 	<c:if test="${camcorderUploadReady}">
 		<mobi:fieldsetGroup>
-			<mobi:fieldsetRow styleClass="mobi-center">
+			<mobi:fieldsetRow>
 				<video src="${camcorderUpload}" controls="controls"
 					class="imageView" style="min-width: 260px"></video>
 				<br>
