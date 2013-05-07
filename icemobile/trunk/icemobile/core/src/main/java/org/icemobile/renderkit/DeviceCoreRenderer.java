@@ -83,6 +83,7 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             writer.startElement(INPUT_ELEM, component);
             if (comptype.equals("scan") || comptype.equals("aug")){
                 writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_TEXT);
+                writer.writeAttribute(CLASS_ATTR, "mobi-input-text ui-input-text");
             }else {
                 writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE);
             }
