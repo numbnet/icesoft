@@ -131,11 +131,10 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             writer.writeAttribute(ONCLICK_ATTR, button.getJsCall().toString());
             writer.endElement(INPUT_ELEM);
         }else if ( !button.getType().trim().toLowerCase().equals(IButton.BUTTON_SUBMIT)){
-            //logger.info(" type of button = "+button.getType());
             StringBuilder sb = new StringBuilder("ice.mobi.button.select('");
             sb.append(clientId).append("', event, {");
             sb.append("singleSubmit: ").append(button.isSingleSubmit());
-            if (null !=button.getParams()) {
+            if (null !=button.getParams() && button.getParams().trim()!="") {
                 sb.append(", params: ").append(button.getParams());
             }
             if (null != button.getGroupId()){
