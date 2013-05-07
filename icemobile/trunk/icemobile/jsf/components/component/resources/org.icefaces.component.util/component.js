@@ -1544,6 +1544,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
     }
 })(ice.mobi);
 
+
 /* touch active state support */
 ice.mobi.addListener(document, "touchstart", function(){});
 
@@ -1554,7 +1555,7 @@ function hideAddressBar()
     {
         case -90:
         case 90:
-            minDeviceDocHeight = 320;
+            minDeviceDocHeight = 268;
             break;
         default:
             // minDeviceDocHeight = window.innerHeight + 60;
