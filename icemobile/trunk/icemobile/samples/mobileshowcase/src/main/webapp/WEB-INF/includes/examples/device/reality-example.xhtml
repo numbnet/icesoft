@@ -21,7 +21,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
 
-    <h:form prependId="false" id="form" styleClass="form">
+    <h:form prependId="false" id="arForm" >
     
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
@@ -44,7 +44,7 @@
                 (depending on GPS accuracy, you may need to walk 10m between
                 locations).</p>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-center">
+            <mobi:fieldsetRow>
                 <mobi:camera id="cam" value="#{realityBean.cameraImage}">
                     <mobi:thumbnail for="cam"/>
                 </mobi:camera>
@@ -64,7 +64,7 @@
 
     </h:form>
 
-    <h:form styleClass="form">
+    <h:form styleClass="results">
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
@@ -75,7 +75,7 @@
         </mobi:fieldsetGroup>
         
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow styleClass="mobi-center">
+            <mobi:fieldsetRow>
                 <mobi:augmentedReality
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}">
@@ -98,7 +98,7 @@
         </mobi:fieldsetGroup>
     </h:form>
 
-    <h:form styleClass="form">
+    <h:form>
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
@@ -114,8 +114,9 @@
             <mobi:fieldsetRow >
                 <p>Select your desired 3D models:</p>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-center">
-                <h:selectOneMenu id="dynamicMarker1"
+            <mobi:fieldsetRow style="text-align:center">
+                <h:selectOneMenu id="dynamicMarker1" styleClass="mobi-input-text"
+                        style="width:45%;margin: 0 1%"
                         value="#{realityBean.selectedModel1}">
                     <f:selectItem itemLabel="ICEmobile Logo"
                             itemValue="icemobile"/>
@@ -131,8 +132,8 @@
                             itemValue="ice.arform"/>
                     <f:ajax execute="@this" render="@all"/>
                 </h:selectOneMenu>
-                 <h:selectOneMenu id="dynamicMarker2"
-                        value="#{realityBean.selectedModel2}">
+                 <h:selectOneMenu id="dynamicMarker2" style="width:45%;margin: 0 1%"
+                        value="#{realityBean.selectedModel2}" styleClass="mobi-input-text">
                     <f:selectItem itemLabel="ICEmobile Logo"
                             itemValue="icemobile"/>
                     <f:selectItem itemLabel="Puzzle Block 1"
@@ -142,7 +143,7 @@
                     <f:ajax execute="@this" render="@all"/>
                 </h:selectOneMenu>
            </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-center">
+            <mobi:fieldsetRow>
                 <mobi:augmentedReality  buttonLabel="3D Augmented Reality"
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}"
@@ -154,11 +155,11 @@
                 </mobi:augmentedReality>
                 
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-center">
-                <mobi:commandButton
-                    styleClass="submit" buttonType="important"
-                    value="Submit"/>
-            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        <mobi:commandButton
+                styleClass="submit" buttonType="important"
+                value="Submit"/>
+                
         <mobi:outputList rendered="#{realityBean.shopping}" inset="true">
             <mobi:outputListItem group="true">Items</mobi:outputListItem>
             <mobi:outputListItem styleClass="aritem">
@@ -207,7 +208,6 @@
             </mobi:outputListItem>
         </mobi:outputList>
 
-        </mobi:fieldsetGroup>
     </h:form>
 
 
