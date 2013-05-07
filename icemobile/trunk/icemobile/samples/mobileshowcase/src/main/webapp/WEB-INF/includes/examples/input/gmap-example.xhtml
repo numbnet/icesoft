@@ -34,20 +34,20 @@
         		<mobi:commandButton value="Locate Me" style="float:none;"/>
         	</mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                Latitude: <h:outputText value="#{gMapBean.latitude}"/>
+                <label class="ui-input-text">Latitude:</label> <h:outputText value="#{gMapBean.latitude}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                Longitude: <h:outputText value="#{gMapBean.longitude}"/>
+                <label class="ui-input-text">Longitude:</label> <h:outputText value="#{gMapBean.longitude}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow rendered="#{gMapBean.direction gt 0.0}">
-                Direction: <h:outputText value="#{gMapBean.direction}"/>
+                <label class="ui-input-text">Direction:</label> <h:outputText value="#{gMapBean.direction}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow rendered="#{gMapBean.altitude gt 0.0}">
-                Altitude: <h:outputText value="#{gMapBean.altitude}"/>
+                <label class="ui-input-text">Altitude:</label> <h:outputText value="#{gMapBean.altitude}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel value="Map Type:"/>
-                <h:selectOneMenu id="mapType" value="#{gMapBean.type}">
+                <h:outputLabel value="Map Type:" class="ui-input-text" />
+                <h:selectOneMenu id="mapType" value="#{gMapBean.type}" class="ui-select">
                     <f:selectItem itemValue="ROADMAP"/>
                     <f:selectItem itemValue="SATELLITE"/>
                     <f:selectItem itemValue="HYBRID"/>

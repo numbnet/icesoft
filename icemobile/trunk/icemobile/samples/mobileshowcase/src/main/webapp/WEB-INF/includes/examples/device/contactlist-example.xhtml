@@ -20,12 +20,12 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form id="conform" styleClass="form">
+    <h:form id="contactForm">
     
         <mobi:getEnhanced/>
         
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow styleClass="mobi-center">
+            <mobi:fieldsetRow>
                 <mobi:fetchContact id="contact" 
                     label="Fetch Contacts" 
                     fields="name, email, phone"
@@ -45,7 +45,7 @@
         <mobi:fieldsetGroup styleClass="results">
             <mobi:fieldsetRow>
                 <label>Name:</label>
-                <span>#{contactsBean.name}</span>
+                <span>&#160;#{contactsBean.name}</span>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <label>Phone:</label>

@@ -21,7 +21,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
 
-    <h:form prependId="false" id="form" styleClass="form">
+    <h:form prependId="false" id="cameraform">
         <mobi:uploadhelper/>
         
         <mobi:fieldsetGroup styleClass="intro">
@@ -34,7 +34,7 @@
         <mobi:getEnhanced/>
         
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow styleClass="mobi-center">
+            <mobi:fieldsetRow>
                 <mobi:camera id="cam" value="#{cameraBean.cameraImage}"
                         maxwidth="#{cameraBean.maxWidth}"
                         maxheight="#{cameraBean.maxHeight}">
@@ -68,14 +68,14 @@
                 Set the maximum width and height dimensions for the photo
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel value="Max width:" for="maxWidth"/>
                 <mobi:inputText id="maxWidth" placeholder="max width" 
-                         type="number" value="#{cameraBean.maxWidth}" />
+                        label="Max width:"
+                        type="number" value="#{cameraBean.maxWidth}" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel value="Max height:" for="maxHeight"/>
                 <mobi:inputText id="maxHeight" placeholder="max height" 
-                         type="number" value="#{cameraBean.maxHeight}" />
+                        label="Max height:"
+                        type="number" value="#{cameraBean.maxHeight}" />
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         

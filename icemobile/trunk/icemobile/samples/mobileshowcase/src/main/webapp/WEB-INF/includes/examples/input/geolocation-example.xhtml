@@ -23,7 +23,7 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 id="geoLocFrag">
 
-    <h:form id="geolocForm" styleClass="form geolocpage">
+    <h:form id="geolocForm" styleClass="geolocpage">
 
     <mobi:geolocation latitude="#{geoLocationBean.latitude}"
                       longitude="#{geoLocationBean.longitude}"
@@ -45,10 +45,11 @@
         <mobi:fieldsetRow>
             <canvas id="mapCanvas" width="#{viewSize eq 'small' ? '260' : '360'}" height="#{viewSize eq 'small' ? '130' : '180'}" class="center"></canvas>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow styleClass="mobi-center">
-            <mobi:commandButton value="Reset Values" actionListener="#{geoLocationBean.resetValues}"
-                buttonType="unimportant"/>
-            <mobi:commandButton value="Locate Me"/>
+        <mobi:fieldsetRow>
+            <mobi:commandButton value="Reset Values" 
+                actionListener="#{geoLocationBean.resetValues}"
+                buttonType="unimportant" style="width:45%;margin: 0 1%"/>
+            <mobi:commandButton value="Locate Me" style="width:45%; margin: 0 1%"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
@@ -56,19 +57,19 @@
 
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <label>Latitude:</label>
+            <label class="ui-input-text">Latitude:</label>
             <h:outputText value="#{geoLocationBean.latitude}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <label>Longitude:</label>
+            <label class="ui-input-text">Longitude:</label>
             <h:outputText value="#{geoLocationBean.longitude}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow rendered="#{geoLocationBean.direction gt 0.0}">
-            <label>Direction:</label>
+            <label class="ui-input-text">Direction:</label>
             <h:outputText value="#{geoLocationBean.direction}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow rendered="#{geoLocationBean.altitude gt 0.0}">
-            <label>Altitude:</label>
+            <label class="ui-input-text">Altitude:</label>
             <h:outputText value="#{geoLocationBean.altitude}"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
@@ -77,7 +78,7 @@
         
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <h:outputLabel value="Continuous Updates:" for="highPrecision"/>
+            <h:outputLabel value="Continuous Updates:" for="highPrecision" class="ui-input-text"/>
             <mobi:flipswitch id="highPrecision"
                              labelOn="true" labelOff="false"
                              singleSubmit="true" 
@@ -85,9 +86,9 @@
                              value="#{geoLocationBean.continuousUpdates}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <h:outputLabel value="enableHighPrecision:" for="highPrecise"/> 
+            <h:outputLabel value="enableHighPrecision:" for="highPrecise" class="ui-input-text"/> 
             <h:selectOneMenu id="highPrecise" value="#{geoLocationBean.enableHighPrecision}"
-                style="max-width:100px;">
+                class="ui-select mobi-input-text">
                 <f:selectItem itemValue="true"/>
                 <f:selectItem itemValue="false"/>
                 <f:selectItem itemValue="asNeeded"/>
@@ -95,24 +96,22 @@
             </h:selectOneMenu>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow styleClass="timeout">
-            <h:outputLabel value="Timeout:" for="timeout"/>
-            <div style="max-width:50%;">
-                <span style="font-size: 11px;float: right;margin: -5px -5px 5px -15px;text-align: left;">
-                    (longest allowable time for reading to arrive (0-x, seconds)
-                </span>
-                <mobi:inputText id="timeout" value="#{geoLocationBean.timeout}"
-                    singleSubmit="true" type="number" style="float: right;clear: both;"/>
-            </div>
+            <label class="ui-input-text">
+                Timeout:
+                <span style="font-size: 11px;float: right;line-height:12px;text-align: left;">(longest allowable time for reading to arrive (0-x, seconds)</span>
+            </label>
+            <mobi:inputText id="timeout" value="#{geoLocationBean.timeout}"
+                singleSubmit="true" type="number"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow styleClass="maxage">
-            <h:outputLabel for="maxAge" value="Maximum Age:"/>
-            <div style="max-width:50%;">
-                <span style="font-size: 11px;float: right;margin: -5px -5px 5px -15px;text-align: left;">
+            <label class="ui-input-text">
+                Maximum Age:
+                <span style="font-size: 11px;float: right;line-height:12px;text-align: left;">
                     (oldest allowable cached Location reading (0-x, seconds)
                 </span>
-                <mobi:inputText id="maxAge" value="#{geoLocationBean.maximumAge}"
-                    singleSubmit="true" type="number" style="float: right;clear: both;"/>
-            </div>
+            </label>
+            <mobi:inputText id="maxAge" value="#{geoLocationBean.maximumAge}"
+                singleSubmit="true" type="number"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     

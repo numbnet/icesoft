@@ -20,34 +20,34 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form>
+    <h:form id="flipswitchForm">
         <mobi:fieldsetGroup>
 
             <mobi:fieldsetRow>
-                <h:outputLabel for="cap" value="Auto-Capitalization"/>
-                <mobi:flipswitch id="cap" style="float:right"
+                <h:outputLabel for="cap" value="Auto-Capitalization" class="ui-input-text"/>
+                <mobi:flipswitch id="cap" 
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  valueChangeListener="#{flipSwitchBean.autoCapitalizationChange}"
                                  value="#{flipSwitchBean.autoCapitalization}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="cor" value="Auto-Correction"/>
-                <mobi:flipswitch id="cor" style="float:right"
+                <h:outputLabel for="cor" value="Auto-Correction" class="ui-input-text"/>
+                <mobi:flipswitch id="cor" 
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  value="#{flipSwitchBean.autoCorrection}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="spell" value="Check Spelling"/>
-                <mobi:flipswitch id="spell" style="float:right"
+                <h:outputLabel for="spell" value="Check Spelling" class="ui-input-text"/>
+                <mobi:flipswitch id="spell" 
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  value="#{flipSwitchBean.checkSpelling}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="lock" value="Enable Caps Lock"/>
-                <mobi:flipswitch id="lock" style="float:right"
+                <h:outputLabel for="lock" value="Enable Caps Lock" class="ui-input-text"/>
+                <mobi:flipswitch id="lock" 
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  value="#{flipSwitchBean.enableCapsLock}"/>
@@ -60,24 +60,20 @@
     <h4><h:outputText value="SwitchSwitch Value Echo"/></h4>
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <h:outputLabel value="Auto-Capitalization"/>
-            <h:outputText styleClass="fr"
-                          value="#{flipSwitchBean.autoCapitalization}"/>
+            <h:outputLabel value="Auto-Capitalization" class="ui-input-text"/>
+            <h:outputText  value="&#160;#{flipSwitchBean.autoCapitalization}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <h:outputLabel value="Auto-Correction"/>
-            <h:outputText styleClass="fr"
-                          value="#{flipSwitchBean.autoCorrection}"/>
+            <h:outputLabel value="Auto-Correction" class="ui-input-text"/>
+            <h:outputText  value="#{flipSwitchBean.autoCorrection}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <h:outputLabel value="Check Spelling"/>
-            <h:outputText styleClass="fr"
-                          value="#{flipSwitchBean.checkSpelling}"/>
+            <h:outputLabel value="Check Spelling" class="ui-input-text"/>
+            <h:outputText  value="#{flipSwitchBean.checkSpelling}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <h:outputLabel value="Enable Caps Lock"/>
-            <h:outputText styleClass="fr"
-                          value="#{flipSwitchBean.enableCapsLock}"/>
+            <h:outputLabel value="Enable Caps Lock" class="ui-input-text"/>
+            <h:outputText  value="#{flipSwitchBean.enableCapsLock}"/>
         </mobi:fieldsetRow>
 
     </mobi:fieldsetGroup>
