@@ -20,7 +20,7 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:util="http://java.sun.com/jsf/composite/components"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-    <h:form styleClass="form">
+    <h:form id="panelConfForm">
 
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
@@ -43,24 +43,25 @@
         
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <h:outputText
-                        value="Execution count: #{panelConfirmationBean.count}"/>
+                <label class="ui-input-text">Execution count:</label>
+                <span>#{panelConfirmationBean.count}</span>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="message" value="Message:"/>
-                <mobi:inputText id="message" value="#{panelConfirmationBean.message}" singleSubmit="true"/>
+                <mobi:inputText id="message" label="Message:" 
+                    value="#{panelConfirmationBean.message}" singleSubmit="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="acceptLabel" value="Accept Label:"/>
-                <mobi:inputText id="acceptLabel" value="#{panelConfirmationBean.acceptLabel}" singleSubmit="true"/>
+                <mobi:inputText id="acceptLabel" label="Accept Label:"
+                    value="#{panelConfirmationBean.acceptLabel}" singleSubmit="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="cancelLabel" value="Cancel Label:"/>
-                <mobi:inputText id="cancelLabel" value="#{panelConfirmationBean.cancelLabel}" singleSubmit="true"/>
+                <mobi:inputText id="cancelLabel" label="Cancel Label:" 
+                    value="#{panelConfirmationBean.cancelLabel}" singleSubmit="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="type" value="Type:"/>
-                <h:selectOneMenu id="type" value="#{panelConfirmationBean.type}">
+                <h:outputLabel for="type" value="Type:" class="ui-input-text"/>
+                <h:selectOneMenu id="type" value="#{panelConfirmationBean.type}" 
+                    class="mobi-input-text ui-select">
                     <f:selectItem itemValue="both"/>
                     <f:selectItem itemValue="acceptOnly"/>
                     <f:selectItem itemValue="cancelOnly"/>

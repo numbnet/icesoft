@@ -20,14 +20,14 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form prependId="false" styleClass="form">
+    <h:form prependId="false" id="qrForm">
 
        <h3>QR Code Scanner</h3>
        
        <mobi:getEnhanced/>
        
        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow styleClass="mobi-center">
+            <mobi:fieldsetRow>
                 <mobi:scan value="#{qrCodeBean.qrScanner}"
                            id="scanOne"
                            singleSubmit="true"/>
