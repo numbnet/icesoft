@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
@@ -39,14 +40,33 @@ public class GMapLayerRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
         if (gMapLayer.getLayerType() != null) {
-            writer.write("ice.ace.gMap.removeMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId + "');");
+			JSONBuilder jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.gMap.removeMapLayer")
+				.item(gMapLayer.getParent().getClientId(context))
+				.item(clientId)
+			.endFunction();
+            writer.write(jb.toString());
             if (gMapLayer.isVisible()) {
-                if (gMapLayer.getUrl() != null)
-                    writer.write("ice.ace.gMap.addMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +
-                            "', '" + gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\", '" + gMapLayer.getUrl() + "');");
-                else
-                    writer.write("ice.ace.gMap.addMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +
-                            "', '" + gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\");");
+                if (gMapLayer.getUrl() != null) {
+					jb = JSONBuilder.create();
+					jb.beginFunction("ice.ace.gMap.addMapLayer")
+						.item(gMapLayer.getParent().getClientId(context))
+						.item(clientId)
+						.item(gMapLayer.getLayerType())
+						.item(gMapLayer.getOptions())
+						.item(gMapLayer.getUrl())
+					.endFunction();
+                    writer.write(jb.toString());
+                } else {
+					jb = JSONBuilder.create();
+					jb.beginFunction("ice.ace.gMap.addMapLayer")
+						.item(gMapLayer.getParent().getClientId(context))
+						.item(clientId)
+						.item(gMapLayer.getLayerType())
+						.item(gMapLayer.getOptions())
+					.endFunction();
+                    writer.write(jb.toString());
+				}
             }
         }
         writer.write("});");

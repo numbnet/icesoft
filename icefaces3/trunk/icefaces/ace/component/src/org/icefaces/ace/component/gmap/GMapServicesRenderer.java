@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
@@ -39,7 +40,15 @@ public class GMapServicesRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
         if (service.getPoints() != null && service.getName() != null) {
-            writer.write("ice.ace.gMap.gService('" + service.getParent().getClientId(context) + "' , '" + service.getName() + "' , \"" + service.getPoints() + "\" , \"" + service.getOptions() + "\",'" + service.getDiv() + "');");
+			JSONBuilder jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.gMap.gService")
+				.item(service.getParent().getClientId(context))
+				.item(service.getName())
+				.item(service.getPoints())
+				.item(service.getOptions())
+				.item(service.getDiv())
+			.endFunction();
+			writer.write(jb.toString());
         }
         writer.write("});");
         writer.endElement("script");
