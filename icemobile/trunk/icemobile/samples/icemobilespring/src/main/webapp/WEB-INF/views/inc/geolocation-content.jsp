@@ -55,10 +55,9 @@
                     class="center"
                 ></canvas>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-center">
+            <mobi:fieldsetRow>
                 <mobi:commandButton value="Locate Me" type="submit"
-                    buttonType="important"
-                />
+                    buttonType="important"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 

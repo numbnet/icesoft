@@ -32,15 +32,15 @@
     </mobi:fieldsetGroup>
 
     <h3>Button Types</h3>
-    <mobi:fieldsetGroup styleClass="buttons">
+    <mobi:fieldsetGroup style="text-align:center">
         <mobi:fieldsetRow>
-            <mobi:commandButton value="Default" style="" />
+            <mobi:commandButton value="Default" styleClass="span-2" />
             <mobi:commandButton value="Unimportant"
-                buttonType="unimportant"/>
+                buttonType="unimportant" styleClass="span-2"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <mobi:commandButton value="Attention" buttonType="attention"/>
-            <mobi:commandButton value="Important" buttonType="important"/>
+            <mobi:commandButton value="Attention" buttonType="attention" styleClass="span-2"/>
+            <mobi:commandButton value="Important" buttonType="important" styleClass="span-2"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:commandButton buttonType="back" value="Back"
@@ -49,7 +49,7 @@
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:commandButton id="disabledDefault" value="Disabled"
-                disabled="true"
+                disabled="true" 
             />
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>

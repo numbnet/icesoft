@@ -34,21 +34,21 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<label>Auto-Capitalization</label>
+			<label class="ui-input-text">Auto-Capitalization</label>
 			<mobi:flipswitch id="onOffFlipSwitch" labelOn="On"
-				style="float:right" labelOff="Off" name="onOffFlipSwitch"
+				labelOff="Off" name="onOffFlipSwitch"
 				value="${flipSwitchBean.onOffFlipSwitch}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label>Auto-Correction</label>
+			<label class="ui-input-text">Auto-Correction</label>
 			<mobi:flipswitch id="yesNoFlipSwitch" labelOn="Yes"
-				style="float:right" labelOff="No" name="yesNoFlipSwitch"
+				labelOff="No" name="yesNoFlipSwitch"
 				value="${flipSwitchBean.yesNoFlipSwitch}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label>Check Spelling</label>
+			<label class="ui-input-text">Check Spelling</label>
 			<mobi:flipswitch id="trueFalseFlipSwitch" labelOn="True"
-				style="float:right" labelOff="False" name="trueFalseFlipSwitch"
+				labelOff="False" name="trueFalseFlipSwitch"
 				value="${flipSwitchBean.trueFalseFlipSwitch}" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
@@ -57,18 +57,18 @@
 		value="Submit" type="submit" />
 
 	<h3>Flip Switch Value Echo</h3>
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="results">
 		<mobi:fieldsetRow>
 			<label>Auto-Capitalization</label>
-			<label style="float: right">${flipSwitchBean.onOffFlipSwitch}</label>
+			<span>${flipSwitchBean.onOffFlipSwitch}</span>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
 			<label>Auto-Correction</label>
-			<label style="float: right">${flipSwitchBean.yesNoFlipSwitch}</label>
+			<span>${flipSwitchBean.yesNoFlipSwitch}</span>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
 			<label>Check Spelling</label>
-			<label style="float: right">${flipSwitchBean.trueFalseFlipSwitch}</label>
+			<span>${flipSwitchBean.trueFalseFlipSwitch}</span>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
