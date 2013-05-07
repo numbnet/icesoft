@@ -1145,8 +1145,12 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             var head = inHead ? inHead : getNode('head'),
                 foot = inFoot ? inFoot : getNode('foot'),
                 bodyDivWrapper = inDivWrap ? inDivWrap : getNode('body'),
-                element = getNode('elem'),
-                dim = element.getBoundingClientRect(),
+                element = getNode('elem');
+
+            // Exit if dataview has been removed from page.
+            if (!element) return;
+
+            var dim = element.getBoundingClientRect(),
                 maxHeight = window.innerHeight - dim.top,
                 headHeight = head ? head.clientHeight : 0,
                 footHeight = foot ? foot.clientHeight : 0,
