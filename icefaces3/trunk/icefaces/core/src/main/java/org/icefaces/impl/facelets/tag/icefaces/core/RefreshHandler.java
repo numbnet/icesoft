@@ -103,8 +103,8 @@ public class RefreshHandler extends TagHandler {
             writer.writeText(", '", null);
             writer.writeText(getClientId(context), null);
             writer.writeText("');", null);
-            writer.endElement("span");
             writer.endElement("script");
+            writer.endElement("span");
         }
     }
 }
