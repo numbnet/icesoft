@@ -42,4 +42,4 @@ html.bb10ctr .mobi-panelpopup-bg, html.bb10ctr .mobi-submitnotific-bg{ display: 
 
 html.ie10 *{ filter: none !important; } /* turn off filters for ie10 */
 
-html.android-ctr .ice-status-indicator-overlay{ display: none !important; } /* avoid android container rendering issues on session expiry */
+html.android-browser .ice-status-indicator-overlay{ display: none !important; } /* avoid android container rendering issues on session expiry */
