@@ -71,16 +71,21 @@ ice.mobi.hasClass = function(ele, remove_cls) {
     return ele.className.replace( /(?:^|\s)remove_cls(?!\S)/ , '' );
 };
 ice.registerAuxUpload = function registerAuxUpload(sessionid, uploadURL) {
+    var sxURL = "icemobile://c=register&r=" +
+                        escape(window.location) + "&JSESSIONID=" + sessionid +
+                        "&u=" + escape(uploadURL);
+
+    if (window.chrome)  {
+        window.location.href = sxURL;
+        return;
+    }
+
     var auxiframe = document.getElementById('auxiframe');
     if (null == auxiframe) {
         auxiframe = document.createElement('iframe');
         auxiframe.setAttribute("id", "auxiframe");
         auxiframe.setAttribute("style", "width:0px; height:0px; border: 0px");
-        auxiframe.setAttribute("src",
-                "icemobile://c=register&r=" +
-                        escape(window.location) + "&JSESSIONID=" + sessionid +
-                        "&u=" + escape(uploadURL)
-        );
+        auxiframe.setAttribute("src", sxURL);
         document.body.appendChild(auxiframe);
     }
 };
