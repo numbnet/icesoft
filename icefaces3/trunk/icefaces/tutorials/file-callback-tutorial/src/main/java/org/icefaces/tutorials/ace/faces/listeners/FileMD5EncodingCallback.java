@@ -58,8 +58,6 @@ public class FileMD5EncodingCallback implements FileEntryCallback, Serializable 
         // We can fail the file here for invalid file type, or some other reason
         invalidExtension = extensionList.contains(FilenameUtils.getExtension(
             fileInfo.getFileName()));
-        System.out.println("Uploaded file extension: " + FilenameUtils.getExtension(fileInfo.getFileName()));
-        System.out.println("Current phase: " + FacesContext.getCurrentInstance().getCurrentPhaseId());
 	}
 
 	// Hash a block of bytes

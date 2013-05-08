@@ -16,7 +16,9 @@
 
 package org.icefaces.tutorial.composite.beans;
 
-public class NameBean {
+import java.io.Serializable;
+
+public class NameBean implements Serializable {
 	private String firstName;
 	private String middleName;
 	private String lastName;

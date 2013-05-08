@@ -22,7 +22,7 @@
 
     <groupId>org.icefaces.tutorial</groupId>
     <artifactId>dateTimeEntry-locale-tutorial</artifactId>
-    <version>1.0</version>
+    <version>3.3.0</version>
 
     <repositories>
         <repository>
@@ -32,9 +32,9 @@
     </repositories>
 
     <parent>
-        <groupId>org.icefaces.tutorial.ace-only</groupId>
+        <groupId>org.icefaces.tutorial.ace</groupId>
         <artifactId>base</artifactId>
-        <version>1.0</version>
+        <version>3.3.0</version>
     </parent>
 
     <name>ACE DateTimeEntry Locale Tutorial</name>

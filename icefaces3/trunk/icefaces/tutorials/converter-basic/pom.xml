@@ -22,7 +22,7 @@
 
     <groupId>org.icefaces.tutorial</groupId>
     <artifactId>converter-basic</artifactId>
-    <version>1.0</version>
+    <version>3.3.0</version>
 
     <repositories>
         <repository>
@@ -34,7 +34,7 @@
     <parent>
         <groupId>org.icefaces.tutorial.ice</groupId>
         <artifactId>base</artifactId>
-        <version>1.0</version>
+        <version>3.3.0</version>
     </parent>
 
     <name>ICE Converter Basic Tutorial</name>

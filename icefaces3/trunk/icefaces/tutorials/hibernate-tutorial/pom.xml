@@ -22,7 +22,7 @@
 
     <groupId>org.icefaces.tutorial</groupId>
     <artifactId>hibernate-tutorial</artifactId>
-    <version>1.0</version>
+    <version>3.3.0</version>
 
     <repositories>
         <repository>
@@ -58,7 +58,7 @@
     <parent>
         <groupId>org.icefaces.tutorial.ice</groupId>
         <artifactId>base</artifactId>
-        <version>1.0</version>
+        <version>3.3.0</version>
     </parent>
 
     <dependencies>
@@ -71,7 +71,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.6.2.Final</version>
+            <version>3.6.10.Final</version>
         </dependency>
         <dependency>
             <groupId>javassist</groupId>
