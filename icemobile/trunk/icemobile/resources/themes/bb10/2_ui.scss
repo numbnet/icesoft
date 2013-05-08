@@ -2121,17 +2121,14 @@ label.ui-submit { font-size: 16px; line-height: 1.4; font-weight: normal; margin
 	.ui-popup .ui-field-contain label.ui-submit,
 	.ui-popup .ui-field-contain .ui-controlgroup-label,
 	.ui-popup .ui-field-contain label.ui-select,
-	.ui-popup .ui-field-contain label.ui-input-text,
-	.ui-popup .ui-field-contain label /* mobi */ {
+	.ui-popup .ui-field-contain label.ui-input-text{
 		font-size: 16px; line-height: 1.4; display: block; font-weight: normal; margin: 0 0 .3em;
 	}
 	.ui-popup .ui-field-contain .ui-btn.ui-submit,
 	.ui-popup .ui-field-contain .ui-controlgroup-controls,
 	.ui-popup .ui-field-contain .ui-select,
 	.ui-popup .ui-field-contain input.ui-input-text,
-	.ui-popup .ui-field-contain input, /* mobi */
 	.ui-popup .ui-field-contain textarea.ui-input-text,
-	.ui-popup .ui-field-contain textarea, /* mobi */
 	.ui-popup .ui-field-contain .ui-input-search {
 		width: 100%; display: block;
 	}
@@ -2273,17 +2270,14 @@ textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; 
 input.ui-mini, .ui-mini input, textarea.ui-mini { font-size: 14px; }
 textarea.ui-mini { height: 45px; }
 @media all and (min-width: 450px){
-	.ui-field-contain label.ui-input-text,
-	.ui-field-contain label /* mobi */  { 
+	.ui-field-contain label.ui-input-text{ 
 		vertical-align: top; display: inline-block; width: 20%; margin: 0 2% 0 0;
 		line-height: 1.8em;
 		text-align: left;
 		@include border-box;
 	}
 	.ui-field-contain input.ui-input-text, 
-	.ui-field-contain input, /* mobi */
 	.ui-field-contain textarea.ui-input-text, 
-	.ui-field-contain textarea, /* mobi */
 	.ui-field-contain .ui-input-search { width: 78%; display: inline-block; } 
 	.ui-hide-label input.ui-input-text, 
 	.ui-hide-label textarea.ui-input-text, 
