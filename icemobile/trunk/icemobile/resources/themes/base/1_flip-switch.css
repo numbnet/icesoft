@@ -22,6 +22,9 @@
 .mobi-flip-switch-off span:last-child, .mobi-flip-switch-off span  {
     color: #666666;
 }
+.mobi-flip-switch-off span:last-child{
+    min-width:35px;
+}
 .mobi-flip-switch-off span:first-child{
     color:transparent;
 }
@@ -32,6 +35,7 @@
 .mobi-flip-switch-on span:first-child {
     color: #ffffff;
     border-left: none;
+    min-width:35px;
 }
 
 .mobi-flip-switch-txt {
