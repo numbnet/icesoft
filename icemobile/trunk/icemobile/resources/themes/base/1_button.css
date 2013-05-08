@@ -51,8 +51,12 @@
     margin: 0;
     max-width: 20%;
 }
+div.mobi-button-back {
+    position: relative;
+    min-height: 14px;
+}
 .mobi-pagePanel-header div.mobi-button-back {
-    min-height: 6px;
+    min-height: 14px;
     min-width: 9px;
 }
 div.mobi-button-back > span, .mobi-button-placeholder { display: none; } /* inner span and b only used for iphone theme */

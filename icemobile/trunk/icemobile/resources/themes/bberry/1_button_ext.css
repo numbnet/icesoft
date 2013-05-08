@@ -47,3 +47,9 @@
 .mobi-button-back input{
 	left: 0;
 }
+.mobi-pagePanel-header div.mobi-button-back {
+    min-width: 14px;
+}
+div.mobi-button-back > input{
+    left: 3px;
+}
