@@ -260,7 +260,6 @@ public class MainServlet extends HttpServlet {
 
     private void returnNotFound(final HttpServletResponse response)
     throws IOException {
-        Thread.dumpStack();
         response.setStatus(404);
         response.setHeader("Content-Type", "text/plain; charset=UTF-8");
         Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
