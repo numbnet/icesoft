@@ -37,11 +37,11 @@ public class RefreshHandler extends TagHandler {
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
-        boolean disabled = getDisabled();
+        boolean disabled = getDisabled(ctx);
         if (!disabled) {
             FacesContext context = FacesContext.getCurrentInstance();
             UIOutput refreshSetup = new RefreshSetupOutput(
-                getInterval(), getDuration(), disabled);
+                getInterval(ctx), getDuration(ctx), disabled);
             UIViewRoot viewRoot = context.getViewRoot();
             refreshSetup.setTransient(true);
             refreshSetup.setId(viewRoot.createUniqueId(context, "_setupRefresh"));
@@ -49,27 +49,27 @@ public class RefreshHandler extends TagHandler {
         }
     }
 
-    public long getInterval()  {
+    public long getInterval(FaceletContext ctx)  {
         TagAttribute intervalAttribute = getAttribute("interval");
         long interval = intervalAttribute == null ? 10000 :
-            (Long.valueOf(intervalAttribute.getValue()) * 1000);
+            (Long.valueOf(intervalAttribute.getValue(ctx)) * 1000);
             //seconds
         return interval;
     }
 
-    public long getDuration()  {
+    public long getDuration(FaceletContext ctx)  {
         TagAttribute durationAttribute = getAttribute("duration");
         long duration = durationAttribute == null ? -1 :
-            (Long.valueOf(durationAttribute.getValue()) * 60 * 1000);
+            (Long.valueOf(durationAttribute.getValue(ctx)) * 60 * 1000);
             //minutes
         return duration;
     }
 
-    public boolean getDisabled()  {
+    public boolean getDisabled(FaceletContext ctx)  {
         TagAttribute disabledAttribute = getAttribute("disabled");
         boolean disabled = disabledAttribute == null ? false :
-            Boolean.parseBoolean(disabledAttribute.getValue());
-        disabled = getDuration() == 0 ? true : disabled;
+            Boolean.parseBoolean(disabledAttribute.getValue(ctx));
+        disabled = getDuration(ctx) == 0 ? true : disabled;
         return disabled;
     }
 
