@@ -64,6 +64,7 @@ public class ICEmobileSX extends Activity
     private static final String LOG_TAG = "ICEmobileSX";
 
     /* Container configuration constants */
+    public static final String HOME_URL = "http://www.icesoft.org/java/demos/icemobile-demos.jsf";
     protected static final boolean INCLUDE_CAMERA = true;
     protected static final boolean INCLUDE_AUDIO = true;
     protected static final boolean INCLUDE_VIDEO = true;
@@ -112,7 +113,7 @@ public class ICEmobileSX extends Activity
 
     public void returnToBrowser()  {
         if (null == mReturnUri)  {
-            mReturnUri = Uri.parse("http://www.google.com");
+            mReturnUri = Uri.parse(HOME_URL);
         }
         Intent browserIntent = new 
                 Intent(Intent.ACTION_VIEW, 
