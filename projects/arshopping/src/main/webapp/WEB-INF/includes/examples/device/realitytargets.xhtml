@@ -21,7 +21,8 @@
              xmlns:util="http://java.sun.com/jsf/composite/components"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <util:exampleTabset exampleBean="#{realityTargetsBean}"
-            autoWidth="#{viewSize ne 'large'}"/>
+            <ui:include src="#{realityTargetsBean.examplePath}">
+                <ui:param name="viewSize" value="small"/>
+            </ui:include>
 
 </ui:composition>
