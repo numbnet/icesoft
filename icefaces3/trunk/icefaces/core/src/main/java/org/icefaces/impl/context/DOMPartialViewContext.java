@@ -28,6 +28,7 @@ import org.w3c.dom.NodeList;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -608,8 +609,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
         //See if any form ids were recorded that need their ViewState fixed
         Map facesMap = facesContext.getAttributes();
-        ArrayList formIdList = (ArrayList)facesMap.get(FixViewState.FORM_LIST_KEY);
-        if( formIdList == null || formIdList.isEmpty() ){
+        ArrayList formIdList = (ArrayList) facesMap.get(FixViewState.FORM_LIST_KEY);
+        if (formIdList == null || formIdList.isEmpty()) {
             //No need to do anything if there are no form ids recorded.
             return;
         }
@@ -620,7 +621,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         //Build an array of the form ids to be passed into the appropriate client function
         StringBuilder buff = new StringBuilder("var iceFormIdList=[");
         for (int i = 0; i < formIdList.size(); i++) {
-            if( i > 0 ){
+            if (i > 0) {
                 buff.append(", ");
             }
             String fullFormId = (String) formIdList.get(i);
@@ -664,13 +665,27 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
 
     private void renderState() throws IOException {
-        // Get the view state and write it to the response..
+        Map facesMap = facesContext.getAttributes();
         PartialResponseWriter writer = getPartialResponseWriter();
-        writer.startUpdate(PartialResponseWriter.VIEW_STATE_MARKER);
-        String state = facesContext.getApplication().getStateManager().getViewState(facesContext);
-        writer.write(state);
-        writer.endUpdate();
+        String viewState = facesContext.getApplication().getStateManager().getViewState(facesContext);
 
+        if (EnvUtils.isJSF22()) {
+            ArrayList formIdList = (ArrayList) facesMap.get(FixViewState.FORM_LIST_KEY);
+            if (formIdList != null && !formIdList.isEmpty()) {
+                UIViewRoot viewRoot = facesContext.getViewRoot();
+                String viewRootId = viewRoot.getId();
+                char separator = UINamingContainer.getSeparatorChar(facesContext);
+                for (int i = 0; i < formIdList.size(); i++) {
+                    writer.startUpdate(viewRootId + separator + PartialResponseWriter.VIEW_STATE_MARKER + separator + i);
+                    writer.write(viewState);
+                    writer.endUpdate();
+                }
+            }
+        } else {
+            writer.startUpdate(PartialResponseWriter.VIEW_STATE_MARKER);
+            writer.write(viewState);
+            writer.endUpdate();
+        }
     }
 
     protected void renderExtensions() {

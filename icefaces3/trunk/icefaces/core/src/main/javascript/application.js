@@ -858,7 +858,7 @@ if (!window.ice.icefaces) {
 
         function ifViewStateUpdated(updates, callback) {
             var viewStateUpdate = detect(updates.getElementsByTagName('update'), function(update) {
-                return update.getAttribute('id') == 'javax.faces.ViewState';
+                return contains(update.getAttribute('id'), 'javax.faces.ViewState');
             });
 
             if (viewStateUpdate) {
@@ -980,11 +980,11 @@ if (!window.ice.icefaces) {
 
         function findAndNotifyUpdatedElements(update) {
             var updatedElementId = update.getAttribute('id');
-            if ("javax.faces.ViewState" === updatedElementId) {
+            if (contains(updatedElementId, 'javax.faces.ViewState')) {
                 return;
             }
             var fvsTail = updatedElementId.substr(updatedElementId.length - 13);
-            if ("_fixviewstate" === fvsTail) {
+            if ('_fixviewstate' === fvsTail) {
                 return;
             }
             var updatedElement = lookupElementById(updatedElementId);

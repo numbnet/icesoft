@@ -239,7 +239,7 @@ var singleSubmit;
         return function(updates) {
             var updatedFragments = inject(updates.getElementsByTagName('update'), [], function(result, update) {
                 var id = update.getAttribute('id');
-                if (id == 'javax.faces.ViewState' || endsWith(id, '_fixviewstate')) {
+                if (contains(id, 'javax.faces.ViewState') || endsWith(id, '_fixviewstate')) {
                     return result;
                 } else {
                     return append(result, lookupElementById(id));
