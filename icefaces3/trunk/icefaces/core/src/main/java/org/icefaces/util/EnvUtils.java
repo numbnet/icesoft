@@ -804,7 +804,7 @@ public class EnvUtils {
      * @return true if JSF implementation is 2.2
      */
     public static boolean isJSF22() {
-        return FlowClass != null;
+        return FacesContext.class.getPackage().getImplementationVersion().startsWith("2.2");
     }
 
 
