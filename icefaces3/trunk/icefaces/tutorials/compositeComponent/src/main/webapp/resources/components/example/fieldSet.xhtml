@@ -27,7 +27,8 @@
     	
 	<composite:implementation>
 		<h:outputLabel for="input" value="#{cc.attrs.label}" style="float:left;" />  
-		<h:inputText id="input" value="#{cc.attrs.value}" style="float:left;"  required="#{cc.attrs.required}" />
+		<h:inputText id="input" value="#{cc.attrs.value}" label="#{cc.attrs.label}"
+                     required="#{cc.attrs.required}" style="float:left;" />
 		<h:message for="input" id="msg" />
 	</composite:implementation>
 </html>
