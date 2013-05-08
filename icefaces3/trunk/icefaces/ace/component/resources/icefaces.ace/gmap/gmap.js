@@ -177,6 +177,14 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             var type = document.getElementById(ele+"_type");
 			if (type) type.value = map.getMapTypeId();
         });
+		var previousVisible = ice.ace.jq(map.getDiv()).is(':visible');
+		gmapWrapper.poll = window.setInterval(function() {
+			var currentVisible = ice.ace.jq(map.getDiv()).is(':visible');
+			if (!previousVisible && currentVisible) {
+				google.maps.event.trigger(map, 'resize');
+			}
+			previousVisible = currentVisible;
+		}, 100);
         initializing = false;
         GMapRepository[ele] = gmapWrapper;
         return gmapWrapper;
