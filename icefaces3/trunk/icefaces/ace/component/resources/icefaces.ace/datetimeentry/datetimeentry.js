@@ -93,11 +93,6 @@ ice.ace.Calendar = function(id, cfg) {
         }
         behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.dateTextChange;
     }
-
-    var widget = this;
-    ice.onElementUpdate(id, function() {
-        widget.destroy();
-    });
 };
 
 ice.ace.Calendar.prototype.configureLocale = function() {
@@ -195,18 +190,26 @@ ice.ace.Calendar.init = function(options) {
         var buttonImage = options.buttonImage || defaults.buttonImage;
         var buttonImageOnly = options.buttonImageOnly || defaults.buttonImageOnly;
         var isRTL = options.isRTL || defaults.isRTL;
+        var initEltSet = ice.ace.jq();
+        var create = function () {
+            var widget = ice.ace.lazy("Calendar", [id, options]);
+            ice.onElementUpdate(id, function () {
+                widget.destroy();
+                initEltSet.remove();
+            });
+            return widget;
+        };
         var initAndShow = function() {
             if (window[widgetVar]) return;
             if (trigger) trigger.remove();
-            window[widgetVar] = new ice.ace.Calendar(id, options);
+            window[widgetVar] = create();
             if (!window[widgetVar].pickerFn) return;
             window[widgetVar].jq[window[widgetVar].pickerFn]("show");
         };
-        var initEltSet = ice.ace.jq();
         var behavior = options.behaviors && options.behaviors.dateTextChange;
 
         if (!options.popup) {
-            window[widgetVar] = new ice.ace.Calendar(id, options);
+            window[widgetVar] = create();
             return;
         }
 
@@ -242,10 +245,5 @@ ice.ace.Calendar.init = function(options) {
             input.one("focus", initAndShow);
             initEltSet = initEltSet.add(input);
         }
-
-        ice.onElementUpdate(id, function() {
-            // .remove cleans jQuery state unlike .unbind
-            initEltSet.remove();
-        });
     });
 };
