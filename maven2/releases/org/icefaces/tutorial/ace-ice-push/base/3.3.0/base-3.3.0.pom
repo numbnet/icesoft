@@ -14,16 +14,16 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.icefaces.tutorial.ice-push</groupId>
+    <groupId>org.icefaces.tutorial.ace-ice-push</groupId>
     <artifactId>base</artifactId>
     <version>3.3.0</version>
 
-    <name>ICEfaces ICE ICEpush Tutorial Base POM</name>
+    <name>ICEfaces ACE ICE ICEpush Tutorial Base POM</name>
 
     <parent>
         <groupId>org.icefaces.tutorial</groupId>
@@ -32,7 +32,7 @@
     </parent>
 
     <packaging>pom</packaging>
-
+    
     <properties>
         <ice.version>3.3.0</ice.version>
         <jsf.version>2.1.21</jsf.version>
@@ -49,6 +49,11 @@
                     <artifactId>icepush</artifactId>
                  </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.icefaces</groupId>
+            <artifactId>icefaces-ace</artifactId>
+            <version>${ice.version}</version>
         </dependency>
         <dependency>
             <groupId>org.icefaces</groupId>
@@ -71,7 +76,7 @@
             </exclusions>
         </dependency>
     </dependencies>
-
+    
     <profiles>
         <profile>
             <id>servlet</id>
