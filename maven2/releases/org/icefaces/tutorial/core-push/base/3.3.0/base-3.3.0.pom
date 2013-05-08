@@ -43,11 +43,27 @@
             <groupId>org.icefaces</groupId>
             <artifactId>icefaces</artifactId>
             <version>${ice.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.icepush</groupId>
+                    <artifactId>icepush</artifactId>
+                 </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.icepush</groupId>
             <artifactId>icepush</artifactId>
             <version>${ice.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet.jsp</groupId>
+                    <artifactId>jsp-api</artifactId>
+                 </exclusion>
+                <exclusion>
+                    <groupId>javax.mail</groupId>
+                    <artifactId>mail</artifactId>
+                 </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     

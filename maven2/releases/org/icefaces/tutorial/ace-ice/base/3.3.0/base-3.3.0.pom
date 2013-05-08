@@ -43,6 +43,12 @@
             <groupId>org.icefaces</groupId>
             <artifactId>icefaces</artifactId>
             <version>${ice.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.icepush</groupId>
+                    <artifactId>icepush</artifactId>
+                 </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.icefaces</groupId>
