@@ -36,25 +36,6 @@
     <target name="install" depends="get-maven">
         <artifact:localRepository id="local.repository"
                                   path="${local.repository}" layout="default"/>
-        <artifact:pom id="icepushPom" file="icepush.pom">
-            <localRepository refid="local.repository"/>
-        </artifact:pom>
-        <echo>installing ${icepush.lib.name}.jar to local repository
-        </echo>
-        <artifact:install file="${lib.dir}/${icepush.lib.name}.jar">
-            <localRepository refid="local.repository"/>
-            <pom refid="icepushPom"/>
-        </artifact:install>
-
-        <artifact:pom id="icefacesPom" file="icefaces.pom">
-            <localRepository refid="local.repository"/>
-        </artifact:pom>
-        <echo>installing ${icefaces.lib.name}.jar to local repository
-        </echo>
-        <artifact:install file="${lib.dir}/${icefaces.lib.name}.jar">
-            <localRepository refid="local.repository"/>
-            <pom refid="icefacesPom"/>
-        </artifact:install>
 
         <artifact:pom id="mobiPom" file="icefaces-mobi.pom">
             <localRepository refid="local.repository"/>
@@ -77,7 +58,17 @@
             <localRepository refid="local.repository"/>
             <pom refid="jspPom"/>
         </artifact:install>
-        
+
+        <artifact:pom id="springPom" file="icemobile-spring.pom">
+            <localRepository refid="local.repository"/>
+        </artifact:pom>
+        <echo>installing ${icemobile-spring.lib.name}.jar to local
+            repository
+        </echo>
+        <artifact:install file="${lib.dir}/${icemobile-spring.lib.name}.jar">
+            <localRepository refid="local.repository"/>
+            <pom refid="springPom"/>
+        </artifact:install>
     </target>
 
     <target name="get-maven" unless="maven.ant.task.available">
