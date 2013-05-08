@@ -207,6 +207,7 @@ if (!window.ice.mobile) {
                 }
             }
 
+            context.source = source;
             context.sourceid = sourceId;
             context.formid = formId;
             context.element = element;
@@ -255,6 +256,7 @@ if (!window.ice.mobile) {
                         form.removeChild(tempInputs[i]);
                     }
                 }
+                context.source = null;
                 context.sourceid = "";
                 context.formid = "";
                 context.serialized = "";

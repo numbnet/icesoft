@@ -93,6 +93,7 @@ if (!window.ice.mobile) {
             jsfResponse.responseXML = xmlDoc;
             jsf.ajax.response(jsfResponse, context);
 
+            context.source = null;
             context.sourceid = "";
             context.formid = "";
             context.serialized = "";
@@ -141,6 +142,7 @@ if (!window.ice.mobile) {
                 }
             }
 
+            context.source = source;
             context.sourceid = sourceId;
             context.formid = formId;
             context.element = element;
