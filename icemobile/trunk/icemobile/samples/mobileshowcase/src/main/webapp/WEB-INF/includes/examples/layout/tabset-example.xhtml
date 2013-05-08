@@ -35,13 +35,16 @@
                     <mobi:fieldsetGroup>
                         <mobi:fieldsetRow>
                             <h:outputLabel for="fixedPosition" value="Fixed Position:" styleClass="ui-input-text"/>
-                            <mobi:flipswitch id="fixedPosition" value="#{tabsetBean.fixedPosition}"
-                                singleSubmit="true"/>
+                            <mobi:flipswitch id="fixedPosition" value="#{tabsetBean.fixedPosition}">
+                                <mobi:ajax render="tabset" execute="tabset"/>
+                            </mobi:flipswitch>
                         </mobi:fieldsetRow>
                         <mobi:fieldsetRow>
                             <h:outputLabel for="orientation" value="Orientation:" styleClass="ui-input-text"/>
                             <mobi:flipswitch id="orientation" value="#{tabsetBean.orientationTop}"
-                                singleSubmit="true" labelOff="Bottom" labelOn="Top"/>
+                                labelOff="Bottom" labelOn="Top">
+                                <mobi:ajax render="tabset" execute="tabset"/>
+                            </mobi:flipswitch>
                         </mobi:fieldsetRow>
                     </mobi:fieldsetGroup>
                 </mobi:contentPane>
