@@ -23,7 +23,7 @@ import java.net.URLDecoder;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 //import android.widget.Button;
 //import android.widget.TextView;
 //import android.view.ViewGroup;
@@ -155,11 +155,10 @@ public class ICEmobileSX extends Activity
             }
         };
 
-        LinearLayout ll = new LinearLayout(this);
 	this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(ll);
-
-	getWindow().setBackgroundDrawableResource(R.drawable.background);
+        setContentView(R.layout.main);
+	ImageView myImage = (ImageView) findViewById(R.id.background);
+	myImage.setAlpha(127);
 
 	ProgressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
         includeUtil();
