@@ -75,6 +75,7 @@ if (!window.ice.mobile) {
             for (var i in tempInputs)  {
                 form.removeChild(tempInputs[i]);
             }
+            context.source = null;
             context.sourceid = "";
             context.formid = "";
             context.serialized = "";
@@ -130,6 +131,7 @@ if (!window.ice.mobile) {
                 }
             }
 
+            context.source = source;
             context.sourceid = sourceId;
             context.formid = formId;
             context.element = element;
