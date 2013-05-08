@@ -25,6 +25,9 @@
      border-right: none;
      border-left: none;
 }
+.div.mobi-button-back > input{
+    left: 5px;
+}
 .mobi-button:active, .mobi-button:focus, .mobi-button[selected], div.mobi-button-back > input:active {
     @include box-shadow2(inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF);
     background-color:#66AFFF;
@@ -66,7 +69,7 @@
     border-radius:0;
     color:#666;
     font-weight:bold;
-    padding-left: 20px;
+    padding-left: 28px;
     @include box-shadow(none);
     text-shadow: none;
 }
