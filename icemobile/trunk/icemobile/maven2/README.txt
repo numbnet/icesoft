@@ -14,22 +14,23 @@ you would like to install to.
 2) The ant target "get-maven" requires an internet connection in order to obtain the jar needed to run maven from ant. This jar 
 will be placed into icemobile/lib.
 
-3) The ant target "install" will install icepush, icefaces and icefaces-mobi jar and poms to the local repository specified in 
+3) The ant target "install" will install icefaces-mobi and icemobile-jsp jars and poms to the local repository specified in
 the build.properties file.
 
 These steps are not needed if you choose to use the releases repository at
 http://anonsvn.icefaces.org/repo/maven2/releases/. 
 Once a release has been made, it will take a day or so for the proper entries to be made available.
 
-Each example in the ICEmobile bundle has it's own build pom and >mvn clean package can be run to create 1 of 2 different 
-profiles: web or profile. The web profile will not include the jsf2 jars (ex. Glassfish and Jboss) while the servlet profile will (ex. Tomcat). 
+Each JSF example in the ICEmobile bundle has it's own build pom and >mvn clean package can be run to create 1 of 3 different
+profiles: web, servlet, servlet-myfaces or web-myfaces.
 For example:
 
->mvn clean package -Pservlet runs the profile for a server which doesn't already contain the jsf jars.
+>mvn clean package -Pservlet-myfaces runs the profile for a server which doesn't already contain the jsf jars using the
+myfaces implementation of JSF
 
-Another approach is to use the mvn command line (or your IDE) to install from this directory:
+Another approach is to use the mvn command line (or your IDE) to install from this directory.  Only open source releases
+are available from the icefaces svn mvn2 repo.
 
-> mvn install:install-file -Dfile=../lib/icefaces.jar -DpomFile=icefaces.pom
 
  
 
