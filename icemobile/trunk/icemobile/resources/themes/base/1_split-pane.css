@@ -25,6 +25,9 @@
     display:inline-block;
     vertical-align:top;
 }
-.mobi-splitpane-divider {
-    border-left: solid 1px;
+.mobi-splitpane-scrollable{
+    border-right: 1px solid #DDD;
+}
+.mobi-splitpane-scrollable:last-child{
+    border-right: none;
 }

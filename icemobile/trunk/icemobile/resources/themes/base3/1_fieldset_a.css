@@ -19,3 +19,6 @@
 .mobi-fieldset-row.mobi-grid > label {
     padding-right: 10px;
 }
+.mobi-fieldset-row label {
+    line-height: 1.8em;
+}
