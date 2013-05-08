@@ -203,5 +203,15 @@ public class UserAgentInfo implements Serializable{
    public boolean isChrome(){
        return userAgentString.contains(CHROME);
    }
+   
+   public boolean isFirefoxAndroid(){
+       return userAgentString.contains(FIREFOX_ANDROID_MOBILE) || userAgentString.contains(FIREFOX_ANDROID_TABLET);
+   }
+   
+   /* Android browser and webview share the same useragent */
+   public boolean isAndroidBrowserOrWebView(){
+       return isAndroidOS() && (!isChrome() && !isFirefoxAndroid());
+   }
+
 
 }

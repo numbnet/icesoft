@@ -277,5 +277,14 @@ public class ClientDescriptor implements Serializable{
         return isIOS5() || isIOS6() || isBlackBerryOS() 
                 || ( isDesktopBrowser() && isChromeBrowser());
     }
+	
+	public boolean isAndroidBrowser(){
+        return _userAgentInfo.isAndroidBrowserOrWebView() && !isEnhancedBrowser();
+    }
+    
+    public boolean isAndroidBrowserOrWebView(){
+        return _userAgentInfo.isAndroidBrowserOrWebView();
+    }
+
 
 }
