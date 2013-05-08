@@ -23,7 +23,7 @@
 %>
 <div>
     <form:form id="geolocationform" method="POST"
-        modelAttribute="geolocationBean" cssClass="form geolocpage"
+        modelAttribute="geolocationBean" cssClass="geolocpage"
     >
 
         <mobi:largeView><h3>GeoLocation</h3></mobi:largeView>
@@ -55,9 +55,9 @@
                     class="center"
                 ></canvas>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center">
                 <mobi:commandButton value="Locate Me" type="submit"
-                    buttonType="important"/>
+                    buttonType="important" style="width:50%"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
@@ -90,47 +90,42 @@
                     Updates:</label>
                 <mobi:flipswitch id="continuousUpdates"
                     name="continuousUpdates" labelOn="true"
-                    labelOff="false"
+                    labelOff="false" style="float:right"
                     value="${geolocationBean.continuousUpdates}"
                 />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <label for="enableHighPrecision">enableHighPrecision:</label>
                 <form:select path="enableHighPrecision" items="${enableHighPrecisionTypes}" 
-                    style="max-width: 100px;"/>
+                    style="max-width: 100px;float:right"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow styleClass="timeout">
-                <label for="timeout">Timeout:</label>
-                <div style="max-width: 50%">
-                    <span
-                        style="font-size: 11px; float: right; margin: -5px -5px 5px -15px; text-align: left;"
-                    > (longest allowable time for reading to arrive
-                        (0-x, seconds) </span>
-                    <mobi:inputText id="timeout" name="timeout"
-                        value="${geolocationBean.timeout}" type="number"
-                        style="float: right;clear: both;"
-                    />
+                <div style="display:inline-block;max-width:50%">
+                    <label>Timeout:</label>
+                    <span style="font-size: 11px;float: left;clear:both;line-height:12px;">
+                        (longest allowable time for reading to arrive (0-x, seconds))
+                    </span>
                 </div>
+                <mobi:inputText id="timeout" name="timeout"
+                        value="${geolocationBean.timeout}" type="number"
+                         style="float:right;max-width:45%"/>&#160;
             </mobi:fieldsetRow>
             <mobi:fieldsetRow styleClass="maxage">
-                <label for="maximumAge">Maximum Age:</label>
-                <div style="max-width: 50%">
-                    <span
-                        style="font-size: 11px; float: right; margin: -5px -5px 5px -15px; text-align: left;"
-                    > (oldest allowable cached Location reading (0-x,
-                        seconds) </span>
-                    <mobi:inputText id="maximumAge" name="maximumAge"
-                        value="${geolocationBean.maximumAge}"
-                        type="number" style="float: right;clear: both;"
-                    />
+                <div style="display:inline-block;max-width:50%">
+                    <label>Maximum Age:</label>
+                    <span style="font-size: 11px;float: left;clear:both;line-height:12px;">
+                        (oldest allowable cached Location reading (0-x, seconds))
+                    </span>
                 </div>
+                <mobi:inputText id="maximumAge" name="maximumAge"
+                        value="${geolocationBean.maximumAge}"
+                        type="number" style="float:right;max-width:45%"/>&#160;
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
         <mobi:commandButton type="submit" buttonType="important"
             styleClass="submit" value="Update Settings"
         />
-
         <br />
 
         <script type="text/javascript">
