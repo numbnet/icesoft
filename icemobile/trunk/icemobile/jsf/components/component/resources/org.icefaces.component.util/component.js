@@ -1164,24 +1164,15 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
             /* set height to full visible size of parent */
             bodyDivWrapper.style.height = fullHeight + 'px';
-            console.log('full ' + fullHeight);
-            console.log('dim ' + dim.top);
 
             /* set height to full visible size of parent minus
              height of all following elements */
             var container = getScrollableContainer(element),
                 bottomResize = function() {
-                    setTimeout(function() {
-                        fullHeight -= (container.scrollHeight - container.clientHeight);
-                        if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i))
-                            fullHeight += 60;
-                        bodyDivWrapper.style.height = fullHeight + 'px';
-
-                        console.log('container scroll ' + container.scrollHeight);
-                        console.log('container client ' + container.clientHeight);
-                        console.log('container diff ' + (container.scrollHeight - container.clientHeight));
-                        console.log('end full ' + fullHeight);
-                    }, 200)
+                    fullHeight -= (container.scrollHeight - container.clientHeight);
+                    if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i))
+                        fullHeight += 60;
+                    bodyDivWrapper.style.height = fullHeight + 'px';
                 };
 
             if (container) bottomResize();
