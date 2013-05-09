@@ -20,7 +20,7 @@
                 xmlns:icecore="http://www.icefaces.org/icefaces/core"
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
    
-    <mobi:pagePanel id="pagePanel">
+    <mobi:pagePanel id="pagePanel" headerSwatch="#{themeBean.headerSwatch}" bodySwatch="#{themeBean.bodySwatch}" footerSwatch="#{themeBean.footerSwatch}">
         <f:facet name="header">
             <h:form id="toolbar" prependId="false">
                 <icecore:singleSubmit rendered="false"/>

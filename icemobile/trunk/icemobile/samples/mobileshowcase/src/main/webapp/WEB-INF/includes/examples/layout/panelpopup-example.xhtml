@@ -35,7 +35,7 @@
                          autoCenter="#{panelPopupBean.autoCenter}"
                          width="260" 
                          headerText="Group of popup items"
-                         style="#{panelPopupBean.autoCenter ? '' : (viewSize eq 'large' ? 'top:50px;left:32%' : 'top:50px;left:10px' )}">
+                         style="#{panelPopupBean.autoCenter ? '' : (mobiClient.handheldBrowser ? 'top:50px;left:10px' : 'top:50px;left:32%' )}">
             <mobi:outputList inset="false">
                 <mobi:outputListItem>
                     <h:commandLink

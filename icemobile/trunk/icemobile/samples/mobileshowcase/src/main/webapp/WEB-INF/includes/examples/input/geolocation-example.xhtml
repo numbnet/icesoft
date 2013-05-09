@@ -43,7 +43,7 @@
     
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <canvas id="mapCanvas" width="#{viewSize eq 'small' ? '260' : '360'}" height="#{viewSize eq 'small' ? '130' : '180'}" class="center"></canvas>
+            <canvas id="mapCanvas" width="#{mobiClient.handheldBrowser ? '260' : '360'}" height="#{mobiClient.handheldBrowser ? '130' : '180'}" class="center"></canvas>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow style="text-align:center">
             <mobi:commandButton value="Reset Values" 
