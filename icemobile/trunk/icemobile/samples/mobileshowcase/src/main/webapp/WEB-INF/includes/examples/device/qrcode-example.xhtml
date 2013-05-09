@@ -27,21 +27,21 @@
        <mobi:getEnhanced/>
        
        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center">
                 <mobi:scan value="#{qrCodeBean.qrScanner}"
                            id="scanOne"
-                           singleSubmit="true"/>
+                           singleSubmit="true" style="width:50%"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel value="QR Code: " style="width:80px"/>
-                <em>
-                <h:outputText rendered="#{not qrCodeBean.qrScannerUrl}"
-                              value="#{qrCodeBean.qrScanner}"/>
-                <h:outputLink value="#{qrCodeBean.qrScanner}"
-                              rendered="#{qrCodeBean.qrScannerUrl}"
-                              style="overflow:hidden;max-width:#{mobiClient.handheldBrowser ? '190px' : '400px'};display:inline-block;text-overflow:ellipsis">
-                        #{qrCodeBean.qrScanner}</h:outputLink>
-                </em>
+                <label>QR Code:</label>
+                <br/>
+                <span style="display:block;max-width:#{mobiClient.handheldBrowser ? '270px' : '100%'};overflow:hidden;text-overflow:ellipsis">
+                    <h:outputText rendered="#{not qrCodeBean.qrScannerUrl}"
+                                  value="#{qrCodeBean.qrScanner}"/>
+                    <h:outputLink value="#{qrCodeBean.qrScanner}"
+                                  rendered="#{qrCodeBean.qrScannerUrl}">
+                            #{qrCodeBean.qrScanner}</h:outputLink>
+                </span>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
@@ -52,11 +52,11 @@
         <h3>QR Code Generator</h3>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <h:outputLabel value="Code Input:"/>
-                <mobi:inputText type="text" value="#{qrCodeBean.qrString}" />
+                <mobi:inputText type="text" value="#{qrCodeBean.qrString}" 
+                    label="Code Input:"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel value="QR Output: "/>
+                <h:outputLabel value="QR Output: " styleClass="ui-input-text"/>
                 <mobi:qrcode value="#{qrCodeBean.qrString}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
