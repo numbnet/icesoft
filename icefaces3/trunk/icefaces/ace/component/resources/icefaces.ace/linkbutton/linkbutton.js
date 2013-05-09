@@ -51,7 +51,7 @@ ice.ace.linkButton.prototype.anchorSelector = ' > span > span > a';
 
 ice.ace.linkButton.prototype.onClick = function () {
     var href = this.anchor.attr('href');
-    var hasHref = href != undefined;
+    var hasHref = !!href;
     var options = {
         source: this.id,
         render:"@all",
