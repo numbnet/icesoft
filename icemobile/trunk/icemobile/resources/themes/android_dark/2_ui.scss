@@ -1914,6 +1914,21 @@ label.ui-submit { font-size: 16px; line-height: 1.4; font-weight: normal; margin
 	}
 	.ui-hide-label .ui-btn.ui-submit { width: auto; display: block; }
 }
+@media all and (max-width: 449px){
+    .ui-field-contain label.ui-input-text{ 
+        vertical-align: top; display: inline-block; width: 30%; margin: 0 2% 0 0;
+        line-height: 1.8em;
+        text-align: left;
+        @include border-box;
+    }
+    .ui-field-contain input.ui-input-text, 
+    .ui-field-contain textarea.ui-input-text, 
+    .ui-field-contain .ui-input-search { width: 68%; display: inline-block; } 
+    .ui-hide-label input.ui-input-text, 
+    .ui-hide-label textarea.ui-input-text, 
+    .ui-hide-label .ui-input-search { width: 100%; }
+    .ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
+}
 .ui-collapsible-inset { margin: .5em 0; }
 .ui-collapsible-heading { font-size: 16px; display: block; margin: 0 -15px; padding: 0; position: relative; }
 .ui-collapsible-inset .ui-collapsible-heading { margin: 0; }
@@ -2278,6 +2293,21 @@ textarea.ui-mini { height: 45px; }
 	.ui-hide-label textarea.ui-input-text, 
 	.ui-hide-label .ui-input-search { width: 100%; }
 	.ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
+}
+@media all and (max-width: 449px){
+    .ui-field-contain label.ui-input-text{ 
+        vertical-align: top; display: inline-block; width: 30%; margin: 0 2% 0 0;
+        line-height: 1.8em;
+        text-align: left;
+        @include border-box;
+    }
+    .ui-field-contain input.ui-input-text, 
+    .ui-field-contain textarea.ui-input-text, 
+    .ui-field-contain .ui-input-search { width: 68%; display: inline-block; } 
+    .ui-hide-label input.ui-input-text, 
+    .ui-hide-label textarea.ui-input-text, 
+    .ui-hide-label .ui-input-search { width: 100%; }
+    .ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
 }
 .ui-listview { margin: 0; }
 ol.ui-listview, ol.ui-listview .ui-li-divider { counter-reset: listnumbering; }
