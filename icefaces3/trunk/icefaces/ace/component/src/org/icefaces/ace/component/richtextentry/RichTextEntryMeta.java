@@ -53,7 +53,11 @@ import org.icefaces.resources.ICEResourceLibrary;
 	@ClientEvent( name="save",
 		javadoc="Fired when the 'Save' button is clicked and the contents of the editor are saved.",
 		tlddoc="Fired when the 'Save' button is clicked and the contents of the editor are saved.",
-		defaultRender="@all", defaultExecute="@this" ) },
+		defaultRender="@all", defaultExecute="@this" ),
+	@ClientEvent( name="blur",
+		javadoc="Fired any time the editor loses focus.",
+		tlddoc="Fired any time the editor loses focus.",
+		defaultRender="@all", defaultExecute="@this" )},
 	defaultEvent="save" )
 public class RichTextEntryMeta extends UIInputMeta {
 
