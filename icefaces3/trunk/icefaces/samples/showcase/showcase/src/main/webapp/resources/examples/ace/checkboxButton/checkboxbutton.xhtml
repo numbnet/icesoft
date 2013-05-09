@@ -34,9 +34,9 @@
     <ui:param name="tldResources" value="#{checkboxButtonResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form style="text-align: center">
+        <h:form id= "form" style="text-align: center">
             <ace:panel>
-                <ace:checkboxButton value="#{checkboxButton.selected}">
+                <ace:checkboxButton id="checkBox" value="#{checkboxButton.selected}">
                     <ace:ajax execute="@this" event="activate" render="valueDescription"/>
                 </ace:checkboxButton>
                 <br/>
