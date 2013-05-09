@@ -102,16 +102,26 @@ ice.ace.richtextentry.renderEditor = function(editor, defaultToolbar, lang, _ski
             htmlEncodeOutput : false
         });
         editorInstance.setData(document.getElementById(editor).value);
-        if (saveOnSubmit) {
-            var updateElement = function(e) {
-                document.getElementById(editor).value = editorInstance.getData();
-            };
-            editorInstance.on('blur', updateElement);
+        if (behaviors && behaviors.behaviors) {
+			if (behaviors.behaviors.save) editorInstance.ajaxSave = behaviors.behaviors.save;
+			if (behaviors.behaviors.blur) editorInstance.ajaxBlur = behaviors.behaviors.blur;
         }
-        if (behaviors) {
-		if (behaviors.behaviors && behaviors.behaviors.save)
-                editorInstance.ajaxSave = behaviors.behaviors.save;
-        }
+		var onBlur = function(e) {
+			var instance = CKEDITOR.instances[editor];
+			var textarea = document.getElementById(editor);
+			if (saveOnSubmit || instance.ajaxBlur) {
+				textarea.value = instance.getData();
+			}
+			if (instance.ajaxBlur) {
+				instance.blurObserver = setTimeout(function(){ice.ace.ab(instance.ajaxBlur);}, 200);
+			}
+		};
+		editorInstance.on('blur', onBlur);
+		var onCommand = function(e) {
+			var instance = CKEDITOR.instances[editor];
+			setTimeout(function(){if (instance.blurObserver) clearTimeout(instance.blurObserver);}, 190);
+		}
+		editorInstance.on('beforeCommandExec', onCommand);
     } catch(e) {
         alert(e);
     }
