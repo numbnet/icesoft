@@ -16,6 +16,7 @@
 
 package com.icesoft.icefaces.tutorial.component.selectinputdate;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.GregorianCalendar;
@@ -33,7 +34,7 @@ import javax.faces.event.ValueChangeEvent;
  * 
  * @since 0.3
  */
-public class SelectInputDateBean {
+public class SelectInputDateBean implements Serializable {
 	/**
 	 * Variables to store the selected dates.
 	 */
