@@ -105,6 +105,15 @@ div.mobi-button-back > span {
     border-bottom-right-radius: 5px; 
     border-top-left-radius: 5px;
     border-top: 1px solid #7B97BD;
+    border-top-width: 0;
+    display: inline-block;
+    position: absolute;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    top: 3px;
+    left: -0.68em;
+    height: 21px;
+    width: 21px;
     
 }
 div.mobi-button-back > input {
@@ -119,16 +128,6 @@ div.mobi-button-back{
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
     box-sizing: border-box;
-}
-div.mobi-button-back > span {
-    display: inline-block;
-    position: absolute;
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-    top: 3px;
-    left: -0.7em;
-    height: 21px;
-    width: 21px;
 }
 div.mobi-button-back input{
     background: transparent;
