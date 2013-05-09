@@ -219,6 +219,13 @@ NSLog(@"handleResponse reloadCurrentURL");
         return;
     }
 
+    if ([@"Welcome" isEqualToString: alertView.title])  {
+        if (buttonIndex == 0)  {
+            [self doGoBack];
+        }
+        return;
+    }
+
     if (buttonIndex == 0) {
         NSURL *theURL = [NSURL URLWithString:self.currentURL];
         NSString *host = [theURL host];
@@ -276,6 +283,13 @@ NSLog(@"handleResponse reloadCurrentURL");
     [[UIApplication sharedApplication] 
             openURL:[NSURL 
                     URLWithString:@"http://mobileshowcase.icemobile.org"]];
+}
+
+- (IBAction) doGoBack  {
+    NSLog(@"ViewController doGoBack");
+    [[UIApplication sharedApplication] 
+            openURL:[NSURL 
+                    URLWithString:@"http://www.icesoft.org/java/initicemobilesx.html"]];
 }
 
 - (IBAction) chooseAction  {
@@ -357,6 +371,19 @@ NSLog(@"handleResponse reloadCurrentURL");
             @"sms", 
             @"geospy", 
             nil];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"initialized"])  {
+        NSLog(@"firstLaunch detected");
+        [[NSUserDefaults standardUserDefaults]
+                setBool:YES forKey:@"initialized"];
+        UIAlertView *alert = [[UIAlertView alloc] 
+                initWithTitle:@"Welcome"
+                message:@"Thank you for using ICEmobile-SX. Return to your web page?"
+                delegate:self cancelButtonTitle:@"OK" 
+                otherButtonTitles:@"Cancel",nil];
+        [alert show];
+        [alert release];
+    }
+
 }
 
 - (void)viewDidUnload
