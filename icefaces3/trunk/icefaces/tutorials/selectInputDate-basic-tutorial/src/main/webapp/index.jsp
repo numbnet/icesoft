@@ -16,7 +16,7 @@
 
 <html>
     <head>
-        <title>ICEfaces Component Showcase</title>
+        <title>ICEfaces ICE SelectInputDate Tutorial</title>
     </head>
     <body>
         <jsp:forward page="selectInputDate-basic.jsf" />
