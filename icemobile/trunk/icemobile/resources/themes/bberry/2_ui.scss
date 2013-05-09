@@ -18,6 +18,7 @@
         width: 100%; display: block;
     }
 }
+
 label.ui-input-text { font-size: 16px; line-height: 1.4; display: block; font-weight: normal; margin: 0 0 .3em; }
 input.ui-input-text, textarea.ui-input-text { background-image: none; padding: .2em; margin: .5em 0; line-height: 1.4; font-size: 14px; display: block; width: 100%; outline: 0; }
 input.ui-input-text.ui-mini, textarea.ui-input-text.ui-mini { margin: .25em 0; }
@@ -39,6 +40,21 @@ textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; 
     .ui-field-contain textarea.ui-input-text, 
     .ui-field-contain textarea, /* mobi */
     .ui-field-contain .ui-input-search { width: 78%; display: inline-block; } 
+    .ui-hide-label input.ui-input-text, 
+    .ui-hide-label textarea.ui-input-text, 
+    .ui-hide-label .ui-input-search { width: 100%; }
+    .ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
+}
+@media all and (max-width: 449px){
+    .ui-field-contain label.ui-input-text{ 
+        vertical-align: top; display: inline-block; width: 30%; margin: 0 2% 0 0;
+        line-height: 1.8em;
+        text-align: left;
+        @include border-box;
+    }
+    .ui-field-contain input.ui-input-text, 
+    .ui-field-contain textarea.ui-input-text, 
+    .ui-field-contain .ui-input-search { width: 68%; display: inline-block; } 
     .ui-hide-label input.ui-input-text, 
     .ui-hide-label textarea.ui-input-text, 
     .ui-hide-label .ui-input-search { width: 100%; }
