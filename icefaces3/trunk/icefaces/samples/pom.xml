@@ -48,12 +48,6 @@
         <dependency>
             <groupId>${icefaces.product.group}</groupId>
             <artifactId>${icefaces.lib.name}</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sun.xml.fastinfoset</groupId>
-                    <artifactId>FastInfoset</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
