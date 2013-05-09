@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Stores the values picked from the SelectInputTextDictionary (different scope to
@@ -33,7 +34,7 @@ import java.util.List;
  *
  * @see SelectInputTextDictionary
  */
-public class SelectInputTextBean {
+public class SelectInputTextBean implements Serializable {
 
     private static Log log = LogFactory.getLog(SelectInputTextBean.class);
 
