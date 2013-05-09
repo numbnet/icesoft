@@ -180,7 +180,10 @@ public class DataViewRenderer extends Renderer {
 
             if (column.isRendered()) {
                 writer.startElement(HTML.TH_ELEM, null);
-                writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_COLUMN_CLASS + "-" + index, null);
+
+                String className = getColumnStyleClass(column, index);
+
+                writer.writeAttribute(HTML.CLASS_ATTR, className, null);
 
                 if (column.getHeaderText() != null)
                     writer.write(column.getHeaderText());
@@ -215,7 +218,10 @@ public class DataViewRenderer extends Renderer {
 
             if (column.isRendered()) {
                 writer.startElement(HTML.TD_ELEM, null);
-                writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_COLUMN_CLASS + "-" + index, null);
+
+                String className = getColumnStyleClass(column, index);
+
+                writer.writeAttribute(HTML.CLASS_ATTR, className, null);
 
                 if (column.getFooterText() != null)
                     writer.write(column.getFooterText());
@@ -228,6 +234,14 @@ public class DataViewRenderer extends Renderer {
         writer.endElement(HTML.TFOOT_ELEM);
 
         if (writeTable) writer.endElement(HTML.TABLE_ELEM);
+    }
+
+    private String getColumnStyleClass(DataViewColumnModel column, int index) {
+        String colStyleClass = column.getStyleClass();
+        String className = IDataView.DATAVIEW_COLUMN_CLASS + "-" + index;
+
+        if (colStyleClass != null) className += " " + colStyleClass;
+        return className;
     }
 
     private void encodeRows(FacesContext context,
@@ -293,7 +307,7 @@ public class DataViewRenderer extends Renderer {
         ValueExpression ve = column.getValueExpression();
         Object value = ve == null ? column.getValue() : ve.getValue(elContext); // use value expression if available, value will have been pre-evaluated
         String type = column.getType();
-        String colClass = IDataView.DATAVIEW_COLUMN_CLASS + "-" + index;
+        String colClass = getColumnStyleClass(column, index);
 
         writer.startElement(HTML.TD_ELEM, null);
 

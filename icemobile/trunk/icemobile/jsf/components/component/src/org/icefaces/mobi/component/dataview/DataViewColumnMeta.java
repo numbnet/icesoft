@@ -1,6 +1,7 @@
 package org.icefaces.mobi.component.dataview;
 
 import org.icefaces.ace.meta.annotation.*;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.convert.Converter;
 
@@ -65,6 +66,9 @@ public class DataViewColumnMeta {
               tlddoc = "Define a ValueExpression whose resulting Object will be iteratively rendered in the table " +
                       "region of the DataView according to the 'type' of this column.")
     Object value;
+
+    @Property(tlddoc = TLDConstants.STYLECLASS)
+    String styleClass;
 
     @Field // MyFaces -  converter must be state saved, cannot cache at component instance level
     Converter converter;

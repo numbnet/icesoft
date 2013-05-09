@@ -39,4 +39,5 @@ public interface DataViewColumnModel {
     public Locale getLocale();
     public boolean isRendered();
     public Integer getReactivePriority();
+    public String getStyleClass();
 }

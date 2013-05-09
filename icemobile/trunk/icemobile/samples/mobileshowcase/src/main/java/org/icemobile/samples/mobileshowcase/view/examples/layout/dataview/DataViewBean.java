@@ -60,7 +60,13 @@ public class DataViewBean extends ExampleImpl<DataViewBean>
 
     public static final String BEAN_NAME = "dataViewBean";
 
-    public boolean colVis = false;
+    public boolean mpgColVis = false;
+    public boolean accelColVis = false;
+    public boolean costColVis = false;
+    public boolean weightColVis = false;
+    public boolean textColVis = false;
+    public boolean nope = false;
+    public String blank = "";
 
     private List<Car> cars = new ArrayList<Car>() {{
         VehicleGenerator vg = new VehicleGenerator();
@@ -71,16 +77,62 @@ public class DataViewBean extends ExampleImpl<DataViewBean>
         super(DataViewBean.class);
     }
 
+    public String getBlank() {
+        return blank;
+    }
+
+    public void setBlank(String blank) {}
+
     public List<Car> getCars() {
         return cars;
     }
 
 
-    public boolean isColVis() {
-        return colVis;
+    public boolean isMpgColVis() {
+        return mpgColVis;
     }
 
-    public void setColVis(boolean colVis) {
-        this.colVis = colVis;
+    public void setMpgColVis(boolean mpgColVis) {
+        this.mpgColVis = mpgColVis;
+    }
+
+    public boolean isAccelColVis() {
+        return accelColVis;
+    }
+
+    public void setAccelColVis(boolean accelColVis) {
+        this.accelColVis = accelColVis;
+    }
+
+    public boolean isCostColVis() {
+        return costColVis;
+    }
+
+    public void setCostColVis(boolean costColVis) {
+        this.costColVis = costColVis;
+    }
+
+    public boolean isWeightColVis() {
+        return weightColVis;
+    }
+
+    public void setWeightColVis(boolean weightColVis) {
+        this.weightColVis = weightColVis;
+    }
+
+    public boolean isTextColVis() {
+        return textColVis;
+    }
+
+    public void setTextColVis(boolean textColVis) {
+        this.textColVis = textColVis;
+    }
+
+    public boolean isNope() {
+        return nope;
+    }
+
+    public void setNope(boolean nope) {
+        this.nope = false;
     }
 }
