@@ -20,29 +20,34 @@
     <resource name="override_styles.css" library="ice.samples.showcase">
         <depends-on>
             <resource name="util/combined.css" library="icefaces.ace"/>
-            <resource name="rime/rime.css" library="ice.compat"/>
-            <resource name="rime-accessible/rime.css" library="ice.compat"/>
-            <resource name="royale/royale.css" library="ice.compat"/>
-            <resource name="royale-accessible/royale.css" library="ice.compat"/>
-            <resource name="xp/xp.css" library="ice.compat"/>
-            <resource name="xp-accessible/xp.css" library="ice.compat"/>
-        </depends-on>
-    </resource>
-    <resource name="override_header.css" library="ice.samples.showcase">
-        <depends-on>
-            <resource name="override_styles.css" library="ice.samples.showcase"/>
         </depends-on>
     </resource>
     <resource name="demo_template.css" library="ice.samples.showcase">
         <depends-on>
-            <resource name="override_header.css" library="ice.samples.showcase"/>
+            <resource name="override_styles.css" library="ice.samples.showcase"/>
         </depends-on>
     </resource>
     <resource name="showcase_styles.css" library="ice.samples.showcase">
         <depends-on>
-            <resource name="override_header.css" library="ice.samples.showcase"/>
+            <resource name="demo_template.css" library="ice.samples.showcase"/>
         </depends-on>
     </resource>
+    <resource name="rime/rime.css" library="ice.compat">
+        <depends-on>
+            <resources name="showcase_styles.css" library="ice.samples.showcase"/>
+        </depends-on>
+    </resource>
+    <resource name="rime/rime-accessible.css" library="ice.compat">
+        <depends-on>
+            <resources name="showcase_styles.css" library="ice.samples.showcase"/>
+        </depends-on>
+    </resource>
+    <resource name="override_header.css" library="ice.samples.showcase">
+        <depends-on>
+            <resource name="rime/rime.css" library="ice.compat"/>
+        </depends-on>
+    </resource>
+
 
     <!-- These entries ensure that the .css files load before the .js ones in the head -->
     <resource name="jsf.js" library="javax.faces">
