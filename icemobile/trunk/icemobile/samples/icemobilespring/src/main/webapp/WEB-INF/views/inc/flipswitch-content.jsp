@@ -36,19 +36,19 @@
 		<mobi:fieldsetRow>
 			<label class="ui-input-text">Auto-Capitalization</label>
 			<mobi:flipswitch id="onOffFlipSwitch" labelOn="On"
-				labelOff="Off" name="onOffFlipSwitch"
+				labelOff="Off" name="onOffFlipSwitch" style="float:right"
 				value="${flipSwitchBean.onOffFlipSwitch}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
 			<label class="ui-input-text">Auto-Correction</label>
 			<mobi:flipswitch id="yesNoFlipSwitch" labelOn="Yes"
-				labelOff="No" name="yesNoFlipSwitch"
+				labelOff="No" name="yesNoFlipSwitch" style="float:right"
 				value="${flipSwitchBean.yesNoFlipSwitch}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
 			<label class="ui-input-text">Check Spelling</label>
 			<mobi:flipswitch id="trueFalseFlipSwitch" labelOn="True"
-				labelOff="False" name="trueFalseFlipSwitch"
+				labelOff="False" name="trueFalseFlipSwitch" style="float:right"
 				value="${flipSwitchBean.trueFalseFlipSwitch}" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
