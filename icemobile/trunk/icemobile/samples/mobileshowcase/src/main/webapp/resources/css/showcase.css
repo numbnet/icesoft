@@ -470,7 +470,7 @@ html.bberry .mobi-fieldset-row-group {
 }
 .accordionpage{ min-height:1000px;}
 
-.results label{ display: inline-block; width: 50%; max-width: 50%; text-align:left !important;}
-.results span{ display: inline-block; text-align: right; line-height: 1.8em; vertical-align: middle;  width: 50%; max-width: 50%;}
+.results label{ display: inline-block; width: 49%; max-width: 49%; text-align:left !important;}
+.results span{ display: inline-block; text-align: right; line-height: 1.8em; vertical-align: middle;  width: 49%; max-width: 49%;}
 
 
