@@ -19,11 +19,11 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-
+             
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow style="padding-bottom:15px;">
             Device theme selection can be changed using the theme control
-            in the #{viewSize eq 'small' ? 'footer below' : 'header above'}.
+            in the #{mobiClient.handheldBrowser ? 'footer below' : 'header above'}.
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 

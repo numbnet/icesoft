@@ -372,11 +372,6 @@ html.bb10 .form .mobi-fieldset-row > textarea{
 .form .mobi-fieldset-row.mobi-fieldset-row-group, html.ipad #inputForm .mobi-fieldset-row.mobi-fieldset-row-group{
     text-align:left;
 }
-html.iphone .form .results .mobi-fieldset-row > span, html.iphone #inputForm .results .mobi-fieldset-row > span, 
-html.ipad .form .results .mobi-fieldset-row > span, html.ipad #inputForm .results .mobi-fieldset-row > span,
-html.bb10 .form .results .mobi-fieldset-row > span{
-    text-align:right;
-}
 html.ipad .form .mobi-fieldset-row > span.mobi-thumb, html.ipad .form .mobi-fieldset-row > span.mobi-thumb-done,
 html.iphone .form .mobi-fieldset-row > span.mobi-thumb, html.iphone .form .mobi-fieldset-row > span.mobi-thumb-done,
 html.bb10 .form .mobi-fieldset-row > span.mobi-thumb, html.bb10 .form .mobi-fieldset-row > span.mobi-thumb-done{
@@ -455,9 +450,6 @@ html.iphone .examplesLink{
 }
 .buttons .mobi-fieldset-row{ text-align:center; }
 .buttons .mobi-button{ min-width:125px;max-width:300px;width:40%; }
-.results .mobi-fieldset-row > span{
-    text-align:right;
-}
 html.bberry .fieldsetpage input{
     float: right;
 }
@@ -476,24 +468,9 @@ html.bberry .mobi-fieldset-row > label{
 html.bberry .mobi-fieldset-row-group {
     background-color: #EEE;
 }
-html.bberry .geolocpage .timeout{
-    height: 80px;
-}
-html.bberry .geolocpage .maxage{
-    height: 60px;
-}
-html.bberry .geolocpage .timeout label, html.bberry .geolocpage .maxage label{
-    float: left;
-}
-html.bberry .geolocpage .timeout div, html.bberry .geolocpage .maxage div{
-    float: right;
-}
-html.bberry .mobi-center{
-    text-align:center;
-}
 .accordionpage{ min-height:1000px;}
 
-.results label{ display: inline-block; width: 50%; }
-.results span{ display: inline-block; width: 48%; text-align: right; }
+.results label{ display: inline-block; width: 50%; max-width: 50%; text-align:left !important;}
+.results span{ display: inline-block; text-align: right; line-height: 1.8em; vertical-align: middle;  width: 50%; max-width: 50%;}
 
 
