@@ -1164,13 +1164,24 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
             /* set height to full visible size of parent */
             bodyDivWrapper.style.height = fullHeight + 'px';
+            console.log('full ' + fullHeight);
+            console.log('dim ' + dim.top);
 
             /* set height to full visible size of parent minus
              height of all following elements */
             var container = getScrollableContainer(element),
                 bottomResize = function() {
-                    bodyDivWrapper.style.height = fullHeight
-                            - (container.scrollHeight - container.clientHeight) + 'px';
+                    setTimeout(function() {
+                        fullHeight -= (container.scrollHeight - container.clientHeight);
+                        if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i))
+                            fullHeight += 60;
+                        bodyDivWrapper.style.height = fullHeight + 'px';
+
+                        console.log('container scroll ' + container.scrollHeight);
+                        console.log('container client ' + container.clientHeight);
+                        console.log('container diff ' + (container.scrollHeight - container.clientHeight));
+                        console.log('end full ' + fullHeight);
+                    }, 200)
                 };
 
             if (container) bottomResize();
@@ -1532,11 +1543,27 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
         /* resize height adjust */
         window.addEventListener("resize", function() {
-            recalcScrollHeight();
+            // Timeout to prevent double recalc when resize is due to orientation
+            if (!oriChange) {
+                console.log(oriChange);
+                console.log('set resize');
+                setTimeout(function() {
+                    if (!oriChange) {
+                        console.log('do resize');
+                        recalcScrollHeight();
+                    }
+                },100);
+            }
         });
 
+        var oriChange = false;
         window.addEventListener("orientationchange", function() {
-            setTimeout(function() {recalcScrollHeight();}, 100);
+            oriChange = true;
+
+            console.log('orient');
+            setTimeout(function() { recalcScrollHeight(); },500);
+            // prevent resize-init'd height recalcs for the next 200ms
+            setTimeout(function() { oriChange = false; },2000);
         });
 
         /* Instance API */
@@ -1558,20 +1585,24 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 /* touch active state support */
 ice.mobi.addListener(document, "touchstart", function(){});
 
-function hideAddressBar()
-{   //todo: add device / browser specificity
+var hideBar = true;
+function hideAddressBar() {
     var minDeviceDocHeight;
+
     switch(window.orientation)
     {
         case -90:
         case 90:
-            minDeviceDocHeight = 268;
+            // if bar has been hidden before - it will not be auto shown during rotation to horizontal
+            // no need for 60px adjustment
+            minDeviceDocHeight = hideBar ? window.innerHeight + 60 : window.innerHeight;
             break;
         default:
-            // minDeviceDocHeight = window.innerHeight + 60;
-            minDeviceDocHeight = 416;
+            minDeviceDocHeight = window.innerHeight + 60;
             break;
     }
+
+    hideBar = false;
 
     if(!window.location.hash) {
         document.body.style.minHeight = minDeviceDocHeight+'px';
