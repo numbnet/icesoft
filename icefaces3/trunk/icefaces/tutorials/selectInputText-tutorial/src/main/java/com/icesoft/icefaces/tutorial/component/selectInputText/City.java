@@ -16,10 +16,12 @@
 
 package com.icesoft.icefaces.tutorial.component.selectInputText;
 
+import java.io.Serializable;
+
 /**
  * <p>The City class is used for database information for the selectInputText example.</p>
  */
-public class City {
+public class City implements Serializable {
 
     // attributes of each entry
     private String city;

@@ -16,7 +16,7 @@
 
 <html>
     <head>
-        <title>ICEfaces Auto Complete Example - Basic</title>
+        <title>ICEfaces SelectInputText Tutorial</title>
     </head>
     <body>
         <jsp:forward page="/selectInputText.jsf"/>
