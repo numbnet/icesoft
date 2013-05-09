@@ -99,6 +99,10 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
             }
         }
 
+        if (useRanges)  {
+            externalContext.setResponseStatus(206);
+        }
+
         if (log.isLoggable(Level.FINE)) {
             log.fine("handleResourceRequest " + key + " path: " +
                     externalContext.getRequestServletPath() + " info: " +
