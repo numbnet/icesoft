@@ -24,7 +24,7 @@
         <h:form id="tabset"> 
             <mobi:tabSet selectedId="#{tabsetBean.currentId}"
                     fixedPosition="#{tabsetBean.fixedPosition}"
-                    parentFooter="#{viewSize ne 'large'}"
+                    parentFooter="#{mobiClient.handheldBrowser}"
                     orientation="#{tabsetBean.orientationTop ? 'top' : 'bottom'}"
                     height="200px"
                     styleClass="exampleTabs">

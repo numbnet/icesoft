@@ -39,7 +39,7 @@
                               value="#{qrCodeBean.qrScanner}"/>
                 <h:outputLink value="#{qrCodeBean.qrScanner}"
                               rendered="#{qrCodeBean.qrScannerUrl}"
-                              style="overflow:hidden;max-width:#{viewSize eq 'small' ? '190px' : '400px'};display:inline-block;text-overflow:ellipsis">
+                              style="overflow:hidden;max-width:#{mobiClient.handheldBrowser ? '190px' : '400px'};display:inline-block;text-overflow:ellipsis">
                         #{qrCodeBean.qrScanner}</h:outputLink>
                 </em>
             </mobi:fieldsetRow>
