@@ -143,22 +143,23 @@
                 </h:selectOneMenu>
            </mobi:fieldsetRow>
             <mobi:fieldsetRow style="text-align:center">
+                <div class="mobi-grid mobi-justify">
                 <mobi:augmentedReality buttonLabel="3D Augmented Reality"
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}"
                     disabled="#{not mobiClient.iOS}"
-                    style="width:50%">
+                    styleClass="mobi-col">
                     <mobi:augmentedRealityMarkers
                         value="#{realityBean.markers}" var="marker"
                         markerLabel="#{marker.label}"
                         markerModel="#{marker.model}" />
                 </mobi:augmentedReality>
-                
+                <mobi:commandButton
+                    styleClass="submit mobi-col mobi-weight1" buttonType="important"
+                    value="Submit"/>
+                </div>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-        <mobi:commandButton
-                styleClass="submit" buttonType="important"
-                value="Submit"/>
                 
         <mobi:outputList rendered="#{realityBean.shopping}" inset="true">
             <mobi:outputListItem group="true">Items</mobi:outputListItem>
