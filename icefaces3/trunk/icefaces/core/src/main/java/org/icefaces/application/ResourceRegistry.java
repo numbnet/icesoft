@@ -88,7 +88,10 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
                     String startString = range.substring(0, splitIndex);
                     String endString = range.substring(splitIndex + 1);
                     rangeStart = Integer.parseInt(startString);
-                    rangeEnd = Integer.parseInt(endString);
+                    // ICE-9256 rangeEnd == 0 means use contentLength below
+                    if (!"".equals( endString )) {
+                        rangeEnd = Integer.parseInt(endString);
+                    }
                     useRanges = true;
                 }
             } catch (Exception e)  {
@@ -168,7 +171,9 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
             externalContext.setResponseHeader("Accept-Ranges", "bytes");
 
             if (useRanges)  {
-                externalContext.setResponseHeader(CONTENT_RANGE, 
+                int cl = Integer.parseInt(contentLength);
+                rangeEnd = (rangeEnd == 0) ? cl-1: rangeEnd;
+                externalContext.setResponseHeader(CONTENT_RANGE,
                         "bytes " + rangeStart + "-" + rangeEnd + "/" +
                         contentLength );
                 externalContext.setResponseHeader(CONTENT_LENGTH, 
