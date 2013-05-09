@@ -45,9 +45,9 @@
                 locations).</p>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <mobi:camera id="cam" value="#{realityBean.cameraImage}">
-                    <mobi:thumbnail for="cam"/>
-                </mobi:camera>
+                <mobi:thumbnail for="cam"/>
+                <mobi:camera id="cam" value="#{realityBean.cameraImage}" style="float:right;width:50%"/>
+                &#160;
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <mobi:inputText value="#{realityBean.label}" 
@@ -75,10 +75,10 @@
         </mobi:fieldsetGroup>
         
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center">
                 <mobi:augmentedReality
                     urlBase="#{realityBean.baseURL}"
-                    value="#{realityBean.selection}">
+                    value="#{realityBean.selection}" style="width:50%">
                     <mobi:augmentedRealityLocations 
                         value="#{realityBean.messages}" var="place"
                         locationLabel="#{place.title}"
@@ -87,8 +87,7 @@
                         locationIcon="#{place.fileName}" />
                 </mobi:augmentedReality>
                 <br />
-                <h:panelGroup style="text-align:center;"
-                    rendered="#{realityBean.image != null}">
+                <h:panelGroup rendered="#{realityBean.image != null}">
                     Selected Location:<br/>
                     <h:graphicImage value="#{realityBean.image}"/>
                     <br/>
@@ -143,11 +142,12 @@
                     <f:ajax execute="@this" render="@all"/>
                 </h:selectOneMenu>
            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <mobi:augmentedReality  buttonLabel="3D Augmented Reality"
+            <mobi:fieldsetRow style="text-align:center">
+                <mobi:augmentedReality buttonLabel="3D Augmented Reality"
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}"
-                    disabled="#{not mobiClient.iOS}">
+                    disabled="#{not mobiClient.iOS}"
+                    style="width:50%">
                     <mobi:augmentedRealityMarkers
                         value="#{realityBean.markers}" var="marker"
                         markerLabel="#{marker.label}"
