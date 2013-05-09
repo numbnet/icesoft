@@ -30,7 +30,11 @@
             table.innerBorder tr td:last-child,
             table.innerBorder tr th:last-child { border-right: 0; }
 
-            .mobi-dv-c-4 {
+            .footButton {
+                margin: 0 1em;
+            }
+
+            .minCol {
                 min-width: 150px;
             }
         </style>
@@ -56,23 +60,58 @@
 
             <mobi:dataViewColumns>
                 <mobi:dataViewColumn headerText="Model" value="#{car.name}" />
-                <mobi:dataViewColumn type="bool" headerText="Manual" value="#{car.manual}" />
-                <mobi:dataViewColumn headerText="Cost" value="#{car.cost}" rendered="#{dataViewBean.colVis}" />
-                <mobi:dataViewColumn type="date" headerText="Release" value="#{car.releaseDate}">
+
+                <mobi:dataViewColumn type="bool" headerText="Manual"
+                                     value="#{car.manual}" />
+
+                <mobi:dataViewColumn type="date" headerText="Release"
+                                     value="#{car.releaseDate}">
                     <f:convertDateTime type="date" dateStyle="short" />
                 </mobi:dataViewColumn>
-                <mobi:dataViewColumn reactivePriority="0"
-                                     headerText="Lorem"
+
+                <mobi:dataViewColumn headerText="Cost" value="$#{car.cost}"
+                                     rendered="#{dataViewBean.costColVis}" />
+
+                <mobi:dataViewColumn headerText="Weight" value="#{car.weight} lbs."
+                                     rendered="#{dataViewBean.weightColVis}" />
+
+                <mobi:dataViewColumn headerText="Acceleration" value="#{car.acceleration}"
+                                     rendered="#{dataViewBean.accelColVis}" />
+
+                <mobi:dataViewColumn headerText="MPG" value="#{car.mpg}"
+                                     rendered="#{dataViewBean.mpgColVis}" />
+
+                <mobi:dataViewColumn headerText="Lorem"
+                                     styleClass="minCol"
                                      value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
-                                     rendered="#{dataViewBean.colVis}" />
+                                     rendered="#{dataViewBean.textColVis}" />
                 <mobi:dataViewColumn headerText="Lorem"
                                      value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
-                                     rendered="#{dataViewBean.colVis}" />
+                                     rendered="#{dataViewBean.textColVis}" />
                 <mobi:dataViewColumn headerText="Lorem"
                                      value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
-                                     rendered="#{dataViewBean.colVis}" />
+                                     rendered="#{dataViewBean.textColVis}" />
             </mobi:dataViewColumns>
         </mobi:dataView>
-        <h:commandButton value="#{dataViewBean.colVis ? 'Remove Cols' : 'Add Cols'}" actionListener="#{dataViewBean.setColVis(not(dataViewBean.colVis))}" />
+        <mobi:commandButton value="Cost"
+                            style="width:18%"
+                            actionListener="#{dataViewBean.setCostColVis(not dataViewBean.costColVis)}"
+                            buttonType="#{dataViewBean.costColVis ? 'important' : null}"/>
+        <mobi:commandButton value="Weight"
+                            style="width:18%"
+                            actionListener="#{dataViewBean.setWeightColVis(not dataViewBean.weightColVis)}"
+                            buttonType="#{dataViewBean.weightColVis ? 'important' : null}"/>
+        <mobi:commandButton value="Accel"
+                            style="width:18%"
+                            actionListener="#{dataViewBean.setAccelColVis(not dataViewBean.accelColVis)}"
+                            buttonType="#{dataViewBean.accelColVis ? 'important' : null}"/>
+        <mobi:commandButton value="MPG"
+                            style="width:18%"
+                            actionListener="#{dataViewBean.setMpgColVis(not dataViewBean.mpgColVis)}"
+                            buttonType="#{dataViewBean.mpgColVis ? 'important' : null}"/>
+        <mobi:commandButton value="Text"
+                            style="width:18%"
+                            actionListener="#{dataViewBean.setTextColVis(not dataViewBean.textColVis)}"
+                            buttonType="#{dataViewBean.textColVis ? 'important' : null}"/>
     </h:form>
 </ui:composition>
