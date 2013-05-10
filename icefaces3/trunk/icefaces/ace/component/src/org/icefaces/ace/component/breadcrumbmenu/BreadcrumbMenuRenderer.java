@@ -13,7 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.icefaces.ace.component.breadcrumbs;
+package org.icefaces.ace.component.breadcrumbmenu;
 
 import org.icefaces.ace.component.menu.AbstractMenu;
 import org.icefaces.ace.component.menu.BaseMenuRenderer;
@@ -28,27 +28,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@MandatoryResourceComponent(tagName = "breadcrumbs", value = "org.icefaces.ace.component.breadcrumbs.Breadcrumbs")
-public class BreadcrumbsRenderer extends BaseMenuRenderer {
+@MandatoryResourceComponent(tagName = "breadcrumbMenu", value = "org.icefaces.ace.component.breadcrumbmenu.BreadcrumbMenu")
+public class BreadcrumbMenuRenderer extends BaseMenuRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         AbstractMenu menu = (AbstractMenu) component;
         if (menu.shouldBuildFromModel()) {
             menu.buildMenuFromModel();
         }
-        Breadcrumbs breadcrumbs = (Breadcrumbs) component;
+        BreadcrumbMenu breadcrumbMenu = (BreadcrumbMenu) component;
 
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-        String style = breadcrumbs.getStyle();
-        String styleClass = breadcrumbs.getStyleClass();
+        String style = breadcrumbMenu.getStyle();
+        String styleClass = breadcrumbMenu.getStyleClass();
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("class", "ui-breadcrumbs" + (styleClass == null ? "" : " " + styleClass), null);
+        writer.writeAttribute("class", "ui-breadcrumb-menu" + (styleClass == null ? "" : " " + styleClass), null);
 
         writer.startElement("ul", component);
         writer.writeAttribute("id", clientId + "_ul", null);
@@ -80,7 +80,7 @@ public class BreadcrumbsRenderer extends BaseMenuRenderer {
 
         writer.startElement("script", component);
         writer.writeAttribute("type", "text/javascript", null);
-        writer.write("ice.ace.create('Breadcrumbs',['" + clientId + "',{}]);//" + UUID.randomUUID());
+        writer.write("ice.ace.create('BreadcrumbMenu',['" + clientId + "',{}]);//" + UUID.randomUUID());
         writer.endElement("script");
 
         writer.endElement("div");

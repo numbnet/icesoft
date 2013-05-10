@@ -13,7 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.icefaces.ace.component.breadcrumbs;
+package org.icefaces.ace.component.breadcrumbmenu;
 
-public class Breadcrumbs extends BreadcrumbsBase {
+public class BreadcrumbMenu extends BreadcrumbMenuBase {
 }

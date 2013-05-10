@@ -13,7 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.icefaces.ace.component.breadcrumbs;
+package org.icefaces.ace.component.breadcrumbmenu;
 
 import org.icefaces.ace.component.menu.AbstractMenu;
 import org.icefaces.ace.meta.annotation.Component;
@@ -26,15 +26,15 @@ import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
-        tagName = "breadcrumbs",
-        componentClass = "org.icefaces.ace.component.breadcrumbs.Breadcrumbs",
-        rendererClass = "org.icefaces.ace.component.breadcrumbs.BreadcrumbsRenderer",
-        generatedClass = "org.icefaces.ace.component.breadcrumbs.BreadcrumbsBase",
+        tagName = "breadcrumbMenu",
+        componentClass = "org.icefaces.ace.component.breadcrumbmenu.BreadcrumbMenu",
+        rendererClass = "org.icefaces.ace.component.breadcrumbmenu.BreadcrumbMenuRenderer",
+        generatedClass = "org.icefaces.ace.component.breadcrumbmenu.BreadcrumbMenuBase",
         extendsClass = "org.icefaces.ace.component.menu.AbstractMenu",
         componentFamily = "org.icefaces.ace.component.Menu",
-        componentType = "org.icefaces.ace.component.Breadcrumbs",
-        rendererType = "org.icefaces.ace.component.BreadcrumbsRenderer",
-        tlddoc = "Breadcrumbs is a horizontal bar of breadcrumb menu items. The crumbs are encoded by child menuItem tags. " +
+        componentType = "org.icefaces.ace.component.BreadcrumbMenu",
+        rendererType = "org.icefaces.ace.component.BreadcrumbMenuRenderer",
+        tlddoc = "BreadcrumbMenu is a horizontal bar of breadcrumb menu items. The crumbs are encoded by child menuItem tags. " +
                 "The menu items can be encoded inline or dynamically using a menu model (org.icefaces.ace.model.MenuModel). The icon attribute is not used. " +
                 "The icon will be forced to a home page icon for the first item and a right arrow icon for the rest. " +
                 "The last (or only) item will also be forced to be disabled."
@@ -45,7 +45,7 @@ import org.icefaces.resources.ICEResourceLibrary;
         @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
         @ICEResourceDependency(name = "util/ace-menu.js")
 })
-public class BreadcrumbsMeta extends UIComponentBaseMeta {
+public class BreadcrumbMenuMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "MenuModel instance to create menus programmatically. " +
             "For the menuitem components, use explicit ids, and " +
