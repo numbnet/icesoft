@@ -34,7 +34,7 @@
             </header>
             
             <mobi:smallView>
-                <a href="<c:url value="/menu"/>" id="menuLink2" class="examplesLink">View the examples</a>
+                <a href="<c:url value="/menu"/>" id="menuLink2" class="ui-link examplesLink">View the examples</a>
                 <script type="text/javascript">
                     MvcUtil.enhanceLink(document.getElementById('menuLink2'),"body");
                 </script>
