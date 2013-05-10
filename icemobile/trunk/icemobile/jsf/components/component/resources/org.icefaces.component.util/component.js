@@ -1119,6 +1119,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         function setupColumnVisibiltyRules(firstRowCells) {
             var minDevWidth = firstRowCells[0].getBoundingClientRect().left;
             var colVisSheet = im.getStyleSheet(clientId + '_colvis');
+            var hideRule = '@media only all {';
+
             if (!colVisSheet) colVisSheet = im.addStyleSheet(clientId + '_colvis', selectorId);
 
             var prioritizedCells = config.colvispri.map(function(pri, i) {
@@ -1135,14 +1137,11 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 minDevWidth += prioritizedCells[i].clientWidth;
 
                 // add column conditional visibility rule
+                hideRule += 'th.'+columnClassname+', td.'+columnClassname;
+                if (i != (prioritizedCells.length - 1)) hideRule += ', ';
                 colVisSheet.insertRule('@media screen and (min-width: '+minDevWidth+'px) { td.'+columnClassname+', th.'+columnClassname+' { display: table-cell; }}', 0);
             }
 
-            var hideRule = '@media only all {';
-            for (var i = 0; i < firstRowCells.length; i++) {
-                hideRule += 'th.mobi-dv-c-'+i+', td.mobi-dv-c-'+i;
-                if (i != (firstRowCells.length - 1)) hideRule += ', ';
-            }
             hideRule += '{ display:none; }}';
             colVisSheet.insertRule(hideRule, 0);
         }
