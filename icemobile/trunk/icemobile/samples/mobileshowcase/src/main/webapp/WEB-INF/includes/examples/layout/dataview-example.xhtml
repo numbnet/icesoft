@@ -31,7 +31,8 @@
             table.innerBorder tr th:last-child { border-right: 0; }
 
             .footButton {
-                margin: 0 1em;
+                padding: .5em 5px;
+                width:18%;
             }
 
             .minCol {
@@ -94,23 +95,23 @@
             </mobi:dataViewColumns>
         </mobi:dataView>
         <mobi:commandButton value="Cost"
-                            style="width:18%"
+                            styleClass="footButton"
                             actionListener="#{dataViewBean.setCostColVis(not dataViewBean.costColVis)}"
                             buttonType="#{dataViewBean.costColVis ? 'important' : null}"/>
         <mobi:commandButton value="Weight"
-                            style="width:18%"
+                            styleClass="footButton"
                             actionListener="#{dataViewBean.setWeightColVis(not dataViewBean.weightColVis)}"
                             buttonType="#{dataViewBean.weightColVis ? 'important' : null}"/>
         <mobi:commandButton value="Accel"
-                            style="width:18%"
+                            styleClass="footButton"
                             actionListener="#{dataViewBean.setAccelColVis(not dataViewBean.accelColVis)}"
                             buttonType="#{dataViewBean.accelColVis ? 'important' : null}"/>
         <mobi:commandButton value="MPG"
-                            style="width:18%"
+                            styleClass="footButton"
                             actionListener="#{dataViewBean.setMpgColVis(not dataViewBean.mpgColVis)}"
                             buttonType="#{dataViewBean.mpgColVis ? 'important' : null}"/>
         <mobi:commandButton value="Text"
-                            style="width:18%"
+                            styleClass="footButton"
                             actionListener="#{dataViewBean.setTextColVis(not dataViewBean.textColVis)}"
                             buttonType="#{dataViewBean.textColVis ? 'important' : null}"/>
     </h:form>
