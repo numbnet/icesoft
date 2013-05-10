@@ -338,7 +338,7 @@ ice.mobi.panelCenter = function(clientId, cfg){
     var paneNode = document.getElementById(clientId);
     var containerElem = cfg.containerElem || null;
     if (!paneNode){
-       ice.console.log (ice.log,"Element Not Found id="+clientId);
+       console.log ("Element Not Found id="+clientId);
        return;
     }
     var container =document.getElementById(containerElem);
@@ -1593,7 +1593,6 @@ function hideAddressBar() {
     hideBar = false;
 
     if(!window.location.hash) {
-        document.body.style.minHeight = minDeviceDocHeight+'px';
         window.scrollTo(0, 0);
     }
 }
@@ -1601,3 +1600,16 @@ if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) 
     window.addEventListener("load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
     window.addEventListener("orientationchange", hideAddressBar );
 }
+(function(){
+    var sizePagePanelsToViewPort = function(){
+        var pagePanels = document.querySelectorAll(".mobi-pagePanel-body"), i=0;
+        while( i < pagePanels.length ){
+            pagePanels[i].style.minHeight = ''+window.innerHeight+'px';
+            i++;
+        }
+    };
+    setTimeout(sizePagePanelsToViewPort,10);
+    ice.mobi.addListener(window,"orientationchange",sizePagePanelsToViewPort);
+}());
+
+
