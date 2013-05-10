@@ -184,7 +184,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 				google.maps.event.trigger(map, 'resize');
 			}
 			previousVisible = currentVisible;
-		}, 100);
+		}, 1000);
         initializing = false;
         GMapRepository[ele] = gmapWrapper;
         return gmapWrapper;
