@@ -1108,8 +1108,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             if (config.colvispri) setupColumnVisibiltyRules(firstrow.children);
 
             /* hide duplicate header */
-            if (dupeHead) dupeHead.style.display = 'none';
-            if (dupeFoot) dupeFoot.style.display = 'none';
+            setTimeout(function() {
+                if (dupeHead) dupeHead.style.display = 'none';
+                if (dupeFoot) dupeFoot.style.display = 'none';
+            }, 50) /* hiding instantly broke scrolling when init'ing the first time on landscape ipad */
 
             recalcScrollHeight(head, foot, bodyDivWrapper);
         }
@@ -1536,11 +1538,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         window.addEventListener("resize", function() {
             // Timeout to prevent double recalc when resize is due to orientation
             if (!oriChange) {
-                console.log(oriChange);
-                console.log('set resize');
                 setTimeout(function() {
                     if (!oriChange) {
-                        console.log('do resize');
                         recalcScrollHeight();
                     }
                 },100);
@@ -1551,7 +1550,6 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         window.addEventListener("orientationchange", function() {
             oriChange = true;
 
-            console.log('orient');
             setTimeout(function() { recalcScrollHeight(); },500);
             // prevent resize-init'd height recalcs for the next 200ms
             setTimeout(function() { oriChange = false; },2000);
