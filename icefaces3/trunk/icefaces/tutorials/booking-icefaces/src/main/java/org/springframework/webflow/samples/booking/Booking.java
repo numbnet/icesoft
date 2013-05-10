@@ -45,6 +45,9 @@ public class Booking implements Serializable {
 
     private Hotel hotel;
 
+    @Transient
+    private Date minCheckinDate;
+
     private Date checkinDate;
 
     private Date checkoutDate;
@@ -71,7 +74,8 @@ public class Booking implements Serializable {
         this.user = user;
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 1);
-        setCheckinDate(calendar.getTime());
+        minCheckinDate = calendar.getTime();
+        setCheckinDate(minCheckinDate);
         calendar.add(Calendar.DAY_OF_MONTH, 1);
         setCheckoutDate(calendar.getTime());
     }
@@ -86,7 +90,7 @@ public class Booking implements Serializable {
         if (checkinDate == null || checkoutDate == null) {
             return 0;
         } else {
-            return (int) (checkoutDate.getTime() - checkinDate.getTime()) / 1000 / 60 / 60 / 24;
+            return (int) ( (checkoutDate.getTime() - checkinDate.getTime()) / 1000L / 60L / 60L / 24L );
         }
     }
 
@@ -98,6 +102,19 @@ public class Booking implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Transient
+    public Date getMinCheckinDate() {
+        return minCheckinDate;
+    }
+
+    @Transient
+    public Date getMinCheckoutDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(checkinDate);
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
     }
 
     @Basic

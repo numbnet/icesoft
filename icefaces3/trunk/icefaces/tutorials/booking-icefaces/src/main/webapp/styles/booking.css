@@ -70,6 +70,13 @@ label {
 }
 
 .label {
-	font-weight: bold;	
+	font-weight: bold;
 }
 
+.tooltipWithPanel, .tooltipWithPanel > .ui-tooltip-content {
+    padding: 0px;
+}
+
+.ui-input-label-left {
+    width: 150px;
+}

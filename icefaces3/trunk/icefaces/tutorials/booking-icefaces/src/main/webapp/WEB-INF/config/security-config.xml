@@ -19,9 +19,9 @@
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
            http://www.springframework.org/schema/security
-           http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <!-- Configure Spring Security -->
     <http auto-config="false"
@@ -40,7 +40,7 @@
         <custom-filter ref="exceptionTranslationFilter" before="FILTER_SECURITY_INTERCEPTOR" />
 
 
-        <logout logout-url="/spring/logout" logout-success-url="/spring/logoutSuccess"/>
+        <logout logout-url="/spring/logout" logout-success-url="/spring/logoutSuccess" invalidate-session="true"/>
         <intercept-url pattern="/secure" method="POST" access="hasRole('ROLE_SUPERVISOR')"/>
     </http>
 
@@ -71,8 +71,11 @@
     <beans:bean id="sessionManagementFilter"
             class="org.springframework.security.web.session.SessionManagementFilter">
         <beans:constructor-arg name="securityContextRepository" ref="httpSessionSecurityContextRepository" />
-        <beans:property name="invalidSessionUrl" value="/auth/sessionExpired.jsf" />
-        <beans:property name="redirectStrategy" ref="jsfRedirectStrategy" />
+        <beans:property name="invalidSessionStrategy" ref="jsfInvalidSessionStrategy" />
+    </beans:bean>
+
+    <beans:bean id="jsfInvalidSessionStrategy" class="com.icesoft.spring.security.JsfInvalidSessionStrategy">
+        <beans:constructor-arg name="invalidSessionUrl" value="/general/logins/sessionExpired.jsf" />
     </beans:bean>
 
 

@@ -59,11 +59,8 @@ public class HotelModelBean implements Serializable {
     }
 
 
-    public String selectHotelAction() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        //note, the attribute used below "hotel" matches the var attribute of the data table
-        Map requestMap = externalContext.getRequestMap();
-        this.selected = (Hotel) requestMap.get("hotel");
+    public String selectHotelAction(Hotel hotel) {
+        this.selected = hotel;
         return "select";
     }
 
