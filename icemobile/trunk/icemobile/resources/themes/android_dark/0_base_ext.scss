@@ -22,8 +22,6 @@ body{
     background: black;
     color: white;
 }
-a:link { color: white; }
-
 .mobi-tap-highlight{
     -webkit-tap-highlight-color: #082658;
 }
@@ -40,8 +38,7 @@ a:link { color: white; }
   font-weight: 700;
   src: local('Droid Sans Bold'), local('DroidSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/droidsans/v3/EFpQQyG9GqCrobXxL-KRMQFhaRv2pGgT5Kf0An0s4MM.woff) format('woff');
 }
-a, a:visited{ color: #666; text-decoration:none;}
-a:hover{ color: #2373A5; }
+a, a:visited{ color: #549fd8; }
 h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid #33B5E5;
 }
