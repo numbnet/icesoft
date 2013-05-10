@@ -464,7 +464,7 @@ ice.ace.ContextMenu = function(id, cfg) {
     this.element.css('z-index', this.cfg.zindex);
 
     if(this.cfg.style)
-        this.element.attr('style', this.cfg.style);
+        this.element.attr('style', this.cfg.style + ';' + this.element.attr('style'));
     if(this.cfg.styleClass)
         this.element.addClass(this.cfg.styleClass);
 }
