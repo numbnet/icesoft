@@ -21,10 +21,6 @@ html {
   /* fix issue from JQM themes with body background images */
   height:auto !important;
 }
-
-.mobi-pagePanel-header, .mobi-pagePanel-footer {
-    height: 40px; 
-}
 .mobi-pagePanel-body {
     @include border-box;
  }
