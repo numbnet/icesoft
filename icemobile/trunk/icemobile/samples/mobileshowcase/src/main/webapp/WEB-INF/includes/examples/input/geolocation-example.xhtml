@@ -136,7 +136,7 @@
                 ctx.clearRect(0, 0, 600, 400);
                 var height = canvas.height;
                 var width = canvas.width;
-
+                
                 ctx.drawImage(image, 0, 0, width, height);
                 var x = Math.floor(lon * width / 2 / 180 + (width / 2));
                 var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
@@ -155,7 +155,7 @@
 
         var image = new Image();
         //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
-        image.src = "#{resource['images:map.png']}";
+        image.src = "#{resource['images:map.jpg']}";
         image.onload = function() {
             showLocation();
         }
