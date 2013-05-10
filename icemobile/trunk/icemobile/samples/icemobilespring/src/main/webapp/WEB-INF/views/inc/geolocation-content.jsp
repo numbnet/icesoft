@@ -163,9 +163,8 @@
 			var image = new Image();
 			//scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
 			image.src = "resources/images/map.png";
-			image.onload = function() {
-				showLocation();
-			}
+            //work around Android browser canvas bug
+            ${mobiClient.androidBrowserOrWebView ? '' : 'image.onload = function() {showLocation();}'}
 			showLocation();
 		</script>
 
