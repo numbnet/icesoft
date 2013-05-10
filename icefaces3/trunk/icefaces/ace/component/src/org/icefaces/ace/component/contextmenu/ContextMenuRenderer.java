@@ -189,7 +189,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		String trigger = null;
 		String _for = menu.getFor();
 
-		if(_for != null) {
+		if(_for != null && !"".equals(_for)) {
 			UIComponent forComponent = menu.findComponent(_for);
 
 			if(forComponent == null)
