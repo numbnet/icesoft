@@ -31,7 +31,6 @@ public class CSSUtils {
     public static final String STYLECLASS_BUTTON_ATTENTION = "mobi-button-attention";
     public static final String STYLECLASS_BUTTON_IMPORTANT = "mobi-button-important";
     public static final String STYLECLASS_BUTTON_BACK = "mobi-button-back";
-    public static final String STYLECLASS_TAP_HIGHLIGHT = "mobi-tap-highlight";
     
     /* jQuery Mobile Classes */
     public static final String STYLECLASS_DISABLED = "ui-disabled";
