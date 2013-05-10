@@ -18,6 +18,8 @@ package org.springframework.webflow.samples.booking;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
@@ -77,11 +79,12 @@ public class ReferenceData {
     public List<SelectItem> getCreditCardExpYears() {
 	if (creditCardExpYears == null) {
 	    creditCardExpYears = new ArrayList<SelectItem>();
-	    creditCardExpYears.add(new SelectItem(new Integer(2008), "2008"));
-	    creditCardExpYears.add(new SelectItem(new Integer(2009), "2009"));
-	    creditCardExpYears.add(new SelectItem(new Integer(2010), "2010"));
-	    creditCardExpYears.add(new SelectItem(new Integer(2010), "2011"));
-	    creditCardExpYears.add(new SelectItem(new Integer(2010), "2012"));
+        Calendar calendar = Calendar.getInstance();
+        for (int y = 0; y < 5; y++) {
+            int year = calendar.get(Calendar.YEAR);
+            creditCardExpYears.add(new SelectItem(new Integer(year), Integer.toString(year)));
+            calendar.add(Calendar.YEAR, 1);
+        }
 	}
 	return creditCardExpYears;
     }

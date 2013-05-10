@@ -18,7 +18,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
                 template="/WEB-INF/layouts/standard.xhtml">
 <ui:define name="notes">
 	<p>
@@ -38,7 +39,7 @@
 		</address>
 	</div>
 	<div class="span-12 last">
-		<ice:form>
+		<h:form>
 			<fieldset>
                 <legend>Confirm Booking Details</legend>
 				<div>
@@ -88,12 +89,12 @@
 					</div>
 				</div>
 				<div>
-					<ice:commandButton id="confirm" value="Confirm" action="confirm"/>&#160;
-		    		<ice:commandButton id="revise" value="Revise" action="revise"/>&#160;
-		    		<ice:commandButton id="cancel" value="Cancel" action="cancel" />
+					<ace:pushButton id="confirm" value="Confirm" action="confirm" style="display: inline;"/>&#160;
+		    		<ace:pushButton id="revise" value="Revise" action="revise" style="display: inline;"/>&#160;
+		    		<ace:pushButton id="cancel" value="Cancel" action="cancel" style="display: inline;"/>
 				</div>
 			</fieldset>
-		</ice:form>
+		</h:form>
 	</div>
 </ui:define>
 </ui:composition>

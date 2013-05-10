@@ -21,6 +21,10 @@
         version="2.0">
 
 	<application>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
 		<message-bundle>JsfMessageResources</message-bundle>
 	</application>
 	    

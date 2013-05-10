@@ -16,8 +16,10 @@
 
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
                 template="/WEB-INF/layouts/standard.xhtml">
     <ui:define name="notes">
         <p>
@@ -52,8 +54,8 @@
                 </h:outputText>
             </div>
             <div>
-                <ice:commandButton id="book" action="book" value="Book Hotel" />
-                <ice:commandButton id="cancel" action="cancel" value="Back to Search"/>
+                <ace:pushButton id="book" action="book" value="Book Hotel" style="display: inline;"/>
+                <ace:pushButton id="cancel" action="cancel" value="Back to Search" style="display: inline;"/>
             </div>
         </h:form>
     </ui:define>
