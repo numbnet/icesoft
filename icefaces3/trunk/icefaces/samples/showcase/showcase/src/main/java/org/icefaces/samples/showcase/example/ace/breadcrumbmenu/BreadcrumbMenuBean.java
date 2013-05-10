@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.example.ace.breadcrumbs;
+package org.icefaces.samples.showcase.example.ace.breadcrumbmenu;
 
 import org.icefaces.ace.component.menuitem.MenuItem;
 import org.icefaces.ace.component.tree.Tree;
@@ -32,6 +32,7 @@ import org.icefaces.util.JavaScriptRunner;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
@@ -44,33 +45,33 @@ import java.util.Map;
 import java.util.Stack;
 
 @ComponentExample(
-        title = "example.ace.breadcrumbs.title",
-        description = "example.ace.breadcrumbs.description",
-        example = "/resources/examples/ace/breadcrumbs/breadcrumbs.xhtml"
+        title = "example.ace.breadcrumbmenu.title",
+        description = "example.ace.breadcrumbmenu.description",
+        example = "/resources/examples/ace/breadcrumbmenu/breadcrumbMenu.xhtml"
 )
 @ExampleResources(
-        resources ={
+        resources = {
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title="breadcrumbs.xhtml",
-                        resource = "/resources/examples/ace/breadcrumbs/breadcrumbs.xhtml"),
+                        title = "breadcrumbMenu.xhtml",
+                        resource = "/resources/examples/ace/breadcrumbmenu/breadcrumbMenu.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title="BreadcrumbsBean.java",
-                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                                "/example/ace/breadcrumbs/BreadcrumbsBean.java")
+                        title = "BreadcrumbMenuBean.java",
+                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase" +
+                                "/example/ace/breadcrumbmenu/BreadcrumbMenuBean.java")
         }
 )
 @Menu(
-        title = "menu.ace.breadcrumbs.subMenu.title",
+        title = "menu.ace.breadcrumbmenu.submenu.title",
         menuLinks = {
-            @MenuLink(title = "menu.ace.breadcrumbs.subMenu.main", isDefault = true, exampleBeanName = BreadcrumbsBean.BEAN_NAME)
+                @MenuLink(title = "menu.ace.breadcrumbmenu.submenu.main", isDefault = true, exampleBeanName = BreadcrumbMenuBean.BEAN_NAME)
         }
 )
-@ManagedBean(name= BreadcrumbsBean.BEAN_NAME)
+@ManagedBean(name = BreadcrumbMenuBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class BreadcrumbsBean extends ComponentExampleImpl<BreadcrumbsBean> implements Serializable {
-    public static final String BEAN_NAME = "breadcrumbsBean";
+public class BreadcrumbMenuBean extends ComponentExampleImpl<BreadcrumbMenuBean> implements Serializable {
+    public static final String BEAN_NAME = "breadcrumbMenuBean";
     public static final Map<String, String> urlMap = new HashMap<String, String>() {{
         put("Canada", "http://en.wikipedia.org/wiki/Canada");
         put("British Columbia", "http://en.wikipedia.org/wiki/British_columbia");
@@ -82,7 +83,10 @@ public class BreadcrumbsBean extends ComponentExampleImpl<BreadcrumbsBean> imple
         put("New Brunswick", "http://en.wikipedia.org/wiki/New_Brunswick");
         put("Newfoundland", "http://en.wikipedia.org/wiki/Newfoundland");
         put("Nova Scotia", "http://en.wikipedia.org/wiki/Nova_Scotia");
-    }};
+    }
+        private static final long serialVersionUID = -4267466225380580467L;
+    };
+    private static final long serialVersionUID = -6406396460390676389L;
     private List<LocationNodeImpl> treeRoots = TreeDataFactory.getTreeRoots();
     private NodeStateMap stateMap;
     private MenuModel menuModel1;
@@ -96,11 +100,11 @@ public class BreadcrumbsBean extends ComponentExampleImpl<BreadcrumbsBean> imple
                 newState.setExpanded(true);
             return newState;
         }
-    };                                                                
+    };
 
 
-    public BreadcrumbsBean() {
-        super(BreadcrumbsBean.class);
+    public BreadcrumbMenuBean() {
+        super(BreadcrumbMenuBean.class);
     }
 
     @PostConstruct
@@ -114,7 +118,7 @@ public class BreadcrumbsBean extends ComponentExampleImpl<BreadcrumbsBean> imple
 
     public void print(String text) {
         JavaScriptRunner.runScript(FacesContext.getCurrentInstance(),
-                "alert('"+text+"');");
+                "alert('" + text + "');");
     }
 
     public NodeStateMap getStateMap() {
@@ -191,11 +195,24 @@ public class BreadcrumbsBean extends ComponentExampleImpl<BreadcrumbsBean> imple
 
     class MenuItemActionListener implements ActionListener {
         public void processAction(ActionEvent event) throws AbortProcessingException {
-            String id = event.getComponent().getId();
+            UIComponent eventComponent = event.getComponent();
+            String id = eventComponent.getId();
             String nodeId = id.substring(id.lastIndexOf("-crumb-2-") + "-crumb-2-".length());
             tree.setKey(tree.getKeyConverter().parseSegments(nodeId.split("-")));
             stateMap.setAllSelected(false);
             stateMap.get(tree.getData()).setSelected(true);
+
+            List<UIComponent> menuItems1 = menuModel1.getMenuItems();
+            List<UIComponent> menuItems2 = menuModel2.getMenuItems();
+            int index = menuItems2.indexOf(eventComponent);
+            if (index > -1) {
+                menuModel1 = new DefaultMenuModel();
+                menuModel2 = new DefaultMenuModel();
+                for (int i = 0; i <= index; i++) {
+                    menuModel1.addMenuItem(menuItems1.get(i));
+                    menuModel2.addMenuItem(menuItems2.get(i));
+                }
+            }
         }
     }
 }

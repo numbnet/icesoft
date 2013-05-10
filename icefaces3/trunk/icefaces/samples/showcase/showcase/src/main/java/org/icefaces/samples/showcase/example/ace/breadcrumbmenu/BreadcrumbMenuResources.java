@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.example.ace.breadcrumbs;
+package org.icefaces.samples.showcase.example.ace.breadcrumbmenu;
 
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -30,21 +30,21 @@ import java.io.Serializable;
 @ExampleResources(
         resources ={
                 @ExampleResource(type = ResourceType.wiki,
-                        title="ace:breadcrumbs",
-                        resource = ResourceRootPath.FOR_WIKI +"Breadcrumbs"),
+                        title="ace:breadcrumbMenu",
+                        resource = ResourceRootPath.FOR_WIKI +"BreadcrumbMenu"),
 
                 @ExampleResource(type = ResourceType.tld,
-                        title="ace:breadcrumbs",
-                        resource = ResourceRootPath.FOR_ACE_TLD + "breadcrumbs.html")
+                        title="ace:breadcrumbMenu",
+                        resource = ResourceRootPath.FOR_ACE_TLD + "breadcrumbMenu.html")
         }
 )
-@ManagedBean(name= BreadcrumbsResources.BEAN_NAME)
+@ManagedBean(name= BreadcrumbMenuResources.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class BreadcrumbsResources extends ComponentExampleImpl<BreadcrumbsResources> implements Serializable {
-    public static final String BEAN_NAME = "breadcrumbsResources";
-    public BreadcrumbsResources()
+public class BreadcrumbMenuResources extends ComponentExampleImpl<BreadcrumbMenuResources> implements Serializable {
+    public static final String BEAN_NAME = "breadcrumbMenuResources";
+    public BreadcrumbMenuResources()
     {
-        super(BreadcrumbsResources.class);
+        super(BreadcrumbMenuResources.class);
     }
 
     @PostConstruct

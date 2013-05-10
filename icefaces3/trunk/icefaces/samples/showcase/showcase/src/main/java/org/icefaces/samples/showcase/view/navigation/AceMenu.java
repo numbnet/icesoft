@@ -19,7 +19,7 @@ package org.icefaces.samples.showcase.view.navigation;
 import org.icefaces.samples.showcase.example.ace.accordionpanel.AccordionPanelBean;
 import org.icefaces.samples.showcase.example.ace.animation.AnimationBean;
 import org.icefaces.samples.showcase.example.ace.autocompleteentry.AutoCompleteEntryBean;
-import org.icefaces.samples.showcase.example.ace.breadcrumbs.BreadcrumbsBean;
+import org.icefaces.samples.showcase.example.ace.breadcrumbmenu.BreadcrumbMenuBean;
 import org.icefaces.samples.showcase.example.ace.chart.ChartBean;
 import org.icefaces.samples.showcase.example.ace.checkboxButton.CheckboxButtonBean;
 import org.icefaces.samples.showcase.example.ace.combobox.ComboBoxBean;
@@ -70,7 +70,7 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.ace.accordionpanel.title", exampleBeanName = AccordionPanelBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.animation.title", exampleBeanName = AnimationBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.autocompleteentry.title", exampleBeanName = AutoCompleteEntryBean.BEAN_NAME),
-                @MenuLink(title = "menu.ace.breadcrumbs.title", exampleBeanName = BreadcrumbsBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.breadcrumbmenu.title", exampleBeanName = BreadcrumbMenuBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.checkboxButton.title", exampleBeanName = CheckboxButtonBean.BEAN_NAME),
 				@MenuLink(title = "menu.ace.combobox.title", exampleBeanName = ComboBoxBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.confirmationdialog.title", exampleBeanName = ConfirmationDialogBean.BEAN_NAME),
