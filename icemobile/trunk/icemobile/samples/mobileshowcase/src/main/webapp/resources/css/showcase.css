@@ -438,10 +438,6 @@ html.bb10 .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
     width:50%;
 }
 html.iphone .examplesLink{
-    color: rgb(65, 115, 170);
-    text-decoration: none;
-    margin: 10px 0;
-    display: inline-block;
     font-weight: bold;
     font-size: 12px;
 }
