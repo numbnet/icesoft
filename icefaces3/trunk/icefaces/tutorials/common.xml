@@ -73,6 +73,8 @@
 
             <exclude name="${icepush.lib.name}.jar"         if="no-icefaces"/>
             <exclude name="${icepush.lib.name}.jar"         if="no-icepush"/>
+
+            <exclude name="jstl.jar" unless="compat"/>
         </patternset>
     </patternset>
 
