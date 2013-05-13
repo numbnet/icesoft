@@ -21,11 +21,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <display-name>ICEfaces 3 Component Suite Demo</display-name>
+    <display-name>ICEfaces Showcase</display-name>
 
     <description>
     </description>
-    
+
     <!-- Context Parameters used by the framework -->
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -76,11 +76,11 @@
         <param-name>com.icesoft.faces.gmapKey</param-name>
         <param-value>AIzaSyAcAbAa7AL1DLU0785OeWn2byf4XOsm7KM</param-value>
     </context-param>
-
+    
 	<context-param>
         <description>Google Maps API key is required if gMap component is used. Sign up for an API key from http://code.google.com/apis/maps/signup.html</description>
         <param-name>org.icefaces.ace.gmapKey</param-name>
-        <param-value>AIzaSyAATyWVqT2qNusNGmcVTyQ0QmymkpU-B5o</param-value>
+        <param-value>AIzaSyAATyWVqT2qNusNGmcVTyQ0QmymkpU-B5o&amp;libraries=places</param-value>
     </context-param>
 
     <!-- Specifying these listeners in this order as per http://issues.liferay.com/browse/FACES-1511 -->
@@ -132,7 +132,7 @@
     </servlet-mapping>
 
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>10</session-timeout>
     </session-config>
 
     <!--

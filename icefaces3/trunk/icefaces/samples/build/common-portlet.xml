@@ -34,9 +34,9 @@
     <patternset id="portlet.files"/>
 
     <!-- Check which portlet bridge implementation to use and set the appropriate sub-directory. The
-         default is PortletFaces but can be changed to Liferay Faces by setting liferayfaces property. -->
-    <condition property="bridge.lib.dir" value="${liferayfaces.lib.dir}" else="${portletfaces.lib.dir}">
-        <isset property="liferayfaces"/>
+         default is LiferayFaces but can be changed to PortletFaces by setting the portletfaces property. -->
+    <condition property="bridge.lib.dir" value="${portletfaces.lib.dir}" else="${liferayfaces.lib.dir}">
+        <isset property="portletfaces"/>
     </condition>
 
     <target name="clean" depends="clean.parent.resources">
