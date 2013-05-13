@@ -137,7 +137,8 @@
                source="1.5"
                target="1.5"
                debug="true"
-               includeantruntime="false">
+               includeantruntime="false"
+               encoding="ISO-8859-1">
 
             <classpath>
                 <fileset dir="${lib.application.dir}" erroronmissingdir="false">
