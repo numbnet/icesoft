@@ -56,7 +56,7 @@
                                        action="#{navigationModel.goToMenu}"
                                        rendered="#{navigationModel.selectedPanel eq 'splash'}"/>
                     </h:form>
-                    <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
+                    <h1 class="ui-title">#{mmsgs[navigationModel.selectedDestination.title]}</h1>
                     <ui:insert name="toolBarContent"/>
                 </f:facet>
         

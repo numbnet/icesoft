@@ -23,7 +23,6 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.Tag;
 
 import org.icemobile.util.HTML;
-import org.icemobile.util.CSSUtils;
 
 
 /**

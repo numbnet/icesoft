@@ -49,6 +49,18 @@
 .mobi-pagePanel-footer{
     bottom: 0;
 }
+.mobi-pagePanel-header h1, .mobi-pagePanel-footer h1{ 
+    min-height: 1.1em;
+    text-align: center;
+    font-size: 16px;
+    display: block;
+    margin: 0.4em 20%;
+    padding: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    outline: 0px;
+}
 /* layout for buttons in headers and footers */
 .mobi-pagePanel-body {
     padding: 39px 0 40px 0;
