@@ -59,18 +59,5 @@ public class Utils {
         return false;
     }
 
-    /**
-     * Utility to see if the date spinner will use the native input method for a
-     * data input.  Current can be set by the attribute useNative and iOS
-     * or blackberry
-     *
-     * @return ture if the native dialog should be used
-     */
-    @Deprecated
-    public static boolean shouldUseNative() {
-        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        return client.isIOS5() || client.isIOS6() || client.isBlackBerryOS();
-    }
-    
 
 }
