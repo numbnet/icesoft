@@ -17,6 +17,7 @@
 package org.icemobile.samples.spring.controllers;
 
 import org.icemobile.samples.spring.AccordionBean;
+import org.icemobile.samples.spring.AudioBean;
 import org.icemobile.samples.spring.CarouselBean;
 import org.icemobile.samples.spring.DateTimeSpinnerBean;
 import org.icemobile.samples.spring.FlipSwitchBean;
@@ -112,6 +113,10 @@ public class EchoController extends ICEmobileBaseController{
     
     @RequestMapping(value = "/menubutton")
     public void doRequest(@ModelAttribute("menuButtonBean") MenuButtonBean model) {
+    }
+    
+    @RequestMapping(value = "/audioplayer")
+    public void doRequest(@ModelAttribute("audioBean") AudioBean model) {
     }
 
 }
