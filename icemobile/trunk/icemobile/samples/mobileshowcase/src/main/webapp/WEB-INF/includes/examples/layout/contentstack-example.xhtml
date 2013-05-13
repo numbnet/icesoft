@@ -47,24 +47,24 @@
         <mobi:contentStack currentId="#{contentStackBean.selectedPaneId}">
             <mobi:contentPane id="panel1" facelet="true" client="false">
                 <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
-                <div class="mobi-grid mobi-right">
+                <div style="text-align:right">
                     <mobi:commandButton value="Next"
                                 action="#{contentStackBean.nextPaneParam}" 
-                                styleClass="mobi-col mobi-weight1">
+                                style="width:50%;">
                         <f:param name="paneName" value="panel2" />
                     </mobi:commandButton>
                 </div>
             </mobi:contentPane>
             <mobi:contentPane id="panel2" facelet="true" client="false">
                 <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
-                <div class="mobi-grid mobi-justify">
+                <div class="text-align:center">
                     <mobi:commandButton value="Previous"
-                                        styleClass="mobi-col mobi-weight1"
+                                        style="width:47%;margin:1%"
                                         action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel1" />
                     </mobi:commandButton>
                     <mobi:commandButton value="Next"
-                                        styleClass="mobi-col mobi-weight1"
+                                        style="width:47%;margin:1%"
                                         action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel3" />
                     </mobi:commandButton>
@@ -72,14 +72,14 @@
             </mobi:contentPane>
             <mobi:contentPane id="panel3" facelet="true" client="false">
                 <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
-                <div class="mobi-grid mobi-justify">
+                <div class="text-align:center">
                     <mobi:commandButton value="Previous"
-                                        styleClass="mobi-col mobi-weight1"
+                                        style="width:47%;margin:1%"
                                         action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel2" />
                     </mobi:commandButton>
                     <mobi:commandButton value="Next"
-                                        styleClass="mobi-col mobi-weight1"
+                                        style="width:47%;margin:1%"
                                         action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel4" />
                     </mobi:commandButton>
@@ -87,9 +87,9 @@
             </mobi:contentPane>
             <mobi:contentPane id="panel4" facelet="true" client="false">
                 <ui:include src="/WEB-INF/includes/content/fieldset-icecar.xhtml"/>
-                <div class="mobi-grid mobi-left">
+                <div class="text-align:left">
                     <mobi:commandButton value="Previous"
-                                        styleClass="mobi-col mobi-weight1"
+                                        style="width:50%;"
                                         action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel3" />
                     </mobi:commandButton>
