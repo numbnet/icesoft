@@ -122,6 +122,52 @@ if (!window.ice.icefaces) {
             }
         };
 
+        var userInactivityListeners = [];
+        var isUserInactivityMonitorStarted = false;
+        namespace.onUserInactivity = function(timeout, callback) {
+            if (!isUserInactivityMonitorStarted) {
+                isUserInactivityMonitorStarted = true;
+                observeUserInactivity();
+            }
+            var tuple = {t: (timeout * 1000), c: callback};
+            append(userInactivityListeners, tuple);
+            return removeCallbackCallback(userInactivityListeners, detectByReference(tuple));
+        };
+
+        function observeUserInactivity() {
+            var userActivityMonitor = Delay(function() {
+                var now = (new Date).getTime();
+                userInactivityListeners = reject(userInactivityListeners, function(tuple) {
+                    var timeout = tuple.t;
+                    var runCallback = now > lastActivityTime + timeout;
+                    if (runCallback) {
+                        var callback = tuple.c;
+                        try {
+                            callback();
+                        } catch (ex) {
+                            warn('onUserInactivity callback failed to run', ex);
+                        }
+                    }
+
+                    return runCallback;
+                });
+            }, 3 * 1000);//poll every 3 seconds
+            run(userActivityMonitor);
+
+            var stopActivityMonitor = curry(stop, userActivityMonitor);
+            namespace.onSessionExpiry(stopActivityMonitor);
+            namespace.onNetworkError(stopActivityMonitor);
+            namespace.onServerError(stopActivityMonitor);
+            namespace.onUnload(stopActivityMonitor);
+
+            var lastActivityTime = (new Date).getTime();
+            function resetUserInactivity() {
+                lastActivityTime = (new Date).getTime();
+            }
+            registerListener('keydown', document, resetUserInactivity);
+            registerListener('mouseover', document, resetUserInactivity);
+        }
+
         function configurationOf(element) {
             var result = configurationOfImpl(element);
             if (result) {
