@@ -19,6 +19,7 @@ package org.icefaces.mobi.component.datespinner;
 import static org.icemobile.util.HTML.CLASS_ATTR;
 
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.utils.HTML;
@@ -514,7 +515,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
      * @return ture if the native dialog should be used
      */
     private boolean shouldUseNative(DateSpinner component) {
-        return component.isUseNative() && Utils.shouldUseNative();
+        return component.isUseNative() && MobiJSFUtils.getClientDescriptor().isHasNativeDatePicker();
     }
 
     /**
