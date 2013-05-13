@@ -57,73 +57,29 @@
                         </goals>
                     </execution>
 
+                    <!-- Rather than try and duplicate the copying of resources that Ant already
+                         does, we'll just use that task ourselves.  This makes it easier to keep
+                         things in sync. -->
                     <execution>
-                        <id>${project.artifactId}-include-sources</id>
-                        <phase>process-resources</phase>
+                        <id>${project.artifactId}-copy-parent-resources</id>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <tasks>
-                                <copy todir="${project.build.outputDirectory}">
-                                    <fileset dir="${project.build.SourceDirectory}" />
-                                </copy>
-                            </tasks>
+                            <target>
+                                <ant antfile="./build.xml" target="copy.parent.resources"/>
+                            </target>
                         </configuration>
                     </execution>
 
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${parent.root}/src/main/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/${artifactId}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${parent.root}/src/main/webapp</directory>
-                                    <includes>
-                                        <include>*/**</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
+                <version>2.3.2</version>
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
@@ -131,11 +87,6 @@
             </plugin>
         </plugins>
 
-        <resources>
-            <resource>
-                <directory>${parent.root}/src/main/resources</directory>
-            </resource>
-        </resources>
     </build>
 
     <profiles>

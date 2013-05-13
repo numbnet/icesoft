@@ -18,9 +18,12 @@
 
     <property name="portlet" value="true" />
 
-    <property name="parent.dir" location="../component-showcase"/>
+    <!--This needs to be overridden in the build file for each portlet sample.-->
+    <property name="parent.dir" location="../"/>
+
     <property name="parent.java.dir" location="${parent.dir}/src/main/java"/>
     <property name="parent.res.dir" location="${parent.dir}/src/main/resources"/>
+    <property name="parent.res.meta.dir" location="${parent.dir}/src/main/resources-meta"/>
     <property name="parent.web.dir" location="${parent.dir}/src/main/webapp"/>
 
     <property name="base.portlet.dir" location="../../../lib/portlets"/>
@@ -57,6 +60,11 @@
         </copy>
         <copy todir="${res.dir}">
             <fileset dir="${parent.res.dir}">
+                <patternset refid="portlet.files"/>
+            </fileset>
+        </copy>
+        <copy todir="${res.meta.dir}">
+            <fileset dir="${parent.res.meta.dir}">
                 <patternset refid="portlet.files"/>
             </fileset>
         </copy>
