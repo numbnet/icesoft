@@ -36,34 +36,3 @@ input.ui-input-text, textarea.ui-input-text, .ui-input-search {
 }
 input.ui-input-text { -webkit-appearance: none; }
 textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; -moz-transition: height 200ms linear; -o-transition: height 200ms linear; transition: height 200ms linear; }
-@media all and (min-width: 450px){
-    .ui-field-contain label.ui-input-text,
-    .ui-field-contain label /* mobi */  { 
-        vertical-align: top; display: inline-block; width: 20%; margin: 0 2% 0 0;
-        line-height: 1.8em;
-        text-align: left;
-        @include border-box;
-    }
-    .ui-field-contain input.ui-input-text, 
-    .ui-field-contain textarea.ui-input-text, 
-    .ui-field-contain .ui-input-search { width: 78%; display: inline-block; } 
-    .ui-hide-label input.ui-input-text, 
-    .ui-hide-label textarea.ui-input-text, 
-    .ui-hide-label .ui-input-search { width: 100%; }
-    .ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
-}
-@media all and (max-width: 449px){
-    .ui-field-contain label.ui-input-text{ 
-        vertical-align: top; display: inline-block; width: 30%; margin: 0 2% 0 0;
-        line-height: 1.8em;
-        text-align: left;
-        @include border-box;
-    }
-    .ui-field-contain input.ui-input-text, 
-    .ui-field-contain textarea.ui-input-text, 
-    .ui-field-contain .ui-input-search { width: 68%; display: inline-block; } 
-    .ui-hide-label input.ui-input-text, 
-    .ui-hide-label textarea.ui-input-text, 
-    .ui-hide-label .ui-input-search { width: 100%; }
-    .ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
-}
