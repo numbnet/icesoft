@@ -388,8 +388,8 @@ public class ICEmobileContainer extends Activity
                 return true;
             case R.id.clear_cookies:
 		CookieSyncManager.createInstance(this);         
-		CookieManager cookieManager = CookieManager.getInstance();        
-		cookieManager.removeAllCookie();
+		CookieManager cookieManager = CookieManager.getInstance();      		cookieManager.removeAllCookie();
+		cookieManager.setCookie(currentURL, "com.icesoft.user-agent=HyperBrowser/1.0");
                 return true;
             case R.id.stop:
                 if (mC2dmHandler != null) {
