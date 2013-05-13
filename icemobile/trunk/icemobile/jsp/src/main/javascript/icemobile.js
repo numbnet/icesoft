@@ -576,9 +576,10 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         var liLngth = children.length;
         var containerWidth = root.clientWidth;
         var width = Math.floor(containerWidth/liLngth);
-        var rem = 100 % liLngth;
+        var percentageWidth = Math.floor(100/liLngth);
         for (var i = 0; i < liLngth; i++){
             children[i].style.width = width+"px";
+            children[i].style.maxWidth = percentageWidth+"%";
         }
     }
 
