@@ -22,7 +22,7 @@
     color: #FFFFFF;
     text-shadow: 0 -1px 1px #145072;
 }
-.mobi-button {
+.mobi-button, a.mobi-button:visited {
     background: -moz-linear-gradient(top, #E7EBE7, #ccc) repeat scroll 0 0 #ccc;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #E7EBE7), color-stop(1, #ccc));
     background-color: #ccc;

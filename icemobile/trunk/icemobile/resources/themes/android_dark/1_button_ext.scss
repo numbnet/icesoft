@@ -16,7 +16,7 @@
  
  @import "../mixins";
  
-.mobi-button {
+.mobi-button, a.mobi-button:visited {
      background-color: #555;
      border-top-color: #878787;
      color: #F1F1F1;
