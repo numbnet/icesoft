@@ -15,7 +15,6 @@
  */
 .mobi-flip-switch {
     border-radius: 1em;
-    background-origin:padding;
     background-clip: border-box;
     display: inline-block;
     text-decoration: none;
@@ -65,7 +64,6 @@
     color: transparent;
     text-shadow: none;
     border-radius: 1em;
-    background-origin:padding;
     background-clip: border-box;
     width:20px;
 }
