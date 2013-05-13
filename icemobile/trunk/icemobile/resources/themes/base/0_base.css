@@ -46,3 +46,6 @@ html.bb10ctr .mobi-panelpopup-bg, html.bb10ctr .mobi-submitnotific-bg{ display: 
 html.ie10 *{ filter: none !important; } /* turn off filters for ie10 */
 
 html.android-browser .ice-status-indicator-overlay{ display: none !important; } /* avoid android container rendering issues on session expiry */
+
+.mobi-audio{ display: inline-block; }
+.mobi-audio audio{ width: 100%; }
