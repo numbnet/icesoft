@@ -69,7 +69,7 @@
     border-radius:0;
     color:#666;
     font-weight:bold;
-    padding-left: 28px;
+    padding-left: 12px;
     @include box-shadow(none);
     text-shadow: none;
 }
@@ -80,7 +80,12 @@
 }
 .mobi-pagePanel-header .mobi-button-back{
     left: 0.5em;
+    top: 0;
     border:none;
+    border-radius: 0;
+    height: 38px;
+    line-height: 22px;
+    background-position: -4px 49%;
 }
 .mobi-button-placeholder{
     padding: 1em;
