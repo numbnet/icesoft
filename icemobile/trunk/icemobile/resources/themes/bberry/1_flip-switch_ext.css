@@ -14,6 +14,9 @@
  * governing permissions and limitations under the License.
  */
 
+.mobi-flip-switch{
+    border-radius: 0.2em;
+}
 .mobi-flip-switch-off, .mobi-flip-switch-on {
     border: 1px solid #888888;
 }
@@ -56,6 +59,7 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#e3e3e3', EndColorStr='#fcfcfc')";
     color: transparent;
     text-shadow: none;
+    border-radius: 0.2em;
 }
 
 .mobi-flip-switch-on span:last-child { border-left: 1px solid #888888; }
