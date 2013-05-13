@@ -36,7 +36,6 @@ public class SubmitMonitorRenderer extends CoreRenderer {
 
         writer.startElement(HTML.DIV_ELEM, monitor);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
         // Encode Component
         writeComponent(context, writer, monitor, clientId);
@@ -51,6 +50,7 @@ public class SubmitMonitorRenderer extends CoreRenderer {
             SubmitMonitor monitor, String clientId) throws IOException {
         writer.startElement(HTML.DIV_ELEM, monitor);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_script", null);
+        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
         JSONBuilder json = JSONBuilder.create();
