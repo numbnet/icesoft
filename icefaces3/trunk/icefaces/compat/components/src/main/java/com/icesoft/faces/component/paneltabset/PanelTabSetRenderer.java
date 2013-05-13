@@ -29,6 +29,7 @@ import com.icesoft.util.pooling.CSSNamePool;
 import com.icesoft.util.pooling.ClientIdPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.impl.context.DOMPartialViewContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -592,6 +593,7 @@ public class PanelTabSetRenderer
             link.setAttribute(HTML.HREF_ATTR, "javascript:;");
             link.setAttribute(HTML.CLASS_ATTR, "icePnlTbLblLnk");
             renderAttribute(tabSet, link, HTML.TABINDEX_ATTR, HTML.TABINDEX_ATTR);
+            link.setAttribute(DOMPartialViewContext.DATA_ELEMENTUPDATE, linkId);
 
             if (labelFacet == null) {
                 td_mid_mid.appendChild(link);
