@@ -46,11 +46,17 @@ mobi.flipswitch = {
         if (this.flipperEl){
             var oldClass = this.flipperEl.className;
             var value = "off";
+            var onClass = this.flipperEl.children[0].className;
+            var offClass = this.flipperEl.children[2].className;
             if (oldClass.indexOf('-off ')>0){
-            	this.flipperEl.className='mobi-flip-switch mobi-flip-switch-on ';
+            	this.flipperEl.className='mobi-flip-switch mobi-flip-switch-on ui-btn-down-c';
+            	this.flipperEl.children[0].className = 'mobi-flip-switch-txt';
+            	this.flipperEl.children[2].className = 'mobi-flip-switch-txt ui-btn-up-c';
                 value = true;
             }else{
-             	this.flipperEl.className='mobi-flip-switch mobi-flip-switch-off ';
+             	this.flipperEl.className='mobi-flip-switch mobi-flip-switch-off ui-btn-down-c';
+             	this.flipperEl.children[0].className = 'mobi-flip-switch-txt ui-btn-up-c';
+                this.flipperEl.children[2].className = 'mobi-flip-switch-txt';
                	value = false;
             }
             var hidden = this.id+"_hidden";
