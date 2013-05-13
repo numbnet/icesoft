@@ -78,6 +78,7 @@
 .mobi-pagePanel-header .mobi-button{
     border-radius: 0.5em;
     border: 1px solid #878787;
+    height: 38px;
 }
 .mobi-pagePanel-header .mobi-button-back{
     left: 0;
@@ -87,7 +88,7 @@
     height: 38px;
     line-height: 22px;
 }
-div.mobi-pagePanel-header .mobi-button-back {
+.mobi-pagePanel-header div.mobi-button-back {
     height: 25px;
     min-width: 15px;
 }
