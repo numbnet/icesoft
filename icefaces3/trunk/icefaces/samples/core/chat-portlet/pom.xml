@@ -114,9 +114,6 @@
     <profiles>
         <profile>
             <id>portletfaces</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <dependencies>
                 <dependency>
                     <groupId>javax.portlet</groupId>
@@ -134,6 +131,9 @@
 
         <profile>
             <id>liferayfaces</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>javax.portlet</groupId>
