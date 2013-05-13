@@ -63,7 +63,7 @@
                 <patternset refid="portlet.files"/>
             </fileset>
         </copy>
-        <copy todir="${res.meta.dir}">
+        <copy todir="${res.meta.dir}" failonerror="false">
             <fileset dir="${parent.res.meta.dir}">
                 <patternset refid="portlet.files"/>
             </fileset>
