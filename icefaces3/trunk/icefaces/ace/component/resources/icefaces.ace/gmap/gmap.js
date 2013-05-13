@@ -153,9 +153,33 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         });
 
     }
+	
+	ice.ace.gMap.replaceAddDomListener = function() {
+		ice.ace.gMap.original_addDomListener = google.maps.event.addDomListener;
+		google.maps.event.addDomListener = function(instance, eventName, handler, capture) {
+			var eventListener = ice.ace.gMap.original_addDomListener.call(google.maps.event, instance, eventName, handler, capture);
+			if (instance == window && eventName == 'resize') {
+				google.maps.event.removeListener(eventListener);
+				if (!ice.ace.gMap.windowResizeListener) {
+					ice.ace.gMap.windowResizeListener = 
+						ice.ace.gMap.original_addDomListener.call(google.maps.event, window, 'resize', ice.ace.gMap.windowResizeHandler);
+				}
+			}
+			return eventListener;
+		};
+	};
+	
+	ice.ace.gMap.windowResizeHandler = function() {
+		for (var mapKey in GMapRepository) {
+			var map = GMapRepository[mapKey];
+			if (map) google.maps.event.trigger(map, 'resize');
+		}
+	};
 
     ice.ace.gMap.create = function (ele, lat, lng, zoom, type) {
-
+		// replace addDomListener here, because the events code is lazily loaded by google
+		if (!ice.ace.gMap.original_addDomListener) ice.ace.gMap.replaceAddDomListener();
+		
         if(lat == undefined && lng == undefined)
             var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:google.maps.MapTypeId.ROADMAP, zoom:5, center: new google.maps.LatLng(0,0)}));
         else
