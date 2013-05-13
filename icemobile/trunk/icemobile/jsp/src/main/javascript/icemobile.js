@@ -385,7 +385,6 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
             //   console.log('pageVal passed in='+pageVal);
                if (currentVal!=pageVal){
                     changedVal = true;
-                   // this.setActive();
                    var undoNode = document.querySelector('.mobi-carousel-cursor-list > li.active');
                    if (undoNode){
                        undoNode.className = '';
@@ -494,7 +493,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                     ice.mobi.carousel.unloadTest(clientId);
                 };
               //  var node = document.getElementById(clientId);
-                ice.mobi.addEventListener(document, "DOMSubtreeModified", this.unload[clientId]);
+                ice.mobi.addListener(document, "DOMSubtreeModified", this.unload[clientId]);
             } else {
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId].updateProperties(clientId, cfgIn);
