@@ -103,14 +103,20 @@ public abstract class BaseCoreRenderer{
     }
     public void writeExternalScript(IMobiComponent component, IResponseWriter writer, String url)
             throws IOException {
+        writeExternalScript(component, writer, url, true);
+    }
+    public void writeExternalScript(IMobiComponent component, IResponseWriter writer, String url, boolean required)
+            throws IOException {
         
             writer.startElement(SPAN_ELEM, null);
             writer.writeAttribute(ID_ATTR, component.getClientId() +"_libJS");
             writer.writeAttribute(CLASS_ATTR, "mobi-hidden");
-            writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript");
-            writer.writeAttribute("src", url);
-            writer.endElement("script");
+            if (required)  {
+                writer.startElement("script", null);
+                writer.writeAttribute("type", "text/javascript");
+                writer.writeAttribute("src", url);
+                writer.endElement("script");
+            }
             writer.endElement(SPAN_ELEM);
     }
     protected boolean isTouchEventEnabled(ClientDescriptor client) {
