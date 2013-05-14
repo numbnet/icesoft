@@ -37,8 +37,10 @@ public class TabSetCoreRenderer extends BaseCoreRenderer {
         ITabSet tabset = (ITabSet)component;
         String clientId = tabset.getClientId();
         /* JSF comp writes script into 1st span */
-        if (!tabset.isScriptLoaded() && !isJSP)  {
-            super.writeExternalScript(component, writer, tabset.getJavascriptFileRequestPath());
+        if (!isJSP)  {
+            super.writeExternalScript(component, writer,
+                    tabset.getJavascriptFileRequestPath(),
+                    !tabset.isScriptLoaded());
             tabset.setScriptLoaded();
         }
         writer.startElement(DIV_ELEM, tabset);
