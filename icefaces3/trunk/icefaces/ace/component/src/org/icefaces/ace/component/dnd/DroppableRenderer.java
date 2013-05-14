@@ -143,10 +143,25 @@ public class DroppableRenderer extends CoreRenderer {
 
     protected UIData findDatasource(FacesContext context, Droppable droppable, String datasourceId) {
         UIComponent datasource = droppable.findComponent(datasourceId);
+		if (datasource == null) datasource = findComponentCustom(context.getViewRoot(), datasourceId);
         
         if(datasource == null)
             throw new FacesException("Cannot find component \"" + datasourceId + "\" in view.");
         else
             return (UIData) datasource;
     }
+	
+	private static UIComponent findComponentCustom(UIComponent base, String id) {
+
+		String baseId = base.getId();
+		if (baseId != null && baseId.equals(id)) return base;
+		java.util.Iterator<UIComponent> children = base.getFacetsAndChildren();
+		UIComponent result = null;
+		while(children.hasNext()) {
+			UIComponent child = children.next();
+			result = findComponentCustom(child, id);
+			if (result != null) break;
+		}
+		return result;
+	}
 }
