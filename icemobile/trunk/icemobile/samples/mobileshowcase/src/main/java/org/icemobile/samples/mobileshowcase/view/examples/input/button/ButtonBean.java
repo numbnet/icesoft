@@ -66,7 +66,7 @@ public class ButtonBean extends ExampleImpl<ButtonBean> implements
     }
 
     public void buttonType(ActionEvent event){
-        buttonType = (String)event.getComponent().getAttributes().get("buttonType");
+        buttonType = (String)event.getComponent().getAttributes().get("bType");
     }
 
     public void commandGroup1Selected(ActionEvent event){
