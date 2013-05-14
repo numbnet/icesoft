@@ -91,7 +91,6 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             writer.writeAttribute("type", "time", "type");
             writer.writeAttribute("id", clientId, null);
             writer.writeAttribute("name", clientId, null);
-            writer.writeAttribute("class", "ui-input-text", null);
             boolean disabled = spinner.isDisabled();
             boolean readonly = spinner.isReadonly();
             String defaultPattern = "HH:mm";

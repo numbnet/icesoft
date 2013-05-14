@@ -96,7 +96,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
             writer.writeAttribute("type", "date", "type");
             writer.writeAttribute("id", clientId, null);
             writer.writeAttribute("name", clientId, null);
-            writer.writeAttribute("class", "ui-input-text", null);
             boolean disabled = spinner.isDisabled();
             boolean readonly = spinner.isReadonly();
 
