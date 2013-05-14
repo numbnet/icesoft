@@ -16,29 +16,18 @@
 
 package org.icefaces.tutorial.portletdndtutorial;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-
 import org.icefaces.ace.event.DragDropEvent;
-import org.icefaces.bean.WindowDisposed;
 import org.icefaces.application.PushRenderer;
 
 import java.util.*;
 
-@ManagedBean
-@WindowDisposed
-@ViewScoped
 public class DroppableBean implements java.io.Serializable {
 
-    @ManagedProperty(value = "#{windowScopedBean}")
     private WindowScopedBean windowScopedBean;
 
 	private List<Item> items;
 	
-	@PostConstruct
-	public void postConstruct() {
+	public DroppableBean() {
 		items = new ArrayList<Item>();
 		PushRenderer.addCurrentView("tutorial");
 	}

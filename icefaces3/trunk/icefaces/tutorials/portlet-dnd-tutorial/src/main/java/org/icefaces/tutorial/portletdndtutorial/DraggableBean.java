@@ -16,29 +16,18 @@
 
 package org.icefaces.tutorial.portletdndtutorial;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-
 import org.icefaces.ace.event.DragDropEvent;
-import org.icefaces.bean.WindowDisposed;
 import org.icefaces.application.PushRenderer;
 
 import java.util.*;
 
-@ManagedBean
-@WindowDisposed
-@ViewScoped
 public class DraggableBean implements java.io.Serializable {
 
-    @ManagedProperty(value = "#{windowScopedBean}")
     private WindowScopedBean windowScopedBean;
 
 	private List<Item> items;
 	
-	@PostConstruct
-	public void postConstruct() {
+	public DraggableBean() {
 		items = new ArrayList<Item>();
 		items.add(new Item("Item1", items));
 		items.add(new Item("Item2", items));

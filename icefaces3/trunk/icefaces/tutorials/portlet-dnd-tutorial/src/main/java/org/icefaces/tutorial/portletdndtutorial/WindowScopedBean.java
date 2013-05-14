@@ -16,16 +16,6 @@
 
 package org.icefaces.tutorial.portletdndtutorial;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.CustomScoped;
-
-import org.icefaces.bean.WindowDisposed;
-
-import java.util.*;
-
-@ManagedBean
-@WindowDisposed
-@CustomScoped(value = "#{window}")
 public class WindowScopedBean implements java.io.Serializable {
 
 	private Item draggedItem;
