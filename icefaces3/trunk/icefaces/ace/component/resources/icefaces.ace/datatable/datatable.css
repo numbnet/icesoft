@@ -86,42 +86,36 @@
 
 .ui-sortable-column-order {
     font-family: Verdana, Arial, sans-serif;
-    display: inline;
-    width:2em;
-    line-height: 22px;
     font-weight: normal;
-    margin-top: 1px;
-    position:relative;
-    text-align: right;
-}
-
-.ui-tableconf-body .ui-sortable-column-order {
-    text-align: left;
-    top:-4px;
+    vertical-align: middle;
 }
 
 .ui-datatable .ui-sortable-column .ui-sortable-column-icon {
     vertical-align: middle;
-    /*float:right;*/
     display: inline-block;
     width:16px;
     height:1.7em;
     margin-left: 5px;
     position:relative;
 }
+.ui-tableconf-button {
+    vertical-align: middle;
+}
 .ui-tableconf-body .ui-sortable-column-icon {
     display: inline-block;
-    height:2em;
+    position: relative;
+    height: 27px;
+    width: 16px;
+    vertical-align: middle;
 
 }
 .ui-tableconf-body .ui-sortable-column-icon .ui-icon-triangle-1-n {
-    position:relative;
-    top:1px;
+    position:absolute;
+    top:0px;
 }
 .ui-tableconf-body .ui-sortable-column-icon .ui-icon-triangle-1-s {
-    position:relative;
-    bottom:-1px;
-    *bottom:4px; /* IE7 specific offset  */
+    position:absolute;
+    bottom:0px;
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-n {
     position:absolute;
