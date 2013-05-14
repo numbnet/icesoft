@@ -32,7 +32,9 @@
 		<h:form>
 			<ace:panel header="Drop Target 2">
 				<ace:panel id="droppable" header="Drop zone" style="height:200px;">
-					<ace:droppable tolerance="touch" dropListener="#{droppableBean.handleDrop}" scope="tutorial" />
+					<ace:droppable tolerance="touch" dropListener="#{droppableBean.handleDrop}" scope="tutorial">
+						<ace:ajax />
+					</ace:droppable>
 					<ace:dataTable id="droppableTable" value="#{droppableBean.items}" var="item">
 						<ace:column headerText="Dropped items">
 							<h:outputText value="#{item.name}" style="display:inline-block;width:100%;"/>

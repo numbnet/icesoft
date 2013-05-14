@@ -29,17 +29,18 @@ public class DraggableBean implements java.io.Serializable {
 	
 	public DraggableBean() {
 		items = new ArrayList<Item>();
-		items.add(new Item("Item1", items));
-		items.add(new Item("Item2", items));
-		items.add(new Item("Item3", items));
-		items.add(new Item("Item4", items));
-		items.add(new Item("Item5", items));
+		items.add(new Item("Item1"));
+		items.add(new Item("Item2"));
+		items.add(new Item("Item3"));
+		items.add(new Item("Item4"));
+		items.add(new Item("Item5"));
 		PushRenderer.addCurrentView("tutorial");
 	}
 
 	public void handleDrag(DragDropEvent e) {
 		Item item = (Item) e.getData();
 		windowScopedBean.setDraggedItem(item);
+		windowScopedBean.setOriginalList(items);
 	}
 	
 	public List<Item> getItems() {

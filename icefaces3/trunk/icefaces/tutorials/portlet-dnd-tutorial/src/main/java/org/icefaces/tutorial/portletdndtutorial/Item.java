@@ -16,16 +16,12 @@
 
 package org.icefaces.tutorial.portletdndtutorial;
 
-import java.util.List;
-
 public class Item implements java.io.Serializable {
     
 	private String name;
-	private List<Item> originalList;
 	
-	public Item (String name, List<Item> originalList) {
+	public Item (String name) {
 		this.name = name;
-		this.originalList = originalList;
 	}
 	
 	public String getName() {
@@ -34,9 +30,5 @@ public class Item implements java.io.Serializable {
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public void removeFromOriginalList() {
-		originalList.remove(this);
 	}
 }

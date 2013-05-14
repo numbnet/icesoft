@@ -29,14 +29,16 @@ public class DroppableBean implements java.io.Serializable {
 	
 	public DroppableBean() {
 		items = new ArrayList<Item>();
-		PushRenderer.addCurrentView("tutorial");
 	}
 	
 	public void handleDrop(DragDropEvent e) {
 		Item item = windowScopedBean.getDraggedItem();
 		if (item != null) {
 			items.add(item);
-			item.removeFromOriginalList();
+			List<Item> originalList = windowScopedBean.getOriginalList();
+			if (originalList != null) {
+				originalList.remove(item);
+			}
 		}
 		PushRenderer.render("tutorial");
 	}
