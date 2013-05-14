@@ -24,6 +24,7 @@
     border: none;
     margin: 0 0 0 5px;
     cursor: pointer;
+    vertical-align: top;
 }
 .mobi-date-popup-btn {
     background-image: url('btn-calendar.png');
