@@ -60,7 +60,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
     public static final String BLACKOUT_PNL_INVISIBLE_CLASS = "mobi-date-bg-inv";
     public static final String CONTAINER_CLASS = "mobi-date-container";
     public static final String CONTAINER_INVISIBLE_CLASS = "mobi-date-container-inv";
-    public static final String INPUT_CLASS = "mobi-input-text ui-input-text";
+    public static final String INPUT_CLASS = "mobi-input-text";
     public static final String POP_UP_CLASS = "mobi-date-popup-btn";
     public static final String TITLE_CLASS = "mobi-date-title-container";
     public static final String SELECT_CONT_CLASS = "mobi-date-select-container";
