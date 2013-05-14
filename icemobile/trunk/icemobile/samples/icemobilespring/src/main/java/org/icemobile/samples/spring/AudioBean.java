@@ -25,9 +25,6 @@ public class AudioBean extends MediaBean {
     private static final Log LOG = LogFactory.getLog(AudioBean.class);
     
 
-    /**
-     * Populates the byte[] and Resource object from a file stored on the server.
-     */
     public AudioBean() {
 
         this.controls = true;

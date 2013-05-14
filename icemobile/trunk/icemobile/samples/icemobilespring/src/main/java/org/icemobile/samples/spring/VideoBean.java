@@ -13,10 +13,22 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+package org.icemobile.samples.spring;
 
-.mobi-mic-record,.mobi-mic-stop{
-    color: #369;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+@SessionAttributes("videoBean")
+public class VideoBean extends MediaBean {
+    
+    private static final Log LOG = LogFactory.getLog(AudioBean.class);
+    
+
+    public VideoBean() {
+
+        this.controls = true;
+        this.src = "resources/video/icesoft_mobile_push.mp4";
+    }
+
 }
-.mobi-mic-record {background: #efefef;}
-
-.mobi-mic-stop {background: #f9d543;}
