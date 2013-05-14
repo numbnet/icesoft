@@ -39,6 +39,7 @@
     
     <mobi:outputListItem group="true">Media</mobi:outputListItem>
     <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/audioplayer"/>">Audio</a></mobi:outputListItem>
+    <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/videoplayer"/>">Video</a></mobi:outputListItem>
     
     <mobi:outputListItem group="true">Native Integration</mobi:outputListItem>
     <mobi:outputListItem><a class="ui-link-inherit" href="<c:url value="/mediaspot"/>">Augmented Reality</a></mobi:outputListItem>

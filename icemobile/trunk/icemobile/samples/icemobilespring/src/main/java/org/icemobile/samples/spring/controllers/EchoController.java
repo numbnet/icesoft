@@ -18,16 +18,17 @@ package org.icemobile.samples.spring.controllers;
 
 import org.icemobile.samples.spring.AccordionBean;
 import org.icemobile.samples.spring.AudioBean;
+import org.icemobile.samples.spring.ButtonsBean;
 import org.icemobile.samples.spring.CarouselBean;
 import org.icemobile.samples.spring.DateTimeSpinnerBean;
 import org.icemobile.samples.spring.FlipSwitchBean;
-import org.icemobile.samples.spring.ButtonsBean;
 import org.icemobile.samples.spring.InputTextBean;
 import org.icemobile.samples.spring.ListBean;
 import org.icemobile.samples.spring.MenuButtonBean;
 import org.icemobile.samples.spring.PanelConfirmationBean;
 import org.icemobile.samples.spring.PanelPopupBean;
 import org.icemobile.samples.spring.TabsetBean;
+import org.icemobile.samples.spring.VideoBean;
 import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -117,6 +118,10 @@ public class EchoController extends ICEmobileBaseController{
     
     @RequestMapping(value = "/audioplayer")
     public void doRequest(@ModelAttribute("audioBean") AudioBean model) {
+    }
+    
+    @RequestMapping(value = "/videoplayer")
+    public void doRequest(@ModelAttribute("videoBean") VideoBean model) {
     }
 
 }

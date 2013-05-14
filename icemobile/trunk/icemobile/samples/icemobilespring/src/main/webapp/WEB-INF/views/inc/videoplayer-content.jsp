@@ -21,60 +21,60 @@
 <%@ taglib prefix="push"
     uri="http://www.icepush.org/icepush/jsp/icepush.tld"
 %>
-<form:form id="audioPlayerForm" method="POST">
+<form:form id="videoPlayerForm" method="POST">
 
     <mobi:fieldsetGroup>
        <mobi:fieldsetRow>
-           <label class="ui-input-text">Preload audio</label>
+           <label class="ui-input-text">Preload video</label>
            <select name="preLoad" style="float:right">
-              <option value="none" ${audioBean.preload=='none' ? 'selected' : ''}>none</option>
-              <option value="auto" ${audioBean.preload=='auto' ? 'selected' : ''}>auto</option>
-              <option value="metadata" ${audioBean.preload=='metadata' ? 'selected' : ''}>metadata</option>
+              <option value="none" ${videoBean.preload=='none' ? 'selected' : ''}>none</option>
+              <option value="auto" ${videoBean.preload=='auto' ? 'selected' : ''}>auto</option>
+              <option value="metadata" ${videoBean.preload=='metadata' ? 'selected' : ''}>metadata</option>
           </select>&#160;
        </mobi:fieldsetRow>
        <mobi:fieldsetRow>
-           <label class="ui-input-text">Audio Controls: </label>
+           <label class="ui-input-text">Video Controls: </label>
            <mobi:flipswitch id="fs2" labelOn="true" labelOff="false" style="float:right"
-                            name="controls" value="${audioBean.controls}"/>&#160;
+                            name="controls" value="${videoBean.controls}"/>&#160;
        </mobi:fieldsetRow>
        <mobi:fieldsetRow>
-           <label class="ui-input-text">Loop audio: </label>
+           <label class="ui-input-text">Loop video: </label>
            <mobi:flipswitch id="fs3" labelOn="true" labelOff="false" style="float:right"
-                            name="loop" value="${audioBean.loop}"/>&#160;
+                            name="loop" value="${videoBean.loop}"/>&#160;
        </mobi:fieldsetRow>
        <mobi:fieldsetRow>
-           <label class="ui-input-text">Auto play audio:</label>
+           <label class="ui-input-text">Auto play video:</label>
            <mobi:flipswitch id="fs4" labelOn="true" labelOff="false" style="float:right"
-                            name="autoPlay" value="${audioBean.autoPlay}"/>&#160;
+                            name="autoPlay" value="${videoBean.autoPlay}"/>&#160;
        </mobi:fieldsetRow>
        <mobi:fieldsetRow>
            <label class="ui-input-text">Mute audio:</label>
            <mobi:flipswitch id="mutfs" labelOn="true" labelOff="false" style="float:right"
-                            name="muted" value="${audioBean.muted}"/>&#160;
+                            name="muted" value="${videoBean.muted}"/>&#160;
        </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <label class="ui-input-text">Link Label:</label>
+            <label class="ui-input-text">Link label:</label>
             <mobi:inputText name="linkLabel" type="text" autoCorrect="off" style="width:50%;float:right"
-                placeholder="Link label" value="${audioBean.linkLabel}" />
+                placeholder="Link label" value="${videoBean.linkLabel}" />
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
     <mobi:commandButton buttonType="important" styleClass="submit"
             value="Submit" type="submit" />
             
-    <h3>Audio Player</h3>
+    <h3>Video Player</h3>
 
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow style="text-align:center">
-            <mobi:audioPlayer id="audioOne"
-                            url="${audioBean.src}"
+            <mobi:videoPlayer id="videoOne"
+                            url="${videoBean.src}"
                             style="width:50%"
-                            type="${audioBean.type}"
-                            loop = "${audioBean.loop}"
-                            preload="${audioBean.preload}"
-                            muted="${audioBean.muted}"
-                            linkLabel="${audioBean.linkLabel}"
-                            controls="${audioBean.controls}"/>
+                            type="${videoBean.type}"
+                            loop = "${videoBean.loop}"
+                            preload="${videoBean.preload}"
+                            muted="${videoBean.muted}"
+                            linkLabel="${videoBean.linkLabel}"
+                            controls="${videoBean.controls}"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
@@ -82,7 +82,7 @@
 
 
 <script type="text/javascript">
-    MvcUtil.enhanceForm("#audioPlayerForm");
+    MvcUtil.enhanceForm("#videoPlayerForm");
     mobi.AjaxRequest = function( options){
         if (options.jspForm){
             $(options.jspForm).submit();

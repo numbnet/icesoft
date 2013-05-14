@@ -13,6 +13,15 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
+.mobi-audio, .mobi-video{ display: inline-block; }
+.mobi-audio audio{ width: 100%; }
+.mobi-video video{
+    display: block;
+    margin-bottom: 14px;
+    width: 100%; 
+}
+ 
 .mobi-video a,.mobi-video a:hover, .mobi-video a:visited,
 .mobi-audio a,.mobi-audio a:hover, .mobi-audio a:visited  {
     text-decoration: underline;
