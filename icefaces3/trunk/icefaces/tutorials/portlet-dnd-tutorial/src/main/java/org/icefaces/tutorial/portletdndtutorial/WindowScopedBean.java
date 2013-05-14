@@ -16,9 +16,12 @@
 
 package org.icefaces.tutorial.portletdndtutorial;
 
+import java.util.*;
+
 public class WindowScopedBean implements java.io.Serializable {
 
 	private Item draggedItem;
+	private List<Item> originalList;
 	
 	public Item getDraggedItem() {
 		return draggedItem;
@@ -26,5 +29,13 @@ public class WindowScopedBean implements java.io.Serializable {
 	
 	public void setDraggedItem(Item draggedItem) {
 		this.draggedItem = draggedItem;
+	}
+	
+	public List<Item> getOriginalList() {
+		return originalList;
+	}
+	
+	public void setOriginalList(List<Item> originalList) {
+		this.originalList = originalList;
 	}
 }
