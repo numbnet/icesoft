@@ -303,10 +303,13 @@ ice.mobi.button = {
         }
     },
     unSelect: function(clientId, classNm){
-        var me = document.getElementById(clientId);
-        var oldClass = me.className;
-        me.className=oldClass.replace('down','up');
-        console.log('id='+clientId+' unSelect call back -> class='+document.getElementById(clientId).className);
+        var elem = document.getElementById(clientId);
+        if( elem ){
+            var oldClass = elem.className;
+            elem.className=oldClass.replace('down','up');
+            //console.log('id='+clientId+' unSelect call back -> class='+document.getElementById(clientId).className);
+        }
+        
     }
 };
 
