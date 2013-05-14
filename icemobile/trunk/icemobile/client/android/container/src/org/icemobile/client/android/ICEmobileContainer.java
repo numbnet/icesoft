@@ -63,6 +63,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.webkit.WebResourceResponse;
 
 import android.media.MediaPlayer;
 import android.widget.VideoView;
@@ -513,10 +515,17 @@ public class ICEmobileContainer extends Activity
     }
 
     private class ICEfacesWebViewClient extends WebViewClient {
+        boolean stillLoading = true;
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
             return true;
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            stillLoading = true;
         }
 
         @Override
@@ -527,11 +536,23 @@ public class ICEmobileContainer extends Activity
             historyManager.add(url);
             currentURL = url;
             newURL = url;
+            stillLoading = false;
         }
 
         @Override
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            //prevent icepush from blocking if page not yet loaded
+            if (url.contains("listen.icepush"))  {
+                if (stillLoading)  {
+                    return new WebResourceResponse(null, null, null);
+                }
+            }
+            return null;
         }
 
         @Override
