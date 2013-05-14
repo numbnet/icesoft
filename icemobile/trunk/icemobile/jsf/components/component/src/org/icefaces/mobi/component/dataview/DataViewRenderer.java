@@ -100,6 +100,7 @@ public class DataViewRenderer extends Renderer {
         String cfg = "{";
         cfg += "active:'" + dataView.getActivationMode() + "'";
         if (reactive) cfg = encodeColumnPriorities(cfg);
+        cfg += "}";
 
         String js =
             "ice.mobi.dataView.create("
@@ -120,7 +121,6 @@ public class DataViewRenderer extends Renderer {
             if (i != priorities.length - 1) cfg += ',';
         }
         cfg += "]";
-        cfg += "}";
         return cfg;
     }
 
