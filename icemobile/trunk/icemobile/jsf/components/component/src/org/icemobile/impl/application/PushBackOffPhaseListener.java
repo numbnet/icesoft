@@ -26,10 +26,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import org.icepush.PushContext;
 
 public class PushBackOffPhaseListener implements PhaseListener {
+    private static final Logger log = Logger.getLogger(PushBackOffPhaseListener.class.getName());
 
     public void afterPhase(PhaseEvent phaseEvent)  {
     }
@@ -40,9 +43,13 @@ public class PushBackOffPhaseListener implements PhaseListener {
         if (PhaseId.RENDER_RESPONSE == phaseEvent.getPhaseId()) {
             String browserID = getBrowserID(facesContext);
             if (null != browserID)  {
-                PushContext pushContext = PushContext.getInstance(
-                    (ServletContext) externalContext.getContext());
-                pushContext.backOff(browserID, 300);
+                try {
+                    PushContext pushContext = PushContext.getInstance(
+                        (ServletContext) externalContext.getContext());
+                    pushContext.backOff(browserID, 300);
+                } catch (Throwable t)  {
+                    log.log(Level.FINE, "pushContext.backOff failed ", t);
+                }
             }
         }
     }
