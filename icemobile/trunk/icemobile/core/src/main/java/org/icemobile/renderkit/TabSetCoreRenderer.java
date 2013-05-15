@@ -18,11 +18,7 @@ package org.icemobile.renderkit;
 
 import org.icemobile.component.ITabSet;
 import org.icemobile.component.IMobiComponent;
-import org.icemobile.util.Utils;
-
-import javax.swing.text.html.HTML;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.icemobile.util.HTML.*;
@@ -120,7 +116,9 @@ public class TabSetCoreRenderer extends BaseCoreRenderer {
         writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, tabset.getClientId() + "_tabs");
         String baseTabsClass = ITabSet.TABSET_TABS_CLASS.toString();
-        if (!tabset.isFixedPosition()){
+        //cannot support fixed positioning in the Android browser
+        
+        if (!tabset.isFixedPosition() || component.getClient().isAndroidBrowserOrWebView()){
             baseTabsClass += " mobi-tabset-tabs-nonfixed";
         }
         writer.writeAttribute("class", baseTabsClass);
