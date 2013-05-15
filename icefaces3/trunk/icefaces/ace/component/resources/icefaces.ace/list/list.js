@@ -31,6 +31,17 @@ ice.ace.List = function(id, cfg) {
 
     // global list of list objects, used by a component
     // to rebuild widget lists following an inserting update.
+    if (ice.ace.Lists[id]) {
+        if (ice.ace.Lists[id].disableClickHandling)
+            this.disableClickHandling = true;
+        if (ice.ace.Lists[id].disableDoubleClickHandling)
+            this.disableDoubleClickHandling = true;
+
+        setTimeout(function() {
+            self.disableClickHandling = false;
+            self.disableDoubleClickHandling = false;
+        }, 500);
+    }
     ice.ace.Lists[id] = self;
 
     // Setup drag wrapped drag events
@@ -311,39 +322,47 @@ ice.ace.List.prototype.itemLeave = function(e) {
 };
 
 ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
-    var item = ice.ace.jq(e.currentTarget),
-        id = item.attr('id'),
-        from = this,
-        fromIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1)),
-        to = this.getSiblingList(e.shiftKey);
+    if (!this.disableDoubleClickHandling) {
+        var item = ice.ace.jq(e.currentTarget),
+            self = this,
+            id = item.attr('id'),
+            from = this,
+            fromIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1)),
+            to = this.getSiblingList(e.shiftKey);
 
-    fromIndex = this.getUnshiftedIndex(
+        clearTimeout(this.pendingClickHandling);
+        this.pendingClickHandling = undefined;
+
+        fromIndex = this.getUnshiftedIndex(
             this.element.find('> ul').children().length,
             this.read('reorderings'),
             fromIndex);
 
-    if (to == undefined) return;
+        if (to == undefined) return;
 
-    to.immigrantMessage = [];
-    to.immigrantMessage.push(this.id);
-    to.immigrantMessage.push([[fromIndex , to.element.find('> ul').children().length]]);
+        to.immigrantMessage = [];
+        to.immigrantMessage.push(this.id);
+        to.immigrantMessage.push([[fromIndex , to.element.find('> ul').children().length]]);
 
-    this.element.find('> ul > li').removeClass('if-list-last-clicked');
-    to.element.find('> ul > li').removeClass('if-list-last-clicked');
+        this.element.find('> ul > li').removeClass('if-list-last-clicked');
+        to.element.find('> ul > li').removeClass('if-list-last-clicked');
 
-    if (this.cfg.selection) {
-        to.deselectConnectedLists();
-        to.deselectAll();
-        this.addSelectedItem(item, fromIndex);
+        if (this.cfg.selection) {
+            to.deselectConnectedLists();
+            to.deselectAll();
+            this.addSelectedItem(item, fromIndex);
+        }
+
+        setTimeout(function() {
+            self.disableDoubleClickHandling = false;
+            self.disableClickHandling = false;
+        },500);
+
+        // Only allow more clicks to occur once migration has finished
+        to.sendMigrateRequest(function() {
+            from.doubleClickAttempted = false;
+        });
     }
-
-    clearTimeout(this.pendingClickHandling);
-    this.pendingClickHandling = undefined;
-
-    // Only allow more clicks to occur once migration has finished
-    to.sendMigrateRequest(function() {
-        from.doubleClickAttempted = false;
-    });
 }
 
 /* Get the following (or if shift is held, previous) list in the first
@@ -372,22 +391,26 @@ ice.ace.List.prototype.getSiblingList = function (shift) {
 }
 
 ice.ace.List.prototype.pendingClickHandling;
-ice.ace.List.prototype.doubleClickAtempted = false;
+ice.ace.List.prototype.disableClickHandling = false;
+ice.ace.List.prototype.disableDoubleClickHandling = false;
 
 ice.ace.List.prototype.itemClickHandler = function(e) {
     // Prevent click handling if waiting to see if we've double clicked
     // or prevent click handling if we have already double clicked and are
     // mindlessly mashing on this element
-    if (this.pendingClickHandling == undefined && !this.doubleClickAttempted) {
+    if (this.pendingClickHandling == undefined && !this.disableClickHandling) {
         var li = e.currentTarget,
             jqLi = ice.ace.jq(li),
             self = this,
-            timeout = this.cfg.dblclk_migrate ? 250 : 0;
+            timeout = this.cfg.dblclk_migrate ? 500 : 0;
+
+        this.disableClickHandling = true;
 
         this.pendingClickHandling =
             setTimeout(function () {
                 // Clear double click monitor token
                 self.pendingClickHandling = undefined;
+                self.disableClickHandling = false;
 
                 var index = jqLi.index();
 
@@ -434,10 +457,6 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
 
                 }
             }, timeout);
-    } else {
-        clearTimeout(this.pendingClickHandling);
-        this.pendingClickHandling = undefined;
-        this.doubleClickAttempted = true;
     }
 };
 
