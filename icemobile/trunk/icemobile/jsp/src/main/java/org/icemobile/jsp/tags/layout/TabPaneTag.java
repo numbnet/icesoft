@@ -41,7 +41,7 @@ public class TabPaneTag extends BodyTagSupport implements ITabPane {
     private String title;
     private String mActiveContentClass = ITabSet.TABSET_ACTIVE_CONTENT_CLASS;
     private String mPassiveContentClass = ITabSet.TABSET_HIDDEN_PAGECLASS;
-    private TabSetControlTag mParent;
+    private TabSetTag mParent;
     private boolean amSelected = false;
     private int index;
     protected String id;
@@ -54,13 +54,13 @@ public class TabPaneTag extends BodyTagSupport implements ITabPane {
   //  private boolean client;
 
     public void setParent(Tag parent) {
-        if (!(parent instanceof TabSetControlTag)) {
+        if (!(parent instanceof TabSetTag)) {
             throw new IllegalArgumentException("TabPane must be child of TabSetTag");
         }
         else {
           //  LOG.info("FOUND PARENT FOR TabPane");
         }
-        mParent = (TabSetControlTag) parent;
+        mParent = (TabSetTag) parent;
     }
 
     public int doStartTag() throws JspException {

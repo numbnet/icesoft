@@ -37,8 +37,8 @@ import org.icemobile.renderkit.TabSetCoreRenderer;
  * If more than one tabset is present on a page, it is up to the developer to specify distinct id for
  * each of the tabset components on the page.
  */
-public class TabSetControlTag extends BaseBodyTag implements ITabSet{
-    private static Logger LOG = Logger.getLogger(TabSetControlTag.class.getName());
+public class TabSetTag extends BaseBodyTag implements ITabSet{
+    private static Logger LOG = Logger.getLogger(TabSetTag.class.getName());
 
     private static final String DEFAULT_ID = "tabset1";
     private static final String DEFAULT_ORIENTATION = "top";

@@ -1637,9 +1637,9 @@
     </tag>
     <tag>
         <description>ICEmobile TabSet buffered version</description>
-        <display-name>tabSetControl</display-name>
-        <name>tabSetControl</name>
-        <tag-class>org.icemobile.jsp.tags.layout.TabSetControlTag</tag-class>
+        <display-name>tabSet</display-name>
+        <name>tabSet</name>
+        <tag-class>org.icemobile.jsp.tags.layout.TabSetTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <description>Pagewide unique identifier.</description>

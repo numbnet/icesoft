@@ -22,7 +22,7 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="tabsetform" method="POST" modelAttribute="tabsetBean" cssClass="tabsetpage">
 
-    <mobi:tabSetControl id="tabsetOne" parentHeader="true"
+    <mobi:tabSet id="tabsetOne" parentHeader="true"
                             selectedId="${tabsetBean.selectedTab}">
         <mobi:tabPane id="tab1" title="Ice Sailer">
             <%@ include file="fieldset-icesailor.jsp"%>
@@ -33,7 +33,7 @@
         <mobi:tabPane id="tab3" title="ICE Skate">
             <%@ include file="fieldset-iceskate.jsp"%>
         </mobi:tabPane>
-    </mobi:tabSetControl>
+    </mobi:tabSet>
 
 	<mobi:largeView><h3>Tabset</h3></mobi:largeView>
 
