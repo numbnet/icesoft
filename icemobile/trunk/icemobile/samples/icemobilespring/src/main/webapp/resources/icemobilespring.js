@@ -124,6 +124,13 @@ MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
         });
     });
 };
+MvcUtil.enhanceAllLinksWithRemoveGeolocationWatch = function(parent)  {
+    $(document).ready(function () {
+        $(parent).find('a').each( function(){
+            $(link).click( function(e) { ice.mobi.geolocation.clearWatch(); } );
+        });
+    });
+};
 window.onload = function() {
     if( window.history && window.history.pushState ){
         window.setTimeout(function() {
