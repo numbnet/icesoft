@@ -912,7 +912,7 @@ ice.mobi.geolocation = {
                 this.successCallback, this.errorCallback,
                 geoParams );
 
-        window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+        ice.mobi.addListener(window, 'deviceorientation', ice.mobi.geolocation.orientationCallback);
         ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
         console.log('Lauching positionWatch for client: ' + pClientId +
                 ' watchId: ' + ice.mobi.geolocation.watchId);
@@ -944,7 +944,7 @@ ice.mobi.geolocation = {
        navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
                     geoParams );
 
-        window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+        ice.mobi.addListener(window, 'deviceorientation', ice.mobi.geolocation.orientationCallback);
         ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
     },
 
@@ -1269,10 +1269,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             for (var i = 0; i < headCells.length; ++i) {
                 var cell = headCells[i];
                 if (isTouchDevice) {
-                    cell.addEventListener("touchend", headCellTouchEnd);
-                    cell.addEventListener("touchstart", headCellTouchStart);
+                    ice.mobi.addListener(cell, "touchend", headCellTouchEnd);
+                    ice.mobi.addListener(cell, "touchstart", headCellTouchStart);
                 } else {
-                    cell.addEventListener("click", sortColumn);
+                    ice.mobi.addListener(cell, "click", sortColumn);
                 }
             }
         }
@@ -1291,9 +1291,11 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 }
 
             if (isTouchDevice) {
-                element.addEventListener("touchend", isRowEvent(rowTouchEnd));
-                element.addEventListener("touchstart", isRowEvent(rowTouchStart));
-            } else element.addEventListener("click", isRowEvent(activateRow));
+                ice.mobi.addListener(element, "touchend", isRowEvent(rowTouchEnd));
+                ice.mobi.addListener(element, "touchstart", isRowEvent(rowTouchStart));
+            } else {
+                ice.mobi.addListener(element, "click", isRowEvent(activateRow));
+            }
         }
 
         function processUpdateStr(dir) {
@@ -1537,7 +1539,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         setTimeout(initTableAlignment, 100);
 
         /* resize height adjust */
-        window.addEventListener("resize", function() {
+        ice.mobi.addListener(window, "resize", function() {
             // Timeout to prevent double recalc when resize is due to orientation
             if (!oriChange) {
                 setTimeout(function() {
@@ -1549,7 +1551,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         });
 
         var oriChange = false;
-        window.addEventListener("orientationchange", function() {
+        ice.mobi.addListener(window, "orientationchange", function() {
             oriChange = true;
 
             setTimeout(function() { recalcScrollHeight(); },500);
@@ -1570,8 +1572,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             return this.instances[clientId];
         }
     }
+    
 })(ice.mobi);
-
 
 /* touch active state support */
 ice.mobi.addListener(document, "touchstart", function(){});
@@ -1596,23 +1598,13 @@ function hideAddressBar() {
     hideBar = false;
 
     if(!window.location.hash) {
+        document.body.style.minHeight = minDeviceDocHeight+'px';
         window.scrollTo(0, 0);
     }
 }
 if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
-    window.addEventListener("load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
-    window.addEventListener("orientationchange", hideAddressBar );
+    ice.mobi.addListener(window, "load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
+    ice.mobi.addListener(window, "orientationchange", hideAddressBar );
 }
-(function(){
-    var sizePagePanelsToViewPort = function(){
-        var pagePanels = document.querySelectorAll(".mobi-pagePanel-body"), i=0;
-        while( i < pagePanels.length ){
-            pagePanels[i].style.minHeight = ''+window.innerHeight+'px';
-            i++;
-        }
-    };
-    setTimeout(sizePagePanelsToViewPort,10);
-    ice.mobi.addListener(window,"orientationchange",sizePagePanelsToViewPort);
-}());
 
 

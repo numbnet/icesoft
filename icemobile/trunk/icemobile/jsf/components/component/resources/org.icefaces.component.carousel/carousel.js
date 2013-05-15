@@ -178,7 +178,7 @@ if (!window.ice['mobi']) {
                     ice.mobi.carousel.unloadTest(clientId);
                 };
             //  var node = document.getElementById(clientId);
-                document.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
+                ice.mobi.addListener(document, "DOMSubtreeModified", this.unload[clientId]);
             } else {
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId].updateProperties(clientId, cfgIn);
