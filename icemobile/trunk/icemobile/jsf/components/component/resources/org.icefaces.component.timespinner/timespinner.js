@@ -190,13 +190,9 @@ mobi.timespinner = {
             mobi.panelAutoCenter(idPopPanel);
         };
 
-        if (window.addEventListener) {
-            window.addEventListener(this.scrollEvent, this.centerCalculation[clientId], false);
-            window.addEventListener('resize', this.centerCalculation[clientId], false);
-        } else { // older ie event listener
-            window.attachEvent(this.scrollEvent, this.centerCalculation[clientId]);
-            window.attachEvent("resize", this.centerCalculation[clientId]);
-        }
+        ice.mobi.addListener(window, this.scrollEvent, this.centerCalculation[clientId]);
+        ice.mobi.addListener(window, 'resize', this.centerCalculation[clientId]);
+
         // set visible
         this.opened[clientId] = true;
         // calculate center for first view
