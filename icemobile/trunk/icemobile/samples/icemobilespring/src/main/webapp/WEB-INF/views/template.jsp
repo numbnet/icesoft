@@ -32,7 +32,7 @@
             <mobi:pagePanel>
                 <mobi:pagePanelHeader>
                     <a href="<c:url value="/menu"/>" id="menuLink" class="ui-icon ui-icon-menu ui-icon-shadow"></a>
-                    ${param.demoTitle}
+                    <h1 class="ui-title">${param.demoTitle}</h1>
                 </mobi:pagePanelHeader>
                 <mobi:pagePanelBody noFooter="true">
                     <jsp:include page="${param.demoPath}" />
@@ -52,7 +52,7 @@
                         <a href="<c:url value="/"/>" style="position: absolute;left: 0.5em;top: 3px;">
                             <img src="resources/images/icemobile_thumb.png"/>
                         </a>
-                        ICEmobile Spring MVC Showcase
+                        <h1 class="ui-title">ICEmobile Spring MVC Showcase</h1>
                     </mobi:pagePanelHeader>
                     <mobi:pagePanelBody noFooter="true">
                         <mobi:splitPane id="sp" scrollable="true" columnDivider="30">
