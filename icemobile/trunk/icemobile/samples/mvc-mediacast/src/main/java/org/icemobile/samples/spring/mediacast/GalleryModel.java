@@ -34,7 +34,7 @@ public class GalleryModel {
 	private static final Log log = LogFactory
 			.getLog(GalleryModel.class);
 	
-	
+	private String selectedTab="tab1";
 	public List<String> getFilters() {
 		return filters;
 	}
@@ -71,6 +71,12 @@ public class GalleryModel {
 	public void setTagsMap(TagWeightMap tagsMap) {
 		this.tagsMap = tagsMap;
 	}
-	
 
+    public String getSelectedTab() {
+        return selectedTab;
+    }
+
+    public void setSelectedTab(String selectedTab) {
+        this.selectedTab = selectedTab;
+    }
 }

@@ -32,22 +32,16 @@
                     <%@ include file="/WEB-INF/jsp/gallery-list.jsp" %>
                 </mobi:fragment>
                 <mobi:fragment name="right">
-                    <mobi:tabSet id="tabs" selectedTab="0">
-                        <mobi:headers>
-                            <mobi:header><span class="mobitab">Upload</span></mobi:header>
-                            <mobi:header><span class="mobitab">Viewer</span></mobi:header>
-                        </mobi:headers>
-                        <mobi:content>
-                           <mobi:contentPane>
+                    <mobi:tabSet id="tabs"  selectedId="${gallerModel.selectedTab}">
+                           <mobi:tabPane id="tab1" title="Upload">
                                 <div id="carouselContainer">
                                     <push:region group="photos" page="/carousel?view=tablet"/>
                                  </div>
                                <%@ include file="/WEB-INF/jsp/upload-form.jsp" %>
-                           </mobi:contentPane>
-                           <mobi:contentPane>
+                           </mobi:tabPane>
+                           <mobi:tabPane id="tab2" title="Viewer">
                                <%@ include file="/WEB-INF/jsp/viewer-panel.jsp" %>
-                           </mobi:contentPane>
-                        </mobi:content>
+                           </mobi:tabPane>
                     </mobi:tabSet>
                 </mobi:fragment>
             </mobi:splitPane>

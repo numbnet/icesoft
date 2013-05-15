@@ -109,7 +109,7 @@
     </mobi:fieldsetGroup>
 </form>
 <form >
-    	<mobi:tabSetControl id="tabsetOne"
+    	<mobi:tabSet id="tabsetOne"
                             orientation="${tabInfo.orientation}"
                             autoWidth="${tabInfo.autoWidth}"
                             disabled="${tabInfo.disabled}"
@@ -128,7 +128,7 @@
 	    <mobi:tabPane id="pane3" title="Skate">
 			<%@ include file="../includes/pane3.jsp"%>
 	    </mobi:tabPane>
-	</mobi:tabSetControl>
+	</mobi:tabSet>
 </form>
    <p>
        <ul>
