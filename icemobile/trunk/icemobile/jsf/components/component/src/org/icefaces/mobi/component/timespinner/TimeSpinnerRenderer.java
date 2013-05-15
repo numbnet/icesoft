@@ -84,13 +84,13 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         spinner.setTouchEnabled(Utils.isTouchEventEnabled(context));
 
         if (shouldUseNative(spinner)) {
-            if (spinner.getStyle()!=null){
-                writer.writeAttribute(HTML.STYLE_ATTR, spinner.getStyle(), HTML.STYLE_ATTR);
-            }
             writer.startElement("input", component);
             writer.writeAttribute("type", "time", "type");
             writer.writeAttribute("id", clientId, null);
             writer.writeAttribute("name", clientId, null);
+            if (spinner.getStyle()!=null){
+                writer.writeAttribute(HTML.STYLE_ATTR, spinner.getStyle(), HTML.STYLE_ATTR);
+            }
             boolean disabled = spinner.isDisabled();
             boolean readonly = spinner.isReadonly();
             String defaultPattern = "HH:mm";
