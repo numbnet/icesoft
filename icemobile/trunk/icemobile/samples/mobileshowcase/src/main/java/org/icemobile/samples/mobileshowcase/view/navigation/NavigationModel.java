@@ -89,7 +89,7 @@ public class NavigationModel implements Serializable {
         if( redirect ){
             StringBuffer val = new StringBuffer("showcase?faces-redirect=true");
             if (MobiJSFUtils.getClientDescriptor().isBlackBerry10OS()) {
-                val.append( "?random=").append( Integer.toString( (int) (Math.random() * 1000)));
+                val.append( "&random=").append( Integer.toString( (int) (Math.random() * 1000)));
             }
             return val.toString();
         }
