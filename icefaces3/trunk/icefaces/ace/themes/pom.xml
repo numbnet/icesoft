@@ -32,36 +32,30 @@
     <modules>
         <module>ace-black-tie</module>
         <module>ace-blitzer</module>
-<!--
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-        <module>ace-</module>
-    -->    
+        <module>ace-cupertino</module>
+        <module>ace-dark-hive</module>
+        <module>ace-dot-luv</module>
+        <module>ace-eggplant</module>
+        <module>ace-excite-bike</module>
+        <module>ace-flick</module>
+        <module>ace-hot-sneaks</module>
+        <module>ace-humanity</module>
+        <module>ace-le-frog</module>
+        <module>ace-mint-choc</module>
+        <module>ace-overcast</module>
+        <module>ace-pepper-grinder</module>
+        <module>ace-redmond</module>
+        <module>ace-smoothness</module>
+        <module>ace-south-street</module>
+        <module>ace-start</module>
+        <module>ace-sunny</module>
+        <module>ace-swanky-purse</module>
+        <module>ace-trontastic</module>
+        <module>ace-ui-darkness</module>
+        <module>ace-ui-lightness</module>
+        <module>ace-vader</module>
+<!--        <module>ace-themes</module>  -->
+
     </modules>
     
 	<build>
