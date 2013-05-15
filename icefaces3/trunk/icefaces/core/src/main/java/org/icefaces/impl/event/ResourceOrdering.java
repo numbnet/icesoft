@@ -24,15 +24,15 @@ import org.w3c.dom.NodeList;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ResourceOrdering implements SystemEventListener {
@@ -43,47 +43,27 @@ public class ResourceOrdering implements SystemEventListener {
 
     public ResourceOrdering() {
         try {
-            //read all resource dependencies manifests
+            //Read all resource dependencies manifests that appear on the classpath.  This
+            //typically means all jars containing a META-INF/resource-dependency.xml file.
+            Enumeration<URL> urls = this.getClass().getClassLoader().getResources("META-INF/resource-dependency.xml");
+            List<URL> urlList = Collections.list(urls);
+
+            //For the application .war itself, any META-INF/resource-dependency.xml file is
+            //not actually on the classpath so won't be picked up using the above method.  For these
+            //files, we need the ServletContext.getResource() method.
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                ExternalContext ec = fc.getExternalContext();
+                URL warResourceDependencyURL = ec.getResource("/META-INF/resource-dependency.xml");
+                if (warResourceDependencyURL != null) {
+                    urlList.add(warResourceDependencyURL);
+                }
+            }
+
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
 
-            Enumeration<URL> urls = this.getClass().getClassLoader().getResources("META-INF/resource-dependency.xml");
-            while (urls.hasMoreElements()) {
-                URL url = urls.nextElement();
-                try {
-                    InputStream stream = url.openStream();
-                    Document doc = db.parse(stream);
-                    doc.normalizeDocument();
-
-                    //read jar's dependency declarations
-                    NodeList resourceElements = doc.getDocumentElement().getChildNodes();
-                    for (int i = 0, l = resourceElements.getLength(); i < l; i++) {
-                        Node node = resourceElements.item(i);
-                        if (node instanceof Element) {
-                            Element resourceElement = (Element) node;
-                            String name = resourceElement.getAttribute("name");
-                            String library = normalizeLibraryName(resourceElement.getAttribute("library"));
-                            String target = normalizeTargetName(resourceElement.getAttribute("target"));
-                            ResourceEntry sourceResourceEntry = lookupOrCreateResource(name, library, target);
-
-                            nonRootDependencies.add(sourceResourceEntry);
-
-                            NodeList dependencies = resourceElement.getElementsByTagName("resource");
-                            for (int j = 0, ll = dependencies.getLength(); j < ll; j++) {
-                                Element dependOnResourceElement = (Element) dependencies.item(j);
-                                String dependencyName = dependOnResourceElement.getAttribute("name");
-                                String dependencyLibrary = normalizeLibraryName(dependOnResourceElement.getAttribute("library"));
-                                String dependencyTarget = normalizeTargetName(dependOnResourceElement.getAttribute("target"));
-
-                                ResourceEntry targetResourceEntry = lookupOrCreateResource(dependencyName, dependencyLibrary, dependencyTarget);
-                                targetResourceEntry.addDependant(sourceResourceEntry);
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.warning("Failed to process resource dependency metadata at " + url);
-                }
-            }
+            processResourceDependencies(db, urlList);
 
             //traverse dependency tree
             List<ResourceEntry> roots = new ArrayList<ResourceEntry>(resourceMap.values());
@@ -101,6 +81,46 @@ public class ResourceOrdering implements SystemEventListener {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void processResourceDependencies(DocumentBuilder db, List<URL> urls) {
+        Log.log(Level.FINE, "resource-dependency.xml URLs: " + urls);
+        for (int index = 0; index < urls.size(); index++) {
+            URL url = urls.get(index);
+            try {
+                InputStream stream = url.openStream();
+                Document doc = db.parse(stream);
+                doc.normalizeDocument();
+
+                //read jar's dependency declarations
+                NodeList resourceElements = doc.getDocumentElement().getChildNodes();
+                for (int i = 0, l = resourceElements.getLength(); i < l; i++) {
+                    Node node = resourceElements.item(i);
+                    if (node instanceof Element) {
+                        Element resourceElement = (Element) node;
+                        String name = resourceElement.getAttribute("name");
+                        String library = normalizeLibraryName(resourceElement.getAttribute("library"));
+                        String target = normalizeTargetName(resourceElement.getAttribute("target"));
+                        ResourceEntry sourceResourceEntry = lookupOrCreateResource(name, library, target);
+
+                        nonRootDependencies.add(sourceResourceEntry);
+
+                        NodeList dependencies = resourceElement.getElementsByTagName("resource");
+                        for (int j = 0, ll = dependencies.getLength(); j < ll; j++) {
+                            Element dependOnResourceElement = (Element) dependencies.item(j);
+                            String dependencyName = dependOnResourceElement.getAttribute("name");
+                            String dependencyLibrary = normalizeLibraryName(dependOnResourceElement.getAttribute("library"));
+                            String dependencyTarget = normalizeTargetName(dependOnResourceElement.getAttribute("target"));
+
+                            ResourceEntry targetResourceEntry = lookupOrCreateResource(dependencyName, dependencyLibrary, dependencyTarget);
+                            targetResourceEntry.addDependant(sourceResourceEntry);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.warning("Failed to process resource dependency metadata at " + url);
+            }
         }
     }
 
