@@ -405,39 +405,6 @@
     </tag>
 
     <tag>
-        <description>Content Pane Tag.</description>
-        <display-name>ICEmobile ContentPane</display-name>
-        <name>contentPane</name>
-        <tag-class>org.icemobile.jsp.tags.ContentPaneTag</tag-class>
-        <body-content>JSP</body-content>
-        <attribute>
-            <description>Pagewide unique identifier.</description>
-            <name>id</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>A textual title appearing above the content.
-            </description>
-            <name>title</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>Inline style definition.</description>
-            <name>style</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>User defined CSS class.</description>
-            <name>styleClass</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-    </tag>
-
-    <tag>
         <description>Geolocation Tag.</description>
         <display-name>ICEmobile Geolocation Tag</display-name>
         <name>geolocation</name>
@@ -1001,46 +968,6 @@
     </tag>
 
     <tag>
-        <description>ICEmobile TabSet.</description>
-        <display-name>tabSet</display-name>
-        <name>tabSet</name>
-        <tag-class>org.icemobile.jsp.tags.TabSetTag</tag-class>
-        <body-content>JSP</body-content>
-        <attribute>
-            <description>Pagewide unique identifier.</description>
-            <name>id</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>User defined CSS class.</description>
-            <name>styleClass</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>Inline style definition.</description>
-            <name>style</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>Index of selected tab (0 - #tabs-1)</description>
-            <name>selectedTab</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>When set to true (default),tabs are evenly spread out to 100% .
-            </description>
-            <name>autoWidth</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>boolean</type>
-        </attribute>
-    </tag>
-
-    <tag>
         <description>ICEmobile Accordion tag allows management of multiple panes
             of content
             with one pane expanded and visible with the other panes minimized
@@ -1129,33 +1056,6 @@
              <rtexprvalue>true</rtexprvalue>
          </attribute>
      </tag>
-    <tag>
-        <description>A tag identifying the header portion of the Tabset
-        </description>
-        <display-name>Header section</display-name>
-        <name>headers</name>
-        <tag-class>org.icemobile.jsp.tags.HeadersTag</tag-class>
-        <body-content>JSP</body-content>
-    </tag>
-
-    <tag>
-        <description>An individual tabset header.</description>
-        <display-name>Header</display-name>
-        <name>header</name>
-        <tag-class>org.icemobile.jsp.tags.HeaderTag</tag-class>
-        <body-content>JSP</body-content>
-    </tag>
-
-    <tag>
-        <description>A delimeter tag for child contentPane tags shown in either
-            a Tabset or Accordion
-            tag
-        </description>
-        <display-name>Content Section</display-name>
-        <name>content</name>
-        <tag-class>org.icemobile.jsp.tags.ContentTag</tag-class>
-        <body-content>JSP</body-content>
-    </tag>
 
     <tag>
         <description>Layout Tag useful for presenting a list of content items
