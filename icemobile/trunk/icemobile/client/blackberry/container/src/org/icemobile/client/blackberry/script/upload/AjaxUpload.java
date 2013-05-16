@@ -58,7 +58,7 @@ public class AjaxUpload extends ScriptableFunction {
 
         final String actionMethod = (String) args[0];
         String serializedForm = (String) args[1];
-        Logger.DEBUG("ajax.upload - actionMethod: " + actionMethod);
+//        Logger.DEBUG("ajax.upload - actionMethod: " + actionMethod);
 
         //boolean gotValue = true;
         //String[] result;
