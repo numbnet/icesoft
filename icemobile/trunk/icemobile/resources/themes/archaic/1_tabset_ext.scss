@@ -16,33 +16,14 @@
  
  @import "../mixins";
  
-.mobi-tabset{
-    padding-top: 0;
-    padding-bottom: 0;
-}
-.mobi-tabset-tabs-top-header.mobi-tabset{
-    padding-top: 0;
-}
-.mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
-    top: 0;
-}
-.mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
-    top: 0;
-    bottom: 0;
-}
-.mobi-tabset > .mobi-tabset-tabs{
-    position:relative;
-    width:auto;
-}
 .mobi-tabset-tabs-top > .mobi-tabset-tabs {
     border-bottom: 1px solid #999;
     border-top: 1px solid #999;
     margin-top: -1px;
 }
 .mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
-    border-top:2px solid #f4f4f6;
+    border-top:1px solid #f4f4f6;
     filter: progid:DXImageTransform.Microsoft.Shadow(color=grey,direction=135,strength=10);
-    @include box-shadow(0px -3px 5px grey);
 }
 .mobi-tabset > .mobi-tabset-tabs > ul{
     background-color: #e8e9ea;
@@ -51,24 +32,12 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f1f1f2', EndColorStr = '#d9dadb');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f1f1f2', EndColorStr='#d9dadb')";
     background-color: #d9dadb;
-    border: 1px solid #999;
+    border-left: 1px solid #999;
     color:#868688;
     font-weight: bold;
-    line-height: 28px;
-    margin: 5px -5px 5px 0;
-    padding: 0 10px;
-    text-shadow: 0 1px 1px #ffffff;
-}
-.mobi-tabset > .mobi-tabset-tabs > ul > li:first-child{
-    border-top-left-radius:5px;
-    border-bottom-left-radius:5px;
-}
-.mobi-tabset > .mobi-tabset-tabs > ul > li:last-child{
-    border-top-right-radius:5px;
-    border-bottom-right-radius:5px;
+    margin: 0;
+    padding: 0;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li.activeTab {
-    background: -moz-linear-gradient(top, #f1f1f2, #b5b6b7) repeat scroll 0 0 #c1c2c3 !important;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #b5b6b7)) !important;
     color:#525253;
 }
