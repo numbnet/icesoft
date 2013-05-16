@@ -45,6 +45,16 @@
         <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
         <loadfile property="blockui.js" srcFile="${src.dir}/blockui.js"/>
         <loadfile property="fixjsf.js" srcFile="${src.dir}/fixjsf.js"/>
+
+        <loadfile property="session-expiry-warning.js" srcFile="${src.dir}/session-expiry-warning.js"/>
+        <loadfile property="clear-callbacks.js" srcFile="${src.dir}/clear-callbacks.js"/>
+        <loadfile property="capture-submit.js" srcFile="${src.dir}/capture-submit.js"/>
+        <loadfile property="capture-single-submit.js" srcFile="${src.dir}/capture-single-submit.js"/>
+        <loadfile property="fix-viewstate.js" srcFile="${src.dir}/fix-viewstate.js"/>
+        <loadfile property="element-update.js" srcFile="${src.dir}/element-update.js"/>
+        <loadfile property="element-remove.js" srcFile="${src.dir}/element-remove.js"/>
+        <loadfile property="user-inactivity.js" srcFile="${src.dir}/user-inactivity.js"/>
+
         <copy file="${src.dir}/application.js" tofile="${tmp}" overwrite="yes">
             <filterset begintoken="//include " endtoken=".js">
                 <filter token="functional" value="${functional.js}"/>
@@ -64,6 +74,15 @@
                 <filter token="submit" value="${submit.js}"/>
                 <filter token="blockui" value="${blockui.js}"/>
                 <filter token="fixjsf" value="${fixjsf.js}"/>
+
+                <filter token="session-expiry-warning" value="${session-expiry-warning.js}"/>
+                <filter token="clear-callbacks" value="${clear-callbacks.js}"/>
+                <filter token="capture-submit" value="${capture-submit.js}"/>
+                <filter token="capture-single-submit" value="${capture-single-submit.js}"/>
+                <filter token="fix-viewstate" value="${fix-viewstate.js}"/>
+                <filter token="element-update" value="${element-update.js}"/>
+                <filter token="element-remove" value="${element-remove.js}"/>
+                <filter token="user-inactivity" value="${user-inactivity.js}"/>
             </filterset>
         </copy>
     </target>
