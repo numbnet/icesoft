@@ -27,9 +27,9 @@ public interface ContainerController {
 
     // Application GUID
     // In Eclipse, type a string, select it and right click->"Convert String to Long"
-    // to create a unique GUID. Last value is "ICEmobileContainer 1.2 GA"
-    public final String PRODUCT_ID = "ICEmobileContainer 1.2 GA";
-    public final long GUID = 0x7431b7489db67f16L;
+    // to create a unique GUID. Last value is "ICEmobileContainer 1.3 Beta"
+    public final String PRODUCT_ID = "ICEmobileContainer 1.3 Beta";
+    public final long GUID = 0x474f3ee26aad77b2L;
     
     // Container navigation methods
     public void reloadCurrentPage();
