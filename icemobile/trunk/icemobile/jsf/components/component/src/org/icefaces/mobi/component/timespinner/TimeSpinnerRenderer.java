@@ -116,7 +116,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
                 String event = spinner.getDefaultEventName(context);
                 String cbhCall = this.buildAjaxRequest(context, cbh, event);
                 writer.writeAttribute("onblur", cbhCall, null);
-            } else if (singleSubmit) {
+            } else if (!readonly && !disabled && singleSubmit) {
                 writer.writeAttribute("onblur", "ice.se(event, this);", null);
             }
             writer.endElement("input");
@@ -136,7 +136,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         ClientBehaviorHolder cbh = (ClientBehaviorHolder) uiComponent;
         String eventStr = timeEntry.isTouchEnabled() ?
                 TOUCH_START_EVENT : CLICK_EVENT;
-
+        boolean readonly = timeEntry.isReadonly();
+        boolean disabled = timeEntry.isDisabled();
+        boolean disabledOrReadonly = false;
+        if (readonly || disabled){
+            disabledOrReadonly = true;
+        }
         //first do the input field and the button
         // build out first input field
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
@@ -161,9 +166,9 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             writer.writeAttribute("value", value, null);
         }
         writer.writeAttribute("type", "text", "type");
-        if (timeEntry.isReadonly())
+        if (readonly)
             writer.writeAttribute("readonly", "readonly", null);
-        if (timeEntry.isDisabled())
+        if (disabled)
             writer.writeAttribute("disabled", "disabled", null);
         writer.endElement("input");
         writer.endElement("span");
@@ -174,7 +179,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.POP_UP_CLASS, null);
         if (timeEntry.isDisabled())
             writer.writeAttribute("disabled", "disabled", null);
-        else {
+        if (!disabledOrReadonly){
             // touch event can be problematic sometime not actualy getting called
             // for ui widgets that don't require rapid response then stick with onClick
             writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.toggle('" + clientId + "');", null);
