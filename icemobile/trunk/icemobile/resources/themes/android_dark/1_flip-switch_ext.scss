@@ -14,27 +14,27 @@
  * governing permissions and limitations under the License.
  */
  
- .mobi-flip-switch{
+ .mobi-flipswitch{
     background-color: #555;
     -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
     border-radius: 0;
     border: none !important;
  }
-  .mobi-flip-switch span{
+  .mobi-flipswitch span{
     min-width: 27px;
   }
- .mobi-flip-switch-txt {
+ .mobi-flipswitch-txt-on, .mobi-flipswitch-txt-off {
     font-weight: bold;
     color: #3B3E3E;
     text-shadow: none;
 }
-.mobi-flip-switch-on span:first-child {
+.mobi-flipswitch-on .mobi-flipswitch-txt-on {
     background-color: #33B5E5;
     border-top: 1px solid #6FCAEC;
     color: #FFF;
     height: 21px;
 }
-.mobi-flip-switch-on span:last-child{
+.mobi-flipswitch-on .mobi-flipswitch-txt-off{
     border-radius: 0;
     margin: 0;
     background: #555;
@@ -43,12 +43,12 @@
     height: 21px;
     min-width: 27px;
 }
-.mobi-flip-switch-off span:last-child {
+.mobi-flipswitch-off .mobi-flipswitch-txt-off {
     background-color: #DDD;
     border-top: 1px solid #878787;
     color: #666;
 }
-.mobi-flip-switch-off span:first-child{
+.mobi-flipswitch-off .mobi-flipswitch-txt-on{
     border-radius: 0;
     margin: 0;
     background: #555;

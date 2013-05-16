@@ -339,11 +339,15 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         if (this.flipperEl) {
             var oldClass = this.flipperEl.className;
             var value = "off";
-            if (oldClass.indexOf('-off ') > 0) {
-                this.flipperEl.className = 'mobi-flip-switch mobi-flip-switch-on ';
+            if (oldClass.indexOf('-off ')>0){
+                this.flipperEl.className='mobi-flipswitch mobi-flipswitch-on ui-btn-down-c';
+                this.flipperEl.children[0].className = 'mobi-flipswitch-txt-on';
+                this.flipperEl.children[2].className = 'mobi-flipswitch-txt-off ui-btn-up-c';
                 value = true;
-            } else {
-                this.flipperEl.className = 'mobi-flip-switch mobi-flip-switch-off ';
+            }else{
+                this.flipperEl.className='mobi-flipswitch mobi-flipswitch-off ui-btn-down-c';
+                this.flipperEl.children[0].className = 'mobi-flipswitch-txt-on ui-btn-up-c';
+                this.flipperEl.children[2].className = 'mobi-flipswitch-txt-off';
                 value = false;
             }
             var hidden = this.id + "_hidden";
@@ -542,11 +546,13 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
     /* taken from accordion with slight modifications */
     function calcMaxChildHeight(containerEl) {
         var mxht = 0;
-        //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
-        var children = containerEl.getElementsByTagName('div');
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].scrollHeight > mxht) {
-                mxht = children[i].scrollHeight;
+        if( containerEl ){
+          //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
+            var children = containerEl.getElementsByTagName('div');
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].scrollHeight > mxht) {
+                    mxht = children[i].scrollHeight;
+                }
             }
         }
         return mxht;
@@ -785,18 +791,20 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
     function calcMaxDivHeight(clientId, handleHt) {
         var accord = document.getElementById(clientId);
         var mxht = 0;
-        //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
-        var children = document.getElementById(clientId).getElementsByTagName('section');
-        for (var i = 0; i < children.length; i++) {
-            var anode = children[i];
-            var max = Math.max(anode.offsetHeight, anode.scrollHeight, anode.clientHeight);
-            //init all classes to close done in renderer
-            if (max > 0 && max > mxht) {
-                mxht = max;
+        if( accord ){
+          //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
+            var children = accord.getElementsByTagName('section');
+            for (var i = 0; i < children.length; i++) {
+                var anode = children[i];
+                var max = Math.max(anode.offsetHeight, anode.scrollHeight, anode.clientHeight);
+                //init all classes to close done in renderer
+                if (max > 0 && max > mxht) {
+                    mxht = max;
+                }
             }
-        }
-        if (mxht <= handleHt && accord.clientHeight>0) {
-            mxht = accord.clientHeight - handleHt;
+            if (mxht <= handleHt && accord.clientHeight>0) {
+                mxht = accord.clientHeight - handleHt;
+            }
         }
         return mxht;
     }
