@@ -29,8 +29,8 @@ import javax.faces.event.ValueChangeEvent;
 
 public class FlipSwitch extends FlipSwitchBase {
     //src is NOT part of the pass through attributes
-    public static final String FLIPSWITCH_ON_CLASS = "mobi-flip-switch mobi-flip-switch-on ui-btn-down-c";
-    public static final String FLIPSWITCH_OFF_CLASS = "mobi-flip-switch mobi-flip-switch-off ui-btn-down-c";
+    public static final String FLIPSWITCH_ON_CLASS = "mobi-flipswitch mobi-flipswitch-on ui-btn-down-c";
+    public static final String FLIPSWITCH_OFF_CLASS = "mobi-flipswitch mobi-flipswitch-off ui-btn-down-c";
     private Attribute[] attributesNames = {
             new Attribute("tabindex", null),
             new Attribute("style", null)};

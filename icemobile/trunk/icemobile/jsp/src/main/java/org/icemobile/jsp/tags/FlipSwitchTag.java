@@ -31,9 +31,8 @@ import java.util.logging.Logger;
  */
 public class FlipSwitchTag extends SimpleTagSupport {
 
-    public static final String FLIPSWITCH_ON_CLASS = "mobi-flip-switch mobi-flip-switch-on ";
-    public static final String FLIPSWITCH_OFF_CLASS = "mobi-flip-switch mobi-flip-switch-off ";
-    public static final String FLIPSWITCH_TEXT_CLASS = "mobi-flip-switch-txt";
+    public static final String FLIPSWITCH_ON_CLASS = "mobi-flipswitch mobi-flipswitch-on ";
+    public static final String FLIPSWITCH_OFF_CLASS = "mobi-flipswitch mobi-flipswitch-off ";
 
     private static Logger LOG = Logger.getLogger(FlipSwitchTag.class.getName());
 
@@ -77,7 +76,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
         out.write(">");
 
         // write the nested child objects containing both on/off labels.
-        out.write("<span class=\"" + FLIPSWITCH_TEXT_CLASS + "\">");
+        out.write("<span class='mobi-flipswitch-txt-on'>");
         out.write(getLabelOn());
         out.write("</span>");
 
@@ -91,7 +90,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
             LOG.warning("Flipswitch tag (id: " + id + ") has no name for value submission");
         }
 
-        out.write("<span class=\"" + FLIPSWITCH_TEXT_CLASS + "\">");
+        out.write("<span class='mobi-flipswitch-txt-off'>");
         out.write(getLabelOff());
         out.write("</span>");
         out.write("</input>");

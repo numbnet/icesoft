@@ -14,44 +14,26 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-flip-switch-off, .mobi-flip-switch-on {
+.mobi-flipswitch{
     border: 1px solid #888888;
+    cursor: pointer;
+}
+.mobi-flipswitch span{
+    min-width: 27px;
+    margin: 0;
+}
+.mobi-flipswitch-off .mobi-flipswitch-txt-off{
+    color: #666666;
+}
+.mobi-flipswitch-on .mobi-flipswitch-txt-on{
+     color: #FFF;
+}
+.mobi-flipswitch-txt-off {
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff')";
+}
+.mobi-flipswitch-txt-on {
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc')";  
 }
 
-.mobi-flip-switch-off {
-    background-color: #c8c8c8;
-}
-
-.mobi-flip-switch-off span:last-child, .mobi-flip-switch-off span {
-}
-.mobi-flip-switch-off span:first-child{
-    color:transparent;
-}
-
-.mobi-flip-switch-on {
-    background-color: #3879ec;
-}
-
-.mobi-flip-switch-on span{
-    border-left: 1px solid #888888;
-}
-
-.mobi-flip-switch-on span:first-child {
-    border-left: none;
-}
-
-.mobi-flip-switch-off span:first-child, .mobi-flip-switch-on span:last-child {
-    border-top: 1px solid white;
-    background-color: #fcfcfc;
-    color: transparent;
-    width:20px
-}
-
-.mobi-flip-switch-on span:last-child {
-    border-left: 1px solid #888888;
-}
-
-.mobi-flip-switch-off span:first-child {
-    border-right: 1px solid #888888;
-    color: transparent ;
-}
