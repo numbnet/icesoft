@@ -179,7 +179,7 @@ public class PushAgent {
             while (running) {
                 try {
                     
-                    Object o = socket.acceptAndOpen();                    
+                    Object o = socket.acceptAndOpen();   
                     conn = (HttpServerConnection) o;
                     inputStream = conn.openInputStream();
                     pushInputStream = new MDSPushInputStream(conn, inputStream);
@@ -187,11 +187,10 @@ public class PushAgent {
                     Logger.DEBUG("Message processed");
                 } catch (Exception e) {
                 	Logger.ERROR("Exception reading push message: " + e);
-                    if (running) {
-                        running = false;
-                    }
                 } finally {
-                    close(conn, pushInputStream, null);
+                	if (conn != null && pushInputStream != null) { 
+                		close(conn, pushInputStream, null);
+                	}
                 }
             }
             Logger.DEBUG("Stopped listening for push messages");
