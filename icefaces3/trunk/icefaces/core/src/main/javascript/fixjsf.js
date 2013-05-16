@@ -244,25 +244,4 @@
         document.execCommand("BackgroundImageCache", false, true);
     } catch(err) {
     }
-
-    //fix potential memory leaks by clearing up the event handlers that replaced elements have had
-    namespace.onBeforeUpdate(function(updates) {
-        each(updates.getElementsByTagName('update'), function(update) {
-            var id = update.getAttribute('id');
-            var e = lookupElementById(id);
-            if (e) {
-                clearEventHandlers(e);
-
-                each(['a', 'iframe', 'input', 'select', 'button', 'textarea'], function(type) {
-                    each(e.getElementsByTagName(type), clearEventHandlers);
-                });
-
-                each(e.getElementsByTagName('form'), function(form) {
-                    clearEventHandlers(form);
-                    form.submit = null;
-                    form.onsubmit = null;
-                });
-            }
-        });
-    });
 })();
