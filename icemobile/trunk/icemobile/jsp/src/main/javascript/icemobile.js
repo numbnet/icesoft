@@ -58,9 +58,9 @@ ice.mobi.addListener= function(obj, event, fnc){
 } ;
 ice.mobi.removeListener= function(obj, event, fnc){
     if (obj.addEventListener){
-        obj.removeEventListener("on"+event, fnc, false);
+        obj.removeEventListener(event, fnc, false);
     } else if (obj.attachEvent){
-        obj.detachEvent(event, fnc);
+        obj.detachEvent("on"+event, fnc);
     } else {
         ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
     }
