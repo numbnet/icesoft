@@ -793,7 +793,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         var mxht = 0;
         if( accord ){
           //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
-            var children = accord.getElementsByTagName('section');
+            var children = accord.children;
             for (var i = 0; i < children.length; i++) {
                 var anode = children[i];
                 var max = Math.max(anode.offsetHeight, anode.scrollHeight, anode.clientHeight);
@@ -855,7 +855,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         }
         var openElem = document.getElementById(paneOpId);
         if (!openElem && accordRoot.hasChildNodes()){
-            var children = accordRoot.getElementsByTagName("section");
+            var children = accordRoot.children;
             openElem = children[0];
             paneOpId = children[0].id;
         }

@@ -14,9 +14,9 @@
  * governing permissions and limitations under the License.
  */
  
-.mobi-accordion > section.open > .handle > .pointer {
+.mobi-accordion > .open > .handle > .pointer {
     border-top-color: #727272;
 }
-.mobi-accordion > section.closed > .handle > .pointer{
+.mobi-accordion > .closed > .handle > .pointer{
     border-left-color: #727272;
 }

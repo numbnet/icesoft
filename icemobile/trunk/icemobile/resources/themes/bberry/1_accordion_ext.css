@@ -26,9 +26,9 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#999999')";
     border-bottom: 1px solid #999999;
 }
-.mobi-accordion > section.open > .handle > .pointer{
+.mobi-accordion > .open > .handle > .pointer{
     border-top-color: #000;
 }
-.mobi-accordion > section.closed > .handle > .pointer{
+.mobi-accordion > .closed > .handle > .pointer{
     border-left-color: #000;
 }
