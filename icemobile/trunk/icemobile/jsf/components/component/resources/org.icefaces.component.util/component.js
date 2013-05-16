@@ -65,7 +65,7 @@ ice.mobi.addListener= function(obj, event, fnc){
     if (obj.addEventListener){
         obj.addEventListener(event, fnc, false);
     } else if (obj.attachEvent) {
-        obj.attachEvent(event, fnc);
+        obj.attachEvent("on"+event, fnc);
     } else {
         ice.log.debug(ice.log, 'WARNING:- this browser does not support addEventListener or attachEvent');
     }
@@ -74,7 +74,7 @@ ice.mobi.removeListener= function(obj, event, fnc){
     if (obj.addEventListener){
         obj.removeEventListener(event, fnc, false);
     } else if (obj.attachEvent){
-        obj.detachEvent(event, fnc);
+        obj.detachEvent("on"+event, fnc);
     } else {
         ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
     }

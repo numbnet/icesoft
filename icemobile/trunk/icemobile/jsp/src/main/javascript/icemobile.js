@@ -51,14 +51,14 @@ ice.mobi.addListener= function(obj, event, fnc){
     if (obj.addEventListener){
         obj.addEventListener(event, fnc, false);
     } else if (obj.attachEvent) {
-        obj.attachEvent(event, fnc);
+        obj.attachEvent("on"+event, fnc);
     } else {
         ice.log.debug(ice.log, 'WARNING:- this browser does not support addEventListener or attachEvent');
     }
 } ;
 ice.mobi.removeListener= function(obj, event, fnc){
     if (obj.addEventListener){
-        obj.removeEventListener(event, fnc, false);
+        obj.removeEventListener("on"+event, fnc, false);
     } else if (obj.attachEvent){
         obj.detachEvent(event, fnc);
     } else {
@@ -2016,12 +2016,14 @@ ice.mobi.geolocation = {
 
     // Clear any existing positionUpdate listeners
     clearWatch: function() {
+        console.log('attempting geolocation clearWatch..');
         if (ice.mobi.geolocation.watchId > 0) {
             console.log('Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
             navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
             ice.mobi.geolocation.watchId = 0;
         }
-        window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+        ice.mobi.removeListener(window,'deviceorientation', ice.mobi.geolocation.orientationCallback);
+        console.log('removed geolocation deviceorientation callback');
     }
 }
 ice.mobi.splitpane = {
