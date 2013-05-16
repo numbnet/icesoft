@@ -402,7 +402,7 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
         var li = e.currentTarget,
             jqLi = ice.ace.jq(li),
             self = this,
-            timeout = this.cfg.dblclk_migrate ? 500 : 0;
+            timeout = this.cfg.dblclk_migrate ? 250 : 0;
 
         this.disableClickHandling = true;
 
