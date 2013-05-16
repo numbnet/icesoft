@@ -27,11 +27,13 @@
     /* taken from accordion with slight modifications */
     function calcMaxChildHeight(containerEl) {
         var mxht = 0;
-        //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
-        var children = containerEl.getElementsByTagName('div');
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].scrollHeight > mxht) {
-                mxht = children[i].scrollHeight;
+        if( containerEl ){
+          //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
+            var children = containerEl.getElementsByTagName('div');
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].scrollHeight > mxht) {
+                    mxht = children[i].scrollHeight;
+                }
             }
         }
         return mxht;
