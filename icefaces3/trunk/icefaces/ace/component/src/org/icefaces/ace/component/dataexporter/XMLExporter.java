@@ -102,12 +102,20 @@ public class XMLExporter extends Exporter {
 				if (!"".equals(rowIndexVar)) {
 					facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
 				}
+				// 'before' conditional rows
+				List<Row> leadingRows = table.getConditionalRows(i, true);
+				for (Row r : leadingRows) exportConditionalRow(builder, r, var, true);
+				
 				builder.append("\t<" + var + ">\n");
 				addColumnValues(builder, columns, headers);
 				builder.append("\t</" + var + ">\n");
 				if (hasRowExpansion) {
 					exportChildRows(facesContext, rootModel, rowStateMap, table, columns, "" + i, builder, headers, var);
 				}
+				
+				// 'after' conditional rows
+				List<Row> tailingRows = table.getConditionalRows(i, false);
+				for (Row r : tailingRows) exportConditionalRow(builder, r, var, false);
 			}
 		}
 
@@ -166,6 +174,20 @@ public class XMLExporter extends Exporter {
 		}
 		
         rootModel.setRootIndex(null);
+	}
+	
+	protected void exportConditionalRow(StringBuilder builder, Row row, String var, boolean isBefore) throws IOException {
+		List<UIComponent> children = row.getChildren();
+		List<UIColumn> rowColumns = new ArrayList<UIColumn>(children.size());
+		for (UIComponent kid : children) {
+			if (kid instanceof Column) {
+				rowColumns.add((Column) kid);
+			}
+		}
+		String suffix = isBefore ? "-before" : "-after";
+		builder.append("\t<" + var + suffix + ">\n");
+		addColumnValues(builder, rowColumns, getFacetTexts(rowColumns, ColumnType.HEADER));
+		builder.append("\t</" + var + suffix + ">\n");
 	}
 	
 	protected void addColumnValues(StringBuilder builder, List<UIColumn> columns, List<String> headers) throws IOException {
