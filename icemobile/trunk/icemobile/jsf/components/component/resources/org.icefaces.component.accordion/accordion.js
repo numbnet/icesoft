@@ -41,18 +41,21 @@
     }
     function calcMaxDivHeight(clientId, handleHt) {
         var mxht = 0;
-        //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
-        var children = document.getElementById(clientId).getElementsByTagName('section');
-        for (var i = 0; i < children.length; i++) {
-            var anode = children[i];
-            var max = Math.max(anode.scrollHeight, anode.offsetHeight, anode.clientHeight);
-            if (max > 0 && max > mxht) {
-                mxht = max;
+        var elem = document.getElementById(clientId);
+        if( elem ){
+          //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
+            var children = document.getElementById(clientId).children;
+            for (var i = 0; i < children.length; i++) {
+                var anode = children[i];
+                var max = Math.max(anode.scrollHeight, anode.offsetHeight, anode.clientHeight);
+                if (max > 0 && max > mxht) {
+                    mxht = max;
+                }
             }
-        }
-        if (mxht <= handleHt ) {
-            mxht = 0;
-            ice.log.debug(ice.log,"COULD NOT CALC A mxht");
+            if (mxht <= handleHt ) {
+                mxht = 0;
+                ice.log.debug(ice.log,"COULD NOT CALC A mxht");
+            }
         }
         return mxht;
     }
@@ -110,7 +113,7 @@
         var openElem = document.getElementById(paneOpId);
         var cntr = 0;
         if (!openElem && accordRoot.hasChildNodes()){
-            var children = accordRoot.getElementsByTagName("section");
+            var children = accordRoot.children;
             openElem = children[0];
             paneOpId = children[0].id;
         }
@@ -169,7 +172,7 @@
                 updateHidden(clientId, subString);
                 openElem = document.getElementById(paneOpId);
                 if (!openElem){
-                    var children = accordRoot.getElementsByTagName("section");
+                    var children = accordRoot.children;
                     openElem = children[0];
                     paneOpId = children[0].id;
                 }

@@ -45,7 +45,7 @@ public class AccordionPaneCoreRenderer extends BaseCoreRenderer {
              throws IOException {
         writer.endElement(DIV_ELEM);
         writer.endElement(DIV_ELEM);
-        writer.endElement(SECTION_ELEM);
+        writer.endElement(DIV_ELEM);
     }
     public void encodeAccordionHandle(IAccordion accordion, IContentPane pane,
                   IResponseWriter writer, boolean isJsp, boolean selected )
@@ -57,7 +57,7 @@ public class AccordionPaneCoreRenderer extends BaseCoreRenderer {
         String myId = pane.getId();
         String handleClass = "handle " + CSSUtils.STYLECLASS_BAR_B;
         String pointerClass = "pointer";
-        writer.startElement(SECTION_ELEM, pane);
+        writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId+"_sect");
            // apply default style class for panel-stack
         StringBuilder styleClass = new StringBuilder("closed");

@@ -28,9 +28,9 @@
     font-weight:bold;
     text-shadow: 0 1px 0 white;
 }
-.mobi-accordion > section.open > .handle > .pointer{
+.mobi-accordion > .open > .handle > .pointer{
     border-top-color: #000;
 }
-.mobi-accordion > section.closed > .handle > .pointer{
+.mobi-accordion > .closed > .handle > .pointer{
     border-left-color: #000;
 }
