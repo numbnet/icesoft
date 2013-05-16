@@ -404,10 +404,6 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
 
         this.pendingClickHandling =
             setTimeout(function () {
-                // Clear double click monitor token
-                self.pendingClickHandling = undefined;
-                self.disableClickHandling = false;
-
                 var index = jqLi.index();
 
                 // find connected lists and deselect all
@@ -427,8 +423,15 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                     }
 
                     jqLi.parent().children().slice(lower, higher).filter(":not(.ui-state-active)").each(function () {
-                        self.addSelectedItem(ice.ace.jq(this));
+                        self.addSelectedItem(ice.ace.jq(this), null, true);
                     });
+
+                    if (self.behaviors && self.behaviors.select) {
+                        self.behaviors.select.oncomplete = function() {
+                            self.clearState();
+                        };
+                        ice.ace.ab(self.behaviors.select);
+                    }
                 }
                 else {
                     var deselection = jqLi.hasClass('ui-state-active');
@@ -452,6 +455,8 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                 }
 
                 self.lastClickedIndex = index;
+                self.pendingClickHandling = undefined;
+                self.disableClickHandling = false;
             }, timeout);
     }
 };
@@ -472,7 +477,7 @@ ice.ace.List.prototype.getUnshiftedIndex = function(length, reorderings, index) 
     return indexes[index];
 };
 
-ice.ace.List.prototype.addSelectedItem = function(item, inputIndex) {
+ice.ace.List.prototype.addSelectedItem = function(item, inputIndex, skipSubmit) {
     if (!item.hasClass('ui-state-active')) {
         var selections = this.read('selections'),
             deselections = this.read('deselections'),
@@ -494,7 +499,7 @@ ice.ace.List.prototype.addSelectedItem = function(item, inputIndex) {
         this.write('selections', selections);
         this.write('deselections', deselections);
 
-        if (this.behaviors)
+        if (this.behaviors & !skipSubmit)
             if (this.behaviors.select) {
                 var self = this;
                 this.behaviors.select.oncomplete = function() {
