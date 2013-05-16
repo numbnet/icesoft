@@ -32,9 +32,10 @@ ice.ace.List = function(id, cfg) {
     // global list of list objects, used by a component
     // to rebuild widget lists following an inserting update.
     if (ice.ace.Lists[id]) {
-        if (ice.ace.Lists[id].disableClickHandling)
+        var old = ice.ace.Lists[id];
+        if (old.disableClickHandling)
             this.disableClickHandling = true;
-        if (ice.ace.Lists[id].disableDoubleClickHandling)
+        if (old.disableDoubleClickHandling)
             this.disableDoubleClickHandling = true;
 
         setTimeout(function() {
@@ -110,9 +111,6 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
     this.immigrantMessage = [];
     this.immigrantMessage.push(srcId);
     this.immigrantMessage.push([[fromIndex , item.index()]]);
-
-    this.element.find('> ul > li').removeClass('if-list-last-clicked');
-    src.element.find('> ul > li').removeClass('if-list-last-clicked');
 
     // Deselect all in connected lists but the currently
     // dragged item.
@@ -344,9 +342,6 @@ ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
         to.immigrantMessage.push(this.id);
         to.immigrantMessage.push([[fromIndex , to.element.find('> ul').children().length]]);
 
-        this.element.find('> ul > li').removeClass('if-list-last-clicked');
-        to.element.find('> ul > li').removeClass('if-list-last-clicked');
-
         if (this.cfg.selection) {
             to.deselectConnectedLists();
             to.deselectAll();
@@ -391,6 +386,7 @@ ice.ace.List.prototype.getSiblingList = function (shift) {
 }
 
 ice.ace.List.prototype.pendingClickHandling;
+ice.ace.List.prototype.lastClickedIndex;
 ice.ace.List.prototype.disableClickHandling = false;
 ice.ace.List.prototype.disableDoubleClickHandling = false;
 
@@ -421,7 +417,7 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                     // Clear selection from shift key use
                     self.clearSelection();
 
-                    var lower, higher, last_clicked = jqLi.siblings('.if-list-last-clicked').index();
+                    var lower, higher, last_clicked = self.lastClickedIndex ? self.lastClickedIndex : -1;
                     if (last_clicked < index) {
                         lower = last_clicked + 1;
                         higher = index + 1;
@@ -439,10 +435,8 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
 
                     function modifyState() {
                         if (deselection) {
-                            jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
                             self.removeSelectedItem(jqLi);
                         } else {
-                            jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
                             self.addSelectedItem(jqLi);
                         }
                     }
@@ -456,6 +450,8 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                     }
 
                 }
+
+                self.lastClickedIndex = index;
             }, timeout);
     }
 };
