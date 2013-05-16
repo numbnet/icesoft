@@ -210,8 +210,7 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  java.lang.String getRemoteAddr()  {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
+        log.warning("cannot get remote address from portlet request");
         return null;
     }
 
