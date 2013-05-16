@@ -23,24 +23,40 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <h3>Date Time Spinners</h3>
-    <h:form>
+    <h:form id="dateSpinnerForm">
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="useNative" value="Use Native:"/>
+                <mobi:flipswitch id="useNative" value="#{dateBean.useNative}" style="float:right">
+                    <mobi:ajax render="dateSpinnerForm" execute="dateSpinnerForm"/>
+                </mobi:flipswitch>&#160;
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="readonly" value="Read Only:"/>
+                <mobi:flipswitch id="readonly" value="#{dateBean.readonly}" style="float:right">
+                    <mobi:ajax render="dateSpinnerForm" execute="dateSpinnerForm"/>
+                </mobi:flipswitch>&#160;
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
         <mobi:fieldsetGroup>
            <!-- date spinner -->
             <mobi:fieldsetRow>
-                <h:outputLabel value="Date:" for="date" styleClass="ui-input-text"/>
-                <mobi:dateSpinner useNative="true" id="date"
-                                 value="#{dateBean.dateInput}"
-                                 style="#{!mobiClient.handheldBrowser ? 'display: inline-block; width: 78%;':''}">
+                <h:outputLabel value="Date:" for="date"/>
+                <mobi:dateSpinner useNative="#{dateBean.useNative}" id="date"
+                                  readonly="#{dateBean.readonly}"
+                                 value="#{dateBean.dateInput}" 
+                                 style="float:right">
                     <f:convertDateTime type="date" pattern="yyyy-MM-dd" timeZone="#{dateBean.timeZone}"/>
-                </mobi:dateSpinner>
+                </mobi:dateSpinner>&#160;
             </mobi:fieldsetRow>
             <!-- time spinner -->
             <mobi:fieldsetRow>
-                <h:outputLabel value="Time:"  styleClass="ui-input-text" for="time"/>
-                <mobi:timeSpinner id="time" useNative="true"  timeZone="#{dateBean.timeZone}"
-                                 value="#{dateBean.timeInput}"
-                                 style="#{!mobiClient.handheldBrowser ? 'display: inline-block; width: 78%;':''}">
-                </mobi:timeSpinner>
+                <h:outputLabel value="Time:" for="time"/>
+                <mobi:timeSpinner id="time" useNative="#{dateBean.useNative}" timeZone="#{dateBean.timeZone}"
+                                 value="#{dateBean.timeInput}" readonly="#{dateBean.readonly}"
+                                 style="float:right">
+                </mobi:timeSpinner>&#160;
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         

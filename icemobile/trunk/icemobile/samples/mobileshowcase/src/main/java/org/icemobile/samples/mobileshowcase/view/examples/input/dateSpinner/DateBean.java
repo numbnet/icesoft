@@ -60,6 +60,9 @@ public class DateBean extends ExampleImpl<DateBean> implements
     private Date dateInput;
     // time input/echo
     private Date timeInput;
+    
+    private boolean useNative = true;
+    private boolean readonly = false;
 
     public DateBean() {
        super(DateBean.class);
@@ -87,5 +90,21 @@ public class DateBean extends ExampleImpl<DateBean> implements
 
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+    }
+
+    public boolean isUseNative() {
+        return useNative;
+    }
+
+    public void setUseNative(boolean useNative) {
+        this.useNative = useNative;
+    }
+
+    public boolean isReadonly() {
+        return readonly;
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
     }
 }
