@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
@@ -210,12 +211,20 @@ public class PDFExporter extends Exporter {
 				if (!"".equals(rowIndexVar)) {
 					facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
 				}
+				// 'before' conditional rows
+				List<Row> leadingRows = table.getConditionalRows(i, true);
+				for (Row r : leadingRows) exportConditionalRow(r, pdfTable, font);
+				
 				for (int j = 0; j < numberOfColumns; j++) {
 					addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
 				}
 				if (hasRowExpansion) {
 					exportChildRows(facesContext, rootModel, rowStateMap, table, columns, "" + i, pdfTable, numberOfColumns, font);
 				}
+				
+				// 'after' conditional rows
+				List<Row> tailingRows = table.getConditionalRows(i, false);
+				for (Row r : tailingRows) exportConditionalRow(r, pdfTable, font);
 			}
 		}
 
@@ -266,6 +275,23 @@ public class PDFExporter extends Exporter {
 		}
 		
         rootModel.setRootIndex(null);
+	}
+	
+	protected void exportConditionalRow(Row row, Object pdfTable, Object font) 
+		throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		List<UIComponent> children = row.getChildren();
+		List<UIColumn> rowColumns = new ArrayList<UIColumn>(children.size());
+		for (UIComponent kid : children) {
+			if (kid instanceof Column) {
+				Column c = (Column) kid;
+				int colspan = c.getColspan();
+				for (int i = 0; i < colspan; i++) rowColumns.add(c);
+			}
+		}
+		int numberOfColumns = rowColumns.size();
+		for (int i = 0; i < numberOfColumns; i++) {
+			addColumnValue(pdfTable, rowColumns.get(i).getChildren(), i, font);
+		}
 	}
 	
 	protected void addFacetColumns(Object pdfTable, List<UIColumn> columns, Object font, ColumnType columnType) 

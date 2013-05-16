@@ -30,6 +30,7 @@ package org.icefaces.ace.component.dataexporter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
@@ -94,11 +95,19 @@ public class CSVExporter extends Exporter {
 				if (!"".equals(rowIndexVar)) {
 					facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
 				}
+				// 'before' conditional rows
+				List<Row> leadingRows = table.getConditionalRows(i, true);
+				for (Row r : leadingRows) exportConditionalRow(builder, r);
+				
 				addColumnValues(builder, columns);
 				builder.append("\n");
 				if (hasRowExpansion) {
 					exportChildRows(facesContext, rootModel, rowStateMap, table, columns, "" + i, builder);
 				}
+				
+				// 'after' conditional rows
+				List<Row> tailingRows = table.getConditionalRows(i, false);
+				for (Row r : tailingRows) exportConditionalRow(builder, r);
 			}
 		}
 
@@ -152,6 +161,20 @@ public class CSVExporter extends Exporter {
 		}
 		
         rootModel.setRootIndex(null);
+	}
+	
+	protected void exportConditionalRow(StringBuilder builder, Row row) throws IOException {
+		List<UIComponent> children = row.getChildren();
+		List<UIColumn> rowColumns = new ArrayList<UIColumn>(children.size());
+		for (UIComponent kid : children) {
+			if (kid instanceof Column) {
+				Column c = (Column) kid;
+				int colspan = c.getColspan();
+				for (int i = 0; i < colspan; i++) rowColumns.add(c);
+			}
+		}
+		addColumnValues(builder, rowColumns);
+		builder.append("\n");
 	}
 	
 	protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {

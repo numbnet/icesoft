@@ -306,12 +306,14 @@ public abstract class Exporter {
             else if (valueHolder.getConverter() != null)
                 return valueHolder.getConverter().getAsString(context, component, value);
 
-            Class<?> valueType;
-            ValueExpression expr = component.getValueExpression("value");
-            if (expr != null) if ((valueType = expr.getType(context.getELContext())) != null) {
-                Converter converterForType = context.getApplication().createConverter(valueType);
-                if (converterForType != null) return converterForType.getAsString(context, component, value);
-            }
+			try {
+				Class<?> valueType;
+				ValueExpression expr = component.getValueExpression("value");
+				if (expr != null) if ((valueType = expr.getType(context.getELContext())) != null) {
+					Converter converterForType = context.getApplication().createConverter(valueType);
+					if (converterForType != null) return converterForType.getAsString(context, component, value);
+				}
+			} catch (Exception e) {}
 
 			return value.toString();
         }

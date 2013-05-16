@@ -29,6 +29,7 @@ package org.icefaces.ace.component.dataexporter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
@@ -107,13 +108,26 @@ public class ExcelExporter extends Exporter {
 				if (!"".equals(rowIndexVar)) {
 					facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
 				}
-				Row row = sheet.createRow(sheetRowIndex++);
+				// 'before' conditional rows
+				List<org.icefaces.ace.component.row.Row> leadingRows = table.getConditionalRows(i, true);
+				for (org.icefaces.ace.component.row.Row r : leadingRows) {
+					Row row = sheet.createRow(sheetRowIndex++);
+					exportConditionalRow(r, row);
+				}
 				
+				Row row = sheet.createRow(sheetRowIndex++);
 				for (int j = 0; j < numberOfColumns; j++) {
 					addColumnValue(row, columns.get(j).getChildren(), j);
 				}
 				if (hasRowExpansion) {
 					sheetRowIndex = exportChildRows(facesContext, rootModel, rowStateMap, table, columns, "" + i, sheet, sheetRowIndex, numberOfColumns);
+				}
+				
+				// 'after' conditional rows
+				List<org.icefaces.ace.component.row.Row> tailingRows = table.getConditionalRows(i, false);
+				for (org.icefaces.ace.component.row.Row r : tailingRows) {
+					row = sheet.createRow(sheetRowIndex++);
+					exportConditionalRow(r, row);
 				}
 			}
 		}
@@ -178,6 +192,22 @@ public class ExcelExporter extends Exporter {
 		
         rootModel.setRootIndex(null);
 		return sheetRowIndex;
+	}
+	
+	protected void exportConditionalRow(org.icefaces.ace.component.row.Row r, Row row) throws IOException {
+		List<UIComponent> children = r.getChildren();
+		List<UIColumn> rowColumns = new ArrayList<UIColumn>(children.size());
+		for (UIComponent kid : children) {
+			if (kid instanceof Column) {
+				Column c = (Column) kid;
+				int colspan = c.getColspan();
+				for (int i = 0; i < colspan; i++) rowColumns.add(c);
+			}
+		}
+		int numberOfColumns = rowColumns.size();
+		for (int i = 0; i < numberOfColumns; i++) {
+			addColumnValue(row, rowColumns.get(i).getChildren(), i);
+		}
 	}
 	
 	protected void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
