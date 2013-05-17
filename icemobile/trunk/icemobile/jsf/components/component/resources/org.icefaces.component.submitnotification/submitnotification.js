@@ -25,7 +25,7 @@ ice.mobi.submitnotify = {
     centerCalculation:{},
     cfg:{},
     open: function (clientId, callerId, cfg, options) {
-        console.log("submitNotif OPEN for clientId="+clientId);
+        //console.log("submitNotif OPEN for clientId="+clientId);
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
         var behaviors = cfg.behaviors ||null;
@@ -57,13 +57,13 @@ ice.mobi.submitnotify = {
         }
     },
     close:function (clientId) {
-        console.log("submitNotif CLOSE for clientId="+clientId);
+        //console.log("submitNotif CLOSE for clientId="+clientId);
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
         var bgNode = document.getElementById(idPanel);
         var pNode = document.getElementById(containerId);
         if (bgNode==null || pNode == null){
-            console.log("bgNode="+bgNode+" pNode="+pNode);
+            //console.log("bgNode="+bgNode+" pNode="+pNode);
             return;
         }
   //      console.log("bgNode class="+bgNode.className+" pNode class="+pNode.className);
