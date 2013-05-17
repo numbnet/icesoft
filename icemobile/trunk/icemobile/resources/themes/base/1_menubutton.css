@@ -35,6 +35,7 @@
 }
 
 .mobi-menu-btn-menu {
+    opacity: 0;
     width: 160px;
     z-index: 5;
     height: 30px;
