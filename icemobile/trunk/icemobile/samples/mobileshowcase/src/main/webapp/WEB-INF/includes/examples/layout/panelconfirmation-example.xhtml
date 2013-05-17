@@ -43,7 +43,7 @@
         
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <label class="ui-input-text">Execution count:</label>
+                <label>Execution count:</label>
                 <span>#{panelConfirmationBean.count}</span>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
@@ -60,8 +60,7 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="type" value="Type:" class="ui-input-text"/>
-                <h:selectOneMenu id="type" value="#{panelConfirmationBean.type}" 
-                    class="mobi-input-text">
+                <h:selectOneMenu id="type" value="#{panelConfirmationBean.type}">
                     <f:selectItem itemValue="both"/>
                     <f:selectItem itemValue="acceptOnly"/>
                     <f:selectItem itemValue="cancelOnly"/>
