@@ -17,13 +17,5 @@
     border: 1px solid #175f9d;
     background-color: #4A6C9B;
     color: #FFFFFF;
-    padding: 0 24px 0 8px;
-}
-
-.mobi-menu-btn-btn { padding: 1px 24px 1px 8px; }
-
-.mobi-menu-btn-menu {
-    width: 175px;
-    padding: 3px;
-    opacity: 0;
+    width: 106px;
 }
