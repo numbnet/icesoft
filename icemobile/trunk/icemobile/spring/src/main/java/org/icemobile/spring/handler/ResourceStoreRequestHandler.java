@@ -50,7 +50,8 @@ public class ResourceStoreRequestHandler extends RangingResourceHttpRequestHandl
         if( theResource != null ){
             return new Object[]{
                     theResource.getInputStream(),
-                    Long.valueOf(theResource.contentLength())
+                    Long.valueOf(theResource.contentLength()),
+                    theResource.getContentType()
                 };
         }
         return null;

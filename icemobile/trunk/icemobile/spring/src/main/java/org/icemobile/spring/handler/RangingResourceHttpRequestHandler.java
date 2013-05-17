@@ -92,6 +92,12 @@ public class RangingResourceHttpRequestHandler extends ResourceHttpRequestHandle
         Object[] inputStreamAndContentLength = 
                 getInputStreamAndContentLength(requestPath);
         if( inputStreamAndContentLength != null ){
+            if (null == contentType)  {
+                if (null != inputStreamAndContentLength[2])  {
+                    response.setContentType((String)
+                            inputStreamAndContentLength[2]);
+                }
+            }
             if( useRanges ){
                 response.setHeader(CONTENT_RANGE, 
                         "bytes " + rangeStart + "-" + rangeEnd + "/" +
@@ -119,7 +125,8 @@ public class RangingResourceHttpRequestHandler extends ResourceHttpRequestHandle
         Resource theResource = context.getResource(requestPath);
         return new Object[]{
                 theResource.getInputStream(),
-                Long.valueOf(theResource.contentLength())
+                Long.valueOf(theResource.contentLength()),
+                null
             };
     }
 
