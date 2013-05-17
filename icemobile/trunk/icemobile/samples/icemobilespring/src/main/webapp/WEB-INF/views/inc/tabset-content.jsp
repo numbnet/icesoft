@@ -23,7 +23,7 @@
 <form:form id="tabsetform" method="POST" modelAttribute="tabsetBean" cssClass="tabsetpage">
 
     <mobi:tabSet id="tabsetOne" parentHeader="true"
-                            selectedId="${tabsetBean.selectedTab}">
+                            selectedId="${tabsetBean.selectedTab}" fixedPosition="true">
         <mobi:tabPane id="tab1" title="Ice Sailer">
             <%@ include file="fieldset-icesailor.jsp"%>
         </mobi:tabPane>
