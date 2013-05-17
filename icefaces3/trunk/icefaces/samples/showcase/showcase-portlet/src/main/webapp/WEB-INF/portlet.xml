@@ -304,6 +304,28 @@
     </portlet>
 
     <portlet>
+        <portlet-name>breadcrumbMenu</portlet-name>
+        <display-name>Breadcrumb Menu</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/breadcrumbmenu/breadcrumbMenu.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Breadcrumb Menu</title>
+            <keywords>ICEfaces ACE Component Showcase Breadcrumb Menu</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
         <portlet-name>chart</portlet-name>
         <display-name>Chart</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
@@ -1057,6 +1079,29 @@
             <keywords>ICEfaces Component Suite Showcase ACE Data Table Config Panel</keywords>
         </portlet-info>
     </portlet>
+
+    <portlet>
+        <portlet-name>dataTableDynamicColumns</portlet-name>
+        <display-name>Data Table Dynamic Columns</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableDynamicColumns.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Data Table Dynamic Columns</title>
+            <keywords>ICEfaces ACE Component Showcase Data Table Dynamic Columns</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>dataTableFiltering</portlet-name>
         <display-name>Data Table Filtering</display-name>

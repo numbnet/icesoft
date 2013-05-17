@@ -16,14 +16,18 @@
 
 package org.icefaces.sample.portlet.chat;
 
+import org.icefaces.application.PushRenderer;
 import org.icefaces.sample.portlet.chat.resources.ResourceUtil;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -42,7 +46,7 @@ public class Participant implements Serializable {
 
     private static Logger log = Logger.getLogger(Participant.class.getName());
 
-    @ManagedProperty(value="#{chatRoom}")
+    @ManagedProperty("#{chatRoom}")
     private transient ChatRoom chatRoom;
 
     private String handle;
@@ -54,6 +58,11 @@ public class Participant implements Serializable {
     public Participant() {
     }
 
+    @PostConstruct
+    public void init(){
+        PushRenderer.addCurrentSession(ChatRoom.ROOM_RENDERER_NAME);
+    }
+
     public String getHandle() {
         return handle;
     }
@@ -63,6 +72,10 @@ public class Participant implements Serializable {
     }
 
     public ChatRoom getChatRoom() {
+        if( chatRoom == null){
+            FacesContext context = FacesContext.getCurrentInstance();
+            chatRoom = (ChatRoom)context.getApplication().evaluateExpressionGet(context, "#{chatRoom}", Object.class);
+        }
         return chatRoom;
     }
 
@@ -80,8 +93,9 @@ public class Participant implements Serializable {
 
     public void login(ActionEvent event) {
         if (handle != null && handle.trim().length() > 0) {
-            if (!chatRoom.hasParticipant(this)) {
-                chatRoom.addParticipant(this);
+            ChatRoom cr = getChatRoom();
+            if (!cr.hasParticipant(this)) {
+                cr.addParticipant(this);
             } else {
                 ResourceUtil.addLocalizedMessage("alreadyRegistered", handle);
                 handle = null;
@@ -92,10 +106,11 @@ public class Participant implements Serializable {
     }
 
     public void sendMessage(ActionEvent event) {
-        if (!chatRoom.hasParticipant(this) || message == null || message.trim().length() < 1) {
+        ChatRoom cr = getChatRoom();
+        if (!cr.hasParticipant(this) || message == null || message.trim().length() < 1) {
             return;
         }
-        chatRoom.addMessage(this, message);
+        cr.addMessage(this, message);
     }
 
     public void logout(ActionEvent event) {
@@ -104,12 +119,16 @@ public class Participant implements Serializable {
 
     @PreDestroy
     public void logout() {
-        chatRoom.removeParticipant(this);
+        PushRenderer.removeCurrentSession(ChatRoom.ROOM_RENDERER_NAME);
+        ChatRoom cr = getChatRoom();
+        if( cr != null ){
+            cr.removeParticipant(this);
+        }
         handle = null;
     }
 
     public boolean isRegistered() {
-        return chatRoom.hasParticipant(this);
+        return getChatRoom().hasParticipant(this);
     }
 
     public void setRegistered(boolean registered) {
@@ -134,7 +153,7 @@ public class Participant implements Serializable {
     }
 
     public boolean isOlder() {
-        return (firstMessageIndex + numOfDisplayedMessages) < chatRoom.getNumberOfMessages();
+        return (firstMessageIndex + numOfDisplayedMessages) < getChatRoom().getNumberOfMessages();
     }
 
     public void olderMessages(ActionEvent event) {
@@ -156,7 +175,7 @@ public class Participant implements Serializable {
     }
 
     public List getMessages() {
-        return chatRoom.getMessages(firstMessageIndex, numOfDisplayedMessages);
+        return getChatRoom().getMessages(firstMessageIndex, numOfDisplayedMessages);
     }
 
 

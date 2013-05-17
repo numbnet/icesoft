@@ -94,6 +94,12 @@
     </portlet>
 
     <portlet>
+        <portlet-name>breadcrumbMenu</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
         <portlet-name>chart</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -284,6 +290,11 @@
     </portlet>
     <portlet>
         <portlet-name>dataTableConfigPanel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableDynamicColumns</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
