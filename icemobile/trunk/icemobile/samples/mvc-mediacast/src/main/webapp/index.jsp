@@ -14,5 +14,6 @@
   ~ governing permissions and limitations under the License.
   --%>
 
-<%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
-<mobi:viewSwitcher mobileView="app?view=mobile" tabletView="app?view=tablet"/>
+<%
+   response.sendRedirect("app");
+%>

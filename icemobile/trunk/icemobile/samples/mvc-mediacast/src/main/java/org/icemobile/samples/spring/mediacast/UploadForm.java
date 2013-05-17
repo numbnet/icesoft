@@ -25,14 +25,9 @@ public class UploadForm {
 	public static final String PAGE_ALL = "all";
 
 
-	public static final String DESKTOP = "desktop";
-	public static final String MOBILE = "mobile";
-	public static final String TABLET = "tablet";
 	
 	@Size(max = 164)
 	private String description;
-	
-	private String view;
 	
 	private String page = PAGE_UPLOAD;
 	
@@ -54,22 +49,6 @@ public class UploadForm {
 		this.description = description;
 	}
 
-	public String getView() {
-		return view;
-	}
-
-	public void setView(String view) {
-		if( notNullOrEmpty(view)){
-			this.view = cleanParam(view);
-			if( TABLET.equals(view) ){
-				page = PAGE_ALL;
-			}
-			else if( PAGE_ALL.equals(page)){
-				page = PAGE_UPLOAD;
-			}
-		}
-	}
-	
 	public String cleanParam(String param){
 		if( param != null && param.indexOf(",") > 0 ){
 			param = param.substring(0,param.indexOf(","));
@@ -95,7 +74,7 @@ public class UploadForm {
 	@Override
 	public String toString() {
 		return "UploadForm [description=" + description
-				+ ", view=" + view + ", page=" + page + ", id=" + id  + "]";
+				+ ", page=" + page + ", id=" + id  + "]";
 	}
 
 

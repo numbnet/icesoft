@@ -32,16 +32,27 @@
                     <%@ include file="/WEB-INF/jsp/gallery-list.jsp" %>
                 </mobi:fragment>
                 <mobi:fragment name="right">
-                    <mobi:tabSet id="tabs"  selectedId="${gallerModel.selectedTab}">
-                           <mobi:tabPane id="tab1" title="Upload">
-                                <div id="carouselContainer">
-                                    <push:region group="photos" page="/carousel?view=tablet"/>
-                                 </div>
-                               <%@ include file="/WEB-INF/jsp/upload-form.jsp" %>
-                           </mobi:tabPane>
-                           <mobi:tabPane id="tab2" title="Viewer">
-                               <%@ include file="/WEB-INF/jsp/viewer-panel.jsp" %>
-                           </mobi:tabPane>
+                    <mobi:tabSet id="tabs" selectedId="tab1" fixedPosition="false">
+                       <mobi:tabPane id="tab1" title="Upload">
+                            <script type="text/javascript">
+                            function updateCarousel(){
+                                ice.push.get('./carousel', function(parameter) { 
+                                    parameter('group', 'photos');
+                                } , 
+                                function(statusCode, responseText) {
+                                    var container = document.getElementById('carouselContainer');
+                                    if( container ) container.innerHTML = responseText;
+                                    if( container ) ice.push.searchAndEvaluateScripts(container);
+                                });
+                            }
+                            </script>
+                            <push:register group="photos" callback="updateCarousel"/>
+                            <div id="carouselContainer"></div>
+                           <%@ include file="/WEB-INF/jsp/upload-form.jsp" %>
+                       </mobi:tabPane>
+                       <mobi:tabPane id="tab2" title="Viewer">
+                           <%@ include file="/WEB-INF/jsp/viewer-panel.jsp" %>
+                       </mobi:tabPane>
                     </mobi:tabSet>
                 </mobi:fragment>
             </mobi:splitPane>

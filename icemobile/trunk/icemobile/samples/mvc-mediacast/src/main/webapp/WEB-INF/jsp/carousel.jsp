@@ -30,16 +30,16 @@
                 </mobi:carousel>
             </div>
         </form:form>
-        <c:if test="${view eq 'tablet' }">
+        <mobi:largeView>
             <script type="text/javascript">
             enhanceCarousel();
             </script>
-        </c:if>
-         <c:if test="${view ne 'tablet' }">
+        </mobi:largeView>
+        <mobi:smallView>
             <script type="text/javascript">
             enhanceGet("#carouselForm a");
             </script>
-        </c:if>
+        </mobi:smallView>
         
      </c:if>
 </div>

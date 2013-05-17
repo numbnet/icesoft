@@ -20,8 +20,8 @@
         <mobi:outputListItem>
             <div id="${m.id}".0
              data-created="${m.created}">
-                <c:if test="${view eq 'mobile'}">
-                    <a class="mediaLink" href='<c:url value="/app?page=viewer&view=${view}&id=${m.id}"/>'>
+                <mobi:smallView>
+                    <a class="mediaLink" href='<c:url value="/app?page=viewer&id=${m.id}"/>'>
                         <c:if test="${not empty m.smallPhoto}">
                             <img src='resources/uploads/${m.smallPhoto.name}' class="p"/>
                         </c:if>
@@ -33,8 +33,8 @@
                         </c:if>
                         <span class="desc"><c:out value="${m.description}"/></span>
                     </a>
-                </c:if>
-                <c:if test="${view ne 'mobile'}">
+                </mobi:smallView>
+                <mobi:largeView>
                     <a class="mediaLink" href="#" onclick="updateViewerPanel('${m.id}');">
                         <c:if test="${not empty m.smallPhoto}">
                             <img src='resources/uploads/${m.smallPhoto.name}' class="p"/>
@@ -47,7 +47,7 @@
                         </c:if>
                         <span class="desc"><c:out value="${m.description}"/></span>
                     </a>
-                </c:if>
+                </mobi:largeView>
              </div>
         </mobi:outputListItem>
     </c:forEach>
