@@ -18,8 +18,7 @@
 <div id="uploadFormContainer">
      
     <form:form id="uploadForm" method="POST" enctype="multipart/form-data" 
-        htmlEscape="true" cssClass="form">
-        <input type="hidden" name="view" value="${view}"/>
+        htmlEscape="true">
         <input type="hidden" name="fullPost" id="fullPost" value="false"/>
         <input type="hidden" name="operation" id="operation"/>
         <form:errors path="*" cssClass="errorblock" element="div" />
@@ -27,10 +26,8 @@
         <mobi:getEnhanced/>
         
         <mobi:fieldsetGroup inset="true">
-           <mobi:fieldsetRow style="font-weight: bold;color: #326ADB">
-                <span>
-                    Share a photo, video clip, or audio recording.
-                </span>
+           <mobi:fieldsetRow style="font-weight: bold;color: #326ADB;text-align:center">
+                Share a photo, video clip, or audio recording.
            </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
@@ -39,12 +36,21 @@
         <mobi:fieldsetGroup inset="true">
              <mobi:fieldsetRow>
                 <c:if test="${!sxPhotoUploadReady}">
-                    <mobi:camera id="camera"/>
+                    <c:if test="${!mobiClient.enhancedBrowser}">
+                        <label for="camera" style="width:33%;display:inline-block">Image file:</label>
+                    </c:if>
+                    <mobi:camera id="camera" />
                 </c:if>
                 <c:if test="${!sxVideoUploadReady}">
+                    <c:if test="${!mobiClient.enhancedBrowser}">
+                        <br/><label for="camcorder" style="width:33%;display:inline-block">Video file:</label>
+                    </c:if>
                     <mobi:camcorder id="camcorder"/>
                 </c:if>
                 <c:if test="${!sxAudioUploadReady}">
+                    <c:if test="${!mobiClient.enhancedBrowser}">
+                        <br/><label for="microphone" style="width:33%;display:inline-block">Audio file:</label>
+                    </c:if>
                     <mobi:microphone id="microphone" buttonLabel="Audio"/>
                 </c:if>
              </mobi:fieldsetRow>  
@@ -67,18 +73,18 @@
                     styleClass="input"
                     type="textarea"
                     autoCorrect="off"
-                    placeholder="Description"/>
+                    placeholder="Description" style="width:100%"/>
              </mobi:fieldsetRow>
-             <mobi:fieldsetRow styleClass="mobi-center">
+             <mobi:fieldsetRow style="text-align:center">
                 <mobi:commandButton id="cancelBtn"
-                       value="Cancel" style="width:100px;margin-top:0;margin-bottom:0"
+                       value="Cancel" style="width:45%;margin:1%"
                        />
                 <mobi:commandButton value="Share" buttonType="important"
-                    style="float:none;width:100px;margin-top:0;margin-bottom:0;"/>
+                    style="width:45%;margin:1%"/>
              </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-        <mobi:fieldsetGroup inset="true" style="padding:10px;">
-            <mobi:fieldsetRow style="text-align:center;padding:0;">
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
             Learn more about ICEmobile video, audio, QR code, augmented reality
             and rich UI features at <a href="http://www.icesoft.org/projects/ICEmobile/overview.jsf">www.icesoft.org/projects/ICEmobile/</a>.
             </mobi:fieldsetRow>

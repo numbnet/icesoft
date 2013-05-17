@@ -22,12 +22,12 @@
     <div id="root">
         <mobi:pagePanel>
             <mobi:pagePanelHeader>
-                <a id="backBtn" class="mobi-button mobi-button-default"
-                    href='<c:url value="/app?page=gallery&view=${view}"/>'
+                <a id="backBtn" class="mobi-button ui-btn-up-c mobi-button-back"
+                    href='<c:url value="/app?page=gallery"/>'
                 >Gallery</a>
-                <span>Mediacast</span>
+                <h1>Mediacast</h1>
                 <img src="<c:url value="/resources/images/icemobile.png"/>"
-                    style="position: absolute; top: 10px; right: 2em;"
+                    style="position: absolute; top: 10px; right: 10px;"
                 />
             </mobi:pagePanelHeader>
             <mobi:pagePanelBody>

@@ -49,7 +49,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes(value = {"desktop", "sxThumbnail", "enhanced", 
+@SessionAttributes(value = {"sxThumbnail", "enhanced", 
         ApplicationController.SX_VIDEO_UPLOAD_KEY,
         ApplicationController.SX_AUDIO_UPLOAD_KEY,
         ApplicationController.SX_PHOTO_UPLOAD_KEY,
@@ -77,11 +77,6 @@ public class ApplicationController implements ServletContextAware {
     private static final String PAGE_GALLERY = "gallery";
     private static final String PAGE_VIEWER = "viewer";
     private static final String PAGE_ALL = "all";
-
-
-    private static final String DESKTOP = "desktop";
-    private static final String MOBILE = "mobile";
-    private static final String TABLET = "tablet";
 
     public static final String SX_PHOTO_UPLOAD_KEY = "sxPhotoUpload";
     public static final String SX_VIDEO_UPLOAD_KEY = "sxVideoUpload";
@@ -115,33 +110,6 @@ public class ApplicationController implements ServletContextAware {
         model.addAttribute("ajaxRequest", isAjaxRequest(request));
     }
 
-    @ModelAttribute
-    public void putAttributeDesktop(HttpServletRequest request, Model model){
-        model.addAttribute("desktop", ClientDescriptor.getInstance(request).isDesktopBrowser());
-    }
-
-    @ModelAttribute
-    public void putAttributeEnhanced(HttpServletRequest request, Model model){
-        boolean enhanced = ClientDescriptor.getInstance(request).isICEmobileContainer();
-        if( !model.containsAttribute("enhanced") || enhanced){
-            model.addAttribute("enhanced", enhanced);
-        }
-    }
-    
-
-    @ModelAttribute
-    public void putAttributeView(HttpServletRequest request, Model model) {
-        String view = DESKTOP;
-        ClientDescriptor client = ClientDescriptor.getInstance(request);
-        if( client.isHandheldBrowser() ){
-            view = MOBILE;
-        }
-        else if( client.isTabletBrowser()){
-            view = TABLET;
-        }
-        model.addAttribute("view", view);
-    }
-
     @RequestMapping(value="/app", method = RequestMethod.GET)
     public String get( HttpServletRequest request,
             HttpServletResponse response,
@@ -151,39 +119,43 @@ public class ApplicationController implements ServletContextAware {
         
         log.info("form="+form);
 
-        String view = null;
-        if( TABLET.equals(form.getView()) ){
+        ClientDescriptor client = ClientDescriptor.getInstance(request);
+        if( !client.isHandheldBrowser() ){
             form.setPage(PAGE_ALL);
         }
+        else{
+            if( form.getPage().equals(PAGE_ALL) ){
+                form.setPage(PAGE_UPLOAD);
+            }
+        }
         
-        addCommonModel(model,form.getView());
-
+        addCommonModel(model);
+        String page = null;
         if( PAGE_UPLOAD.equals(form.getPage()) ){
-            addUploadViewModel(PAGE_UPLOAD, form.getView(), model);
-            view = "upload-page";
+            addUploadViewModel(PAGE_UPLOAD, model);
+            page = "upload-page";
         }
         else if( PAGE_GALLERY.equals(form.getPage()) ){
-            view = "gallery-page";
+            page = "gallery-page";
         }
         else if( PAGE_VIEWER.equals(form.getPage())){
             addViewerViewModel(form.getId(), model, false, false);
-            view = "viewer-page";
+            page = "viewer-page";
         }
         else if( PAGE_ALL.equals(form.getPage())){
-            addUploadViewModel(PAGE_ALL, form.getView(), model);
+            addUploadViewModel(PAGE_ALL, model);
             addViewerViewModel(form.getId(), model, false, false);
-            view = "tablet";
+            page = "tablet";
         }
-        log.debug("forwarding to " + view);
+        log.debug("forwarding to " + page);
 
-        return view;
+        return page;
     }
 
     @RequestMapping(value="/carousel")
     public String getCarouselContent(UploadForm form, Model model) {
         model.addAttribute("carouselItems", mediaService
-                .getMediaImageMarkup(form.getView()));
-        model.addAttribute("view",form.getView());
+                .getMediaImageMarkup());
         return "carousel";
     }
     
@@ -194,14 +166,14 @@ public class ApplicationController implements ServletContextAware {
         String actionParam = form.cleanParam(action);
         boolean back = "back".equals(actionParam);
         boolean forward = "forward".equals(actionParam);
-        addCommonModel(model, form.getView());
+        addCommonModel(model);
         addViewerViewModel(form.getId(), model, back, forward);
         return "viewer-panel";
     }
 
     @RequestMapping(value="/gallery-list", method=RequestMethod.GET)
     public String getGalleryListContent(UploadForm form, Model model){
-        addCommonModel(model, form.getView());
+        addCommonModel(model);
         return "gallery-list";
     }
 
@@ -245,11 +217,12 @@ public class ApplicationController implements ServletContextAware {
             @RequestParam(value="operation", required=false) String operation,
             UploadForm form, BindingResult result,
             @ModelAttribute("msg") String msg,
-            @ModelAttribute("desktop") boolean desktop,
             Model model)
                     throws IOException {
         
         log.info("postUpload()");
+        
+        ClientDescriptor client = ClientDescriptor.getInstance(request);
 
         log.info("user-agent="+request.getHeader("User-Agent"));
         log.info(form);
@@ -273,7 +246,7 @@ public class ApplicationController implements ServletContextAware {
             request.getSession().removeAttribute(SX_VIDEO_UPLOAD_KEY);
             model.addAttribute(SX_VIDEO_UPLOAD_READY_KEY, false);
             
-            return "redirect:/" + "app?view=" + form.getView()+(MOBILE.equals(form.getView())?"&page=upload":"");
+            return "redirect:/app&page=upload";
         }
         
         boolean hasUpload = cameraMultiPart != null || camcorderMultiPart != null || microphoneMultiPart != null;
@@ -304,7 +277,7 @@ public class ApplicationController implements ServletContextAware {
                 model.addAttribute(SX_AUDIO_UPLOAD_KEY, sxAudioMasterFile);
                 model.addAttribute(SX_AUDIO_UPLOAD_READY_KEY, true);
             }
-            return postUploadFormResponseView(false, false, form.getView());
+            return postUploadFormResponseView(false, false, client);
         }
 
         boolean success = false;
@@ -384,20 +357,22 @@ public class ApplicationController implements ServletContextAware {
     
             success = true;
         }
-        addCommonModel(model, form.getView());
-        return postUploadFormResponseView(isAjaxRequest(request),success,form.getView());
+        addCommonModel(model);
+        return postUploadFormResponseView(isAjaxRequest(request),success, client);
     }
 
-    private String postUploadFormResponseView(boolean ajax, boolean redirect, String view){
+    private String postUploadFormResponseView(boolean ajax, boolean redirect, ClientDescriptor client){
         String returnView = null;
         if( ajax ){
             redirect = false;
         }
         if( redirect ){
-            returnView = "redirect:/" + "app?view=" + view
-                    +(MOBILE.equals(view)?"page=upload":"");
+            returnView = "redirect:/app";
+            if( client.isHandheldBrowser()){
+                returnView += "&page=upload";
+            }
         }
-        else if( MOBILE.equals(view)){
+        else if( client.isHandheldBrowser()){
             returnView = "upload-page";
         }
         else {
@@ -406,18 +381,17 @@ public class ApplicationController implements ServletContextAware {
         return returnView;
     }
 
-    private void addCommonModel(Model model, String view) {
+    private void addCommonModel(Model model) {
         model.addAttribute("mediaService", mediaService);
-        model.addAttribute("view", view);
         model.addAttribute("updated", System.currentTimeMillis());
     }
 
-    private void addUploadViewModel(String page, String view, Model model) {
+    private void addUploadViewModel(String page, Model model) {
         if (PAGE_UPLOAD.equals(page)) {
             page = PAGE_VIEWER;
         }
         model.addAttribute("carouselItems", mediaService
-                .getMediaImageMarkup(view));
+                .getMediaImageMarkup());
     }
 
     private void addViewerViewModel(String id, Model model, boolean back, boolean forward){

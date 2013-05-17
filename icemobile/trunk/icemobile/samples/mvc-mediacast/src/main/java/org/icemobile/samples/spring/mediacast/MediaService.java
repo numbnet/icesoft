@@ -77,7 +77,7 @@ public class MediaService implements ServletContextAware {
         this.contextPath = contextPath;
     }
     
-    public List<String> getMediaImageMarkup(String view){
+    public List<String> getMediaImageMarkup(){
         List<String> imageMarkup = new ArrayList<String>();
         if( media != null ){
             List<MediaMessage> list = getMediaSortedByTime(CAROUSEL_MAX_INDEX);
@@ -86,7 +86,7 @@ public class MediaService implements ServletContextAware {
                     File photo = mediaMsg.getSmallPhoto();
                     if( photo != null ){
                         String markup = "<div><a data-id='"+mediaMsg.getId()+"' href='"+contextPath+"/app?page=viewer"
-                                + (view != null ? "&view=" + view : "") + "&id="+mediaMsg.getId()
+                                + "&id="+mediaMsg.getId()
                                 +"' title='"+mediaMsg.getDescription()+"'><img height='"
                                 +CAROUSEL_IMG_HEIGHT+"' width='"+CAROUSEL_IMG_HEIGHT +"' src='resources/uploads/"
                                 + photo.getName()+"' style='border:none;'/></a></div>";

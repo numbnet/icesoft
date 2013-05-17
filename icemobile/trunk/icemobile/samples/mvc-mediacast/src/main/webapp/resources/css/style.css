@@ -190,6 +190,9 @@ html.bberry .mobi-tabset-tabs > ul li {
 	.imageViewer {
 	    width: 100%;
 	}
+	input[type='file']{
+	   width:65%;
+	}
 }
 
 /* LARGE SCREEN */
