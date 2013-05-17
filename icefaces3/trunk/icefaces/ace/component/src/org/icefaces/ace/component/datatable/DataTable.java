@@ -1547,7 +1547,7 @@ public class DataTable extends DataTableBase implements Serializable {
         if (visitRows) setRowIndex(-1);
         if (getChildCount() > 0) {
             for (UIComponent column : getChildren()) {
-                if (column instanceof Column || column instanceof PanelExpansion) {
+                if (column instanceof Column || column instanceof PanelExpansion || column instanceof TableConfigPanel) {
                     VisitResult result = context.invokeVisitCallback(column, callback); // visit the column directly
                     if (result == VisitResult.COMPLETE) return true;
                     if (column.getFacetCount() > 0) {

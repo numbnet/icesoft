@@ -94,4 +94,7 @@ public class TableConfigPanelMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Define if viewing this panel disables the rest of the application from input.",
         defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     Boolean modal;
+
+    @Field(defaultValue = "0")
+    Integer forcedRenderCount;
 }

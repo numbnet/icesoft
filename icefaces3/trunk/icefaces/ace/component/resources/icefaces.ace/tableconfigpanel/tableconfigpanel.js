@@ -31,7 +31,7 @@ ice.ace.TableConfLauncher = function(clientId, panelJsId) {
         if (panel.is(':not(:visible)'))
             panelJsId.submitTableConfig(e.currentTarget);
         else if (panelJsId.behaviors && panelJsId.behaviors.open)
-            panelJsId.behaviors.open();
+            ice.ace.ab(panelJsId.behaviors.open);
 
         e.stopPropagation();
     }
@@ -276,8 +276,8 @@ ice.ace.TableConf.prototype.setupCloseButton = function() {
                 self.$this.toggle();
                 self.modal.toggle();
 
-                if (self.cfg.behavior && self.behavior.close)
-                    self.behavior.close();
+                if (self.cfg.behaviors && self.behaviors.cancel)
+                    ice.ace.ab(self.behaviors.cancel);
             });
 }
 
