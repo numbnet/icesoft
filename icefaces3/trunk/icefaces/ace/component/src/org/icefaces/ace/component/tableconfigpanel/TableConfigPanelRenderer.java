@@ -29,10 +29,19 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class TableConfigPanelRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        TableConfigPanel panel = (TableConfigPanel)component;
+        String event = params.get("javax.faces.behavior.event");
+        String source = params.get("javax.faces.source");
+        if (source != null && event != null && source.equals(component.getClientId()) && event.equals("cancel")) {
+            panel.setForcedRenderCount(panel.getForcedRenderCount()+1);
+        }
+
         decodeBehaviors(context, component);
     }
 
@@ -86,6 +95,11 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writeJavascript(writer, clientId, tableId, component);
 
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.NAME_ATTR, "absRend", null);
+        writer.writeAttribute(HTML.VALUE_ATTR, component.getForcedRenderCount(), null);
+        writer.endElement(HTML.INPUT_ELEM);
         writer.endElement(HTML.DIV_ELEM);
 
         if (component.isModal()) {
