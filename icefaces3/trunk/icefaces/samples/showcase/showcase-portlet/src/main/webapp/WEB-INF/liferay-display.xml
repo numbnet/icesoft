@@ -88,6 +88,7 @@
                 <portlet id="dataTable"/>
                 <portlet id="dataTableColumnReordering"/>
                 <portlet id="dataTableConfigPanel"/>
+                <portlet id="dataTableDynamicColumns"/>
                 <portlet id="dataTableFiltering"/>
                 <portlet id="dataTableFind"/>
                 <portlet id="dataTableGrouping"/>
@@ -186,6 +187,7 @@
             </category>
             <category name="Misc">
                 <portlet id="animation"/>
+                <portlet id="breadcrumbMenu"/>
                 <portlet id="message"/>
                 <portlet id="printer"/>
                 <portlet id="submitMonitor"/>

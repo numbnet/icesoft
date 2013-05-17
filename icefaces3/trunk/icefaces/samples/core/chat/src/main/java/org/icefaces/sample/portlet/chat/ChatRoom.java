@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  * It is also responsible for firing Ajax Push requests when the state
  * of the application has changed.
  */
-@ManagedBean
+@ManagedBean (eager=true)
 @ApplicationScoped
 public class ChatRoom{
 
@@ -62,7 +62,6 @@ public class ChatRoom{
         participants.remove(participant.getHandle());
         String localizedMessage = ResourceUtil.getLocalizedMessage("left", participant.getHandle());
         addMessage(participant, localizedMessage);
-        PushRenderer.removeCurrentSession(ROOM_RENDERER_NAME);
     }
 
     public String[] getHandles() {
