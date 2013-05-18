@@ -103,11 +103,11 @@ public class NotificationBean extends ExampleImpl<NotificationBean> implements
     public NotificationBean() {
         super(NotificationBean.class);
         // add current session to common render group.
-        HttpSession session = FacesUtils.getHttpSession(false);
-        if (session != null){
-            renderGroup = session.getId();
-            PushRenderer.addCurrentSession(renderGroup);
-        }
+//        HttpSession session = FacesUtils.getHttpSession(false);
+//        if (session != null){
+//            renderGroup = session.getId();
+//            PushRenderer.addCurrentSession(renderGroup);
+//        }
     }
 
     /**
@@ -182,6 +182,13 @@ public class NotificationBean extends ExampleImpl<NotificationBean> implements
     }
 
     public String getEchoedMessage() {
+
+        HttpSession session = FacesUtils.getHttpSession(false);
+        if (session != null){
+            renderGroup = session.getId();
+            PushRenderer.addCurrentSession(renderGroup);
+        }
+
         return echoedMessage;
     }
 
