@@ -118,7 +118,7 @@ public class TabSetCoreRenderer extends BaseCoreRenderer {
         String baseTabsClass = ITabSet.TABSET_TABS_CLASS.toString();
         //cannot support fixed positioning in the Android browser
         
-        if (!tabset.isFixedPosition() || component.getClient().isAndroidBrowserOrWebView()){
+        if (!tabset.isFixedPosition() || !component.getClient().isSupportsFixedPosition()){
             baseTabsClass += " mobi-tabset-tabs-nonfixed";
         }
         writer.writeAttribute("class", baseTabsClass);

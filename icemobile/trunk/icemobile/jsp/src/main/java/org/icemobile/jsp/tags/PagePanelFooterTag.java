@@ -19,10 +19,12 @@ package org.icemobile.jsp.tags;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.HTML;
 
 /**
@@ -30,7 +32,7 @@ import org.icemobile.util.HTML;
  */
 public class PagePanelFooterTag extends TagSupport {
 
-    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ui-footer ui-footer-fixed ";
+    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ui-footer ";
 
     private static Logger LOG = Logger.getLogger(PagePanelFooterTag.class.getName());
     public PagePanelTag mParent;
@@ -43,7 +45,10 @@ public class PagePanelFooterTag extends TagSupport {
        mParent = (PagePanelTag) parent;
    }
     public int doStartTag() throws JspTagException {
-        StringBuilder footerClass = new StringBuilder(FOOTER_CLASS + "ui-bar-"+swatch);
+        ClientDescriptor client = ClientDescriptor.getInstance((HttpServletRequest)pageContext.getRequest());
+        StringBuilder footerClass = new StringBuilder(FOOTER_CLASS 
+                + (client.isSupportsFixedPosition() ? "ui-footer-fixed " : "")
+                + "ui-bar-"+swatch);
         if (mParent != null) {
             mParent.setHasHeader(true);
             if (mParent.getStyleClass() !=null){

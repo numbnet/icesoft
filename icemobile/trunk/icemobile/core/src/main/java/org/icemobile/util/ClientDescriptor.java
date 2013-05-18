@@ -130,7 +130,7 @@ public class ClientDescriptor implements Serializable{
     public boolean isAndroidOS() {
         return os == OS.ANDROID;
     }
-
+    
     public boolean isBlackBerryOS() {
         return os == OS.BLACKBERRY;
     }
@@ -274,7 +274,7 @@ public class ClientDescriptor implements Serializable{
     }
     
     public boolean isHasNativeDatePicker() {
-        return isIOS5() || isIOS6() || isBlackBerryOS() || isChromeBrowser();
+        return isIOS5() || isIOS6() || isBlackBerryOS() || isChromeBrowser() || _userAgentInfo.isFirefoxAndroid();
     }
 	
 	public boolean isAndroidBrowser(){
@@ -283,6 +283,20 @@ public class ClientDescriptor implements Serializable{
     
     public boolean isAndroidBrowserOrWebView(){
         return _userAgentInfo.isAndroidBrowserOrWebView();
+    }
+    
+    public boolean isAndroid2(){
+        return _userAgentInfo.isAndroid2();
+    }
+    
+    /*
+     * Fixed position is problematic on Android 2 (non-Firefox) and all Android
+     * WebViews on tablets.
+     */
+    public boolean isSupportsFixedPosition(){
+        return isDesktopBrowser() 
+               || (isTabletBrowser() && !isAndroidBrowserOrWebView())
+               || (isHandheldBrowser() && (!isAndroid2() ||  _userAgentInfo.isFirefoxAndroid()));
     }
 
 

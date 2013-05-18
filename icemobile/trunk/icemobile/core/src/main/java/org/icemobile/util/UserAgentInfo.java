@@ -60,6 +60,7 @@ public class UserAgentInfo implements Serializable{
     public static final String FIREFOX_ANDROID_TABLET = "android; tablet;";
     public static final String FIREFOX_ANDROID_MOBILE = "android; mobile;";
     public static final String CHROME = "chrome";
+    public static final String ANDROID2 = "android 2";
     
 
     public UserAgentInfo(String userAgent) {
@@ -211,6 +212,10 @@ public class UserAgentInfo implements Serializable{
    /* Android browser and webview share the same useragent */
    public boolean isAndroidBrowserOrWebView(){
        return isAndroidOS() && (!isChrome() && !isFirefoxAndroid());
+   }
+   
+   public boolean isAndroid2(){
+       return userAgentString.contains(ANDROID2);
    }
 
 

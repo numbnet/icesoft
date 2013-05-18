@@ -27,8 +27,8 @@ public class PagePanelCoreRenderer {
     private static Logger logger = Logger.getLogger(PagePanelCoreRenderer.class.getName());
     
     // base styles for the three page sections
-    public static final String HEADER_CLASS = "mobi-pagePanel-header ui-header ui-header-fixed";
-    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ui-footer ui-footer-fixed";
+    public static final String HEADER_CLASS = "mobi-pagePanel-header ui-header";
+    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ui-footer";
     public static final String BODY_CLASS = "mobi-pagePanel-body";
     public static final String CTR_CLASS = "mobi-pagePanel-ctr";
 
@@ -57,11 +57,11 @@ public class PagePanelCoreRenderer {
             logger.warning("PagePanel header, body and footer were not defined, " +
                     "no content will be rendered by this component.");
         }
-
         // write header if present
         if (header != null) {
             writer.startElement(DIV_ELEM, component);
-            writer.writeAttribute(CLASS_ATTR, HEADER_CLASS);
+            writer.writeAttribute(CLASS_ATTR, HEADER_CLASS 
+                    + (component.getClient().isSupportsFixedPosition() ? " ui-header-fixed" : ""));
             if( clientId != null ){
                 writer.writeAttribute(ID_ATTR, clientId + "_pgPnlHdr");
             }
@@ -94,7 +94,8 @@ public class PagePanelCoreRenderer {
         // write footer present
         if (footer != null) {
             writer.startElement(DIV_ELEM, component);
-            writer.writeAttribute(CLASS_ATTR, FOOTER_CLASS);
+            writer.writeAttribute(CLASS_ATTR, FOOTER_CLASS
+                    + (component.getClient().isSupportsFixedPosition() ? " ui-footer-fixed " : ""));
             if( clientId != null ){
                 writer.writeAttribute(ID_ATTR, clientId + "_pgPnlFtr");
             }
