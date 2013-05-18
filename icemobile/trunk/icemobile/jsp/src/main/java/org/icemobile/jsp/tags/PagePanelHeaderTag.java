@@ -19,9 +19,11 @@ package org.icemobile.jsp.tags;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.Tag;
 
+import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.HTML;
 
 
@@ -30,7 +32,7 @@ import org.icemobile.util.HTML;
  */
 public class PagePanelHeaderTag extends BaseBodyTag {
 
-    public static final String HEADER_CLASS = "mobi-pagePanel-header ui-header ui-header-fixed ";
+    public static final String HEADER_CLASS = "mobi-pagePanel-header ui-header ";
     private static Logger LOG = Logger.getLogger(PagePanelHeaderTag.class.getName());
     public PagePanelTag mParent;
     
@@ -44,7 +46,10 @@ public class PagePanelHeaderTag extends BaseBodyTag {
    }
 
     public int doStartTag() throws JspTagException {
-        StringBuilder headerClass = new StringBuilder(HEADER_CLASS+"ui-bar-"+swatch);
+        ClientDescriptor client = ClientDescriptor.getInstance((HttpServletRequest)pageContext.getRequest());
+        StringBuilder headerClass = new StringBuilder(HEADER_CLASS
+                + (client.isSupportsFixedPosition() ? "ui-header-fixed " : "")
+                +"ui-bar-"+swatch);
         if (mParent != null) {
             mParent.setHasHeader(true);
             if (mParent.getStyleClass() !=null){
