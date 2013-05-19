@@ -146,7 +146,7 @@
             
             <mobi:fieldsetRow>    
                 <div style="padding:5px;">#{uploadModel.uploadFeedbackMessage}</div>
-                <div class="mobi-grid #{viewSize eq 'small' ? 'mobi-center' : 'mobi-right'}">
+                <div class="mobi-grid #{mobiClient.handheldBrowser ? 'mobi-center' : 'mobi-right'}">
                     <mobi:commandButton id="cancelUploadBtn"
                             styleClass="mobi-col mobi-weight1"
                             buttonType="unimportant"

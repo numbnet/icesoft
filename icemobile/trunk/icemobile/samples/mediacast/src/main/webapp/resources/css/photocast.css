@@ -61,11 +61,9 @@ label{
 }
 
 ul.weighted {
-	float: left;
 	display: block;
 	overflow: auto;
 	padding: 5px;
-	margin: 0 10px 20px 0;
 }
 
 ul.weighted li {
