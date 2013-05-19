@@ -185,7 +185,7 @@
                         closePane(openElem, handleht);
                     } else {
                         //contents may have changed so get new ones or may be single pane MOBI-611
-                        if (cached!=true){
+                        if (cached!="true"){
                             ice.se(null, clientId);
                         }
                     //    console.log(" CLIENT and fixedHeight="+fixedHeight+" openElem id="+openElem.id);
@@ -194,7 +194,7 @@
                 }
                 else {//panel has changed
                     closePane(openElem, handleht);
-                    if (cached){
+                    if (cached!="false"){
                        // console.log(" PANE CHANGED  fixedHeight="+fixedHeight);
                         openPane(theParent,fixedHeight);
                         paneOpId = theParent.id;
