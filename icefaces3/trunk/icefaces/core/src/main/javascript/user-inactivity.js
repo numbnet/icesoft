@@ -40,7 +40,7 @@
                     try {
                         callback();
                     } catch (ex) {
-                        warn('onUserInactivity idle user callback failed to run', ex);
+                        warn(logger, 'onUserInactivity idle user callback failed to run', ex);
                     }
                 }
 
@@ -67,7 +67,7 @@
                         try {
                             callback();
                         } catch (ex) {
-                            warn('onUserInactivity active user callback failed to run', ex);
+                            warn(logger, 'onUserInactivity active user callback failed to run', ex);
                         }
                     }
                 });
