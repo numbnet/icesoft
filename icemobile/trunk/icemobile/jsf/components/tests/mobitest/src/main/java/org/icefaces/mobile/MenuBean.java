@@ -173,16 +173,24 @@ public class MenuBean implements Serializable {
         private String eventTriggered = "none";
         private String value;
         private String label;
-        private String panelConfId;
-        private String submitNotif;
+        private String panelConfId= null;
+        private String submitNotif=null;
         private String disabled= "false";
         private String singleSubmit = "false";
+        private boolean panelConfOnly;
+        private boolean submitNotifOnly;
+        private boolean both;
+        private boolean none;
 
         public ModelData (String val, String label, String pcId, String snId){
             this.value = val;
             this.label = label;
-            this.submitNotif = snId;
-            this.panelConfId = pcId;
+            if (null != snId && !snId.isEmpty()){
+               this.submitNotif = snId;
+            }
+            if (null != pcId && !pcId.isEmpty()){
+                this.panelConfId = pcId;
+            }
         }
 
         public String getDisabled() {
@@ -214,11 +222,12 @@ public class MenuBean implements Serializable {
          }
 
          public void actionMethod(ActionEvent ae){
+     //        logger.info(" actionMethod for value="+this.value);
              MenuBean.EVENT_TRIGGERED="item "+this.value+" was selected";
              if (this.value.equals("Add") || this.value.equals("Print")){
                 try{
                    Thread.sleep(5000);
-                   this.label="Added";
+                    logger.info(" after sleeping value="+this.value);
                 }  catch (Exception e){
 
                 }
@@ -242,6 +251,18 @@ public class MenuBean implements Serializable {
 
         public void setSingleSubmit(String singleSubmit) {
             this.singleSubmit = singleSubmit;
+        }
+        public boolean isBoth(){
+            return this.submitNotif !=null && this.panelConfId !=null;
+        }
+        public boolean isSubmitNotifOnly(){
+            return this.submitNotif !=null && this.panelConfId == null;
+        }
+        public boolean isPanelConfOnly(){
+            return this.panelConfId !=null && this.submitNotif ==null;
+        }
+        public boolean isNone(){
+            return this.panelConfId==null && this.submitNotif ==null;
         }
     }
 }

@@ -20,7 +20,7 @@
 	<property name="common.build.file" location="../build-common.xml" />
 
 	<import file="${common.build.file}" />
-    <target name="servlet" depends="clean,servlet-profile">
+    <target name="servlet_mojarra" depends="clean,servlet-profile">
         <echo message="making tomcat config default"/>
     </target>
   

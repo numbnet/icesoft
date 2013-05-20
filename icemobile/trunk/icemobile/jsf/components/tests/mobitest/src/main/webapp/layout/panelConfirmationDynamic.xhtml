@@ -44,7 +44,6 @@
                                         message="#{panelConfirmation.message}"
                                         acceptLabel="#{panelConfirmation.acceptLabel}"
                                         cancelLabel="#{panelConfirmation.cancelLabel}"
-                                        disabled="#{panelConfirmation.disabled}"
                                         type="#{panelConfirmation.type}" />
         <br />
     </h:form>
@@ -55,10 +54,6 @@
             <mobi:fieldsetRow>
                 <h:outputLabel for="count" value="count Of execute:"/>
                 <h:outputText id="count" value="#{panelConfirmation.count}"/>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="disabled" value="Disabled:" />
-                <mobi:flipswitch id="disabled" value="#{panelConfirmation.disabled}" singleSubmit="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="message" value="Message:"/>
