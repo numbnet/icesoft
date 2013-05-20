@@ -63,10 +63,12 @@
             if (notEmpty(notifiedUserInactivityListeners)) {
                 each(notifiedUserInactivityListeners, function(tuple) {
                     var callback = tuple.activeCallback;
-                    try {
-                        callback();
-                    } catch (ex) {
-                        warn('onUserInactivity active user callback failed to run', ex);
+                    if (callback) {
+                        try {
+                            callback();
+                        } catch (ex) {
+                            warn('onUserInactivity active user callback failed to run', ex);
+                        }
                     }
                 });
                 userInactivityListeners = concatenate(userInactivityListeners, notifiedUserInactivityListeners);
