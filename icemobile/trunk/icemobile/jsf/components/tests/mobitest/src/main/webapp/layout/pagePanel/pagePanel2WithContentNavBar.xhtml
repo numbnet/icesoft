@@ -21,12 +21,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-     <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen" />
+      <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
     <title>pagePanel 2 with with footer facet but no header facet and contentNavBar</title>
 </h:head>
 <h:body>
