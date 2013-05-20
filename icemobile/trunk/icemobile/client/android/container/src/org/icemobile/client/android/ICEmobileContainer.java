@@ -134,7 +134,6 @@ public class ICEmobileContainer extends Activity
 
     // Handler messages
     protected static final int PROGRESS_MSG = 0;
-    protected static final int ASSET_MSG = 1;
 
     // Authentication dialog
     protected static final int AUTH_DIALOG = 2;
@@ -175,7 +174,7 @@ public class ICEmobileContainer extends Activity
     private ProgressBar pBar;
     private Animation fadeOut;
     private int lastProgress;
-    boolean stillLoading = true;
+    private View mCachedVideoView;
 
     /**
      * Called when the activity is first created.
@@ -193,13 +192,6 @@ public class ICEmobileContainer extends Activity
 		    switch(msg.what) {
 		    case PROGRESS_MSG:
 			adjustProgress(msg.arg1);
-			break;
-		    case ASSET_MSG:
-			    Log.e("ICEmobile", "Retrying asset loading");
-			    if (!stillLoading) {
-				Log.e("ICEmobile", "Attempting asset load");
-				mWebView.loadUrl("javascript:eval(' ' + window.ICEassets.loadAssetFile('native-interface.js'));");
-			    }
 			break;
 		    default:
 		    }
@@ -524,6 +516,7 @@ public class ICEmobileContainer extends Activity
     }
 
     private class ICEfacesWebViewClient extends WebViewClient {
+        boolean stillLoading = true;
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -600,14 +593,6 @@ public class ICEmobileContainer extends Activity
         }
 
         @Override
-	    public void onConsoleMessage(String msg, int line, String src) {
-	    if (msg.contains("loadAssetFile")) {
-		Log.e("ICEmobile", "Load Assets Failed");
-		mHandler.sendEmptyMessageDelayed(ASSET_MSG, 100);
-	    }
-        }
-
-        @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
             super.onShowCustomView(view, callback);
             this.view = view;
@@ -617,7 +602,8 @@ public class ICEmobileContainer extends Activity
                 if (frame.getFocusedChild() instanceof VideoView) {
                     video = (VideoView) frame.getFocusedChild();
                     frame.removeView(video);
-                    self.setContentView(video);
+                    mWebView.addView(video);
+                    mCachedVideoView = video;
                     video.setOnCompletionListener(this);
                     video.setOnErrorListener(this);
                     video.start();
@@ -640,7 +626,10 @@ public class ICEmobileContainer extends Activity
         private void returnToWebView() {
             video.stopPlayback();
             callback.onCustomViewHidden();
-            self.setContentView(mWebView);
+            if (mCachedVideoView != null) {
+                mWebView.removeView(mCachedVideoView);
+                mCachedVideoView = null;
+            }
         }
 
         /**
