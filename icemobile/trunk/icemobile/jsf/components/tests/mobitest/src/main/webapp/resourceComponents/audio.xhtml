@@ -32,9 +32,10 @@
        <br />
        <h:panelGroup id="ipadpanel">
             <h:outputText value="iPadSample file:-"/>
-            <mobi:audioPlayer id="ipadSample" value="#{audio.value}"
+            <mobi:audioPlayer id="ipadSample" url="audio.mp3"
                     type="#{audio.type}"
                     loop="#{audio.loop}"
+                    controls="#{audio.controls}"
                     preload="#{audio.preload}"
                     muted="#{audio.muted}"
                     autoPlay = "#{audio.autoPlay}"
@@ -47,15 +48,8 @@
    <h:form id="inputForm">
        <mobi:fieldsetGroup>
            <mobi:fieldsetRow>
-               <h:outputLabel for="src" value="File:"/>
-               <h:selectOneMenu id="src" value="#{audio.value}" >
-                   <f:selectItem itemValue="none" itemLabel="none"/>
-                   <f:selectItem itemValue="metadata" itemLabel="metadata"/>
-                   <f:selectItem itemValue="auto" itemLabel="auto"/>
-               </h:selectOneMenu>
-           </mobi:fieldsetRow>
-               <h:outputLabel for="url" value="Url:"/>
-               <h:selectOneMenu id="url" value="#{audio.url}" >
+               <h:outputLabel for="url" value="fileName:"/>
+               <h:selectOneMenu id="url" value="#{audio.clipName}" >
                    <f:selectItem itemValue="../audio/audio_clip.mp3" itemLabel="mpeg"/>
                    <f:selectItem itemValue="../audio/sampleIPad.mp4" itemLabel="iPad"/>
                    <f:selectItem itemValue="../audio/sampleAndroid.mp4" itemLabel="android"/>
@@ -112,12 +106,8 @@
            </mobi:fieldsetRow>
            <mobi:fieldsetRow>
                <h:outputLabel for="linkLabel" value="linkLabel:"/>
-               <mobi:inputText id="linkLabel" value="#{autio.linkLabel}" singleSubmit="true"/>
+               <mobi:inputText id="linkLabel" value="#{audio.linkLabel}" singleSubmit="true"/>
            </mobi:fieldsetRow>
-      <!--     <mobi:fieldsetRow>
-               <h:outputLabel for="height" value="Height:"/>
-               <mobi:inputText id="height" value="#{popup.height}" singleSubmit="true" type="number"/>
-           </mobi:fieldsetRow>  -->
        </mobi:fieldsetGroup>
     </h:form>
 	<li><a href="../resourceComponents.html">index page</a>

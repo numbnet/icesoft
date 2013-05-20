@@ -31,22 +31,26 @@
  
     <h3>panelConfirmation with menuButton and submitNotification MOBI-561</h3>
 
-      <legend>example with panelConfirmation and submitNotification</legend>
-      <h:form id="form2">
-       <mobi:menuButton id="mnu3" disabled="#{panelConfirmation.menuButtonDisabled}">
-           <mobi:menuButtonItem value="item1" label="label1"
+        <legend>example with panelConfirmation and submitNotification</legend>
+        <h:form id="form2">
+            <mobi:menuButton id="mnu3" disabled="#{panelConfirmation.menuButtonDisabled}">
+                <mobi:menuButtonItem value="item1" label="label1"
                                      submitNotification="sn1"
+                                     panelConfirmation="pc1"
                                      actionListener="#{panelConfirmation.actionMethod}"/>
-           <mobi:menuButtonItem value="item2" label="label2"
+                <mobi:menuButtonItem value="item2" label="label2"
                                 submitNotification="sn2"
+                                panelConfrimation="pc1"
                                 actionListener="#{panelConfirmation.actionMethod2}"/>
-        </mobi:menuButton>
-        <mobi:submitNotification id="sn1">
-            <h:outputText value="#{panelConfirmation.submitMessage}"/>
-        </mobi:submitNotification>
-        <mobi:submitNotification id="sn2">
-            <h:outputText value="Static Message sn2"/>
-        </mobi:submitNotification>
+            </mobi:menuButton>
+
+            <mobi:submitNotification id="sn1">
+                <h:outputText value="#{panelConfirmation.submitMessage}"/>
+            </mobi:submitNotification>
+            <mobi:submitNotification id="sn2">
+                <h:outputText value="Static Message sn2"/>
+            </mobi:submitNotification>
+            <mobi:panelConfirmation id="pc1" message="#{panelConfirmation.submitMessage}"/>
         <br />
     </h:form>
 
@@ -61,10 +65,6 @@
             <mobi:fieldsetRow>
                 <h:outputLabel for="disabled" value="Menu Button Disabled:" />
                 <mobi:flipswitch id="disabled" value="#{panelConfirmation.menuButtonDisabled}" singleSubmit="true"/>
-            </mobi:fieldsetRow>
-           <mobi:fieldsetRow>
-                <h:outputLabel for="disabled2" value="Panel Confirmation for item2 Disabled:" />
-                <mobi:flipswitch id="disabled2" value="#{panelConfirmation.disabled}" singleSubmit="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="message" value="Submit Notification Message:"/>

@@ -51,7 +51,7 @@
                        disabled="#{layoutBean.disabled}"
                        styleClass="#{layoutBean.styleClass}"
                        autoHeight="#{layoutBean.autoHeight}">
-              <mobi:contentPane id="panel1" title="panel1" client="true">
+              <mobi:contentPane id="panel1" title="panel1" >
                   <div id="inner1">
                       <fieldset title="panel1">
                       <legend>Panel1</legend>
@@ -70,7 +70,8 @@
                   </fieldset>
                   </div>
               </mobi:contentPane>
-               <mobi:contentPane id="panel2" title="panel2" style="background-color:#00ADFF">
+               <mobi:contentPane id="panel2" title="panel2" client="true"
+                                 style="background-color:#00ADFF">
                 <div id="inner2">
                  <fieldset title="panel2">
                    <legend>Panel2</legend>
