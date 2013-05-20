@@ -16,14 +16,15 @@
 
 (function() {
     var userInactivityListeners = [];
+    var notifiedUserInactivityListeners = [];
     var isUserInactivityMonitorStarted = false;
 
-    namespace.onUserInactivity = function(timeout, callback) {
+    namespace.onUserInactivity = function(timeout, idleUserCallback, activeUserCallback) {
         if (!isUserInactivityMonitorStarted) {
             isUserInactivityMonitorStarted = true;
             observeUserInactivity();
         }
-        var tuple = {t: (timeout * 1000), c: callback};
+        var tuple = {interval: (timeout * 1000), idleCallback: idleUserCallback, activeCallback: activeUserCallback};
         append(userInactivityListeners, tuple);
         return removeCallbackCallback(userInactivityListeners, detectByReference(tuple));
     };
@@ -31,20 +32,22 @@
     function observeUserInactivity() {
         var userActivityMonitor = Delay(function() {
             var now = (new Date).getTime();
-            userInactivityListeners = reject(userInactivityListeners, function(tuple) {
-                var timeout = tuple.t;
-                var runCallback = now > lastActivityTime + timeout;
+            var additionalNotifiedListeners = select(userInactivityListeners, function(tuple) {
+                var interval = tuple.interval;
+                var runCallback = now > lastActivityTime + interval;
                 if (runCallback) {
-                    var callback = tuple.c;
+                    var callback = tuple.idleCallback;
                     try {
                         callback();
                     } catch (ex) {
-                        warn('onUserInactivity callback failed to run', ex);
+                        warn('onUserInactivity idle user callback failed to run', ex);
                     }
                 }
 
                 return runCallback;
             });
+            userInactivityListeners = complement(userInactivityListeners, additionalNotifiedListeners);
+            notifiedUserInactivityListeners = concatenate(notifiedUserInactivityListeners, additionalNotifiedListeners);
         }, 3 * 1000);//poll every 3 seconds
         run(userActivityMonitor);
 
@@ -57,6 +60,18 @@
         var lastActivityTime = (new Date).getTime();
         function resetUserInactivity() {
             lastActivityTime = (new Date).getTime();
+            if (notEmpty(notifiedUserInactivityListeners)) {
+                each(notifiedUserInactivityListeners, function(tuple) {
+                    var callback = tuple.activeCallback;
+                    try {
+                        callback();
+                    } catch (ex) {
+                        warn('onUserInactivity active user callback failed to run', ex);
+                    }
+                });
+                userInactivityListeners = concatenate(userInactivityListeners, notifiedUserInactivityListeners);
+                notifiedUserInactivityListeners = [];
+            }
         }
         registerListener('keydown', document, resetUserInactivity);
         registerListener('mouseover', document, resetUserInactivity);
