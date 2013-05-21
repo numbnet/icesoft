@@ -285,7 +285,7 @@ public class ClientDescriptor implements Serializable{
         return _userAgentInfo.isAndroidBrowserOrWebView();
     }
     
-    public boolean isAndroid2(){
+    public boolean isAndroid2OS(){
         return _userAgentInfo.isAndroid2();
     }
     
@@ -296,7 +296,7 @@ public class ClientDescriptor implements Serializable{
     public boolean isSupportsFixedPosition(){
         return isDesktopBrowser() 
                || (isTabletBrowser() && !isAndroidBrowserOrWebView())
-               || (isHandheldBrowser() && (!isAndroid2() ||  _userAgentInfo.isFirefoxAndroid()));
+               || (isHandheldBrowser() && (!isAndroid2OS() ||  _userAgentInfo.isFirefoxAndroid()));
     }
 
 
