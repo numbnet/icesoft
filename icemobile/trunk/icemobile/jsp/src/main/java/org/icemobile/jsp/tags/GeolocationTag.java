@@ -107,7 +107,7 @@ public class GeolocationTag extends BaseSimpleTag {
         if (request instanceof HttpServletRequest) {
             HttpServletRequest hsr = (HttpServletRequest) request;
             ClientDescriptor client = ClientDescriptor.getInstance(hsr);
-            return (client.isAndroidOS() & client.isTabletBrowser()) || client.isBlackBerryOS();
+            return (client.isAndroidOS() & client.isTabletBrowser()) || client.isBlackBerryOS() || client.isBlackBerry10OS();
         } else {
             return true;
         }
