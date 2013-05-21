@@ -27,6 +27,8 @@
 }
 .mobi-tabset > .mobi-tabset-tabs > ul{
     background-color: #e8e9ea;
+     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f1f1f2', EndColorStr = '#d9dadb');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f1f1f2', EndColorStr='#d9dadb')";
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f1f1f2', EndColorStr = '#d9dadb');
@@ -37,6 +39,9 @@
     font-weight: bold;
     margin: 0;
     padding: 0;
+}
+.mobi-tabset > .mobi-tabset-tabs > ul > li:first-child{
+    border-left:none;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li.activeTab {
     color:#525253;
