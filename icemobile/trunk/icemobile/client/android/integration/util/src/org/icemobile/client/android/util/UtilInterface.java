@@ -118,8 +118,13 @@ public class UtilInterface implements JavascriptInterface,
 	    for (int i=0; i<params.length; i++) {
             String packedName = params[i].getName();
             int nameSplit = packedName.indexOf("-");
-            String paramType = packedName.substring(0, nameSplit);
-            String paramName = packedName.substring(nameSplit + 1);
+            //if type is missing, "hidden" will be assumed
+            String paramType = "hidden";
+            String paramName = packedName;
+            if (nameSplit > 0)  {
+                paramType = packedName.substring(0, nameSplit);
+                paramName = packedName.substring(nameSplit + 1);
+            }
             if ("file".equals(paramType)) {
                 String fname = "undefined";
                 try {

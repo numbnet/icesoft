@@ -105,6 +105,7 @@ public class ICEmobileSX extends Activity
     private boolean pendingCloudPush;
     private Uri mReturnUri;
     private Uri mPOSTUri;
+    private String mParameters;
     private String mCurrentId;
     private String mCurrentjsessionid;
     private String mCurrentMediaFile;
@@ -223,6 +224,7 @@ public class ICEmobileSX extends Activity
 
 	    mReturnUri = Uri.parse((String) commandParts.get("r"));
 	    mPOSTUri = Uri.parse((String) commandParts.get("u"));
+	    mParameters = (String) commandParts.get("p");
 	    if (null != commandName)  {
 		dispatch(commandName, commandParts, commandParams);
 	    }
@@ -344,7 +346,11 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
         //better to store return data in the intent than keep member
         //fields on this class
 
-        String encodedForm = null;
+        String encodedForm = "";
+        
+        if (null != mParameters)  {
+            encodedForm = mParameters + "&";
+        }
 
 	Log.d(LOG_TAG, "onActivityResult: request = " + requestCode + ", result = " + resultCode);
         if (resultCode == RESULT_OK) {
@@ -352,7 +358,7 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
                 case TAKE_PHOTO_CODE:
 		    Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
                     mCameraHandler.gotPhoto();
-                    encodedForm = encodeMedia(mCurrentId,
+                    encodedForm += encodeMedia(mCurrentId,
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm, mBrowserReturn);
@@ -360,7 +366,7 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
                     break;
                 case TAKE_VIDEO_CODE:
                     mVideoHandler.gotVideo(data);
-                    encodedForm = encodeMedia(mCurrentId,
+                    encodedForm += encodeMedia(mCurrentId,
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm, mBrowserReturn);
@@ -369,14 +375,14 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
                 case SCAN_CODE:
                     String scanResult = data.getStringExtra(Intents.Scan.RESULT);
 
-                    encodedForm = "hidden-" + mCurrentId + "=" +
+                    encodedForm += "hidden-" + mCurrentId + "=" +
                             URLEncoder.encode(scanResult);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm, mBrowserReturn);
                     break;
                 case RECORD_CODE:
                     mAudioRecorder.gotAudio(data);
-                    encodedForm = encodeMedia(mCurrentId,
+                    encodedForm += encodeMedia(mCurrentId,
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm, mBrowserReturn);
@@ -452,6 +458,9 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
                     String encodedContact = 
                             mContactListInterface.getEncodedContactList();
                     String encodedForm = "hidden-" + mCurrentId + "=" + encodedContact;
+                    if (null != mParameters)  {
+                        encodedForm += "&" + mParameters;
+                    }
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm);
 		    Log.d(LOG_TAG, "completionCallback completed fetchContacts:" + encodedContact);
