@@ -56,13 +56,14 @@
                <mobi:commandButtonGroup id="group1"
                                          name="selectedId"
                                          selectedId="${buttonsBean.selectedId}"
-                                         orientation="horizontal">
+                                         orientation="horizontal"
+                                         style="width:80%;margin:0 auto;">
                     <mobi:commandButton value="Yes" id="button1"
-                             type="button"/>
+                             type="button" style="width:33%"/>
                     <mobi:commandButton value="No"
-                            type="button"  id="button2"/>
+                            type="button"  id="button2" style="width:33%"/>
                     <mobi:commandButton value="Please"
-                            type="button" id="button3" />
+                            type="button" id="button3" style="width:33%"/>
                 </mobi:commandButtonGroup>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>

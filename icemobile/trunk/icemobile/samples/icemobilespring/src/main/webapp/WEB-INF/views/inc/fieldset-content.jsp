@@ -20,7 +20,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi"%>
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<form id="fieldset" class="form fieldsetpage">
+<form id="fieldset">
 
 	<mobi:largeView><h3>FieldSets</h3></mobi:largeView>
 
@@ -30,7 +30,7 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<mobi:fieldsetGroup styleClass="form">
+	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow group="true">
             Information
         </mobi:fieldsetRow>
@@ -45,7 +45,7 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<mobi:fieldsetGroup styleClass="form">
+	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
 			<mobi:inputText id="first" name="first" value="John" label="First Name"/>
 		</mobi:fieldsetRow>
