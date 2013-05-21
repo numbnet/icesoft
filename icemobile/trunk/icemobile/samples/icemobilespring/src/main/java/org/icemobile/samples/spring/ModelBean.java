@@ -25,7 +25,6 @@ public class ModelBean {
 	private Map<String, String> additionalInfo;
 
     public String getName() {
-        System.out.println("ModelBean.getName(): " + name);
         return name;
 	}
 
