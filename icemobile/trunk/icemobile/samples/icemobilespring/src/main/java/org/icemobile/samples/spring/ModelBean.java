@@ -20,16 +20,17 @@ import java.util.Map;
 
 public class ModelBean {
 	
-	private String name = "";
+	private String name = " ";
 	
 	private Map<String, String> additionalInfo;
 
     public String getName() {
-		return name;
+        System.out.println("ModelBean.getName(): " + name);
+        return name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+	    this.name = name != null ?  name.trim() : " ";
 	}
 
 
