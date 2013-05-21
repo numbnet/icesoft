@@ -149,19 +149,37 @@ ice.ace.Panel.prototype.setupTriggerVisuals = function(trigger) {
             .mouseout(function() {ice.ace.jq(this).removeClass('ui-state-hover');});
 }
 
-ice.ace.Panel.unfocus = function(e,ui) {
+ice.ace.Panel.eventSink = function() {
+	return false;
+};
+
+ice.ace.Panel.onfocusSink = function() {
 	this.blur();
 	setFocus('');
-}
+	return false;
+};
 
 ice.ace.Panel.disableInputs = function(id) {
 	var panel = ice.ace.jq(ice.ace.escapeClientId(id + '_content'));
-	panel.find('input, select, label, textarea, button, a').on('focus', ice.ace.Panel.unfocus);
+	if (panel.find('.ui-disableinputs').size() > 0) return;
+	panel.find('input, select, label, textarea, button, a').each(function(i,e) {
+		ice.ace.jq.data(e, 'disableInputs-onfocus', e.onfocus);
+		ice.ace.jq.data(e, 'disableInputs-onblur', e.onblur);
+		ice.ace.jq.data(e, 'disableInputs-onkeypress', e.onkeypress);
+		ice.ace.jq.data(e, 'disableInputs-onkeyup', e.onkeyup);
+		ice.ace.jq.data(e, 'disableInputs-onkeydown', e.onkeydown);
+		ice.ace.jq.data(e, 'disableInputs-onclick', e.onclick);
+		e.onfocus = ice.ace.Panel.onfocusSink;
+		e.onblur = ice.ace.Panel.eventSink;
+		e.onkeypress = ice.ace.Panel.eventSink;
+		e.onkeyup = ice.ace.Panel.eventSink;
+		e.onkeydown = ice.ace.Panel.eventSink;
+		e.onclick = ice.ace.Panel.eventSink;
+	});
 	var overlay = document.createElement('div');
 	overlay.className = 'ui-widget-overlay ui-disableinputs';
 	ice.ace.Panel.positionOverlay(id, overlay);
 	panel.get(0).appendChild(overlay);
-	ice.ace.Panel.overlay = overlay;
 };
 
 ice.ace.Panel.positionOverlay = function(id, overlay) {
@@ -170,10 +188,23 @@ ice.ace.Panel.positionOverlay = function(id, overlay) {
 	overlay.style.cssText = 'position: absolute; z-index: 900; zoom: 1;' +
 		'top:' + offset.top + 'px;left:' + offset.left + 'px;' +
 		'height:' + panel.outerHeight() + 'px;width:' + panel.outerWidth() + 'px;';
-}
+};
 
 ice.ace.Panel.enableInputs = function(id) {
 	var panel = ice.ace.jq(ice.ace.escapeClientId(id + '_content'));
-	panel.find('input, select, label, textarea, button, a').off('focus', ice.ace.Panel.unfocus);
-	panel.get(0).removeChild(ice.ace.Panel.overlay);
+	panel.find('input, select, label, textarea, button, a').each(function(i,e) {
+		e.onfocus = ice.ace.jq.data(e, 'disableInputs-onfocus');
+		e.onblur = ice.ace.jq.data(e, 'disableInputs-onblur');
+		e.onkeypress = ice.ace.jq.data(e, 'disableInputs-onkeypress');
+		e.onkeyup = ice.ace.jq.data(e, 'disableInputs-onkeyup');
+		e.onkeydown = ice.ace.jq.data(e, 'disableInputs-onkeydown');
+		e.onclick = ice.ace.jq.data(e, 'disableInputs-onclick');
+		ice.ace.jq.data(e, 'disableInputs-onfocus', null);
+		ice.ace.jq.data(e, 'disableInputs-onblur', null);
+		ice.ace.jq.data(e, 'disableInputs-onkeypress', null);
+		ice.ace.jq.data(e, 'disableInputs-onkeyup', null);
+		ice.ace.jq.data(e, 'disableInputs-onkeydown', null);
+		ice.ace.jq.data(e, 'disableInputs-onclick', null);
+	});
+	panel.find('.ui-disableinputs').remove();
 };
