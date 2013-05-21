@@ -119,9 +119,9 @@ public class SimpleAudioRecorder extends Activity  {
             public void onClick(View v) {
                 onRecord(mStartRecording);
                 if (mStartRecording) {
-                    setText("Stop recording");
+                    setText("Stop record");
                 } else {
-                    setText("Start recording");
+                    setText("Start record");
                 }
                 mStartRecording = !mStartRecording;
             }
@@ -129,7 +129,7 @@ public class SimpleAudioRecorder extends Activity  {
 
         public RecordButton(Context ctx) {
             super(ctx);
-            setText("Start recording");
+            setText("Start record");
             setOnClickListener(clicker);
         }
     }
@@ -141,9 +141,9 @@ public class SimpleAudioRecorder extends Activity  {
             public void onClick(View v) {
                 onPlay(mStartPlaying);
                 if (mStartPlaying) {
-                    setText("Stop playing");
+                    setText("Stop play");
                 } else {
-                    setText("Start playing");
+                    setText("Start play");
                 }
                 mStartPlaying = !mStartPlaying;
             }
@@ -151,7 +151,7 @@ public class SimpleAudioRecorder extends Activity  {
 
         public PlayButton(Context ctx) {
             super(ctx);
-            setText("Start playing");
+            setText("Start play");
             setOnClickListener(clicker);
         }
     }
