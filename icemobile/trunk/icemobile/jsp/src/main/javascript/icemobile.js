@@ -191,7 +191,8 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
         if (lastHash > 0) {
             returnURL = returnURL.substring(0, lastHash);
         }
-        returnURL += "#icemobilesx";
+//ajax page update upon return is not yet implemented
+//        returnURL += "#icemobilesx";
     }
 
     if ("" != params) {
