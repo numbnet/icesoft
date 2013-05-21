@@ -529,6 +529,13 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>A step value for number values.
+            </description>
+            <name>step</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <description>A placeholder string appearing in the textfield.
             </description>
             <name>placeholder</name>

@@ -38,7 +38,7 @@
 				placeholder="Text input" value="${inputTextBean.text}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<mobi:inputText id="number" name="number" type="number" label="Number:" autoCorrect="off"
+			<mobi:inputText id="number" name="number" type="number" label="Number:" autoCorrect="off" step="any"
 				placeholder="Number" value="${inputTextBean.number}" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
