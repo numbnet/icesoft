@@ -2000,7 +2000,6 @@ ice.mobi.geolocation = {
         console.log('Position update for client: ' + ice.mobi.geolocation.clientId);
         try {
             var inputId = ice.mobi.geolocation.clientId + "_locHidden";
-            console.log('LOGGING Position TO hidden field: ' + inputId);
             ice.mobi.storeLocation(inputId, pos.coords);
 
         } catch(e) {
@@ -2010,7 +2009,7 @@ ice.mobi.geolocation = {
 
     // Success Callback for getCurrentPosition  in that it removes deviceorientation listener
     oneTimeSuccessCallback: function(pos) {
-        console.log('getCurrentPosition update for client: ' + ice.mobi.geolocation.clientId);
+        console.log('oneTimePosition update for client: ' + ice.mobi.geolocation.clientId);
         var inputId = ice.mobi.geolocation.clientId + "_locHidden";
         ice.mobi.storeLocation(inputId, pos.coords);
         ice.mobi.geolocation.clearWatch();
