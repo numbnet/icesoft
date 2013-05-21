@@ -153,7 +153,12 @@ public class AudioRecorder {
     PackageManager packageManager = container.getPackageManager();
     List list = packageManager.queryIntentActivities(intent,  
             packageManager.MATCH_DEFAULT_ONLY);
-    if (0 == list.size())  {
+
+    boolean olddroid =
+        android.os.Build.VERSION.RELEASE.startsWith("1.") ||
+        android.os.Build.VERSION.RELEASE.startsWith("2.");
+
+    if ( olddroid || (0 == list.size()) )  {
         Log.d("ICEaudio", "falling back to SimpleAudioRecorder");
         intent = new Intent(container.getApplicationContext(), 
                 SimpleAudioRecorder.class);
