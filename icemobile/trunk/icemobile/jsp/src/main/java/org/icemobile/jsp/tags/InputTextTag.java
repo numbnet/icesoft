@@ -49,6 +49,7 @@ public class InputTextTag extends SimpleTagSupport {
     private String autoCapitalize = "off";
     private String autoComplete = "off";
     private String placeholder;
+    private String step;
     private String label;
 
     public void doTag() throws IOException {
@@ -95,6 +96,9 @@ public class InputTextTag extends SimpleTagSupport {
         out.write(" autocorrect=\"" + autoCorrect + "\"");
         out.write(" autocapitalize=\"" + autoCapitalize + "\"");
         out.write(" placeholder=\"" + placeholder + "\"");
+        if (null != step)  {
+            out.write(" step=\"" + step + "\"");
+        }
 	// Disabled and readonly;
         if (isDisabled()) {
             out.write(" disabled=\"true\"");
@@ -193,6 +197,14 @@ public class InputTextTag extends SimpleTagSupport {
 
     public void setPlaceholder(String placeholder) {
         this.placeholder = placeholder;
+    }
+
+    public String getStep() {
+        return step;
+    }
+
+    public void setStep(String step) {
+        this.step = step;
     }
 
     public String getAutoCapitalize() {
