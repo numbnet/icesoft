@@ -172,6 +172,11 @@
     </form:form>
 
     <script type="text/javascript">
+        window. setTimeout(function(){console.log("Removing location watch from application");
+                                      ice.mobi.geolocation.clearWatch(); }, 120000);
+    </script>
+
+    <script type="text/javascript">
 		MvcUtil.enhanceForm("#geolocationform");
 		MvcUtil.enhanceAllLinksWithRemoveGeolocationWatch("#sp_left, #menuLink");
 	</script>
