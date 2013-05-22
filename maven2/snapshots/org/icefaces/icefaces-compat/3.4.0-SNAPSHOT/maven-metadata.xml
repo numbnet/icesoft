@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.icefaces</groupId>
+  <artifactId>icefaces-compat</artifactId>
+  <version>3.4.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20130522.212514</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20130522212514</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>3.4.0-20130522.212514-1</value>
+        <updated>20130522212514</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
