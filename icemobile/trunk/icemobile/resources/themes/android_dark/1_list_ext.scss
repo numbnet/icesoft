@@ -31,23 +31,16 @@
     color: #BDBEBD;
 }
 .mobi-list > .mobi-list-item > .mobi-list-item-default > a {
+    color: #fff;
     padding: 10px 25px;
     background-image: url("next.png");
     background-repeat: no-repeat;
     background-position: 100% 50%;
     background-size: 20px;
 }
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a:hover{ 
+    color: #33B5E5;     
+}
 .mobi-list > .mobi-list-item:last-child {
     border-bottom-width: 1px !important;
 }
-
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
-    color: #fff;
-}
-
-.mobi-list-item-custom {
-    color: #fff;
-}
-
-
-
