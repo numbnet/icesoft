@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.icepush</groupId>
+  <artifactId>icepush-parent</artifactId>
+  <version>3.4.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20130522.211732</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20130522211732</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>3.4.0-20130522.211732-1</value>
+        <updated>20130522211732</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
