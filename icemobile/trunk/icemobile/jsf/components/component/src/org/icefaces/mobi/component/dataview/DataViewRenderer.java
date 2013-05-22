@@ -258,6 +258,7 @@ public class DataViewRenderer extends Renderer {
         if (dataView.isRowStripe()) bodyClass += " stripe";
 
         writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "overthrow", null);
         writer.startElement(HTML.TABLE_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, bodyClass, null);
 
