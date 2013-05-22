@@ -166,5 +166,9 @@ public class CoalescingResource extends Resource {
         return Long.toString(Math.abs(digest.toString().hashCode()), 36);
     }
 
+    protected String calculateInfosDigest(){
+        return calculateDigest(resourceInfos);
+    }
+
 
 }
