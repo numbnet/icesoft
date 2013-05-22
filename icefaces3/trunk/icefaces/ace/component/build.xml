@@ -280,6 +280,7 @@
 				<file name="icefaces.ace/combobox/combobox.js"/>
 				<file name="icefaces.ace/selectmenu/selectmenu.js"/>
 				<file name="icefaces.ace/themeselect/themeselect.js"/>
+				<file name="icefaces.ace/messages/messages.js"/>
             </filelist>
         </concat>
         <!-- ace-chart.js -->

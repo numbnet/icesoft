@@ -16,4 +16,19 @@
 package org.icefaces.ace.component.message;
 
 public class Message extends MessageBase {
+    public String getCurrText() {
+        return (String) getStateHelper().get("currText");
+    }
+
+    public void setCurrText(String currText) {
+        getStateHelper().put("currText", currText);
+    }
+
+    public String getPrevText() {
+        return (String) getStateHelper().get("prevText");
+    }
+
+    public void setPrevText(String prevText) {
+        getStateHelper().put("prevText", prevText);
+    }
 }

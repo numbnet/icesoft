@@ -21,7 +21,9 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Required;
 import org.icefaces.ace.meta.baseMeta.UIMessageMeta;
 import org.icefaces.ace.resources.ACEResourceNames;
+import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
         tagName = "message",
@@ -41,7 +43,12 @@ import org.icefaces.resources.ICEResourceDependency;
                 "<li>Fatal: ui-icon-alert w/ ui-state-error css</li>" +
                 "</ul>"
 )
-@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY, name = ACEResourceNames.COMBINED_CSS)
+@ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
+@ICEResourceDependencies({
+        @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
+        @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
+        @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
+})
 public class MessageMeta extends UIMessageMeta {
 
     @Property(name = "for", implementation = Implementation.EXISTS_IN_SUPERCLASS, required = Required.yes)
@@ -65,4 +72,16 @@ public class MessageMeta extends UIMessageMeta {
 
     @Property(tlddoc = "Advisory title information about markup elements generated for this component.")
     private String title;
+
+    @Property(tlddoc = "Effect to run to show the message when there was no previous message. One of \"blind\", \"bounce\", \"clip\", \"drop\", \"explode\", \"fade\", \"fold\", \"highlight\", \"puff\", \"pulsate\", \"scale\", \"shake\", \"size\", \"slide\". Default is no effect.")
+    private String initEffect;
+
+    @Property(tlddoc = "Duration (also called \"speed\" in jQuery) of init effect. One of \"slow\", \"_default\", \"fast\", or an integer of milliseconds. Default is \"_default\". (\"slow\", \"_default\", \"fast\" currently equated to 600, 400 and 200 respectively in jQuery.)")
+    private String initEffectDuration;
+
+    @Property(tlddoc = "Effect to run to show the message when there was a different previous message. Values and default same as for initEffect.")
+    private String changeEffect;
+
+    @Property(tlddoc = "Duration (also called \"speed\" in jQuery) of change effect. Values and default same as for initEffectDuration.")
+    private String changeEffectDuration;
 }
