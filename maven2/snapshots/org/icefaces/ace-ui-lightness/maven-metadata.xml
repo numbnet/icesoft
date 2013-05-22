@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.icefaces</groupId>
+  <artifactId>ace-ui-lightness</artifactId>
+  <versioning>
+    <versions>
+      <version>3.4.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20130522212027</lastUpdated>
+  </versioning>
+</metadata>
