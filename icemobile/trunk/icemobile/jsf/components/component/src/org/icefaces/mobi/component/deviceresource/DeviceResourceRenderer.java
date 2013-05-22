@@ -132,11 +132,26 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
             theme = Theme.ANDROID_DARK;
         }
         writeOutDeviceStyleSheets(context,comp,theme);
+
+        if (client.isAndroid2OS()) {
+            writeOverthrow(context);
+        }
+
         if (isSimulated)  {
             writeSimulatorResources(context, comp, theme);
         }
         encodeMarkers(writer,theme, client);
 
+    }
+
+    private void writeOverthrow(FacesContext context) throws IOException {
+        Resource ot = context.getApplication().getResourceHandler().createResource("overthrow.js", UTIL_RESOURCE);
+        String src = ot.getRequestPath();
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.writeAttribute("src", src, null);
+        writer.endElement("script");
     }
 
     private boolean isNeedAppBanner(FacesContext facesContext, 
