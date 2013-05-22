@@ -25,6 +25,7 @@
         <relativePath>../../</relativePath>
     </parent>
 
+    <groupId>org.icefaces.ace-themes</groupId>
     <artifactId>ace-themes-parent</artifactId>
     <packaging>pom</packaging>
     <name>${icefaces.product.name}: ACE Themes Parent</name>
