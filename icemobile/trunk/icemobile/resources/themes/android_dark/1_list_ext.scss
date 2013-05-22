@@ -38,7 +38,8 @@
     background-position: 100% 50%;
     background-size: 20px;
 }
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a:hover{ 
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a:hover,
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a:active{ 
     color: #33B5E5;     
 }
 .mobi-list > .mobi-list-item:last-child {

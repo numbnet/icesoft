@@ -34,6 +34,7 @@
     color: #5E5E5E;
     text-shadow: 1px 1px 1px #E2E2E2;
 }
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a:hover{ 
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a:hover,
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a:active{ 
     color: #33B5E5;     
 }
