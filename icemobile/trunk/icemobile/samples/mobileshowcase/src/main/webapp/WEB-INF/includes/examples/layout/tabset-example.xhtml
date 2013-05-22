@@ -33,7 +33,7 @@
                 <mobi:contentPane title="Settings" id="tab0"
                                   facelet="false" client="true" >
                     <mobi:fieldsetGroup>
-                        <mobi:fieldsetRow rendered="#{!mobiClient.androidBrowserOrWebView}">
+                        <mobi:fieldsetRow rendered="#{mobiClient.supportsFixedPosition}">
                             <h:outputLabel for="fixedPosition" value="Fixed Position:" styleClass="ui-input-text"/>
                             <mobi:flipswitch id="fixedPosition" value="#{tabsetBean.fixedPosition}">
                                 <mobi:ajax render="tabset" execute="tabset"/>
