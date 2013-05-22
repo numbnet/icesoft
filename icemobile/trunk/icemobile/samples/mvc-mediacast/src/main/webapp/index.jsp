@@ -27,7 +27,10 @@
             border: none !important;
             color: #549FD8;
             text-shadow: 1px 1px 1px #FFF;
+            font-size: 1.5em;
+            margin: 0;
         }
+        h3{ font-size: 1em }
     </style>
     <mobi:pagePanel>
         <mobi:pagePanelHeader>
@@ -46,7 +49,7 @@
                 </mobi:fieldsetGroup>
                 
                 <h3>A media sharing application powered by ICEmobile-JSP and Spring MVC</h3>
-                <img src="resources/images/icemobile_large.png" style="margin:15px"/>
+                <img src="resources/images/icemobile_large.png" style="margin:10px;height:60px;width:60px"/>
                 <div>
                     <i class="icon-eye-open"></i>
                     <i class="icon-facetime-video"></i>
