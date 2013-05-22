@@ -44,6 +44,7 @@
     text-align: center;
     text-decoration: none;
 }
+a.mobi-button:hover{ text-decoration:none;}
 .mobi-pagePanel-header .mobi-button{
     position: absolute;
     top: 4px;
