@@ -15,15 +15,13 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.icefaces</groupId>
         <artifactId>bundle-parent</artifactId>
-        <version>3.3.0-SNAPSHOT</version>
+        <version>3.4.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -32,6 +30,10 @@
     <name>${icefaces.product.name} ACE Components</name>
     <url>http://www.icesoft.org</url>
     <description>${icefaces.product.name} ACE Component Library</description>
+
+		<modules>
+       <module>themes</module>
+   </modules>
 
     <build>
         <plugins>
@@ -48,7 +50,7 @@
                         <phase>clean</phase>
                         <configuration>
                             <target>
-                                <ant antfile="./build.xml" target="clean"/>
+                                <ant antfile="./build.xml" target="clean" />
                             </target>
                         </configuration>
                         <goals>
@@ -62,7 +64,7 @@
                         <phase>compile</phase>
                         <configuration>
                             <target>
-                                <ant antfile="./build.xml"/>
+                                <ant antfile="./build.xml" />
                             </target>
                         </configuration>
                         <goals>
@@ -76,7 +78,7 @@
                         <phase>verify</phase>
                         <configuration>
                             <target>
-                                <ant dir="./component" antfile="build.xml" target="javadoc-no-compile"/>
+                                <ant dir="./component" antfile="build.xml" target="javadoc-no-compile" />
                             </target>
                         </configuration>
                         <goals>
