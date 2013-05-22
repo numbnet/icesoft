@@ -30,7 +30,7 @@ public class GeolocationBean {
     private String direction;
 
     private int timeout = 30;
-    private int maximumAge = 5;
+    private int maximumAge = 3600;
     private String enableHighPrecision = "asNeeded";
     private boolean continuousUpdates = true;
     
