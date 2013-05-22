@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.icefaces.ace-themes</groupId>
+  <artifactId>ace-dot-luv</artifactId>
+  <versioning>
+    <versions>
+      <version>3.4.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20130522225917</lastUpdated>
+  </versioning>
+</metadata>
