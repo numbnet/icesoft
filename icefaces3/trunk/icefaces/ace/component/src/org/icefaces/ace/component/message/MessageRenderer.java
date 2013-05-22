@@ -15,6 +15,7 @@
  */
 package org.icefaces.ace.component.message;
 
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
@@ -24,7 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +34,8 @@ public class MessageRenderer extends Renderer {
 
     private static String[] icons = new String[]{"notice", "info", "alert", "alert"};
     private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
+    private static Set<String> effectSet = new HashSet<String>(Arrays.asList("blind", "bounce", "clip", "drop", "explode", "fade", "fold", "highlight", "puff", "pulsate", "scale", "shake", "size", "slide"));
+    private static Set<String> durationSet = new HashSet<String>(Arrays.asList("slow", "_default", "fast"));
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -52,7 +55,9 @@ public class MessageRenderer extends Renderer {
         Iterator messageIter = context.getMessages(forComponent.getClientId(context));
 
         writer.startElement("span", message);
-        writer.writeAttribute("id", message.getClientId(), "id");
+        String clientId = message.getClientId();
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, null);
         writeAttributes(writer, component, "lang", "style", "title");
         if (ariaEnabled) {
             writer.writeAttribute("role", "alert", null);
@@ -61,20 +66,59 @@ public class MessageRenderer extends Renderer {
             writer.writeAttribute("aria-relevant", "all", null);
         }
 
+        writer.startElement("span", message);
+        writer.writeAttribute("id", clientId + "_msg", "id");
         boolean rendered = false;
         FacesMessage facesMessage;
         while (messageIter.hasNext()) {
             facesMessage = (FacesMessage) messageIter.next();
             if (!facesMessage.isRendered() || message.isRedisplay()) {
-                encodeMessage(writer, message, facesMessage, styleClass);
+                encodeMessage(writer, message, facesMessage, "");
+                /*encodeMessage(writer, message, facesMessage, styleClass);*/
                 rendered = true;
                 break;
             }
         }
         if (!rendered) {
-            writer.writeAttribute("class", styleClass, null);
+            message.setCurrText("");
+            /*writer.writeAttribute("class", styleClass, null);*/
         }
         writer.endElement("span");
+
+        String event = "", effect = "", duration = "";
+        String prevText = (prevText = message.getPrevText()) != null ? prevText : "";
+        String currText = (currText = message.getCurrText()) != null ? currText : "";
+        if (prevText.equals("") && !currText.equals("")) {
+            event = "init";
+            effect = (effect = message.getInitEffect()) != null ? effect.trim() : "";
+            effect = effectSet.contains(effect) ? effect : "";
+            duration = (duration = message.getInitEffectDuration()) != null ? duration.trim() : "";
+        } else if (!prevText.equals("") && !currText.equals("") && !prevText.equals(currText)) {
+            event = "change";
+            effect = (effect = message.getChangeEffect()) != null ? effect.trim() : "";
+            effect = effectSet.contains(effect) ? effect : "";
+            duration = (duration = message.getChangeEffectDuration()) != null ? duration.trim() : "";
+        }
+        if (!(event.equals("") || effect.equals(""))) {
+            JSONBuilder jb = JSONBuilder.create();
+            jb.beginMap()
+                    .entry("id", clientId)
+                    .entry("event", event)
+                    .entry("effect", effect);
+            try {
+                jb.entry("duration", Integer.parseInt(duration));
+            } catch (NumberFormatException e) {
+                duration = durationSet.contains(duration) ? duration : "_default";
+                jb.entryNonNullValue("duration", duration);
+            }
+            jb.endMap();
+            writer.startElement("script", null);
+            writer.write("ice.ace.Message.factory(" + jb + ");//" + UUID.randomUUID());
+            writer.endElement("script");
+        }
+
+        writer.endElement("span");
+        message.setPrevText(message.getCurrText());
     }
 
     private void encodeMessage(ResponseWriter writer, Message message, FacesMessage facesMessage, String styleClass) throws IOException {
@@ -84,6 +128,7 @@ public class MessageRenderer extends Renderer {
         String summary = (null != (summary = facesMessage.getSummary())) ? summary : "";
         String detail = (null != (detail = facesMessage.getDetail())) ? detail : ""; // Mojarra defaults to summary. Not good.
         String text = ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
+        message.setCurrText(text);
         int ordinal = (ordinal = FacesMessage.VALUES.indexOf(facesMessage.getSeverity())) > -1 && ordinal < states.length ? ordinal : 0;
 
         if (text.equals("")) {
@@ -92,13 +137,14 @@ public class MessageRenderer extends Renderer {
         writer.writeAttribute("class", styleClass + " ui-widget ui-corner-all ui-state-" + states[ordinal], null);
 
         writer.startElement("span", message);
+        writer.writeAttribute("class", "ui-faces-message-icon", null);
+        writer.startElement("span", message);
         writer.writeAttribute("class", "ui-icon ui-icon-" + icons[ordinal], null);
+        writer.endElement("span");
         writer.endElement("span");
 
         writer.startElement("span", message);
-        writer.writeAttribute("class", "ui-icon-padding", null);
-        writer.endElement("span");
-
+        writer.writeAttribute("class", "ui-faces-message-text", null);
         if (!text.equals("")) {
             if (message.isEscape()) {
                 writer.writeText(text, message, null);
@@ -106,6 +152,7 @@ public class MessageRenderer extends Renderer {
                 writer.write(text);
             }
         }
+        writer.endElement("span");
 
         facesMessage.rendered();
     }

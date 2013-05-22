@@ -126,10 +126,16 @@ public class MessageBean extends ComponentExampleImpl<MessageBean> implements Se
 
     public void blurListener(AjaxBehaviorEvent event) {
         TextEntry textEntry = (TextEntry) event.getComponent();
-        if (textEntry.getValue().toString().trim().equals("")) {
-            String label = textEntry.getLabel();
+        String value = textEntry.getValue().toString().trim();
+        String label = textEntry.getLabel();
+        if (value.equals("") || value.equalsIgnoreCase(label)) {
             int index = severityMap.get(label);
-            String message = severityNames[index] + ": " + label + " missing.";
+            String message;
+            if (value.equals("")) {
+                message = severityNames[index] + ": " + label + " missing.";
+            } else {
+                message = severityNames[index] + ": Value cannot be \"" + value + "\"";
+            }
             FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(index), message, message);
             FacesContext.getCurrentInstance().addMessage(textEntry.getClientId(), facesMessage);
         }
