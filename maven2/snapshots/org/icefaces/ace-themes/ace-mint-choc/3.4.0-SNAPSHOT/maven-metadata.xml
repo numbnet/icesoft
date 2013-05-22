@@ -20,6 +20,11 @@
         <value>3.4.0-20130522.225940-1</value>
         <updated>20130522225940</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <extension>jar.asc</extension>
+        <value>3.4.0-20130522.225940-1</value>
+        <updated>20130522225940</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
