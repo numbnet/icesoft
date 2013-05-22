@@ -33,6 +33,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Log;
 import android.os.Bundle;
@@ -122,8 +123,18 @@ public class VideoHandler {
 	
 	if (thumbId != null && thumbId.length() > 0 && 
 	    thumbWidth > 0 && thumbHeight > 0) {
-	    Bitmap bm = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(), MediaStore.Video.Thumbnails.MINI_KIND);
-	    String thumb = util.produceThumbnail(bm, thumbWidth, thumbHeight);
+        Bitmap bm;
+        String thumb;
+	    bm = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(), MediaStore.Video.Thumbnails.MINI_KIND);
+	    if (bm != null) {
+            thumb = util.produceThumbnail(bm, thumbWidth, thumbHeight);
+        } else {
+            bm = BitmapFactory.decodeResource(container.getResources(), R.drawable.check);
+            thumb = util.produceThumbnail(bm, bm.getWidth(), bm.getHeight());
+        }
+        if (bm != null) {
+            bm.recycle();
+        }
 	    util.loadURL("javascript:ice.setThumbnail('" + thumbId +
 			 "', 'data:image/jpg;base64," + thumb + "');");
 	}
