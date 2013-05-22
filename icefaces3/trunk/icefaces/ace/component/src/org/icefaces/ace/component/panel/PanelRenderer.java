@@ -145,7 +145,7 @@ public class PanelRenderer extends CoreRenderer {
 
         if (optionsMenu != null) {
             optionsMenu.setPosition("dynamic");
-			if (optionsMenu.getZindex() == 1) optionsMenu.setZindex(1000); // set default zIndex for disableInputs overlay
+			if (optionsMenu.getZindex() == 1) optionsMenu.setZindex(28100); // set default zIndex for disableInputs overlay
             optionsMenu.setTrigger(clientId + "_menu");
             optionsMenu.setMy("left top");
             optionsMenu.setAt("left bottom");
@@ -167,10 +167,10 @@ public class PanelRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		if (panel.isDisableInputs()) {
-			writer.write("ice.ace.Panel.disableInputs('"+clientId+"'); //" + System.currentTimeMillis()); // keep disabled across updates
+			writer.write("ice.ace.BlockUI.activate('"+clientId+"_content'); //" + System.currentTimeMillis()); // keep disabled across updates
 		} else if (panel.isPreviousDisableInputs() != null) { 
 			if (panel.isPreviousDisableInputs() == true) // only render when there's a change from disabled to enabled
-				writer.write("ice.ace.Panel.enableInputs('"+clientId+"');");
+				writer.write("ice.ace.BlockUI.deactivate('"+clientId+"_content');");
 		}
 		writer.endElement("script");
         writer.endElement("span");
