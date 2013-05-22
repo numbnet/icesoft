@@ -70,6 +70,12 @@
         <value>3.4.0-20130522.211856-1</value>
         <updated>20130522211856</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <classifier>sources</classifier>
+        <extension>jar.asc.asc</extension>
+        <value>3.4.0-20130522.211856-1</value>
+        <updated>20130522211856</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
