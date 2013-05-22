@@ -1141,7 +1141,6 @@ ice.mobi.geolocation = {
         console.log('Position update for client: ' + ice.mobi.geolocation.clientId);
         try {
             inputId = ice.mobi.geolocation.clientId + "_locHidden";
-            console.log('LOGGING Position TO hidden field: ' + inputId);
             ice.mobi.storeLocation(inputId, pos.coords);
 
         } catch(e) {
