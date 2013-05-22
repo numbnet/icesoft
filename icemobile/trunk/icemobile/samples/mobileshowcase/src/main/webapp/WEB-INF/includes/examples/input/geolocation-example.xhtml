@@ -43,6 +43,7 @@
     
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
+            <img id="map" src="#{resource['images:map.png']}"  width="#{mobiClient.handheldBrowser ? '260' : '360'}" height="#{mobiClient.handheldBrowser ? '130' : '180'}" class="center"/>
             <canvas id="mapCanvas" width="#{mobiClient.handheldBrowser ? '260' : '360'}" height="#{mobiClient.handheldBrowser ? '130' : '180'}" class="center"></canvas>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow style="text-align:center">
@@ -136,14 +137,18 @@
                 ctx.clearRect(0, 0, 600, 400);
                 var height = canvas.height;
                 var width = canvas.width;
-                
-                ctx.drawImage(image, 0, 0, width, height);
-                var x = Math.floor(lon * width / 2 / 180 + (width / 2));
-                var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
-                ctx.fillStyle = "#FFFF00";
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, Math.PI * 2, true);
-                ctx.fill();
+                var image = new Image();
+                image.src = "#{resource['images:map.png']}";
+                image.onload = function() {
+                    document.getElementById('map').style.display = 'none';
+                    ctx.drawImage(image, 0, 0, width, height);
+                    var x = Math.floor(lon * width / 2 / 180 + (width / 2));
+                    var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
+                    ctx.fillStyle = "#FFFF00";
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI * 2, true);
+                    ctx.fill();
+                }
             }
         }
 
@@ -153,11 +158,7 @@
             }
         }
 
-        var image = new Image();
-        //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
-        image.src = "#{resource['images:map.png']}";
-        //work around Android browser canvas bug
-        #{mobiClient.androidBrowserOrWebView ? '' : 'image.onload = function() {showLocation();}'}
+        #{mobiClient.androidBrowserOrWebView ? '' : 'showLocation();'}
 
 
         jsf.ajax.addOnEvent(updateLocation);
