@@ -32,8 +32,13 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.net.URI;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CoalescingResourceHandler extends ResourceHandlerWrapper {
+
+    private final static Logger log = Logger.getLogger(CoalescingResourceHandler.class.getName());
+
     public static final String COALESCED = "coalesced";
     public static final String CSS_EXTENSION = ".css";
     public static final String COALESCED_CSS = COALESCED + CSS_EXTENSION;
@@ -54,18 +59,50 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         FacesContext context = FacesContext.getCurrentInstance();
         if (EnvUtils.isCoallesceResources(context)) {
+
+            ExternalContext ec = context.getExternalContext();
+            boolean isPortlet = EnvUtils.instanceofPortletRequest(ec.getRequest());
+
             if (ICE_CORE_LIBRARY.equals(libraryName) && COALESCED_CSS.equals(resourceName)) {
-                CoalescingResource.Infos resourceInfos = (CoalescingResource.Infos) context.getExternalContext().getSessionMap().get(CoalescingResourceHandler.class.getName() + CSS_EXTENSION);
-                return new CoalescingResource(COALESCED_CSS, ICE_CORE_LIBRARY, getMapping(context), isExtensionMapping(context), resourceInfos);
+                CoalescingResource.Infos resourceInfos = getResourceInfos(ec, CSS_EXTENSION);
+                if( isPortlet ){
+                    return new CoalescingPortletResource(COALESCED_CSS,
+                                                         ICE_CORE_LIBRARY,
+                                                         getMapping(context),
+                                                         isExtensionMapping(context),
+                                                         resourceInfos);
+                } else {
+                    return new CoalescingResource(COALESCED_CSS,
+                                                  ICE_CORE_LIBRARY,
+                                                  getMapping(context),
+                                                  isExtensionMapping(context),
+                                                  resourceInfos);
+                }
             } else if (ICE_CORE_LIBRARY.equals(libraryName) && COALESCED_JS.equals(resourceName)) {
-                CoalescingResource.Infos resourceInfos = (CoalescingResource.Infos) context.getExternalContext().getSessionMap().get(CoalescingResourceHandler.class.getName() + JS_EXTENSION);
-                return new CoalescingResource(COALESCED_JS, ICE_CORE_LIBRARY, getMapping(context), isExtensionMapping(context), resourceInfos);
+                CoalescingResource.Infos resourceInfos = getResourceInfos(ec, JS_EXTENSION);
+                if( isPortlet ){
+                    return new CoalescingPortletResource(COALESCED_JS,
+                                                         ICE_CORE_LIBRARY,
+                                                         getMapping(context),
+                                                         isExtensionMapping(context),
+                                                         resourceInfos);
+                } else {
+                    return new CoalescingResource(COALESCED_JS,
+                                                  ICE_CORE_LIBRARY,
+                                                  getMapping(context),
+                                                  isExtensionMapping(context),
+                                                  resourceInfos);
+                }
             } else {
                 return super.createResource(resourceName, libraryName, contentType);
             }
         } else {
             return super.createResource(resourceName, libraryName, contentType);
         }
+    }
+
+    private static CoalescingResource.Infos getResourceInfos(ExternalContext ec, String extension){
+        return (CoalescingResource.Infos)ec.getSessionMap().get(CoalescingResourceHandler.class.getName() + extension);
     }
 
     public Resource createResource(String resourceName) {
@@ -102,8 +139,9 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             coallescedResourceComponent.setRendererType(rendererType);
             coallescedResourceComponent.setTransient(true);
 
-            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            CoalescingResource.Infos previousResourceInfos = (CoalescingResource.Infos) sessionMap.get(CoalescingResourceHandler.class.getName() + extension);
+            ExternalContext ec = context.getExternalContext();
+            Map<String, Object> sessionMap = ec.getSessionMap();
+            CoalescingResource.Infos previousResourceInfos = getResourceInfos(ec,extension);
 
             CoalescingResource.Infos resourceInfos = new CoalescingResource.Infos();
             List children = resourceContainer.getChildren();
@@ -122,7 +160,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                         nextResource = resourceHandler.createResource(nextName, nextLibrary);
                     }
                     if (nextName.endsWith(extension) && !"jsf.js".equals(nextName) &&
-                            nextResource != null && !URI.create(nextResource.getRequestPath()).isAbsolute()) {
+                            nextResource != null && !isExternalResource(nextResource)) {
                         CoalescingResource.Info info = new CoalescingResource.Info(nextName, nextLibrary);
 
                         if (!context.isPostback() || previousResourceInfos.resources.contains(info)) {
@@ -155,6 +193,39 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             }
 
             resourceContainer.setInView(true);
+        }
+
+        /**
+         * Avoid coalescing any resources that are "external" to the application. This mainly
+         * pertains to the scripts required for Google Maps API.
+         */
+        private static boolean isExternalResource(Resource rez){
+            String path = rez.getRequestPath();
+            URI rezURI = URI.create(path);
+
+            //As a first check, external resource URIs must be absolute.  Absolute URIs must include
+            //a scheme. So if it's not absolute, it cannot refer to an external resource.
+            if( !rezURI.isAbsolute() ){
+                return false;
+            }
+
+            //However, portlet resources can have a scheme (e.g. http) but not be external
+            String rezHost = rezURI.getHost();
+            if(rezHost == null){
+                return false;
+            }
+
+            //Check if the host for the resource is the same as the host identified in the request.  If
+            //they don't match then we consider the request an "external" request.
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            String requestHost = ec.getRequestServerName();
+            if(rezHost.trim().equals(requestHost)){
+                return false;
+            }
+
+            log.log(Level.FINE,"external resource detected: resource host [" + rezHost + "] is different from request host [" + requestHost + "]");
+            return true;
         }
     }
 
