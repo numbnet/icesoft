@@ -42,6 +42,12 @@
         <value>3.4.0-20130522.211856-1</value>
         <updated>20130522211856</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <classifier>javadoc</classifier>
+        <extension>jar.asc</extension>
+        <value>3.4.0-20130522.211856-1</value>
+        <updated>20130522211856</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
