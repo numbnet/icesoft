@@ -26,5 +26,8 @@ public interface IPagePanel extends IMobiComponent{
     public Object getHeader();
     public Object getBody();
     public Object getFooter();
+    public String getHeaderSwatch();
+    public String getBodySwatch();
+    public String getFooterSwatch();
 
 }

@@ -30,7 +30,7 @@
 }
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container {
     padding: 0;
-    z-index: 499;
+    z-index: 1001;
     position: absolute;
     top: 0;
     left: 0;

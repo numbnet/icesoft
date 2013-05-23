@@ -48,6 +48,9 @@ public class PagePanelMeta extends UIPanelMeta {
     @Property(tlddoc = "", defaultValue="a")
     private String headerSwatch;
     
+    @Property(tlddoc = "", defaultValue="c")
+    private String bodySwatch;
+    
     @Property(tlddoc = "", defaultValue="a")
     private String footerSwatch;
 

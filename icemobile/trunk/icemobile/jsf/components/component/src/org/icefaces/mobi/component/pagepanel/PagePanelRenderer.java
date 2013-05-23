@@ -41,6 +41,7 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         String clientId = component.getClientId(facesContext);
         // render a top level div and apply the style and style class pass through attributes
         writer.startElement(HTML.DIV_ELEM, pagePanel);
+        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-pagePanel", null);
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, pagePanel,
                 pagePanel.getCommonAttributeNames());
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnl", HTML.ID_ATTR);

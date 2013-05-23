@@ -1795,4 +1795,24 @@ if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) 
     ice.mobi.addListener(window, "orientationchange", hideAddressBar );
 }
 
+(function(){
+    var sizePagePanelsToViewPort = function(){
+        var pagePanels = document.querySelectorAll(".mobi-pagePanel"), i=0;
+        while( i < pagePanels.length ){
+            pagePanels[i].style.minHeight = ''+window.innerHeight+'px';
+            var hasHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel-header").length > 0;
+            var hasFooter = pagePanels[i].querySelectorAll(".mobi-pagePanel-footer").length > 0;
+            var pagePanelBodyMinHeight = window.innerHeight - (hasHeader ? 40 : 0) - (hasFooter ? 40 : 0);
+            var body = pagePanels[i].querySelector(".mobi-pagePanel-body");
+            if( body ){
+                body.style.minHeight = ''+pagePanelBodyMinHeight+'px';
+            }
+            i++;
+        }
+        
+    };
+    setTimeout(sizePagePanelsToViewPort,10);
+    ice.mobi.addListener(window,"orientationchange",sizePagePanelsToViewPort);
+}());
+
 
