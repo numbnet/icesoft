@@ -24,9 +24,6 @@ import java.net.URLDecoder;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.widget.ImageView;
-//import android.widget.Button;
-//import android.widget.TextView;
-//import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
@@ -62,6 +59,17 @@ public class ICEmobileSX extends Activity
     implements C2dmRegistrationHandler, SubmitProgressListener {
 
     private static final String LOG_TAG = "ICEmobileSX";
+
+    private class SxProgress extends ProgressDialog {
+	public SxProgress(Context context) {
+	    super(context);
+	}
+
+	@Override
+        protected void onStop() {
+	    stopped = true;
+	}
+    }
 
     /* Container configuration constants */
     public static final String HOME_URL = "http://www.icesoft.org/java/demos/icemobile-demos.jsf";
@@ -111,6 +119,8 @@ public class ICEmobileSX extends Activity
     private String mCurrentMediaFile;
     private Runnable mBrowserReturn;
     private boolean doRegister = false;
+    private SxProgress progressDialog;
+    private boolean stopped;
 
     public void returnToBrowser()  {
         if (null == mReturnUri)  {
@@ -161,8 +171,10 @@ public class ICEmobileSX extends Activity
         setContentView(R.layout.main);
 	ImageView myImage = (ImageView) findViewById(R.id.background);
 	myImage.setAlpha(127);
+	progressDialog = new SxProgress(this);
+	stopped = false;
+	progressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
 
-	ProgressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
         includeUtil();
         if (INCLUDE_QRCODE) {
             includeQRCode();
@@ -406,6 +418,10 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
     @Override
 	protected void onResume() {
         super.onResume();
+	if (stopped) {
+	    stopped = false;
+	    progressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
+	}
 	// Clear any existing C2DM notifications;
 	if (pendingCloudPush) {
 	    pendingCloudPush = false;
