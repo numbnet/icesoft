@@ -29,7 +29,7 @@ public class VideoBean extends MediaBean {
 
         this.controls = true;
         this.src = "media/icesoft_mobile_push.mp4";
-        this.linkLabel = "Play Video";
+        this.linkLabel = "Play";
     }
 
 }
