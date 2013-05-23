@@ -464,11 +464,6 @@ ice.ace.Autocompleter.prototype = {
 
     onBlur: function(event) {
         var input = ice.ace.jq(this.element);
-        if (ice.ace.jq.trim(input.val()) == "" && this.cfg.inFieldLabel) {
-            input.val(this.cfg.inFieldLabel);
-            input.addClass(this.cfg.inFieldLabelStyleClass);
-            input.data("labelIsInField", true);
-        }
 		// check if last click was done on scrollbar
 		if (navigator.userAgent.indexOf("MSIE") >= 0) {
 			var n = this.height;
@@ -490,7 +485,12 @@ ice.ace.Autocompleter.prototype = {
 				}
 			}
 		}
-        // needed to make click events working
+        if (ice.ace.jq.trim(input.val()) == "" && this.cfg.inFieldLabel) {
+            input.val(this.cfg.inFieldLabel);
+            input.addClass(this.cfg.inFieldLabelStyleClass);
+            input.data("labelIsInField", true);
+        }
+        // needed to make click events work
 		var self = this;
         this.hideObserver = setTimeout(function () { self.hide(); }, 400);
         this.hasFocus = false;

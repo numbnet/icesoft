@@ -400,6 +400,28 @@ ice.ace.ComboBox.prototype = {
     },
 
     onBlur: function(event) {
+		var $box = this.root.find('.ui-combobox-value');
+		// check if last click was done on scrollbar
+		if (navigator.userAgent.indexOf("MSIE") >= 0) {
+			var n = this.height;
+			if (n!=null && n!='' && typeof n === 'number' && n % 1 == 0) {
+				var posx=0; var posy=0;
+				var e = window.event;
+				if (e.pageX || e.pageY) {
+					posx = e.pageX;
+					posy = e.pageY;
+				} else if (e.clientX || e.clientY) {
+					posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+					posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+				}
+				var widthX=$box.position().left+$box.width();
+				var heightX=$box.position().top+$box.height()+parseFloat(this.height)+10;
+				if ( (posx>$box.position().left && posx<=widthX) && (posy>$box.position().top && posy<heightX) ) {
+					this.element.focus();
+					return;
+				}
+			}
+		}
 		var self = this;
         this.hideObserver = setTimeout(function () { // needed to make click events work
 				self.hide();
