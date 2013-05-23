@@ -20,9 +20,51 @@ if (!window['ice']) {
 if (!window['ice']['ace']) {
     window.ice.ace = {};
 }
+if (!window.ice.ace['jq']) {
+    ice.ace.jq = jQuery; /* bind our JQ impl merged above for later use*/
+    jQuery.noConflict(true);
+}
 if (!window['ice']['ace']['util']) {
     window.ice.ace.util = {};
 }
+
+
+/* General JS Utilities *******************************************************/
+ice.ace.util.clone = function(obj) {
+    // Handle the 3 simple types, and null or undefined
+    if (null == obj || "object" != typeof obj) return obj;
+
+    if (obj instanceof Date) {
+        var copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+
+    if (obj instanceof Array) {
+        var copy = [];
+        var len;
+        for (var i = 0, len = obj.length; i < len; ++i) {
+            copy[i] = ice.ace.clone(obj[i]);
+        }
+        return copy;
+    }
+
+    if (obj instanceof Object) {
+        var copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = ice.ace.clone(obj[attr]);
+        }
+        return copy;
+    }
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+}
+
+ice.ace.util.extend = function(t, s) {
+    for (var attrname in s) { t[attrname] = s[attrname]; }
+}
+/******************************************************************************/
+
+
 
 /* Element Selection Utilities ************************************************/
 ice.ace.util.formOf = function(element) {
@@ -70,11 +112,44 @@ ice.ace.util.eventTarget = function(event) {
        event = event || window.event;           
        return(event.target || event.srcElement);
 };
+
+ice.ace.util.isMouseOver = function(elem, jqEvent) {
+    elem = ice.ace.jq(elem);
+
+    var offset = elem.offset(),
+            xMin = offset.left,
+            xMax = xMin + elem.outerWidth(),
+            yMin = offset.top,
+            yMax = yMin + elem.outerHeight(),
+            mouseY = jqEvent.pageY,
+            mouseX = jqEvent.pageX;
+
+    return (mouseY < yMax && mouseY > yMin && mouseX < xMax && mouseX > xMin);
+}
+
+ice.ace.util.getEvent = function() {
+    if (ice.ace.jq.browser.msie && ice.ace.jq.browser.version < 9) return window.event;
+
+    var source = ice.ace.getEvent.caller; // firefox compatible caller usage
+    while (source) {
+        source = source.caller;
+        if (source && source.arguments[0] instanceof Event)
+            return source.arguments[0];
+    }
+
+    return null;
+}
 /******************************************************************************/
 
 
 
 /* Array Utilities ************************************************************/
+
+/* Given an array, return an array of all elements not contained in it*/
+Array.prototype.diff = function(a) {
+    return this.filter(function(i) {return !(a.indexOf(i) > -1);});
+};
+
 ice.ace.util.arrayIndexOf = function(arr, elem, fromIndex) {
 	if (arr.indexOf) {
 		return arr.indexOf(elem, fromIndex);
@@ -117,7 +192,7 @@ ice.ace.util.arraysEqual = function(arr1, arr2) {
 
 
 
-/* Dynamic Style Sheet Utilities **********************************************/
+/* Style Utilities ************************************************************/
 ice.ace.util.getStyleSheet = function (sheetId) {
     return Array.prototype.filter.call(document.styleSheets, function(s) {
         return s.title == sheetId;
@@ -131,5 +206,72 @@ ice.ace.util.addStyleSheet = function (sheetId, parentSelector) {
     s.title = sheetId;
     document.querySelectorAll(parentSelector || "head")[0].appendChild(s);
     return ice.mobi.getStyleSheet(sheetId);
+};
+
+ice.ace.util.getOpacity = function(elem) {
+    var ori = ice.ace.jq(elem).css('opacity');
+    var ori2 = ice.ace.jq(elem).css('filter');
+    if (ori2) {
+        ori2 = parseInt( ori2.replace(')','').replace('alpha(opacity=','') ) / 100;
+        if (!isNaN(ori2) && ori2 != '') {
+            ori = ori2;
+        }
+    }
+    return ori;
+};
+
+ice.ace.util.bindHoverFocusStyle = function(input) {
+    input.hover(
+            function() { ice.ace.jq(this).addClass('ui-state-hover'); },
+            function() { ice.ace.jq(this).removeClass('ui-state-hover'); }
+    ).focus(
+            function() { ice.ace.jq(this).addClass('ui-state-focus'); }
+    ).blur(
+            function() { ice.ace.jq(this).removeClass('ui-state-focus'); }
+    );
+};
+/******************************************************************************/
+
+
+
+/* Outside Utilities **********************************************************/
+/**
+ * jQuery Cookie plugin
+ *
+ * Copyright (c) 2010 Klaus Hartl (stilbuero.de)
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ *
+ */
+ice.ace.jq.cookie = function (key, value, options) {
+
+    // key and value given, set cookie...
+    if (arguments.length > 1 && (value === null || typeof value !== "object")) {
+        options = ice.ace.jq.extend({}, options);
+
+        if (value === null) {
+            options.expires = -1;
+        }
+
+        if (typeof options.expires === 'number') {
+            var days = options.expires, t = options.expires = new Date();
+            t.setDate(t.getDate() + days);
+        }
+
+        return (document.cookie = [
+            encodeURIComponent(key), '=',
+            options.raw ? String(value) : encodeURIComponent(String(value)),
+            options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+            options.path ? '; path=' + options.path : '',
+            options.domain ? '; domain=' + options.domain : '',
+            options.secure ? '; secure' : ''
+        ].join(''));
+    }
+
+    // key and possibly options given, get cookie...
+    options = value || {};
+    var result, decode = options.raw ? function (s) {return s;} : decodeURIComponent;
+    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
 };
 /******************************************************************************/

@@ -190,7 +190,7 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
     if (!(ice.ace.jq.browser.chrome || ice.ace.jq.browser.safari)) {
         setTimeout(function () {
             var ie = ice.ace.jq.browser.msie && (ice.ace.jq.browser.version == 8 || ice.ace.jq.browser.version == 7);
-            if (!ice.ace.isMouseOver(item, event)) self.itemLeave({currentTarget : item});
+            if (!ice.ace.util.isMouseOver(item, event)) self.itemLeave({currentTarget : item});
         }, 100);
     }
 

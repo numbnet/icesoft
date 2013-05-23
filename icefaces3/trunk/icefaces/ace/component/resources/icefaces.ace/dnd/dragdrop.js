@@ -65,7 +65,7 @@ ice.ace.Draggable.prototype.setupDragStartHandler = function() {
             ice.ace.ab(
                 ice.ace.extendAjaxArgs(
                     dragStartBehaviour,
-                    ice.ace.removeExecuteRenderOptions(options)
+                    ice.ace.clearExecRender(options)
                 )
             );
         } else ice.ace.AjaxRequest(options);
@@ -107,7 +107,7 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
             ice.ace.ab(
                 ice.ace.extendAjaxArgs(
                     dropBehaviour,
-                    ice.ace.removeExecuteRenderOptions(options)
+                    ice.ace.clearExecRender(options)
                 )
             );
         } else ice.ace.AjaxRequest(options);

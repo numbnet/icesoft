@@ -16,45 +16,20 @@
 
 if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
-if (!window.ice.ace['jq']) ice.ace.jq = jQuery;
-jQuery.noConflict(true);
-// After core is loaded after / as part of combined.js core will need to have
-// this object pulled apart so as no to overwrite existing members of ice.ace that
-// may come before it. Alternatively the generator could explictly add core.js earlier
-// in the merged script than most.
 
-
-// Useful prototypes
-// TODO: find better home for this and other util functions s
-Array.prototype.diff = function(a) {
-    return this.filter(function(i) {return !(a.indexOf(i) > -1);});
-};
+ice.ace.ab = function(cfg) { ice.ace.AjaxRequest(cfg); };
+ice.ace.locales = {};
+ice.ace.PARTIAL_REQUEST_PARAM = "javax.faces.partial.ajax";
+ice.ace.PARTIAL_UPDATE_PARAM = "javax.faces.partial.render";
+ice.ace.PARTIAL_PROCESS_PARAM = "javax.faces.partial.execute";
+ice.ace.PARTIAL_SOURCE_PARAM = "javax.faces.source";
+ice.ace.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
+ice.ace.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
+ice.ace.VIEW_STATE = "javax.faces.ViewState";
 
 ice.ace.escapeClientId = function(id) {
     return "#" + id.replace(/:/g,"\\:");
 };
-
-ice.ace.cleanWatermarks = function(){
-    ice.ace.jq.watermark.hideAll();
-};
-
-ice.ace.showWatermarks = function(){
-    ice.ace.jq.watermark.showAll();
-};
-
-ice.ace.isMouseOver = function(elem, jqEvent) {
-    elem = ice.ace.jq(elem);
-
-    var offset = elem.offset(),
-            xMin = offset.left,
-            xMax = xMin + elem.outerWidth(),
-            yMin = offset.top,
-            yMax = yMin + elem.outerHeight(),
-            mouseY = jqEvent.pageY,
-            mouseX = jqEvent.pageX;
-
-    return (mouseY < yMax && mouseY > yMin && mouseX < xMax && mouseX > xMin);
-}
 
 ice.ace.lazy = function(name, args) {
     var clientId = args[0], // lazy requires clientId is first arg
@@ -98,128 +73,34 @@ ice.ace.create = function(name, args) {
                 'for more details.';
 };
 
-// Get originating event object in call stack if one exists
-ice.ace.getEvent = function() {
-    if (ice.ace.jq.browser.msie && ice.ace.jq.browser.version < 9) return window.event;
-
-    var source = ice.ace.getEvent.caller; // firefox compatible caller usage
-    while (source) {
-        source = source.caller;
-        if (source && source.arguments[0] instanceof Event)
-            return source.arguments[0];
-    }
-
-    return null;
-}
-
-ice.ace.addSubmitParam = function(parent, name, value) {
-    ice.ace.jq(this.escapeClientId(parent)).append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\"/>");
-    return this;
-};
-
-ice.ace.submit = function(formId) {
-    ice.ace.jq(this.escapeClientId(formId)).submit();
-};
-
 ice.ace.attachBehaviors = function(element, behaviors) {
     for (var event in behaviors)
         element.bind(event, function() { ice.ace.ab.call(element, behaviors[event]); });
 };
 
-ice.ace.getCookie = function(name) {
-    return ice.ace.jq.cookie(name);
-};
-
-ice.ace.setCookie = function(name, value) {
-    ice.ace.jq.cookie(name, value);
-};
-
-ice.ace.skinInput = function(input) {
-    input.hover(
-        function() {
-            ice.ace.jq(this).addClass('ui-state-hover');
-        },
-        function() {
-            ice.ace.jq(this).removeClass('ui-state-hover');
-        }
-    ).focus(function() {
-            ice.ace.jq(this).addClass('ui-state-focus');
-    }).blur(function() {
-            ice.ace.jq(this).removeClass('ui-state-focus');
-    });
-};
-
-ice.ace.bind = function(context, method) {
-    return function() {
-        return method.apply(context, arguments);
-    }
-};
-
-ice.ace.eachExtension = function(responseXML, iterator) {
+ice.ace.eachCustomUpdate = function(responseXML, f) {
     var xmlDoc = responseXML.documentElement;
     var extensions = xmlDoc.getElementsByTagName("extension");
+
     for (var i = 0, l = extensions.length; i < l; i++) {
-        iterator(extensions[i]);
-    }
-};
-
-ice.ace.selectCustomUpdates = function(responseXML, iterator) {
-    ice.ace.eachExtension(responseXML, function(extension) {
+        var extension = extensions[i];
         if (extension.getAttributeNode('ice.customUpdate')) {
-            var id = extension.attributes.getNamedItem("id").nodeValue;
-            var content = extension.firstChild.data;
-            iterator(id, content);
+            f(extension.attributes.getNamedItem("id").nodeValue,
+              extension.firstChild.data);
         }
-    });
-};
+    }
+}
 
-ice.ace.removeExecuteRenderOptions = function(options) {
+ice.ace.clearExecRender = function(options) {
     options['execute'] = undefined;
     options['render'] = undefined;
     return options;
 }
 
-ice.ace.clone = function(obj) {
-    // Handle the 3 simple types, and null or undefined
-    if (null == obj || "object" != typeof obj) return obj;
-
-    // Handle Date
-    if (obj instanceof Date) {
-        var copy = new Date();
-        copy.setTime(obj.getTime());
-        return copy;
-    }
-
-    // Handle Array
-    if (obj instanceof Array) {
-        var copy = [];
-        var len;
-        for (var i = 0, len = obj.length; i < len; ++i) {
-            copy[i] = ice.ace.clone(obj[i]);
-        }
-        return copy;
-    }
-
-    // Handle Object
-    if (obj instanceof Object) {
-        var copy = {};
-        for (var attr in obj) {
-            if (obj.hasOwnProperty(attr)) copy[attr] = ice.ace.clone(obj[attr]);
-        }
-        return copy;
-    }
-
-    throw new Error("Unable to copy obj! Its type isn't supported.");
-}
-
-ice.ace.extend = function(targetObject, sourceObject) {
-    for (var attrname in sourceObject) { targetObject[attrname] = sourceObject[attrname]; }
-}
-
 ice.ace.extendAjaxArgs = function(callArguments, options) {
     // Return a modified copy of the original arguments instead of modifying the original.
     // The cb arguments, being a configured property of the component will live past this request.
-    callArguments = ice.ace.clone(callArguments);
+    callArguments = ice.ace.util.clone(callArguments);
 
     // Premerge arrays of arguments supplied by the server
     if (callArguments instanceof Array) {
@@ -243,7 +124,7 @@ ice.ace.extendAjaxArgs = function(callArguments, options) {
 
     if (params) {
         if (callArguments['params'])
-            ice.ace.extend(callArguments['params'], params);
+            ice.ace.util.extend(callArguments['params'], params);
         else
             callArguments['params'] = params;
     }
@@ -324,47 +205,6 @@ ice.ace.extendAjaxArgs = function(callArguments, options) {
     
     return callArguments;
 }
-
-ice.ace.ab = function(cfg) { ice.ace.AjaxRequest(cfg); };
-ice.ace.locales = {};
-ice.ace.PARTIAL_REQUEST_PARAM = "javax.faces.partial.ajax";
-ice.ace.PARTIAL_UPDATE_PARAM = "javax.faces.partial.render";
-ice.ace.PARTIAL_PROCESS_PARAM = "javax.faces.partial.execute";
-ice.ace.PARTIAL_SOURCE_PARAM = "javax.faces.source";
-ice.ace.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
-ice.ace.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
-ice.ace.VIEW_STATE = "javax.faces.ViewState";
-
-ice.ace.AjaxUtils = {
-    updateElement: function(id, content) {
-        ice.ace.jq(ice.ace.escapeClientId(id)).replaceWith(content);
-
-        //Mobile
-        if(ice.ace.jq.mobile) {
-            var controls = ice.ace.jq(ice.ace.escapeClientId(id)).parent().find("input, textarea, select, button, ul");
-
-            //input and textarea
-            controls
-                .filter("input, textarea")
-                .not("[type='radio'], [type='checkbox'], [type='button'], [type='submit'], [type='reset'], [type='image'], [type='hidden']")
-                .textinput();
-
-            //lists
-            controls.filter("[data-role='listview']").listview();
-
-            //buttons
-            controls.filter("button, [type='button'], [type='submit'], [type='reset'], [type='image']" ).button();
-
-            //slider
-            controls.filter("input, select")
-                    .filter("[data-role='slider'], [data-type='range']")
-                    .slider();
-
-            //selects
-            controls.filter("select:not([data-role='slider'])" ).selectmenu();
-        }
-    }
-};
 
 ice.ace.AjaxRequest = function(cfg) {
     // If start events return false, cancel request
@@ -472,127 +312,36 @@ ice.ace.AjaxResponse = function(responseXML) {
         if (extension.getAttributeNode('ice.customUpdate')) {
             var id = extension.attributes.getNamedItem("id").nodeValue;
             var content = extension.firstChild.data;
-            ice.ace.AjaxUtils.updateElement(id, content);
+            this.updateElem(id, content);
         }
     }
 };
 
+ice.ace.AjaxResponse.updateElem = function(id, content) {
+    ice.ace.jq(ice.ace.escapeClientId(id)).replaceWith(content);
 
-ice.ace.getOpacity = function(elem) {
-    var ori = ice.ace.jq(elem).css('opacity');
-    var ori2 = ice.ace.jq(elem).css('filter');
-    if (ori2) {
-        ori2 = parseInt( ori2.replace(')','').replace('alpha(opacity=','') ) / 100;
-        if (!isNaN(ori2) && ori2 != '') {
-            ori = ori2;
-        }
+    //Mobile
+    if(ice.ace.jq.mobile) {
+        var controls = ice.ace.jq(ice.ace.escapeClientId(id)).parent().find("input, textarea, select, button, ul");
+
+        //input and textarea
+        controls
+                .filter("input, textarea")
+                .not("[type='radio'], [type='checkbox'], [type='button'], [type='submit'], [type='reset'], [type='image'], [type='hidden']")
+                .textinput();
+
+        //lists
+        controls.filter("[data-role='listview']").listview();
+
+        //buttons
+        controls.filter("button, [type='button'], [type='submit'], [type='reset'], [type='image']" ).button();
+
+        //slider
+        controls.filter("input, select")
+                .filter("[data-role='slider'], [data-type='range']")
+                .slider();
+
+        //selects
+        controls.filter("select:not([data-role='slider'])" ).selectmenu();
     }
-    return ori;
 }
-
-
-/* General Utilities */
-
-/**
- * Adding startsWith to String prototype
- */
-if (typeof String.prototype.startsWith != 'function') {
-  String.prototype.startsWith = function (str){
-    return this.slice(0, str.length) == str;
-  };
-}
-
-
-/**
- * jQuery Cookie plugin
- *
- * Copyright (c) 2010 Klaus Hartl (stilbuero.de)
- * Dual licensed under the MIT and GPL licenses:
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.gnu.org/licenses/gpl.html
- *
- */
-ice.ace.jq.cookie = function (key, value, options) {
-
-    // key and value given, set cookie...
-    if (arguments.length > 1 && (value === null || typeof value !== "object")) {
-        options = ice.ace.jq.extend({}, options);
-
-        if (value === null) {
-            options.expires = -1;
-        }
-
-        if (typeof options.expires === 'number') {
-            var days = options.expires, t = options.expires = new Date();
-            t.setDate(t.getDate() + days);
-        }
-
-        return (document.cookie = [
-            encodeURIComponent(key), '=',
-            options.raw ? String(value) : encodeURIComponent(String(value)),
-            options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-            options.path ? '; path=' + options.path : '',
-            options.domain ? '; domain=' + options.domain : '',
-            options.secure ? '; secure' : ''
-        ].join(''));
-    }
-
-    // key and possibly options given, get cookie...
-    options = value || {};
-    var result, decode = options.raw ? function (s) {return s;} : decodeURIComponent;
-    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
-};
-
-// Original code copied from http://stackoverflow.com/a/7329696
-// See comments at http://jira.icesoft.org/browse/ICE-7824?focusedCommentId=39755&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_39755
-ice.ace.findNextTabElement = function(currElement) {
-            // if we haven't stored the tabbing order
-            if (!currElement.form.tabOrder) {
-
-                var els = currElement.form.elements,
-                    ti = [],
-                    rest = [];
-
-                // store all focusable form elements with tabIndex > 0
-                for (var i = 0, il = els.length; i < il; i++) {
-                    if (els[i].tabIndex > 0 &&
-                        !els[i].disabled &&
-                        !els[i].hidden &&
-                        !els[i].readOnly &&
-                        els[i].type !== 'hidden') {
-                        ti.push(els[i]);
-                    }
-                }
-
-                // sort them by tabIndex order
-                ti.sort(function(a,b){ return a.tabIndex - b.tabIndex; });
-
-                // store the rest of the elements in order
-                for (i = 0, il = els.length; i < il; i++) {
-                    if (els[i].tabIndex == 0 &&
-                        !els[i].disabled &&
-                        !els[i].hidden &&
-                        !els[i].readOnly &&
-                        els[i].type !== 'hidden') {
-                        rest.push(els[i]);
-                    }
-                }
-
-                // store the full tabbing order
-                currElement.form.tabOrder = ti.concat(rest);
-            }
-
-            // find the next element in the tabbing order and focus it
-            // if the last element of the form then blur
-            // (this can be changed to focus the next <form> if any)
-            for (var j = 0, jl = currElement.form.tabOrder.length; j < jl; j++) {
-                if (currElement === currElement.form.tabOrder[j]) {
-                    if (j+1 < jl) {
-//                        $(this.form.tabOrder[j+1]).focus();
-                        return currElement.form.tabOrder[j+1];
-                    } else {
-//                        $(this).blur();
-                    }
-                }
-            }
-};

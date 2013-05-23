@@ -68,7 +68,7 @@ ice.ace.pushbutton.prototype.onClick = function () {
     if (this.cfg.behaviors && this.cfg.behaviors.activate) {
         ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.cfg.behaviors.activate,
-                ice.ace.removeExecuteRenderOptions(options))
+                ice.ace.clearExecRender(options))
         );
     } else
         ice.ace.ab(options);

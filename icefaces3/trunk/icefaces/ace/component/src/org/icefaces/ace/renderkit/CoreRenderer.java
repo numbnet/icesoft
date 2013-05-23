@@ -214,20 +214,7 @@ public class CoreRenderer extends Renderer {
 		
 		return value.trim().equals("");
 	}
-	
-    protected String addSubmitParam(String parent, String name, String value) {
-        StringBuilder builder = new StringBuilder();
 
-        builder.append(".addSubmitParam('")
-                    .append(parent).append("','")
-                    .append(name)
-                    .append("','")
-                    .append(value)
-                    .append("')");
-
-        return builder.toString();
-    }
-	
 	protected String escapeText(String value) {
 		return value == null ? "" : value.replaceAll("'", "\\\\'");
 	}

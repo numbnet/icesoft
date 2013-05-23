@@ -324,6 +324,6 @@ ice.ace.InputMask = function(id, cfg) {
 
     //Visuals
     if(this.cfg.theme != false) {
-        ice.ace.skinInput(this.jq);
+        ice.ace.util.bindHoverFocusStyle(this.jq);
     }
 }
