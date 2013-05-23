@@ -29,10 +29,11 @@
         <mobi:fieldsetRow style="text-align:center">
             <mobi:videoPlayer id="videoOne"
                             url="${videoBean.src}"
-                            style="width:${mobiClient.handheldBrowser ? '100%' : '60%'};"
+                            style="width:${mobiClient.handheldBrowser ? '100%' : '60%'}"
                             type="${videoBean.type}"
                             loop = "${videoBean.loop}"
-                            preload="${videoBean.preload}"
+                            preload="false"
+                            playsinline="true"
                             muted="${videoBean.muted}"
                             linkLabel="${videoBean.linkLabel}"
                             controls="${videoBean.controls}"/>
@@ -42,14 +43,6 @@
     <h3>Video Settings</h3>
 
     <mobi:fieldsetGroup>
-       <mobi:fieldsetRow>
-           <label class="ui-input-text">Preload video</label>
-           <select name="preLoad" style="float:right" class="mobi-input-text">
-              <option value="none" ${videoBean.preload=='none' ? 'selected' : ''}>none</option>
-              <option value="auto" ${videoBean.preload=='auto' ? 'selected' : ''}>auto</option>
-              <option value="metadata" ${videoBean.preload=='metadata' ? 'selected' : ''}>metadata</option>
-          </select>&#160;
-       </mobi:fieldsetRow>
        <mobi:fieldsetRow style="min-height:28px">
            <label class="ui-input-text">Video Controls: </label>
            <mobi:flipswitch id="fs2" labelOn="true" labelOff="false" style="float:right"
