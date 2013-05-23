@@ -296,8 +296,10 @@ public class ClientDescriptor implements Serializable{
     public boolean isSupportsFixedPosition(){
         return isDesktopBrowser() 
                || (isTabletBrowser() && !isAndroidBrowserOrWebView())
-               || (isHandheldBrowser() && (!isAndroid2OS() ||  _userAgentInfo.isFirefoxAndroid() )
-               || _userAgentInfo.isBlackberry6OS());
+               || (isHandheldBrowser() 
+                       && (!isAndroid2OS() ||  _userAgentInfo.isFirefoxAndroid() 
+                               || !_userAgentInfo.isBlackberry6OS())
+               );
     }
 
 
