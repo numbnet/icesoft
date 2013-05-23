@@ -39,9 +39,9 @@ public class PagePanelTag extends BodyTagSupport {
 
         StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
         if (id != null && !"".equals(id)) {
-            tag.append(" id='").append(getId()).append("_pgPnl' class='mobi-pagePanel'");
+            tag.append(" id='").append(getId()).append("_pgPnl'");
         }
-        tag.append(">");
+        tag.append(" class='mobi-pagePanel'>");
 
         try {
             out.write(tag.toString());
