@@ -31,8 +31,8 @@ import java.util.logging.Logger;
  */
 public class FlipSwitchTag extends SimpleTagSupport {
 
-    public static final String FLIPSWITCH_ON_CLASS = "mobi-flipswitch mobi-flipswitch-on ";
-    public static final String FLIPSWITCH_OFF_CLASS = "mobi-flipswitch mobi-flipswitch-off ";
+    public static final String FLIPSWITCH_ON_CLASS = "mobi-flipswitch mobi-flipswitch-on ui-btn-down-c";
+    public static final String FLIPSWITCH_OFF_CLASS = "mobi-flipswitch mobi-flipswitch-off ui-btn-down-c";
 
     private static Logger LOG = Logger.getLogger(FlipSwitchTag.class.getName());
 
