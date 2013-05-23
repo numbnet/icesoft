@@ -114,7 +114,13 @@ public class UserAgentInfo implements Serializable{
     }
 
     public boolean isBlackberryOS() {
-        boolean result = userAgentString.contains(BLACKBERRY) || userAgentString.contains(BLACKBERRY10);
+        boolean result = userAgentString.contains(BLACKBERRY) || isBlackberry10OS();
+        log(result, "BlackBerry", userAgentString);
+        return result;
+    }
+    
+    public boolean isBlackberry6OS() {
+        boolean result = userAgentString.contains(BLACKBERRY) && !isBlackberry10OS();
         log(result, "BlackBerry", userAgentString);
         return result;
     }
