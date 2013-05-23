@@ -332,14 +332,14 @@ ice.ace.tabset = {
 	   var _form = null;
 	   try {
 		   //see if the tabset is enclosed inside a form
-	       _form = formOf(tabset);
+	       _form = ice.ace.util.formOf(tabset);
 	   } catch(e) {
 		   //seems like tabset is not enclosed inside a form, now look for tabsetproxy component 
 		   if (!_form) {
 			   var tsc = document.getElementById(tabset.id + '_tsc');
 			   if(tsc) {
 				   try {
-					   _form = formOf(tsc);
+					   _form = ice.ace.util.formOf(tsc);
 				   } catch(e) {
                        ice.ace.tabset.consoleLog(true, 'ERROR: The tabSetProxy must be enclosed inside a form element');
 				   }

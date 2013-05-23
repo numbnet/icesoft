@@ -14,16 +14,6 @@
  * governing permissions and limitations under the License.
  */
 
-function formOf(element) {
-    var parent = element.parentNode;
-    while (parent) {
-        if (parent.tagName && parent.tagName.toLowerCase() == 'form') return parent;
-        parent = parent.parentNode;
-    }
-
-    throw 'Cannot find enclosing form.';
-}
-
 if (!window['ice']) {
     window.ice = {};
 }
@@ -34,6 +24,38 @@ if (!window['ice']['ace']['util']) {
     window.ice.ace.util = {};
 }
 
+/* Element Selection Utilities ************************************************/
+ice.ace.util.formOf = function(element) {
+    var parent = element.parentNode;
+    while (parent) {
+        if (parent.tagName && parent.tagName.toLowerCase() == 'form') return parent;
+        parent = parent.parentNode;
+    }
+
+    throw 'Cannot find enclosing form.';
+}
+/******************************************************************************/
+
+
+
+/* Element Insertion Utilities ************************************************/
+ice.ace.util.insertElementAtIndex = function(parentElem, insertElem, index) {
+    if (!parentElem.hasChildNodes()) {
+        parentElem.appendChild(insertElem);
+    } else {
+        var afterElem = parentElem.childNodes[index];
+        if (afterElem) {
+            parentElem.insertBefore(insertElem, afterElem);
+        } else {
+            parentElem.appendChild(insertElem);
+        }
+    }
+};
+/******************************************************************************/
+
+
+
+/* Event Utilities ************************************************************/
 ice.ace.util.isEventSourceInputElement = function(event) {
     var elem = ice.ace.util.eventTarget(event);
     var tag = elem.tagName.toLowerCase();
@@ -48,20 +70,11 @@ ice.ace.util.eventTarget = function(event) {
        event = event || window.event;           
        return(event.target || event.srcElement);
 };
+/******************************************************************************/
 
-ice.ace.util.insertElementAtIndex = function(parentElem, insertElem, index) {
-	if (!parentElem.hasChildNodes()) {
-		parentElem.appendChild(insertElem);
-	} else {
-		var afterElem = parentElem.childNodes[index];
-        if (afterElem) {
-            parentElem.insertBefore(insertElem, afterElem);
-        } else {
-            parentElem.appendChild(insertElem);
-        }
-	}
-};
 
+
+/* Array Utilities ************************************************************/
 ice.ace.util.arrayIndexOf = function(arr, elem, fromIndex) {
 	if (arr.indexOf) {
 		return arr.indexOf(elem, fromIndex);
@@ -100,26 +113,23 @@ ice.ace.util.arraysEqual = function(arr1, arr2) {
     }
     return true;
 };
+/******************************************************************************/
 
-ice.ace.util.createHiddenField = function(parent, id) {
-    var inp = document.createElement("input");
-    inp.setAttribute('type', 'hidden');
-    inp.setAttribute('id', id);
-    inp.setAttribute('name', id);
-    parent.appendChild(inp);
-    return inp;
+
+
+/* Dynamic Style Sheet Utilities **********************************************/
+ice.ace.util.getStyleSheet = function (sheetId) {
+    return Array.prototype.filter.call(document.styleSheets, function(s) {
+        return s.title == sheetId;
+    })[0];
 };
 
-ice.ace.util.createElement = function(parent, name) {
-    var element = document.createElement(name);
-    parent.appendChild(element);
-    return element;
+ice.ace.util.addStyleSheet = function (sheetId, parentSelector) {
+    var s = document.createElement('style');
+    s.type = 'text/css';
+    s.rel = 'stylesheet';
+    s.title = sheetId;
+    document.querySelectorAll(parentSelector || "head")[0].appendChild(s);
+    return ice.mobi.getStyleSheet(sheetId);
 };
-
-ice.ace.util.removeElement = function(element) {
-    element.parentNode.removeChild(element);
-};
-
-ice.ace.onContentReady = function(id, fn) {
-    YAHOO.util.Event.onContentReady(id, fn, window, true);
-};
+/******************************************************************************/
