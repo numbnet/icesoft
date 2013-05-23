@@ -67,11 +67,19 @@ final class CameraConfigurationManager {
    */
   void setDesiredCameraParameters(Camera camera) {
     Camera.Parameters parameters = camera.getParameters();
+    Camera.Parameters paramClone = camera.getParameters();
     Log.d(TAG, "Setting preview size: " + cameraResolution);
     parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
-    setFlash(parameters);
-    setZoom(parameters);
-    camera.setParameters(parameters);
+    paramClone.setPreviewSize(cameraResolution.x, cameraResolution.y);
+    try {
+        setFlash(parameters);
+        setZoom(parameters);
+        camera.setParameters(parameters);
+        Log.d(TAG, "set size, flash, zoom: " + parameters);
+    } catch (Throwable t)  {
+        Log.e(TAG, "failed to disable flash and zoom : " + t);
+        camera.setParameters(paramClone);
+    }
   }
 
   Point getCameraResolution() {
