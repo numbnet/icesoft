@@ -276,7 +276,7 @@ var Draggable = Class.create({
                     revert: false,
                     quiet: false,
                     scroll: false,
-                    scrollSensitivity: 20,
+                    scrollSensitivity: 40,
                     scrollSpeed: 15,
                     snap: false,  // false, or xy or [x,y] or function(x,y){ return [x,y] }
                     delay: 0
@@ -303,6 +303,7 @@ var Draggable = Class.create({
 
                 if (options.scroll && !options.scroll.scrollTo && !options.scroll.outerHTML) {
                     options.scroll = $(options.scroll);
+					Element.makePositioned(options.scroll);
                     this._isScrollChild = Element.childOf(this.element, options.scroll);
                 }
 
@@ -349,6 +350,10 @@ var Draggable = Class.create({
 
                     Draggables.activate(this);
                     Event.stop(event);
+					if (this.options.scroll) {
+						this.originalScrollHeight = this.options.scroll.scrollHeight;
+						this.originalScrollWidth = this.options.scroll.scrollWidth;
+					}
                 }
             },
 
@@ -457,13 +462,21 @@ var Draggable = Class.create({
                 if (revert && Object.isFunction(revert)) revert = revert(this.element);
 
                 var d = this.currentDelta();
-                if (revert && this.options.reverteffect) {
+                if (revert && this.options.reverteffect && !this.options.scroll) {
                     if (dropped == 0 || revert != 'failure')
                         this.options.reverteffect(this.element,
                                 d[1] - this.delta[1], d[0] - this.delta[0]);
                 } else {
                     this.delta = d;
                 }
+				
+				if (this.options.scroll) {
+					var style = this.element.style;
+					style.left = '';
+					style.top = '';
+					style.position = '';
+					style.zIndex = '';
+				}
 
                 if (this.options.zindex)
                     this.element.style.zIndex = this.originalZ;
@@ -550,6 +563,21 @@ var Draggable = Class.create({
             },
 
             scroll: function() {
+				// avoid scrolling past the original boundaries of the container
+				var containerOffset = Element.cumulativeOffset(this.options.scroll).toArray();
+				var containerTop = containerOffset[1];
+				var containerLeft = containerOffset[0];
+				var elementOffset = Element.cumulativeOffset(this.element).toArray();
+				var elementTop = elementOffset[1];
+				var elementLeft = elementOffset[0];
+				var elementHeight = Element.getHeight(this.element);
+				if (((elementTop + elementHeight) >= (this.originalScrollHeight + containerTop))
+					|| ((elementLeft) >= (this.originalScrollWidth + containerLeft))
+					|| (elementTop <= containerTop) || (elementLeft <= containerLeft)) {
+					this.stopScrolling();
+					return;
+				}
+			
                 var current = new Date();
                 var delta = current - this.lastScrolled;
                 this.lastScrolled = current;
