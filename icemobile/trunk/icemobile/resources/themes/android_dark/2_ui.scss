@@ -28,6 +28,14 @@
 
 @import "../mixins";
 
+.ui-btn-up-a, .ui-btn-down-a, 
+.ui-btn-up-b, .ui-btn-down-b, 
+.ui-btn-up-c, .ui-btn-down-c, 
+.ui-btn-up-d, .ui-btn-down-d, 
+.ui-btn-up-e, .ui-btn-down-e {
+    border-radius: 5px;
+}
+
 /* Swatches */
 /* A
 -----------------------------------------------------------------------------------------------------------*/
@@ -408,7 +416,7 @@
     background-image:     -ms-linear-gradient( #E2E2E2 /*{c-bup-background-start}*/, #EEE /*{c-bup-background-end}*/); /* IE10 */
     background-image:      -o-linear-gradient( #E2E2E2 /*{c-bup-background-start}*/, #EEE /*{c-bup-background-end}*/); /* Opera 11.10+ */
     background-image:         linear-gradient( #E2E2E2 /*{c-bup-background-start}*/, #EEE /*{c-bup-background-end}*/);
-    border-radius: 5px;
+    
     @include box-shadow(0 0 1px #EEE);
 }
 .ui-btn-up-c:visited,
