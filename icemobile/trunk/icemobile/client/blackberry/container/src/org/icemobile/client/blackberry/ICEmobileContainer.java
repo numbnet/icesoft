@@ -84,7 +84,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
 
     // Default, compile time, initial page. This value is passed to BlackberryOptionsProperties
     // during construction to be used if the Properties object is new
-    public static final String HOME_URL = "http://www.icemobile.org/demos.html";
+    public static final String HOME_URL = "http://labs.icesoft.com/mobileshowcase";
     
     public static final int HISTORY_SIZE = 10;
 
@@ -789,9 +789,48 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
         }
     }
 
+    /**
+     * Allow the container to exit. Perform all shutdown operations here. 
+     */
+    public void shutdownContainer() { 
+    	
+    	if (mPushAgent != null) { 
+    		mPushAgent.shutdown(); 
+    	}
+    	mPushAgent = null; 
+    	System.exit(0);
+    	
+    }
+    
 
     // -------------------  Utility methods ---------------------------------
 
+    public void testJavascriptNamespace() { 
+    	
+    	try {
+    		if (mScriptEngine != null && mRealDevice) {
+    			mScriptEngine.executeScript("if (ice.push) { icefaces.logInContainer('1) js.test - ice.push is present'); }", null);
+    		}
+    	} catch (Throwable t) {
+    		Logger.DIALOG("1) js.test - ice.push is missing: " + t);
+    	}
+    	try {
+    		if (mScriptEngine != null && mRealDevice) {
+    			mScriptEngine.executeScript("if (ice.push.connection) { icefaces.logInContainer('2) js.test - ice.push.connection is present'); }", null);
+    		}
+    	} catch (Throwable t) {
+    		Logger.DIALOG ("2) js.test - ice.push.connection is missing: " + t);
+    	}
+
+    	try {
+    		if (mScriptEngine != null && mRealDevice) {
+    			mScriptEngine.executeScript("if (ice.push.connection.resumeConnection) { icefaces.logInContainer('3) js.test - ice.push.connection.resumeConnection is present'); }", null);
+    		}
+    	} catch (Throwable t) {
+    		Logger.DIALOG ("3) js.test - ice.push.connection is missing: " + t);
+    	}
+    }
+    
 
     /**
      * fetch the contents of a file as a resource

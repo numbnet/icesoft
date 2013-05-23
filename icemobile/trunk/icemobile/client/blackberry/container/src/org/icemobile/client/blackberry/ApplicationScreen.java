@@ -16,12 +16,14 @@
 package org.icemobile.client.blackberry;
 
 import org.icemobile.client.blackberry.menu.BackMenuItem;
+import org.icemobile.client.blackberry.menu.ExitMenuItem;
 import org.icemobile.client.blackberry.menu.HistorySubMenuItem;
 import org.icemobile.client.blackberry.menu.LogMemoryMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadCurrentMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadHomeMenuItem;
 import org.icemobile.client.blackberry.menu.ResetAuthorizationMenuItem;
 import org.icemobile.client.blackberry.menu.ResetPushMenuItem;
+import org.icemobile.client.blackberry.menu.TestJavascriptFullItem;
 //import org.icemobile.client.blackberry.menu.ResetPushMenuItem;
 //import org.icemobile.client.blackberry.menu.TestJavascriptMenuItem;
 import org.icemobile.client.blackberry.menu.URLEntryMenu;
@@ -51,7 +53,8 @@ import net.rim.device.api.ui.menu.SubMenu;
      
      private MenuItem mResetPushMenu;
      private MenuItem mBackMenu; 
-//     private MenuItem mTestJavascriptMenu;
+     private MenuItem mTestJavascriptMenu;
+     private MenuItem mExitContainerMenu;
      
      
      private HistorySubMenuItem[] mHistorySubs;
@@ -90,7 +93,8 @@ import net.rim.device.api.ui.menu.SubMenu;
          mResetPushMenu = new ResetPushMenuItem(mController);         
          mBackMenu = new BackMenuItem(mController); 
          mURLMenu = new URLEntryMenu(mController);
-//         mTestJavascriptMenu = new TestJavascriptMenuItem(mContainer);
+         mTestJavascriptMenu = new TestJavascriptFullItem(mController);
+         mExitContainerMenu = new ExitMenuItem(mController);
          mResetAuthCacheMenu = new ResetAuthorizationMenuItem(mController); 
          mLogMemMenu = new LogMemoryMenuItem(mController);
          
@@ -108,7 +112,8 @@ import net.rim.device.api.ui.menu.SubMenu;
     	 menu.add(mURLMenu);
     	 menu.add(mResetAuthCacheMenu);
     	 menu.add(mLogMemMenu);
-//    	 menu.add(mTestJavascriptMenu);
+    	 menu.add(mTestJavascriptMenu);
+    	 menu.add(mExitContainerMenu);
     	 menu.add(mResetPushMenu);  
     	 
     	 
