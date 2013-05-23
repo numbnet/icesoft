@@ -179,7 +179,12 @@ public class PushAgent {
             while (running) {
                 try {
                     
-                    Object o = socket.acceptAndOpen();   
+                	if (socket == null) { 
+                		Logger.DEBUG("No Socket available, exiting push receiver");
+                		running = false; 
+                		continue;
+                	}
+                	Object o = socket.acceptAndOpen();   
                     conn = (HttpServerConnection) o;
                     inputStream = conn.openInputStream();
                     pushInputStream = new MDSPushInputStream(conn, inputStream);
