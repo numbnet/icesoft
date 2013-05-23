@@ -451,7 +451,6 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                     } else {
                         modifyState();
                     }
-
                 }
 
                 self.lastClickedIndex = index;
@@ -499,7 +498,7 @@ ice.ace.List.prototype.addSelectedItem = function(item, inputIndex, skipSubmit) 
         this.write('selections', selections);
         this.write('deselections', deselections);
 
-        if (this.behaviors & !skipSubmit)
+        if (this.behaviors && !skipSubmit)
             if (this.behaviors.select) {
                 var self = this;
                 this.behaviors.select.oncomplete = function() {
