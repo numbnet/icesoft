@@ -76,7 +76,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
         out.write(">");
 
         // write the nested child objects containing both on/off labels.
-        out.write("<span class='mobi-flipswitch-txt-on'>");
+        out.write("<span class='mobi-flipswitch-txt-on" + (isChecked ? "" : " ui-btn-up-c" ) + "'>");
         out.write(getLabelOn());
         out.write("</span>");
 
@@ -90,7 +90,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
             LOG.warning("Flipswitch tag (id: " + id + ") has no name for value submission");
         }
 
-        out.write("<span class='mobi-flipswitch-txt-off'>");
+        out.write("<span class='mobi-flipswitch-txt-off" + (isChecked ? " ui-btn-up-c" : "") + "'>");
         out.write(getLabelOff());
         out.write("</span>");
         out.write("</input>");
