@@ -60,16 +60,15 @@ public class VideoPlayerCoreRenderer extends BaseCoreRenderer{
             writer.writeAttribute("webkit-playsinline", "yes");
         }
         writer.writeAttribute("preload", preloadVal);
-        if (video.getHeight() != Integer.MIN_VALUE) {
+        if (video.getHeight() > 0) {
             writer.writeAttribute("height", String.valueOf(video.getHeight()));
         }
-        if (video.getWidth() != Integer.MIN_VALUE) {
+        if (video.getWidth() > 0) {
             writer.writeAttribute("width", String.valueOf(video.getWidth()));
         }
         if (video.isControls()){
             writer.writeAttribute("controls", "controls");
         }
-        String mimeType = video.getType();
         if (null != video.getType()) {
             writer.writeAttribute("type", video.getType());
         }
