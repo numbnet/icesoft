@@ -203,31 +203,51 @@ if (!Function.prototype.bind) {
     };
 }
 
-if (!Array.prototype.filter) {
-    Array.prototype.filter = function filter(fun /*, thisp */) {
-        var object = toObject(this),
-            self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                    object,
-            length = self.length >>> 0,
-            result = [],
-            value,
-            thisp = arguments[1];
-
-        // If no callback function or if callback is not a callable function
-        if (_toString(fun) != "[object Function]") {
-            throw new TypeError(fun + " is not a function");
-        }
-
-        for (var i = 0; i < length; i++) {
-            if (i in self) {
-                value = self[i];
-                if (fun.call(thisp, value, i, object)) {
-                    result.push(value);
-                }
-            }
-        }
-        return result;
+if (!('filter' in Array.prototype)) {
+    Array.prototype.filter= function(filter, that /*opt*/) {
+        var other= [], v;
+        for (var i=0, n= this.length; i<n; i++)
+            if (i in this && filter.call(that, v= this[i], i, this))
+                other.push(v);
+        return other;
+    };
+}
+if (!('map' in Array.prototype)) {
+    Array.prototype.map= function(mapper, that /*opt*/) {
+        var other= new Array(this.length);
+        for (var i= 0, n= this.length; i<n; i++)
+            if (i in this)
+                other[i]= mapper.call(that, this[i], i, this);
+        return other;
+    };
+}
+if (!('indexOf' in Array.prototype)) {
+    Array.prototype.indexOf= function(find, i /*opt*/) {
+        if (i===undefined) i= 0;
+        if (i<0) i+= this.length;
+        if (i<0) i= 0;
+        for (var n= this.length; i<n; i++)
+            if (i in this && this[i]===find)
+                return i;
+        return -1;
+    };
+}
+if (!('lastIndexOf' in Array.prototype)) {
+    Array.prototype.lastIndexOf= function(find, i /*opt*/) {
+        if (i===undefined) i= this.length-1;
+        if (i<0) i+= this.length;
+        if (i>this.length-1) i= this.length-1;
+        for (i++; i-->0;) /* i++ because from-argument is sadly inclusive */
+            if (i in this && this[i]===find)
+                return i;
+        return -1;
+    };
+}
+if (!('forEach' in Array.prototype)) {
+    Array.prototype.forEach= function(action, that /*opt*/) {
+        for (var i= 0, n= this.length; i<n; i++)
+            if (i in this)
+                action.call(that, this[i], i, this);
     };
 }
 
@@ -335,7 +355,12 @@ ice.mobi.findFormFromNode = function (sourcenode) {
 
 ice.mobi.matches = function(elem, selector) {
     var impl = elem.webkitMatchesSelector || elem.msMatchesSelector || elem.mozMatchesSelector;
-    return (impl.bind(elem))(selector);
+    if( impl && impl.bind ){
+        return (impl.bind(elem))(selector);
+    }
+    else{
+        return Array.prototype.indexOf.call(document.querySelectorAll(selector), elem) > -1;
+    }
 };
 
 mobi.AjaxRequest = function (cfg) {
@@ -1287,42 +1312,46 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 return val.nodeName.toLowerCase() == "td"; /* remove hidden input */
             });
 
-            var frbcWidths = Array.prototype.map.call(
-                firstRowBodyCells,
-                function(n) {
-                    var compd = document.defaultView.getComputedStyle(n, null);
-                    return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
-            });
-
-            /* fix body column widths */
-            for (var i = 0; i < frbcWidths.length; i++) {
-                sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { width: "+frbcWidths[i] + 'px'+"; }", 0);
-            }
-
-            var dupeHeadCellWidths = Array.prototype.map.call(
-                dupeHeadCells,
-                function(n) {
-                    var compd = document.defaultView.getComputedStyle(n, null);
-                    return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
+            if( window.getComputedStyle ){
+                var frbcWidths = Array.prototype.map.call(
+                    firstRowBodyCells,
+                    function(n) {
+                        var compd = document.defaultView.getComputedStyle(n, null);
+                        return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
                 });
-
-            var dupeFootCellWidths = Array.prototype.map.call(
-                dupeFootCells,
-                function(n) {
-                    var compd = document.defaultView.getComputedStyle(n, null);
-                    return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
-                });
-
-            /* copy head col widths from duplicate header */
-            for (var i = 0; i < dupeHeadCellWidths.length; i++) {
-                headCells[i].style.width = dupeHeadCellWidths[i] + 'px';
-            }
-
-            /* copy foot col widths from duplicate footer */
-            if (footCells.length > 0)
-                for (var i = 0; i < dupeFootCellWidths.length; i++) {
-                    footCells[i].style.width = dupeFootCellWidths[i] + 'px';
+    
+                /* fix body column widths */
+                for (var i = 0; i < frbcWidths.length; i++) {
+                    if( sheet.insertRule ){
+                        sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { width: "+frbcWidths[i] + 'px'+"; }", 0);
+                    }
                 }
+
+                var dupeHeadCellWidths = Array.prototype.map.call(
+                    dupeHeadCells,
+                    function(n) {
+                        var compd = document.defaultView.getComputedStyle(n, null);
+                        return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
+                    });
+    
+                var dupeFootCellWidths = Array.prototype.map.call(
+                    dupeFootCells,
+                    function(n) {
+                        var compd = document.defaultView.getComputedStyle(n, null);
+                        return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
+                    });
+    
+                /* copy head col widths from duplicate header */
+                for (var i = 0; i < dupeHeadCellWidths.length; i++) {
+                    headCells[i].style.width = dupeHeadCellWidths[i] + 'px';
+                }
+    
+                /* copy foot col widths from duplicate footer */
+                if (footCells.length > 0)
+                    for (var i = 0; i < dupeFootCellWidths.length; i++) {
+                        footCells[i].style.width = dupeFootCellWidths[i] + 'px';
+                    }
+            }
 
             if (config.colvispri) setupColumnVisibiltyRules(firstrow.children);
 
@@ -1358,11 +1387,13 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 // add column conditional visibility rule
                 hideRule += 'th.'+columnClassname+', td.'+columnClassname;
                 if (i != (prioritizedCells.length - 1)) hideRule += ', ';
-                colVisSheet.insertRule('@media screen and (min-width: '+minDevWidth+'px) { td.'+columnClassname+', th.'+columnClassname+' { display: table-cell; }}', 0);
+                if( colVisSheet.insertRule )
+                    colVisSheet.insertRule('@media screen and (min-width: '+minDevWidth+'px) { td.'+columnClassname+', th.'+columnClassname+' { display: table-cell; }}', 0);
             }
 
             hideRule += '{ display:none; }}';
-            colVisSheet.insertRule(hideRule, 0);
+            if( colVisSheet.insertRule )
+                colVisSheet.insertRule(hideRule, 0);
         }
 
         /* arguments optional to avoid lookup */
@@ -1383,16 +1414,19 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 fullHeight = maxHeight - headHeight - footHeight - 1;
 
             /* set height to full visible size of parent */
-            bodyDivWrapper.style.height = fullHeight + 'px';
+            if( isNumber(fullHeight) )
+                bodyDivWrapper.style.height = fullHeight + 'px';
 
             /* set height to full visible size of parent minus
              height of all following elements */
             var container = getScrollableContainer(element),
                 bottomResize = function() {
                     fullHeight -= (container.scrollHeight - container.clientHeight);
-                    if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i))
-                        fullHeight += 60;
-                    bodyDivWrapper.style.height = fullHeight + 'px';
+                    if( isNumber(fullHeight)){
+                        if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i))
+                            fullHeight += 60;
+                        bodyDivWrapper.style.height = fullHeight + 'px';
+                    }
                 };
 
             if (container) bottomResize();
