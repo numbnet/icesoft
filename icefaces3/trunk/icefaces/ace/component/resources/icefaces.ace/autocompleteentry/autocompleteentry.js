@@ -469,17 +469,27 @@ ice.ace.Autocompleter.prototype = {
             input.addClass(this.cfg.inFieldLabelStyleClass);
             input.data("labelIsInField", true);
         }
-        if (navigator.userAgent.indexOf("MSIE") >= 0) { // ICE-2225
-            var strictMode = document.compatMode && document.compatMode == "CSS1Compat";
-            var docBody = strictMode ? document.documentElement : document.body;
-            // Right or bottom border, if any, will be treated as scrollbar.
-            // No way to determine their width or scrollbar width accurately.
-            if (event.clientX > docBody.clientLeft + docBody.clientWidth ||
-                event.clientY > docBody.clientTop + docBody.clientHeight) { 
-                this.element.focus();
-                return;
-            }
-        }
+		// check if last click was done on scrollbar
+		if (navigator.userAgent.indexOf("MSIE") >= 0) {
+			var n = this.height;
+			if (n!=null && n!='' && typeof n === 'number' && n % 1 == 0) {
+				var posx=0; var posy=0;
+				var e = window.event;
+				if (e.pageX || e.pageY) {
+					posx = e.pageX;
+					posy = e.pageY;
+				} else if (e.clientX || e.clientY) {
+					posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+					posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+				}
+				var widthX=input.position().left+input.width();
+				var heightX=input.position().top+input.height()+parseFloat(this.height)+10;
+				if ( (posx>input.position().left && posx<=widthX) && (posy>input.position().top && posy<heightX) ) {
+					this.element.focus();
+					return;
+				}
+			}
+		}
         // needed to make click events working
 		var self = this;
         this.hideObserver = setTimeout(function () { self.hide(); }, 400);
