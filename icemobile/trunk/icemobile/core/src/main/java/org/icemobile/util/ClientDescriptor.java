@@ -297,9 +297,8 @@ public class ClientDescriptor implements Serializable{
         return isDesktopBrowser() 
                || (isTabletBrowser() && !isAndroidBrowserOrWebView())
                || (isHandheldBrowser() 
-                       && (!isAndroid2OS() ||  _userAgentInfo.isFirefoxAndroid() 
-                               || !_userAgentInfo.isBlackberry6OS())
-               );
+                       && (!isAndroid2OS() ||  _userAgentInfo.isFirefoxAndroid() )
+                       && !_userAgentInfo.isBlackberry6OS());
     }
 
 
