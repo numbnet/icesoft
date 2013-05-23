@@ -51,7 +51,7 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         StringBuilder headerClass = new StringBuilder(PagePanel.HEADER_CLASS
                 + (MobiJSFUtils.getClientDescriptor().isSupportsFixedPosition() ? "ui-header-fixed " : "")
                 +" ui-bar-"+component.getAttributes().get("headerSwatch"));
-        StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS); // ui-body-c goes on body element - else backgrounds are not page length without hacks
+        StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS+"ui-body-"+component.getAttributes().get("bodySwatch"));
         StringBuilder footerClass = new StringBuilder(PagePanel.FOOTER_CLASS
                 + (MobiJSFUtils.getClientDescriptor().isSupportsFixedPosition() ? "ui-footer-fixed " : "")
                 +"ui-bar-"+component.getAttributes().get("footerSwatch"));

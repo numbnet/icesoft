@@ -2353,8 +2353,9 @@ if (window.addEventListener) {
         
     };
     if( window.innerHeight ){
-        setTimeout(sizePagePanelsToViewPort,10);
+        setTimeout(sizePagePanelsToViewPort,50);
         ice.mobi.addListener(window,"orientationchange",sizePagePanelsToViewPort);
+        ice.mobi.addListener(window,"resize",sizePagePanelsToViewPort);
     }
 }());
 
