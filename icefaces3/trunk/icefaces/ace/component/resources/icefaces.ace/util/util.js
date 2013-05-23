@@ -44,7 +44,7 @@ ice.ace.util.clone = function(obj) {
         var copy = [];
         var len;
         for (var i = 0, len = obj.length; i < len; ++i) {
-            copy[i] = ice.ace.clone(obj[i]);
+            copy[i] = ice.ace.util.clone(obj[i]);
         }
         return copy;
     }
@@ -52,7 +52,7 @@ ice.ace.util.clone = function(obj) {
     if (obj instanceof Object) {
         var copy = {};
         for (var attr in obj) {
-            if (obj.hasOwnProperty(attr)) copy[attr] = ice.ace.clone(obj[attr]);
+            if (obj.hasOwnProperty(attr)) copy[attr] = ice.ace.util.clone(obj[attr]);
         }
         return copy;
     }
