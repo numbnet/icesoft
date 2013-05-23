@@ -19,7 +19,7 @@
 .mobi-video video{
     display: block;
     margin-bottom: 14px;
-    width: 100%; 
+    width: 100%; height:auto;
 }
  
 .mobi-video a,.mobi-video a:hover, .mobi-video a:visited,
