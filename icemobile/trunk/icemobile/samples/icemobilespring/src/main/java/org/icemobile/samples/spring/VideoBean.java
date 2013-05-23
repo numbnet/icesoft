@@ -28,7 +28,7 @@ public class VideoBean extends MediaBean {
     public VideoBean() {
 
         this.controls = true;
-        this.src = "resources/video/icesoft_mobile_push.mp4";
+        this.src = "media/icesoft_mobile_push.mp4";
     }
 
 }
