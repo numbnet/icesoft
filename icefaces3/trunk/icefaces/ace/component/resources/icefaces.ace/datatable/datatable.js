@@ -880,7 +880,7 @@ ice.ace.DataTable.prototype.setupResizableColumns = function () {
                 var columnHeader = ice.ace.jq(item);
                 columnWidths.push(columnHeader.css('width'));
             });
-            ice.ace.jq.cookie((_self.columnWidthsCookie, columnWidths.join(','));
+            ice.ace.jq.cookie(_self.columnWidthsCookie, columnWidths.join(','));
         }
     });
 
