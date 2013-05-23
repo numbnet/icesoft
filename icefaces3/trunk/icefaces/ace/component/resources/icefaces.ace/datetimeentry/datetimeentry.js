@@ -89,7 +89,7 @@ ice.ace.Calendar = function(id, cfg) {
 
         //Visuals
         if(this.cfg.popup && this.cfg.theme != false) {
-            ice.ace.skinInput(this.jq);
+            ice.ace.util.bindHoverFocusStyle(this.jq);
         }
         behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.dateTextChange;
     }

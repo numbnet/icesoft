@@ -17,7 +17,7 @@
 // Constructor
 ice.ace.linkButton = function(clientId, cfg) {
     var self = this,
-        event = ice.ace.getEvent();
+        event = ice.ace.util.getEvent();
     this.id = clientId;
     this.jqId = ice.ace.escapeClientId(clientId);
     this.element = ice.ace.jq(this.jqId);

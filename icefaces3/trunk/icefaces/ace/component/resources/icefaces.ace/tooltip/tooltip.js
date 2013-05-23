@@ -157,7 +157,7 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function(callback) {
     if (behavior) {
         ice.ace.ab(ice.ace.extendAjaxArgs(
                 behavior,
-                ice.ace.removeExecuteRenderOptions(options)
+                ice.ace.clearExecRender(options)
         ));
     } else ice.ace.AjaxRequest(options);
 };

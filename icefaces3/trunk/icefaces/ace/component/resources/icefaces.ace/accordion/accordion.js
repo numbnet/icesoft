@@ -94,7 +94,7 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
     if (behaviourArgs) {
         ice.ace.ab(ice.ace.extendAjaxArgs(
                 behaviourArgs,
-                ice.ace.removeExecuteRenderOptions(options)
+                ice.ace.clearExecRender(options)
         ));
     } else ice.ace.AjaxRequest(options);
 };

@@ -176,7 +176,7 @@ ice.ace.Tree.prototype.sendReorderingRequest = function(source, parent, index) {
     if (this.cfg.behaviors && this.cfg.behaviors['reorder']) {
         ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.cfg.behaviors['reorder'],
-                ice.ace.removeExecuteRenderOptions(options)
+                ice.ace.clearExecRender(options)
         ));
     } else {
         ice.ace.AjaxRequest(options);
@@ -237,7 +237,7 @@ ice.ace.Tree.prototype.sendNodeDeselectionRequest = function(node) {
     if (this.cfg.behaviors && this.cfg.behaviors['deselect']) {
         ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.cfg.behaviors['deselect'],
-                ice.ace.removeExecuteRenderOptions(options)
+                ice.ace.clearExecRender(options)
         ));
     } else {
         ice.ace.AjaxRequest(options);
@@ -259,7 +259,7 @@ ice.ace.Tree.prototype.sendNodeSelectionRequest = function(node) {
     if (this.cfg.behaviors && this.cfg.behaviors['select']) {
         ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.cfg.behaviors['select'],
-                ice.ace.removeExecuteRenderOptions(options)
+                ice.ace.clearExecRender(options)
         ));
     } else {
         ice.ace.AjaxRequest(options);
@@ -327,7 +327,7 @@ ice.ace.Tree.prototype.sendNodeContractionRequest = function(node) {
     if (this.cfg.behaviors && this.cfg.behaviors['contract']) {
         ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.cfg.behaviors['contract'],
-                ice.ace.removeExecuteRenderOptions(options)
+                ice.ace.clearExecRender(options)
         ));
     } else {
         ice.ace.AjaxRequest(options);
@@ -346,7 +346,7 @@ ice.ace.Tree.prototype.sendNodeExpansionRequest = function(node) {
     if (this.cfg.behaviors && this.cfg.behaviors['expand']) {
         ice.ace.ab(ice.ace.extendAjaxArgs(
                 this.cfg.behaviors['expand'],
-                ice.ace.removeExecuteRenderOptions(options)
+                ice.ace.clearExecRender(options)
         ));
     } else {
         ice.ace.AjaxRequest(options);

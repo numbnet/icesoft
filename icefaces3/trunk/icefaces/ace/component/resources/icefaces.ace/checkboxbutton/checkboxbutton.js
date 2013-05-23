@@ -31,7 +31,7 @@ ice.ace.checkboxbutton = function(clientId, options) {
     this.button = ice.ace.jq(this.buttonSelector);
     this.icon = ice.ace.jq(this.iconSelector);
     var self = this,
-        event = ice.ace.getEvent();
+        event = ice.ace.util.getEvent();
 
     // Event Binding
     ice.ace.jq(this.jqId)
