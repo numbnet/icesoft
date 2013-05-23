@@ -21,17 +21,9 @@
 <%@ taglib prefix="push"
     uri="http://www.icepush.org/icepush/jsp/icepush.tld"
 %>
-<form:form id="audioPlayerForm" method="POST">
+<form:form id="audioPlayerForm" modelAttribute="audioBean"  method="POST">
 
     <mobi:fieldsetGroup>
-       <mobi:fieldsetRow>
-           <label class="ui-input-text">Preload audio</label>
-           <select name="preLoad" style="float:right">
-              <option value="none" ${audioBean.preload=='none' ? 'selected' : ''}>none</option>
-              <option value="auto" ${audioBean.preload=='auto' ? 'selected' : ''}>auto</option>
-              <option value="metadata" ${audioBean.preload=='metadata' ? 'selected' : ''}>metadata</option>
-          </select>&#160;
-       </mobi:fieldsetRow>
        <mobi:fieldsetRow>
            <label class="ui-input-text">Audio Controls: </label>
            <mobi:flipswitch id="fs2" labelOn="true" labelOff="false" style="float:right"
@@ -71,7 +63,7 @@
                             style="width:50%"
                             type="${audioBean.type}"
                             loop = "${audioBean.loop}"
-                            preload="${audioBean.preload}"
+                            preload="true"
                             muted="${audioBean.muted}"
                             linkLabel="${audioBean.linkLabel}"
                             controls="${audioBean.controls}"/>

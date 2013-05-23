@@ -251,108 +251,12 @@ html.ipad #splash > h5, html.iphone #splash > h5{
     padding: 0 1%;
     font-weight:normal;
 }
-.form .mobi-fieldset{
-    clear: both;
-    text-align:center;
-}
-html.ipad .form .mobi-fieldset.intro .mobi-fieldset-row,
-html.iphone .form .mobi-fieldset.intro .mobi-fieldset-row,
-html.bb10 .form .mobi-fieldset.intro .mobi-fieldset-row{
-    display: block;
-}
-.form .mobi-fieldset.intro{
-    text-align:left;
-}
-html.bberry .form .mobi-fieldset{
-    text-align:left;
-}
-html.ipad .form .mobi-fieldset-row,
-html.iphone .form .mobi-fieldset-row,
-html.bb10 .form .mobi-fieldset-row{
-    display: -webkit-box;
-    display: -moz-box;
-    -webkit-box-orient: horizontal;
-    -moz-box-orient: horizontal;
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -moz-box-orient: horizontal;
-    box-orient: horizontal;
-    position: relative;
-    min-width: 100%;
-}
-.form .mobi-fieldset-row .mobi-getenhanced{
-    display: block;
-    width: 100%;
-}
-html.ipad .form .mobi-fieldset-row .mobi-getenhanced .mobi-button,
-html.iphone .form .mobi-fieldset-row .mobi-getenhanced .mobi-button,
-html.bb10 .form .mobi-fieldset-row .mobi-getenhanced .mobi-button{
-    box-sizing: content-box;
-}
-html.ipad .form label,
-html.iphone .form label,
-html.bb10 .form label{
-    width:100px;
-    text-align:left;
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    box-sizing: border-box;
-    overflow: hidden;
-    display: block!important;
-    float: none!important;
-}
-html.ipad .form .mobi-fieldset-row > input, html.iphone .form .mobi-fieldset-row > input, html.bb10 .form .mobi-fieldset-row > input, 
-html.ipad .form .mobi-fieldset-row > select, html.iphone .form .mobi-fieldset-row > select, html.bb10 .form .mobi-fieldset-row > select, 
-html.ipad .form .mobi-fieldset-row > span, html.iphone .form .mobi-fieldset-row > span, html.bb10 .form .mobi-fieldset-row > span,
-html.ipad .form .mobi-fieldset-row > textarea, html.iphone .form .mobi-fieldset-row > textarea, html.bb10 .form .mobi-fieldset-row > textarea{
-    -webkit-box-flex: 2;
-    -moz-box-flex: 2;
-    -moz-box-sizing: border-box;
-    -wekit-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    display: block!important;
-    float: none!important;
-}
-.form .mobi-fieldset-row.mobi-fieldset-row-group{
-    text-align:left;
-}
-html.ipad .form .mobi-fieldset-row > span > input,
-html.iphone .form .mobi-fieldset-row > span > input,
-html.bb10 .form .mobi-fieldset-row > span > input{
-    display:block;
-    width:100%;
- }
-html.ipad .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
-html.iphone .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
-html.bb10 .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
-    -moz-box-sizing: border-box;
-    -wekit-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    display: block!important;
-    float: none!important;
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-}
-.form h3{
-    clear:both;
-    padding-top:10px;
-}
 .center{
     margin: 0 auto;
     display: block;
     text-align: center;
     padding: 10px;
 }
-.form p{ text-align:left; margin:0 0 10px 0;}
-html.ipad .form .mobi-fieldset-row > span.mobi-thumb, html.ipad .form .mobi-fieldset-row > span.mobi-thumb-done,
-html.iphone .form .mobi-fieldset-row > span.mobi-thumb, html.iphone .form .mobi-fieldset-row > span.mobi-thumb-done{
-    display: inline-block!important;
-}
-
 /* LARGE SCREEN */
 @media screen and (min-width: 580px) {  
     input.submit, button.submit{
@@ -414,46 +318,12 @@ html.iphone .examplesLink{
 }
 .buttons .mobi-fieldset-row{ text-align:center; }
 .buttons .mobi-button{ min-width:125px;max-width:300px;width:40%; }
-html.bberry .fieldsetpage input{
-    float: right;
+.results label{ 
+    display: inline-block; 
+    width: 49%;
+    max-width: 49%;
+    text-align:left !important;
 }
-html.bberry .fieldsetpage .form .mobi-fieldset-row{
-    height: 30px;
-}
-html.bberry .fieldsetpage .form .mobi-fieldset-row-group{
-    height: 20px;
-}
-html.bberry .mobi-fieldset-row > label{
-    line-height: 26px;
-}
-html.bberry .mobi-fieldset-row-group {
-    background-color: #EEE;
-}
-html.bberry .mobi-center{
-    text-align:center;
-}
-html.bberry .tabsetpage, html.iphone .tabsetpage, html.android .tabsetpage{
-    padding-top: 40px;
-}
-html.bberry .tabsetpage .mobi-tabset.mobi-tabset-tabs-top-header,
-html.android .tabsetpage .mobi-tabset.mobi-tabset-tabs-top-header,
-html.iphone .tabsetpage .mobi-tabset.mobi-tabset-tabs-top-header{
-    padding-top: 0;
-}
-html.bberry .geolocpage .timeout{
-    height: 80px;
-}
-html.bberry .geolocpage .maxage{
-    height: 60px;
-}
-html.bberry .geolocpage .timeout label, html.bberry .geolocpage .maxage label{
-    float: left;
-}
-html.bberry .geolocpage .timeout div, html.bberry .geolocpage .maxage div{
-    float: right;
-}
-
-.results label{ display: inline-block; width: 49%; max-width: 49%; text-align:left !important;}
 .results span{ 
     display: inline-block; 
     text-align: right; 
@@ -463,6 +333,4 @@ html.bberry .geolocpage .timeout div, html.bberry .geolocpage .maxage div{
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-
 .span-2{ display: inline-block; width: 45%; margin: 0 1%; }

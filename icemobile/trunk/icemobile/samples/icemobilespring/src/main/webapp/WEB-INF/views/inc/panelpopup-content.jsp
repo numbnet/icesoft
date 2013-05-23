@@ -71,7 +71,7 @@
 			<div
 				style="text-align: right; background-color: rgba(255, 255, 255, 0.5)">
 				<input type="button" value="Close"
-					class="mobi-button mobi-button-important"
+					class="mobi-button mobi-button-important ui-btn-up-c"
 					onclick="ice.mobi.panelPopup.closeClient('popup');" />
 			</div>
 		</mobi:panelPopup>
@@ -103,7 +103,7 @@
 			<div
 				style="text-align: right; background-color: rgba(255, 255, 255, 0.5)">
 				<input type="button" value="Close"
-					class="mobi-button mobi-button-important"
+					class="mobi-button mobi-button-important ui-btn-up-c"
 					onclick="ice.mobi.panelPopup.closeClient('autoCenterPopup');" />
 			</div>
 		</mobi:panelPopup>
