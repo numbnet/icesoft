@@ -40,7 +40,7 @@
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
 			<mobi:thumbnail for="cam" />
-			<mobi:camera id="cam" style="margin-left:20px" />
+			<mobi:camera id="cam" style="float:left" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
