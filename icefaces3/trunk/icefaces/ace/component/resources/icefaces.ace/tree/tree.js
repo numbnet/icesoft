@@ -111,7 +111,7 @@ ice.ace.Tree.prototype.setupReordering = function () {
         },
         update:function (event, ui) {
             if (self.droppedItemSameParent(ui.item)) {
-                var parent = ice.ace.jq(this).closest('.if-node-cnt, .if-tree'),
+                var parent = ice.ace.jq(ui.item).parent().closest('.if-node-cnt, .if-tree'),
                     source = ice.ace.jq(ui.item);
                     index = source.index();
                 self.sendReorderingRequest(source, parent, index, self.cfg.indexIds);
