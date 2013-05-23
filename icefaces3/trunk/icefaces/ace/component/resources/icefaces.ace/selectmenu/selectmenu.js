@@ -466,23 +466,33 @@ ice.ace.SelectMenu.prototype = {
 
     onBlur: function(event) {
         var element = ice.ace.jq(this.element);
+		// check if last click was done on scrollbar
+		if (navigator.userAgent.indexOf("MSIE") >= 0) {
+			var n = this.height;
+			if (n!=null && n!='' && typeof n === 'number' && n % 1 == 0) {
+				var posx=0; var posy=0;
+				var e = window.event;
+				if (e.pageX || e.pageY) {
+					posx = e.pageX;
+					posy = e.pageY;
+				} else if (e.clientX || e.clientY) {
+					posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+					posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+				}
+				var widthX=element.position().left+element.width();
+				var heightX=element.position().top+element.height()+parseFloat(this.height)+10;
+				if ( (posx>element.position().left && posx<=widthX) && (posy>element.position().top && posy<heightX) ) {
+					this.element.focus();
+					return;
+				}
+			}
+		}
         if (ice.ace.jq.trim(this.displayedValue.innerHTML) == '&nbsp;' && this.cfg.inFieldLabel) {
 			this.displayedValue.innerHTML = this.replaceSpaces(this.cfg.inFieldLabel);
             element.addClass(this.cfg.inFieldLabelStyleClass);
             element.data("labelIsInField", true);
         }
-        if (navigator.userAgent.indexOf("MSIE") >= 0) { // ICE-2225
-            var strictMode = document.compatMode && document.compatMode == "CSS1Compat";
-            var docBody = strictMode ? document.documentElement : document.body;
-            // Right or bottom border, if any, will be treated as scrollbar.
-            // No way to determine their width or scrollbar width accurately.
-            if (event.clientX > docBody.clientLeft + docBody.clientWidth ||
-                event.clientY > docBody.clientTop + docBody.clientHeight) { 
-                this.element.focus();
-                return;
-            }
-        }
-        // needed to make click events working
+        // needed to make click events work
 		var self = this;
         this.hideObserver = setTimeout(function () { self.hide(); }, 250);
         this.hasFocus = false;
