@@ -25,6 +25,8 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
         <title>DataTimeEntry Locale Tutorial</title>
+    </h:head>
+    <h:body>
         <script type="text/javascript">
             // French initialization
             ice.ace.locales['fr'] = {
@@ -62,8 +64,8 @@
                 showMonthAfterYear: true,
                 yearSuffix: '年'
             };
-			// Spanish initialization
-                ice.ace.locales['es'] = {
+            // Spanish initialization
+            ice.ace.locales['es'] = {
                 closeText: 'Cerrar',
                 prevText: 'Previo',
                 nextText: 'Próximo',
@@ -79,10 +81,8 @@
                 isRTL: false,
                 showMonthAfterYear: false,
                 yearSuffix: ''
-            };    
+            };
         </script>
-    </h:head>
-    <h:body>
 		<h:form id="frm">
 			<h:panelGrid columns="2">
 				<ace:dateTimeEntry id="french" locale="fr"/>
