@@ -26,6 +26,14 @@
 
 @import "../mixins";
 
+.ui-btn-up-a, .ui-btn-down-a, 
+.ui-btn-up-b, .ui-btn-down-b, 
+.ui-btn-up-c, .ui-btn-down-c, 
+.ui-btn-up-d, .ui-btn-down-d, 
+.ui-btn-up-e, .ui-btn-down-e {
+    border-radius: 5px;
+}
+
 /* Swatches */
 /* A
 -----------------------------------------------------------------------------------------------------------*/
