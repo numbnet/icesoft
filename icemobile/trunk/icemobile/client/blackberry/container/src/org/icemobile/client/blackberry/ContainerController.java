@@ -172,5 +172,15 @@ public interface ContainerController {
      */
     public void insertHiddenFieldUntyped(final String id, final String hiddenArgument); 
     
+    /**
+     * Exit the container 
+     */
+    public void shutdownContainer(); 
+    
+    /**
+     * Run a series of diagnostic checks on the javascript namespace defined in the BrowserField
+     */
+    public void testJavascriptNamespace();
+    
   
 }
