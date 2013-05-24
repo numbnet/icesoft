@@ -37,14 +37,11 @@
        <div id="innerwrp">
 	    <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item"
 	         selectedItem="#{carousel.selectedIndex}" singleSubmit="true">
-            <h:column>
 	          <h:panelGroup id="imgPanel">
 	            <mobi:graphicImage id="innerImg" value="#{item.imageUrl}" title="#{item.title}"
 	                            style="border:none;height:75px;"/>
                 <h:outputLabel id="labimg" value="#{item.title}"/>
 	          </h:panelGroup>
-           </h:column>
-
 	    </mobi:carousel>
        </div>
         <h5>add an item to check ability to add or remove items from list</h5>

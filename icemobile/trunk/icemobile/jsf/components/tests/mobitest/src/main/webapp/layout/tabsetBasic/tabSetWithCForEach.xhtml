@@ -47,7 +47,7 @@
                      fixedHeight="333px"
                      fixedPosition="false"
                      parentHeader="false"
-                     parentFooter="false" autoWidth="false"
+                     parentFooter="false" autoWidth="true"
                      orientation="top">
             <c:forEach items="#{layoutBean.eachContentPane}"
                        var="currContentPane">
@@ -66,7 +66,7 @@
                                  alt="#{currContentPane.alt}"/>
                             <figcaption>#{currContentPane.figcaption}</figcaption>
                         </figure>
-                        <ui:include src="../included.xhtml"/>
+
                     </fieldset>
                 </mobi:contentPane>
             </c:forEach>
