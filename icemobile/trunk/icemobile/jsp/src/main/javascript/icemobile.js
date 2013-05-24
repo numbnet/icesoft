@@ -2337,25 +2337,35 @@ if (window.addEventListener) {
 };
 
 (function(){
-    var sizePagePanelsToViewPort = function(){
-        var pagePanels = document.querySelectorAll(".mobi-pagePanel"), i=0;
-        while( i < pagePanels.length ){
-            pagePanels[i].style.minHeight = ''+window.innerHeight+'px';
-            var hasHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel-header").length > 0;
-            var hasFooter = pagePanels[i].querySelectorAll(".mobi-pagePanel-footer").length > 0;
-            var pagePanelBodyMinHeight = window.innerHeight - (hasHeader ? 40 : 0) - (hasFooter ? 40 : 0);
-            var body = pagePanels[i].querySelector(".mobi-pagePanel-body");
-            if( body ){
-                body.style.minHeight = ''+pagePanelBodyMinHeight+'px';
+    ice.mobi.sizePagePanelsToViewPort = function(){
+        var desktop = document.documentElement.className.indexOf('desktop') > -1;
+        if( !desktop ){
+            var pagePanels = document.querySelectorAll(".mobi-pagePanel"), i=0;
+            while( i < pagePanels.length ){
+                var hasHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel-header").length > 0;
+                var hasFixedHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel-header.ui-header-fixed").length > 0;
+                var hasFooter = pagePanels[i].querySelectorAll(".mobi-pagePanel-footer").length > 0;
+                var hasFixedFooter = pagePanels[i].querySelectorAll(".mobi-pagePanel-footer.ui-footer-fixed").length > 0;
+                var pagePanelBodyMinHeight = window.innerHeight;
+                if( hasHeader && !hasFixedHeader ){
+                    pagePanelBodyMinHeight -= 40;
+                }
+                if( hasFooter && !hasFixedFooter ){
+                    pagePanelBodyMinHeight -= 40;
+                }
+                var body = pagePanels[i].querySelector(".mobi-pagePanel-body");
+                if( body ){
+                    body.style.minHeight = ''+pagePanelBodyMinHeight+'px';
+                }
+                i++;
             }
-            i++;
         }
         
     };
     if( window.innerHeight ){
-        setTimeout(sizePagePanelsToViewPort,50);
-        ice.mobi.addListener(window,"orientationchange",sizePagePanelsToViewPort);
-        ice.mobi.addListener(window,"resize",sizePagePanelsToViewPort);
+        window.addEventListener('load', ice.mobi.sizePagePanelsToViewPort);
+        ice.mobi.addListener(window,"orientationchange",ice.mobi.sizePagePanelsToViewPort);
+        ice.mobi.addListener(window,"resize",ice.mobi.sizePagePanelsToViewPort);
     }
 }());
 
