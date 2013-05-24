@@ -119,7 +119,12 @@ public class Participant implements Serializable {
 
     @PreDestroy
     public void logout() {
-        PushRenderer.removeCurrentSession(ChatRoom.ROOM_RENDERER_NAME);
+        try {
+            PushRenderer.removeCurrentSession(ChatRoom.ROOM_RENDERER_NAME);
+        } catch (Exception e) {
+            //Ignore any issues trying to remove ourselves from the session during logout as it
+            //could happen on a non-JSF thread when the session expires meaning there is no FacesContext available.
+        }
         ChatRoom cr = getChatRoom();
         if( cr != null ){
             cr.removeParticipant(this);
