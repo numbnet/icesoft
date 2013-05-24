@@ -1,0 +1,91 @@
+/*
+ * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+ @import "../mixins";
+ 
+.mobi-tabset {
+    margin: 0;
+    padding: 0;
+}
+/* padding for pagepanel */
+.mobi-tabset.mobi-tabset-tabs-top-header{
+    padding-top: 39px;
+}
+.mobi-tabset.mobi-tabset-tabs-bottom-footer{ 
+    padding-bottom:40px;
+}
+.mobi-tabset > .mobi-tabset-tabs{
+    position: fixed;
+    text-align:center;
+    width: 100%;
+    z-index: 496;
+    border: none;
+}
+
+.mobi-tabset > .mobi-tabset-tabs-nonfixed{
+    position: static;
+    top: 0 !important;
+    bottom: 0!important;
+}
+.mobi-tabset.mobi-tabset-tabs-top-header > .mobi-tabset-tabs-nonfixed{
+    margin-top: -39px !important;
+}
+.mobi-tabset.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs-nonfixed{
+    margin-bottom: -40px !important;
+}
+
+.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs{
+    top: 0;
+}
+.mobi-tabset-tabs-bottom > .mobi-tabset-tabs{ 
+    bottom: 0; 
+}
+.mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
+    top: 40px;
+}
+
+.mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
+    bottom: 40px;
+}
+
+.mobi-tabset > .mobi-tabset-tabs > ul{
+    margin: 0;
+    padding: 0;
+    height: 40px;
+}
+.mobi-tabset > .mobi-tabset-tabs > ul > li{
+    cursor: pointer;
+    display: inline-block;
+    line-height: 38px;
+    padding: 0;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 40px;
+    float: left;
+    @include border-box;
+}
+.mobi-tabpage-hidden { 
+    display: none; 
+}
+.mobi-tabpage{
+}
