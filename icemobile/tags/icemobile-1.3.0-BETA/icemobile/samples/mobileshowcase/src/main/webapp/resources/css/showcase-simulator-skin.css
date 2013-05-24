@@ -1,6 +1,0 @@
-#splitPane_left::-webkit-scrollbar, .mobi-pagePanel-body::-webkit-scrollbar {
-    width: 0;
-}
-body, #splitPane_right{
-    overflow-y: scroll;
-}
