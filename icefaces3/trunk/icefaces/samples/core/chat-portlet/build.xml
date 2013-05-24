@@ -23,6 +23,7 @@
     <import file="../build/common.xml"/>
 
     <patternset id="portlet.files">
+        <exclude name="**/*web.xml"/>
         <exclude name="**/*view.xhtml"/>
         <exclude name="**/*liferay*"/>
         <exclude name="**/*portlet.xml"/>
