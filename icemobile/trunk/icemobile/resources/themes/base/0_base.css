@@ -32,16 +32,6 @@ a:hover{ text-decoration: underline;}
 .mobi-hidden{
     display:none !important;
 }
-/* bb10 container does not support fixed positioning */ 
-html.bb10ctr .ui-header-fixed, html.bb10ctr .ui-footer-fixed{
-    position: relative !important; 
-}
-html.bb10ctr .mobi-pagePanel-body{ padding: 0 !important; }
-html.bb10ctr .mobi-tabset-tabs{ position: relative; top: 0 !important; }
-html.bb10ctr .mobi-tabset.mobi-tabset-tabs-top-header{ padding-top: 0 !important; }
-html.bb10ctr .mobi-tabset.mobi-tabset-tabs-bottom-footer{ padding-bottom: 0 !important; }
-html.bb10ctr .mobi-date-bg, html.bb10ctr .mobi-time-bg, html.bb10ctr .mobi-panelconf-bg, 
-html.bb10ctr .mobi-panelpopup-bg, html.bb10ctr .mobi-submitnotific-bg{ display: none !important; }
 
 html.ie10 *{ filter: none !important; } /* turn off filters for ie10 */
 
