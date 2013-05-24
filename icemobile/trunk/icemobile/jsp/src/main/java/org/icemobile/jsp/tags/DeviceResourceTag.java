@@ -192,6 +192,9 @@ public class DeviceResourceTag extends BaseSimpleTag {
         if( client.isAndroidBrowserOrWebView()){
             markers += " android-browser";
         }
+        if( client.isDesktopBrowser()){
+            markers += " desktop";
+        }
         out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+'" 
                 + markers + "';if (window.addEventListener) window.addEventListener('load', function() {document.body.className = 'ui-body-c';});</script>");
 		

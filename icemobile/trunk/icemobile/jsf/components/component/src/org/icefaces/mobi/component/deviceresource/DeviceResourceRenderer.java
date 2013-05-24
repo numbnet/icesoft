@@ -251,6 +251,9 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         if( client.isAndroidBrowserOrWebView()){
             markers += " android-browser";
         }
+        if( client.isDesktopBrowser()){
+            markers += " desktop";
+        }
         writer.writeText("document.documentElement.className = document.documentElement.className+'" 
                 + markers + "'; if (window.addEventListener) window.addEventListener('load', function() {document.body.className = 'ui-body-c';});", null);
         
