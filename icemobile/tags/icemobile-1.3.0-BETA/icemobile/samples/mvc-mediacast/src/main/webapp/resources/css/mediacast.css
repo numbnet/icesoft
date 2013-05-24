@@ -1,0 +1,105 @@
+/*
+ * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+.view-play-icon {
+	display: inline-block;
+	height: 26px;
+	left: 50px;
+	margin: 0;
+	position: relative;
+	top: -32px;
+	width: 33px;
+	opacity: 0.7;
+}
+.mobi-pagePanel-footer {
+	color: #FFF;
+	font-size:10pt;
+	font-weight: bold;
+	height:30px;
+	padding-top:10px;
+}
+#icemobileIcon{
+	float: right;
+	margin-top: -7px;
+	margin-right: 5px;
+}
+#springIcon{
+	float: left;
+	margin-top: -7px;
+	margin-left: 5px;
+}
+.js .ajaxHide{
+	display:none;
+}
+.ajaxShow{
+	display:none; /* Show only for Ajax clients */
+}
+.js .ajaxShow{
+	display:block; /* Show only for Ajax clients */
+}
+
+.input{
+	width: 100%;	
+}
+#geoGrid{ height: 70px; }
+#geoGrid label{
+	float: left;
+	text-align: right;
+	width: 90px;
+	clear: both;
+	font-weight: bold;
+	font-size: smaller;
+}
+#geoGrid span{
+	float: left;
+	width: 120px;
+	margin-left: 10px;
+	font-size: smaller;
+}
+#largePhoto img{
+	border-radius: 0.6em;
+	-webkit-border-radius: 0.6em;
+	-moz-border-radius: 0.6em;
+	margin-bottom: 5px;
+}
+ul.tagCloud {
+	float: left;
+	display: block;
+	overflow: auto;
+	padding: 20px;
+	margin: 0 10px 20px 0;
+}
+
+ul.tagCloud li {
+	display: inline;
+}
+
+ul.tagCloud li a {
+	margin: 2px;
+}
+
+ul.tagCloud a {
+	color: #4040F0;
+	text-decoration: none;
+}
+.mobi-carousel-cursor-list { display:none;}
+.mobi-carousel-list li > img{
+    height:75px;
+}
+.mobi-carousel-list li div{
+    overflow:hidden;
+    height:75px;
+}

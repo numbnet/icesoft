@@ -1,0 +1,116 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">submitNotification Tests</title>
+    <mobi:deviceResource   includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}"/>
+
+</h:head>
+
+<h:body>
+ 
+   <h3>submitNotification tests on commandButton</h3>
+   <h:form id="form1">
+       <mobi:fieldsetGroup>
+           <mobi:fieldsetRow>
+               <h5>just submitNotification on button</h5>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="text1" value="Inputname for submitNotification Popup"/>
+               <mobi:inputText id="text1" value="#{submitNotification.name}"
+                               singleSubmit="true"
+                               type="text" placeholder="name" />
+           </mobi:fieldsetRow>
+
+           <mobi:fieldsetRow>
+               <h:outputLabel for="button1" value="SingleSubmit"></h:outputLabel>
+               <mobi:commandButton id="button1" value="submitBlockOn"
+                            submitNotification="sn1"
+                            actionListener="#{submitNotification.testSubmitNotification}"/>
+           </mobi:fieldsetRow>
+       </mobi:fieldsetGroup>
+       <mobi:submitNotification id="sn1"
+                                style="#{submitNotification.style}"
+                                styleClass = "#{submitNotification.styleClass}"
+                                disabled="#{submitNotification.disabled}">
+            <h:outputText value="WORKING..."/>
+       </mobi:submitNotification>
+
+   </h:form>
+
+
+   <h:form id="form2">
+       <mobi:fieldsetGroup>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="textSSFalse" value="Standard ajax submit name"/>
+               <mobi:inputText id="textSSFalse" value="#{submitNotification.name}" type="text"
+                        placeholder="name" title="basic text input"/>
+          </mobi:fieldsetRow>
+          <mobi:fieldsetRow>
+              <h:outputLabel for="ex2" value="no singleSubmit"/>
+              <mobi:commandButton id="ex2" value="StandardSubmit"
+                           panelConfirmation="pc1"
+                           submitNotification="sn2"
+                           actionListener="#{submitNotification.testSubmitNotification}"/>
+          </mobi:fieldsetRow>
+
+              <mobi:panelConfirmation id="pc1" message="working"/>
+              <mobi:submitNotification id="sn2"
+                                style="#{submitNotification.style}"
+                                styleClass = "#{submitNotification.styleClass}"
+                                disabled="#{submitNotification.disabled}">
+                    <h:outputText value="WORKING...#{submitNotification.name}"/>
+                    <h:outputText value="MESSAGE:- #{submitNotification.submitMessage}" />
+             </mobi:submitNotification>
+        <br />
+       </mobi:fieldsetGroup>
+    </h:form>
+
+
+  <h:form>
+    <h3>RESULTS</h3>
+     <mobi:fieldsetGroup>
+         <mobi:fieldsetRow>
+             <h:outputLabel for="name" value="Submit Notification message:" />
+             <mobi:inputText id="name" value="#{submitNotification.submitMessage}" singleSubmit="true"/>
+         </mobi:fieldsetRow>
+         <mobi:fieldsetRow>
+             <h:outputLabel for="disabled" value="Disabled:" />
+             <mobi:flipswitch id="disabled" value="#{submitNotification.disabled}" singleSubmit="true"/>
+         </mobi:fieldsetRow>
+         <mobi:fieldsetRow>
+             <h:outputLabel for="style" value="Style:"/>
+             <mobi:inputText id="style" value="#{submitNotification.style}" singleSubmit="true"/>
+         </mobi:fieldsetRow>
+         <mobi:fieldsetRow>
+             <h:outputLabel for="styleClass" value="Cancel Label:"/>
+             <mobi:inputText id="styleClass" value="#{submitNotification.styleClass}" singleSubmit="true"/>
+         </mobi:fieldsetRow>
+
+     </mobi:fieldsetGroup>
+  </h:form>
+    <br />
+	<li><a href="../inputComponents.html">input components page</a>
+	</li>
+</h:body>
+</html>
