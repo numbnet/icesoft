@@ -1058,6 +1058,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         if (ie7) tableLayout();
 
         // Set Duplicate Sizing
+        var cssid = this.jqId.substr(1)+'_colSizes',
+            styleSheet = ice.ace.util.getStyleSheet(cssid) || ice.ace.util.addStyleSheet(cssid, this.jqId);
+
         if (!ie7) {
             for (var i = 0; i < bodySingleCols.length; i++) {
                 bodyColumn = ice.ace.jq(bodySingleCols[i]);
@@ -1075,7 +1078,12 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
                 // Set Duplicate Header Sizing to Body Columns
                 // Equiv of max width
-                bodyColumn.parent().width(bodyColumnWidth);
+                var index = bodySingleCols.length - i - 1,
+                    selector =  this.jqId+' .ui-col-'+index+' > div';
+                if (styleSheet.insertRule)
+                    styleSheet.insertRule(selector + ' { width:' + bodyColumnWidth + 'px; }',0);
+                else if (styleSheet.addRule)
+                    styleSheet.addRule(selector, 'width:' + bodyColumnWidth + 'px;');
 
                 // Adjust last column size to stop prevent horizontal scrollbar / align vertical
                 if (i == 0) {
@@ -1085,7 +1093,11 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 }
 
                 // Equiv of min width
-                bodyColumn.width(bodyColumnWidth);
+                selector =  this.jqId+' .ui-col-'+index;
+                if (styleSheet.insertRule)
+                    styleSheet.insertRule(selector + ' { width:' + bodyColumnWidth + 'px; }',0);
+                else if (styleSheet.addRule)
+                    styleSheet.addRule(selector, 'width:' + bodyColumnWidth + 'px;');
             }
 
             for (var i = 0; i < realHeadCols.length; i++) {
