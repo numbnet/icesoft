@@ -39,9 +39,18 @@ public class CachingHeaderPhaseListener implements Serializable {
 
             public void beforePhase(PhaseEvent phaseEvent) {
                 ExternalContext ec = phaseEvent.getFacesContext().getExternalContext();
-                ec.addResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-                ec.addResponseHeader("Pragma", "no-cache");
-                ec.addResponseHeader("Expires", "0");
+                Object responseObj = ec.getResponse();
+
+                //Attempting to add these headers to a PortletResponse that is not of type ResourceResponse results
+                //in the portlet bridge logging warnings.  So we avoid doing it in that particular scenario.
+                boolean avoidAddingHeaders = EnvUtils.instanceofPortletResponse(responseObj) &&
+                                             !EnvUtils.instanceofPortletResourceResponse(responseObj);
+
+                if (!avoidAddingHeaders) {
+                    ec.addResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                    ec.addResponseHeader("Pragma", "no-cache");
+                    ec.addResponseHeader("Expires", "0");
+                }
             }
 
             public PhaseId getPhaseId() {
