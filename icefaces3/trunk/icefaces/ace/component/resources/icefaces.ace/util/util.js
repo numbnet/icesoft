@@ -194,9 +194,9 @@ ice.ace.util.arraysEqual = function(arr1, arr2) {
 
 /* Style Utilities ************************************************************/
 ice.ace.util.getStyleSheet = function (sheetId) {
-    return Array.prototype.filter.call(document.styleSheets, function(s) {
-        return s.title == sheetId;
-    })[0];
+    for (var i = 0; i < document.styleSheets.length; i++) {
+        if (document.styleSheets[i].title == sheetId) return document.styleSheets[i];
+    }
 };
 
 ice.ace.util.addStyleSheet = function (sheetId, parentSelector) {
@@ -205,7 +205,7 @@ ice.ace.util.addStyleSheet = function (sheetId, parentSelector) {
     s.rel = 'stylesheet';
     s.title = sheetId;
     document.querySelectorAll(parentSelector || "head")[0].appendChild(s);
-    return ice.mobi.getStyleSheet(sheetId);
+    return ice.ace.util.getStyleSheet(sheetId);
 };
 
 ice.ace.util.getOpacity = function(elem) {

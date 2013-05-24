@@ -87,7 +87,9 @@ public class DataTableRowRenderer {
 
             boolean innerTdDivRequired = ((tableContext.isScrollable() || tableContext.isResizableColumns()) & !topVisibleRowRendered);
 
-            for (Column kid : tableContext.getColumns()) {
+            List<Column> cols = tableContext.getColumns();
+            for (int i = 0; i < cols.size(); i++) {
+                Column kid = cols.get(i);
                 if (kid.isRendered()) {
                     boolean cellSelected = false;
                     if (selectedCellExpressions != null) {
@@ -98,7 +100,7 @@ public class DataTableRowRenderer {
                         if (ve != null)
                             cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
                     }
-                    encodeRegularCell(context, tableContext.getColumns(), kid, cellSelected, innerTdDivRequired);
+                    encodeRegularCell(context, cols, i, cellSelected, innerTdDivRequired);
                 }
             }
 
@@ -183,7 +185,8 @@ public class DataTableRowRenderer {
         writer.endElement(HTML.TD_ELEM);
     }
 
-    private static void encodeRegularCell(FacesContext context, List columnSiblings, Column column, boolean selected, boolean resizable) throws IOException {
+    private static void encodeRegularCell(FacesContext context, List<Column> columnSiblings, int colIndex, boolean selected, boolean resizable) throws IOException {
+        Column column = columnSiblings.get(colIndex);
         ResponseWriter writer = context.getResponseWriter();
 
         Column nextColumn = DataTableRendererUtil.getNextColumn(column, columnSiblings);
@@ -199,6 +202,7 @@ public class DataTableRowRenderer {
         } else {
             if (!isCurrStacked) {
                 writer.startElement(HTML.TD_ELEM, null);
+                writer.writeAttribute(HTML.CLASS_ATTR, "ui-col-"+colIndex, null);
 
                 if (column.getStyle() != null)
                     writer.writeAttribute(HTML.STYLE_ELEM, column.getStyle(), null);
@@ -312,7 +316,9 @@ public class DataTableRowRenderer {
                     writer.writeAttribute(HTML.CLASS_ATTR,
                             DataTableConstants.ROW_CLASS + " " + alternatingClass + " " + selectionClass + " " + expandedClass + " " + unselectableClass, null);
 
-                    for (Column kid : tableContext.getColumns()) {
+                    List<Column> cols = tableContext.getColumns();
+                    for (int i = 0; i < cols.size(); i++) {
+                        Column kid = cols.get(i);
                         if (kid.isRendered()) {
                             boolean cellSelected = false;
                             if (selectedCellExpressions != null) {
@@ -324,7 +330,7 @@ public class DataTableRowRenderer {
                                             .contains(ve.getExpressionString());
                             }
 
-                            encodeRegularCell(context, tableContext.getColumns(), kid, cellSelected, false);
+                            encodeRegularCell(context, cols, i, cellSelected, false);
                         }
                     }
                     writer.endElement(HTML.TR_ELEM);
