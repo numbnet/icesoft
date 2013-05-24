@@ -15,11 +15,13 @@
  */
 package org.icefaces.ace.component.message;
 
+import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -49,7 +51,7 @@ public class MessageRenderer extends Renderer {
 
         UIComponent forComponent = forId.equals("") ? null : message.findComponent(forId);
         if (forComponent == null) {
-            logger.logp(Level.WARNING, logger.getName(), sourceMethod, "'for' attribute value cannot be null or empty or non-existent id.");
+            log(Level.WARNING, sourceMethod, "'for' attribute value cannot be null or empty or non-existent id.");
             return;
         }
         Iterator messageIter = context.getMessages(forComponent.getClientId(context));
@@ -57,6 +59,7 @@ public class MessageRenderer extends Renderer {
         writer.startElement("span", message);
         String clientId = message.getClientId();
         writer.writeAttribute("id", clientId, "id");
+        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
         writer.writeAttribute("class", styleClass, null);
         writeAttributes(writer, component, "lang", "style", "title");
         if (ariaEnabled) {
@@ -91,11 +94,13 @@ public class MessageRenderer extends Renderer {
         if (prevText.equals("") && !currText.equals("")) {
             event = "init";
             effect = (effect = message.getInitEffect()) != null ? effect.trim() : "";
+            logInvalid(effectSet, "effect", effect, sourceMethod);
             effect = effectSet.contains(effect) ? effect : "";
             duration = (duration = message.getInitEffectDuration()) != null ? duration.trim() : "";
         } else if (!prevText.equals("") && !currText.equals("") && !prevText.equals(currText)) {
             event = "change";
             effect = (effect = message.getChangeEffect()) != null ? effect.trim() : "";
+            logInvalid(effectSet, "effect", effect, sourceMethod);
             effect = effectSet.contains(effect) ? effect : "";
             duration = (duration = message.getChangeEffectDuration()) != null ? duration.trim() : "";
         }
@@ -108,8 +113,9 @@ public class MessageRenderer extends Renderer {
             try {
                 jb.entry("duration", Integer.parseInt(duration));
             } catch (NumberFormatException e) {
+                logInvalid(durationSet, "duration", duration, sourceMethod);
                 duration = durationSet.contains(duration) ? duration : "_default";
-                jb.entryNonNullValue("duration", duration);
+                jb.entry("duration", duration);
             }
             jb.endMap();
             writer.startElement("script", null);
@@ -164,6 +170,17 @@ public class MessageRenderer extends Renderer {
             if (value != null) {
                 writer.writeAttribute(key, value, key);
             }
+        }
+    }
+
+    private void log(Level level, String sourceMethod, String message) {
+        if (!FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Development)) return;
+        logger.logp(level, logger.getName(), sourceMethod, message);
+    }
+
+    private void logInvalid(Set<String> validSet, String name, String value, String sourceMethod) {
+        if (!value.equals("") && !validSet.contains(value)) {
+            log(Level.WARNING, sourceMethod, "Invalid " + name + " \"" + value + "\" reset to default. Read TLD doc.");
         }
     }
 }
