@@ -193,7 +193,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
             markers += " android-browser";
         }
         out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+'" 
-                + markers + "';</script>");
+                + markers + "';if (window.addEventListener) window.addEventListener('load', function() {document.body.className = 'ui-body-c';});</script>");
 		
 		String cssLink = String.format("<link type='text/css' rel='stylesheet' href='%s%s/%s/%s/%s.css' />", 
 				contextRoot, MobiJspConstants.RESOURCE_BASE_URL, DEFAULT_LIBRARY, theme, fileName);
