@@ -23,12 +23,6 @@
     height: 26px;
 }
 
-.mobi-date-bg-inv, .mobi-date-container-inv,
-.mobi-time-bg-inv, .mobi-time-container-inv{
-    opacity: 0;
-    display: none;
-}
-
 .mobi-date-container, .mobi-time-container {
     background-color: #ccc;
     border: 1px solid #e4e4e4;
