@@ -242,9 +242,6 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         String markers = " " + theme.fileName() + " ui-mobile";
-        if( client.isBlackBerry10OS() && client.isICEmobileContainer() ){
-            markers += " bb10ctr";
-        }
         if( client.isIE10Browser() ){
             markers += " ie10";
         }

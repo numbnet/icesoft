@@ -183,10 +183,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		String contextRoot = Util.getContextRoot(pageContext.getRequest());
 		
 		String markers = " " + theme + " ui-mobile";
-		if( client.isBlackBerry10OS() && client.isICEmobileContainer() ){
-            markers += " bb10ctr";
-        }
-        if( client.isIE10Browser() ){
+		if( client.isIE10Browser() ){
             markers += " ie10";
         }
         if( client.isAndroidBrowserOrWebView()){
