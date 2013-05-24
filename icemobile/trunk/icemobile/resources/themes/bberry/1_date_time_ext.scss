@@ -21,7 +21,7 @@
     height: 24px;
 }
 
-.mobi-time-popup-btn {
+.mobi-date-popup-btn {
     width: 28px;
     height: 26px;
 }
@@ -34,10 +34,12 @@
 }
 
 .mobi-date-title-container, .mobi-time-title-container {
-    background-color: #000;
+    background-color: #444;
     color: white;
     text-align: center;
     border-bottom: 1px solid white;
+    color: #FFF;
+    text-shadow: none;
 }
 
 .mobi-date-select-container, .mobi-time-select-container {
