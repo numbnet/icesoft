@@ -729,4 +729,4 @@ ice.ace.List.prototype.clearSelection = function() {
     } else if (document.selection) {  // IE?
         document.selection.empty();
     }
-}
+};
