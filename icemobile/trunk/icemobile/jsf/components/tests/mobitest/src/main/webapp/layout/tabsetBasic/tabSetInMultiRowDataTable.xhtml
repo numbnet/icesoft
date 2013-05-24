@@ -38,10 +38,10 @@
         <h:dataTable value="#{layoutBean.dataListMultiRow}" var="tblVar"
                 style="width:550px;">
             <h:column>
-                <mobi:tabSet id="test1" currentId="#{tblVar.selectedPane}"
+                <mobi:tabSet id="test1" selectedId="#{tblVar.selectedPane}"
                              parentHeader="false"
                              fixedPosition="false"
-                             parentFooter="false" autoWidth="false"
+                             parentFooter="false" autoWidth="true"
                              orientation="top">
                     <mobi:contentPane id="panel1" title="panel1" client="true">
                         <fieldset title="panel1">
@@ -93,7 +93,6 @@
                                      alt="joker"/>
                                 <figcaption>joker</figcaption>
                             </figure>
-                            <ui:include src="../included.xhtml"/>
                         </fieldset>
                     </mobi:contentPane>
                 </mobi:tabSet>
