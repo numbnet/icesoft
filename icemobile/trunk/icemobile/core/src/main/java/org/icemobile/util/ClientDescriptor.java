@@ -291,14 +291,13 @@ public class ClientDescriptor implements Serializable{
     
     /*
      * Fixed position is problematic on Android 2 (non-Firefox) and all Android
-     * WebViews on tablets.
+     * WebViews on tablets, as well as BlackBerry
      */
     public boolean isSupportsFixedPosition(){
-        return isDesktopBrowser() 
-               || (isTabletBrowser() && !isAndroidBrowserOrWebView())
-               || (isHandheldBrowser() 
-                       && (!isAndroid2OS() ||  _userAgentInfo.isFirefoxAndroid() )
-                       && !_userAgentInfo.isBlackberry6OS());
+        return !(isTabletBrowser() && isAndroidBrowserOrWebView())
+               && !(isHandheldBrowser() && isAndroid2OS() && !_userAgentInfo.isFirefoxAndroid() ) //Handheld, Android2 (Firefox works well, no Chrome available)
+               && !_userAgentInfo.isBlackberry6OS() //BB6 & 7 do not support fixed well
+               && !(_userAgentInfo.isBlackberry10OS() && isEnhancedBrowser()); //BB10 container uses Android 2 browser
     }
 
 
