@@ -142,9 +142,9 @@ public class MediaController implements Serializable {
     }
 
 	public static void uploadsCompleted(UploadModel model, MediaStore store) {
-		LOGGER.finer("uploadsCompleted()");
 		MediaMessage msg = model.getCurrentMediaMessage();
-		if (msg.isHasMedia()) {
+		System.out.println("uploadsCompleted() "+msg);
+        if (msg.isHasMedia()) {
 			if( model.getTags() != null && model.getTags().length() > 0){
 			    msg.getTags().addAll(Arrays.asList(model.getTags().split(",")));
 			}
@@ -158,7 +158,7 @@ public class MediaController implements Serializable {
 				}
 			}
 			
-			if( msg.getTitle() != null && msg.getTitle().length() > 0 ){
+			if( msg.getTitle() == null || msg.getTitle().length() == 0 ){
 				msg.setTitle(Utils.getHttpDateFormat().format(new Date()));
 			}
 			
