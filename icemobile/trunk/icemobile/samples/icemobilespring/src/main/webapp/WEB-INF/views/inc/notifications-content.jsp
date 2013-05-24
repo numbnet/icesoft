@@ -55,7 +55,7 @@
 			<form:label path="delay">
                 Delay: <form:errors path="delay" cssClass="error" />
 			</form:label>
-			<form:select path="delay" cssClass="mobi-input-text"
+			<form:select path="delay"
                 style="float:right;margin-top: -2px;">
 				<form:option value="5" label="5s" />
 				<form:option value="10" label="10s" />
