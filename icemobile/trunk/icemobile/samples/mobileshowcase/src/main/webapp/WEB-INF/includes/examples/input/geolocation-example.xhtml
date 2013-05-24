@@ -135,8 +135,8 @@
             var x = Math.floor(lon * width / 2 / 180 + (width / 2));
             var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
             var pointer = document.getElementById('pointer');
-            pointer.style.left = ''+x+'px';
-            pointer.style.top = ''+y+'px';
+            pointer.style.left = ''+(x+image.offsetLeft)+'px';
+            pointer.style.top = ''+(y+image.offsetTop)+'px';
             
         }
 

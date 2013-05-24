@@ -51,9 +51,10 @@
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <canvas id="mapCanvas" width="260" height="130"
-                    class="center"
-                ></canvas>
+                <div id="mapctr" style="position:relative">
+                    <img id="map" src="resources/images/map.png"  width="${mobiClient.handheldBrowser ? '260' : '360'}" height="${mobiClient.handheldBrowser ? '130' : '180'}" class="center"/>
+                    <div id="pointer" style="position: absolute;background-color: red;border-radius:1em;width:5px;height:5px"></div>
+                </div>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow style="text-align:center">
                 <mobi:commandButton value="Locate Me" type="submit"
@@ -129,36 +130,19 @@
         <br />
 
         <script type="text/javascript">
-			function showLocation() {
-				var canvas = document.getElementById('mapCanvas');
-				if (!canvas) {
-					return;
-				}
-				// temporary work around for drawing location on canvas
-				var lat = '${geolocationBean.latitude}';
-				var lon = '${geolocationBean.longitude}';
-
-				if (!lat && !lon) {
-					lat = 0;
-					lon = 0;
-				}
-
-				if (canvas.getContext) {
-					var ctx = canvas.getContext('2d');
-					ctx.clearRect(0, 0, 600, 400);
-					var height = canvas.height;
-					var width = canvas.width;
-
-					ctx.drawImage(image, 0, 0, width, height);
-					var x = Math.floor(lon * width / 2 / 180 + (width / 2));
-					var y = Math.floor(-1 * lat * (height / 2) / 90
-							+ (height / 2));
-					ctx.fillStyle = "#FFFF00";
-					ctx.beginPath();
-					ctx.arc(x, y, 5, 0, Math.PI * 2, true);
-					ctx.fill();
-				}
-			}
+            function showLocation() {
+                var lat = '${geolocationBean.latitude}';
+                var lon = '${geolocationBean.longitude}';
+                var image = document.getElementById('map');
+                var height = image.clientHeight;
+                var width = image.clientWidth;
+                var x = Math.floor(lon * width / 2 / 180 + (width / 2));
+                var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
+                var pointer = document.getElementById('pointer');
+                pointer.style.left = ''+(x+image.offsetLeft)+'px';
+                pointer.style.top = ''+(y+image.offsetTop)+'px';
+                
+            }
 
 			var image = new Image();
 			//scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
