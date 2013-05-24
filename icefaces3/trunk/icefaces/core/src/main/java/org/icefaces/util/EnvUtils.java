@@ -123,12 +123,14 @@ public class EnvUtils {
     private static Class PortletSessionClass;
     private static Class PortletRequestClass;
     private static Class PortletResponseClass;
+    private static Class PortletResourceResponseClass;
 
     static {
         try {
             PortletSessionClass = Class.forName("javax.portlet.PortletSession");
             PortletRequestClass = Class.forName("javax.portlet.PortletRequest");
             PortletResponseClass = Class.forName("javax.portlet.PortletResponse");
+            PortletResourceResponseClass = Class.forName("javax.portlet.ResourceResponse");
         } catch (Throwable t) {
             log.log(Level.FINE, "Portlet classes not available: ", t);
         }
@@ -682,6 +684,10 @@ public class EnvUtils {
 
     public static boolean instanceofPortletResponse(Object response) {
         return PortletResponseClass != null && PortletResponseClass.isInstance(response);
+    }
+
+    public static boolean instanceofPortletResourceResponse(Object response) {
+        return PortletResourceResponseClass != null && PortletResourceResponseClass.isInstance(response);
     }
 
     public static HttpServletRequest getSafeRequest(FacesContext fc) {
