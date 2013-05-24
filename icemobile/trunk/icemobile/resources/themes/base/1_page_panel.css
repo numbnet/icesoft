@@ -70,9 +70,9 @@
 .ui-header-fixed + .mobi-pagePanel-body {
     padding: 39px 0 40px 0;
 }
-.mobi-pagePanel-body-noheader {
-    padding-top: 0;
+.mobi-pagePanel .mobi-pagePanel-body-noheader {
+    padding-top: 0 !important;
 }
-.mobi-pagePanel-body-nofooter {
-    padding-bottom: 0;
+.mobi-pagePanel .mobi-pagePanel-body-nofooter {
+    padding-bottom: 0 !important;
 }
