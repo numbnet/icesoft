@@ -65,7 +65,7 @@ public class InputBean extends ExampleImpl<InputBean> implements
     private String textArea;
     private String urlInput;
     private double numberInput;
-    private Date dateInput;
+    private String dateInput;
 
 
     public InputBean() {
@@ -96,11 +96,11 @@ public class InputBean extends ExampleImpl<InputBean> implements
         this.numberInput = numberInput;
     }
 
-    public Date getDateInput() {
+    public String getDateInput() {
         return dateInput;
     }
 
-    public void setDateInput(Date dateInput) {
+    public void setDateInput(String dateInput) {
         this.dateInput = dateInput;
     }
 
