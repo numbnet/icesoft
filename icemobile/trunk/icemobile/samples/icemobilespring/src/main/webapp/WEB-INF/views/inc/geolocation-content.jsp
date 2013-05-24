@@ -151,6 +151,8 @@
                 showLocation();
             }
             showLocation();
+            ice.mobi.addListener(window, 'resize',showLocation);
+            ice.mobi.addListener(window, 'orientationchange',showLocation);
 		</script>
 
     </form:form>
