@@ -344,4 +344,4 @@ ice.ace.AjaxResponse.updateElem = function(id, content) {
         //selects
         controls.filter("select:not([data-role='slider'])" ).selectmenu();
     }
-}
+};

@@ -224,8 +224,9 @@ var Class = (function() {
 
     function extend(destination, source) {
         /* stop extend from overwriting - keep native implementation if available when extending prototypes */
-        for (var property in source && destination[property] == undefined)
-            destination[property] = source[property];
+        for (var property in source)
+            if (destination[property] == undefined)
+                destination[property] = source[property];
         return destination;
     }
 
