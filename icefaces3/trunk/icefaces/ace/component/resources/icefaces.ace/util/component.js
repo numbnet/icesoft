@@ -13,6 +13,12 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+if (!window['ice']) {
+    window.ice = {};
+}
+if (!window['ice']['ace']) {
+    window.ice.ace = {};
+}
 
 String.prototype.trim = function () {
     return this.replace(/^\s*/, "").replace(/\s*$/, "");
