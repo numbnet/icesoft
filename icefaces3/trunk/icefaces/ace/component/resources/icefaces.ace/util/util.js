@@ -130,7 +130,7 @@ ice.ace.util.isMouseOver = function(elem, jqEvent) {
 ice.ace.util.getEvent = function() {
     if (ice.ace.jq.browser.msie && ice.ace.jq.browser.version < 9) return window.event;
 
-    var source = ice.ace.getEvent.caller; // firefox compatible caller usage
+    var source = ice.ace.util.getEvent.caller; // firefox compatible caller usage
     while (source) {
         source = source.caller;
         if (source && source.arguments[0] instanceof Event)
