@@ -387,8 +387,8 @@ ice.ace.DataTable.prototype.saveSortState = function() {
     if (this.sortOrder.length == 0) {
         this.element.find(this.sortControlSelector).each(function () {
             var $this = ice.ace.jq(this);
-            if (ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-n')[0]) == 1 ||
-                    ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-s')[0]) == 1)
+            if (ice.ace.util.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-n')[0]) == 1 ||
+                    ice.ace.util.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-s')[0]) == 1)
                 self.sortOrder.splice(
                         parseInt($this.find(' > span.ui-sortable-column-order').html()) - 1,
                         0,
@@ -452,8 +452,8 @@ ice.ace.DataTable.prototype.setupSortRequest = function (_self, $this, event, he
     });
 
     if (metaKey && cellFound) {
-        if ((ice.ace.getOpacity(topCarat) == 1 && !descending) ||
-            (ice.ace.getOpacity(bottomCarat) == 1 && descending)) {
+        if ((ice.ace.util.getOpacity(topCarat) == 1 && !descending) ||
+            (ice.ace.util.getOpacity(bottomCarat) == 1 && descending)) {
             // Remove from sort order
             _self.sortOrder.splice(headerCell.find('.ui-sortable-column-order').html() - 1, 1);
             ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');

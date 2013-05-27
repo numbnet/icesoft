@@ -4581,9 +4581,9 @@ function wijmoASPNetParseOptions(o) {
                 };
 
             if (parentlist && parentlist.length > 0) {
-                var opacity = ice.ace.getOpacity(parentlist);
+                var opacity = ice.ace.util.getOpacity(parentlist);
                 setTimeout(function() {
-                    var newopacity = ice.ace.getOpacity(parentlist);
+                    var newopacity = ice.ace.util.getOpacity(parentlist);
                     if (opacity == newopacity && parentlist.is(':visible'))
                         show();
                 },10);

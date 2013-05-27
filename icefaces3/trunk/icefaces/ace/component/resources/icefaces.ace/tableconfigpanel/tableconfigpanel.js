@@ -138,8 +138,8 @@ ice.ace.TableConf = function (id, cfg) {
                     if (_self.sortOrder.length == 0) {
                        _self.$this.find('.ui-tableconf-body .ui-sortable-control').each(function() {
                             var $this = ice.ace.jq(this);
-                            if (ice.ace.getOpacity($this.find('.ui-icon-triangle-1-n')[0]) == 1 ||
-                                ice.ace.getOpacity($this.find('.ui-icon-triangle-1-s')[0]) == 1 )
+                            if (ice.ace.util.getOpacity($this.find('.ui-icon-triangle-1-n')[0]) == 1 ||
+                                ice.ace.util.getOpacity($this.find('.ui-icon-triangle-1-s')[0]) == 1 )
                                 _self.sortOrder.splice(
                                     parseInt($this.find('.ui-sortable-column-order').html())-1,
                                     0,
@@ -171,8 +171,8 @@ ice.ace.TableConf = function (id, cfg) {
                     // if meta clicking a currently sorted row
                     if (metaKey && rowFound) {
                         // if deselecting
-                        if ((ice.ace.getOpacity(topCarat) == 1 && !descending) ||
-                            (ice.ace.getOpacity(bottomCarat) == 1 && descending)) {
+                        if ((ice.ace.util.getOpacity(topCarat) == 1 && !descending) ||
+                            (ice.ace.util.getOpacity(bottomCarat) == 1 && descending)) {
                              // Remove from sort order
                              _self.sortOrder.splice(controlCell.find('.ui-sortable-column-order').html()-1,1);
                              ice.ace.jq(bottomCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
@@ -288,8 +288,8 @@ ice.ace.TableConf.prototype.getSortAscending= function() {
             $order = ice.ace.jq(ice.ace.jq($val.closest('.ui-sortable-control')).find('.ui-sortable-column-order')[0]),
             topCarat = $val.find('.ui-icon-triangle-1-n')[0],
             bottomCarat = $val.find('.ui-icon-triangle-1-s')[0];
-        if (ice.ace.getOpacity(topCarat) == 1 || ice.ace.getOpacity(bottomCarat) == 1) {
-            sortAsc[parseInt($order.html())] = (ice.ace.getOpacity(topCarat) == 1);
+        if (ice.ace.util.getOpacity(topCarat) == 1 || ice.ace.util.getOpacity(bottomCarat) == 1) {
+            sortAsc[parseInt($order.html())] = (ice.ace.util.getOpacity(topCarat) == 1);
             maxOrder++;
         }
     });
@@ -317,7 +317,7 @@ ice.ace.TableConf.prototype.getSortOrder = function() {
                 $row = ice.ace.jq($val.closest('tr')),
                 $order = ice.ace.jq($row.find('.ui-sortable-column-order')[0]);
 
-        if (ice.ace.getOpacity(topCarat) == 1 || ice.ace.getOpacity(bottomCarat) == 1) {
+        if (ice.ace.util.getOpacity(topCarat) == 1 || ice.ace.util.getOpacity(bottomCarat) == 1) {
             sortOrders[parseInt($order.html())-1] = $row.attr('class').split(" ")[0].replace("ui-tableconf-row-","");
             maxOrder++;
         }
