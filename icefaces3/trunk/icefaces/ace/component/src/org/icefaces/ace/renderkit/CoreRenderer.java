@@ -32,12 +32,14 @@ import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
@@ -93,6 +95,35 @@ public class CoreRenderer extends Renderer {
             return facesContext.getExternalContext().encodeResourceURL(url);
         }
     }
+	
+	protected String getEncodedURL(FacesContext facesContext, String type, String baseUrl, Map parameters) {
+		if (type != null) {
+			type = type.toLowerCase();
+			ExternalContext externalContext = facesContext.getExternalContext();
+			ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
+			if (type.equals("action")) {
+				String viewUrl = viewHandler.getActionURL(facesContext, baseUrl);
+				return externalContext.encodeActionURL(viewUrl);
+			} else if (type.equals("partialaction")) {
+				String viewUrl = viewHandler.getActionURL(facesContext, baseUrl);
+				return externalContext.encodePartialActionURL(viewUrl);
+			} else if (type.equals("bookmarkable")) {
+				String viewUrl = viewHandler.getBookmarkableURL(facesContext, baseUrl, parameters, false);
+				return externalContext.encodeBookmarkableURL(viewUrl, parameters);
+			} else if (type.equals("redirect")) {
+				String viewUrl = viewHandler.getRedirectURL(facesContext, baseUrl, parameters, false);
+				return externalContext.encodeRedirectURL(viewUrl, parameters);
+			} else if (type.equals("resource")) {
+				if (baseUrl.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
+					return baseUrl;
+				} else {
+					String viewUrl = viewHandler.getResourceURL(facesContext, baseUrl);
+					return externalContext.encodeResourceURL(viewUrl);
+				}
+			}
+		}
+		return baseUrl; // default, no encoding
+	}
     
     protected String getResourceRequestPath(FacesContext facesContext, String resourceName) {
 		Resource resource = facesContext.getApplication().getResourceHandler().createResource(resourceName, "icefaces.ace");
