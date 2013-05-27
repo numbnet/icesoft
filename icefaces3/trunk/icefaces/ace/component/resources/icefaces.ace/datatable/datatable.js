@@ -969,7 +969,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         if (!ie7) {
             // Reset fixed sizing if set by previous sizing.
             for (var i = 0; i < bodySingleCols.length; i++)
-                ice.ace.jq(bodySingleCols[i]).css('width', 'auto');
+                ice.ace.jq(bodySingleCols[i]).css('width', '');
         }
 
         // Reset padding if added to offset scrollbar issues
@@ -978,10 +978,6 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         if (!ie7) {
             var unsizedVScrollShown = bodyTableParent.is(':scrollable(vertical)'),
                 unsizedBodyVScrollShown = ice.ace.jq('html').is(':scrollable(vertical)');
-
-            // Show Duplicate Header / Footer
-            dupeHead.css('display', 'table-header-group');
-            dupeFoot.css('display', 'table-footer-group');
         }
 
         // Get Duplicate Header/Footer Sizing
@@ -1004,6 +1000,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
             // Change table rendering algorithm to get more accurate sizing
             bodyTable.css('table-layout', 'auto');
+            // Show Duplicate Header / Footer
+            dupeHead.css('display', 'table-header-group');
+            dupeFoot.css('display', 'table-footer-group');
         }
 
         var ie7ScrollbarFix = function() {
