@@ -79,12 +79,14 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.window", null);
                 writer.writeAttribute("value", scopeMap.getId(), null);
+                writer.writeAttribute("autocomplete", "off", null);
                 writer.endElement("input");
 
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.view", null);
                 writer.writeAttribute("value", viewID, null);
+                writer.writeAttribute("autocomplete", "off", null);
                 writer.endElement("input");
             }
         };
