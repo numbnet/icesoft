@@ -245,5 +245,10 @@ ice.ace.Calendar.init = function(options) {
             input.one("focus", initAndShow);
             initEltSet = initEltSet.add(input);
         }
+
+        ice.onElementUpdate(id, function() {
+            // .remove cleans jQuery state unlike .unbind
+            initEltSet.remove();
+        });
     });
 };
