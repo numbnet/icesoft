@@ -85,8 +85,9 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 			if (menuItem.isDisabled() || disabledParent) {
 				writer.writeAttribute("class", "ui-state-disabled", null);
 			} else {
-				if(menuItem.getUrl() != null) {
-					writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
+				String url = menuItem.getUrl();
+				if(url != null) {
+					writer.writeAttribute("href", getEncodedURL(context, menuItem.getUrlEncoding(), url, menuItem.getUrlParameters()), null);
 					if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
 					if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
 				} else {

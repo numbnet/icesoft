@@ -43,6 +43,12 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 public class MenuItemMeta extends UICommandMeta {
     @Property(tlddoc = "Url to be navigated when menuitem is clicked.")
     private String url;
+	
+    @Property(tlddoc = "Specifies the encoding type for value of the 'url' attribute. Possible values are \"resource\", \"action\", \"partialaction\", \"bookmarkable\", \"redirect\", and \"none\". For all encodings other than \"resource\" and \"none\" the URL must be relative to the context path and must start with '/'. For external links and to render the value of the 'url' attribute unmodified use \"none\".", defaultValue="resource")
+    private String urlEncoding;
+	
+    @Property(tlddoc = "Specifies an optional map of parameters to use when encoding URLs of the \"bookmarkable\" and \"redirect\" types. The value of this attribute must evaluate to an object of type Map<String,List<String>>.")
+    private java.util.Map urlParameters;
 
     @Property(tlddoc = "Target type of url navigation.")
     private String target;
