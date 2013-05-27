@@ -16,10 +16,13 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface IceUtil : NSObject
 
++ (void)makeFancyButton:(UIButton*)button withLayer:(CAGradientLayer*)fancyLayer;
 + (void)makeFancyButton:(UIButton*)button withColor:(UIColor*)color;
 + (void)makeFancyButton:(UIButton*)button;
++ (void)pushFancyButton:(UIButton*)button;
 
 @end
