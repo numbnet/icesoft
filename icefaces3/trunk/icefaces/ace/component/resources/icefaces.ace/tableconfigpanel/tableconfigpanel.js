@@ -58,6 +58,13 @@ ice.ace.TableConfLauncher = function(clientId, panelJsId) {
 }
 
 ice.ace.TableConf = function (id, cfg) {
+    var self = this;
+    setTimeout(function(){
+        self.init(id, cfg);
+    }, 500);
+}
+
+ice.ace.TableConf.prototype.init = function(id, cfg) {
     this.id = ice.ace.escapeClientId(id);
     this.tableId = ice.ace.escapeClientId(cfg.tableId);
     this.$this = ice.ace.jq(this.id);
@@ -78,7 +85,7 @@ ice.ace.TableConf = function (id, cfg) {
     this.$this.draggable(dragConfig);
 
     var isTopSet = ice.ace.jq.isNumeric(this.cfg.top),
-        isLeftSet = ice.ace.jq.isNumeric(this.cfg.left);
+            isLeftSet = ice.ace.jq.isNumeric(this.cfg.left);
 
     if (isTopSet || isLeftSet) {
         if (isTopSet) this.$this.css('top', this.cfg.top);
@@ -96,13 +103,13 @@ ice.ace.TableConf = function (id, cfg) {
         };
 
         this.$this.find('.ui-tableconf-body > table > tbody')
-             .sortable({
-                axis:'y',
-                containment:'parent',
-                helper: fixHelper,
-                items:'tr:not(.ui-disabled)',
-                handle:'.ui-sortable-handle:not(.ui-disabled)'
-              });
+                .sortable({
+                    axis:'y',
+                    containment:'parent',
+                    helper: fixHelper,
+                    items:'tr:not(.ui-disabled)',
+                    handle:'.ui-sortable-handle:not(.ui-disabled)'
+                });
     }
 
     if (cfg.sortable) {
@@ -111,14 +118,14 @@ ice.ace.TableConf = function (id, cfg) {
                 .click(function(event, altY, altMeta) {
                     event.stopPropagation();
                     var $this = ice.ace.jq(this),
-                        topCarat = $this.find(".ui-icon-triangle-1-n")[0],
-                        bottomCarat = $this.find(".ui-icon-triangle-1-s")[0],
-                        controlCell =  $this.parent().parent(),
-                        controlRow  =  ice.ace.jq(controlCell).parent(),
-                        controlOffset = $this.offset(),
-                        controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
-                        descending = false,
-                        metaKey = altMeta;
+                            topCarat = $this.find(".ui-icon-triangle-1-n")[0],
+                            bottomCarat = $this.find(".ui-icon-triangle-1-s")[0],
+                            controlCell =  $this.parent().parent(),
+                            controlRow  =  ice.ace.jq(controlCell).parent(),
+                            controlOffset = $this.offset(),
+                            controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
+                            descending = false,
+                            metaKey = altMeta;
 
                     if (metaKey == undefined) {
                         if (ice.ace.jq.browser.os == 'mac')
@@ -136,33 +143,33 @@ ice.ace.TableConf = function (id, cfg) {
                     // If we are looking a freshly rendered DT initalize our JS sort state
                     // from the state of the rendered controls
                     if (_self.sortOrder.length == 0) {
-                       _self.$this.find('.ui-tableconf-body .ui-sortable-control').each(function() {
+                        _self.$this.find('.ui-tableconf-body .ui-sortable-control').each(function() {
                             var $this = ice.ace.jq(this);
                             if (ice.ace.util.getOpacity($this.find('.ui-icon-triangle-1-n')[0]) == 1 ||
-                                ice.ace.util.getOpacity($this.find('.ui-icon-triangle-1-s')[0]) == 1 )
+                                    ice.ace.util.getOpacity($this.find('.ui-icon-triangle-1-s')[0]) == 1 )
                                 _self.sortOrder.splice(
-                                    parseInt($this.find('.ui-sortable-column-order').html())-1,
-                                    0,
-                                    $this.closest('tr')
+                                        parseInt($this.find('.ui-sortable-column-order').html())-1,
+                                        0,
+                                        $this.closest('tr')
                                 );
                         });
                     }
 
-                     if (!metaKey || _self.cfg.singleSort) {
-                         // Remake sort criteria
-                         // Reset all other arrows
-                         _self.sortOrder = [];
-                         controlRow.siblings()
-                                 .find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s')
-                                 .animate({opacity : .33}, 200)
-                                 .removeClass('ui-toggled');
+                    if (!metaKey || _self.cfg.singleSort) {
+                        // Remake sort criteria
+                        // Reset all other arrows
+                        _self.sortOrder = [];
+                        controlRow.siblings()
+                                .find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s')
+                                .animate({opacity : .33}, 200)
+                                .removeClass('ui-toggled');
 
-                         if (!_self.cfg.singleSort) controlRow.siblings()
-                                 .find('.ui-sortable-column-order')
-                                 .html('&#160;');
-                         // remove previous gradients
-                         //headerCell.siblings().removeClass('ui-state-active').find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
-                     }
+                        if (!_self.cfg.singleSort) controlRow.siblings()
+                                .find('.ui-sortable-column-order')
+                                .html('&#160;');
+                        // remove previous gradients
+                        //headerCell.siblings().removeClass('ui-state-active').find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                    }
 
                     var rowFound = false;
                     ice.ace.jq(_self.sortOrder).each(function() {
@@ -172,18 +179,18 @@ ice.ace.TableConf = function (id, cfg) {
                     if (metaKey && rowFound) {
                         // if deselecting
                         if ((ice.ace.util.getOpacity(topCarat) == 1 && !descending) ||
-                            (ice.ace.util.getOpacity(bottomCarat) == 1 && descending)) {
-                             // Remove from sort order
-                             _self.sortOrder.splice(controlCell.find('.ui-sortable-column-order').html()-1,1);
-                             ice.ace.jq(bottomCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
-                             ice.ace.jq(topCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
-                             if (!_self.cfg.singleSort) {
-                                 controlCell.find('.ui-sortable-column-order').html('&#160;');
-                                 var i = 0;
-                                 ice.ace.jq(_self.sortOrder).each(function(){
+                                (ice.ace.util.getOpacity(bottomCarat) == 1 && descending)) {
+                            // Remove from sort order
+                            _self.sortOrder.splice(controlCell.find('.ui-sortable-column-order').html()-1,1);
+                            ice.ace.jq(bottomCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
+                            ice.ace.jq(topCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
+                            if (!_self.cfg.singleSort) {
+                                controlCell.find('.ui-sortable-column-order').html('&#160;');
+                                var i = 0;
+                                ice.ace.jq(_self.sortOrder).each(function(){
                                     this.find('.ui-sortable-column-order').html(parseInt(i++)+1);
-                                 });
-                             }
+                                });
+                            }
                         } else {
                             // Not a deselect, just meta toggle
                             if (descending) {
@@ -194,27 +201,27 @@ ice.ace.TableConf = function (id, cfg) {
                                 ice.ace.jq(bottomCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
                             }
                         }
-                    // if not a deselect
+                        // if not a deselect
                     } else {
-                         // add header gradient
-                         //headerCell.addClass('ui-state-active');
-                         if (descending) {
-                             ice.ace.jq(bottomCarat).animate({opacity : 1},  200).addClass('ui-toggled');
-                             ice.ace.jq(topCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
-                         } else {
-                             ice.ace.jq(topCarat).animate({opacity : 1},  200).addClass('ui-toggled');
-                             ice.ace.jq(bottomCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
-                         }
+                        // add header gradient
+                        //headerCell.addClass('ui-state-active');
+                        if (descending) {
+                            ice.ace.jq(bottomCarat).animate({opacity : 1},  200).addClass('ui-toggled');
+                            ice.ace.jq(topCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
+                        } else {
+                            ice.ace.jq(topCarat).animate({opacity : 1},  200).addClass('ui-toggled');
+                            ice.ace.jq(bottomCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
+                        }
 
-                         // add to sort order
-                         var rowFound = false;
-                         ice.ace.jq(_self.sortOrder).each(
-                                 function() { if (controlRow.attr('class') === this.attr('class')) { rowFound = true; } });
-                         if (!rowFound) {
-                             var order = _self.sortOrder.push(controlRow);
-                             // write control display value
-                             if (!_self.cfg.singleSort) controlCell.find('.ui-sortable-column-order').html(order);
-                         }
+                        // add to sort order
+                        var rowFound = false;
+                        ice.ace.jq(_self.sortOrder).each(
+                                function() { if (controlRow.attr('class') === this.attr('class')) { rowFound = true; } });
+                        if (!rowFound) {
+                            var order = _self.sortOrder.push(controlRow);
+                            // write control display value
+                            if (!_self.cfg.singleSort) controlCell.find('.ui-sortable-column-order').html(order);
+                        }
                     }
                 });
 
@@ -228,7 +235,7 @@ ice.ace.TableConf = function (id, cfg) {
                         var $currentTarget = ice.ace.jq(event.currentTarget);
                         $currentTarget.closest('.ui-sortable-control')
                                 .trigger('click', [$currentTarget.offset().top, metaKey]);
-                }}).not('.ui-toggled').fadeTo(0, 0.33);
+                    }}).not('.ui-toggled').fadeTo(0, 0.33);
 
         this.$this.find('.ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
                 .find('.ui-icon-triangle-1-s')
@@ -239,7 +246,7 @@ ice.ace.TableConf = function (id, cfg) {
                         var $currentTarget = ice.ace.jq(event.currentTarget);
                         $currentTarget.closest('.ui-sortable-control')
                                 .trigger('click', [$currentTarget.offset().top + 6, metaKey]);
-                }}).not('.ui-toggled').fadeTo(0, 0.33);
+                    }}).not('.ui-toggled').fadeTo(0, 0.33);
     }
 }
 
