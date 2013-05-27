@@ -67,14 +67,14 @@ Available ui:params to pass:
 						<ace:menuColumn>
 							<ace:submenu label="WIKI Documentation">
 								<c:forEach items="#{wikiResources}" var="wiki">
-								   <ace:menuItem value="#{wiki.title}" url="#{wiki.resource}" target="_blank"/>
+								   <ace:menuItem value="#{wiki.title}" url="#{wiki.resource}" urlEncoding="none" target="_blank"/>
 								</c:forEach>
 							</ace:submenu>
 						</ace:menuColumn>
 						<ace:menuColumn>
 							<ace:submenu label="TLD Documentation">
 								<c:forEach items="#{tldResources}" var="tld">
-								   <ace:menuItem value="#{tld.title}" url="#{tld.resource}" target="_blank"/>
+								   <ace:menuItem value="#{tld.title}" url="#{tld.resource}" urlEncoding="none" target="_blank"/>
 								</c:forEach>
 							</ace:submenu>
 						</ace:menuColumn>
