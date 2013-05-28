@@ -80,6 +80,7 @@ ice.ace.TableConf.prototype.init = function(id, cfg) {
         dragConfig.handle = cfg.handle;
 
     this.setupOkButton();
+    this.setupTrashButton();
     this.setupCloseButton();
 
     this.$this.draggable(dragConfig);
@@ -269,6 +270,25 @@ ice.ace.TableConf.prototype.setupOkButton = function() {
             });
 }
 
+ice.ace.TableConf.prototype.setupTrashButton = function() {
+    var self = this;
+    ice.ace.jq(this.id + "_tableconf_trash")
+            .off('mouseenter mouseleave click')
+            .hover(function (event) {
+                ice.ace.jq(event.currentTarget).toggleClass('ui-state-hover');
+            })
+            .click(function (event) {
+                ice.ace.jq(self.id + "_tableconf_launch").removeClass('ui-state-active');
+
+                self.$this.toggle();
+                self.modal.toggle();
+
+                var panel = ice.ace.jq(self.id);
+                if (panel.is(':not(:visible)'))
+                    self.trashTableConfig(event.currentTarget);
+            });
+}
+
 ice.ace.TableConf.prototype.setupCloseButton = function() {
     var self = this;
     ice.ace.jq(this.id + "_tableconf_close")
@@ -346,6 +366,28 @@ ice.ace.TableConf.prototype.getColOrder = function() {
     });
     return columnOrders;
 }
+
+ice.ace.TableConf.prototype.trashTableConfig = function (target) {
+    var id = this.tableId.replace("#","").replace(/\\/g,""),
+        selfId = this.id.replace("#","").replace(/\\/g,""),
+        options = {
+            source: id,
+            execute: id,
+            render: id + ' ' + selfId,
+            params: {}
+        };
+
+    options.params[id+"_tabletrash"] = true;
+
+    if (this.behaviors)
+        if (this.behaviors.trash) {
+            ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.trash, options));
+            return;
+        }
+
+    ice.ace.AjaxRequest(options);
+}
+
 
 ice.ace.TableConf.prototype.submitTableConfig = function (target) {
     var id = this.tableId.replace("#","").replace(/\\/g,""),
