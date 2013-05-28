@@ -20,7 +20,7 @@
         <groupId>org.icemobile</groupId>
         <artifactId>bundle-parent</artifactId>
         <version>1.3.0-BETA1</version>
-        <relativePath>..</relativePath>
+     <!--   <relativePath>..</relativePath>-->
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.icemobile.samples</groupId>
