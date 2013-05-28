@@ -107,3 +107,7 @@ This also overrides the indeterminate progress imagery. But the themes don't sup
 .ui-datepicker-trigger {
     border: 0;
 }
+
+.ui-notificationbar.ui-widget-content table {
+    color: inherit;
+}
