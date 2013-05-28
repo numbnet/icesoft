@@ -74,6 +74,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writeConfigPanelOkButton(writer, clientId);
         writeConfigPanelCloseButton(writer, clientId, jsId);
+        writeConfigPanelTrashButton(writer, clientId, jsId);
 
         writer.endElement(HTML.DIV_ELEM);
 
@@ -178,6 +179,25 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writer.endElement(HTML.TR_ELEM);
         writer.endElement(HTML.THEAD_ELEM);
+    }
+
+    private void writeConfigPanelTrashButton(ResponseWriter writer, String clientId, String jsId) throws IOException {
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "float:right;", null);
+
+        writer.startElement(HTML.ANCHOR_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all ui-tableconf-head-button", null);
+        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_trash", null);
+
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-trash", null);
+
+        writer.writeText("table", null);
+
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.ANCHOR_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
     }
 
     private void writeConfigPanelOkButton(ResponseWriter writer, String clientId) throws IOException {
