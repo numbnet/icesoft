@@ -83,11 +83,13 @@ ice.ace.ConfirmDialog = function(id, cfg) {
 };
 
 ice.ace.ConfirmDialog.prototype.show = function() {
-    this.jq.dialog('open');
+	var jq = this.jq;
+    setTimeout(function(){jq.dialog('open');},1);
 };
 
 ice.ace.ConfirmDialog.prototype.hide = function() {
-    this.jq.dialog('close');
+	var jq = this.jq;
+    setTimeout(function(){jq.dialog('close');},1);
 };
 
 ice.ace.ConfirmDialog.browser = function() {
