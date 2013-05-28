@@ -48,7 +48,7 @@
                                                visible="#{notificationPanelBean.visible}"
                                                position="top"
                                                effect="slide" effectSpeed="slow"
-                                               style="height: 125px; width: 98%; color: #667; background-color: #ffc; border: 2px solid #fc0;">
+                                               >
                     <ace:ajax event="close" execute="@this" render="@form" listener="#{notificationPanelBean.closeListener}"/>
                     <ace:ajax event="display" execute="@this" render="@form" listener="#{notificationPanelBean.displayListener}"/>
                 <f:facet name="close">
