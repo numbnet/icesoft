@@ -38,6 +38,7 @@
     UIView *linkView;
     UITextField *urlField;
     UISegmentedControl *actionSelector;
+    UIButton *geospyButton;
 }
 
 @property (retain) NativeInterface *nativeInterface;
@@ -57,6 +58,7 @@
 @property (nonatomic, retain) IBOutlet UIView *linkView;
 @property (nonatomic, retain) IBOutlet UITextField *urlField;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *actionSelector;
+@property (nonatomic, retain) IBOutlet UIButton *geospyButton;
 
 - (void) applicationWillResignActive;
 - (void) applicationDidEnterBackground;
@@ -70,6 +72,7 @@
 - (IBAction) doMobileshowcase;
 - (IBAction) chooseAction;
 - (IBAction) returnPressed;
+- (IBAction) geospyPressed;
 - (IBAction) showLicense;
 
 @end

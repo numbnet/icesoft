@@ -21,6 +21,8 @@
 		9C42F73E158277E00011FECC /* W.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F736158277E00011FECC /* W.png */; };
 		9C42F73F158277E00011FECC /* W@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F737158277E00011FECC /* W@2x.png */; };
 		9C46E924158259FF00EFA276 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C46E923158259FF00EFA276 /* MediaPlayer.framework */; };
+		9C4B206E17566B20009C6477 /* geospy.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4B206C17566B20009C6477 /* geospy.png */; };
+		9C4B206F17566B20009C6477 /* geospy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4B206D17566B20009C6477 /* geospy@2x.png */; };
 		9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3714859D3600A2B288 /* AudioController.m */; };
 		9C4F8C3A14859D3600A2B288 /* AudioController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3814859D3600A2B288 /* AudioController.xib */; };
 		9C51732F155DA6E600090828 /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51732D155DA6E600090828 /* ARViewController.m */; };
@@ -104,6 +106,8 @@
 		9C42F736158277E00011FECC /* W.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = W.png; path = Shared/W.png; sourceTree = "<group>"; };
 		9C42F737158277E00011FECC /* W@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "W@2x.png"; path = "Shared/W@2x.png"; sourceTree = "<group>"; };
 		9C46E923158259FF00EFA276 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		9C4B206C17566B20009C6477 /* geospy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = geospy.png; sourceTree = "<group>"; };
+		9C4B206D17566B20009C6477 /* geospy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "geospy@2x.png"; sourceTree = "<group>"; };
 		9C4F8C3614859D3600A2B288 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioController.h; path = Shared/AudioController.h; sourceTree = "<group>"; };
 		9C4F8C3714859D3600A2B288 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioController.m; path = Shared/AudioController.m; sourceTree = "<group>"; };
 		9C4F8C3814859D3600A2B288 /* AudioController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AudioController.xib; path = Shared/AudioController.xib; sourceTree = "<group>"; };
@@ -328,6 +332,8 @@
 				9CE8327316443D7D00F6C270 /* contacts@2x.png */,
 				9C5CD04114BCBCA70070662F /* qr.png */,
 				9C5CD04214BCBCA70070662F /* qr@2x.png */,
+				9C4B206C17566B20009C6477 /* geospy.png */,
+				9C4B206D17566B20009C6477 /* geospy@2x.png */,
 				9C77C791147310F90079FDF5 /* icon-72.png */,
 				9C77C792147310F90079FDF5 /* icon.png */,
 				9C77C793147310F90079FDF5 /* icon@2x.png */,
@@ -453,6 +459,8 @@
 				9CA2E88B1731BFF1001D1CFC /* Default@2x.png in Resources */,
 				9C654EA0174D8F1C00758CA6 /* Default-Portrait@2x~ipad.png in Resources */,
 				9C654EA1174D8F1C00758CA6 /* Default-Portrait~ipad.png in Resources */,
+				9C4B206E17566B20009C6477 /* geospy.png in Resources */,
+				9C4B206F17566B20009C6477 /* geospy@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

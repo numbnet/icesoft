@@ -113,9 +113,9 @@ static char base64EncodingTable[64] = {
 //    } else if ([@"sms" isEqualToString:commandName])  {
 //        [self sms:[params objectForKey:@"n"]
 //                    body:[params objectForKey:@"body"]];
-//    } else if ([@"geospy" isEqualToString:commandName])  {
-//        [self geospy:[params objectForKey:@"id"]
-//                withStrategy:[params objectForKey:@"strategy"]];
+    } else if ([@"geospy" isEqualToString:commandName])  {
+        [self geospy:[params objectForKey:@"id"]
+                withStrategy:[params objectForKey:@"strategy"]];
     }
 
     return YES;

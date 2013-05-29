@@ -21,6 +21,7 @@
 
 #import "ViewController.h"
 #import "NativeInterface.h"
+#import "IceUtil.h"
 #import "Logging.h"
 
 @implementation ViewController
@@ -36,6 +37,7 @@
 @synthesize linkView;
 @synthesize urlField;
 @synthesize actionSelector;
+@synthesize geospyButton;
 @synthesize deviceToken;
 @synthesize confirmMessages;
 @synthesize confirmTitles;
@@ -322,6 +324,16 @@ NSLog(@"handleResponse reloadCurrentURL");
     LogDebug(@"ViewController returnPressed");
 }
 
+- (IBAction) geospyPressed  {
+   NSLog(@"ViewController geospyPressed %d", geospyButton.selected);
+   geospyButton.selected = !geospyButton.selected;
+   if (geospyButton.selected)  {
+       [IceUtil pushFancyButton:geospyButton];
+   } else {
+       [IceUtil makeFancyButton:geospyButton];
+   }
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -334,6 +346,9 @@ NSLog(@"handleResponse reloadCurrentURL");
         [self.appTitle setBackgroundColor:[UIColor colorWithPatternImage:
                 [UIImage imageNamed:@"bar.png"]] ];
     }
+
+    [IceUtil makeFancyButton:self.geospyButton];
+
     [self hideProgress];
     [self showControls];
     self.nativeInterface = [[NativeInterface alloc] init];
