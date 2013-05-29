@@ -88,7 +88,6 @@ This also overrides the indeterminate progress imagery. But the themes don't sup
 .ui-progressbar-value
 {
     border: 1px solid #000000/*{borderColorHeader}*/;
-    background: url("#{resource['css/images/progressBarBackground.png']}") repeat-x scroll 0 0 #D8D8D8;
     color: black/*{fcHeader}*/;
     font-weight: bold;
 }
