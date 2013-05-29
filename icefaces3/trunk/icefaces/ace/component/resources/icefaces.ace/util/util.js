@@ -202,10 +202,9 @@ ice.ace.util.getStyleSheet = function (sheetId) {
 ice.ace.util.addStyleSheet = function (sheetId, parentSelector) {
     var s = document.createElement('style');
     s.type = 'text/css';
-    s.rel = 'stylesheet';
-    s.title = sheetId;
     document.querySelectorAll(parentSelector || "head")[0].appendChild(s);
-    return ice.ace.util.getStyleSheet(sheetId);
+    setTimeout(function() { s.title = sheetId; }, 1000); // must title after insertion to prevent chrome bug
+    return document.styleSheets[document.styleSheets.length - 1];
 };
 
 ice.ace.util.getOpacity = function(elem) {
