@@ -202,7 +202,6 @@ public class DataTableRowRenderer {
         } else {
             if (!isCurrStacked) {
                 writer.startElement(HTML.TD_ELEM, null);
-                writer.writeAttribute(HTML.CLASS_ATTR, "ui-col-"+colIndex, null);
 
                 if (column.getStyle() != null)
                     writer.writeAttribute(HTML.STYLE_ELEM, column.getStyle(), null);
@@ -212,7 +211,7 @@ public class DataTableRowRenderer {
 
                 CellEditor editor = column.getCellEditor();
 
-                String columnStyleClass = column.getStyleClass();
+                String columnStyleClass = "ui-col-"+colIndex + " " + column.getStyleClass();
                 if (editor != null) {
                     columnStyleClass = columnStyleClass == null
                             ? DataTableConstants.EDITABLE_COLUMN_CLASS
