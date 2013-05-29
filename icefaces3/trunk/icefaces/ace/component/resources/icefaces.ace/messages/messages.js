@@ -19,7 +19,7 @@
     ice.ace.Message = function (opts) {
         var effOpts = {};
         this.opts = opts;
-        this.$msg = $(document.getElementById(opts.id + "_msg"));
+        this.$msg = $(document.getElementById(opts.id + "_msg" + (opts.count || "")));
         if (opts.effect == "fade") {
             this.$msg.hide();
         } else if (opts.effect == "size") {
