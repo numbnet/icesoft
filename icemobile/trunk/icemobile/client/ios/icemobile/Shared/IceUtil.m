@@ -28,10 +28,30 @@
     if (nil != oldLayer)  {
         [oldLayer removeFromSuperlayer];
     }
+
     [[button layer] insertSublayer:fancyLayer atIndex:0];
+
+    if (nil !=[button currentImage])  {
+        CALayer* imageLayer = [CALayer layer];
+        imageLayer.contents = (id) [button currentImage].CGImage;
+
+        CGRect buttonFrame = [button layer].frame;
+
+        CGFloat nativeWidth = CGImageGetWidth([button currentImage].CGImage);
+        CGFloat nativeHeight = CGImageGetHeight([button currentImage].CGImage);
+        CGRect imageFrame = CGRectMake(0.0, 0.0, nativeWidth / 2, nativeHeight / 2);
+        CGFloat offX = (buttonFrame.size.width - imageFrame.size.width) / 2;
+        CGFloat offY = (buttonFrame.size.height - imageFrame.size.height) / 2;
+        imageFrame.origin.x = offX;
+        imageFrame.origin.y = offY;
+        imageLayer.frame = imageFrame;
+
+        [[button layer] insertSublayer:imageLayer atIndex:1];
+    }
 
     [[button layer] setCornerRadius:8.0f];
     [[button layer] setMasksToBounds:YES];
+    [[button layer] setBorderColor:[[UIColor lightGrayColor] CGColor]];
     [[button layer] setBorderWidth:1.0f];
 }
 
@@ -47,7 +67,6 @@
                      [NSArray arrayWithObjects:
                             (id)[[UIColor whiteColor] CGColor], 
                             (id)[color CGColor], nil]];
-    NSLog(@"makeFancyButton layers %@", [[button layer] sublayers]);
 
     [IceUtil makeFancyButton:button withLayer:gradientLayer];
 
@@ -61,9 +80,9 @@
     CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
     [gradientLayer setBounds:[button bounds]];
     gradientLayer.name = @"fancyGradient";
-    [gradientLayer setBorderColor:[[UIColor grayColor] CGColor]];
+    [gradientLayer setBorderColor:[[UIColor darkGrayColor] CGColor]];
     [gradientLayer setCornerRadius:8.0f];
-    [gradientLayer setBorderWidth:4.0f];
+    [gradientLayer setBorderWidth:3.0f];
     [gradientLayer setPosition:
                 CGPointMake([button bounds].size.width/2,
                        [button bounds].size.height/2)];
@@ -80,7 +99,7 @@
 }
 
 + (void)makeFancyButton:(UIButton*)button  {
-    [IceUtil makeFancyButton:button withColor:[UIColor grayColor]];
+    [IceUtil makeFancyButton:button withColor:[UIColor lightGrayColor]];
 }
 
 
