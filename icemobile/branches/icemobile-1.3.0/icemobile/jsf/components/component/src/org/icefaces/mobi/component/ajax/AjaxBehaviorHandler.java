@@ -275,21 +275,21 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
             boolean isClientBehaviorHolder, boolean isCompositeComponent) {
         if (!isClientBehaviorHolder && !isCompositeComponent) {
             throw new TagException(this.tag,
-                "Error: ace:ajax is nested in a parent that does not support behaviors");
+                "Error: mobi:ajax is nested in a parent that does not support behaviors");
         }
     }
     
     protected void verifyNestCompositeCompBeanInfo(BeanInfo bi) {
         if (null == bi) {
             throw new TagException(tag,
-                "Error: ace:ajax is nested in a composite component that does not have a BeanInfo attribute");
+                "Error: mobi:ajax is nested in a composite component that does not have a BeanInfo attribute");
         }
     }
 
     protected void verifyNestCompositeCompBeanDescriptor(BeanDescriptor beanDescriptor) {
         if (null == beanDescriptor) {
             throw new TagException(tag,
-                "Error: ace:ajax is nested in a composite component that does not have a BeanDescriptor");
+                "Error: mobi:ajax is nested in a composite component that does not have a BeanDescriptor");
         }
     }
 
@@ -299,7 +299,7 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
             String eventName) {
         if (!isClientBehaviorHolder && null == attachedObjectTargetList) {
             throw new TagException(tag,
-                "Error: ace:ajax is nested in a composite component that does not support behaviors");
+                "Error: mobi:ajax is nested in a composite component that does not support behaviors");
         }
 
         boolean isCorrespondingAttachedObjectTarget = false;
@@ -322,7 +322,7 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
         }
         if (!isClientBehaviorHolder && !isCorrespondingAttachedObjectTarget) {
             throw new TagException(tag,
-                "Error: ace:ajax is nested in a composite component that does not support its event: "
+                "Error: mobi:ajax is nested in a composite component that does not support its event: "
                 + eventName);
         }
         return isCorrespondingAttachedObjectTarget;
@@ -337,7 +337,7 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
                     return false;
                 }
                 throw new TagException(this.tag,
-                    "Error: ace:ajax has unspecified event name, and is " +
+                    "Error: mobi:ajax has unspecified event name, and is " +
                         "nested in a ClientBehaviorHolder that does not " +
                         "specify a default event name");
             }
@@ -349,7 +349,7 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
                     return false;
                 }
                 throw new TagException(this.tag,
-                    "Error: ace:ajax specifies an event name that is " +
+                    "Error: mobi:ajax specifies an event name that is " +
                         "unsupported by its parent ClientBehaviorHolder. " +
                         "Event name: " + eventName + ", Parent: " +
                         parentClientBehaviorHolder + ", Valid values: " +

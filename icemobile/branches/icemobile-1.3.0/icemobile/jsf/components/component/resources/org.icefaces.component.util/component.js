@@ -365,7 +365,7 @@ ice.mobi.matches = function(elem, selector) {
 
 mobi.AjaxRequest = function (cfg) {
 
-    if (cfg.onstart && !cfg.onstart.call(this)) {
+    if (cfg.onstart && !cfg.onstart.call(this, cfg)) {
         return;//cancel request
     }
     var form = mobi.findForm(cfg.source);
