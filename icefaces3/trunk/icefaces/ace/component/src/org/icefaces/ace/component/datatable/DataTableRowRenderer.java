@@ -211,29 +211,28 @@ public class DataTableRowRenderer {
 
                 CellEditor editor = column.getCellEditor();
 
-                String columnStyleClass = "ui-col-"+colIndex + " " + column.getStyleClass();
-                if (editor != null) {
-                    columnStyleClass = columnStyleClass == null
-                            ? DataTableConstants.EDITABLE_COLUMN_CLASS
-                            : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
-                }
+                String columnStyleClass = "ui-col-"+colIndex;
+
+                if (column.getStyleClass() != null)
+                    columnStyleClass += " " + column.getStyleClass();
+
+                if (editor != null)
+                    columnStyleClass += " " + DataTableConstants.EDITABLE_COLUMN_CLASS;
 
                 // Add alternating styling, except when last group is the same value, split by an expansion or conditional row
                 if (column.getValueExpression("groupBy") != null) {
-                    if (column.isLastGroupDifferent()) column.setOddGroup(!column.isOddGroup());
-                    if (columnStyleClass == null) columnStyleClass = "";
+                    if (column.isLastGroupDifferent())
+                        column.setOddGroup(!column.isOddGroup());
 
                     columnStyleClass += column.isOddGroup()
                             ? " ui-datatable-group-odd"
                             : " ui-datatable-group-even";
                 }
 
-                if (selected) columnStyleClass = columnStyleClass == null
-                        ? "ui-state-active ui-selected"
-                        : columnStyleClass + " ui-state-active ui-selected";
+                if (selected)
+                    columnStyleClass += " ui-state-active ui-selected";
 
-                if (columnStyleClass != null)
-                    writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
+                writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
 
                 if (resizable) writer.startElement(HTML.DIV_ELEM, null);
             }
