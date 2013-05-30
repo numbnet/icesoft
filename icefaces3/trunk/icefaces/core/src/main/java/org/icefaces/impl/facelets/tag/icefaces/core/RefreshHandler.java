@@ -17,6 +17,7 @@
 package org.icefaces.impl.facelets.tag.icefaces.core;
 
 import org.icefaces.impl.event.BridgeSetup;
+import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -91,7 +92,9 @@ public class RefreshHandler extends TagHandler {
         public void encodeBegin(FacesContext context) throws IOException {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("span", this);
-            writer.writeAttribute("id", getClientId(context), null);
+            String clientId = getClientId(context);
+            writer.writeAttribute("id", clientId, null);
+            CoreUtils.enableOnElementUpdateNotify(writer, clientId);
             writer.startElement("script", this);
             writer.writeAttribute("type", "text/javascript", null);
             writer.writeText("ice.setupRefresh('", null);
@@ -101,10 +104,13 @@ public class RefreshHandler extends TagHandler {
             writer.writeText(", ", null);
             writer.writeText(duration, null);
             writer.writeText(", '", null);
-            writer.writeText(getClientId(context), null);
+            writer.writeText(clientId, null);
             writer.writeText("');", null);
             writer.endElement("script");
             writer.endElement("span");
+        }
+
+        public void encodeEnd(FacesContext context) throws IOException {
         }
     }
 }

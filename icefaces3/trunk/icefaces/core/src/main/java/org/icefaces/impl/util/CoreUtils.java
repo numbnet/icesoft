@@ -16,7 +16,11 @@
 
 package org.icefaces.impl.util;
 
+import org.icefaces.impl.context.DOMPartialViewContext;
+
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -84,5 +88,9 @@ public class CoreUtils {
 			}
     	}
     	return portletEnvironment.booleanValue();
+    }
+
+    public static void enableOnElementUpdateNotify(ResponseWriter writer, String id) throws IOException {
+        writer.writeAttribute(DOMPartialViewContext.DATA_ELEMENTUPDATE, id, null);
     }
 }
