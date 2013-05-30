@@ -32,6 +32,9 @@
     <h:outputStylesheet library="ice.samples.showcase" name="demo_template.css"/>
     <h:outputStylesheet library="ice.samples.showcase" name="override_styles.css"/>
     <h:outputStylesheet library="ice.samples.showcase" name="showcase_styles.css"/>
+	<ui:fragment rendered="#{navigationModel.theme == 'rime' ? 'true' : 'false'}">
+		<style type="text/css">#{rimeThemeBean.styles}</style>
+	</ui:fragment>
     <icecore:config mandatoryResource="dataTable" />
 </h:head>
 
