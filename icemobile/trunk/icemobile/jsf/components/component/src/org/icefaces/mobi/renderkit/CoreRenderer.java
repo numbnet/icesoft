@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.*;
+import java.util.Iterator;
 import java.util.logging.Logger;
 import javax.faces.context.ResponseWriter;
 
@@ -59,10 +60,19 @@ public class CoreRenderer extends MobileBaseRenderer {
 
         for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
             String event = eventIterator.next();
+       //     logger.info("eventIterator returning="+event);
+            String domEvent = event;
             if (null != inEvent) {
-                event = inEvent;
+                domEvent = inEvent;
+   //             logger.info("passed in event="+event);
             }
-            String domEvent = getDomEvent(event);
+            domEvent = getDomEvent(event);
+      //      logger.info("getDomEvent returns event="+domEvent);
+            if (behaviorEvents.get(event)==null){
+                logger.warning(" NO behavior for event="+event+" component="+((UIComponent) component).getClientId());
+                return null;
+            }  //don't do anything with domEvent yet as have to use the one the behavior is registered with.
+       //     logger.info("before interation event="+event);
             for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                 ClientBehavior behavior = behaviorIter.next();
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
@@ -155,8 +165,9 @@ public class CoreRenderer extends MobileBaseRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventBehavior = params.get("javax.faces.behavior.event");
         if(null != eventBehavior) {
+          //  logger.info("eventBehavior not null ="+eventBehavior+" for comp="+component.getClientId());
             List<ClientBehavior> eventBehaviorsList = behaviors.get(eventBehavior);
-            if (eventBehaviorsList.isEmpty() || eventBehaviorsList == null){
+            if (eventBehaviorsList == null || eventBehaviorsList.isEmpty() ){
                 return;
             }
             else {
@@ -168,7 +179,9 @@ public class CoreRenderer extends MobileBaseRenderer {
                    }
                }
             }
-        }
+        } /*else {
+            logger.info("eventBehavior NULL for component="+component.getClientId());
+        } */
     }
     protected void writeJavascriptFile(FacesContext facesContext,
             UIComponent component, String JS_NAME, String JS_MIN_NAME,

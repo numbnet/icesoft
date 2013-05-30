@@ -53,8 +53,8 @@ public class InputTextRenderer extends BaseInputRenderer {
                 return;
             }
             this.setSubmittedValue(inputText, submittedString);
+            decodeBehaviors(facesContext, inputText);
         }
-        decodeBehaviors(facesContext, inputText);
     }
 
 
@@ -141,7 +141,7 @@ public class InputTextRenderer extends BaseInputRenderer {
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
 
         if (!disabled && !readOnly && hasBehaviors){
-              String cbhCall = this.buildAjaxRequest(facesContext, cbh, event);
+              String cbhCall = "ice.setFocus(null); " + this.buildAjaxRequest(facesContext, cbh, event);
               writer.writeAttribute(event, cbhCall, null);
         }
         else if (inputText.isSingleSubmit()){
