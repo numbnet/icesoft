@@ -59,7 +59,9 @@ public class LayoutBean implements Serializable {
     private long timestamp;
     private long headTimestamp;
     private String orientation="top";
-    private boolean fixedPosition=true;
+    private boolean fixedPosition=false;
+    private String inputString;
+    private String inputString2;
 
 	public LayoutBean(){
         this.selectedPane = FIRSTPANE;
@@ -115,6 +117,15 @@ public class LayoutBean implements Serializable {
             }
         }
     }
+
+    public String getInputString2() {
+        return inputString2;
+    }
+
+    public void setInputString2(String inputString2) {
+        this.inputString2 = inputString2;
+    }
+
     public void clearFixedHeight(ActionEvent evt){
         this.fixedHeightString = "";
     }
@@ -201,6 +212,14 @@ public class LayoutBean implements Serializable {
 
     public void setSelectedPane2(String selectedPane2) {
         this.selectedPane2 = selectedPane2;
+    }
+
+    public String getInputString() {
+        return inputString;
+    }
+
+    public void setInputString(String inputString) {
+        this.inputString = inputString;
     }
 
     public List getMenuList() {
