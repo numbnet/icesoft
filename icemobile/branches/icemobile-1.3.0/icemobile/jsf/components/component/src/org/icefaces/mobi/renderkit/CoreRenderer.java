@@ -59,10 +59,18 @@ public class CoreRenderer extends MobileBaseRenderer {
 
         for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
             String event = eventIterator.next();
+      //     logger.info("eventIterator returning="+event);
+            String domEvent = event;
             if (null != inEvent) {
-                event = inEvent;
+                domEvent = inEvent;
+   //             logger.info("passed in event="+event);
             }
-            String domEvent = getDomEvent(event);
+            domEvent = getDomEvent(event);
+      //      logger.info("getDomEvent returns event="+domEvent);
+            if (behaviorEvents.get(event)==null){
+                logger.warning(" NO behavior for event="+event+" component="+((UIComponent) component).getClientId());
+                return null;
+            }  //don't do anything with domEvent yet as have to use the one the behavior is registered with.
             for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                 ClientBehavior behavior = behaviorIter.next();
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
@@ -156,7 +164,7 @@ public class CoreRenderer extends MobileBaseRenderer {
         String eventBehavior = params.get("javax.faces.behavior.event");
         if(null != eventBehavior) {
             List<ClientBehavior> eventBehaviorsList = behaviors.get(eventBehavior);
-            if (eventBehaviorsList.isEmpty() || eventBehaviorsList == null){
+            if (eventBehaviorsList == null || eventBehaviorsList.isEmpty() ){
                 return;
             }
             else {
