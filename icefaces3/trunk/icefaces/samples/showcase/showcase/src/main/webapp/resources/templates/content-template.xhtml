@@ -31,24 +31,42 @@ Available ui:params to pass:
 -->
     <div class="example">
 		<style type="text/css">
-			@-moz-document url-prefix() { 
-			  .moz-float-left {
-				 float:left;
-			  }
-			}
-			.documentation-menu .wijmo-wijmenu-link {
-				padding:2px;
-			}
-			.documentation-menu .wijmo-wijmenu-item {
-				margin:0;
-			}
-            .documentation-menu {
-                right:6px;
-                top:6px;
-                font-size:75% !important;
-                position:absolute;
-                padding:0;
-                heights:22px !important;
+			.documentation-menu .wijmo-wijmenu-link { padding:2px; }
+			.documentation-menu .wijmo-wijmenu-item { margin:0; }
+            .documentation-menu { padding:0; }
+
+            /* panel header wrapper shouldn't be inline */
+            #examplePanel .ui-panel-title {
+                display:block;
+                margin-right:0;
+            }
+
+            /*menu*/
+            #examplePanel .ui-panel-title > div { /* ace:menuBar has detail-less wrapper div */
+                display:inline-block;
+                vertical-align: middle;
+                width:20%;
+                text-align: right;
+                /* IE7 inline-block hack */
+                zoom: 1;
+                *display:inline;
+            }
+            #examplePanel .ui-panel-title > div > div {
+                display: inline-block;
+                font-size:10pt;
+                /* IE7 inline-block hack */
+                zoom: 1;
+                *display:inline;
+            }
+
+            /*title*/
+            #examplePanel .ui-panel-title > span {
+                display:inline-block;
+                vertical-align: middle;
+                width:80%;
+                /* IE7 inline-block hack */
+                zoom: 1;
+                *display:inline;
             }
 		</style>
         <ace:panel header="#{title}" id="examplePanel" styleClass="containerPanelStyle">
@@ -61,7 +79,7 @@ Available ui:params to pass:
             </h:panelGroup>
         </div>
             <f:facet name="header">  
-				<h:outputText value="#{title}" class="moz-float-left" escape="false"/>
+				<h:outputText value="#{title}"  escape="false"/>
 				<ace:menuBar direction="down left" styleClass="documentation-menu">
 					<ace:multiColumnSubmenu label="Documentation">
 						<ace:menuColumn>

@@ -32,17 +32,6 @@
     <h:outputStylesheet library="ice.samples.showcase" name="demo_template.css"/>
     <h:outputStylesheet library="ice.samples.showcase" name="override_styles.css"/>
     <h:outputStylesheet library="ice.samples.showcase" name="showcase_styles.css"/>
-	<!-- Rime theme extensions -->
-	<ui:fragment rendered="#{navigationModel.theme == 'rime' ? 'true' : 'false'}">
-		<style type="text/css">
-			.wijmo-wijmenu-horizontal.documentation-menu {
-			font-size:1.1em !important;
-			}
-			.containerPanelStyle .ui-panel-titlebar {
-			height: 19px;
-			}
-		</style>
-	</ui:fragment>
     <icecore:config mandatoryResource="dataTable" />
 </h:head>
 
