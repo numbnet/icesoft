@@ -288,11 +288,3 @@
 /* Overlays */
 .ui-widget-overlay { background: #666666 url("#{resource['icefaces.ace:themes/rime/images/ui-bg_diagonals-thick_40_666666_40x40.png']}") 50% 50% repeat; opacity: .30;filter:Alpha(Opacity=30); }
 .ui-widget-shadow { margin: -5px 0 0 -5px; padding: 5px; background: #000000 url("#{resource['icefaces.ace:themes/rime/images/ui-bg_flat_10_000000_40x100.png']}") 50% 50% repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
-
-/* Showcase extensions */
-.wijmo-wijmenu-horizontal.documentation-menu {
-font-size:1.1em !important;
-}
-.containerPanelStyle .ui-panel-titlebar {
-height: 19px;
-}
