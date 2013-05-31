@@ -155,7 +155,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                         diffs = domDiff(oldDOM, newDOM);
                     }
                 } else {
-                    writer.startSubtreeRendering(oldDOM);
+                    Document oldDOMCopy = (Document) oldDOM.cloneNode(true);
+                    writer.startSubtreeRendering(oldDOMCopy);
                     Collection<String> renderIds = getRenderIds();
                     customIds = getCustomIds(customUpdate);
                     if (null != customIds) {
