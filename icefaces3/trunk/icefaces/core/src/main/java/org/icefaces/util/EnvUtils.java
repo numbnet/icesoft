@@ -73,6 +73,7 @@ public class EnvUtils {
     public static String COALESCE_RESOURCES = "org.icefaces.coalesceResources";
     public static String WARN_BEFORE_SESSION_EXPIRY_INTERVAL = "org.icefaces.warnBeforeSessionExpiryInterval";
     public static String CLIENT_SIDE_ELEMENT_UPDATE_DETERMINATION = "org.icefaces.clientSideElementUpdateDetermination";
+    public static String ACE_FILE_ENTRY_REQUIRE_JAVASCRIPT = "org.icefaces.ace.fileEntry.requireJavascript";
 
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -1030,8 +1031,12 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(context).warnBeforeExpiryInterval;
     }
 
-    public static boolean isClientSideElementupdateDetermination(FacesContext facesContext) {
-        return EnvConfig.getEnvConfig(facesContext).clientSideElementupdateDetermination;
+    public static boolean isClientSideElementUpdateDetermination(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).clientSideElementUpdateDetermination;
+    }
+
+    public static boolean isFileEntryRequireJavascript(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).fileEntryRequireJavascript;
     }
 }
 
@@ -1072,7 +1077,8 @@ class EnvConfig {
     public boolean reloadOnUpdateFailure;
     public boolean coalesceResources;
     public long warnBeforeExpiryInterval;
-    public boolean clientSideElementupdateDetermination;
+    public boolean clientSideElementUpdateDetermination;
+    public boolean fileEntryRequireJavascript;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -1112,7 +1118,8 @@ class EnvConfig {
         versionableTypes = decodeString(initMap, EnvUtils.VERSIONABLE_TYPES, DEFAULT_VERSIONABLE_TYPES, info);
         coalesceResources = decodeBoolean(initMap, EnvUtils.COALESCE_RESOURCES, false, info);
         warnBeforeExpiryInterval = decodeLong(initMap, EnvUtils.WARN_BEFORE_SESSION_EXPIRY_INTERVAL, -1L, info);
-        clientSideElementupdateDetermination = decodeBoolean(initMap, EnvUtils.CLIENT_SIDE_ELEMENT_UPDATE_DETERMINATION, false, info);
+        clientSideElementUpdateDetermination = decodeBoolean(initMap, EnvUtils.CLIENT_SIDE_ELEMENT_UPDATE_DETERMINATION, false, info);
+        fileEntryRequireJavascript = decodeBoolean(initMap, EnvUtils.ACE_FILE_ENTRY_REQUIRE_JAVASCRIPT, true, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }

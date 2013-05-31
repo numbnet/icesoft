@@ -68,8 +68,11 @@ ice.ace.fileentry = {
     },
     
     captureFormOnsubmit : function(formId, iframeId, progressPushId, progressResourcePath) {
-        var f = document.getElementById(formId);      
-        var encodedURL = f.elements['javax.faces.encodedURL'];
+        var f = document.getElementById(formId);
+        // To support portlets, as well as flagging FileEntry server code to
+        // handle this multipart request, and not handle multipart requests
+        // from other upload components which will omit this parameter.
+        var encodedURL = f.elements['ice.fileEntry.encodedURL'];
         if(encodedURL){
             f.action = encodedURL.value;
         }

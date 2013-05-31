@@ -71,7 +71,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     public DOMPartialViewContext(PartialViewContext partialViewContext, FacesContext facesContext) {
         this.wrapped = partialViewContext;
         this.facesContext = facesContext;
-        this.clientSideElementUpdateDetermination = EnvUtils.isClientSideElementupdateDetermination(facesContext);
+        this.clientSideElementUpdateDetermination = EnvUtils.isClientSideElementUpdateDetermination(facesContext);
     }
 
     @Override
