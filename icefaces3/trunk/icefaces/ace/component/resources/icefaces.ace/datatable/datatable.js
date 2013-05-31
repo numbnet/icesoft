@@ -1057,10 +1057,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         if (ie7) tableLayout();
 
         // Set Duplicate Sizing
-        var cssid = this.jqId.substr(1)+'_colSizes',
-            styleSheet = ice.ace.util.getStyleSheet(cssid) || ice.ace.util.addStyleSheet(cssid, this.jqId);
+        var cssid = this.jqId.substr(1)+'_colSizes';
 
         if (!ie7) {
+            var styleSheet = ice.ace.util.getStyleSheet(cssid) || ice.ace.util.addStyleSheet(cssid, this.jqId);
             for (var i = 0; i < bodySingleCols.length; i++) {
                 bodyColumn = ice.ace.jq(bodySingleCols[i]);
 
