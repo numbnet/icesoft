@@ -245,3 +245,22 @@
 /* Overlays */
 .ui-widget-overlay { background: #2b2922 url("#{resource['ace-south-street:images/ui-bg_inset-soft_15_2b2922_1x100.png']}") 50% bottom repeat-x; opacity: .90;filter:Alpha(Opacity=90); }
 .ui-widget-shadow { margin: -12px 0 0 -12px; padding: 12px; background: #cccccc url("#{resource['ace-south-street:images/ui-bg_highlight-hard_95_cccccc_1x100.png']}") 50% top repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+
+/*ICE-9294*/
+
+.wijmo-wijmenu-item a, .wijmo-wijmenu-item a:link, .wijmo-wijmenu-item a:visited {
+    color: #312E25;
+}
+
+.wijmo-wijmenu-item  a.ui-state-hover, .wijmo-wijmenu-item  a.ui-state-focus {
+    background: #67b021 url("#{resource['ace-south-street:images/ui-bg_highlight-soft_25_67b021_1x100.png']}") 50% 50% repeat-x;
+    color: #ffffff;
+}
+
+.wijmo-wijmenu-item .ui-icon {
+    background-image: url("#{resource['ace-south-street:images/ui-icons_808080_256x240.png']}");
+}
+
+.wijmo-wijmenu-item .ui-state-hover .ui-icon, .wijmo-wijmenu-item .ui-state-focus .ui-icon {
+    background-image: url("#{resource['ace-south-street:images/ui-icons_ffffff_256x240.png']}");
+}

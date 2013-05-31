@@ -245,3 +245,21 @@
 /* Overlays */
 .ui-widget-overlay { background: #e6b900 url("#{resource['ace-excite-bike:images/ui-bg_flat_0_e6b900_40x100.png']}") 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
 .ui-widget-shadow { margin: 6px 0 0 6px; padding: 0px; background: #e69700 url("#{resource['ace-excite-bike:images/ui-bg_flat_0_e69700_40x100.png']}") 50% 50% repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+
+/*ICE-9294*/
+
+.wijmo-wijmenu-item .ui-icon {
+    background-image: url("#{resource['ace-excite-bike:images/ui-icons_0a82eb_256x240.png']}")
+}
+
+.wijmo-wijmenu-item a, .wijmo-wijmenu-item a:link, .wijmo-wijmenu-item a:visited {
+    color: #222222;
+}
+
+.wijmo-wijmenu-item .ui-state-hover .ui-icon {
+    background-image: url("#{resource['ace-excite-bike:images/ui-icons_ffffff_256x240.png']}")
+}
+
+.wijmo-wijmenu-item a.ui-state-hover, .wijmo-wijmenu-item a:link.ui-state-hover, .wijmo-wijmenu-item a:visited.ui-state-hover {
+    color: #ffffff;
+}
