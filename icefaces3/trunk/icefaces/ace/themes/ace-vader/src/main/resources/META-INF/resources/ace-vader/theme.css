@@ -245,3 +245,22 @@
 /* Overlays */
 .ui-widget-overlay { background: #aaaaaa url("#{resource['ace-vader:images/ui-bg_flat_0_aaaaaa_40x100.png']}") 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
 .ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa url("#{resource['ace-vader:images/ui-bg_flat_0_aaaaaa_40x100.png']}") 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -khtml-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }
+
+/*ICE-9294*/
+
+.wijmo-wijmenu-item a, .wijmo-wijmenu-item a:link, .wijmo-wijmenu-item a:visited {
+    color: #EEEEEE;
+}
+
+.wijmo-wijmenu-item  a.ui-state-hover, .wijmo-wijmenu-item  a.ui-state-focus {
+    background: #dddddd url("#{resource['ace-vader:images/ui-bg_highlight-soft_60_dddddd_1x100.png']}") 50% 50% repeat-x;
+    color: #000000;
+}
+
+.wijmo-wijmenu-item .ui-icon {
+    background-image: url("#{resource['ace-vader:images/ui-icons_bbbbbb_256x240.png']}");
+}
+
+.wijmo-wijmenu-item .ui-state-hover .ui-icon, .wijmo-wijmenu-item .ui-state-focus .ui-icon {
+    background-image: url("#{resource['ace-vader:images/ui-icons_c98000_256x240.png']}");
+}

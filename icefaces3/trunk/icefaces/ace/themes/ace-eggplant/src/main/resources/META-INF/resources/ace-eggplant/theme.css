@@ -256,10 +256,10 @@
     color: #ffffff;
 }
 
-.wijmo-wijmenu-item .ui-state-hover .ui-icon {
+.wijmo-wijmenu-item .ui-state-hover .ui-icon, .wijmo-wijmenu-item .ui-state-focus .ui-icon {
     background-image: url("#{resource['ace-eggplant:images/ui-icons_734d99_256x240.png']}");
 }
 
-.wijmo-wijmenu-item a.ui-state-hover, .wijmo-wijmenu-item a:link.ui-state-hover, .wijmo-wijmenu-item a:visited.ui-state-hover {
+.wijmo-wijmenu-item a.ui-state-hover, .wijmo-wijmenu-item a:link.ui-state-hover, .wijmo-wijmenu-item a:visited.ui-state-hover, .wijmo-wijmenu-item  a.ui-state-focus {
     color: #665874;
 }
