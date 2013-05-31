@@ -295,13 +295,13 @@ public class DataTableDecoder {
         String clientId = table.getClientId(context);
         List<Column> columns = table.getColumns();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        boolean visibility = panel.isColumnVisibilityConfigurable();
-        boolean ordering = panel.isColumnOrderingConfigurable();
         boolean sizing = false; //panel.isColumnSizingConfigurable();
         boolean name = panel.isColumnNameConfigurable();
         boolean firstCol = panel.getType().equals("first-col") ;
         boolean lastCol = panel.getType().equals("last-col");
         boolean sorting = panel.isColumnSortingConfigurable();
+        boolean visibility = panel.isColumnVisibilityConfigurable();
+        boolean ordering = panel.isColumnOrderingConfigurable();
 
         for (i = 0; i < columns.size(); i++) {
             Column column = columns.get(i);
@@ -392,10 +392,17 @@ public class DataTableDecoder {
     }
 
     public static void decodeTrashConfigurationRequest(FacesContext context, DataTable table) {
-        table.setColumnOrdering((List)null);
+        TableConfigPanel panel = table.findTableConfigPanel(context);
+        boolean sorting = panel.isColumnSortingConfigurable();
+        boolean visibility = panel.isColumnVisibilityConfigurable();
+        boolean ordering = panel.isColumnOrderingConfigurable();
+
+        if (ordering)
+            table.setColumnOrdering((List)null);
+
         for (Column c : table.getColumns(true)) {
-            c.setSortPriority(null);
-            c.setRendered(true);
+            if (sorting) c.setSortPriority(null);
+            if (visibility) c.setRendered(true);
         }
     }
 }

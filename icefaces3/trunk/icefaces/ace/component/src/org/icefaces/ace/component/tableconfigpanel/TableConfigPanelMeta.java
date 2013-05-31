@@ -34,6 +34,7 @@ import org.icefaces.resources.ICEResourceLibrary;
     componentClass = "org.icefaces.ace.component.tableconfigpanel.TableConfigPanel",
     componentFamily = "org.icefaces.ace.TableConfigPanel",
     tlddoc = "<p>Renders a hidden panel with controls to configure column features. The table whose columns are to be configured is targeted with the 'for' attribute. The location of the button to reveal this panel is configured via the 'type' attribute.</p>" +
+             "<p>The table config panel renders three buttons, a checkmark which submits changes, a crossout that closes without submitting changes, and a trashcan, that closes and resets the column properties configurable via the table config panel to an unconfigured state. </p>" +
              "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TableConfigPanel\">TableConfigPanel Wiki Documentation</a>.</p>")
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
@@ -48,7 +49,9 @@ import org.icefaces.resources.ICEResourceLibrary;
     @ClientEvent(name="submit", javadoc="Fired when the TableConfigPanel submits its changes and closes.",
             tlddoc="Fired when the TableConfigPanel submits its changes and closes.", defaultRender="@all", defaultExecute="@this"),
     @ClientEvent(name="cancel", javadoc="Fired when the TableConfigPanel cancel its changes and closes.",
-            tlddoc="Fired when the TableConfigPanel cancel its changes and closes.", defaultRender="@all", defaultExecute="@this")},
+            tlddoc="Fired when the TableConfigPanel cancel its changes and closes.", defaultRender="@all", defaultExecute="@this"),
+    @ClientEvent(name="trash", javadoc="Fired when the TableConfigPanel clears out the current state and closes.",
+            tlddoc="Fired when the TableConfigPanel clears out it's changes and closes.", defaultRender="@all", defaultExecute="@this")},
     defaultEvent = "submit"
 )
 public class TableConfigPanelMeta extends UIComponentBaseMeta {
