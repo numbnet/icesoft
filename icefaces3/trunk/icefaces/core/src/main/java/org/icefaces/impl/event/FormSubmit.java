@@ -51,6 +51,7 @@ public class FormSubmit implements SystemEventListener {
         UIOutput scriptWriter = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                 if (form.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
+                    LOGGER.finer("UIForm has DISABLE_CAPTURE_SUBMIT attribute set, so core not rendering submit capturing script");
                     return;
                 }
                 Object keyMap = form.getAttributes().get(DefaultAction.class.getName());
@@ -94,6 +95,7 @@ public class FormSubmit implements SystemEventListener {
         }
         UIForm htmlForm = (UIForm) source;
         if (htmlForm.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
+            LOGGER.finer("UIForm has DISABLE_CAPTURE_SUBMIT attribute set, so core not capturing submit");
             return false;
         }
         String componentId = htmlForm.getId() + CAPTURE_SUBMIT_SUFFIX;
