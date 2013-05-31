@@ -35,8 +35,10 @@ import javax.faces.component.behavior.ClientBehavior;
 import java.util.Map;
 import java.util.List;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 public class AjaxDisabledList implements SystemEventListener {
+    private static final Logger log = Logger.getLogger(AjaxDisabledList.class.getName());
     public static String DISABLED_LIST = "org.icefaces.ajaxdisabledlist";
 
     public AjaxDisabledList() {
@@ -54,6 +56,7 @@ public class AjaxDisabledList implements SystemEventListener {
         if (isDisabled)  {
             UIForm theForm = getContainingForm(component);
             if ((component instanceof UIForm) || isAjaxDisabled(theForm))  {
+                log.finer("Ajax is disabled, so disabling form submit capturing");
                 theForm.getAttributes().put(
                         FormSubmit.DISABLE_CAPTURE_SUBMIT, "true");
                 //no need to list components if the form is ajaxDisabled
