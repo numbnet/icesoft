@@ -33,7 +33,7 @@ import javax.faces.event.SystemEventListener;
 import java.util.*;
 
 public class RestoreResourceDependencies implements SystemEventListener {
-    private static final Set HINTS = new HashSet(Arrays.asList(new VisitHint[] { VisitHint.SKIP_ITERATION }));
+    private static final Set<VisitHint> HINTS = EnumSet.of(VisitHint.SKIP_ITERATION);
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         final FacesContext facesContext = FacesContext.getCurrentInstance();
