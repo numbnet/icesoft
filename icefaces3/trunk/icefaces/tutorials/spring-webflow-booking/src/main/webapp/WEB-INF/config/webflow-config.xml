@@ -47,6 +47,7 @@
 	<!-- Installs a listener to apply Spring Security authorities -->
 	<bean id="securityFlowExecutionListener" class="org.springframework.webflow.security.SecurityFlowExecutionListener" />
 
+    <!-- Set the viewId and windowId after a POST-Redirect-GET -->
     <bean id="icefacesFlowListener" class="com.icesoft.spring.security.WebflowListener" />
 
 </beans>
