@@ -79,6 +79,8 @@ public class DataTableRenderer extends CoreRenderer {
         else if (table.isTableConfigurationRequest(context))
             DataTableDecoder.decodeTableConfigurationRequest(context, table);
 
+        else if (table.isTrashConfigurationRequest(context))
+            DataTableDecoder.decodeTrashConfigurationRequest(context, table);
 
 
         decodeBehaviors(context, component);
