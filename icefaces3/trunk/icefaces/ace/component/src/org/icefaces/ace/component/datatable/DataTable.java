@@ -1018,6 +1018,7 @@ public class DataTable extends DataTableBase implements Serializable {
     /*#######################################################################*/
     protected boolean isPaginationRequest(FacesContext x)         { return isIdPrefixedParamSet("_paging", x); }
     protected boolean isTableConfigurationRequest(FacesContext x) { return isIdPrefixedParamSet("_tableconf", x); }
+    protected boolean isTrashConfigurationRequest(FacesContext x) { return isIdPrefixedParamSet("_tabletrash", x); }
     protected boolean isColumnReorderRequest(FacesContext x)      { return isIdPrefixedParamSet("_columnReorder", x); }
     protected boolean isSortRequest(FacesContext x)               { return isIdPrefixedParamSet("_sorting", x); }
     protected boolean isFilterRequest(FacesContext x)             { return isIdPrefixedParamSet("_filtering", x); }

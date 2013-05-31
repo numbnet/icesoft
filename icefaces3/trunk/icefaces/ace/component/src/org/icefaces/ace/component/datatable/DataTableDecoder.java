@@ -390,4 +390,12 @@ public class DataTableDecoder {
             i++;
         }
     }
+
+    public static void decodeTrashConfigurationRequest(FacesContext context, DataTable table) {
+        table.setColumnOrdering((List)null);
+        for (Column c : table.getColumns(true)) {
+            c.setSortPriority(null);
+            c.setRendered(true);
+        }
+    }
 }
