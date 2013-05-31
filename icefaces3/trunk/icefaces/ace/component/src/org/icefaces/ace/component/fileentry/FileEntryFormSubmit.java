@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.component.fileentry;
 
+import org.icefaces.ace.util.HTML;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.event.FormSubmit;
 import org.icefaces.impl.context.ICEFacesContextFactory;
@@ -39,6 +40,9 @@ public class FileEntryFormSubmit implements SystemEventListener {
 
     static final String IFRAME_ID = "hiddenIframe";
     private static final String ID_SUFFIX = "_captureFileOnsubmit";
+    private static final String ENCODED_URL_ID = "ice_fileEntry_encodedURL";
+    private static final String ENCODED_URL_NAME = "ice.fileEntry.encodedURL";
+    static final String FILE_ENTRY_MARKER = "ice.fileEntry.ajaxResponse";
     private static final String AJAX_FORCED_VIEWS = 
             ICEFacesContextFactory.AJAX_FORCED_VIEWS;
     private boolean partialStateSaving;
@@ -77,9 +81,45 @@ public class FileEntryFormSubmit implements SystemEventListener {
         forceAjaxOnView(context);
         form.getAttributes().put(FormSubmit.DISABLE_CAPTURE_SUBMIT, "true");
 
+        UIOutput urlOutput = new UIOutput() {
+            public void encodeBegin(FacesContext context) throws IOException {
+                // Similarly to how h:form renders the 'javax.faces.encodedURL'
+                // hidden input field for partial submits, when
+                // ExternalContext's encodeActionURL and encodePartialActionURL
+                // values differ, except that we're passing in a parameter to
+                // mark the multipart request as handled by FileEntry, and
+                // will always use encodePartialActionURL, as that's correct
+                // for both portlets and non-portlets.
+
+                String clientId = getClientId(context);
+                String viewId = context.getViewRoot().getViewId();
+                String actionURL = context.getApplication().getViewHandler().
+                    getActionURL(context, viewId);
+                String prefix = actionURL.contains("?") ? "&" : "?";
+                actionURL = actionURL + prefix + FILE_ENTRY_MARKER + "=true";
+                ExternalContext externalContext = context.getExternalContext();
+                String encodedPartialActionURL = externalContext.encodePartialActionURL(actionURL);
+                log.finer("RENDER ENCODED_URL  clientId: " + clientId + "  encodedPartialActionURL: " + encodedPartialActionURL);
+                if (encodedPartialActionURL != null) {
+                    ResponseWriter writer = context.getResponseWriter();
+                    writer.startElement(HTML.INPUT_ELEM, this);
+                    writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
+                    writer.writeAttribute(HTML.ID_ATTR, clientId, "clientId");
+                    writer.writeAttribute(HTML.NAME_ATTR, ENCODED_URL_NAME, null);
+                    writer.writeAttribute(HTML.VALUE_ATTR, encodedPartialActionURL, "clientId");
+                    writer.endElement(HTML.INPUT_ELEM);
+                }
+            }
+            public void encodeEnd(FacesContext context) throws IOException {
+            }
+        };
+        urlOutput.setId(ENCODED_URL_ID);
+        urlOutput.setTransient(true);
+        form.getChildren().add(0, urlOutput);
+
         FormScriptWriter scriptWriter = new FormScriptWriter(
             null, "_captureFileOnsubmit");
-        form.getChildren().add(0, scriptWriter);
+        form.getChildren().add(1, scriptWriter);
 
         UIOutput output = new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
@@ -98,7 +138,7 @@ public class FileEntryFormSubmit implements SystemEventListener {
         };
         output.setId(IFRAME_ID);
         output.setTransient(true);
-        form.getChildren().add(1, output);
+        form.getChildren().add(2, output);
     }
     
     private static boolean foundFileEntry(UIComponent parent) {

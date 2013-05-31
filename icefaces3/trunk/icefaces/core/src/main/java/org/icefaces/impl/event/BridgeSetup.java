@@ -186,7 +186,7 @@ public class BridgeSetup implements SystemEventListener {
                     writer.write(Boolean.toString(EnvUtils.isBlockUIOnSubmit(context)));
                     writer.write(",");
                     writer.write("clientSideElementUpdateDetermination: ");
-                    writer.write(Boolean.toString(EnvUtils.isClientSideElementupdateDetermination(context)));
+                    writer.write(Boolean.toString(EnvUtils.isClientSideElementUpdateDetermination(context)));
                     writer.write("});");
                     writer.endElement("script");
                     writer.endElement("span");

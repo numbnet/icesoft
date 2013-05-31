@@ -27,11 +27,6 @@ import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.context.ExternalContext;
-import javax.faces.context.ExternalContextWrapper;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
-import javax.faces.event.FacesEvent;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
@@ -66,6 +61,15 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
     @Override
     public boolean isResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
+        Object requestObject = facesContext.getExternalContext().getRequest();
+        HttpServletRequest request = EnvUtils.getSafeRequest(facesContext);
+        Object fileEntryMarker = request.getParameter(FileEntryFormSubmit.FILE_ENTRY_MARKER);  // String "true"
+        log.finest("FileEntryResourceHandler  fileEntryMarker: " + fileEntryMarker +
+            "  requireJS: " + EnvUtils.isFileEntryRequireJavascript(facesContext));
+        if (fileEntryMarker == null && EnvUtils.isFileEntryRequireJavascript(facesContext)) {
+            return wrapped.isResourceRequest(facesContext);
+        }
+
         String reqContentType = externalContext.getRequestContentType();
         boolean contentTypeNotMultipart = ( (null == reqContentType) ||
                 !reqContentType.startsWith("multipart") );
@@ -79,8 +83,6 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
             return wrapped.isResourceRequest(facesContext);
         }
 
-        Object requestObject = facesContext.getExternalContext().getRequest();
-        HttpServletRequest request = EnvUtils.getSafeRequest(facesContext);
         boolean isPortlet = EnvUtils.instanceofPortletRequest(requestObject);
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         log.finer("FileEntryResourceHandler  isMultipart: " + isMultipart + "  isPortlet: " + isPortlet);
@@ -148,10 +150,13 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
 
             // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             Map<String, String[]> parameterMap = new HashMap<String, String[]>(
-                ((parameterListMap.size() > 0) ? parameterListMap.size() : 1) );            
+                ((parameterListMap.size() > 0) ? parameterListMap.size() : 1) );
+            // ICE-6448 Support javascript-less environments by making the 
+            // javascript set a flag that will determine if we do a full page
+            // render of a partial page ajax update render
             boolean ajaxResponse = false;
-            for(String key : parameterListMap.keySet()) {  
-                if (key.equals("ice.fileEntry.ajaxResponse")) ajaxResponse = true;
+            for(String key : parameterListMap.keySet()) {
+                if (key.equals(FileEntryFormSubmit.FILE_ENTRY_MARKER)) ajaxResponse = true;
                 List<String> parameterList = parameterListMap.get(key);
                 String[] values = new String[parameterList.size()];
                 values = parameterList.toArray(values);
