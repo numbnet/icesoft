@@ -152,8 +152,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		mousedownScript = mousedownScript == null ? "" : mousedownScript;
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
 		writer.writeAttribute("style", "width: " + width + "px;" + autoCompleteEntry.getStyle(), null);
+		boolean disabled = autoCompleteEntry.isDisabled();
         writer.writeAttribute("class", "ui-inputfield ui-widget ui-state-default ui-corner-all"
-                + getStateStyleClasses(autoCompleteEntry) + inFieldLabelStyleClass, null);
+                + getStateStyleClasses(autoCompleteEntry) + inFieldLabelStyleClass + (disabled?" ui-state-disabled":""), null);
+		if (disabled) writer.writeAttribute("disabled", "disabled", null);
 		writer.writeAttribute("autocomplete", "off", null);
 
         if (onfocusAppValue != null)
