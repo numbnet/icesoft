@@ -99,7 +99,10 @@
 
         setTimeout(function() {
             consoleLog('Overlay  setTimeout to add overlay / clone / revert  addElements: ' + addElements);
-            whenShownFunc();
+            if (whenShownFunc) {
+                whenShownFunc();
+                whenShownFunc = null;
+            }
             if (!addElements) {
                 return;
             }
@@ -193,6 +196,7 @@
         var uniqueId = uniqueCounter++;
 
         function isMonitoringElement(source) {
+            consoleLog('Monitor '+uniqueId+'>'+jqId+'  isMonitoringElement  monitorFor: ' + cfg.monitorFor + '  source.id: ' + (source ? source.id : '<null>'));
             var mf = cfg.monitorFor;
             if (mf == undefined || mf.length == 0) {
                 return true;
@@ -205,9 +209,12 @@
             while (true) {
                 var currId = curr.id;
                 if (currId) {
+                    consoleLog('Monitor '+uniqueId+'>'+jqId+'  isMonitoringElement  source ancestor id: ' + currId + '  monitoredElementIds: ' + monitoredElementIds);
                     if (-1 < ice.ace.jq.inArray(currId, monitoredElementIds)) {
+                        consoleLog('Monitor '+uniqueId+'>'+jqId+'  isMonitoringElement  MATCHED');
                         return true;
                     }
+                    consoleLog('Monitor '+uniqueId+'>'+jqId+'  isMonitoringElement  NOT MATCHED  continuing scanning...');
                 }
                 if (curr == document.body) {
                     break;
@@ -217,6 +224,7 @@
                     break;
                 }
             }
+            consoleLog('Monitor '+uniqueId+'>'+jqId+'  isMonitoringElement  NOT MATCHED');
             return false;
         }
 
@@ -329,6 +337,7 @@
                 var overlayContainerElem = resolveBlockUIElement(source);
                 consoleLog('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  overlayContainerElem: ' + overlayContainerElem);
                 var blockUIOverlay = Overlay(cfg, overlayContainerElem, overlayShownFunc);
+                overlayShownFunc = null;
                 var rollbacks = fold(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
                     return result.concat(
                             ice.ace.jq.map(overlayContainerElem.getElementsByTagName(type), function(e) {
@@ -359,7 +368,10 @@
 
                 stopBlockingUI = function() {
                     broadcast(rollbacks);
-                    blockUIOverlay();
+                    if (blockUIOverlay) {
+                        blockUIOverlay();
+                        blockUIOverlay = null;
+                    }
                     stopBlockingUI = NOOP;
                     consoleLog('Monitor '+uniqueId+'>'+jqId+'  Unblocked UI');
                 };
@@ -371,6 +383,7 @@
 
         var CLEANUP_UNNECESSARY = 0, CLEANUP_PENDING = 1, CLEANUP_ACKNOWLEDGED = 2;
         var cleanup = CLEANUP_UNNECESSARY;
+        var cleanBeforeSubmit = null, cleanBeforeUpdate = null, cleanServerError = null, cleanNetworkError = null;
 
         function handleCleanup(isBeforeSubmit) {
             if (cleanup == CLEANUP_ACKNOWLEDGED) {
@@ -379,7 +392,25 @@
             } else if (cleanup == CLEANUP_PENDING) {
                 cleanup = CLEANUP_ACKNOWLEDGED;
                 consoleLog('Monitor '+uniqueId+'>'+jqId+'  handleCleanup  CLEANUP PENDING -> ACKNOWLEDGED');
-                //TODO Remove all listeners
+                setTimeout(function() {
+                    consoleLog('Monitor '+uniqueId+'>'+jqId+'  handleCleanup  setTimeout cleanup');
+                    if (cleanBeforeSubmit) {
+                        cleanBeforeSubmit();
+                        cleanBeforeSubmit = null;
+                    }
+                    if (cleanBeforeUpdate) {
+                        cleanBeforeUpdate();
+                        cleanBeforeUpdate = null;
+                    }
+                    if (cleanServerError) {
+                        cleanServerError();
+                        cleanServerError = null;
+                    }
+                    if (cleanNetworkError) {
+                        cleanNetworkError();
+                        cleanNetworkError = null;
+                    }
+                }, 270);
                 return isBeforeSubmit;
             }
             return false;
@@ -392,7 +423,7 @@
             consoleLog('Monitor '+uniqueId+'>'+jqId+'  onElementUpdate  -> CLEANUP_PENDING');
         });
 
-        window.ice.onBeforeSubmit(function(source, isClientRequest) {
+        cleanBeforeSubmit = window.ice.onBeforeSubmit(function(source, isClientRequest) {
             if (handleCleanup(true)) {
                 return;
             }
@@ -400,7 +431,7 @@
                 return;
             }
             if (!isMonitoringElement(source)) {
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  onBeforeSubmit()  NOT monitoring source: ' + source + '  id: ' + source.id);
+                consoleLog('Monitor '+uniqueId+'>'+jqId+'  onBeforeSubmit()  NOT monitoring source: ' + source + '  id: ' + source.id);
                 return;
             }
             begunApplicableToThis = true;
@@ -424,7 +455,7 @@
             changeState(IDLE);
         };
 
-        window.ice.onBeforeUpdate(function(xmlContent, source) {
+        cleanBeforeUpdate = window.ice.onBeforeUpdate(function(xmlContent, source) {
             if (handleCleanup(false)) {
                 return;
             }
@@ -455,7 +486,7 @@
             }
         });
 
-        window.ice.onServerError(function() {
+        cleanServerError = window.ice.onServerError(function() {
             if (handleCleanup(false)) {
                 return;
             }
@@ -463,7 +494,7 @@
             changeState(SERVER_ERROR);
         });
 
-        window.ice.onNetworkError(function() {
+        cleanNetworkError = window.ice.onNetworkError(function() {
             if (handleCleanup(false)) {
                 return;
             }
