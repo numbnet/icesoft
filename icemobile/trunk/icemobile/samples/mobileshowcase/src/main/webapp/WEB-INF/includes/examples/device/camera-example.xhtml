@@ -26,7 +26,7 @@
         
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
-                Use your mobile device's camera to take a picture and upload
+                Use your mobile device camera to take a picture and upload
                 it to the server.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
@@ -37,6 +37,7 @@
             <mobi:fieldsetRow>
                 <mobi:thumbnail for="cam"/>
                 <mobi:camera id="cam" value="#{cameraBean.cameraImage}"
+                        buttonLabel="Camera" captureMessageLabel="Photo captured"
                         maxwidth="#{cameraBean.maxWidth}"
                         maxheight="#{cameraBean.maxHeight}" style="float:right"/>
                 &#160;

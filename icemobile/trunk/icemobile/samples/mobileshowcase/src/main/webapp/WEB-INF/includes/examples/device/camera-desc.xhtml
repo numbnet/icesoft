@@ -22,12 +22,19 @@
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
-        <p>The camera component allows JSF applications to access a mobile devices’
+        <p>The camera component allows JSF applications to access a mobile device
             camera. The component renders a simple button that, when pressed, launches
             the native camera application on the device. Once a picture has been taken
             and accepted, the user is returned to the web application. Image data
             captured by the device is inserted in the calling form and data is
             submitted to the server via a standard JSF form post.</p>
+            
+         <p>
+            The button label can be changed after a photo has been taken to 
+            notify the user. The 'buttonLabel' attribute is first displayed, and after
+            a photo has been captured, the 'captureMessageLabel' attribute value is
+            then shown as the button label. 
+        </p>
 
         <p>
             Value binding is achieved via a Map object so that other important
@@ -37,7 +44,8 @@
 
 <pre>
 &lt;mobi:camera
-    value="#{'#'}{myBean.map}"/&gt;
+    value="#{'#'}{myBean.map}"
+    buttonLabel="Camera" captureMessageLabel="Photo captured"/&gt;
 </pre>
 
         <p>
@@ -46,9 +54,9 @@
             available to the application.
         </p>
 
-        <p>Device camera is only accessible if the application is running
-            in an ICEmobile device container, otherwise
-            the component will display a file upload input component. </p>
+        <p>The camera is only accessible if the application is running
+            in an ICEmobile device container or if ICEmobile SX has been registered, 
+            otherwise the component will display a file upload input component. </p>
 
     </mobi:fieldsetGroup>
 
