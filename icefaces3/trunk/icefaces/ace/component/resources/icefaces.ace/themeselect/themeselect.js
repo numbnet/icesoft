@@ -23,8 +23,13 @@ var ThemeSelect = ice.ace.ThemeSelect = function (clientId, cfg) {
     if (cfg.behaviors) {
         ice.ace.attachBehaviors(this.$sel, cfg.behaviors);
     }
+    var currentSelection = document.getElementById(selectId).value;
     ice.onElementUpdate(selectId, function() {
-        window.location.reload();
+        if (currentSelection != document.getElementById(selectId).value) {
+            window.location.reload();
+        } else {
+            currentSelection = document.getElementById(selectId).value;
+        }
     });
 };
 
