@@ -23,12 +23,19 @@
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
         <p>The camcorder component allows JSF applications to access a mobile
-            devices’ video camera. The component renders a simple button that,
+            device video camera. The component renders a simple button that,
             when pressed, launches the native video camera application on the
-            device. Once a video has been taken and accepted, the user is returned
+            device. Once a video has been captured and accepted, the user is returned
             to the web application. Video data captured by the device is
-            inserted in the calling form and data is submitted to the server
+            inserted into the calling form and data is submitted to the server
             via a standard JSF form post.</p>
+            
+        <p>
+            The button label can be changed after a video has been recorded to 
+            notify the user. The 'buttonLabel' attribute is first displayed, and after
+            a video has been captured, the 'captureMessageLabel' attribute value is
+            then shown as the button label. 
+        </p>
 
         <p>
             Value binding is achieved via a Map object so that other important
@@ -36,20 +43,17 @@
             video component setup looks as follows:
         </p>
 
+        
+        
 <pre>
 &lt;mobi:camcorder
-    value="#{'#'}{myBean.map}"/&gt;
+    value="#{'#'}{myBean.map}" 
+    buttonLabel="Camcorder" captureMessageLabel="Video captured"/&gt;
 </pre>
 
-        <p>
-            When the containing form is submitted to the server, the setter
-            setMap() is called on the bean, making the video file available to
-            the JSF application.
-        </p>
-
         <p>Device video access is only available if the application is running
-            in an ICEmobile device container, otherwise the component will display a
-            file upload input component. </p>
+            in an ICEmobile device container or if ICEmobile SX has been registered, 
+            otherwise the component will display a file upload input component. </p>
 
     </mobi:fieldsetGroup>
 

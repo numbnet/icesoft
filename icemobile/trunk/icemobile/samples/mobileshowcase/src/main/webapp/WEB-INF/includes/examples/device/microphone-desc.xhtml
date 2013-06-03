@@ -23,10 +23,17 @@
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
         <p>The microphone component allows JSF applications to access a mobile
-            devices’ microphone. The component renders a simple button that, when
-            pressed, activates a native interface that captures audio using the device's microphone.
-            Sound data captured by the device is inserted in the calling form
+            device audio recorder. The component renders a simple button that, when
+            pressed, activates a native interface that captures audio using the device microphone.
+            Audio data captured by the device is inserted into the calling form
             and data is submitted to the server via a standard JSF form post.</p>
+            
+         <p>
+            The button label can be changed after audio has been recorded to 
+            notify the user. The 'buttonLabel' attribute is first displayed, and after
+            the audio has been captured, the 'captureMessageLabel' attribute value is
+            then shown as the button label. 
+        </p>
 
         <p>
             Value binding is achieved via a Map object so that other important
@@ -35,15 +42,16 @@
         </p>
 
 <pre>
-&lt;mobi:microphone
-    value="#{'#'}{myBean.map}"/&gt;
+&lt;mobi:microphone duration="10" 
+    buttonLabel="Record Audio"
+    captureMessageLabel="Audio captured"
+    value="#{microphoneBean.audioFileMap}"/&gt;
 </pre>
+    
+    <p>Device audio recording access is only available if the application is running
+            in an ICEmobile device container or if ICEmobile SX has been registered, 
+            otherwise the component will display a file upload input component. </p>
 
-        <p>
-            When the containing form is submitted to the server the setter
-            setMap() is called on the bean, making the
-            sound file available to the application.
-        </p>
 
     </mobi:fieldsetGroup>
 
