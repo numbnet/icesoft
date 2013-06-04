@@ -450,14 +450,16 @@ ice.ace.Autocompleter.prototype = {
     },
 
     onClick: function(event) {
-        this.hidden = true;
-        // Hack to fix before beta. Was popup up the list after a selection was made
+		if (this.ieScrollbarFixObserver) clearTimeout(this.ieScrollbarFixObserver);
 		var element = ice.ace.jq(event.currentTarget).closest('div').get(0);
         this.index = element.autocompleteIndex;
         var idx = element.autocompleteIndex;
-        this.selectEntry();
-        this.getUpdatedChoices(true, event, idx);
-        this.hide();
+		if (!this.isInteractive(event.target, element)) {
+			this.hidden = true;
+			this.selectEntry();
+			this.getUpdatedChoices(true, event, idx);
+			this.hide();
+		}
 		if (this.hideObserver) clearTimeout(this.hideObserver);
 		if (this.blurObserver) clearTimeout(this.blurObserver);
     },
@@ -480,7 +482,8 @@ ice.ace.Autocompleter.prototype = {
 				var widthX=input.position().left+input.width();
 				var heightX=input.position().top+input.height()+parseFloat(this.height)+10;
 				if ( (posx>input.position().left && posx<=widthX) && (posy>input.position().top && posy<heightX) ) {
-					this.element.focus();
+					var self = this;
+					this.ieScrollbarFixObserver = setTimeout(function(){self.element.focus();}, 200);
 					return;
 				}
 			}
@@ -835,7 +838,39 @@ ice.ace.Autocompleter.prototype = {
 		if (keyCode == 9 || keyCode == 10 || keyCode == 13 || keyCode ==  27) return false; // tab, lf, cr, esc
 		return true;
 	},
-
+	
+	isInteractive: function(element, container) {
+		if (element) {
+			var result;
+			var currentNode = element;
+			while (currentNode !== container) {
+				result = this.isInteractiveElement(currentNode);
+				if (result) return true;
+				else currentNode = currentNode.parentNode;
+			}
+		}
+		return false;
+	},
+	
+	isInteractiveElement: function(element) {
+		if (element) {
+			var tag = element.tagName;
+			if (tag) {
+				tag = tag.toLowerCase();
+				switch (tag) {
+					case 'input':
+					case 'select':
+					case 'label':
+					case 'textarea':
+					case 'button':
+					case 'a':
+						return true;
+				}
+			}
+		}
+		return false;
+	},
+	
     updateNOW: function(text) {
 
 		if (!text) return;
