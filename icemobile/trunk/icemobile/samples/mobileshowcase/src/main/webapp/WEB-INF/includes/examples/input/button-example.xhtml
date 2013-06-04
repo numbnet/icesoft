@@ -25,18 +25,15 @@
             <mobi:fieldsetRow>
                 <mobi:commandButtonGroup orientation="vertical" style="width:80%;margin:0 auto;">
                     <mobi:commandButton value="Yes"
-                             actionListener="#{buttonBean.commandGroup1Selected}"
-                             selected="#{buttonBean.selectedButton1 eq 'Yes'}">
+                             actionListener="#{buttonBean.commandGroup1Selected}">
                         <f:attribute name="selectedName" value="Yes"/>
                     </mobi:commandButton>
                     <mobi:commandButton value="No"
-                            actionListener="#{buttonBean.commandGroup1Selected}"
-                            selected="#{buttonBean.selectedButton1 eq 'No'}">
+                            actionListener="#{buttonBean.commandGroup1Selected}">
                         <f:attribute name="selectedName" value="No"/>
                     </mobi:commandButton>
                     <mobi:commandButton value="Please"
-                            actionListener="#{buttonBean.commandGroup1Selected}"
-                            selected="#{buttonBean.selectedButton1 eq 'Please'}" >
+                            actionListener="#{buttonBean.commandGroup1Selected}" >
                         <f:attribute name="selectedName" value="Please" />
                     </mobi:commandButton>
                 </mobi:commandButtonGroup>
@@ -48,18 +45,15 @@
             <mobi:fieldsetRow>
                 <mobi:commandButtonGroup orientation="horizontal" style="width:80%;margin:0 auto;">
                     <mobi:commandButton value="Yes" style="width:33%"
-                             actionListener="#{buttonBean.commandGroup2Selected}"
-                             selected="#{buttonBean.selectedButton2 eq 'Yes'}">
+                             actionListener="#{buttonBean.commandGroup2Selected}">
                         <f:attribute name="selectedName" value="Yes"/>
                     </mobi:commandButton>
                     <mobi:commandButton value="No" style="width:33%"
-                            actionListener="#{buttonBean.commandGroup2Selected}"
-                            selected="#{buttonBean.selectedButton2 eq 'No'}">
+                            actionListener="#{buttonBean.commandGroup2Selected}">
                         <f:attribute name="selectedName" value="No"/>
                     </mobi:commandButton>
                     <mobi:commandButton value="Please" style="width:33%"
-                            actionListener="#{buttonBean.commandGroup2Selected}"
-                            selected="#{buttonBean.selectedButton2 eq 'Please'}" >
+                            actionListener="#{buttonBean.commandGroup2Selected}">
                         <f:attribute name="selectedName" value="Please" />
                     </mobi:commandButton>
                 </mobi:commandButtonGroup>

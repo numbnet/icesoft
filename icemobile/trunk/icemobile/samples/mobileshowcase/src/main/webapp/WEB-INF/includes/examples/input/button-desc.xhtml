@@ -23,19 +23,21 @@
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
         <p>The commandButton component extends the standard JSF commandButton component, 
-        adding named types and device theme support, as well as a selected state for combination
-            with a button group.</p>
+        adding named types and device theme support.</p>
 
 <pre>
 &lt;mobi:commandButtonGroup
-    orientation="horizontal"&gt;
-   &lt;mobi:commandButton
-       selected="false"&gt;
-      Yes&lt;/mobi:commandButton&gt;
-   &lt;mobi:commandButton
-       selected="true"&gt;
-      No&lt;/mobi:commandButton&gt;
-&lt;/mobi:commandButtonGroup>
+   orientation="horizontal"&gt;
+   &lt;mobi:commandButton value="Yes" 
+      style="width:33%"
+      actionListener="&#x2317;{bean.doYes}"/&gt;
+   &lt;mobi:commandButton value="No" 
+      style="width:33%"
+      actionListener="&#x2317;{bean.doNo}"/&gt;
+   &lt;mobi:commandButton value="Please" 
+      style="width:33%"
+      actionListener="&#x2317;{bean.do}"/&gt;
+&lt;/mobi:commandButtonGroup&gt;
 </pre>
 
 
