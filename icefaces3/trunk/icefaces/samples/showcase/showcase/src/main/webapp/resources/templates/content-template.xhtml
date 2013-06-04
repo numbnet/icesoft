@@ -68,6 +68,10 @@ Available ui:params to pass:
                 zoom: 1;
                 *display:inline;
             }
+			
+			.rimeHeightAdjustment .ui-panel-titlebar {
+				min-height:19px;
+			}
 		</style>
         <ace:panel header="#{title}" id="examplePanel" styleClass="containerPanelStyle">
         <div class="content">
@@ -102,7 +106,7 @@ Available ui:params to pass:
         </ace:panel>
         
         <h:form id="sourceCodeForm" rendered="#{navigationModel.renderAsExample}">
-            <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code" styleClass="containerPanelStyle">
+            <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code" styleClass="containerPanelStyle rimeHeightAdjustment">
                 <div class="resources">
                     <ace:ajax event="toggle" execute="@this"/>
                     <ace:tabSet clientSide="true" selectedIndex="0"
