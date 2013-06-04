@@ -118,7 +118,7 @@ var contains = operator($witch(function(condition) {
     condition(isArray, function(items, item) {
         var size = items.length;
         for (var i = 0; i < size; i++) {
-            if (equal(items[i], item)) {
+            if (items[i] == item) {
                 return true;
             }
         }
