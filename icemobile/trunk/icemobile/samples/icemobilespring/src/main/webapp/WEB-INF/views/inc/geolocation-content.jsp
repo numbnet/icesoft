@@ -51,8 +51,8 @@
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <div id="mapctr" style="position:relative">
-                    <img id="map" src="resources/images/map.png"  width="${mobiClient.handheldBrowser ? '260' : '360'}" height="${mobiClient.handheldBrowser ? '130' : '180'}" class="center"/>
+                <div id="mapctr" style="position:relative" class="center">
+                    <img id="map" src="resources/images/map.png"  width="${mobiClient.handheldBrowser ? '260' : '360'}" height="${mobiClient.handheldBrowser ? '130' : '180'}"/>
                     <div id="pointer" style="position: absolute;background-color: red;border-radius:1em;width:5px;height:5px"></div>
                 </div>
             </mobi:fieldsetRow>
