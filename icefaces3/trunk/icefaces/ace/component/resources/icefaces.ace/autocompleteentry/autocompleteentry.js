@@ -454,11 +454,19 @@ ice.ace.Autocompleter.prototype = {
 		var element = ice.ace.jq(event.currentTarget).closest('div').get(0);
         this.index = element.autocompleteIndex;
         var idx = element.autocompleteIndex;
-		if (!this.isInteractive(event.target, element)) {
+		var interactiveElement = this.isInteractive(event.target, element);
+		if (!interactiveElement) {
 			this.hidden = true;
 			this.selectEntry();
 			this.getUpdatedChoices(true, event, idx);
 			this.hide();
+		} else {
+			var self = this;
+			var jqInteractiveElement = ice.ace.jq(interactiveElement);
+			if (!jqInteractiveElement.data("onBlurHandlerRegistered")) {
+				jqInteractiveElement.one('blur', function() {jqInteractiveElement.data("onBlurHandlerRegistered", false);self.onBlur();});
+				jqInteractiveElement.data("onBlurHandlerRegistered", true);
+			}
 		}
 		if (this.hideObserver) clearTimeout(this.hideObserver);
 		if (this.blurObserver) clearTimeout(this.blurObserver);
@@ -845,7 +853,7 @@ ice.ace.Autocompleter.prototype = {
 			var currentNode = element;
 			while (currentNode !== container) {
 				result = this.isInteractiveElement(currentNode);
-				if (result) return true;
+				if (result) return result;
 				else currentNode = currentNode.parentNode;
 			}
 		}
@@ -864,7 +872,7 @@ ice.ace.Autocompleter.prototype = {
 					case 'textarea':
 					case 'button':
 					case 'a':
-						return true;
+						return element;
 				}
 			}
 		}

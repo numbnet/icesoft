@@ -391,10 +391,19 @@ ice.ace.ComboBox.prototype = {
 		var element = $element.get(0);
         this.index = element.autocompleteIndex;
         var idx = element.autocompleteIndex;
-		if (!$element.hasClass('ui-state-disabled') && !this.isInteractive(event.target, element)) {
+		var interactiveElement = this.isInteractive(event.target, element);
+		if (!$element.hasClass('ui-state-disabled') && !interactiveElement) {
 			this.selectEntry();
 			this.getUpdatedChoices(true, event, idx);
 			this.hide();
+		}
+		if (interactiveElement) {
+			var self = this;
+			var jqInteractiveElement = ice.ace.jq(interactiveElement);
+			if (!jqInteractiveElement.data("onBlurHandlerRegistered")) {
+				jqInteractiveElement.one('blur', function() {jqInteractiveElement.data("onBlurHandlerRegistered", false);self.onBlur();});
+				jqInteractiveElement.data("onBlurHandlerRegistered", true);
+			}
 		}
 		if (this.hideObserver) clearTimeout(this.hideObserver);
 		if (this.blurObserver) clearTimeout(this.blurObserver);
@@ -785,7 +794,7 @@ ice.ace.ComboBox.prototype = {
 			var currentNode = element;
 			while (currentNode !== container) {
 				result = this.isInteractiveElement(currentNode);
-				if (result) return true;
+				if (result) return result;
 				else currentNode = currentNode.parentNode;
 			}
 		}
@@ -804,7 +813,7 @@ ice.ace.ComboBox.prototype = {
 					case 'textarea':
 					case 'button':
 					case 'a':
-						return true;
+						return element;
 				}
 			}
 		}
