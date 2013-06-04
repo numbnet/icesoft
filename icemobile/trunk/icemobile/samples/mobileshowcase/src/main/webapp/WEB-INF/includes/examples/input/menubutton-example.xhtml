@@ -28,16 +28,42 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
-                <mobi:menuButton id="mnu1"
-                                 buttonLabel="Action Menu"
+        <mobi:fieldsetGroup> 
+            <mobi:fieldsetRow>The Menu Button can be used dynamically with a backing list</mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center">
+                <mobi:menuButton id="dynamicMnuBtn"
+                                 buttonLabel="Dynamic Menu Button"
                                  value="#{menuButton.dynamicMenuButton}"
                                  var="item">
                     <mobi:menuButtonItem
                             label="#{item.label}"
                             actionListener="#{item.commandAction.execute}"/>
+                        
                 </mobi:menuButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>The Menu Button also supports option groups with the menuButtonGroup component</mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center">
+               <mobi:menuButton id="menuBtnGroup"
+                            buttonLabel="Menu Button Group"
+                            selectTitle="Select an item">
+                   <mobi:menuButtonGroup label="Menu Group A" >
+                       <mobi:menuButtonItem id="itemA1" label="Item A1" value="A1"
+                                  actionListener="#{menuButton.actionMethod}"
+                                  panelConfirmation="pc1"/>
+                       <mobi:menuButtonItem id="itemA2" label="Item A2" value="A2"
+                                  actionListener="#{menuButton.actionMethod}"/>
+                       <mobi:menuButtonItem id="itemA3" label="Item A3" value="A3"
+                                  actionListener="#{menuButton.actionMethod}"/>
+                   </mobi:menuButtonGroup>
+                   <mobi:menuButtonGroup label="Menu Group B">
+                       <mobi:menuButtonItem id="itemB1" label="Item B1" value="B1"
+                               actionListener="#{menuButton.actionMethod}"/>
+                       <mobi:menuButtonItem id="itemB2" label="Item B2" value="B2"
+                               actionListener="#{menuButton.actionMethod}"/>
+                       <mobi:menuButtonItem id="itemB3" label="Item B3" value="B3"
+                               actionListener="#{menuButton.actionMethod}"/>
+                    </mobi:menuButtonGroup>
+               </mobi:menuButton>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputText value="Selected Command: " />

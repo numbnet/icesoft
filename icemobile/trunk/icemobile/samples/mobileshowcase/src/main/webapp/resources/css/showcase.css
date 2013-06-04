@@ -17,8 +17,8 @@
 .center {
     display: block;
     text-align: center;
-    padding: 10px;
     margin: 0 auto;
+    padding:10px;
 }
 .exampleDescription {
     padding: 10px;
