@@ -22,5 +22,5 @@ version: 2.6.0
 */
 .ice-pushbutton .yui-button button {
     padding:.25em 1em;
-    border:0;
+    /*border:0;*/
 }
