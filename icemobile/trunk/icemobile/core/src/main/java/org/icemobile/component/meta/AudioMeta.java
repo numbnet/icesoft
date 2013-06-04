@@ -39,7 +39,7 @@ import javax.faces.application.ResourceDependency;
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.Audio",
         tlddoc = "This component renders an HTML5 audio element. The component can be bound to a variety of source types. " +
-        		"Play back options can be controlled. JSF Resource management options are also available. "
+        		"Playback options can be controlled. JSF Resource management options are also available. "
 )
 @JSP(tagName                        = "audioPlayer",
      tagClass                       = "org.icemobile.jsp.tags.media.AudioTag",
@@ -48,7 +48,7 @@ import javax.faces.application.ResourceDependency;
      generatedInterfaceExtendsClass = "org.icemobile.component.IBaseClientComponent",
      tlddoc = "This component renders an HTML5 audio element. " +
              "The component can be bound to a variety of source types. " +
-              "Play back options can be controlled, but the developer should check to see " +
+              "Playback options can be controlled, but the developer should check to see " +
              "which options are available on the devices & browsers to be supported" )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
