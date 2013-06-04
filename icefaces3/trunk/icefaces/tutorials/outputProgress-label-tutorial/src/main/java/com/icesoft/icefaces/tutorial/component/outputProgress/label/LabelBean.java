@@ -83,7 +83,7 @@ public class LabelBean extends ProgressBar implements Serializable
    		PortableRenderer renderer = PushRenderer.getPortableRenderer();
         start(renderer);
         
-        return "startProgress";
+        return null;
     }
     
     /**
@@ -94,6 +94,6 @@ public class LabelBean extends ProgressBar implements Serializable
     public String stopProgress() {
         stop();
         
-        return "stopProgress";
+        return null;
     }
 }
