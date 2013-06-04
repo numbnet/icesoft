@@ -15,29 +15,33 @@
  */
 .mobi-menu-btn {
     display: inline-block;
+    position: relative;
 }
 
 .mobi-menu-btn-btn span, .mobi-menu-btn-btn {
-    width: 125px;
-    height: 20px;
-    position: absolute;
+    width: 100%;
     text-align:left;
 }
 
 .mobi-menu-btn-btn span {
     background: url('down-arrow.png') no-repeat right;
-    padding-right: 15px;
+    display: inline-block;
+    line-height: 20px;
 }
 
 .mobi-menu-btn-btn {
     overflow: hidden;
-    padding: 5px 24px 3px 8px
+    @include border-box;
 }
 
 .mobi-menu-btn-menu {
     opacity: 0;
-    width: 160px;
+    filter: Alpha(Opacity=0);
+    width: 100%;
     z-index: 5;
     height: 30px;
+    position: absolute;
+    top: 10px;
+    left: 6px;
 }
 
