@@ -16,6 +16,7 @@
 .mobi-menu-btn {
     display: inline-block;
     position: relative;
+    padding-right:30px;
 }
 
 .mobi-menu-btn-btn span, .mobi-menu-btn-btn {
