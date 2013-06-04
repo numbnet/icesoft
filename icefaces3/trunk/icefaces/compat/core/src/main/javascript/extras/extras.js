@@ -2325,7 +2325,7 @@ Autocompleter.Base.prototype = {
         }
         // needed to make click events working
         setTimeout(this.hide.bind(this), 250);
-        this.hasFocus = false;
+        if (!this.inTransit) this.hasFocus = false;
         this.active = false;
     },
 
@@ -2580,6 +2580,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
 */
         var ue = $(updateId);
         this.baseInitialize(element, ue, options, rowClass, selectedRowClass);
+		if (existing && existing.hasFocus) this.hasFocus = true;
 
         this.options.onComplete = this.onComplete.bind(this);
         this.options.defaultParams = this.options.parameters || null;
@@ -2624,6 +2625,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
 
         var indexName = this.element.id + "_idx";
         form[indexName].value = "";
+		this.inTransit = true;
     },
 
     onComplete: function(request) {
@@ -2631,6 +2633,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
     },
 
     updateNOW: function(text) {
+		this.inTransit = false;
         Element.cleanWhitespace(this.update);
         this.updateChoices(text);
         if (this.hasFocus) {
