@@ -18,21 +18,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>org.icemobile</groupId>
-        <artifactId>bundle-parent</artifactId>
-        <version>1.3.0-BETA1</version>
+        <artifactId>samples-parent</artifactId>
+        <version>1.3.0-Final</version>
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.icemobile.samples</groupId>
     <artifactId>samples-jsf-parent</artifactId>
-    <version>1.3.0-BETA1</version>
+    <version>1.3.0-Final</version>
     <packaging>pom</packaging>
     <name>Icemobile JSF Samples Parent</name>
     <url>http://www.icesoft.org</url>
 
     <modules>
-        <module>../samples/mobileshowcase</module>
-        <module>../samples/mediacast</module>
+        <module>../mobileshowcase</module>
+        <module>../mediacast</module>
     </modules>
 
     <!-- Naming the war files this way prevents the version from being appended. -->
