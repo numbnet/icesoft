@@ -386,11 +386,12 @@ ice.ace.ComboBox.prototype = {
     },
 
     onClick: function(event) {
+		if (this.ieScrollbarFixObserver) clearTimeout(this.ieScrollbarFixObserver);
 		var $element = ice.ace.jq(event.currentTarget).closest('div');
 		var element = $element.get(0);
         this.index = element.autocompleteIndex;
         var idx = element.autocompleteIndex;
-		if (!$element.hasClass('ui-state-disabled')) {
+		if (!$element.hasClass('ui-state-disabled') && !this.isInteractive(event.target, element)) {
 			this.selectEntry();
 			this.getUpdatedChoices(true, event, idx);
 			this.hide();
@@ -417,7 +418,8 @@ ice.ace.ComboBox.prototype = {
 				var widthX=$box.position().left+$box.width();
 				var heightX=$box.position().top+$box.height()+parseFloat(this.height)+10;
 				if ( (posx>$box.position().left && posx<=widthX) && (posy>$box.position().top && posy<heightX) ) {
-					this.element.focus();
+					var self = this;
+					this.ieScrollbarFixObserver = setTimeout(function(){self.element.focus();}, 200);
 					return;
 				}
 			}
@@ -775,6 +777,38 @@ ice.ace.ComboBox.prototype = {
 		if (keyCode >= 112 && keyCode <= 123) return false; // f keys
 		if (keyCode == 9 || keyCode == 10 || keyCode == 13 || keyCode ==  27) return false; // tab, lf, cr, esc
 		return true;
+	},
+	
+	isInteractive: function(element, container) {
+		if (element) {
+			var result;
+			var currentNode = element;
+			while (currentNode !== container) {
+				result = this.isInteractiveElement(currentNode);
+				if (result) return true;
+				else currentNode = currentNode.parentNode;
+			}
+		}
+		return false;
+	},
+	
+	isInteractiveElement: function(element) {
+		if (element) {
+			var tag = element.tagName;
+			if (tag) {
+				tag = tag.toLowerCase();
+				switch (tag) {
+					case 'input':
+					case 'select':
+					case 'label':
+					case 'textarea':
+					case 'button':
+					case 'a':
+						return true;
+				}
+			}
+		}
+		return false;
 	},
 	
 	setContent: function(content) {
