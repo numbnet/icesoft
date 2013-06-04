@@ -132,7 +132,7 @@
          -->
 
         <!-- Use with Liferay 6.1 -->
-        <liferayfaces.version>3.1.2-ga3-SNAPSHOT</liferayfaces.version>
+        <liferayfaces.version>3.1.2-ga3</liferayfaces.version>
 
         <!-- Use with Liferay 6.0 -->
         <!--<liferayfaces.version>3.0.2-ga3-SNAPSHOT</liferayfaces.version>-->
