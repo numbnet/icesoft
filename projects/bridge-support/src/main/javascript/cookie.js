@@ -49,7 +49,7 @@ var remove = operator();
 function Cookie(name, val, path) {
     val = val || '';
     path = path || '/';
-    document.cookie = name + '=' + val + '; path=' + path;
+    document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
 
     return object(function(method) {
         method(value, function(self) {
