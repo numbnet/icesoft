@@ -22,7 +22,7 @@ package org.icemobile.component;
  */
 public interface IMenuButton extends IMobiComponent  {
     public static final String BASE_STYLE_CLASS = "mobi-menu-btn";
-    public static final String BUTTON_STYLE_CLASS = "mobi-menu-btn-btn";
+    public static final String BUTTON_STYLE_CLASS = "mobi-menu-btn-btn mobi-button ui-btn-up-c";
     public static final String DISABLED_STYLE_CLASS = "mobi-button-dis";
     public static final String MENU_SELECT_CLASS =  "mobi-menu-btn-menu";
 

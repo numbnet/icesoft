@@ -90,7 +90,7 @@
     border-radius: 0;
     height: 38px;
     line-height: 22px;
-    box-sizing: border-box;
+    @include border-box;
 }
 .mobi-pagePanel-header div.mobi-button-back {
     height: 23px;
