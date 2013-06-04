@@ -60,7 +60,7 @@ public class PushButtonRenderer extends CoreRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
-        String yuiBaseClass= "yui-button yui-push-button ui-button ui-widget ui-state-default";
+        String yuiBaseClass= "yui-button yui-push-button";
         PushButton pushButton = (PushButton) uiComponent;
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         boolean disabled = pushButton.isDisabled();
@@ -94,9 +94,11 @@ public class PushButtonRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
 
         if (disabled)
-            writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-disabled", null);
-        else
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-button ui-widget ui-state-disabled ui-corner-all", null);
+        else {
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-button ui-widget ui-state-default ui-corner-all", null);
             encodeScript(facesContext, writer, pushButton, clientId, HTML.ONFOCUS_ATTR);
+        }
 
         if (tabindex != null)
             writer.writeAttribute(HTML.TABINDEX_ATTR, tabindex, null);
