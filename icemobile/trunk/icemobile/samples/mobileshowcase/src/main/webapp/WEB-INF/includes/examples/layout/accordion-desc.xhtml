@@ -22,22 +22,23 @@
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
-        <p>The accordion component contains child contentPane components.  Only one content pane can be expanded
-	at any given time.  The title bar
-        text for each accordion panel can be set via the title attribute
-        on the contentPane.</p>
+        <p>The accordion component contains child contentPane components.  Only one 
+        content pane can be expanded at any given time.  The title bar text for each 
+        accordion panel can be set via the title attribute on the contentPane.</p>
 
 <pre>
-   &lt;mobi:accordion&gt;
-      &lt;mobi:contentPane
-        id="tab1" &gt;
-         ...
-      &lt;/mobi:contentPane&gt;
-      &lt;mobi:contentPane
-        id="tab2" &gt;
-         ...
-      &lt;/mobi:contentPane&gt;
-   &lt;/mobi:accordion&gt;
+&lt;mobi:accordion id="autoHeightAccordion" selectedId="&#x2317;{accordionBean.selectedId}"
+    autoHeight="true"&gt;
+    &lt;mobi:contentPane title="ICE Sailor" id="accordionPane1" client="true"&gt;
+            &lt;ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/&gt;
+    &lt;/mobi:contentPane&gt;
+    &lt;mobi:contentPane title="ICE Breaker" id="accordionPane2" client="true"&gt;
+        &lt;ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/&gt;
+    &lt;/mobi:contentPane&gt;
+    &lt;mobi:contentPane title="ICE Skate" id="accordionPane3" client="true"&gt;
+        &lt;ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/&gt;
+    &lt;/mobi:contentPane&gt;
+&lt;/mobi:accordion&gt;
 </pre>
 
     </mobi:fieldsetGroup>
