@@ -28,15 +28,16 @@
             a list of images that the user can swipe to view additional images in the list. </p>
 
 
-    <pre>
-    &lt;mobi:carousel
-         value="# {bean.list}
-         var="listItem" &gt;
-        &lt;h:panelGroup&gt;
-            # {listItem}
-        &lt;/h:panelGroup&gt;
-    &lt;/mobi:carousel&gt;
-    </pre>
+<pre>
+&lt;mobi:carousel id="flagCarousel" selectedItem="&#x2317;{carouselBean.selectedItem}"
+               value="&#x2317;{carouselBean.images}"
+               singleSubmit="true"
+               var="item"&gt;
+    &lt;h:panelGroup&gt;
+        &lt;h:graphicImage library="images" name="&#x2317;{item}" style="height:98px;"/&gt;
+    &lt;/h:panelGroup&gt;
+&lt;/mobi:carousel&gt;
+</pre>
 
     </mobi:fieldsetGroup>
 
