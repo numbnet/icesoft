@@ -78,9 +78,9 @@ Available ui:params to pass:
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>
             </div>
-            <h:panelGroup layout="block" styleClass="instance" rendered="#{navigationModel.renderAsExample}">
+            <ace:panel styleClass="instance" rendered="#{navigationModel.renderAsExample}">
                 <ui:insert name="example"/>
-            </h:panelGroup>
+            </ace:panel>
         </div>
             <f:facet name="header">  
 				<h:outputText value="#{title}"  escape="false"/>
