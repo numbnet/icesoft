@@ -254,7 +254,7 @@ public abstract class Exporter {
 	}
 
     protected String exportValue(FacesContext context, UIComponent component) {
-		if (shouldExcludeFromExport(component)) return "";
+		if (shouldExcludeFromExport(component) || !component.isRendered()) return "";
 		if (component instanceof CellEditor) {
 			UIComponent facet = component.getFacet("output");
 			if (facet != null) {
