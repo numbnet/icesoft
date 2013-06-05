@@ -65,6 +65,28 @@ ice.mobi.removeListener= function(obj, event, fnc){
         ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
     }
 };
+ice.mobi.ajaxRequest = function( options){
+    if (options.oncomplete || options.onComplete){//support for submitNotification
+        var callBack = options.oncomplete || options.onComplete;
+        ice.mobi.addListener(document, "DOMSubtreeModified", callBack);
+    }
+    if( typeof ice.mobi.userAjaxRequest === "function"){
+        ice.mobi.userAjaxRequest(options);
+    }
+    else{ //default to form submit
+        var src = options.source;
+        if (!src){
+            console.log("No source element to submit");
+            return;
+        }
+        var myForm = ice.formOf(document.getElementById(src));
+        if (myForm) {
+            myForm.submit();
+        }else{
+            console.log(" no form to submit for source element="+src);
+        }
+    }
+};
 ice.mobi.BUTTON_UNPRESSED = " ui-btn-up-c";
 ice.mobi.BUTTON_PRESSED = " ui-btn-down-c";
 ice.mobi.hasClass = function(ele, remove_cls) {
@@ -299,7 +321,7 @@ ice.mobi.button = {
              }
             //if here, then no panelConfirmation as this action is responsible for submit
              else {
-                 mobi.AjaxRequest(options);
+                 ice.mobi.ajaxRequest(options);
             }
         }
     },
@@ -410,7 +432,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                        submitcfg.execute = "@this";
                        var refreshXHR = function(xhr, status, args) { ice.mobi.carousel.refreshCall(clientId, pageVal);};
                        submitcfg.oncomplete = refreshXHR;
-                       mobi.AjaxRequest(submitcfg);
+                       ice.mobi.ajaxRequest(submitcfg);
                    }
                /*    if (behaviors){  disabled for now until determined if required
                        submitcfg.behaviors = behaviors;
@@ -2146,7 +2168,7 @@ ice.mobi.panelConf = {
         var snId = this.cfg[clientId].snId || this.options[clientId].snId || null;
         if (snId ==null && callerId) {
             this.close(clientId);
-            mobi.AjaxRequest(this.options[clientId]);
+            ice.mobi.ajaxRequest(this.options[clientId]);
         }
         else if (snId!=null) {
             this.close(clientId);
@@ -2224,10 +2246,10 @@ ice.mobi.submitnotify = {
         if (behaviors){
             cfg.oncomplete = closeCall;
             cfg.onsuccess = options.keyCall || keyCall;
-            mobi.AjaxRequest(cfg);
+            ice.mobi.ajaxRequest(cfg);
         }else{
             options.oncomplete = closeCall;
-            mobi.AjaxRequest(options);
+            ice.mobi.ajaxRequest(options);
         }
     },
     close:function (clientId) {
@@ -2293,7 +2315,7 @@ ice.mobi.menubutton = {
             ice.mobi.submitnotify.open(snId, optId, cfg, options);
             return;
         }
-        mobi.AjaxRequest(options);
+        ice.mobi.ajaxRequest(options);
         this.reset(myselect, index);
     },
     reset: function reset(myselect, index) {

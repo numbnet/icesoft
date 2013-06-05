@@ -81,7 +81,7 @@
        </ul>
    </p>
 <script type="text/javascript">
-	mobi.AjaxRequest = function( options){
+/*	ice.mobi.ajaxRequest = function( options){
         if (options.oncomplete || options.onComplete){
             var callBack = options.oncomplete || options.onComplete;
             ice.mobi.addListener(document, "DOMSubtreeModified", callBack);
@@ -89,7 +89,7 @@
         if (options.jspForm){
             options.jspForm.submit();
         }
-    }
+    }  */
 </script>
 </body>
 
