@@ -14,14 +14,15 @@
  * governing permissions and limitations under the License.
  */
 
-var at = operator();
-var putAt = operator();
-var removeAt = operator();
+ice.lib.hashtable = ice.module(function(define) {
+    eval(ice.importFrom('ice.lib.functional'));
+    eval(ice.importFrom('ice.lib.oo'));
+    eval(ice.importFrom('ice.lib.collection'));
 
-var HashTable;
-var HashSet;
+    var at = operator();
+    var putAt = operator();
+    var removeAt = operator();
 
-(function() {
     var removeInArray = Array.prototype.splice ? function(array, index) {
         array.splice(index, 1);
     } : function(array, index) {
@@ -120,7 +121,7 @@ var HashSet;
     var internalBuckets = operator();
     var internalBucketCount = operator();
 
-    HashTable = function() {
+    function HashTable() {
         var buckets = [];
         var bucketCount = 5000;
 
@@ -143,9 +144,9 @@ var HashSet;
                 });
             });
         });
-    };
+    }
 
-    HashSet = function(list) {
+    function HashSet(list) {
         var buckets = [];
         var bucketCount = 5000;
         var present = new Object;
@@ -207,5 +208,11 @@ var HashSet;
                 return bucketCount;
             });
         });
-    };
-})();
+    }
+
+    define('at', at);
+    define('putAt', putAt);
+    define('removeAt', removeAt);
+    define('HashTable', HashTable);
+    define('HashSet', HashSet);
+});

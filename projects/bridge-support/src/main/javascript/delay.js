@@ -14,45 +14,54 @@
  * governing permissions and limitations under the License.
  */
 
-var run = operator();
-var runOnce = operator();
-var stop = operator();
+ice.lib.delay = ice.module(function(exportAs) {
+    eval(ice.importFrom('ice.lib.oo'));
 
-function Delay(f, milliseconds) {
-    return object(function(method) {
-        var id = null;
-        var canceled = false;
+    var run = operator();
+    var runOnce = operator();
+    var stop = operator();
 
-        method(run, function(self, times) {
-            //avoid starting a new process
-            if (id || canceled) return;
+    function Delay(f, milliseconds) {
+        return object(function(method) {
+            var id = null;
+            var canceled = false;
 
-            var call = times ? function() {
-                try {
-                    f();
-                } finally {
-                    if (--times < 1) stop(self);
+            method(run, function(self, times) {
+                //avoid starting a new process
+                if (id || canceled) return;
+
+                var call = times ? function() {
+                    try {
+                        f();
+                    } finally {
+                        if (--times < 1) stop(self);
+                    }
+                } : f;
+
+                id = setInterval(call, milliseconds);
+
+                return self;
+            });
+
+            method(runOnce, function(self) {
+                return run(self, 1);
+            });
+
+            method(stop, function(self) {
+                //stop only an active process
+                if (id) {
+                    clearInterval(id);
+                    id = null;
+                    //cancel execution completely if run* was not called
+                } else {
+                    canceled = true;
                 }
-            } : f;
-
-            id = setInterval(call, milliseconds);
-
-            return self;
+            });
         });
+    }
 
-        method(runOnce, function(self) {
-            return run(self, 1);
-        });
-
-        method(stop, function(self) {
-            //stop only an active process
-            if (id) {
-                clearInterval(id);
-                id = null;
-                //cancel execution completely if run* was not called
-            } else {
-                canceled = true;
-            }
-        });
-    });
-}
+    exportAs('run', run);
+    exportAs('runOnce', runOnce);
+    exportAs('stop', stop);
+    exportAs('Delay', Delay);
+});

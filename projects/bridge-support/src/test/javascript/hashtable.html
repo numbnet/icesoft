@@ -19,12 +19,17 @@
 <html>
 <head>
     <title></title>
+    <script type="text/javascript" src="../../main/javascript/header.js"></script>
+    <script type="text/javascript" src="../../main/javascript/module.js"></script>
     <script type="text/javascript" src="../../main/javascript/oo.js"></script>
     <script type="text/javascript" src="../../main/javascript/functional.js"></script>
     <script type="text/javascript" src="../../main/javascript/collection.js"></script>
     <script type="text/javascript" src="../../main/javascript/hashtable.js"></script>
     <script type="text/javascript" src="unittest.js"></script>
     <script type="text/javascript">
+        eval(ice.importFrom('ice.lib.collection'));
+        eval(ice.importFrom('ice.lib.hashtable'));
+
         window.onload = InPageRunner('Hashtable test suite', function(test) {
             test('check put/lookup', function() {
                 var table = HashTable();
