@@ -1242,6 +1242,16 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         indicatorSelector = "i.mobi-dv-si",
         blankInicatorClass = 'mobi-dv-si';
     function DataView(clientId, cfg) {
+        function hideAddressBar() {
+            if(!window.location.hash) {
+                window.scrollTo(0, 0);
+            }
+        }
+        if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
+            ice.mobi.addListener(window, "load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
+            ice.mobi.addListener(window, "orientationchange", hideAddressBar );
+        }
+
         var config = cfg,
             selectorId = '#' + im.escapeJsfId(clientId),
             bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
@@ -1827,17 +1837,6 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
 /* touch active state support */
 ice.mobi.addListener(document, "touchstart", function(){});
-
-var hideBar = true;
-function hideAddressBar() {
-    if(!window.location.hash) {
-        window.scrollTo(0, 0);
-    }
-}
-if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
-    ice.mobi.addListener(window, "load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
-    ice.mobi.addListener(window, "orientationchange", hideAddressBar );
-}
 
 (function(){
     ice.mobi.sizePagePanelsToViewPort = function(){
