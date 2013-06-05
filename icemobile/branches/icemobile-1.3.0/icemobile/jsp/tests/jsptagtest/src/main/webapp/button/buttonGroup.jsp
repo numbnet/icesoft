@@ -117,12 +117,12 @@
     	   <li><a href="../index.html">index</a></li>
        </ul>
    </p>
-<script type="text/javascript">
-	mobi.AjaxRequest = function( options){
+ <script type="text/javascript">
+/**	ice.mobi.userAjaxRequest = function( options){
         if (options.jspForm){
             options.jspForm.submit();
         }
-    }
+    } */
 </script>
 </body>
 

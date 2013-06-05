@@ -116,11 +116,11 @@
        </ul>
    </p>
 <script type="text/javascript">
-	mobi.AjaxRequest = function( options){
+/*	ice.mobi.ajaxRequest = function( options){
         if (options.jspForm){
             options.jspForm.submit();
         }
-    }
+    }  */
 </script>
 </body>
 

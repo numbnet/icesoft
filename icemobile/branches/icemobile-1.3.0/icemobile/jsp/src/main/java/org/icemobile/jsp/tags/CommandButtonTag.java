@@ -239,7 +239,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
         this.parentDisabled = dis;
     }
     public void release(){
-        logger.info("button id="+this.id+" RELEASE");
+     //   logger.info("button id="+this.id+" RELEASE");
         super.release();
         this.mParent = null ;
         this.writer= null;
