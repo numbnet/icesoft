@@ -19,21 +19,25 @@
     <resource name="bridge.uncompressed.js" library="ice.core">
         <depends-on>
             <resource name="jsf.js" library="javax.faces"/>
+            <resource name="bridge-support.uncompressed.js" library="ice.core"/>
         </depends-on>
     </resource>
     <resource name="bridge.js" library="ice.core">
         <depends-on>
             <resource name="jsf.js" library="javax.faces"/>
+            <resource name="bridge-support.js" library="ice.core"/>
         </depends-on>
     </resource>
     <resource name="icepush.uncompressed.js" library="ice.push">
         <depends-on>
             <resource name="jsf.js" library="javax.faces"/>
+            <resource name="bridge-support.uncompressed.js" library="ice.core"/>
         </depends-on>
     </resource>
     <resource name="icepush.js" library="ice.push">
         <depends-on>
             <resource name="jsf.js" library="javax.faces"/>
+            <resource name="bridge-support.js" library="ice.core"/>
         </depends-on>
     </resource>
     <resource name="JavaScriptRunnerSetup" target="body">
