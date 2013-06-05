@@ -16,11 +16,15 @@
 
 package org.icemobile.samples.mobileshowcase.view.examples.input.menubutton;
 
+import org.icefaces.mobi.component.menubutton.MenuButtonItem;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.event.ActionEvent;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -58,6 +62,9 @@ public class MenuButtonBean extends ExampleImpl<MenuButtonBean> implements
     private ArrayList<MenuButtonItemModel> dynamicMenuButton;
 
     private String executedCommand;
+    
+    private String selTitle="Select";
+    
 
     public MenuButtonBean() {
         super(MenuButtonBean.class);
@@ -86,5 +93,22 @@ public class MenuButtonBean extends ExampleImpl<MenuButtonBean> implements
 
     public String getExecutedCommand() {
         return executedCommand;
+    }
+    
+    public String getSelTitle() {
+        return this.selTitle;
+    }
+
+    public void setSelTitle(String selTitle) {
+        this.selTitle = selTitle;
+    }
+
+    public void actionMethod(ActionEvent ae){
+        UIComponent uic = ae.getComponent();
+        if (uic instanceof MenuButtonItem) {
+            MenuButtonItem mbi = (MenuButtonItem)uic;
+         //   logger.info("Item selected="+mbi.getValue()+" label="+mbi.getLabel());
+            this.executedCommand = mbi.getValue().toString();
+        }
     }
 }
