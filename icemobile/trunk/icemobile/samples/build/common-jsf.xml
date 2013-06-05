@@ -14,6 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
+
 <project name="common-jsf" default="servlet-profile">
 		
 	<import file="common.xml"/>

@@ -18,14 +18,15 @@
     
     <property file="build.properties"/>
     <property file="../../build.properties"/>
-    <property name="icemobile.base.dir" location="../.."/>
+
+    <property name="icemobile.base.dir" location="../../.."/>
     <property name="samples.dist.dir" location="${icemobile.base.dir}/samples/dist"/>
-    
+
     <property name="compile.source" value="1.5"/>
     <property name="compile.target" value="1.5"/>
     <property name="compile.debug" value="true"/>
 
-    <property name="lib.icemobile.dir" location="../../lib"/>
+    <property name="lib.icemobile.dir" location="../../../lib"/>
     <property name="lib.application.dir" location="./src/main/webapp/WEB-INF/lib"/>
 
     <property name="java.dir" location="./src/main/java"/>
