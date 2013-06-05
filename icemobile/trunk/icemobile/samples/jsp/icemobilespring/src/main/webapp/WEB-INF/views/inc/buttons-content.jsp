@@ -80,7 +80,7 @@
 </form:form>
 <script type="text/javascript">
     MvcUtil.enhanceForm("#buttonsform");
-    mobi.AjaxRequest = function( options){
+    mobi.userAjaxRequest = function( options){
         if (options.jspForm){
             $(options.jspForm).submit();
         }

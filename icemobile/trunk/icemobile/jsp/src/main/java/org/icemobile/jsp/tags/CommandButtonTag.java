@@ -51,7 +51,6 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     private boolean parentDisabled = false;
 
     public void setParent(Tag parent) {
-        logger.info("SETPARENT!!!");
         if ((parent instanceof CommandButtonGroupTag)) {
             this.mParent = (CommandButtonGroupTag) parent;
         }
@@ -239,7 +238,6 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
         this.parentDisabled = dis;
     }
     public void release(){
-        logger.info("button id="+this.id+" RELEASE");
         super.release();
         this.mParent = null ;
         this.writer= null;
