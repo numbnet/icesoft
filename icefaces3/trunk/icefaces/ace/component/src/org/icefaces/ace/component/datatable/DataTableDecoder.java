@@ -109,7 +109,9 @@ public class DataTableDecoder {
         RowStateMap stateMap = table.getStateMap();
 
         if (isValueBlank(selection)) {
-            if (deselection != null && !"".equals(deselection))
+            if (table.isCellSelection())
+                table.clearCellSelection();
+            else if (deselection != null && !"".equals(deselection))
                 stateMap.setAllSelected(false);
         }
         else if (table.isCellSelection()) {
