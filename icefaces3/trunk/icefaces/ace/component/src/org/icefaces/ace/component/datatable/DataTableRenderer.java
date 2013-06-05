@@ -138,6 +138,14 @@ public class DataTableRenderer extends CoreRenderer {
         if ((styleClass = table.getStyleClass()) != null)
             containerClass += " " + styleClass;
 
+        if (table.isSelectionEnabled()) {
+            if (table.isCellSelection()) {
+                containerClass += " ui-cell-select";
+            } else {
+                containerClass += " ui-row-select";
+            }
+        }
+
         // Container
         writer.startElement(HTML.DIV_ELEM, table);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
