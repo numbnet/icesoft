@@ -199,20 +199,22 @@ if (!window.ice.icefaces) {
             return viewID + '-single-submit';
         }
 
-        //include functional.js
-        //include oo.js
-        //include collection.js
-        //include hashtable.js
-        //include string.js
-        //include delay.js
+        ice.evaluate(ice.importFrom('ice.lib.functional'));
+        ice.evaluate(ice.importFrom('ice.lib.oo'));
+        ice.evaluate(ice.importFrom('ice.lib.collection'));
+        ice.evaluate(ice.importFrom('ice.lib.hashtable'));
+        ice.evaluate(ice.importFrom('ice.lib.string'));
+        ice.evaluate(ice.importFrom('ice.lib.delay'));
+        ice.evaluate(ice.importFrom('ice.lib.window'));
+        ice.evaluate(ice.importFrom('ice.lib.event'));
+        ice.evaluate(ice.importFrom('ice.lib.element'));
+        ice.evaluate(ice.importFrom('ice.lib.logger'));
+        ice.evaluate(ice.importFrom('ice.lib.query'));
+        ice.evaluate(ice.importFrom('ice.lib.http'));
 
-        //include window.js
         namespace.onLoad = curry(onLoad, window);
         namespace.onUnload = curry(onUnload, window);
 
-        //include event.js
-        //include element.js
-        //include logger.js
         var handler = window.console && window.console.log ? ConsoleLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         var logger = Logger([ 'window' ], handler);
         namespace.log = logger;
@@ -227,8 +229,6 @@ if (!window.ice.icefaces) {
         namespace.sf = setFocus;
         namespace.applyFocus = applyFocus;
         namespace.af = applyFocus;
-
-        //include http.js
 
         function appendHiddenInputElement(form, name, value, defaultValue) {
             var hiddenInput = document.createElement('input');

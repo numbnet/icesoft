@@ -52,6 +52,7 @@ public class BridgeSetup implements SystemEventListener {
     private final boolean deltaSubmit;
     private final boolean focusManaged;
     private int seed = 0;
+    private String bridgeSupportResourceName;
     private String bridgeResourceName;
     private String icepushResourceName;
 
@@ -61,6 +62,7 @@ public class BridgeSetup implements SystemEventListener {
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
         focusManaged = EnvUtils.isFocusManaged(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
+        bridgeSupportResourceName = fc.isProjectStage(ProjectStage.Development) ? "bridge-support.uncompressed.js" : "bridge-support.js";
         bridgeResourceName = fc.isProjectStage(ProjectStage.Development) ? "bridge.uncompressed.js" : "bridge.js";
         icepushResourceName = fc.isProjectStage(ProjectStage.Development) ? "icepush.uncompressed.js" : "icepush.js";
         fc.getExternalContext().getApplicationMap().put(BRIDGE_SETUP, this);
@@ -115,6 +117,8 @@ public class BridgeSetup implements SystemEventListener {
     private List<UIComponent> getHeadResources(FacesContext context) {
         ArrayList<UIComponent> resources = new ArrayList();
 
+        //always add bridge support code
+        resources.add(ResourceOutputUtil.createTransientScriptResourceComponent(bridgeSupportResourceName, ICE_CORE_LIB));
         //add ICEpush code only when needed
         if (EnvUtils.isICEpushPresent()) {
             resources.add(ResourceOutputUtil.createTransientScriptResourceComponent(icepushResourceName, ICE_PUSH_LIB));
