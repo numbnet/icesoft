@@ -22,13 +22,23 @@
         return removeCallbackCallback(beforeSessionExpiryListeners, detectByReference(callback));
     };
 
+    var beforeSessionExpiryTimeoutBomb = object(function(method) {
+        method(stop, noop);
+    });
     var sessionExpiryTimeoutBomb = object(function(method) {
         method(stop, noop);
     });
 
     namespace.resetSessionExpiryTimeout = function(deltaTime, timeLeft) {
+        stop(beforeSessionExpiryTimeoutBomb);
         stop(sessionExpiryTimeoutBomb);
         var timeInSeconds = Math.round(timeLeft / 1000);
-        sessionExpiryTimeoutBomb = runOnce(Delay(curry(broadcast, beforeSessionExpiryListeners, [timeInSeconds]), deltaTime));
+        beforeSessionExpiryTimeoutBomb = runOnce(Delay(function() {
+            broadcast(beforeSessionExpiryListeners, [timeInSeconds]);
+
+            runOnce(Delay(function() {
+                sessionExpiryTimeoutBomb = broadcast(sessionExpiryListeners);
+            }, timeLeft));
+        }, deltaTime));
     };
 })();

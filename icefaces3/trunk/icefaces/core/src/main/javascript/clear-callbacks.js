@@ -52,7 +52,11 @@ var clearEventHandlersOnUnload;
                     //ignore exception thrown by IE, let the rest of cleanup proceed
                 }
                 form.onsubmit = null;
-                each(form.elements, clearEventHandlers);
+                var elements = form.elements;
+                //IE returns 'undefined' when no from elements exist
+                if (elements) {
+                    each(elements, clearEventHandlers);
+                }
             });
         });
     };

@@ -29,8 +29,10 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class SessionExpiryWarning implements SystemEventListener {
+    private static final Random RANDOM = new Random();
     private long intervalBeforeExpiry;
 
     public SessionExpiryWarning() {
@@ -40,27 +42,20 @@ public class SessionExpiryWarning implements SystemEventListener {
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
-        Map session = externalContext.getSessionMap();
-
-        long lastAccessTime;
-        Object o = session.get(SessionExpiryWarning.class.getName());
-        if (o == null) {
-            lastAccessTime = System.currentTimeMillis();
-            saveLastAccessTime(session);
-        } else {
-            lastAccessTime = (Long) o;
-        }
-
         long maxInactiveInterval = externalContext.getSessionMaxInactiveInterval() * 1000;
-        long currentTime = System.currentTimeMillis();
-        long deltaTime =  lastAccessTime + maxInactiveInterval - intervalBeforeExpiry - currentTime;
+        long deltaTime = maxInactiveInterval - intervalBeforeExpiry;
 
         UIComponent bodyComponent = (UIComponent) event.getSource();
-        String code = EnvUtils.isPushRequest(context) ? "" : ("ice.resetSessionExpiryTimeout(" + deltaTime + "," + intervalBeforeExpiry + ");");
+        String code;
+        if (EnvUtils.isPushRequest(context)) {
+            code = "";
+        } else {
+            //use random comment to force DOM diffing into sending the call to ice.resetSessionExpiryTimeout
+            //this approach will work even when submits are not triggered by ICEfaces (as opposed to using a submit callback on the client)
+            code = ("ice.resetSessionExpiryTimeout(" + deltaTime + "," + intervalBeforeExpiry + ");//" + RANDOM.nextInt());
+        }
         UIComponent c = new ScriptWriter(bodyComponent, code, "reset_session_expiry_timeout");
         bodyComponent.getChildren().add(c);
-
-        saveLastAccessTime(session);
     }
 
     public boolean isListenerForSource(final Object source) {
@@ -68,9 +63,5 @@ public class SessionExpiryWarning implements SystemEventListener {
         return EnvUtils.isICEfacesView(context) &&
                 "javax.faces.Body".equals(((UIComponent) source).getRendererType()) &&
                 intervalBeforeExpiry > -1;
-    }
-
-    private static void saveLastAccessTime(Map session) {
-        session.put(SessionExpiryWarning.class.getName(), System.currentTimeMillis());
     }
 }
