@@ -18,14 +18,21 @@
     
     <property file="build.properties"/>
     <property file="../../build.properties"/>
-    <property name="icemobile.base.dir" location="../.."/>
+    <!-- not reading these properties from bundle properties file -->
+    <property name="icemobile-jsp.lib.name" value="icemobile-jsp"/>
+    <property name="icemobile-spring.lib.name" value="icemobile-spring"/>
+    <property name="icepush.lib.name" value="icepush"/>
+    <property name="icefaces.lib.name" value="icefaces"/>
+    <property name="icefaces-mobi.lib.name"  value="icefaces-mobi"/>
+
+    <property name="icemobile.base.dir" location="../../.."/>
     <property name="samples.dist.dir" location="${icemobile.base.dir}/samples/dist"/>
     
     <property name="compile.source" value="1.5"/>
     <property name="compile.target" value="1.5"/>
     <property name="compile.debug" value="true"/>
 
-    <property name="lib.icemobile.dir" location="../../lib"/>
+    <property name="lib.icemobile.dir" location="../../../lib"/>
     <property name="lib.application.dir" location="./src/main/webapp/WEB-INF/lib"/>
 
     <property name="java.dir" location="./src/main/java"/>
@@ -75,5 +82,14 @@
         <mkdir dir="${build.dir}/classes"/>
         <mkdir dir="${build.dir}/dist"/>
     </target>
+<!--    <target name="check1Settings">
+        <echo message="application dir is &quot;${lib.application.dir}&quot;" />
+        <echo message="lib dir is &quot;${lib.icemobile.dir}&quot;" />
+        <echo message="base dir is &quot;${icemobile.base.dir}&quot;" />
+        <echo message="classes dir is &quot;${classes.dir}&quot;" />
+        <echo message="build dir is &quot;${build.dir}&quot;" />
+        <echo message=" jsp lib name &quot;${icemobile-jsp.lib.name}&quot;"/>
+        <echo message=" jsp spring lib name &quot;${icemobile-spring.lib.name}&quot;"/>
+   </target>  -->
     
 </project>
