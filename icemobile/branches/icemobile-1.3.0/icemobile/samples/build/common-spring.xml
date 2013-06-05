@@ -95,8 +95,17 @@
             </fileset>
         </copy>
     </target>
-
+   <target name="checkvals">
+        <echo message="application dir is &quot;${lib.application.dir}&quot;" />
+        <echo message="lib dir is &quot;${lib.icemobile.dir}&quot;" />
+        <echo message="base dir is &quot;${icemobile.base.dir}&quot;" />
+        <echo message="classes dir is &quot;${classes.dir}&quot;" />
+        <echo message="build dir is &quot;${build.dir}&quot;" />
+        <echo message=" jsp lib name &quot;${icemobile-jsp.lib.name}&quot;"/>
+        <echo message=" jsp spring lib name &quot;${icemobile-spring.lib.name}&quot;"/>
+   </target>
     <target name="war.basic" depends="compile">
+
         <war basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war"
              webxml="${web.dir}/WEB-INF/web.xml">
