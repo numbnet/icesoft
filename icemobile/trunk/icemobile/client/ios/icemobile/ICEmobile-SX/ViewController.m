@@ -38,6 +38,13 @@
 @synthesize urlField;
 @synthesize actionSelector;
 @synthesize geospyButton;
+@synthesize smsButton;
+@synthesize cameraButton;
+@synthesize camcorderButton;
+@synthesize microphoneButton;
+@synthesize qrButton;
+@synthesize arButton;
+@synthesize contactsButton;
 @synthesize deviceToken;
 @synthesize confirmMessages;
 @synthesize confirmTitles;
@@ -159,9 +166,9 @@ NSLog(@"hideControls");
 
 - (void) hideProgress  {
     LogDebug(@"hideProgress");
-    uploadLabel.hidden = YES;
-    uploadProgress.hidden = YES;
-    linkView.hidden = NO;
+    self.uploadLabel.hidden = YES;
+    self.uploadProgress.hidden = YES;
+    self.linkView.hidden = NO;
 }
 
 - (void) setProgress:(NSInteger)percent  {
@@ -177,9 +184,13 @@ NSLog(@"hideControls");
 }
 
 - (void) handleResponse:(NSString *)responseString  {
-    LogDebug(@"handleResponse received %@", responseString);
-NSLog(@"handleResponse reloadCurrentURL");
-    [self reloadCurrentURL];
+NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
+    if (!self.launchedFromApp)  {
+        [self reloadCurrentURL];
+    } else {
+        [self hideProgress];
+        [self showControls];
+    }
 }
 
 - (void)play: (NSString*)audioId  {
@@ -324,14 +335,46 @@ NSLog(@"handleResponse reloadCurrentURL");
     LogDebug(@"ViewController returnPressed");
 }
 
-- (IBAction) geospyPressed  {
-   NSLog(@"ViewController geospyPressed %d", geospyButton.selected);
-   geospyButton.selected = !geospyButton.selected;
-   if (geospyButton.selected)  {
-       [IceUtil pushFancyButton:geospyButton];
+- (void) flipButton:(UIButton*) theButton  {
+   NSLog(@"ViewController flipping %d", theButton.selected);
+   theButton.selected = !theButton.selected;
+   if (theButton.selected)  {
+       [IceUtil pushFancyButton:theButton];
    } else {
-       [IceUtil makeFancyButton:geospyButton];
+       [IceUtil makeFancyButton:theButton];
    }
+}
+
+- (IBAction) actionPressed:(id) sender  {
+    UIButton *theButton = (UIButton*) sender;
+    NSString *theCommand = [self.commandNames 
+            objectAtIndex:[sender tag]];
+    NSString *params = @"";
+    NSLog(@"ViewController actionPressed %@", theCommand);
+
+    if ([@"geospy" isEqualToString:theCommand])  {
+        [self flipButton:theButton];
+        if (!theButton.selected)  {
+            params = @"&strategy=stop";
+        }
+    }
+
+    self.currentURL = urlField.text;
+    [urlField resignFirstResponder];
+    self.returnURL = self.currentURL;
+    self.currentParameters = nil;
+    CGRect selectionFrame = theButton.frame;
+    selectionFrame = [theButton.superview convertRect:selectionFrame
+            toView:self.view];
+    CGFloat popOffset = selectionFrame.size.width / 2;
+    self.nativeInterface.popoverSource = CGRectMake(
+            popOffset, selectionFrame.origin.y,
+            selectionFrame.size.width, selectionFrame.size.height);
+    self.currentCommand = [NSString stringWithFormat:
+            @"%@?id=undefined%@", theCommand, params];
+    self.launchedFromApp = YES;
+    [self dispatchCurrentCommand];
+
 }
 
 #pragma mark - View lifecycle
@@ -347,7 +390,22 @@ NSLog(@"handleResponse reloadCurrentURL");
                 [UIImage imageNamed:@"bar.png"]] ];
     }
 
+    [IceUtil makeFancyButton:self.cameraButton];
+    self.cameraButton.tag = 0;
+    [IceUtil makeFancyButton:self.camcorderButton];
+    self.camcorderButton.tag = 1;
+    [IceUtil makeFancyButton:self.microphoneButton];
+    self.microphoneButton.tag = 2;
+    [IceUtil makeFancyButton:self.qrButton];
+    self.qrButton.tag = 3;
+    [IceUtil makeFancyButton:self.arButton];
+    self.arButton.tag = 4;
+    [IceUtil makeFancyButton:self.contactsButton];
+    self.contactsButton.tag = 5;
+    [IceUtil makeFancyButton:self.smsButton];
+    self.smsButton.tag = 6;
     [IceUtil makeFancyButton:self.geospyButton];
+    self.geospyButton.tag = 7;
 
     [self hideProgress];
     [self showControls];
@@ -416,6 +474,10 @@ NSLog(@"handleResponse reloadCurrentURL");
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    if (self.nativeInterface.monitoringLocation)  {
+        self.geospyButton.selected = YES;
+        [IceUtil pushFancyButton:self.geospyButton];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

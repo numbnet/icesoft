@@ -43,6 +43,7 @@
     NSInteger nextFileIndex;
     BOOL recording;
     BOOL uploading;
+    BOOL monitoringLocation;
     NSMutableData *receivedData;
     QRScanner *qrScanner;
     UIImagePickerController *currentPicker;
@@ -67,6 +68,7 @@
 @property (nonatomic, assign) NSInteger nextFileIndex;
 @property (nonatomic, assign) BOOL recording;
 @property (atomic, assign) BOOL uploading;
+@property (atomic, assign) BOOL monitoringLocation;
 @property (retain) NSMutableData *receivedData;
 @property (retain) QRScanner *qrScanner;
 @property (nonatomic, retain) UIImagePickerController *currentPicker;

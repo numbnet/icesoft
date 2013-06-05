@@ -38,7 +38,14 @@
     UIView *linkView;
     UITextField *urlField;
     UISegmentedControl *actionSelector;
+    UIButton *arButton;
+    UIButton *contactsButton;
     UIButton *geospyButton;
+    UIButton *smsButton;
+    UIButton *cameraButton;
+    UIButton *camcorderButton;
+    UIButton *microphoneButton;
+    UIButton *qrButton;
 }
 
 @property (retain) NativeInterface *nativeInterface;
@@ -58,7 +65,14 @@
 @property (nonatomic, retain) IBOutlet UIView *linkView;
 @property (nonatomic, retain) IBOutlet UITextField *urlField;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *actionSelector;
+@property (nonatomic, retain) IBOutlet UIButton *arButton;
+@property (nonatomic, retain) IBOutlet UIButton *contactsButton;
 @property (nonatomic, retain) IBOutlet UIButton *geospyButton;
+@property (nonatomic, retain) IBOutlet UIButton *smsButton;
+@property (nonatomic, retain) IBOutlet UIButton *cameraButton;
+@property (nonatomic, retain) IBOutlet UIButton *camcorderButton;
+@property (nonatomic, retain) IBOutlet UIButton *microphoneButton;
+@property (nonatomic, retain) IBOutlet UIButton *qrButton;
 
 - (void) applicationWillResignActive;
 - (void) applicationDidEnterBackground;
@@ -68,11 +82,12 @@
 - (void) showControls;
 - (void) hideProgress;
 - (void) decorateParams:(NSMutableDictionary*) params;
+- (void) flipButton:(UIButton*)theButton;
 - (IBAction) doMediacast;
 - (IBAction) doMobileshowcase;
 - (IBAction) chooseAction;
 - (IBAction) returnPressed;
-- (IBAction) geospyPressed;
+- (IBAction) actionPressed:(id)sender;
 - (IBAction) showLicense;
 
 @end

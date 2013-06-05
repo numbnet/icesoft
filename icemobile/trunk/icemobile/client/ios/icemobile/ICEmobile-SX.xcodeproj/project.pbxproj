@@ -76,6 +76,8 @@
 		9CBF5ACD1638AB1E0015E267 /* IceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBF5ACC1638AB1E0015E267 /* IceUtil.m */; };
 		9CE8327416443D7D00F6C270 /* contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8327216443D7D00F6C270 /* contacts.png */; };
 		9CE8327516443D7D00F6C270 /* contacts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8327316443D7D00F6C270 /* contacts@2x.png */; };
+		9CF13E60175E57A100E0DF90 /* sms.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF13E5E175E57A100E0DF90 /* sms.png */; };
+		9CF13E61175E57A100E0DF90 /* sms@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF13E5F175E57A100E0DF90 /* sms@2x.png */; };
 		9CFDBD41164D865100D1F041 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CFDBD40164D865100D1F041 /* license.txt */; };
 /* End PBXBuildFile section */
 
@@ -174,6 +176,8 @@
 		9CBF5ACC1638AB1E0015E267 /* IceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IceUtil.m; path = Shared/IceUtil.m; sourceTree = "<group>"; };
 		9CE8327216443D7D00F6C270 /* contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contacts.png; sourceTree = "<group>"; };
 		9CE8327316443D7D00F6C270 /* contacts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contacts@2x.png"; sourceTree = "<group>"; };
+		9CF13E5E175E57A100E0DF90 /* sms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms.png; sourceTree = "<group>"; };
+		9CF13E5F175E57A100E0DF90 /* sms@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sms@2x.png"; sourceTree = "<group>"; };
 		9CFDBD40164D865100D1F041 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = license.txt; path = Shared/license.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -334,6 +338,8 @@
 				9C5CD04214BCBCA70070662F /* qr@2x.png */,
 				9C4B206C17566B20009C6477 /* geospy.png */,
 				9C4B206D17566B20009C6477 /* geospy@2x.png */,
+				9CF13E5E175E57A100E0DF90 /* sms.png */,
+				9CF13E5F175E57A100E0DF90 /* sms@2x.png */,
 				9C77C791147310F90079FDF5 /* icon-72.png */,
 				9C77C792147310F90079FDF5 /* icon.png */,
 				9C77C793147310F90079FDF5 /* icon@2x.png */,
@@ -461,6 +467,8 @@
 				9C654EA1174D8F1C00758CA6 /* Default-Portrait~ipad.png in Resources */,
 				9C4B206E17566B20009C6477 /* geospy.png in Resources */,
 				9C4B206F17566B20009C6477 /* geospy@2x.png in Resources */,
+				9CF13E60175E57A100E0DF90 /* sms.png in Resources */,
+				9CF13E61175E57A100E0DF90 /* sms@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

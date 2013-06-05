@@ -39,6 +39,7 @@
 @synthesize nextFileIndex;
 @synthesize recording;
 @synthesize uploading;
+@synthesize monitoringLocation;
 @synthesize receivedData;
 @synthesize qrScanner;
 @synthesize currentPicker;
@@ -110,9 +111,9 @@ static char base64EncodingTable[64] = {
         [self aug:[params objectForKey:@"id"] locations:params];
     } else if ([@"fetchContacts" isEqualToString:commandName])  {
         [self address:[params objectForKey:@"id"]];
-//    } else if ([@"sms" isEqualToString:commandName])  {
-//        [self sms:[params objectForKey:@"n"]
-//                    body:[params objectForKey:@"body"]];
+    } else if ([@"sms" isEqualToString:commandName])  {
+        [self sms:[params objectForKey:@"n"]
+                    body:[params objectForKey:@"body"]];
     } else if ([@"geospy" isEqualToString:commandName])  {
         [self geospy:[params objectForKey:@"id"]
                 withStrategy:[params objectForKey:@"strategy"]];
@@ -743,10 +744,17 @@ NSLog(@"Found record %@", result);
     if ([@"continuous" isEqualToString:strategy]) {
         NSLog(@"geospy starting continuous updates");
         [self.locationManager startUpdatingLocation];
-    } else {
+        self.monitoringLocation = YES;
+    } else if ([@"stop" isEqualToString:strategy]) {
+        NSLog(@"geospy stopping");
+        [self.locationManager stopUpdatingLocation];
+        [self.locationManager stopMonitoringSignificantLocationChanges];
+        self.monitoringLocation = NO;
+    } else  {
         NSLog(@"geospy starting significant updates");
         [self.locationManager startMonitoringSignificantLocationChanges];
-    }
+        self.monitoringLocation = YES;
+    };
     [self.controller doCancel];
     return YES;
 }
