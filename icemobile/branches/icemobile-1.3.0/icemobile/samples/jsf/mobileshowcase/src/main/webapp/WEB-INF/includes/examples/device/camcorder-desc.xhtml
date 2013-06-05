@@ -21,7 +21,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
-
+        <mobi:fieldsetRow>
         <p>The camcorder component allows JSF applications to access a mobile
             device video camera. The component renders a simple button that,
             when pressed, launches the native video camera application on the
@@ -42,19 +42,22 @@
             video data can be stored along with the video file data. A typical
             video component setup looks as follows:
         </p>
-
-        
+    </mobi:fieldsetRow>
+    <mobi:fieldsetRow>
         
 <pre>
 &lt;mobi:camcorder
-    value="&#x2317;{myBean.map}" 
-    buttonLabel="Camcorder" captureMessageLabel="Video captured"/&gt;
+  value="&#x2317;{myBean.map}" 
+  buttonLabel="Camcorder" 
+  captureMessageLabel="Captured"/&gt;
 </pre>
 
+    </mobi:fieldsetRow>
+    <mobi:fieldsetRow>
         <p>Device video access is only available if the application is running
             in an ICEmobile device container or if ICEmobile SX has been registered, 
             otherwise the component will display a file upload input component. </p>
-
+    </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
 </ui:composition>
