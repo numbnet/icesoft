@@ -48,7 +48,6 @@ public class Accordion extends AccordionBase implements ContentPaneController, I
      * returns null if their are no children of type contentPane or no children at all.
      * If activeIndex is outside of the range of 0 -> number of children -1, then the default
      * valid value is the first child.
-     * @return
      */
     public Accordion(){
         super();
