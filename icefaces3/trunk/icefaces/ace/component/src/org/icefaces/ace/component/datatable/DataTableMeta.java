@@ -55,31 +55,78 @@ import java.util.Map;
 @ClientBehaviorHolder(events = {
         @ClientEvent(name="page", javadoc="Fired when the page is changed on the DataTable.",
                 tlddoc="Fired when the page is changed on the DataTable.", defaultRender="@all", defaultExecute="@this"),
-        @ClientEvent(name="select", javadoc="Fired when a row or cell is selected on the DataTable.",
-                tlddoc="Fired when a row or cell is selected on the DataTable.", defaultRender="@all", defaultExecute="@this"),
-        @ClientEvent(name="deselect", javadoc="Fired when a row or cell is deselected on the DataTable.",
-                tlddoc="Fired when a row or cell is deselected on the DataTable.", defaultRender="@all", defaultExecute="@this"),
-        @ClientEvent(name="sort", javadoc="Fired when a change to the current sort occurs on the DataTable.",
-                tlddoc="Fired when a change to the current sort occurs on the DataTable.", defaultRender="@all", defaultExecute="@this"),
-        @ClientEvent(name="filter", javadoc="Fired when a change to the current filters occurs on the DataTable.",
-                tlddoc="Fired when a change to the current filters occurs on the DataTable.", defaultRender="@all", defaultExecute="@this"),
-        @ClientEvent(name="reorder", javadoc="Fired when a column is dragged and dropped into a new ordering.",
-                tlddoc="Fired when a column is dragged and dropped into a new ordering.", defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="cellClick",
+                     javadoc="Fired when a cell is clicked on the DataTable.",
+                     tlddoc="Fired when a cell is clicked on the DataTable.",
+                     defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="cellDblClick",
+                     javadoc="Fired when a cell is double clicked on the DataTable.",
+                     tlddoc="Fired when a cell is double clicked on the DataTable.",
+                     defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="select",
+                     javadoc="Fired when a row or cell is selected on the DataTable.",
+                     tlddoc="Fired when a row or cell is selected on the DataTable.",
+                     defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="deselect",
+                     javadoc="Fired when a row or cell is deselected on the DataTable.",
+                     tlddoc="Fired when a row or cell is deselected on the DataTable.",
+                     defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="sort",
+                     javadoc="Fired when a change to the current sort occurs on the DataTable.",
+                     tlddoc="Fired when a change to the current sort occurs on the DataTable.",
+                     defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="filter",
+                     javadoc="Fired when a change to the current filters occurs on the DataTable.",
+                     tlddoc="Fired when a change to the current filters occurs on the DataTable.",
+                     defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="reorder",
+                     javadoc="Fired when a column is dragged and dropped into a new ordering.",
+                     tlddoc="Fired when a column is dragged and dropped into a new ordering.",
+                     defaultRender="@all", defaultExecute="@this"),
+
         // Edit has custom render and execute, @none is just a null placeholder for additional update/execute fields
-        @ClientEvent(name="editStart", javadoc="Fired when a row is enabled for editing.",
-                tlddoc="Fired when a row is enabled for editing.", defaultRender="@this", defaultExecute="@this"),
-        @ClientEvent(name="editSubmit", javadoc="Fired when a row is submits its edits.",
-                tlddoc="Fired when a row is submits its edits.", defaultRender="@all", defaultExecute="@this"),
-        @ClientEvent(name="editCancel", javadoc="Fired when a row cancels an in-progress edit.",
-                tlddoc="Fired when a row cancels an in-progress edit.", defaultRender="@this", defaultExecute="@this"),
-        @ClientEvent(name="expand", javadoc="Fired when a child ExpansionToggler component is clicked to expand.",
-                tlddoc="Fired when a child ExpansionToggler component is clicked to expand.", defaultRender="@all", defaultExecute="@this"),
-        @ClientEvent(name="contract", javadoc="Fired when a child ExpansionToggler component is clicked to contract.",
-                tlddoc="Fired when a child ExpansionToggler component is clicked to contract.", defaultRender="@all", defaultExecute="@this"),
-        @ClientEvent(name="pin", javadoc="Fired when a column is added to the pinning region of the table.",
-                tlddoc="Fired when a column is added to the pinning region of the table.", defaultRender="@this", defaultExecute="@this"),
-        @ClientEvent(name="unpin", javadoc="Fired when a column is removed to the pinning region of the table.",
-                tlddoc="Fired when a column is removed to the pinning region of the table.", defaultRender="@this", defaultExecute="@this")} ,
+        @ClientEvent(name="editStart",
+                     javadoc="Fired when a row is enabled for editing.",
+                     tlddoc="Fired when a row is enabled for editing.",
+                     defaultRender="@this", defaultExecute="@this"),
+
+        @ClientEvent(name="editSubmit",
+                     javadoc="Fired when a row is submits its edits.",
+                     tlddoc="Fired when a row is submits its edits.",
+                     defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="editCancel",
+                     javadoc="Fired when a row cancels an in-progress edit.",
+                     tlddoc="Fired when a row cancels an in-progress edit.",
+                     defaultRender="@this", defaultExecute="@this"),
+
+        @ClientEvent(name="expand",
+                     javadoc="Fired when a child ExpansionToggler component is clicked to expand.",
+                     tlddoc="Fired when a child ExpansionToggler component is clicked to expand.",
+                     defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="contract",
+                     javadoc="Fired when a child ExpansionToggler component is clicked to contract.",
+                     tlddoc="Fired when a child ExpansionToggler component is clicked to contract.",
+                     defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="pin",
+                     javadoc="Fired when a column is added to the pinning region of the table.",
+                     tlddoc="Fired when a column is added to the pinning region of the table.",
+                     defaultRender="@this", defaultExecute="@this"),
+
+        @ClientEvent(name="unpin",
+                     javadoc="Fired when a column is removed to the pinning region of the table.",
+                     tlddoc="Fired when a column is removed to the pinning region of the table.",
+                     defaultRender="@this", defaultExecute="@this")}
+        ,
         defaultEvent = "select"
 )
 public class DataTableMeta extends UIDataMeta {

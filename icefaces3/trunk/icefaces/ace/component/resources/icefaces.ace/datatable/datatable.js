@@ -1,42 +1,42 @@
 /*
- * Original Code Copyright Prime Technology.
- * Subsequent Code Modifications Copyright 2011-2012 ICEsoft Technologies Canada Corp. (c)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * NOTE THIS CODE HAS BEEN MODIFIED FROM ORIGINAL FORM
- *
- * Subsequent Code Modifications have been made and contributed by ICEsoft Technologies Canada Corp. (c).
- *
- * Code Modification 1: Integrated with ICEfaces Advanced Component Environment.
- * Contributors: ICEsoft Technologies Canada Corp. (c)
- *
- * Code Modification 2: Improved Scrollable DataTable Column Sizing - ICE-7028
- * Contributors: Nils Lundquist
- *
- * Code Modification 3: Added CustomUpdate Param - Fixed DomDiff - ICE-6950
- * Contributors: Nils Lundquist
- *
- * Code Modification 4: Added Keyboard Navigation
- * Contributors: Nils Lundquist
- *
- * Code Modification 5: Row Deselection Tracking
- * Contributors: Nils Lundquist
- *
- */
+* Original Code Copyright Prime Technology.
+* Subsequent Code Modifications Copyright 2011-2012 ICEsoft Technologies Canada Corp. (c)
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+* NOTE THIS CODE HAS BEEN MODIFIED FROM ORIGINAL FORM
+*
+* Subsequent Code Modifications have been made and contributed by ICEsoft Technologies Canada Corp. (c).
+*
+* Code Modification 1: Integrated with ICEfaces Advanced Component Environment.
+* Contributors: ICEsoft Technologies Canada Corp. (c)
+*
+* Code Modification 2: Improved Scrollable DataTable Column Sizing - ICE-7028
+* Contributors: Nils Lundquist
+*
+* Code Modification 3: Added CustomUpdate Param - Fixed DomDiff - ICE-6950
+* Contributors: Nils Lundquist
+*
+* Code Modification 4: Added Keyboard Navigation
+* Contributors: Nils Lundquist
+*
+* Code Modification 5: Row Deselection Tracking
+* Contributors: Nils Lundquist
+*
+*/
 /**
- * DataTable Widget
- */
+* DataTable Widget
+*/
 if (!window.ice['ace']) {
     window.ice.ace = {};
 }
@@ -187,11 +187,15 @@ ice.ace.DataTable = function (id, cfg) {
     this.filterSource = null;
     this.behaviors = cfg.behaviors;
     this.parentSize = 0;
-    this.lastClickedIndex = -1;
     this.scrollLeft = 0;
     this.scrollTop = 0;
     this.currentPinRegionOffset = 0;
+    this.lastClickedIndex = -1;
     this.element = ice.ace.jq(this.jqId);
+    this.selectionHolder = this.jqId + '_selection';
+    this.deselectionHolder = this.jqId + '_deselection';
+    this.selection = [];
+    this.deselection = [];
 
     var oldInstance = ice.ace.DataTables[this.id];
     var rowEditors = this.getRowEditors();
@@ -206,17 +210,45 @@ ice.ace.DataTable = function (id, cfg) {
         this.setupPaginator();
 
     if (!this.cfg.disabled) {
+        var self = this,
+            cellClickObs = [function() {}], rowClickObs = [function() {}],
+            rowDblClickObs = [function() {}], cellDblClickObs = [function() {}];
+
+        if (this.behaviors && this.behaviors.cellClick)
+            cellClickObs.push(function() {
+                ice.ace.ab(self.behaviors.cellClick);
+            });
+
+        if (this.behaviors && this.behaviors.cellDblClick)
+            cellDblClickObs.push(function() {
+                ice.ace.ab(self.behaviors.cellDblClick);
+            });
+
+        // Add selection listener to appropriate observer set
+        if (this.isSelectionEnabled()) {
+            if (this.isCellSelectionEnabled()) {
+                if (this.cfg.dblclickSelect)
+                    cellDblClickObs.push(function(event) { self.onCellClick(event); });
+                else
+                    cellClickObs.push(function(event) { self.onCellClick(event); })
+            }
+            else {
+                if (this.cfg.dblclickSelect)
+                    rowDblClickObs.push(function(event) { self.onRowClick(event); });
+                else
+                    rowClickObs.push(function(event) { self.onRowClick(event); })
+            }
+
+            this.setupSelectionHover();
+        }
+
+        this.setupCellClick(cellClickObs);
+        this.setupRowClick(rowClickObs);
+        this.setupCellDoubleClick(cellDblClickObs);
+        this.setupRowDoubleClick(rowDblClickObs);
+
         if (this.cfg.sorting)
             this.setupSortEvents();
-
-        if (this.isSelectionEnabled()) {
-            this.selectionHolder = this.jqId + '_selection';
-            this.deselectionHolder = this.jqId + '_deselection';
-            this.selection = [];
-            this.deselection = [];
-            this.setupSelectionEvents();
-        } else // Clean up global events left over from possible pre-existing selection mode
-            this.tearDownSelectionEvents();
 
         if (this.cfg.configPanel)
             if (this.cfg.configPanel.startsWith(":"))
@@ -300,7 +332,7 @@ ice.ace.DataTable.prototype.unload = function() {
 
     // Clear scrolling
     ice.ace.jq(window).unbind('resize', this.scrollableResizeCallback);
-    this.element.find(this.scrollBodySelector).unbind('scroll')
+    this.element.find(this.scrollBodySelector).unbind('scroll');
 
     // Clear filter events
     this.element.off('keyup keypress', this.filterSelector);
@@ -675,58 +707,140 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
         });
 }
 
-ice.ace.DataTable.prototype.tearDownSelectionEvents = function () {
-    var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
-    var selector = this.isCellSelectionEnabled()
-        ? this.cellSelector
-        : this.rowSelector;
+ice.ace.DataTable.prototype.setupCellClick = function(obsList) {
+    if (obsList.length == 0) return;
 
-    ice.ace.jq(selector).off('dblclick').off('click').off('mouseenter');
-}
+    var execObsList = obsList.reduce(function(preObs, curObs) {
+        return function(event) {
+            if (preObs) preObs(event);
+            curObs(event);
+        }
+    });
 
-ice.ace.DataTable.prototype.setupSelectionEvents = function () {
-    var _self = this;
-    var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
+    var self = this;
+    this.element.on('click', this.cellSelector, function (event) {
+        if (self.blockCellClick == true) return;
+
+        self.cellClickWaiting = setTimeout(function() {
+            execObsList.call(self, event);
+            // console.log('cell click');
+        }, 350);
+
+        self.blockCellClick = true;
+
+        // seperate timeout - first timeout behaviour may be cancelled
+        setTimeout(function() {
+            self.blockCellClick = false;
+        }, 350);
+    });
+};
+
+ice.ace.DataTable.prototype.setupRowClick = function(obsList) {
+    if (obsList.length == 0) return;
+
+    var execObsList = obsList.reduce(function(preObs, curObs) {
+        return function(event) {
+            if (preObs) preObs(event);
+            curObs(event);
+        }
+    });
+
+    var self = this;
+    this.element.on('click', this.rowSelector, function (event) {
+        if (self.blockRowClick == true) return;
+
+        self.rowClickWaiting = setTimeout(function() {
+            execObsList.call(self, event);
+            // console.log('row click');
+        }, 350);
+
+        self.blockRowClick = true;
+
+        // seperate timeout - first timeout behaviour may be cancelled
+        setTimeout(function() {
+            self.blockRowClick = false;
+        }, 350);
+    });
+};
+
+ice.ace.DataTable.prototype.setupCellDoubleClick = function(obsList) {
+    if (obsList.length == 0) return;
+
+    var execObsList = obsList.reduce(function(preObs, curObs) {
+        return function(event) {
+            if (preObs) preObs(event);
+            curObs(event);
+        }
+    });
+
+    var self = this;
+    this.element.on('dblclick', this.cellSelector, function (event) {
+        if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
+        if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
+
+        execObsList.call(self,event);
+
+        // console.log('cell double click');
+    });
+};
+
+ice.ace.DataTable.prototype.setupRowDoubleClick = function(obsList) {
+    if (obsList.length == 0) return;
+
+    var execObsList = obsList.reduce(function(preObs, curObs) {
+        return function(event) {
+            if (preObs) preObs(event);
+            curObs(event);
+        }
+    });
+
+    var self = this;
+    this.element.on('dblclick', this.rowSelector, function (event) {
+        if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
+        if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
+
+        execObsList.call(self, event);
+
+        // console.log('row double click');
+    });
+};
+
+ice.ace.DataTable.prototype.setupSelectionHover = function () {
+    var _self = this,
         selector = this.isCellSelectionEnabled()
             ? this.cellSelector
             : this.rowSelector,
-        $target = this.element.find(selector),
-        $dt = this.element;
+        name = this.isCellSelectionEnabled() ? 'td' : 'tr',
+        bodyTableSelector = '> div > table > tbody.ui-datatable-data',
+        hoverSelector = '> tbody.ui-datatable-data > tr.ui-state-hover,  > tbody.ui-datatable-data > tr > td.ui-state-hover';
 
-    $target.css('cursor', 'pointer');
-
-    $dt.on(selectEvent, selector, function (event) {
-        if (this.nodeName == 'TR') _self.onRowClick(event, this);
-        else _self.onCellClick(event, this);
-    });
-
-    if (!(_self.cfg.nohover)) {
-        $target.closest('table').bind('mouseleave',function () {
-            var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
-            ice.ace.jq(this).find('tbody ' + element + ".ui-state-hover")
-                .removeClass('ui-state-hover');
-        }).find('thead').bind('mouseenter', function () {
-            var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
-            ice.ace.jq(this).siblings().find(element + ".ui-state-hover")
-                .removeClass('ui-state-hover');
+    this.element.find(bodyTableSelector).parent()
+        .bind('mouseleave', function () {
+            ice.ace.jq(this).find(hoverSelector).removeClass('ui-state-hover');
+        })
+        .find('thead').bind('mouseenter', function () {
+            ice.ace.jq(this).siblings().closest('table').find(hoverSelector).removeClass('ui-state-hover');
         });
 
-        $dt.off('mouseenter', selector);
+    this.element
+        .off('mouseenter', selector)
+        .on('mouseenter', selector, function (e) {
+            var src = ice.ace.jq(e.currentTarget);
 
-        $dt.on('mouseenter', selector, function () {
-            var element = ice.ace.jq(this);
-            if (!element.hasClass('dt-cond-row') &&
-                    (!_self.isCellSelectionEnabled() || !element.parent().hasClass('dt-cond-row')))
-                element.addClass('ui-state-hover');
+            src.siblings().removeClass('ui-state-hover');
 
-            element.siblings('.ui-state-hover')
-                    .removeClass('ui-state-hover');
+            // Skip conditional rows and their cells
+            if (src.hasClass('dt-cond-row') || src.parent().hasClass('dt-cond-row'))
+                return;
+
+            src.addClass('ui-state-hover');
+
             if (_self.isCellSelectionEnabled()) {
-                element.parent().siblings().children('.ui-state-hover')
-                        .removeClass('ui-state-hover');
+                src.parent().siblings()
+                            .children('.ui-state-hover')
+                            .removeClass('ui-state-hover');
             }
         });
-    }
 }
 
 ice.ace.DataTable.prototype.setupReorderableColumns = function () {
@@ -1778,13 +1892,15 @@ ice.ace.DataTable.prototype.setupDisabledStyling = function () {
     });
 
     // Row style
-    ice.ace.jq(this.jqId + ' > table > tbody.ui-datatable-data:first > tr > td')
+    ice.ace.jq(this.jqId + ' > table > tbody.ui-datatable-data > tr > td')
         .css({backgroundColor:'#EDEDED', opacity:0.8});
+
+    ice.ace.jq(this.jqId).addClass('ui-disabled');
 }
 
 /* #########################################################################
- ############################### Requests ################################
- ######################################################################### */
+############################### Requests ################################
+######################################################################### */
 ice.ace.DataTable.prototype.reorderColumns = function (oldIndex, newIndex) {
     var options = {
         source:this.id,
@@ -2080,9 +2196,11 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
         }
 
         // If first row is in this selection, deselection, or will be implicitly deselected by singleSelection
-        // resize the scrollable table.
+        // resize the scrollable table. IE7 only now
         options.onsuccess = function (responseXML) {
-            if (_self.cfg.scrollable && (ice.ace.jq.inArray("0", _self.selection) > -1 || ice.ace.jq.inArray("0", _self.deselection) > -1 || (firstRowSelected && _self.isSingleSelection())))
+            if (ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7 && (_self.cfg.scrollable
+                && (ice.ace.jq.inArray("0", _self.selection) > -1 || ice.ace.jq.inArray("0", _self.deselection) > -1
+                || (firstRowSelected && _self.isSingleSelection()))))
                 _self.resizeScrolling();
         };
 
@@ -2108,7 +2226,8 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
     }
 }
 
-ice.ace.DataTable.prototype.onRowClick = function (event, rowElement) {
+ice.ace.DataTable.prototype.onRowClick = function (event) {
+    var rowElement = event.currentTarget;
     //Check if rowclick triggered this event not an element in row content
     if (ice.ace.jq(event.target).is('td,span,div')) {
         var row = ice.ace.jq(rowElement);
@@ -2124,10 +2243,11 @@ ice.ace.DataTable.prototype.onRowClick = function (event, rowElement) {
     }
 }
 
-ice.ace.DataTable.prototype.onCellClick = function (event, cellElement) {
+ice.ace.DataTable.prototype.onCellClick = function (event) {
+    var cellTarget = ice.ace.jq(event.target);
     //Check if rowclick triggered this event not an element in row content
-    if (ice.ace.jq(event.target).is('div,td,span')) {
-        var cell = ice.ace.jq(cellElement);
+    if (cellTarget.is('div,td,span')) {
+        var cell = cellTarget.closest('td');
         if (cell.hasClass('ui-selected')) this.doSelectionEvent('cell', true, cell);
         else this.doSelectionEvent('cell', false, cell);
     }
@@ -2198,8 +2318,8 @@ ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function (lastIndex, curr
 
 
 /* #########################################################################
- ########################### Expansion ###################################
- ######################################################################### */
+########################### Expansion ###################################
+######################################################################### */
 ice.ace.DataTable.prototype.toggleExpansion = function (expanderElement) {
     var expander = ice.ace.jq(expanderElement),
         row = expander.closest('tr'),
@@ -2354,8 +2474,8 @@ ice.ace.DataTable.prototype.loadExpandedPanelContent = function (row) {
 
 
 /* #########################################################################
- ########################### Row Editing #################################
- ######################################################################### */
+########################### Row Editing #################################
+######################################################################### */
 ice.ace.DataTable.prototype.showEditors = function (element) {
     this.doRowEditShowRequest(element);
 }

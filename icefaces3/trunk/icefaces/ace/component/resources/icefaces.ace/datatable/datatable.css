@@ -84,6 +84,14 @@
     vertical-align:middle;
 }
 
+.ui-datatable.ui-row-select:not(.ui-disabled) > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) {
+    cursor:pointer;
+}
+
+.ui-datatable.ui-cell-select:not(.ui-disabled) > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td {
+    cursor:pointer;
+}
+
 .ui-sortable-column-order {
     font-family: Verdana, Arial, sans-serif;
     font-weight: normal;
@@ -201,6 +209,10 @@
 }
 
 .ui-datatable-scrollable .ui-datatable-scrollable-body > table > tbody > tr:first-child > td {
+    border-top:none;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-body > table > tbody > tr:first-child {
     border-top:none;
 }
 
