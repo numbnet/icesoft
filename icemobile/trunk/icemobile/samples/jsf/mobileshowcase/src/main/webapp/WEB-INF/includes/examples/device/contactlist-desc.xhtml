@@ -21,7 +21,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
-
+        <mobi:fieldsetRow>
         <p>The fetchContact component will invoke the native contact list 
             interface to fetch various fields for a selected contact from the 
             device contact list database.The component 
@@ -37,21 +37,24 @@
             a composite, comma-delimited key/value string via the 'value' attribute. 
             A typical use of the fetchContact component is as follows:
         </p>
-
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
 <pre>
 &lt;mobi:fetchContact id="contact" 
     buttonLabel="Fetch Contact" 
     fields="name, email, phone"
-    value="&#x2317;{contactsBean.rawContact}"
-    name="&#x2317;{contactsBean.name}"
-    email="&#x2317;{contactsBean.email}"
-    phone="&#x2317;{contactsBean.phone}"/&gt;
+    value="&#x2317;{bean.rawContact}"
+    name="&#x2317;{bean.name}"
+    email="&#x2317;{bean.email}"
+    phone="&#x2317;{bean.phone}"/&gt;
 </pre>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
 
         <p>Contact list access is only available if the application is running
             in an ICEmobile device container or if ICEmobile SX has been registered, 
             otherwise the component will display a disabled button. </p>
-
+        </mobi:fieldsetRow>
        
     </mobi:fieldsetGroup>
 
