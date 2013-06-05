@@ -16,7 +16,7 @@
 
 <%
 
-    response.sendRedirect("./index.jsf");
+    response.sendRedirect("./mediacast.jsf");
 
 %>
 
