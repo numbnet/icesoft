@@ -134,13 +134,7 @@
     	   <li><a href="../index.html">index</a></li>
        </ul>
    </p>
-<script type="text/javascript">
-	mobi.AjaxRequest = function( options){
-        if (options.jspForm){
-            options.jspForm.submit();
-        }
-    }
-</script>
+
 </body>
 
 </html>

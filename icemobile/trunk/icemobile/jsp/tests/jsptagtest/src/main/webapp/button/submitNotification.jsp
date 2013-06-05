@@ -80,17 +80,6 @@
     	   <li><a href="../index.html">index</a></li>
        </ul>
    </p>
-<script type="text/javascript">
-	mobi.AjaxRequest = function( options){
-        if (options.oncomplete || options.onComplete){
-            var callBack = options.oncomplete || options.onComplete;
-            ice.mobi.addListener(document, "DOMSubtreeModified", callBack);
-        }
-        if (options.jspForm){
-            options.jspForm.submit();
-        }
-    }
-</script>
 </body>
 
 </html>
