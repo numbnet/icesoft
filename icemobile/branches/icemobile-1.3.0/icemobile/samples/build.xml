@@ -27,7 +27,6 @@
     </target>
 
     <target name="clean">
-    	<delete dir="dist"/>
         <subant target="clean">
             <fileset dir="." includes="jsp/*/build.xml" excludes=""/>
             <fileset dir="." includes="jsf/*/build.xml" excludes=""/>
