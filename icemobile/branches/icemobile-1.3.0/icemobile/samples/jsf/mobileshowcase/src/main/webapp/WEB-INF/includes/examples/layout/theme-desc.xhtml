@@ -21,28 +21,36 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
-
-        <p>Mobi components have been skinned to match popular
+        <mobi:fieldsetRow>
+        <p>Mobi components have been skinned to match the
             mobile platforms, but can also be easily extended to match custom
             corporate themes. The mobile platforms Android, iOS and Blackberry
-            have been targeted for initial support. </p>
+            have been targeted for initial support. jQuery Mobile ThemeRoller
+            is also supported and existing mobile ThemeRoller skins can be
+            imported</p>
+
+        <p>To have a device theme automatically applied to your ICEmobile 
+        page, simply include the following component in the head of
+        your page:</p>
 
 <pre>
-  &lt;mobi:deviceOutputStyle /&gt;
+  &lt;mobi:deviceResources /&gt;
 </pre>
 
         <p>
-            The component deviceOutputStyle has been created to automatically
-            detect supported platforms and load the corresponding CSS.
-            Try the select one menu in the footer to see the
-            various themes.
+            The deviceResource component will automatically
+            detect the current platform and load the corresponding CSS.
+            Specific themes can also be used by using the 'theme' attribute and
+            specifying one of the built-in themes, such as iPhone (iphone), iPad (ipad),
+            Android Holo light and dark (android_light &amp; android_dark), 
+            BlackBerry (bberry), BlackBerry 10 (bb10), and jQuery mobile (jqm).
         </p>
 
         <p style="text-align: center;">
             <h:graphicImage library="images" name="themes.png"
-                        style="width:236px;height:341px;" />
+                        style="width:100%" />
         </p>
-
+        </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
 </ui:composition>
