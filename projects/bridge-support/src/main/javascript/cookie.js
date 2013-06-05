@@ -14,61 +14,74 @@
  * governing permissions and limitations under the License.
  */
 
-function lookupCookieValue(name) {
-    var tupleString = detect(split(asString(document.cookie), '; '), function(tuple) {
-        return startsWith(tuple, name);
-    }, function() {
-        throw 'Cannot find value for cookie: ' + name;
-    });
+ice.lib.cookie = ice.module(function(exportAs) {
+    eval(ice.importFrom('ice.lib.oo'));
+    eval(ice.importFrom('ice.lib.string'));
 
-    return decodeURIComponent(contains(tupleString, '=') ? split(tupleString, '=')[1] : '');
-}
+    function lookupCookieValue(name) {
+        var tupleString = detect(split(asString(document.cookie), '; '), function(tuple) {
+            return startsWith(tuple, name);
+        }, function() {
+            throw 'Cannot find value for cookie: ' + name;
+        });
 
-function lookupCookie(name, failThunk) {
-    try {
-        return Cookie(name, lookupCookieValue(name));
-    } catch (e) {
-        if (failThunk) {
-            return failThunk();
-        } else {
-            throw e;
+        return decodeURIComponent(contains(tupleString, '=') ? split(tupleString, '=')[1] : '');
+    }
+
+    function lookupCookie(name, failThunk) {
+        try {
+            return Cookie(name, lookupCookieValue(name));
+        } catch (e) {
+            if (failThunk) {
+                return failThunk();
+            } else {
+                throw e;
+            }
         }
     }
-}
 
-function existsCookie(name) {
-    var exists = true;
-    lookupCookie(name, function() {
-        exists = false;
-    });
-    return exists;
-}
-
-var update = operator();
-var remove = operator();
-function Cookie(name, val, path) {
-    val = val || '';
-    path = path || '/';
-    document.cookie = name + '=' + val + '; path=' + path;
-
-    return object(function(method) {
-        method(value, function(self) {
-            return lookupCookieValue(name);
+    function existsCookie(name) {
+        var exists = true;
+        lookupCookie(name, function() {
+            exists = false;
         });
+        return exists;
+    }
 
-        method(update, function(self, val) {
-            document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
-            return self;
-        });
+    var update = operator();
+    var remove = operator();
 
-        method(remove, function(self) {
-            var date = new Date();
-            date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
-            document.cookie = name + '=; expires=' + date.toGMTString() + '; path=' + path;
-        });
+    function Cookie(name, val, path) {
+        val = val || '';
+        path = path || '/';
+        document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
 
-        method(asString, function(self) {
-            return 'Cookie[' + name + ', ' + value(self) + ', ' + path + ']';
+        return object(function(method) {
+            method(value, function(self) {
+                return lookupCookieValue(name);
+            });
+
+            method(update, function(self, val) {
+                document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
+                return self;
+            });
+
+            method(remove, function(self) {
+                var date = new Date();
+                date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
+                document.cookie = name + '=; expires=' + date.toGMTString() + '; path=' + path;
+            });
+
+            method(asString, function(self) {
+                return 'Cookie[' + name + ', ' + value(self) + ', ' + path + ']';
+            });
         });
-    });
-}
+    }
+
+    exportAs('lookupCookieValue', lookupCookieValue);
+    exportAs('lookupCookie', lookupCookie);
+    exportAs('existsCookie', existsCookie);
+    exportAs('update', update);
+    exportAs('remove', remove);
+    exportAs('Cookie', Cookie);
+});

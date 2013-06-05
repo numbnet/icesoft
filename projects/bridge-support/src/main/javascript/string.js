@@ -14,81 +14,99 @@
  * governing permissions and limitations under the License.
  */
 
-var indexOf = function(s, substring) {
-    var index = s.indexOf(substring);
-    if (index >= 0) {
-        return index;
-    } else {
-        throw '"' + s + '" does not contain "' + substring + '"';
-    }
-};
-
-var lastIndexOf = function(s, substring) {
-    var index = s.lastIndexOf(substring);
-    if (index >= 0) {
-        return index;
-    } else {
-        throw 'string "' + s + '" does not contain "' + substring + '"';
-    }
-};
-
-var startsWith = function(s, pattern) {
-    return s.indexOf(pattern) == 0;
-};
-
-var endsWith = function(s, pattern) {
-    return s.lastIndexOf(pattern) == s.length - pattern.length;
-};
-
-var containsSubstring = function(s, substring) {
-    return s.indexOf(substring) >= 0;
-};
-
-var blank = function(s) {
-    return /^\s*$/.test(s);
-};
-
-var split = function(s, separator) {
-    return s.length == 0 ? [] : s.split(separator);
-};
-
-var replace = function(s, regex, replace) {
-    return s.replace(regex, replace);
-};
-
-var toLowerCase = function(s) {
-    return s.toLowerCase();
-};
-
-var toUpperCase = function(s) {
-    return s.toUpperCase();
-};
-
-var substring = function(s, from, to) {
-    return s.substring(from, to);
-};
-
-var trim = function(s) {
-    s = s.replace(/^\s+/, '');
-    for (var i = s.length - 1; i >= 0; i--) {
-        if (/\S/.test(s.charAt(i))) {
-            s = s.substring(0, i + 1);
-            break;
+ice.lib.string = ice.module(function(exportAs) {
+    function indexOf(s, substring) {
+        var index = s.indexOf(substring);
+        if (index >= 0) {
+            return index;
+        } else {
+            throw '"' + s + '" does not contain "' + substring + '"';
         }
     }
 
-    return s;
-};
+    function lastIndexOf(s, substring) {
+        var index = s.lastIndexOf(substring);
+        if (index >= 0) {
+            return index;
+        } else {
+            throw 'string "' + s + '" does not contain "' + substring + '"';
+        }
+    }
 
-var asNumber = Number;
+    function startsWith(s, pattern) {
+        return s.indexOf(pattern) == 0;
+    }
 
-var asBoolean = function(s) {
-    return 'true' == s || 'any' == s;
-};
+    function endsWith(s, pattern) {
+        return s.lastIndexOf(pattern) == s.length - pattern.length;
+    }
 
-var asRegexp = function(s) {
-    return new RegExp(s);
-};
+    function containsSubstring(s, substring) {
+        return s.indexOf(substring) >= 0;
+    }
+
+    function blank(s) {
+        return /^\s*$/.test(s);
+    }
+
+    function split(s, separator) {
+        return s.length == 0 ? [] : s.split(separator);
+    }
+
+    function replace(s, regex, replace) {
+        return s.replace(regex, replace);
+    }
+
+    function toLowerCase(s) {
+        return s.toLowerCase();
+    }
+
+    function toUpperCase(s) {
+        return s.toUpperCase();
+    }
+
+    function substring(s, from, to) {
+        return s.substring(from, to);
+    }
+
+    function trim(s) {
+        s = s.replace(/^\s+/, '');
+        for (var i = s.length - 1; i >= 0; i--) {
+            if (/\S/.test(s.charAt(i))) {
+                s = s.substring(0, i + 1);
+                break;
+            }
+        }
+
+        return s;
+    }
+
+    var asNumber = Number;
+
+    function asBoolean(s) {
+        return 'true' == s || 'any' == s;
+    }
+
+    function asRegexp(s) {
+        return new RegExp(s);
+    }
+
+    exportAs('indexOf', indexOf);
+    exportAs('lastIndexOf', lastIndexOf);
+    exportAs('startsWith', startsWith);
+    exportAs('endsWith', endsWith);
+    exportAs('containsSubstring', containsSubstring);
+    exportAs('blank', blank);
+    exportAs('split', split);
+    exportAs('replace', replace);
+    exportAs('toLowerCase', toLowerCase);
+    exportAs('toUpperCase', toUpperCase);
+    exportAs('substring', substring);
+    exportAs('trim', trim);
+    exportAs('asNumber', asNumber);
+    exportAs('asBoolean', asBoolean);
+    exportAs('asRegexp', asRegexp);
+});
 
 
 

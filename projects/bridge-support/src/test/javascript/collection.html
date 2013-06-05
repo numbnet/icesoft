@@ -17,11 +17,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <script type="text/javascript" src="../../main/javascript/header.js"></script>
+    <script type="text/javascript" src="../../main/javascript/module.js"></script>
     <script type="text/javascript" src="../../main/javascript/oo.js"></script>
     <script type="text/javascript" src="../../main/javascript/functional.js"></script>
     <script type="text/javascript" src="../../main/javascript/collection.js"></script>
     <script type="text/javascript" src="unittest.js"></script>
     <script type="text/javascript">
+        eval(ice.importFrom('ice.lib.oo'));
+        eval(ice.importFrom('ice.lib.functional'));
+        eval(ice.importFrom('ice.lib.collection'));
+
         function Range(start, end) {
             return Stream(function(cellConstructor) {
                 if (start == end) return null;

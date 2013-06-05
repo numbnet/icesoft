@@ -14,97 +14,111 @@
  * governing permissions and limitations under the License.
  */
 
-var attributeAsString = operator();
-var attributeAsBoolean = operator();
-var attributeAsNumber = operator();
-var valueAsStrings = operator();
-var valueAsBooleans = operator();
-var valueAsNumbers = operator();
-var attributeNames = operator();
-var childConfiguration = operator();
+ice.lib.configuration = ice.module(function(exportAs) {
+    eval(ice.importFrom('ice.lib.oo'));
+    eval(ice.importFrom('ice.lib.string'));
+    eval(ice.importFrom('ice.lib.collection'));
 
-function XMLDynamicConfiguration(lookupElement) {
-    function asBoolean(s) {
-        return 'true' == toLowerCase(s);
-    }
+    var attributeAsString = operator();
+    var attributeAsBoolean = operator();
+    var attributeAsNumber = operator();
+    var valueAsStrings = operator();
+    var valueAsBooleans = operator();
+    var valueAsNumbers = operator();
+    var childConfiguration = operator();
 
-    function lookupAttribute(name) {
-        var a = lookupElement().getAttribute(name);
-        if (a) {
-            return a;
-        } else {
-            throw 'unknown attribute: ' + name;
+    function XMLDynamicConfiguration(lookupElement) {
+        function asBoolean(s) {
+            return 'true' == toLowerCase(s);
         }
-    }
 
-    function lookupValues(name) {
-        return collect(asArray(lookupElement().getElementsByTagName(name)), function(e) {
-            var valueNode = e.firstChild;
-            return valueNode ? valueNode.nodeValue : '';
-        });
-    }
-
-    return object(function(method) {
-        method(attributeAsString, function(self, name, defaultValue) {
-            try {
-                return lookupAttribute(name);
-            } catch (e) {
-                if (isString(defaultValue)) {
-                    return defaultValue;
-                } else {
-                    throw e;
-                }
-            }
-        });
-
-        method(attributeAsNumber, function(self, name, defaultValue) {
-            try {
-                return Number(lookupAttribute(name));
-            } catch (e) {
-                if (isNumber(defaultValue)) {
-                    return defaultValue;
-                } else {
-                    throw e;
-                }
-            }
-        });
-
-        method(attributeAsBoolean, function(self, name, defaultValue) {
-            try {
-                return asBoolean(lookupAttribute(name));
-            } catch (e) {
-                if (isBoolean(defaultValue)) {
-                    return defaultValue;
-                } else {
-                    throw e;
-                }
-            }
-        });
-
-        method(childConfiguration, function(self, name) {
-            var elements = lookupElement().getElementsByTagName(name);
-            if (isEmpty(elements)) {
-                throw 'unknown configuration: ' + name;
+        function lookupAttribute(name) {
+            var a = lookupElement().getAttribute(name);
+            if (a) {
+                return a;
             } else {
-                return XMLDynamicConfiguration(function() {
-                    return lookupElement().getElementsByTagName(name)[0];
-                });
+                throw 'unknown attribute: ' + name;
             }
-        });
+        }
 
-        method(valueAsStrings, function(self, name, defaultValues) {
-            var values = lookupValues(name);
-            return isEmpty(values) && defaultValues ? defaultValues : values;
-        });
+        function lookupValues(name) {
+            return collect(asArray(lookupElement().getElementsByTagName(name)), function(e) {
+                var valueNode = e.firstChild;
+                return valueNode ? valueNode.nodeValue : '';
+            });
+        }
 
-        method(valueAsNumbers, function(self, name, defaultValues) {
-            var values = lookupValues(name);
-            return isEmpty(values) && defaultValues ? defaultValues : collect(values, Number);
-        });
+        return object(function(method) {
+            method(attributeAsString, function(self, name, defaultValue) {
+                try {
+                    return lookupAttribute(name);
+                } catch (e) {
+                    if (isString(defaultValue)) {
+                        return defaultValue;
+                    } else {
+                        throw e;
+                    }
+                }
+            });
 
-        method(valueAsBooleans, function(self, name, defaultValues) {
-            var values = lookupValues(name);
-            return isEmpty(values) && defaultValues ? defaultValues : collect(values, asBoolean);
+            method(attributeAsNumber, function(self, name, defaultValue) {
+                try {
+                    return Number(lookupAttribute(name));
+                } catch (e) {
+                    if (isNumber(defaultValue)) {
+                        return defaultValue;
+                    } else {
+                        throw e;
+                    }
+                }
+            });
+
+            method(attributeAsBoolean, function(self, name, defaultValue) {
+                try {
+                    return asBoolean(lookupAttribute(name));
+                } catch (e) {
+                    if (isBoolean(defaultValue)) {
+                        return defaultValue;
+                    } else {
+                        throw e;
+                    }
+                }
+            });
+
+            method(childConfiguration, function(self, name) {
+                var elements = lookupElement().getElementsByTagName(name);
+                if (isEmpty(elements)) {
+                    throw 'unknown configuration: ' + name;
+                } else {
+                    return XMLDynamicConfiguration(function() {
+                        return lookupElement().getElementsByTagName(name)[0];
+                    });
+                }
+            });
+
+            method(valueAsStrings, function(self, name, defaultValues) {
+                var values = lookupValues(name);
+                return isEmpty(values) && defaultValues ? defaultValues : values;
+            });
+
+            method(valueAsNumbers, function(self, name, defaultValues) {
+                var values = lookupValues(name);
+                return isEmpty(values) && defaultValues ? defaultValues : collect(values, Number);
+            });
+
+            method(valueAsBooleans, function(self, name, defaultValues) {
+                var values = lookupValues(name);
+                return isEmpty(values) && defaultValues ? defaultValues : collect(values, asBoolean);
+            });
         });
-    });
-}
+    }
+
+    exportAs('attributeAsString', attributeAsString);
+    exportAs('attributeAsBoolean', attributeAsBoolean);
+    exportAs('attributeAsNumber', attributeAsNumber);
+    exportAs('valueAsStrings', valueAsStrings);
+    exportAs('valueAsBooleans', valueAsBooleans);
+    exportAs('valueAsNumbers', valueAsNumbers);
+    exportAs('childConfiguration', childConfiguration);
+    exportAs('XMLDynamicConfiguration', XMLDynamicConfiguration);
+});

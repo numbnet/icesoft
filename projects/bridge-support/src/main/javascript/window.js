@@ -14,25 +14,37 @@
  * governing permissions and limitations under the License.
  */
 
-function registerListener(eventType, obj, listener) {
-    if (obj.addEventListener) {
-        obj.addEventListener(eventType, listener, false);
-    } else {
-        obj.attachEvent('on' + eventType, listener);
+ice.lib.window = ice.module(function(exportAs) {
+    eval(ice.importFrom('ice.lib.functional'));
+
+    function registerListener(eventType, obj, listener) {
+        if (obj.addEventListener) {
+            obj.addEventListener(eventType, listener, false);
+        } else {
+            obj.attachEvent('on' + eventType, listener);
+        }
     }
-}
 
-var onLoad = curry(registerListener, 'load');
-var onUnload = curry(registerListener, 'unload');
-var onBeforeUnload = curry(registerListener, 'beforeunload');
-var onResize = curry(registerListener, 'resize');
-var onKeyPress = curry(registerListener, 'keypress');
-var onKeyUp = curry(registerListener, 'keyup');
+    var onLoad = curry(registerListener, 'load');
+    var onUnload = curry(registerListener, 'unload');
+    var onBeforeUnload = curry(registerListener, 'beforeunload');
+    var onResize = curry(registerListener, 'resize');
+    var onKeyPress = curry(registerListener, 'keypress');
+    var onKeyUp = curry(registerListener, 'keyup');
 
-window.width = function() {
-    return window.innerWidth ? window.innerWidth : (document.documentElement && document.documentElement.clientWidth) ? document.documentElement.clientWidth : document.body.clientWidth;
-};
+    window.width = function() {
+        return window.innerWidth ? window.innerWidth : (document.documentElement && document.documentElement.clientWidth) ? document.documentElement.clientWidth : document.body.clientWidth;
+    };
 
-window.height = function() {
-    return window.innerHeight ? window.innerHeight : (document.documentElement && document.documentElement.clientHeight) ? document.documentElement.clientHeight : document.body.clientHeight;
-};
+    window.height = function() {
+        return window.innerHeight ? window.innerHeight : (document.documentElement && document.documentElement.clientHeight) ? document.documentElement.clientHeight : document.body.clientHeight;
+    };
+
+    exportAs('registerListener', registerListener);
+    exportAs('onLoad', onLoad);
+    exportAs('onUnload', onUnload);
+    exportAs('onBeforeUnload', onBeforeUnload);
+    exportAs('onResize', onResize);
+    exportAs('onKeyPress', onKeyPress);
+    exportAs('onKeyUp', onKeyUp);
+});
