@@ -251,12 +251,6 @@ public class JSFUtils {
         return parent;
     }
 
-    /**
-     * Copied over from ace ComponentUtils for ajax support
-     * 
-     * @param component
-     * @return
-     */
     public static UIComponent findParentForm(UIComponent component) {
         UIComponent parent = component;
         while (parent != null)
@@ -268,14 +262,6 @@ public class JSFUtils {
         return parent;
     }
 
-    /**
-     * taken from ace Util.ComponentUtils for ajax tag support Nov 20, 2011
-     * 
-     * @param context
-     * @param component
-     * @param list
-     * @return
-     */
     public static String findClientIds(FacesContext context,
             UIComponent component, String list) {
         if (list == null)

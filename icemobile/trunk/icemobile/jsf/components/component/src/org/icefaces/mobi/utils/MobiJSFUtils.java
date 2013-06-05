@@ -245,9 +245,6 @@ public class MobiJSFUtils {
     /**
      * use this to ascertain that the domdiff does not wipe out the script tag
      * for updating components
-     * 
-     * @param value
-     * @return
      */
     public static int generateHashCode(Object value) {
         int hashCode = 0;
@@ -282,8 +279,6 @@ public class MobiJSFUtils {
 
     /**
      * use this one for mobi:ajaxRequest until JSON builder replaces this stuff
-     * @param children
-     * @return
      */
     public static String asParameterStringForMobiAjax(List<UIParameter> children){
         if (children.isEmpty()){

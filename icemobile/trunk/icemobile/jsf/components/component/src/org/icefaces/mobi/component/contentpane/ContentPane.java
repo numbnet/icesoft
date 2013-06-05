@@ -110,7 +110,6 @@ public class ContentPane extends ContentPaneBase implements IContentPane{
      * TODO implement disabled for this component which will affect
      * contentStack, tabSet and accordion components.  Need to return something
      * for IContentPane interface in core .
-     * @return
      */
     public boolean isDisabled(){
         return false;
@@ -119,7 +118,6 @@ public class ContentPane extends ContentPaneBase implements IContentPane{
      * TODO implement disabled for this component which will affect
      * contentStack, tabSet and accordion components.  Need to return something
      * for IContentPane interface in core .
-     * @return
      */
     public void setDisabled(boolean disabled){
         //noop
