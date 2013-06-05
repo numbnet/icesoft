@@ -16,8 +16,8 @@
 
 <project name="icemobile-jsp" default="web-profile">
 
-	<property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <import file="../build/common-jsp.xml"/>
+    <property file="../../../build.properties"/>
+    <property file="../../build/build.properties"/>
+    <import file="../../build/common-jsp.xml"/>
 
 </project>

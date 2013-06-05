@@ -17,7 +17,8 @@
 <project name="mvc-mediacast" default="web-profile">
 
 	<property file="./build.properties" />
-	<property file="../build/build.properties" />
-	<import file="../build/common-spring.xml" />
+    <property file="../../../build.properties"/>
+	<property file="../../build/build.properties" />
+	<import file="../../build/common-spring.xml" />
 
 </project>
