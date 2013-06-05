@@ -42,7 +42,7 @@ import javax.faces.application.ResourceDependency;
      generatedInterfaceClass        = "org.icemobile.component.IVideoPlayer",
      generatedInterfaceExtendsClass = "org.icemobile.component.IBaseClientComponent",
      tlddoc = "This component renders an HTML5 video element. " +
-              "Play back options can be controlled. " )
+              "Playback options can be controlled. " )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
