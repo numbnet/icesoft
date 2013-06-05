@@ -27,17 +27,21 @@
         accordion panel can be set via the title attribute on the contentPane.</p>
 
 <pre>
-&lt;mobi:accordion id="autoHeightAccordion" selectedId="&#x2317;{accordionBean.selectedId}"
-    autoHeight="true"&gt;
-    &lt;mobi:contentPane title="ICE Sailor" id="accordionPane1" client="true"&gt;
-            &lt;ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/&gt;
-    &lt;/mobi:contentPane&gt;
-    &lt;mobi:contentPane title="ICE Breaker" id="accordionPane2" client="true"&gt;
-        &lt;ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/&gt;
-    &lt;/mobi:contentPane&gt;
-    &lt;mobi:contentPane title="ICE Skate" id="accordionPane3" client="true"&gt;
-        &lt;ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/&gt;
-    &lt;/mobi:contentPane&gt;
+&lt;mobi:accordion 
+  selectedId="&#x2317;{bean.selectedId}"
+  autoHeight="true"&gt;
+  &lt;mobi:contentPane title="Tab 1" 
+    client="true"&gt;
+    ...
+  &lt;/mobi:contentPane&gt;
+  &lt;mobi:contentPane title="Tab 2" 
+    client="true"&gt;
+    ...
+  &lt;/mobi:contentPane&gt;
+  &lt;mobi:contentPane title="Tab 3" 
+    client="true"&gt;
+    ...
+  &lt;/mobi:contentPane&gt;
 &lt;/mobi:accordion&gt;
 </pre>
 
