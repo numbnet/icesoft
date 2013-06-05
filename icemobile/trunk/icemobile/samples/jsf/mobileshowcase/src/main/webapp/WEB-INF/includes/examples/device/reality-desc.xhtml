@@ -21,22 +21,24 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
-
+        <mobi:fieldsetRow>
         <p>The augmented reality component displays a set of labeled icons
         with latitude-longitude locations via an overlay on the camera view.
         The selected icon label is set as the component value.
         </p>
+        </mobi:fieldsetRow>
 
-
+        <mobi:fieldsetRow>
 <pre>
 &lt;mobi:augmentedReality
     value="&#x2317;{bean.selection}"/&gt;
 </pre>
-
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
         <p>augmentedReality is only accessible for
              ICEmobile device containers. In non-container environments
             the component displays a text field input component. </p>
-
+        </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
 </ui:composition>

@@ -21,7 +21,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
-
+    <mobi:fieldsetRow>
         <p>The camera component allows JSF applications to access a mobile device
             camera. The component renders a simple button that, when pressed, launches
             the native camera application on the device. Once a picture has been taken
@@ -41,13 +41,16 @@
             camera image data can be stored along with the image file data. A
             typical camera component setup looks as follows:
         </p>
-
+    </mobi:fieldsetRow>
+    <mobi:fieldsetRow>
 <pre>
 &lt;mobi:camera
-    value="&#x2317;{myBean.map}"
-    buttonLabel="Camera" captureMessageLabel="Photo captured"/&gt;
+  value="&#x2317;{myBean.map}"
+  buttonLabel="Camera" 
+  captureMessageLabel="Thanks"/&gt;
 </pre>
-
+    </mobi:fieldsetRow>
+    <mobi:fieldsetRow>
         <p>
             When the containing form is submitted to the server the setter
             setMap() is called on the bean, making the camera image 
@@ -57,7 +60,7 @@
         <p>The camera is only accessible if the application is running
             in an ICEmobile device container or if ICEmobile SX has been registered, 
             otherwise the component will display a file upload input component. </p>
-
+    </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
 </ui:composition>
