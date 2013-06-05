@@ -26,7 +26,7 @@
         
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
-                Use your mobile device's microphone to make a recording and upload
+                Use your mobile device audio recorder to make a recording and upload
                 it to the server.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
@@ -36,6 +36,7 @@
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow style="text-align:right">
                 <mobi:microphone duration="10" buttonLabel="Record Audio"
+                                 captureMessageLabel="Audio captured"
                                  value="#{microphoneBean.audioFileMap}"
                                   style="width:50%"/>
             </mobi:fieldsetRow>

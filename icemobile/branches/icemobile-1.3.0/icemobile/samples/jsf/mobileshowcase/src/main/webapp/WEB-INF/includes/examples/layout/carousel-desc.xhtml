@@ -23,20 +23,22 @@
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
         <p>The carousel component displays a list of child elements, allowing a
-            user to swipe right or left to view non-visible
-            child elements. The most common use of this component is for displaying
+            user to swipe right or left. The most common use of this component is for displaying
             a list of images that the user can swipe to view additional images in the list. </p>
 
 
-    <pre>
-    &lt;mobi:carousel
-         value="# {bean.list}
-         var="listItem" &gt;
-        &lt;h:panelGroup&gt;
-            # {listItem}
-        &lt;/h:panelGroup&gt;
-    &lt;/mobi:carousel&gt;
-    </pre>
+<pre>
+&lt;mobi:carousel 
+  selectedItem="&#x2317;{bean.selectedItem}"
+  value="&#x2317;{bean.images}"
+  singleSubmit="true"
+  var="item"&gt;
+  &lt;h:panelGroup&gt;
+    &lt;h:graphicImage library="images" 
+      name="&#x2317;{item}"/&gt;
+  &lt;/h:panelGroup&gt;
+&lt;/mobi:carousel&gt;
+</pre>
 
     </mobi:fieldsetGroup>
 
