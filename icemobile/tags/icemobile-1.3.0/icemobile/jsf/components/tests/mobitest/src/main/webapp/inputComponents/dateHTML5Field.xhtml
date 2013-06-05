@@ -1,0 +1,85 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+ 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+   <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+
+</h:head>
+
+<h:body>
+ 
+    <h3>html5 input types should bring up proper device keyboard</h3>
+
+    <h:form id="inputForm" >
+
+      <p>
+       <h5>mobi input type is date string no converter or singleSubmit</h5>
+         <h:outputText value="A. date string"/>
+         <mobi:inputText id="dateId" value="#{input.dateString}" type="date" placeholder="12-12-2012"
+                       singleSubmit="false"  >
+
+         </mobi:inputText>
+                         
+       </p>
+       <p>
+       <h5>mobi input type is date with converter and singleSubmit true</h5>
+         <h:outputText value="B. date with converter and singleSubmit"/>
+         <mobi:inputText id="dateIdConv" value="#{input.dateObj}" type="date" placeholder="2012-01-30"
+                       singleSubmit="true"  title="date field">
+                       <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+         </mobi:inputText>
+                         
+       </p>
+
+       <p>
+
+       </p>
+       <mobi:commandButton id="defaultOne" value="defaultSStrue" singleSubmit="true" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton  id="defaultTwo" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
+
+    </h:form>
+    <h3>RESULTS</h3>
+
+
+    <h:outputText id="outDate1" value="#{input.dateString}">
+        <h:outputLabel for="outDate1" value="A date string singleSubmit false:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="outDate2" value="#{input.dateObj}">
+        <h:outputLabel for="outDate2" value="B date object single submit true:-"/>
+        <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+    </h:outputText>
+
+	<li><a href="../inputComponents.html">index page</a>
+	</li>
+
+</h:body>
+</html>
