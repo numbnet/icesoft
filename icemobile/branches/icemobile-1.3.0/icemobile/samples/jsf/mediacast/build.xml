@@ -17,6 +17,7 @@
 <project name="mediacast" default="servlet-profile">
 
     <property file="./build.properties"/>
+    <property file="../../../build.properties"/>
     <property file="../../build/build.properties"/>
     <import file="../../build/common-jsf.xml"/>
   

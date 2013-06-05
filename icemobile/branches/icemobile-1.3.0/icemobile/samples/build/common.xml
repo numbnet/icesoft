@@ -18,12 +18,6 @@
     
     <property file="build.properties"/>
     <property file="../../build.properties"/>
-    <!-- not reading these properties from bundle properties file -->
-    <property name="icemobile-jsp.lib.name" value="icemobile-jsp"/>
-    <property name="icemobile-spring.lib.name" value="icemobile-spring"/>
-    <property name="icepush.lib.name" value="icepush"/>
-    <property name="icefaces.lib.name" value="icefaces"/>
-    <property name="icefaces-mobi.lib.name"  value="icefaces-mobi"/>
 
     <property name="icemobile.base.dir" location="../../.."/>
     <property name="samples.dist.dir" location="${icemobile.base.dir}/samples/dist"/>
