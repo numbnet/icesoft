@@ -1,0 +1,71 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<mobi:pagePanel>
+		<f:facet name="header">Header</f:facet>
+		<f:facet name="body">
+			<mobi:splitPane>
+				<f:facet name="left">
+					<h:form>
+						<h:panelGroup>
+							<mobi:contentStackMenu id="mnu" contentStackId="stack1"
+								selectedPane="#{navigationBean.selPane}">
+								<mobi:contentMenuItem label="MenuTitle" />
+								<mobi:contentMenuItem label="panel1" value="panel1" />
+								<mobi:contentMenuItem label="panel2" value="panel2" />
+								<mobi:contentMenuItem label="panel3" value="panel3" />
+							</mobi:contentStackMenu>
+						</h:panelGroup>
+					</h:form>
+				</f:facet>
+				<f:facet name="right">
+					<mobi:contentStack id="stack1"
+						currentId="#{navigationBean.selPane}"
+						contentMenuId="mnu">
+						<mobi:contentPane id="panel1">
+							<h:panelGroup>
+								<h:form>
+									<ui:include src="../layout/includes/other.xhtml" />
+								</h:form>
+							</h:panelGroup>
+						</mobi:contentPane>
+						<mobi:contentPane id="panel2">
+							<h:panelGroup>
+								<ui:include src="../layout/includes/splash.xhtml" />
+							</h:panelGroup>
+						</mobi:contentPane>
+						<mobi:contentPane id="panel3">
+							<h:panelGroup>
+								<mobi:contentNavBar>
+									<mobi:contentMenuItem label="Go to Pane1" value="panel1" />
+								</mobi:contentNavBar>
+							</h:panelGroup>
+							<p>Insert Your Content Here</p>
+						</mobi:contentPane>
+					</mobi:contentStack>
+				</f:facet>
+			</mobi:splitPane>
+		</f:facet>
+		<f:facet name="footer">
+			Footer      <a href="../templateTests.html">index page</a>
+		</f:facet>
+	</mobi:pagePanel>
+</ui:composition>
