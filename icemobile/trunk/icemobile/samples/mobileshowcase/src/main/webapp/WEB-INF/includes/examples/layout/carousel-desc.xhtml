@@ -28,13 +28,15 @@
 
 
 <pre>
-&lt;mobi:carousel id="flagCarousel" selectedItem="&#x2317;{carouselBean.selectedItem}"
-               value="&#x2317;{carouselBean.images}"
-               singleSubmit="true"
-               var="item"&gt;
-    &lt;h:panelGroup&gt;
-        &lt;h:graphicImage library="images" name="&#x2317;{item}" style="height:98px;"/&gt;
-    &lt;/h:panelGroup&gt;
+&lt;mobi:carousel 
+  selectedItem="&#x2317;{bean.selectedItem}"
+  value="&#x2317;{bean.images}"
+  singleSubmit="true"
+  var="item"&gt;
+  &lt;h:panelGroup&gt;
+    &lt;h:graphicImage library="images" 
+      name="&#x2317;{item}"/&gt;
+  &lt;/h:panelGroup&gt;
 &lt;/mobi:carousel&gt;
 </pre>
 
