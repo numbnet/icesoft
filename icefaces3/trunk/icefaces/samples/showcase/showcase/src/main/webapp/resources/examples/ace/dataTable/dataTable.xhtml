@@ -38,7 +38,10 @@
         <h:form id="form">
             <style type="text/css">
                 /* Important required because row */
-                .ui-datatable-odd {background-color:lightgray !important;}
+                .ui-datatable-odd {
+                    background-color:lightgray !important;
+                    background-position-y: -1400px; /* IE7 hack */
+                }
             </style>
            <ace:dataTable id="carTable"
                           value="#{dataTableBean.carsData}"
