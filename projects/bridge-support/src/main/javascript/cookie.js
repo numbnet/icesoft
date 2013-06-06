@@ -17,6 +17,7 @@
 ice.lib.cookie = ice.module(function(exportAs) {
     eval(ice.importFrom('ice.lib.oo'));
     eval(ice.importFrom('ice.lib.string'));
+    eval(ice.importFrom('ice.lib.collection'));
 
     function lookupCookieValue(name) {
         var tupleString = detect(split(asString(document.cookie), '; '), function(tuple) {
