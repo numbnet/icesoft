@@ -20,7 +20,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi"%>
 <%@ taglib prefix="push"
     uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<form:form id="menubutton" method="POST" enctype="multipart/form-data">
+<form:form id="menubutton" method="POST" enctype="multipart/form-data" modelAttribute="menuButtonBean">
 
     <mobi:largeView><h3>Menu Button</h3></mobi:largeView>
 
@@ -28,35 +28,57 @@
         <mobi:fieldsetRow>
             The menuButton allows a user to select and execute a menu item.
         </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
-
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-           <mobi:menuButton id="buttonOne"
-                            name="selectedValue"
-                            selectedValue="${menuButtonBean.selectedValue}"
-                            buttonLabel="${menuButtonBean.buttonLabel}"
-                            selectTitle="${menuButtonBean.selectTitle}"
-                            disabled="${menuButtonBean.disabled}"
-                            style="${menuButtonBean.style}"
-                            styleClass="${menuButtonBean.styleClass}">
-                      <mobi:menuButtonGroup label="Group1" >
-                          <mobi:menuButtonItem id="item1a" label="oneA" value="1A"
-                                  panelConfirmation="${menuButtonBean.panelConfirmation}"
-                                  submitNotification="${menuButtonBean.submitNotification}"/>
-                          <mobi:menuButtonItem id="item2a" label="twoA" value="2A"
-                                  submitNotification="sn1"/>
-                          <mobi:menuButtonItem id="item3a" label="threeA" value="3A"/>
-                      </mobi:menuButtonGroup>
-                      <mobi:menuButtonGroup label="Group2">
-                          <mobi:menuButtonItem id="item1b" label="oneB" value="1B"/>
-                          <mobi:menuButtonItem id="item2b" label="twoB" value="2B"
-                                  panelConfirmation="pc1"
-                                  submitNotification="sn1"/>
-                          <mobi:menuButtonItem id="item3b" label="threeB" value="3B"/>
-                      </mobi:menuButtonGroup>
-                 </mobi:menuButton>
+        <mobi:fieldsetRow style="text-align:center">
+            <mobi:menuButton id="mnuBtn1"
+                             name="menu1Value"
+                             buttonLabel="Menu Button">
+                <mobi:menuButtonItem id="create"
+                        label="Create Record"
+                        value="create"/>
+                <mobi:menuButtonItem id="update"
+                        label="Update Record"
+                        value="update"/>
+                <mobi:menuButtonItem id="delete"
+                        label="Delete Record"
+                        value="delete"/>
+            </mobi:menuButton>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="results">
+            <label>Selected Command:</label>
+            <span>${menuButtonBean.menu1Value}</span>
+        </mobi:fieldsetRow>
+        
+        
+        <mobi:fieldsetRow>The Menu Button also supports option groups with the menuButtonGroup component</mobi:fieldsetRow>
+        <mobi:fieldsetRow style="text-align:center">
+           <mobi:menuButton id="menuBtnGroup" name="menu2Value"
+                        buttonLabel="Menu Button Group"
+                        selectTitle="Select an item">
+               <mobi:menuButtonGroup label="Menu Group A" >
+                   <mobi:menuButtonItem id="itemA1" label="Item A1" value="A1"/>
+                   <mobi:menuButtonItem id="itemA2" label="Item A2" value="A2"/>
+                   <mobi:menuButtonItem id="itemA3" label="Item A3" value="A3"/>
+               </mobi:menuButtonGroup>
+               <mobi:menuButtonGroup label="Menu Group B">
+                   <mobi:menuButtonItem id="itemB1" label="Item B1" value="B1"/>
+                   <mobi:menuButtonItem id="itemB2" label="Item B2" value="B2"/>
+                   <mobi:menuButtonItem id="itemB3" label="Item B3" value="B3"/>
+                </mobi:menuButtonGroup>
+           </mobi:menuButton>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="results">
+            <label>Selected Command:</label>
+            <span>${menuButtonBean.menu2Value}</span>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
+  
 </form:form>
+<script type="text/javascript">
+    MvcUtil.enhanceForm("#menubutton");
+    ice.mobi.userAjaxRequest = function( options){
+        if (options.jspForm){
+            $(options.jspForm).submit();
+        }
+    };
+</script>
 
