@@ -25,7 +25,6 @@ import org.icemobile.samples.spring.FlipSwitchBean;
 import org.icemobile.samples.spring.InputTextBean;
 import org.icemobile.samples.spring.ListBean;
 import org.icemobile.samples.spring.MenuButtonBean;
-import org.icemobile.samples.spring.ModelBean;
 import org.icemobile.samples.spring.PanelConfirmationBean;
 import org.icemobile.samples.spring.PanelPopupBean;
 import org.icemobile.samples.spring.TabsetBean;
@@ -41,7 +40,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  * General Controller for echoing simple input pages
  */
 @Controller
-@SessionAttributes({"geolocationBean", "carouselBean", "panelConfirmationBean"})
+@SessionAttributes({"geolocationBean", "carouselBean", "panelConfirmationBean", "buttonsBean",
+    "panelPopupBean"})
 @ICEmobileResourceStore(bean="icemobileResourceStore")
 public class EchoController extends ICEmobileBaseController{
 
@@ -98,7 +98,7 @@ public class EchoController extends ICEmobileBaseController{
     }
 
     @RequestMapping(value = "/panelPopup")
-    public void doRequest(@ModelAttribute("tabsetBean") PanelPopupBean model) {
+    public void doRequest(@ModelAttribute("panelPopupBean") PanelPopupBean model) {
     }
     
     @RequestMapping(value = "/panelconfirmation")
@@ -120,6 +120,16 @@ public class EchoController extends ICEmobileBaseController{
     @ModelAttribute("panelConfirmationBean")
     public PanelConfirmationBean createPanelConfirmationBean() {
         return new PanelConfirmationBean();
+    }
+    
+    @ModelAttribute("buttonsBean")
+    public ButtonsBean createButtonsBean() {
+        return new ButtonsBean();
+    }
+    
+    @ModelAttribute("panelPopupBean")
+    public PanelPopupBean createPopupBean() {
+        return new PanelPopupBean();
     }
 
 }
