@@ -22,6 +22,7 @@ import org.icemobile.renderkit.ButtonCoreRenderer;
 
 import javax.servlet.jsp.tagext.Tag;
 import java.io.IOException;
+import java.lang.String;
 import java.util.logging.Logger;
 
 import static org.icemobile.util.HTML.*;
@@ -43,6 +44,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     private boolean selectedButton;
     private boolean selected = false;
     private String groupId;
+    private String name;
 
     private ButtonCoreRenderer renderer;
     private TagWriter writer;
@@ -152,6 +154,14 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {

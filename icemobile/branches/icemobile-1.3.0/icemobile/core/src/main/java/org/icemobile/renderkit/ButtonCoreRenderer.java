@@ -112,7 +112,11 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         check on type?
          */
         writer.writeAttribute(TYPE_ATTR, type);
-        writer.writeAttribute(NAME_ATTR, clientId);
+        String name = clientId;
+        if (button.getName()!=null && !button.getName().isEmpty()){
+            name=button.getName();
+        }
+        writer.writeAttribute(NAME_ATTR, name);
 
         if (button.isDisabled()) {
             writer.writeAttribute(DISABLED_ATTR, "disabled");

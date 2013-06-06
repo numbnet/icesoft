@@ -86,6 +86,7 @@
         <mobi:fieldsetRow>
             <label>mobi commandButton</label>
     	         <mobi:commandButton id="buttonOne"
+                            name="${buttonInfo.someText}"
                             value="${buttonInfo.value}"
                             disabled="${buttonInfo.disabled}"
                             style="${buttonInfo.style}"
