@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 @MandatoryResourceComponent(tagName = "messages", value = "org.icefaces.ace.component.messages.Messages")
 public class MessagesRenderer extends Renderer {
 
-    private static String[] icons = new String[]{"notice", "info", "alert", "alert"};
+    private static String[] icons = new String[]{"info", "notice", "alert", "alert"};
     private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
     private static Set<String> effectSet = new HashSet<String>(Arrays.asList("blind", "bounce", "clip", "drop", "explode", "fade", "fold", "highlight", "puff", "pulsate", "scale", "shake", "size", "slide"));
     private static Set<String> durationSet = new HashSet<String>(Arrays.asList("slow", "_default", "fast"));
