@@ -87,6 +87,7 @@
             <label>mobi commandButton</label>
     	         <mobi:commandButton id="buttonOne"
                             value="${buttonInfo.value}"
+                            name="${buttonInfo.someText}"
                             disabled="${buttonInfo.disabled}"
                             style="${buttonInfo.style}"
                             styleClass="${buttonInfo.styleClass}"

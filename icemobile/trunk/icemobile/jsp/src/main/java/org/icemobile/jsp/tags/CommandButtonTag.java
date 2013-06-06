@@ -43,6 +43,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     private boolean selectedButton;
     private boolean selected = false;
     private String groupId;
+    private String name;
 
     private ButtonCoreRenderer renderer;
     private TagWriter writer;
@@ -153,7 +154,13 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
         this.value = value;
     }
 
-    public String getType() {
+   public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }    public String getType() {
         return this.type;
     }
 
