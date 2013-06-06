@@ -114,7 +114,9 @@ Available ui:params to pass:
                         <c:forEach items="#{resourceValue}"
                                    var="exRes">
                             <ace:tabPane label="#{exRes.title}">
-                                <h:outputText escape="false" value="#{sourceCodeLoaderConnection[exRes.resource]}" />
+								<div style="background-color:#fff;">
+									<h:outputText escape="false" value="#{sourceCodeLoaderConnection[exRes.resource]}" />
+								</div>
                             </ace:tabPane>
                         </c:forEach>
                     </ace:tabSet>
