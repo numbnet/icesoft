@@ -35,22 +35,28 @@
     <mobi:fieldsetGroup style="text-align:center">
         <mobi:fieldsetRow>
             <mobi:commandButton id="default" value="Default"
+                name="selectedType"
                 styleClass="span-2"/>
             <mobi:commandButton id="unimportant" value="Unimportant"
+                name="selectedType"
                 buttonType="unimportant" styleClass="span-2"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:commandButton id="attention" value="Attention" 
+                name="selectedType"
                 buttonType="attention" styleClass="span-2"/>
             <mobi:commandButton id="important" value="Important" 
+                name="selectedType"
                 buttonType="important" styleClass="span-2"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:commandButton id="back" value="Back"
+                name="selectedType"
                 buttonType="back" styleClass="back"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:commandButton id="disabled" value="Disabled"
+                name="selectedType"
                 disabled="true" />
         </mobi:fieldsetRow>
         <mobi:fieldsetRow styleClass="results">
