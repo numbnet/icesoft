@@ -23,9 +23,7 @@ public class PanelConfirmationBean {
     private int count = 0;
     private boolean execute = false;
     
-    public PanelConfirmationBean(){
-        System.out.println("panelConfirmationBean ctor");
-        
+    public PanelConfirmationBean(){        
     }
 
     public int getCount() {
