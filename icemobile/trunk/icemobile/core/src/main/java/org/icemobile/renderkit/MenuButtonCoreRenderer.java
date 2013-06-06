@@ -16,7 +16,6 @@
 
 package org.icemobile.renderkit;
 
-import org.icemobile.component.ISubmitNotification;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -109,7 +108,7 @@ public class MenuButtonCoreRenderer extends BaseCoreRenderer {
             throws IOException{
         writer.startElement(OPTION_ELEM, item);
         // ask Philip about styleClass and style.
-        writer.writeAttribute(VALUE_ATTR, "selectTitle");
+        writer.writeAttribute(VALUE_ATTR, "");
         writer.write(item.getSelectTitle());
         writer.endElement(OPTION_ELEM);
     }
