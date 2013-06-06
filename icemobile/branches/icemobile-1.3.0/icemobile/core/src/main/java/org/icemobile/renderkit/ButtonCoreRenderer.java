@@ -113,7 +113,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
          */
         writer.writeAttribute(TYPE_ATTR, type);
         String name = clientId;
-        if (button.getName()!=null && !button.getName().isEmpty()){
+        if (button.getName()!=null){
             name=button.getName();
         }
         writer.writeAttribute(NAME_ATTR, name);

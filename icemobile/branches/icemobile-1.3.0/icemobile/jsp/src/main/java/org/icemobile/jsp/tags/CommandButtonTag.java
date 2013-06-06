@@ -22,7 +22,6 @@ import org.icemobile.renderkit.ButtonCoreRenderer;
 
 import javax.servlet.jsp.tagext.Tag;
 import java.io.IOException;
-import java.lang.String;
 import java.util.logging.Logger;
 
 import static org.icemobile.util.HTML.*;
@@ -53,7 +52,6 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     private boolean parentDisabled = false;
 
     public void setParent(Tag parent) {
-        logger.info("SETPARENT!!!");
         if ((parent instanceof CommandButtonGroupTag)) {
             this.mParent = (CommandButtonGroupTag) parent;
         }
