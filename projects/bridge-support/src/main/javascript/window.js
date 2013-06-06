@@ -16,6 +16,7 @@
 
 ice.lib.window = ice.module(function(exportAs) {
     eval(ice.importFrom('ice.lib.functional'));
+    eval(ice.importFrom('ice.lib.collection'));
 
     function registerListener(eventType, obj, listener) {
         if (obj.addEventListener) {
