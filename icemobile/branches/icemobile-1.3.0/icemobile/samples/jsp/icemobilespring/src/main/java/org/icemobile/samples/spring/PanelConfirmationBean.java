@@ -35,7 +35,6 @@ public class PanelConfirmationBean {
     }
     
     public void setExecute(boolean val){
-        System.out.println("setExecute() " + val);
         if( val ){
             incrementCount();
         }
