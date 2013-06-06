@@ -711,12 +711,19 @@ public class EnvUtils {
 
     //Leave this for backwards compatibility that defaults to a PORTLET_APPLICATION scope.
     public static HttpSession getSafeSession(FacesContext fc) {
-        return getSafeApplicationScopeSession(fc);
+        return getSafeSession(fc, true);
     }
 
-    private static HttpSession getSafeSession(FacesContext fc, int scope) {
+    public static HttpSession getSafeSession(FacesContext fc, boolean createSession) {
+        return getSafeApplicationScopeSession(fc, createSession);
+    }
+
+    private static HttpSession getSafeSession(FacesContext fc, int scope, boolean createSession) {
         ExternalContext ec = fc.getExternalContext();
-        Object rawSess = ec.getSession(true);
+        Object rawSess = ec.getSession(createSession);
+        if(rawSess == null){
+            return null;
+        }
         if (instanceofPortletSession(rawSess)) {
             return new ProxySession(fc, scope);
         }
@@ -724,11 +731,19 @@ public class EnvUtils {
     }
 
     public static HttpSession getSafePortletScopeSession(FacesContext fc) {
-        return getSafeSession(fc, ProxySession.PORTLET_SCOPE);
+        return getSafeSession(fc, ProxySession.PORTLET_SCOPE, true);
     }
 
     public static HttpSession getSafeApplicationScopeSession(FacesContext fc) {
-        return getSafeSession(fc, ProxySession.APPLICATION_SCOPE);
+        return getSafeSession(fc, ProxySession.APPLICATION_SCOPE, true);
+    }
+
+    public static HttpSession getSafePortletScopeSession(FacesContext fc, boolean createSession) {
+        return getSafeSession(fc, ProxySession.PORTLET_SCOPE, createSession);
+    }
+
+    public static HttpSession getSafeApplicationScopeSession(FacesContext fc, boolean createSession) {
+        return getSafeSession(fc, ProxySession.APPLICATION_SCOPE, createSession);
     }
 
     public static boolean isSecure(FacesContext fc){
