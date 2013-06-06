@@ -67,6 +67,9 @@ public class FileEntryPhaseListener implements PhaseListener {
     public void beforePhase(PhaseEvent phaseEvent) {
         log.fine("FileEntryPhaseListener.beforePhase()  phaseId: " + phaseEvent.getPhaseId());
         if (phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
+            log.finer("FileEntryPhaseListener.beforePhase()\n" +
+                "  ajaxRequest   : " + phaseEvent.getFacesContext().getPartialViewContext().isAjaxRequest() + "\n" +
+                "  partialRequest: " + phaseEvent.getFacesContext().getPartialViewContext().isPartialRequest());
             final Map<String, FacesEvent> clientId2FacesEvent = FileEntry.
                 removeEventsForPreRender(phaseEvent.getFacesContext());
             if (clientId2FacesEvent != null) {
