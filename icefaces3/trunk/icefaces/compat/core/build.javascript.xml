@@ -33,26 +33,10 @@
         <echoproperties/>
         <mkdir dir="${build.res.dir}"/>
         <delete file="${tmp}" failonerror="not"/>
-        <loadfile property="functional.js" srcFile="${lib.dir}/functional.js"/>
-        <loadfile property="oo.js" srcFile="${lib.dir}/oo.js"/>
-        <loadfile property="collection.js" srcFile="${lib.dir}/collection.js"/>
-        <loadfile property="string.js" srcFile="${lib.dir}/string.js"/>
-        <loadfile property="window.js" srcFile="${lib.dir}/window.js"/>
-        <loadfile property="delay.js" srcFile="${lib.dir}/delay.js"/>
-        <loadfile property="http.js" srcFile="${lib.dir}/http.js"/>
-        <loadfile property="event.js" srcFile="${lib.dir}/event.js"/>
         <loadfile property="status.js" srcFile="${src.dir}/status.js"/>
         <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
         <copy file="${src.dir}/compat.js" tofile="${tmp}" overwrite="yes">
             <filterset begintoken="//include " endtoken=".js">
-                <filter token="functional" value="${functional.js}"/>
-                <filter token="oo" value="${oo.js}"/>
-                <filter token="collection" value="${collection.js}"/>
-                <filter token="string" value="${string.js}"/>
-                <filter token="window" value="${window.js}"/>
-                <filter token="delay" value="${delay.js}"/>
-                <filter token="http" value="${http.js}"/>
-                <filter token="event" value="${event.js}"/>
                 <filter token="status" value="${status.js}"/>
                 <filter token="submit" value="${submit.js}"/>
             </filterset>
