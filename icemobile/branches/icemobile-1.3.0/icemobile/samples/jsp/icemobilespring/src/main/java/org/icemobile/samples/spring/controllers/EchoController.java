@@ -25,10 +25,12 @@ import org.icemobile.samples.spring.FlipSwitchBean;
 import org.icemobile.samples.spring.InputTextBean;
 import org.icemobile.samples.spring.ListBean;
 import org.icemobile.samples.spring.MenuButtonBean;
+import org.icemobile.samples.spring.ModelBean;
 import org.icemobile.samples.spring.PanelConfirmationBean;
 import org.icemobile.samples.spring.PanelPopupBean;
 import org.icemobile.samples.spring.TabsetBean;
 import org.icemobile.samples.spring.VideoBean;
+import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,7 +41,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  * General Controller for echoing simple input pages
  */
 @Controller
-@SessionAttributes({"geolocationBean", "carouselBean"})
+@SessionAttributes({"geolocationBean", "carouselBean", "panelConfirmationBean"})
+@ICEmobileResourceStore(bean="icemobileResourceStore")
 public class EchoController extends ICEmobileBaseController{
 
     @RequestMapping(value = "/menu")
@@ -55,16 +58,6 @@ public class EchoController extends ICEmobileBaseController{
     public void doRequest(
         @ModelAttribute("buttonsBean")ButtonsBean model) {
     }
-  /*  public void doRequest(Model model,
-                          @RequestParam(value = "submitB", required = false)
-                          String submitted) {
-        if (submitted != null) {
-            if( submitted.indexOf(",") > -1 ){
-                submitted = submitted.substring(submitted.indexOf(",")+1).trim();
-            }
-            model.addAttribute("pressed", "[" + submitted + "]");
-        }
-    }  */
 
     @RequestMapping(value = "/carousel")
     public void doRequest(
@@ -109,7 +102,7 @@ public class EchoController extends ICEmobileBaseController{
     }
     
     @RequestMapping(value = "/panelconfirmation")
-    public void doRequest(@ModelAttribute("tabsetBean") PanelConfirmationBean model) {
+    public void doRequest(@ModelAttribute("panelConfirmationBean") PanelConfirmationBean model) {
     }
     
     @RequestMapping(value = "/menubutton")
@@ -122,6 +115,11 @@ public class EchoController extends ICEmobileBaseController{
     
     @RequestMapping(value = "/videoplayer")
     public void doRequest(@ModelAttribute("videoBean") VideoBean model) {
+    }
+    
+    @ModelAttribute("panelConfirmationBean")
+    public PanelConfirmationBean createPanelConfirmationBean() {
+        return new PanelConfirmationBean();
     }
 
 }
