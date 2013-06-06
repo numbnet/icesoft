@@ -20,7 +20,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi"%>
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<div class="panelContent">
+<form:form id="panelform" method="POST" modelAttribute="panelPopupBean">
 
 	<mobi:largeView><h3>Panel Popup</h3></mobi:largeView>
 
@@ -32,93 +32,106 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<form:form id="panelform" method="POST">
-		<mobi:fieldsetGroup id="groupOne">
-			<mobi:fieldsetRow style="text-align:center">
-				<input type="button" value="Auto-center"
-					onclick="ice.mobi.panelPopup.openClient('autoCenterPopup');"
-					class="mobi-button mobi-button-important ui-btn-up-c span-2" />
-                <input type="button" value="No Auto-center"
-                    onclick="ice.mobi.panelPopup.openClient('popup');"
-                    class="mobi-button mobi-button-important ui-btn-up-c span-2" />
-			</mobi:fieldsetRow>
-		</mobi:fieldsetGroup>
+	
+	<mobi:fieldsetGroup id="groupOne">
+		<mobi:fieldsetRow style="text-align:center">
+			<input type="button" value="Auto-center"
+				onclick="ice.mobi.panelPopup.openClient('autoCenterPopup');"
+				class="mobi-button mobi-button-important ui-btn-up-c span-2" />
+            <input type="button" value="No Auto-center"
+                onclick="ice.mobi.panelPopup.openClient('popup');"
+                class="mobi-button mobi-button-important ui-btn-up-c span-2" />
+		</mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="results">
+            <label>Selected Command:</label>
+            <span>${panelPopupBean.selectedItem}</span>
+        </mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
+    
+    <mobi:commandButton buttonType='important' styleClass="submit"
+        value="Submit" type="submit" id="submit" style="margin-bottom: 20px"/>
 
-		<mobi:panelPopup id="popup" width="260"
-			headerText="Group of popup items" autoCenter="false"
-			style="${mobiClient.handheldBrowser ? 'top:50px;left:10px' : 'top:50px;left:32%'}">
-			<mobi:outputList inset="false" id="itemList">
-				<mobi:outputListItem group="true">
+	<mobi:panelPopup id="popup" width="260"
+		headerText="Group of popup items" autoCenter="false"
+		style="${mobiClient.handheldBrowser ? 'top:50px;left:10px' : 'top:50px;left:32%'}">
+		<mobi:outputList inset="false" id="itemList">
+			<mobi:outputListItem group="true">
+            Panel Popup Links (select one)
+        </mobi:outputListItem>
+			<mobi:outputListItem>
+				<a onclick="selectItem('System Update');">System Update</a>
+			</mobi:outputListItem>
+			<mobi:outputListItem>
+				<a onclick="selectItem('Status');">Status</a>
+			</mobi:outputListItem>
+			<mobi:outputListItem>
+				<a onclick="selectItem('Battery use');">Battery use</a>
+			</mobi:outputListItem>
+			<mobi:outputListItem>
+				<a onclick="selectItem('Device Information');">Device Information</a>
+			</mobi:outputListItem>
+			<mobi:outputListItem>
+				<a onclick="ice.mobi.panelPopup.closeClient('popup');"> This
+					will be a dismissive link </a>
+			</mobi:outputListItem>
+		</mobi:outputList>
+		<div
+			style="text-align: right; background-color: rgba(255, 255, 255, 0.5)">
+			<input type="button" value="Close"
+				class="mobi-button mobi-button-important ui-btn-up-c"
+				onclick="ice.mobi.panelPopup.closeClient('popup');" />
+		</div>
+	</mobi:panelPopup>
+
+
+	<mobi:panelPopup id="autoCenterPopup" width="260"
+		headerText="Group of popup items" autoCenter="true">
+		<mobi:outputList inset="false" id="itemList">
+			<mobi:outputListItem group="true">
                 Panel Popup Links (select one)
             </mobi:outputListItem>
-				<mobi:outputListItem>
-					<a href="#">System Update</a>
-				</mobi:outputListItem>
-				<mobi:outputListItem>
-					<a href="#">Status</a>
-				</mobi:outputListItem>
-				<mobi:outputListItem>
-					<a href="#">Battery use</a>
-				</mobi:outputListItem>
-				<mobi:outputListItem>
-					<a href="#">Device Information</a>
-				</mobi:outputListItem>
-				<mobi:outputListItem>
-					<a onclick="ice.mobi.panelPopup.closeClient('popup');"> This
-						will be a dismissive link </a>
-				</mobi:outputListItem>
-			</mobi:outputList>
-			<div
-				style="text-align: right; background-color: rgba(255, 255, 255, 0.5)">
-				<input type="button" value="Close"
-					class="mobi-button mobi-button-important ui-btn-up-c"
-					onclick="ice.mobi.panelPopup.closeClient('popup');" />
-			</div>
-		</mobi:panelPopup>
+			<mobi:outputListItem>
+				<a onclick="selectItem('System Update');">System Update</a>
+			</mobi:outputListItem>
+			<mobi:outputListItem>
+				<a onclick="selectItem('Status');">Status</a>
+			</mobi:outputListItem>
+			<mobi:outputListItem>
+				<a onclick="selectItem('Battery use');">Battery use</a>
+			</mobi:outputListItem>
+			<mobi:outputListItem>
+				<a onclick="selectItem('Device Information');">Device Information</a>
+			</mobi:outputListItem>
+			<mobi:outputListItem>
+				<a onclick="ice.mobi.panelPopup.closeClient('autoCenterPopup');">
+					This will be a dismissive link </a>
+			</mobi:outputListItem>
+		</mobi:outputList>
+		<div
+			style="text-align: right; background-color: rgba(255, 255, 255, 0.5)">
+			<input type="button" value="Close"
+				class="mobi-button mobi-button-important ui-btn-up-c"
+				onclick="ice.mobi.panelPopup.closeClient('autoCenterPopup');" />
+		</div>
+	</mobi:panelPopup>
 
+	<mobi:fieldsetGroup styleClass="intro">
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			The panelPopup is a container tag that renders a
+			modal popup panel that hovers on top of a web page. The child
+			elements of the tag are inserted into the popup panel.
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
+    
+    <input type="hidden" name="selectedItem" id="selectedItem" value="${panelPopupBean.selectedItem}"/>
 
-		<mobi:panelPopup id="autoCenterPopup" width="260"
-			headerText="Group of popup items" autoCenter="true">
-			<mobi:outputList inset="false" id="itemList">
-				<mobi:outputListItem group="true">
-                    Panel Popup Links (select one)
-                </mobi:outputListItem>
-				<mobi:outputListItem>
-					<a href="#">System Update</a>
-				</mobi:outputListItem>
-				<mobi:outputListItem>
-					<a href="#">Status</a>
-				</mobi:outputListItem>
-				<mobi:outputListItem>
-					<a href="#">Battery use</a>
-				</mobi:outputListItem>
-				<mobi:outputListItem>
-					<a href="#">Device Information</a>
-				</mobi:outputListItem>
-				<mobi:outputListItem>
-					<a onclick="ice.mobi.panelPopup.closeClient('autoCenterPopup');">
-						This will be a dismissive link </a>
-				</mobi:outputListItem>
-			</mobi:outputList>
-			<div
-				style="text-align: right; background-color: rgba(255, 255, 255, 0.5)">
-				<input type="button" value="Close"
-					class="mobi-button mobi-button-important ui-btn-up-c"
-					onclick="ice.mobi.panelPopup.closeClient('autoCenterPopup');" />
-			</div>
-		</mobi:panelPopup>
-
-		<mobi:fieldsetGroup styleClass="intro">
-			<mobi:fieldsetRow group="true">
-				Description
-			</mobi:fieldsetRow>
-			<mobi:fieldsetRow>
-				The panelPopup is a container tag that renders a
-				modal popup panel that hovers on top of a web page. The child
-				elements of the tag are inserted into the popup panel.
-			</mobi:fieldsetRow>
-		</mobi:fieldsetGroup>
-
-	</form:form>
-
-</div>
+</form:form>
+<script type="text/javascript">
+    MvcUtil.enhanceForm("#panelform");
+    function selectItem(item){
+        document.getElementById('selectedItem').value = item;
+    }
+</script>
