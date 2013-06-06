@@ -49,8 +49,8 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
         /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId);
-        writer.writeAttribute("keyId", pane.getId());
-        writer.writeAttribute("client", pane.isClient());
+ //       writer.writeAttribute("keyId", pane.getId());
+ //       writer.writeAttribute("client", pane.isClient());
         if (pane.getStyleClass()!=null){
             writer.writeAttribute(CLASS_ATTR, pane.getStyleClass());
         }
