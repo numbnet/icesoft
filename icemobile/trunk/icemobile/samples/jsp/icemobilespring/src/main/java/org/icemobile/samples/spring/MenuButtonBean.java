@@ -28,6 +28,9 @@ public class MenuButtonBean {
     private String styleClass;
     private String panelConfirmation;
     private String submitNotification;
+    
+    private String menu1Value = null;
+    private String menu2Value = null;
 
     public String getSelectedValue() {
         return this.selectedValue;
@@ -122,6 +125,22 @@ public class MenuButtonBean {
 
     public void setPanelConfirmationSet(boolean panelConfirmationSet) {
         this.panelConfirmationSet = panelConfirmationSet;
+    }
+
+    public String getMenu1Value() {
+        return menu1Value;
+    }
+
+    public void setMenu1Value(String menu1Value) {
+        this.menu1Value = menu1Value;
+    }
+
+    public String getMenu2Value() {
+        return menu2Value;
+    }
+
+    public void setMenu2Value(String menu2Value) {
+        this.menu2Value = menu2Value;
     }
 
 }
