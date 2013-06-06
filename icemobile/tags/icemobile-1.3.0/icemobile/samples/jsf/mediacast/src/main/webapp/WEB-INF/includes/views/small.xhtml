@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+<mobi:pagePanel xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component" >
+	<f:facet name="header">
+           Mediacast
+       </f:facet>
+	<f:facet name="body">
+		<div style="border-top: 1px solid #999999; z-index: 1;">
+			<mobi:carousel id="recentMediaCarousel" var="mediaMessage"
+				value="#{mediaStore.media}"
+				rendered="#{not empty mediaStore.media}">
+				<h:column>
+					<div style="overflow: hidden; height: 75px;">
+						<h:commandLink id="mediaLink">
+                            <mobi:graphicImage style="border:none;"
+                                width="#{mediaMessage.mediumPhoto.width}"
+                                height="#{mediaMessage.mediumPhoto.height}"
+                                value="#{mediaMessage.mediumPhoto.data}"
+                                rendered="#{not empty mediaMessage.largePhoto}"/>
+                            <mobi:graphicImage style="border:none;"
+                                        width="#{mediaMessage.videoThumbnail.width}"
+                                        height="#{mediaMessage.videoThumbnail.height}"
+                                        value="#{mediaMessage.videoThumbnail.data}"
+                                        rendered="#{not empty mediaMessage.video}"/>
+                            <mobi:graphicImage style="border:none;"
+                                        width="#{mediaHelper.soundIcon.width}"
+                                        height="#{mediaHelper.soundIcon.height}"
+                                        value="#{mediaHelper.soundIcon.data}"
+                                        rendered="#{not empty mediaMessage.audio}"/>
+                            <f:setPropertyActionListener target="#{mediaView.media}"
+                                value="#{mediaMessage}" />
+                            <f:setPropertyActionListener
+                                target="#{mediaView.currentTab}" value="viewer" />
+                        </h:commandLink>
+					</div>
+					
+				</h:column>
+			</mobi:carousel>
+		</div>
+		<mobi:tabSet style="padding-top:0;clear:both;" autoWidth="true"
+			orientation="top" selectedId="#{mediaView.currentTab}" id="tabSet"
+			singleSubmit="true">
+			<mobi:contentPane facelet="false" client="true" id="upload"
+				title="Upload">
+				<h4 style="text-align:center;">Share from your location:</h4>
+				<ui:include src="/WEB-INF/includes/content/message-upload.xhtml" />
+			</mobi:contentPane>
+			<mobi:contentPane facelet="false" client="true" id="feed"
+				title="Feed">
+				<script type="text/javascript">
+					window.scrollTo(0, 0);
+				</script>
+				<ui:include src="/WEB-INF/includes/content/tag-cloud.xhtml" />
+				<ui:include src="/WEB-INF/includes/content/feed.xhtml"/>
+				<ui:include src="/WEB-INF/includes/content/augmented-reality.xhtml" />
+			</mobi:contentPane>
+			<mobi:contentPane facelet="false" client="true" id="viewer"
+				title="Viewer">
+				<ui:include src="/WEB-INF/includes/content/media-viewer.xhtml" />
+			</mobi:contentPane>
+		</mobi:tabSet>
+	</f:facet>
+</mobi:pagePanel>
