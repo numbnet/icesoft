@@ -116,7 +116,7 @@ public class OuterTableCSVExporter extends CSVExporter {
 			if (pe != null) {
 				exportedInnerTables = exportInnerTables(pe, builder, rowBuilder, facesContext, component);
 			}
-			if (!exportedInnerTables || exportRow) {
+			if (!exportedInnerTables && exportRow) {
 				builder.append(rowBuilder.toString());
 				builder.append("\n");
 			}
