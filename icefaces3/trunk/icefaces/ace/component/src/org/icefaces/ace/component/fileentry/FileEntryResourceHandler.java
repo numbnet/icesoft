@@ -63,7 +63,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         ExternalContext externalContext = facesContext.getExternalContext();
         Object requestObject = facesContext.getExternalContext().getRequest();
         HttpServletRequest request = EnvUtils.getSafeRequest(facesContext);
-        Object fileEntryMarker = request.getParameter(FileEntryFormSubmit.FILE_ENTRY_MARKER);  // String "true"
+        Object fileEntryMarker = request.getParameter(FileEntryFormSubmit.FILE_ENTRY_MULTIPART_MARKER);  // String "true"
         log.finest("FileEntryResourceHandler  fileEntryMarker: " + fileEntryMarker +
             "  requireJS: " + EnvUtils.isFileEntryRequireJavascript(facesContext));
         if (fileEntryMarker == null && EnvUtils.isFileEntryRequireJavascript(facesContext)) {
@@ -156,8 +156,11 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
             // render of a partial page ajax update render
             boolean ajaxResponse = false;
             for(String key : parameterListMap.keySet()) {
-                if (key.equals(FileEntryFormSubmit.FILE_ENTRY_MARKER)) ajaxResponse = true;
                 List<String> parameterList = parameterListMap.get(key);
+                if (key.equals(FileEntryFormSubmit.FILE_ENTRY_AJAX_RESPONSE_MARKER)) {
+                    ajaxResponse = true;
+                    log.finest("FileEntryResourceHandler  ajaxResponse: " + parameterList);
+                }
                 String[] values = new String[parameterList.size()];
                 values = parameterList.toArray(values);
                 parameterMap.put(key, values);
@@ -173,12 +176,12 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                 }
                 facesContext.getExternalContext().setRequest(wrapper);
 
-                if (ajaxResponse) {
-                    PartialViewContext pvc = facesContext.getPartialViewContext();
-                    if (pvc instanceof DOMPartialViewContext)
-                        ((DOMPartialViewContext) pvc).setAjaxRequest(true);
-                    pvc.setPartialRequest(true);
+                log.finer("FileEntryResourceHandler  determined partial/ajax request: " + ajaxResponse);
+                PartialViewContext pvc = facesContext.getPartialViewContext();
+                if (pvc instanceof DOMPartialViewContext) {
+                    ((DOMPartialViewContext) pvc).setAjaxRequest(ajaxResponse);
                 }
+                pvc.setPartialRequest(ajaxResponse);
             }
         }
 

@@ -42,8 +42,9 @@ public class FileEntryFormSubmit implements SystemEventListener {
     private static final String ID_SUFFIX = "_captureFileOnsubmit";
     private static final String ENCODED_URL_ID = "ice_fileEntry_encodedURL";
     private static final String ENCODED_URL_NAME = "ice.fileEntry.encodedURL";
-    static final String FILE_ENTRY_MARKER = "ice.fileEntry.ajaxResponse";
-    private static final String AJAX_FORCED_VIEWS = 
+    static final String FILE_ENTRY_MULTIPART_MARKER = "ice.fileEntry.multipart";
+    static final String FILE_ENTRY_AJAX_RESPONSE_MARKER = "ice.fileEntry.ajaxResponse";
+    private static final String AJAX_FORCED_VIEWS =
             ICEFacesContextFactory.AJAX_FORCED_VIEWS;
     private boolean partialStateSaving;
 
@@ -96,7 +97,7 @@ public class FileEntryFormSubmit implements SystemEventListener {
                 String actionURL = context.getApplication().getViewHandler().
                     getActionURL(context, viewId);
                 String prefix = actionURL.contains("?") ? "&" : "?";
-                actionURL = actionURL + prefix + FILE_ENTRY_MARKER + "=true";
+                actionURL = actionURL + prefix + FILE_ENTRY_MULTIPART_MARKER + "=true";
                 ExternalContext externalContext = context.getExternalContext();
                 String encodedPartialActionURL = externalContext.encodePartialActionURL(actionURL);
                 log.finer("RENDER ENCODED_URL  clientId: " + clientId + "  encodedPartialActionURL: " + encodedPartialActionURL);
