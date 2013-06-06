@@ -107,19 +107,29 @@ public class VideoHandler {
 
     public void gotVideo(Intent data) {
 
-	//Need to move file as MediaStore.Video.EXTRA_OUTPUT does not work;
+    // mobi-770. As of the BB10 10.1 update, the Camera Activity no longer
+    // returns an URI for fetching the video, but the raw file name directly.
+    // This could all be avoided if the devices supported setting the EXTRA_OUTPUT parameter,
+    // but the early 2.3.3 phones do not.
 	Uri uri = data.getData();
+    String recordedVideoFilePath;
 	String[] projection = { MediaStore.Video.Media.DATA, MediaStore.Video.Media.SIZE  }; 
-	Cursor cursor = container.managedQuery(uri, projection, null, null, null); 
-	int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA); 
-	int column_index_size = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE); 
-	cursor.moveToFirst(); 
-	String recordedVideoFilePath = cursor.getString(column_index_data);
-	int recordedVideoFileSize = cursor.getInt(column_index_size);
-
+	Cursor cursor = container.managedQuery(uri, projection, null, null, null);
+    if (cursor == null) {
+        String temp = uri.toString();
+        if (!temp.startsWith("file")) {
+            recordedVideoFilePath = "file://" + temp;
+        } else {
+            recordedVideoFilePath = temp;
+        }
+    } else {
+        int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+        cursor.moveToFirst();
+	    recordedVideoFilePath = cursor.getString(column_index_data);
+    }
 	File file = new File(recordedVideoFilePath);
 	file.renameTo(videoFile);
-	int rows = container.getContentResolver().delete(uri,null,null);
+//	int rows = container.getContentResolver().delete(uri,null,null);
 	
 	if (thumbId != null && thumbId.length() > 0 && 
 	    thumbWidth > 0 && thumbHeight > 0) {
