@@ -106,21 +106,19 @@ public class OuterTableCSVExporter extends CSVExporter {
 				RowState rowState = rowStateMap.get(rowData);
 				if (!rowState.isSelected()) exportRow = false;
 			}
-			if (exportRow) {
-				if (!"".equals(rowIndexVar)) {
-					facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
-				}
-				StringBuilder rowBuilder = new StringBuilder();
-				addColumnValues(rowBuilder, columns);
-				boolean exportedInnerTables = false;
-				PanelExpansion pe = table.getPanelExpansion();
-				if (pe != null) {
-					exportedInnerTables = exportInnerTables(pe, builder, rowBuilder, facesContext, component);
-				}
-				if (!exportedInnerTables) {
-					builder.append(rowBuilder.toString());
-					builder.append("\n");
-				}
+			if (!"".equals(rowIndexVar)) {
+				facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
+			}
+			StringBuilder rowBuilder = new StringBuilder();
+			addColumnValues(rowBuilder, columns);
+			boolean exportedInnerTables = false;
+			PanelExpansion pe = table.getPanelExpansion();
+			if (pe != null) {
+				exportedInnerTables = exportInnerTables(pe, builder, rowBuilder, facesContext, component);
+			}
+			if (!exportedInnerTables || exportRow) {
+				builder.append(rowBuilder.toString());
+				builder.append("\n");
 			}
 		}
 
