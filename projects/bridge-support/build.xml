@@ -36,6 +36,7 @@
                 <file name="delay.js"/>
                 <file name="string.js"/>
                 <file name="collection.js"/>
+                <file name="configuration.js"/>
                 <file name="window.js"/>
                 <file name="cookie.js"/>
                 <file name="http.js"/>
