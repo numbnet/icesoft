@@ -43,6 +43,8 @@
     padding: 0.6em 15px;
     text-align: center;
     text-decoration: none;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 a.mobi-button:hover{ text-decoration:none;}
 .mobi-pagePanel-header .mobi-button{
