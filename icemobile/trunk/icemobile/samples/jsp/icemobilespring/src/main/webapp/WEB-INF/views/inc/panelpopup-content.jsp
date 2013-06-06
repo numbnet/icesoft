@@ -27,7 +27,7 @@
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
 			The panelPopup is a container tag that renders a popup panel that 
-			hovers on top of a web page. Click either the "Popup" or "Auto-center Popup" buttons
+			hovers on top of a web page. Click either the "Auto-center" or "No Auto-center" buttons
 			to display a popup.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
@@ -35,12 +35,12 @@
 	<form:form id="panelform" method="POST">
 		<mobi:fieldsetGroup id="groupOne">
 			<mobi:fieldsetRow style="text-align:center">
-				<input type="button" value="Popup"
-					onclick="ice.mobi.panelPopup.openClient('popup');"
-					class="mobi-button mobi-button-important ui-btn-up-c span-2" />
-				<input type="button" value="Auto-center Popup"
+				<input type="button" value="Auto-center"
 					onclick="ice.mobi.panelPopup.openClient('autoCenterPopup');"
 					class="mobi-button mobi-button-important ui-btn-up-c span-2" />
+                <input type="button" value="No Auto-center"
+                    onclick="ice.mobi.panelPopup.openClient('popup');"
+                    class="mobi-button mobi-button-important ui-btn-up-c span-2" />
 			</mobi:fieldsetRow>
 		</mobi:fieldsetGroup>
 
