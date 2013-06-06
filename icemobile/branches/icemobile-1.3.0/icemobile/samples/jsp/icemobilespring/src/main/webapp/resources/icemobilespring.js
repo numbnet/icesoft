@@ -49,11 +49,28 @@ MvcUtil.enhanceForm = function(theForm)  {
     //submitting the form will update 
     //the containing div with class ajaxzone
     $(document).ready(function () {
+        $(theForm).click(function (e) {
+            window.iceButtonTracker = e.target;
+        });
         $(theForm).submit(function () {
             var updateRegion = $(this).closest("div.ajaxzone");
             if (window.ice && ice.upload) {
                 window.ice.handleResponse = function (data) {
+                    var tracker = document
+                            .getElementById("iceButtonTrackerHidden");
+                    if (tracker) {
+                        tracker.parentNode.removeChild(tracker);
+                    }
                     updateRegion.html(unescape(data));
+                }
+                if (window.iceButtonTracker) {
+                    $('<input>').attr({
+                        type:'hidden',
+                        id:'iceButtonTrackerHidden',
+                        name:window.iceButtonTracker.name,
+                        value:window.iceButtonTracker.value
+                    }).appendTo($(this));
+                    window.iceButtonTracker = null;
                 }
                 ice.upload($(this).attr("id"));
                 return false;
