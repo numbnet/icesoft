@@ -24,14 +24,16 @@ if (!window.ice) {
 if (!window.ice.compat) {
     (function(namespace) {
         namespace.compat = true;
-        //include functional.js
-        //include oo.js
-        //include collection.js
-        //include string.js
-        //include window.js
-        //include delay.js
-        //include http.js
-        //include event.js
+
+        ice.evaluate(ice.importFrom('ice.lib.functional'));
+        ice.evaluate(ice.importFrom('ice.lib.oo'));
+        ice.evaluate(ice.importFrom('ice.lib.collection'));
+        ice.evaluate(ice.importFrom('ice.lib.string'));
+        ice.evaluate(ice.importFrom('ice.lib.delay'));
+        ice.evaluate(ice.importFrom('ice.lib.window'));
+        ice.evaluate(ice.importFrom('ice.lib.event'));
+        ice.evaluate(ice.importFrom('ice.lib.logger'));
+        ice.evaluate(ice.importFrom('ice.lib.query'));
 
         function findBridgeContainer(element) {
             while (element) {
