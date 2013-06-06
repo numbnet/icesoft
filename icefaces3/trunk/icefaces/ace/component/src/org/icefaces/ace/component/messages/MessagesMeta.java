@@ -38,8 +38,8 @@ import org.icefaces.resources.ICEResourceLibrary;
                 "If redisplay is true, a message is always rendered; " +
                 "if redisplay is false, a message is rendered only if it was undisplayed before. " +
                 "Styling is done by predefined jQuery classes in theme stylesheets:<ul>" +
-                "<li>Info: ui-icon-notice w/ ui-state-highlight css</li>" +
-                "<li>Warn: ui-icon-info w/ ui-state-highlight css</li>" +
+                "<li>Info: ui-icon-info w/ ui-state-highlight css</li>" +
+                "<li>Warn: ui-icon-notice w/ ui-state-highlight css</li>" +
                 "<li>Error: ui-icon-alert w/ ui-state-error css</li>" +
                 "<li>Fatal: ui-icon-alert w/ ui-state-error css</li>" +
                 "</ul>"
