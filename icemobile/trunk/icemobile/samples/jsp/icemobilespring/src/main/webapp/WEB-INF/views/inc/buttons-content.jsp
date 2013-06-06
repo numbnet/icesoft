@@ -34,40 +34,75 @@
     <h3>Button Types</h3>
     <mobi:fieldsetGroup style="text-align:center">
         <mobi:fieldsetRow>
-            <mobi:commandButton value="Default" styleClass="span-2" />
-            <mobi:commandButton value="Unimportant"
+            <mobi:commandButton id="default" value="Default"
+                styleClass="span-2"/>
+            <mobi:commandButton id="unimportant" value="Unimportant"
                 buttonType="unimportant" styleClass="span-2"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <mobi:commandButton value="Attention" buttonType="attention" styleClass="span-2"/>
-            <mobi:commandButton value="Important" buttonType="important" styleClass="span-2"/>
+            <mobi:commandButton id="attention" value="Attention" 
+                buttonType="attention" styleClass="span-2"/>
+            <mobi:commandButton id="important" value="Important" 
+                buttonType="important" styleClass="span-2"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <mobi:commandButton buttonType="back" value="Back"
-                styleClass="back"
-            />
+            <mobi:commandButton id="back" value="Back"
+                buttonType="back" styleClass="back"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <mobi:commandButton id="disabledDefault" value="Disabled"
-                disabled="true" 
-            />
+            <mobi:commandButton id="disabled" value="Disabled"
+                disabled="true" />
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-               <mobi:commandButtonGroup id="group1"
-                                         name="selectedId"
-                                         selectedId="${buttonsBean.selectedId}"
-                                         orientation="horizontal"
-                                         style="width:80%;margin:0 auto;">
-                    <mobi:commandButton value="Yes" id="button1"
-                             type="button" style="width:33%"/>
-                    <mobi:commandButton value="No"
-                            type="button"  id="button2" style="width:33%"/>
-                    <mobi:commandButton value="Please"
-                            type="button" id="button3" style="width:33%"/>
-                </mobi:commandButtonGroup>
+        <mobi:fieldsetRow styleClass="results">
+            <label>Selected:</label>
+            <span>${buttonsBean.selectedType}</span>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
-
+    
+    <h3>Vertical Button List</h3>
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            <mobi:commandButtonGroup id="verticalGroup"
+                                     name="selectedVertical"
+                                     selectedId="${buttonsBean.selectedVertical}"
+                                     orientation="vertical"
+                                     style="width:80%;margin:0 auto;">
+                <mobi:commandButton value="Yes" 
+                         type="button" id="yes"/>
+                <mobi:commandButton value="No"
+                        type="button"  id="no"/>
+                <mobi:commandButton value="Please"
+                        type="button" id="please"/>
+            </mobi:commandButtonGroup>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="results">
+            <label>Selected:</label>
+            <span>${buttonsBean.selectedVertical}</span>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+        
+    <h3>Horizontal button list</h3>
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            <mobi:commandButtonGroup id="horizontalGroup"
+                                     name="selectedHorizontal"
+                                     selectedId="${buttonsBean.selectedHorizontal}"
+                                     orientation="horizontal"
+                                     style="width:80%;margin:0 auto;">
+                <mobi:commandButton value="Yes" id="yes"
+                         type="button" style="width:33%"/>
+                <mobi:commandButton value="No"
+                        type="button"  id="no" style="width:33%"/>
+                <mobi:commandButton value="Please"
+                        type="button" id="please" style="width:33%"/>
+            </mobi:commandButtonGroup>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="results">
+            <label>Selected:</label>
+            <span>${buttonsBean.selectedHorizontal}</span>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+        
     <mobi:fieldsetGroup>
     	<mobi:fieldsetRow group="true">
     		Description
@@ -80,7 +115,7 @@
 </form:form>
 <script type="text/javascript">
     MvcUtil.enhanceForm("#buttonsform");
-    mobi.userAjaxRequest = function( options){
+    ice.mobi.userAjaxRequest = function( options){
         if (options.jspForm){
             $(options.jspForm).submit();
         }

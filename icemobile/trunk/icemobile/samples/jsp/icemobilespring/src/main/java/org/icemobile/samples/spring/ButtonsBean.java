@@ -27,18 +27,37 @@ import java.lang.String;
  */
 @SessionAttributes("buttonsBean")
 public class ButtonsBean {
-    private String selectedId = "button2";
+    private String selectedHorizontal = null;
+    private String selectedVertical = null;
+    private String selectedType = null;
 
     @ModelAttribute("buttonsBean")
     public ButtonsBean createBean() {
         return new ButtonsBean();
     }
 
-    public String getSelectedId() {
-        return selectedId;
+    public String getSelectedHorizontal() {
+        return selectedHorizontal;
     }
 
-    public void setSelectedId(String selectedId1) {
-        this.selectedId = selectedId1;
+    public void setSelectedHorizontal(String selectedHorizontal) {
+        this.selectedHorizontal = selectedHorizontal;
     }
+
+    public String getSelectedVertical() {
+        return selectedVertical;
+    }
+
+    public void setSelectedVertical(String selectedVertical) {
+        this.selectedVertical = selectedVertical;
+    }
+
+    public String getSelectedType() {
+        return selectedType;
+    }
+
+    public void setSelectedType(String selectedType) {
+        this.selectedType = selectedType;
+    }
+
 }
