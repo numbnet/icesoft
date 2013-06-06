@@ -19,5 +19,33 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 @SessionAttributes("panelConfirmationBean")
 public class PanelConfirmationBean {
+    
+    private int count = 0;
+    private boolean execute = false;
+    
+    public PanelConfirmationBean(){
+        System.out.println("panelConfirmationBean ctor");
+        
+    }
+
+    public int getCount() {
+        return count;
+    }
+    
+    public void incrementCount(){
+        count++;
+    }
+    
+    public void setExecute(boolean val){
+        System.out.println("setExecute() " + val);
+        if( val ){
+            incrementCount();
+        }
+        execute = val;
+    }
+    
+    public boolean getExecute(){
+        return execute;
+    }
 
 }

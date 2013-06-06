@@ -20,26 +20,30 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi"%>
 <%@ taglib prefix="push"
     uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<form id="panelconfirmation">
+<form:form id="panelconfirmation" method="POST" modelAttribute="panelConfirmationBean">
 
     <h3>Panel Confirmation</h3>
     
     <mobi:fieldsetGroup styleClass="intro">
         <mobi:fieldsetRow>
-            The panelConfirmation component will be dipsplayed when the
+            The panelConfirmation component will be displayed when the
             execute button is pressed. The user then has the choice to
             veto execution or let it proceed.
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow style="text-align:center">
                 <mobi:commandButton value="Open the confirmation panel" 
                          type="button"
                          id="pcButton"
                          panelConfirmation="panelConfirmation"
                          buttonType="important"/>
                          
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="results">
+            <label>Execution count:</label>
+            <span>${panelConfirmationBean.count}</span>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
@@ -49,5 +53,16 @@
             type="both"
             acceptLabel="Yes"
             cancelLabel="Cancel"/>
+            
+     <input type="hidden" id="execute" name="execute" value="${panelConfirmationBean.execute}"/>
                 
-</form>
+</form:form>
+<script type="text/javascript">
+    MvcUtil.enhanceForm("#panelconfirmation");
+    ice.mobi.userAjaxRequest = function( options){
+        if (options.jspForm){
+            document.getElementById('execute').value = 'true';
+            $(options.jspForm).submit();
+        }
+    };
+</script>
