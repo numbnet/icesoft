@@ -116,5 +116,8 @@ public class CommandButtonMeta extends UICommandMeta {
     @Field
     private StringBuilder jsCall;
 
+    @Field
+    private String name;
+
 
 }
