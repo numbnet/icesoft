@@ -429,13 +429,15 @@ ice.ace.ContextMenu = function(id, cfg) {
 				_this.css('list-style-type', 'none');
 				var _item = _this.parents('li:first');
 				var offset = _item.offset();
-				if (_self.cfg.directionX == 'auto') {
-					if (ice.ace.ContextMenu.shouldDisplayLeft(offset.left, _this.width(), _item.width())) _collision = 'flip ';
-					else _collision = 'none ';
-				}
-				if (_self.cfg.directionY == 'auto') {
-					if (ice.ace.ContextMenu.shouldDisplayAbove(offset.top, _this.height())) _collision += 'flip';
-					else _collision += 'none';
+				if (offset) {
+					if (_self.cfg.directionX == 'auto') {
+						if (ice.ace.ContextMenu.shouldDisplayLeft(offset.left, _this.width(), _item.width())) _collision = 'flip ';
+						else _collision = 'none ';
+					}
+					if (_self.cfg.directionY == 'auto') {
+						if (ice.ace.ContextMenu.shouldDisplayAbove(offset.top, _this.height())) _collision += 'flip';
+						else _collision += 'none';
+					}
 				}
 				_this.position({
 					my: _my,
