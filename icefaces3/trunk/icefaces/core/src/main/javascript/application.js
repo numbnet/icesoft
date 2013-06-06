@@ -199,18 +199,18 @@ if (!window.ice.icefaces) {
             return viewID + '-single-submit';
         }
 
-        ice.evaluate(ice.importFrom('ice.lib.functional'));
-        ice.evaluate(ice.importFrom('ice.lib.oo'));
-        ice.evaluate(ice.importFrom('ice.lib.collection'));
-        ice.evaluate(ice.importFrom('ice.lib.hashtable'));
-        ice.evaluate(ice.importFrom('ice.lib.string'));
-        ice.evaluate(ice.importFrom('ice.lib.delay'));
-        ice.evaluate(ice.importFrom('ice.lib.window'));
-        ice.evaluate(ice.importFrom('ice.lib.event'));
-        ice.evaluate(ice.importFrom('ice.lib.element'));
-        ice.evaluate(ice.importFrom('ice.lib.logger'));
-        ice.evaluate(ice.importFrom('ice.lib.query'));
-        ice.evaluate(ice.importFrom('ice.lib.http'));
+        eval(ice.importFrom('ice.lib.functional'));
+        eval(ice.importFrom('ice.lib.oo'));
+        eval(ice.importFrom('ice.lib.collection'));
+        eval(ice.importFrom('ice.lib.hashtable'));
+        eval(ice.importFrom('ice.lib.string'));
+        eval(ice.importFrom('ice.lib.delay'));
+        eval(ice.importFrom('ice.lib.window'));
+        eval(ice.importFrom('ice.lib.event'));
+        eval(ice.importFrom('ice.lib.element'));
+        eval(ice.importFrom('ice.lib.logger'));
+        eval(ice.importFrom('ice.lib.query'));
+        eval(ice.importFrom('ice.lib.http'));
 
         namespace.onLoad = curry(onLoad, window);
         namespace.onUnload = curry(onUnload, window);
