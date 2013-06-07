@@ -23,7 +23,7 @@ public interface IGetEnhanced extends IMobiComponent{
     public static final String DOWNLOAD = "Download ICEmobile";
     public static final String ENABLE = "Enable ICEmobile";
     public static final String IOS_LINK = "http://itunes.apple.com/us/app/icemobile-sx/id485908934?mt=8";
-    public static final String ANDROID_LINK = "https://play.google.com/store/apps/details?id=org.icemobile.client.android";
+    public static final String ANDROID_LINK = "https://play.google.com/store/apps/developer?id=ICEsoft+Technologies";
     public static final String BLACKBERRY_LINK = "http://appworld.blackberry.com/webstore/content/59555/";
     public static final String ICEMOBILE_LINK = "http://www.icesoft.org/projects/ICEmobile/containers.jsf";
 
