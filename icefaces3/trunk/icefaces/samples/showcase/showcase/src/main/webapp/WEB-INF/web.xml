@@ -78,7 +78,7 @@
 	<context-param>
         <description>Resource Coalescing will automatically combine required resources for the initial page load into single .css and .js files</description>
         <param-name>org.icefaces.coalesceResources</param-name>
-        <param-value>false</param-value>
+        <param-value>true</param-value>
   </context-param>
 
 	
