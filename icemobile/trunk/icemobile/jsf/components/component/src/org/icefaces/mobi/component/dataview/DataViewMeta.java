@@ -5,8 +5,8 @@ import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.mobi.utils.TLDConstants;
-import org.icefaces.resources.ICEResourceDependencies;
-import org.icefaces.resources.ICEResourceDependency;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 /**
  * Copyright 2010-2013 ICEsoft Technologies Canada Corp.
