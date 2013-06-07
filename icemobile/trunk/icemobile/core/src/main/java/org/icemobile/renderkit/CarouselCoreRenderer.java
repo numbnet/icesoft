@@ -16,6 +16,7 @@
 
 package org.icemobile.renderkit;
 
+import org.icemobile.component.IButton;
 import org.icemobile.util.Constants;
 import org.icemobile.component.ICarousel;
 import org.icemobile.util.ClientDescriptor;
@@ -71,11 +72,11 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
         writer.startElement(DIV_ELEM, carousel);
         writer.writeAttribute(ID_ATTR, clientId+"_dots");
         Object prevLabel = carousel.getPreviousLabel();
-        if (prevLabel !=null){
+        if (prevLabel !=null && !prevLabel.toString().equals("null") && prevLabel.toString().length()>0){
             renderPagination( carousel, writer, String.valueOf(prevLabel),clientId, "prev" );
         }
         Object nextLabel = carousel.getNextLabel();
-        if (nextLabel !=null ){
+        if (nextLabel !=null && !nextLabel.toString().equals("null") && nextLabel.toString().length()>0){
             renderPagination(carousel, writer, String.valueOf(nextLabel),clientId, "next" );
         }
         writer.startElement(DIV_ELEM, carousel);
@@ -115,12 +116,17 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
         ClientDescriptor cd = carousel.getClient();
         String eventStr = isTouchEventEnabled(cd) ?
                 Constants.TOUCH_START_EVENT : Constants.CLICK_EVENT;
-        writer.startElement(DIV_ELEM, carousel);
+        writer.startElement(INPUT_ELEM, carousel);
+        writer.writeAttribute(TYPE_ATTR, "button");
+        writer.writeAttribute(CLASS_ATTR, IButton.BUTTON_DEFAULT);
+        if (ind.equals("next")){
+            writer.writeAttribute(STYLE_ATTR, "float: right;");
+        }
         writer.writeAttribute(ID_ATTR, id+"_"+ind);
         StringBuilder prevBuilder = new StringBuilder(call).append(id).append("', '").append(ind).append("'); return false");
         writer.writeAttribute(eventStr, prevBuilder.toString());
-        writer.writeText(value);
-        writer.endElement(DIV_ELEM);
+        writer.writeAttribute(VALUE_ATTR, value);
+        writer.endElement(INPUT_ELEM);
     }
     public void encodeIScrollLib(ICarousel carousel, IResponseWriter writer)
             throws IOException{
