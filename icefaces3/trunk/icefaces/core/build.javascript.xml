@@ -65,11 +65,11 @@
 
     <target name="build.bridge.compressed" depends="prepare">
         <echo message="Compressing Javascript code..."/>
-        <java jar="../lib/yui-compressor.jar" fork="yes">
-            <arg line="--preserve-semi"/>
-            <arg value="-o"/>
-            <arg value="${build.dir}/bridge.js"/>
+        <java jar="../lib/shrinksafe.jar" fork="true" output="${build.dir}/bridge.js">
             <arg value="${tmp}"/>
+            <classpath>
+                <pathelement location="../lib/js.jar"/>
+            </classpath>
         </java>
     </target>
 
