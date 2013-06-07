@@ -42,7 +42,7 @@
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
 			<mobi:thumbnail for="video" />
-			<mobi:camcorder id="video" style="float:right" />
+			<mobi:camcorder id="video" style="float:right" />&nbsp;
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 

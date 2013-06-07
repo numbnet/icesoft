@@ -35,7 +35,7 @@
 	</mobi:fieldsetGroup>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow>
+		<mobi:fieldsetRow style="text-align:center">
 			<mobi:fetchContact id="rawContact" buttonLabel="Fetch Contact"
 				fields="name, phone, email" />
 		</mobi:fieldsetRow>
