@@ -887,6 +887,26 @@
              <rtexprvalue>true</rtexprvalue>
          </attribute>
          <attribute>
+             <description>Text that denotes use of a button that will page forward
+                 through the carousel to the Next item.</description>
+             <name>nextLabel</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
+             <description>Text that denotes use of a button that will page backward
+                 through the carousel to the Previous item.</description>
+             <name>previousLabel</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
+            <description>Disables or enables the carousel.</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
             <description>Index of selected tab (0 to collection.size-1)
             </description>
             <name>selectedItem</name>
