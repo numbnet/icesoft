@@ -514,7 +514,7 @@ public class DataViewRenderer extends Renderer {
         Integer index = dataView.getActiveRowIndex();
         String var = dataView.getVar();
         ActivationMode activeMode = dataView.getActivationMode();
-        boolean active = ActivationMode.client.equals(activeMode) || (ActivationMode.server.equals(activeMode) && index != null && index > 0);
+        boolean active = ActivationMode.client.equals(activeMode) || (ActivationMode.server.equals(activeMode) && index != null && index >= 0);
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         if (index != null) {
