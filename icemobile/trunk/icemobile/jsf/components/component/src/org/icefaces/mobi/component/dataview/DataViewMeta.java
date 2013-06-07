@@ -5,9 +5,8 @@ import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.mobi.utils.TLDConstants;
-
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 /**
  * Copyright 2010-2013 ICEsoft Technologies Canada Corp.
@@ -88,7 +87,7 @@ public class DataViewMeta extends UIComponentBaseMeta {
                       "When set to 'client' an activation 'renders' the detail region by updating, entirely on the client, " +
                       "an existing rendering with the dynamic attributes unique to an iterative rendering. The components " +
                       "and attributes supported for client encoding are limited, though growing with new releases and user desire." +
-                      "Specifics can be found on our wiki at: ")
+                      "Specifics can be found on our wiki at: http://www.icesoft.org/wiki/display/icemobile/DataView")
     ActivationMode activationMode;
 
     @Property(defaultValue = "false",
