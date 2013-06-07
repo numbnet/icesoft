@@ -31,7 +31,8 @@
         <mobi:fieldsetRow style="text-align:center">
             <mobi:menuButton id="mnuBtn1"
                              name="menu1Value"
-                             buttonLabel="Menu Button">
+                             buttonLabel="Menu Button"
+                             selectTitle="Select an item">
                 <mobi:menuButtonItem id="create"
                         label="Create Record"
                         value="create"/>
