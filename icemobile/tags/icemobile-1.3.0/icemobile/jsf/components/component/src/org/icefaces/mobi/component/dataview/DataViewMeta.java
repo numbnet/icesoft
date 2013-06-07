@@ -88,7 +88,7 @@ public class DataViewMeta extends UIComponentBaseMeta {
                       "When set to 'client' an activation 'renders' the detail region by updating, entirely on the client, " +
                       "an existing rendering with the dynamic attributes unique to an iterative rendering. The components " +
                       "and attributes supported for client encoding are limited, though growing with new releases and user desire." +
-                      "Specifics can be found on our wiki at: ")
+                      "Specifics can be found on our wiki at: http://www.icesoft.org/wiki/display/icemobile/DataView")
     ActivationMode activationMode;
 
     @Property(defaultValue = "false",
