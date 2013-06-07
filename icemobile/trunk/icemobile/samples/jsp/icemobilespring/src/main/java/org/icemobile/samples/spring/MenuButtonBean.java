@@ -132,7 +132,7 @@ public class MenuButtonBean {
     }
 
     public void setMenu1Value(String menu1Value) {
-        this.menu1Value = menu1Value;
+        this.menu1Value = Utils.cleanParam(menu1Value);
     }
 
     public String getMenu2Value() {
@@ -140,7 +140,7 @@ public class MenuButtonBean {
     }
 
     public void setMenu2Value(String menu2Value) {
-        this.menu2Value = menu2Value;
+        this.menu2Value = Utils.cleanParam(menu2Value);
     }
 
 }
