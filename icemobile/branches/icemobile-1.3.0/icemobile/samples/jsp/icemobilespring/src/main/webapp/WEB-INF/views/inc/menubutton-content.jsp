@@ -32,7 +32,8 @@
             <mobi:menuButton id="mnuBtn1"
                              name="menu1Value"
                              buttonLabel="Menu Button"
-                             selectTitle="Select an item">
+                             selectTitle="Select an item"
+                             selectedValue="${menuButtonBean.menu1Value}">
                 <mobi:menuButtonItem id="create"
                         label="Create Record"
                         value="create"/>
@@ -54,7 +55,8 @@
         <mobi:fieldsetRow style="text-align:center">
            <mobi:menuButton id="menuBtnGroup" name="menu2Value"
                         buttonLabel="Menu Button Group"
-                        selectTitle="Select an item">
+                        selectTitle="Select an item" 
+                        selectedValue="${menuButtonBean.menu2Value}">
                <mobi:menuButtonGroup label="Menu Group A" >
                    <mobi:menuButtonItem id="itemA1" label="Item A1" value="A1"/>
                    <mobi:menuButtonItem id="itemA2" label="Item A2" value="A2"/>
