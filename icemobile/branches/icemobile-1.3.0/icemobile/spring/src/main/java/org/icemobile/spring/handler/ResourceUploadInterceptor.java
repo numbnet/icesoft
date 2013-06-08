@@ -75,7 +75,7 @@ public class ResourceUploadInterceptor extends HandlerInterceptorAdapter{
             HandlerMethod handlerMethod = (HandlerMethod)handler;
             Class beanClass = handlerMethod.getBean().getClass();
             ResourceStore store = storeLocator.getStore(beanClass, request);
-            LOG.info("beanClass: " + beanClass.getName() + ", store: " + store);
+            LOG.debug("beanClass: " + beanClass.getName() + ", store: " + store);
             if( store != null ){
                 processUploads(request, store);
             }
