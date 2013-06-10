@@ -426,7 +426,7 @@ ice.ace.ComboBox.prototype = {
 				}
 				var widthX=$box.position().left+$box.width();
 				var heightX=$box.position().top+$box.height()+parseFloat(this.height)+10;
-				if ( (posx>$box.position().left && posx<=widthX) && (posy>$box.position().top && posy<heightX) ) {
+				if ( this.active && (posx>$box.position().left && posx<=widthX) && (posy>$box.position().top && posy<heightX) ) {
 					var self = this;
 					this.ieScrollbarFixObserver = setTimeout(function(){self.element.focus();}, 200);
 					return;

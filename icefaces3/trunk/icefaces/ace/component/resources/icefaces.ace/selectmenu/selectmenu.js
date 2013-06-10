@@ -491,7 +491,7 @@ ice.ace.SelectMenu.prototype = {
 				}
 				var widthX=element.position().left+element.width();
 				var heightX=element.position().top+element.height()+parseFloat(this.height)+10;
-				if ( (posx>element.position().left && posx<=widthX) && (posy>element.position().top && posy<heightX) ) {
+				if ( this.active && (posx>element.position().left && posx<=widthX) && (posy>element.position().top && posy<heightX) ) {
 					var self = this;
 					this.ieScrollbarFixObserver = setTimeout(function(){self.element.focus();}, 200);
 					return;
