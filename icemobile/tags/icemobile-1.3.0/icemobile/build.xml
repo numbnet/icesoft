@@ -1,0 +1,289 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<project name="icemobile" default="build.all" xmlns:ice="urn:ICEsoft" >
+
+    <property file="build.properties"/>
+
+    <property name="build.dir" location="build"/>
+    <property name="dist.dir" location="dist"/>
+    <property name="docs.jsf.dir" location="docs/jsf"/>
+    <property name="docs.jsp.dir" location="docs/jsp"/>
+
+    <condition property="release.type.suffix" value="-${release.type}" else="">
+        <not>
+            <equals arg1="${release.type}" arg2="" trim="true"/>
+        </not>
+    </condition>
+    <property name="bundle.name"
+              value="${product}-${version.primary}.${version.secondary}.${version.tertiary}${release.type.suffix}"/>
+
+    <property name="bin.bundle.name" value="${bundle.name}-bin"/>
+    <property name="bin.bundle.prefix" value="${bin.bundle.name}/${bundle.dir.name}"/>
+    <property name="bin.bundle.file"
+              location="${dist.dir}/${bin.bundle.name}.zip"/>
+
+    <property name="src.bundle.name" value="${bundle.name}-src"/>
+    <property name="src.bundle.prefix" value="${src.bundle.name}/${bundle.dir.name}"/>
+    <property name="src.bundle.file"
+              location="${dist.dir}/${src.bundle.name}.zip"/>
+
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+    <property name="compile.debug" value="true"/>
+
+    <condition property="jsf.implementation" value="myfaces" else="mojarra">
+        <isset property="myfaces"/>
+    </condition>
+
+    <propertyset id="product.info">
+        <propertyref name="company"/>
+        <propertyref name="product"/>
+        <propertyref name="version.primary"/>
+        <propertyref name="version.secondary"/>
+        <propertyref name="version.tertiary"/>
+        <propertyref name="release.type"/>
+        <propertyref name="build.number"/>
+        <propertyref name="revision"/>
+    </propertyset>
+
+    <presetdef name="ant" uri="urn:ICEsoft">
+        <ant inheritall="false"/>
+    </presetdef>
+
+    <presetdef name="subant" uri="urn:ICEsoft">
+        <subant inheritall="false" failonerror="true" verbose="true">
+            <property name="jsf.implementation" value="${jsf.implementation}"/>
+        </subant>
+    </presetdef>
+
+    <presetdef name="zip" uri="urn:ICEsoft">
+        <zip duplicate="fail" whenempty="fail"/>
+    </presetdef>
+
+    <target name="build.all" description="Build ICEmobile project and samples.">
+        <ice:subant target="all">
+            <fileset dir="./core" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
+            <fileset dir="./jsp" includes="build.xml" />
+        </ice:subant>
+    	<ice:subant target="all">
+            <fileset dir="./spring" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
+            <fileset dir="./jsf" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
+            <fileset dir="./samples" includes="build.xml" />
+        </ice:subant>
+    </target>
+	
+	<target name="build.libs" description="Build ICEmobile project libraries.">
+	        <ice:subant target="all">
+	            <fileset dir="./core" includes="build.xml" />
+	        </ice:subant>
+	        <ice:subant target="all">
+	            <fileset dir="./jsp" includes="build.xml" />
+	        </ice:subant>
+	        <ice:subant target="all">
+	            <fileset dir="./spring" includes="build.xml" />
+	        </ice:subant>
+	        <ice:subant target="all">
+	            <fileset dir="./jsf" includes="build.xml" />
+	        </ice:subant>
+	    </target>
+
+    <target name="build.bin" >
+        <build.bin.bundle />
+    </target>
+
+   
+    <target name="build.jsp" description="Build JSP library.">
+        <ice:subant target="all">
+            <filelist dir="." files="core, jsp"/>
+        </ice:subant>
+    </target>
+
+    <target name="build.jsf" description="Build JSF library.">
+        <ice:subant target="all">
+            <filelist dir="." files="core, jsf"/>
+        </ice:subant>
+    </target>
+    
+
+
+    <target name="zip.src">
+        <zip.src />
+    </target>
+	
+	<target name="clean.build.all" depends="clean,build.all"/>
+
+    <target name="build.bin.bundle" depends="build.bin, clean.bin"
+            description="Creates ICEmobile binary bundle.">
+        <zip.bin.bundle/>
+    </target>
+
+    <target name="build.common">
+        <ice:subant>
+            <filelist dir="." files="core, jsf, samples"/>
+        </ice:subant>
+    </target>
+
+    <target name="build.src.bundle" description="Creates ICEmobile source bundle.">
+        <touch file="${src.bundle.file}" mkdirs="true"/>
+        <delete file="${src.bundle.file}"/>
+
+        <ice:zip destfile="${src.bundle.file}">
+            <zipfileset dir="." excludes="dist/" prefix="${src.bundle.prefix}"/>
+        </ice:zip>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <delete dir="${docs.jsf.dir}"/>
+    	<delete dir="${docs.jsp.dir}"/>
+    	<delete dir=".sass-cache"/>
+        <ice:subant target="clean">
+            <filelist dir="." files="core, jsf, jsp, spring, samples, resources"/>
+        </ice:subant>
+    </target>
+
+    <target name="clean.bin">
+        <ice:subant target="clean">
+            <filelist dir="." files="core, jsf, jsp, spring, samples"/>
+        </ice:subant>
+    </target>
+
+    <macrodef name="zip.bin.bundle" >
+        <attribute name="path" default="."/>
+        <attribute name="bundle.file" default="${bin.bundle.file}"/>
+        <attribute name="zip.bundle.prefix" default="${bin.bundle.prefix}"/>
+        <element name="add.zip.elements" optional="true"/>
+
+        <sequential>
+
+            <touch file="@{bundle.file}" mkdirs="true"/>
+            <delete file="@{bundle.file}"/>
+
+            <ice:zip destfile="@{bundle.file}" update="true">
+
+                <!-- trim any source or binaries used to build the components  -->
+                <zipfileset dir="." prefix="${bin.bundle.prefix}"  >
+                    <exclude name="dist/"/>
+                    <exclude name="client/"/>
+                    <exclude name="jsf/"/>
+                    <exclude name="jsp/"/>
+                	<exclude name="spring/"/>
+                    <exclude name="lib/generator/"/>
+                    <!-- trim component build script for binary bundle -->
+                    <exclude name="build.xml" />
+                </zipfileset>
+
+                <add.zip.elements/>
+            </ice:zip>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="zip.src">
+        <attribute name="path" default="."/>
+        <attribute name="zip.bundle.prefix" default="${bin.bundle.prefix}"/>
+        <attribute name="bundle.file" default="${bin.bundle.file}"/>
+
+        <sequential>
+            <touch file="@{bundle.file}" mkdirs="true"/>
+            <delete file="@{bundle.file}"/>
+
+            <ice:zip destfile="@{bundle.file}">
+                <zipfileset dir="@{path}" includes=""
+                            excludes="dist/"
+                            prefix="@{zip.bundle.prefix}"/>
+            </ice:zip>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="build.bin.bundle">
+        <attribute name="path" default="."/>
+        <element name="add.ant.elements" optional="true"/>
+
+        <sequential>
+
+            <ice:subant target="all">
+                <fileset dir="./core" includes="build.xml" />
+                <propertyset refid="product.info"/>
+            </ice:subant>
+            <ice:subant target="build">
+                <fileset dir="./jsf" includes="build.xml" />
+                <propertyset refid="product.info"/>
+            </ice:subant>
+            <ice:subant target="all">
+                <fileset dir="./jsp" includes="build.xml" />
+                <propertyset refid="product.info"/>
+            </ice:subant>
+        	<ice:subant target="all">
+	            <fileset dir="./spring" includes="build.xml" />
+	        </ice:subant>
+            <ice:subant target="all">
+                <fileset dir="./samples" includes="build.xml" />
+                <propertyset refid="product.info"/>
+            </ice:subant>
+
+            <add.ant.elements/>
+         
+            <!-- Create the JSF component JavaDocs and TLD documentation -->
+            <subant target="docs" failonerror="true" verbose="true">
+                <fileset dir="./jsf" includes="build.xml"/>
+                <property name="jsf.implementation" value="${jsf.implementation}"/>
+            </subant> 
+            <!-- copy the jsf -->
+            <mkdir dir="${docs.jsf.dir}/tld/"/>
+            <mkdir dir="${docs.jsf.dir}/api/"/>
+            <move file="./jsf/components/component/build/doc/tld" 
+                tofile="${docs.jsf.dir}/tld/"/>
+            <move file="./jsf/components/component/build/doc/javadoc" 
+                tofile="${docs.jsf.dir}/api/"/>
+                
+            <!-- Create the JSP component JavaDocs and TLD documentation  -->    
+            <subant target="tlddoc" failonerror="true" verbose="true">
+                <fileset dir="./jsp" includes="build.xml"/>
+            </subant>
+            <mkdir dir="${docs.jsp.dir}/tld/"/>
+            <move file="./jsp/build/docs/tld" 
+                tofile="${docs.jsp.dir}/tld/"/>
+
+        </sequential>
+    </macrodef>
+
+    <macrodef name="build.src.bundle">
+        <attribute name="path" default="."/>
+        <attribute name="bundle.file" default="${src.bundle.file}"/>
+        <attribute name="bundle.prefix" default="${src.bundle.prefix}"/>
+        <element name="add.zip.elements" optional="true"/>
+
+        <sequential>
+            <touch file="@{bundle.file}" mkdirs="true"/>
+            <delete file="@{bundle.file}"/>
+
+            <ice:zip destfile="@{bundle.file}">
+                <zipfileset dir="@{path}" excludes="dist/" prefix="@{bundle.prefix}"/>
+                <add.zip.elements/>
+
+            </ice:zip>
+        </sequential>
+    </macrodef>
+
+</project>
