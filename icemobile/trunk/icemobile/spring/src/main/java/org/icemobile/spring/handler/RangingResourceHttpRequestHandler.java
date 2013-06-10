@@ -74,7 +74,10 @@ public class RangingResourceHttpRequestHandler extends ResourceHttpRequestHandle
                     String startString = range.substring(0, splitIndex);
                     String endString = range.substring(splitIndex + 1);
                     rangeStart = Integer.parseInt(startString);
-                    rangeEnd = Integer.parseInt(endString);
+                    // ICE-9256 rangeEnd == 0 means use contentLength below
+                    if (!"".equals( endString )) {
+                        rangeEnd = Integer.parseInt(endString);
+                    }
                     useRanges = true;
                 }
             } catch (Exception e)  {
@@ -99,12 +102,11 @@ public class RangingResourceHttpRequestHandler extends ResourceHttpRequestHandle
                 }
             }
             if( useRanges ){
+                int cl = ((Long)inputStreamAndContentLength[1]).intValue();
+                rangeEnd = (rangeEnd == 0) ? cl-1: rangeEnd;
                 response.setHeader(CONTENT_RANGE, 
-                        "bytes " + rangeStart + "-" + rangeEnd + "/" +
-                                inputStreamAndContentLength[1]);
+                        "bytes " + rangeStart + "-" + rangeEnd + "/" + cl);
                 response.setContentLength(1 + rangeEnd - rangeStart);
-            }
-            if (useRanges)  {
                 IOUtils.copyStream((InputStream)inputStreamAndContentLength[0], 
                         response.getOutputStream(), rangeStart, rangeEnd);
             } else {
