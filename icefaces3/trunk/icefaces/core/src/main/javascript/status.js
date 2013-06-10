@@ -15,9 +15,11 @@
  */
 
 var setupDefaultIndicators;
-(function() {
+(function () {
+    var off = operator();
+
     function PopupIndicator(message, description, panel) {
-        panel();
+        var backPanel = panel();
         var messageContainer = document.body.appendChild(document.createElement('div'));
         messageContainer.className = 'ice-status-indicator';
         var messageContainerStyle = messageContainer.style;
@@ -55,16 +57,30 @@ var setupDefaultIndicators;
         descriptionElementStyle.marginBottom = '7px';
         descriptionElementStyle.fontWeight = 'normal';
 
-        var resize = function() {
+        var resize = function () {
             messageContainerStyle.left = ((window.width() - messageContainer.clientWidth) / 2) + 'px';
             messageContainerStyle.top = ((window.height() - messageContainer.clientHeight) / 2) + 'px';
         };
         resize();
-        onResize(window, resize);
+        var clearOnResize = onResize(window, resize);
+
+        return object(function (method) {
+            method(off, function (self) {
+                if (messageContainer) {
+                    try {
+                        document.body.removeChild(messageContainer);
+                        clearOnResize();
+                        off(backPanel);
+                    } finally {
+                        messageContainer = null;
+                    }
+                }
+            });
+        });
     }
 
     function BackgroundOverlay(container) {
-        return function() {
+        return function () {
             var overlay = container.ownerDocument.createElement('iframe');
             overlay.setAttribute('src', 'about:blank');
             overlay.setAttribute('frameborder', '0');
@@ -75,17 +91,30 @@ var setupDefaultIndicators;
             container.appendChild(overlay);
 
             var resize = container.tagName.toLowerCase() == 'body' ?
-                function() {
+                function () {
                     overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
                     overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
                 } :
-                function() {
+                function () {
                     overlayStyle.width = container.offsetWidth + 'px';
                     overlayStyle.height = container.offsetHeight + 'px';
                 };
             resize();
-            onResize(window, resize);
-        };
+            var clearOnResize = onResize(window, resize)
+
+            return object(function (method) {
+                method(off, function (self) {
+                    if (overlay) {
+                        try {
+                            container.removeChild(overlay);
+                            clearOnResize();
+                        } finally {
+                            overlay = null;
+                        }
+                    }
+                });
+            });
+        }
     }
 
     function extractTagContent(tag, html) {
@@ -95,14 +124,17 @@ var setupDefaultIndicators;
         return tagWithContent.substring(tagWithContent.indexOf('>') + 1, tagWithContent.lastIndexOf('<'));
     }
 
-    setupDefaultIndicators = function(container, configuration) {
+    setupDefaultIndicators = function (container, configuration) {
         var overlay = BackgroundOverlay(container);
+        var beforeSessionExpiryIndicator = object(function (method) {
+            method(off, noop);
+        });
 
         function showIndicators() {
             return !(namespace.disableDefaultErrorPopups || configuration.disableDefaultErrorPopups);
         }
 
-        namespace.onServerError(function(code, html, xmlContent) {
+        namespace.onServerError(function (code, html, xmlContent) {
             if (showIndicators()) {
                 //test if server error message is formatted in XML
                 var message;
@@ -118,21 +150,22 @@ var setupDefaultIndicators;
             }
         });
 
-        namespace.onNetworkError(function() {
+        namespace.onNetworkError(function () {
             if (showIndicators()) {
                 PopupIndicator("Network Connection Interrupted", "Reload this page to try to reconnect.", overlay);
             }
         });
 
-        namespace.onSessionExpiry(function() {
+        namespace.onSessionExpiry(function () {
             if (showIndicators()) {
+                off(beforeSessionExpiryIndicator);
                 PopupIndicator("User Session Expired", "Reload this page to start a new user session.", overlay);
             }
         });
 
-        namespace.onBeforeSessionExpiry(function(time) {
+        namespace.onBeforeSessionExpiry(function (time) {
             if (showIndicators()) {
-                PopupIndicator("User Session is about to expire in " + time + " seconds.", "Reload this page to keep your current user session.", overlay);
+                beforeSessionExpiryIndicator = PopupIndicator("User Session is about to expire in " + time + " seconds.", "Reload this page to keep your current user session.", overlay);
             }
         });
     }
