@@ -70,7 +70,7 @@ public class DataViewBean extends ExampleImpl<DataViewBean>
 
     private List<Car> cars = new ArrayList<Car>() {{
         VehicleGenerator vg = new VehicleGenerator();
-        addAll(vg.getRandomCars(200));
+        addAll(vg.getRandomCars(100));
     }};
 
     public DataViewBean() {
