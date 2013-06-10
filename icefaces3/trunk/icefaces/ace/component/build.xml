@@ -310,46 +310,46 @@
     <target name="res-js-compress" depends="res-js-combine"
             unless="no-compress">
         <echo message="Compressing ace-yui.js"/>
-        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
-            <arg line="--preserve-semi"/>
-            <arg value="-o"/>
-            <arg value="${ace-yui.js}"/>
+        <java jar="../../lib/shrinksafe.jar" fork="true" output="${ace-yui.js}">
             <arg value="${ace-yui.js.uncompressed}"/>
+            <classpath>
+                <pathelement location="../../lib/js.jar"/>
+            </classpath>
         </java>
-		<echo message="Compressing ace-jquery.js"/>
-        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
-            <arg line="--preserve-semi"/>
-            <arg value="-o"/>
-            <arg value="${ace-jquery.js}"/>
+        <echo message="Compressing ace-jquery.js"/>
+        <java jar="../../lib/shrinksafe.jar" fork="true" output="${ace-jquery.js}">
             <arg value="${ace-jquery.js.uncompressed}"/>
+            <classpath>
+                <pathelement location="../../lib/js.jar"/>
+            </classpath>
         </java>
 		<echo message="Compressing ace-datatable.js"/>
-        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
-            <arg line="--preserve-semi"/>
-            <arg value="-o"/>
-            <arg value="${ace-datatable.js}"/>
+        <java jar="../../lib/shrinksafe.jar" fork="true" output="${ace-datatable.js}">
             <arg value="${ace-datatable.js.uncompressed}"/>
+            <classpath>
+                <pathelement location="../../lib/js.jar"/>
+            </classpath>
         </java>
-		<echo message="Compressing ace-menu.js"/>
-        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
-            <arg line="--preserve-semi"/>
-            <arg value="-o"/>
-            <arg value="${ace-menu.js}"/>
+        <echo message="Compressing ace-menu.js"/>
+        <java jar="../../lib/shrinksafe.jar" fork="true" output="${ace-menu.js}">
             <arg value="${ace-menu.js.uncompressed}"/>
+            <classpath>
+                <pathelement location="../../lib/js.jar"/>
+            </classpath>
         </java>
-		<echo message="Compressing ace-components.js"/>
-        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
-            <arg line="--preserve-semi"/>
-            <arg value="-o"/>
-            <arg value="${ace-components.js}"/>
+        <echo message="Compressing ace-components.js"/>
+        <java jar="../../lib/shrinksafe.jar" fork="true" output="${ace-components.js}">
             <arg value="${ace-components.js.uncompressed}"/>
+            <classpath>
+                <pathelement location="../../lib/js.jar"/>
+            </classpath>
         </java>
-		<echo message="Compressing ace-chart.js"/>
-        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
-            <arg line="--preserve-semi"/>
-            <arg value="-o"/>
-            <arg value="${ace-chart.js}"/>
+        <echo message="Compressing ace-chart.js"/>
+        <java jar="../../lib/shrinksafe.jar" fork="true" output="${ace-chart.js}">
             <arg value="${ace-chart.js.uncompressed}"/>
+            <classpath>
+                <pathelement location="../../lib/js.jar"/>
+            </classpath>
         </java>
     </target>
 
