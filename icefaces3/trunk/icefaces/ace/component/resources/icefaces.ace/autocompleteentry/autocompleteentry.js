@@ -489,7 +489,7 @@ ice.ace.Autocompleter.prototype = {
 				}
 				var widthX=input.position().left+input.width();
 				var heightX=input.position().top+input.height()+parseFloat(this.height)+10;
-				if ( (posx>input.position().left && posx<=widthX) && (posy>input.position().top && posy<heightX) ) {
+				if ( this.active && (posx>input.position().left && posx<=widthX) && (posy>input.position().top && posy<heightX) ) {
 					var self = this;
 					this.ieScrollbarFixObserver = setTimeout(function(){self.element.focus();}, 200);
 					return;
