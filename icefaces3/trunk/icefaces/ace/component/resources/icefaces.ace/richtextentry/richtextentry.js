@@ -26,7 +26,7 @@ CKEDITOR.plugins.add('aceSave', {
             command:'save'
         })
     }
-})
+});
 
 ice.ace.richtextentry.CKsaveAjax = function(editor) {
 
@@ -38,7 +38,7 @@ ice.ace.richtextentry.CKsaveAjax = function(editor) {
     } else {
         ice.s(nothingEvent, document.getElementById(editor.name));
     }
-}
+};
 
 CKEDITOR.config.extraPlugins = "aceSave";
 
@@ -73,7 +73,7 @@ ice.ace.richtextentry.getToolbar = function(toolbar) {
     } else {
         return toolbar;
     }
-}
+};
 
 
 ice.ace.richtextentry.renderEditor = function(editor, defaultToolbar, lang, _skin, _height, _width, _customConfig, saveOnSubmit, hashCode, behaviors) {
@@ -125,4 +125,4 @@ ice.ace.richtextentry.renderEditor = function(editor, defaultToolbar, lang, _ski
     } catch(e) {
         alert(e);
     }
-}
+};
