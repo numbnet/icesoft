@@ -532,3 +532,11 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     background-color: #ff9999;
 	background-image: none;
 }
+
+div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.plainMenu {
+	width: 180px;
+}
+
+.plainMenu ul {
+	padding: .5em 0 .5em 0;
+}
