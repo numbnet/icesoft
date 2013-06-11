@@ -82,7 +82,7 @@
             </lib>
 
             <lib dir="${lib.icemobile.dir}/${jsf.implementation}">
-            	<patternset refid="pattern.all"/>
+                <include name="**/*.jar" if="jsf" />
             </lib>
 
             <lib dir="${lib.application.dir}">
