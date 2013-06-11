@@ -32,28 +32,16 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<mobi:fieldsetGroup style="text-align:right">
+	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<label class="ui-input-text">
-                Date Spinner
-            </label>
-			<div style="display: inline-block">
-				<span style="font-size: 10px; float: right;">(yyyy-mm-dd)</span>
-				<div style="clear: both;">
-					<mobi:dateSpinner name="dateOne" id="d1"
-						value="${dateTimeSpinnerBean.dateOne}" />
-				</div>
-			</div>
+			<label>Date Spinner</label>
+			<mobi:dateSpinner name="dateOne" id="d1"
+						value="${dateTimeSpinnerBean.dateOne}" style="float:right"/>&#160;
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<label class="ui-input-text">Time Spinner</label>
-			<div style="display: inline-block">
-				<span style="font-size: 10px; float: right;">(hh:mm AM/PM)</span>
-				<div style="clear: both;">
-					<mobi:timeSpinner name="timeOne" id="t1" style="width:100px;"
-						value="${dateTimeSpinnerBean.timeOne}" />
-				</div>
-			</div>
+			<label>Time Spinner</label>
+			<mobi:timeSpinner name="timeOne" id="t1" 
+						value="${dateTimeSpinnerBean.timeOne}" style="float:right" />&#160;
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
