@@ -26,9 +26,10 @@
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
-			The panelPopup is a container tag that renders a popup panel that 
-			hovers on top of a web page. Click either the "Auto-center" or "No Auto-center" buttons
-			to display a popup.
+            The panelPopup is a container tag that renders a popup panel that 
+            hovers on top of a web page. Click either the "Auto-center" or "No Auto-center" buttons
+            to display a popup. Click on an item in the popup, dismiss the popup, then press
+            "Submit" to echo the selection.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
