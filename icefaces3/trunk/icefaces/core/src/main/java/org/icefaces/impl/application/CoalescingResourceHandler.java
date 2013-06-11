@@ -30,6 +30,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import javax.servlet.http.HttpSession;
 import java.net.URI;
 import java.util.*;
 import java.util.logging.Level;
@@ -64,7 +65,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             boolean isPortlet = EnvUtils.instanceofPortletRequest(ec.getRequest());
 
             if (ICE_CORE_LIBRARY.equals(libraryName) && COALESCED_CSS.equals(resourceName)) {
-                CoalescingResource.Infos resourceInfos = getResourceInfos(ec, CSS_EXTENSION);
+                CoalescingResource.Infos resourceInfos = getResourceInfos(context, CSS_EXTENSION);
                 if( isPortlet ){
                     return new CoalescingPortletResource(COALESCED_CSS,
                                                          ICE_CORE_LIBRARY,
@@ -79,7 +80,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                                                   resourceInfos);
                 }
             } else if (ICE_CORE_LIBRARY.equals(libraryName) && COALESCED_JS.equals(resourceName)) {
-                CoalescingResource.Infos resourceInfos = getResourceInfos(ec, JS_EXTENSION);
+                CoalescingResource.Infos resourceInfos = getResourceInfos(context, JS_EXTENSION);
                 if( isPortlet ){
                     return new CoalescingPortletResource(COALESCED_JS,
                                                          ICE_CORE_LIBRARY,
@@ -101,8 +102,9 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
         }
     }
 
-    private static CoalescingResource.Infos getResourceInfos(ExternalContext ec, String extension){
-        return (CoalescingResource.Infos)ec.getSessionMap().get(CoalescingResourceHandler.class.getName() + extension);
+    private static CoalescingResource.Infos getResourceInfos(FacesContext fc, String extension){
+        HttpSession sess = EnvUtils.getSafeSession(fc);
+        return (CoalescingResource.Infos)sess.getAttribute(CoalescingResourceHandler.class.getName() + extension);
     }
 
     public Resource createResource(String resourceName) {
@@ -140,8 +142,8 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             coallescedResourceComponent.setTransient(true);
 
             ExternalContext ec = context.getExternalContext();
-            Map<String, Object> sessionMap = ec.getSessionMap();
-            CoalescingResource.Infos previousResourceInfos = getResourceInfos(ec,extension);
+            HttpSession sess = EnvUtils.getSafeSession(context);
+            CoalescingResource.Infos previousResourceInfos = getResourceInfos(context,extension);
 
             CoalescingResource.Infos resourceInfos = new CoalescingResource.Infos();
             List children = resourceContainer.getChildren();
@@ -180,7 +182,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             }
 
             if (previousResourceInfos == null) {
-                sessionMap.put(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
+                sess.setAttribute(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
             } else {
                 Collection newResourceInfos = new ArrayList(resourceInfos.resources);
                 newResourceInfos.removeAll(previousResourceInfos.resources);
@@ -188,7 +190,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                 if (newResourceInfos.isEmpty()) {
                     previousResourceInfos.modified = false;
                 } else {
-                    sessionMap.put(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
+                    sess.setAttribute(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
                 }
             }
 
