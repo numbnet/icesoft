@@ -167,6 +167,10 @@ public class ClientDescriptor implements Serializable{
         return os == OS.IOS && _userAgentInfo.isIOS6();
     }
     
+    public boolean isIOS7() {
+        return os == OS.IOS && _userAgentInfo.isIOS7();
+    }
+    
     public boolean isSXRegistered(){
         return sxRegistered;
     }
@@ -274,7 +278,7 @@ public class ClientDescriptor implements Serializable{
     }
     
     public boolean isHasNativeDatePicker() {
-        return isIOS5() || isIOS6() || isBlackBerryOS() || isChromeBrowser() || _userAgentInfo.isFirefoxAndroid();
+        return isIOS5() || isIOS6() || isIOS7() || isBlackBerryOS() || isChromeBrowser() || _userAgentInfo.isFirefoxAndroid();
     }
 	
 	public boolean isAndroidBrowser(){

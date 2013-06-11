@@ -87,14 +87,14 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         
         DeviceResource comp = (DeviceResource)uiComponent;
         
-        boolean ios6 = false;
+        boolean ios6orHigher = false;
         boolean desktop = false;
         boolean isSimulated = false;
     
         ClientDescriptor client = ClientDescriptor
                 .getInstance((HttpServletRequest)context.getExternalContext().getRequest());
-        ios6 = client.isIOS6();
-        if( !ios6 ){
+        ios6orHigher = client.isIOS6() || client.isIOS7();
+        if( !ios6orHigher ){
             desktop = client.isDesktopBrowser();
         }
         if (desktop) {
@@ -110,7 +110,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.write(String.format(LINK_SHORTCUT_ICON, contextRoot));
         if( !desktop ){
             writer.write(META_VIEWPORT);
-            if( ios6 ){
+            if( ios6orHigher ){
                 writer.write(META_IOS_WEBAPPCAPABLE);
                 writer.write(META_IOS_APPSTATUSBAR);
                 if (isNeedAppBanner(context, comp, client))  {
