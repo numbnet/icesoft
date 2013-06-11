@@ -18,6 +18,7 @@ package org.icefaces.ace.component.listcontrol;
 
 import org.icefaces.ace.component.list.ACEList;
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -65,8 +66,11 @@ public class ListControlRenderer extends CoreRenderer {
         else
             styleClass = styleClass + containerStyleClass;
 
+        String clientId = control.getClientId(context);
+
         writer.startElement(HTML.DIV_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, control.getClientId(context), "id");
+        writer.writeAttribute(HTML.ID_ATTR, clientId, "id");
+        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, "styleClass");
         if (style != null)
             writer.writeAttribute(HTML.STYLE_ATTR, style, "style");
