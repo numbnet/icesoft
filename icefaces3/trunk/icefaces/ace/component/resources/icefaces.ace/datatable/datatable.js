@@ -1287,8 +1287,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 footerTable.find('tr td:last').css('padding-right', '');
             }
         } else {
-            headerTable.parent().css('margin-right', '');
-            footerTable.parent().css('margin-right', '');
+            headerTable.css('width','100%').parent().css('margin-right', '');
+            footerTable.css('width','100%').parent().css('margin-right', '');
             headerTable.find('tr th:last').css('padding-right', '');
             footerTable.find('tr td:last').css('padding-right', '');
         }
