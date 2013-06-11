@@ -48,12 +48,12 @@
         <h3>Uploaded Audio</h3>
         
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center">
                 <ui:fragment
                         rendered="#{microphoneBean.outputResource != null}">
-                    <mobi:audioPlayer linkLabel="Play"
+                    <mobi:audioPlayer linkLabel="Play" mimeType="audio/mpeg"
                             value="#{microphoneBean.outputResource}"
-                            controls="true"/>
+                            controls="true" preload="auto" style="width:60%"/>
                 </ui:fragment>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
