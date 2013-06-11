@@ -28,6 +28,12 @@ ice.ace.ListControl = function(id, cfg) {
     this.selector = cfg.selector;
     this.sep = String.fromCharCode(this.cfg.separator);
 
+    // If control hasn't been built before setup clean up callback
+    if (!ice.ace.ListControls[id]) {
+        var self = this;
+        ice.onElementUpdate(this.id, function() { self.unload(); });
+    }
+
     // global list of list control objects, used by lists to
     // find lists they share migration controls with, in order
     // to enforce mutually exclusive selection
@@ -35,6 +41,19 @@ ice.ace.ListControl = function(id, cfg) {
 
     this.setupControls();
 };
+
+ice.ace.ListControl.prototype.unload = function() {
+    delete ice.ace.ListControls[this.id];
+
+    var selector;
+
+    if (this.element.hasClass('if-list-nctrls'))
+        selector = '> .if-list-ctrl-spcr > .if-list-nctrl';
+    else
+        selector = '> .if-list-nctrls .if-list-nctrl, > .if-list-dl > .if-list-nctrls .if-list-nctrl';
+
+    this.element.find(selector).off('mouseenter mouseleave click');
+}
 
 ice.ace.ListControl.prototype.setupControls = function(){
     var self = this, selector;
