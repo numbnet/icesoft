@@ -77,7 +77,6 @@ public class TimeSpinnerTag extends SimpleTagSupport {
 
         PageContext pageContext = (PageContext) getJspContext();
         Writer out = pageContext.getOut();
-        ServletRequest sr = pageContext.getRequest();
         if (tu == null) tu = new TagUtil();
         ClientDescriptor client = ClientDescriptor.getInstance((HttpServletRequest)pageContext.getRequest());
         if (useNative && client.isHasNativeDatePicker()) {
@@ -108,6 +107,12 @@ public class TimeSpinnerTag extends SimpleTagSupport {
             }
             if (readOnly) {
                 tu.writeAttribute(out, "readonly", "true");
+            }
+            if( !tu.isValueBlank(style)){
+                tu.writeAttribute(out, "style", style);
+            }
+            if( !tu.isValueBlank(styleClass)){
+                tu.writeAttribute(out, "class", styleClass);
             }
             out.write(">" + tu.INPUT_TAG_END);
         } else {
