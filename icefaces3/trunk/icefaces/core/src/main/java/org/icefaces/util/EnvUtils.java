@@ -22,12 +22,14 @@ import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
 import org.icefaces.impl.push.servlet.ProxyHttpServletResponse;
+import org.icefaces.impl.push.servlet.ProxyServletContext;
 import org.icefaces.impl.push.servlet.ProxySession;
 
 import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -689,6 +691,15 @@ public class EnvUtils {
 
     public static boolean instanceofPortletResourceResponse(Object response) {
         return PortletResourceResponseClass != null && PortletResourceResponseClass.isInstance(response);
+    }
+
+    public static ServletContext getSafeContext(FacesContext fc) {
+        ExternalContext ec = fc.getExternalContext();
+        Object rawReq = ec.getRequest();
+        if (instanceofPortletRequest(rawReq)) {
+            return new ProxyServletContext(fc);
+        }
+        return (ServletContext) ec.getContext();
     }
 
     public static HttpServletRequest getSafeRequest(FacesContext fc) {
