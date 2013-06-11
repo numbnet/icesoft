@@ -28,7 +28,7 @@ public class AudioBean extends MediaBean {
     public AudioBean() {
 
         this.controls = true;
-        this.src = "resources/audio/audio_clip.mp3";
+        this.src = "media/audio_clip.mp3";
     }
 
 }
