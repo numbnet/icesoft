@@ -82,14 +82,14 @@ public class DeviceResourceTag extends BaseSimpleTag {
 
 	public void doTag() throws IOException {
 		
-	    boolean ios6 = false;
+	    boolean ios6orHigher = false;
 		boolean desktop = false;
 				
 		PageContext pageContext = getContext();
 		ClientDescriptor client = getClient();
 		
-		ios6 = client.isIOS6();
-		if( !ios6 ){
+		ios6orHigher = client.isIOS6() || client.isIOS7();
+		if( !ios6orHigher ){
 			desktop = client.isDesktopBrowser();
 		}
 		JspWriter out = pageContext.getOut();
@@ -99,7 +99,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		out.write(String.format(LINK_SHORTCUT_ICON, contextRoot));
 		if( !desktop ){
 			out.write(META_VIEWPORT);
-			if( ios6 ){
+			if( ios6orHigher ){
 				out.write(META_IOS_WEBAPPCAPABLE);
 				out.write(META_IOS_APPSTATUSBAR);
 				if (isShowAppBanner(client))  {
