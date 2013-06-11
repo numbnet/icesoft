@@ -34,13 +34,12 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <ace:panel style="border: none;">
                 <h:panelGrid columns="3" columnClasses ="menuWrapper, menuWrapper, menuWrapper" width="100%">
                     <h:panelGrid>
                         <h:panelGrid styleClass="centeredPanelGrid">
                             <h:outputText value="plain" style="font-weight: bolder; font-size: 10pt;"/>
                         </h:panelGrid>
-                        <ace:menu id="plainMenu" type="plain" >
+                        <ace:menu id="plainMenu" type="plain" styleClass="plainMenu">
                             <ace:submenu label="File" id="plainMenuFile">
                                 <ace:menuItem id="plainMenuNew"
                                               value="New" 
@@ -201,7 +200,6 @@
                         </ace:menu>
                     </h:panelGrid>
                 </h:panelGrid>
-            </ace:panel>
             
             <ace:panel  header="Menu Selections Log">
                 <h:dataTable id="message" value="#{menuType.list}" var="message">
