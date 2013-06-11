@@ -57,10 +57,10 @@
 	</c:if>
 	<c:if test="${micUploadReady}">
 		<mobi:fieldsetGroup>
-			<mobi:fieldsetRow>
-				<audio src="${micUpload}" controls="controls"></audio>
-				<br>
-				<a href="${micUpload}">Play</a>
+			<mobi:fieldsetRow style="text-align:center">
+				<mobi:audioPlayer linkLabel="Play"
+                            url="${micUpload}"
+                            controls="true" preload="auto" style="width:60%"/>
 			</mobi:fieldsetRow>
 		</mobi:fieldsetGroup>
 	</c:if>
