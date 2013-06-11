@@ -8,6 +8,7 @@ import javax.faces.context.ExternalContextWrapper;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
 import java.net.URI;
+import java.net.URL;
 
 public class ICEfacesContext extends FacesContextWrapper {
     private FacesContext wrapped;
@@ -42,6 +43,13 @@ public class ICEfacesContext extends FacesContextWrapper {
             //the following tests should not be necessary since the encodeResourceURL should be used only to encode
             //resource URLs, unfortunately Mojarra's OutputLinkRenderer uses this method for encoding the hyperlink URLs
             if (url.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
+                return url;
+            }
+            //avoid encoding external URLs
+            String requestServerName = wrapped.getRequestServerName();
+            URI uri = URI.create(url);
+            String hostName = uri == null ? null : uri.getHost();
+            if (requestServerName!= null && hostName !=null && !requestServerName.equals(hostName)) {
                 return url;
             }
             String mimeType = wrapped.getMimeType(url);
