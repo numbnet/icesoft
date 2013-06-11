@@ -47,6 +47,7 @@ public class UserAgentInfo implements Serializable{
     public static final String BLACKBERRY10 = "bb10";
     public static final String IOS5 = " os 5_";
     public static final String IOS6 = " os 6_";
+    public static final String IOS7 = " os 7_";
     public static final String TABLET = "tablet";
     public static final String TABLET_GALAXY = "gt-p1000";
     public static final String TABLET_TRANSORMER_PRIME = "transformer prime";
@@ -97,6 +98,12 @@ public class UserAgentInfo implements Serializable{
     public boolean isIOS6(){
         boolean result = userAgentString.indexOf(IOS6) != -1;
         log(result, "iOS6", userAgentString);
+        return result;
+    }
+    
+    public boolean isIOS7(){
+        boolean result = userAgentString.indexOf(IOS7) != -1;
+        log(result, "iOS7", userAgentString);
         return result;
     }
 
