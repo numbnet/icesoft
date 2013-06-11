@@ -39,12 +39,12 @@
 			<mobi:inputText id="name" name="name" label="Author:"
                 value="${microphoneBean.name}" />
 		</mobi:fieldsetRow>
-		<mobi:fieldsetRow>
-			<mobi:microphone id="mic" buttonLabel="Record Audio" />
+		<mobi:fieldsetRow style="text-align:center">
+			<mobi:microphone id="mic" buttonLabel="Record Audio"/>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<c:if test="${!sxRegistered}">
+	<c:if test="${!mobiClient.SXRegistered}">
 		<!-- SX on iOS auto-submits -->
 		<mobi:commandButton buttonType="important" value="Submit"
 			type="submit" styleClass="submit" />
