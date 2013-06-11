@@ -107,20 +107,19 @@ public class DateSpinnerTag extends SimpleTagSupport {
             if (readOnly) {
                 tu.writeAttribute(out, "readonly", "true");
             }
+            if( !tu.isValueBlank(style)){
+                tu.writeAttribute(out, "style", style);
+            }
+            if( !tu.isValueBlank(styleClass)){
+                tu.writeAttribute(out, "class", styleClass);
+            }
+            
             out.write(">" + tu.INPUT_TAG_END);
         } else {
             //            writeJavascriptFile(pageContext, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
             encodeMarkup(pageContext, out, encodeValue(value));
             encodeScript(out);
         }
-        out.write(tu.A_TAG);
-        tu.writeAttribute(out, "id", id);
-
-        if (!tu.isValueBlank(name)) {
-            tu.writeAttribute(out, "name", name);
-        }
-        out.write(" >");
-        out.write(tu.A_TAG_END);
 
     }
 
