@@ -232,12 +232,8 @@ class PushUtils {
     }
 
     private static Object reflectPushContextInstance() {
-        ExternalContext externalContext =
-                FacesContext.getCurrentInstance().getExternalContext();
-        ServletContext servletContext = (ServletContext)
-                externalContext.getContext();
+        ServletContext servletContext = EnvUtils.getSafeContext(FacesContext.getCurrentInstance());
         Object inst = null;
-        // PushContext.getInstance(servletContext);
         try {
             if (org_icepush_PushContext_getInstance_method != null) {
                 inst = org_icepush_PushContext_getInstance_method.invoke(
