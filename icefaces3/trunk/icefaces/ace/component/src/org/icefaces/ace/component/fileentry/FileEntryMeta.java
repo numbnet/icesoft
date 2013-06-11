@@ -21,13 +21,14 @@ import javax.el.MethodExpression;
 import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceLibrary;
 
 import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.resources.ICEResourceLibrary;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 @Component(
     tagName         = "fileEntry",
@@ -243,7 +244,18 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         "due to no files being uploaded")
     private String requiredMessage;
 
-    @Property(tlddoc = "The size attribute is used to specify how many characters wide the file selection will display." +
-            " Default: no size attribute will be rendered; determined by browser.")
+    @Property(tlddoc = "The size attribute is used to specify how many " +
+        "characters wide the file selection will display. Default: no size " +
+        "attribute will be rendered; determined by browser.")
     private int size;
+
+    @Property(tlddoc = "Input components add conversion and validation " +
+        "faces messages on every execute. When this is true, this component " +
+        "will add its upload success and failure on every execute, " +
+        "otherwise, when false, it will only add the faces messages when an " +
+        "upload occurs. Note: false precludes requires faces messages from " +
+        "ever being added.",
+        defaultValueType = DefaultValueType.EXPRESSION,
+        defaultValue = "true")
+    private boolean messagePersistence;
 }

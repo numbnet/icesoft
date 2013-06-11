@@ -232,7 +232,9 @@ public class FileEntry extends FileEntryBase {
             boolean partialSubmit = "true".equals(partialSubmitValue);
             log.finer("FileEntry.validateResults()    partialSubmit: " + partialSubmit + "  required: " + isRequired());
             if (!partialSubmit && isRequired()) {
-                addMessageFromRequired(facesContext);
+                if (isMessagePersistence()) {
+                    addMessageFromRequired(facesContext);
+                }
                 failed = true;
                 log.finer("FileEntry.validateResults()    FAILED  required");
             }
@@ -369,7 +371,11 @@ public class FileEntry extends FileEntryBase {
                 // ICE-5750 deals with re-adding faces messages for components
                 // that have not re-executed. Components that are executing
                 // should re-add their faces messages themselves.
-                addMessagesFromResults(context);
+                // FileEntry will only re-add faces messages past the upload
+                // lifecycle if its messagePersistence property is true.
+                if (isMessagePersistence() || fee.isInvoke()) {
+                    addMessagesFromResults(context);
+                }
             }
         }
         else {
