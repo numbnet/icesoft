@@ -210,42 +210,7 @@ ice.ace.DataTable = function (id, cfg) {
         this.setupPaginator();
 
     if (!this.cfg.disabled) {
-        var self = this,
-            cellClickObs = [function() {}], rowClickObs = [function() {}],
-            rowDblClickObs = [function() {}], cellDblClickObs = [function() {}];
-
-        if (this.behaviors && this.behaviors.cellClick)
-            cellClickObs.push(function() {
-                ice.ace.ab(self.behaviors.cellClick);
-            });
-
-        if (this.behaviors && this.behaviors.cellDblClick)
-            cellDblClickObs.push(function() {
-                ice.ace.ab(self.behaviors.cellDblClick);
-            });
-
-        // Add selection listener to appropriate observer set
-        if (this.isSelectionEnabled()) {
-            if (this.isCellSelectionEnabled()) {
-                if (this.cfg.dblclickSelect)
-                    cellDblClickObs.push(function(event) { self.onCellClick(event); });
-                else
-                    cellClickObs.push(function(event) { self.onCellClick(event); })
-            }
-            else {
-                if (this.cfg.dblclickSelect)
-                    rowDblClickObs.push(function(event) { self.onRowClick(event); });
-                else
-                    rowClickObs.push(function(event) { self.onRowClick(event); })
-            }
-
-            this.setupSelectionHover();
-        }
-
-        this.setupCellClick(cellClickObs);
-        this.setupRowClick(rowClickObs);
-        this.setupCellDoubleClick(cellDblClickObs);
-        this.setupRowDoubleClick(rowDblClickObs);
+        this.setupClickEvents();
 
         if (this.cfg.sorting)
             this.setupSortEvents();
@@ -314,6 +279,9 @@ ice.ace.DataTable.prototype.cellEditorSelector = ' > div > table > tbody.ui-data
    ########################## Event Binding & Setup #######################
    ######################################################################## */
 ice.ace.DataTable.prototype.unload = function() {
+    // Remove dynamic stylesheet
+    // ice.ace.util.removeStyleSheet(this.jqId.substr(1)+'_colSizes');
+
     // Cleanup sort events
     this.element.find(this.sortColumnSelector).unbind("click").unbind("mousemove").unbind("mouseleave");
 
@@ -534,7 +502,7 @@ ice.ace.DataTable.prototype.setupSortRequest = function (_self, $this, event, he
 ice.ace.DataTable.prototype.setupSortEvents = function () {
     var _self = this;
 
-    // Bind clickable header events
+    // Bind `clickable header events
     if (_self.cfg.clickableHeaderSorting) {
         this.element.find(this.sortColumnSelector)
             .unbind('click').bind("click", function (event) {
@@ -707,103 +675,169 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
         });
 }
 
-ice.ace.DataTable.prototype.setupCellClick = function(obsList) {
-    if (obsList.length == 0) return;
+ice.ace.DataTable.prototype.setupClickEvents = function() {
+     function setupCellClick(obsList) {
+        if (obsList.length == 0) return;
 
-    var execObsList = obsList.reduce(function(preObs, curObs) {
-        return function(event) {
-            if (preObs) preObs(event);
-            curObs(event);
-        }
-    });
+        var execObsList = obsList.reduce(function(preObs, curObs) {
+            return function(event) {
+                if (preObs) preObs(event);
+                curObs(event);
+            }
+        });
 
-    var self = this;
-    this.element.on('click', this.cellSelector, function (event) {
-        if (self.blockCellClick == true) return;
+        var self = this;
+        this.element.on('click', this.cellSelector, function (event) {
+            if (self.blockCellClick == true) return;
 
-        self.cellClickWaiting = setTimeout(function() {
+            self.cellClickWaiting = setTimeout(function() {
+                execObsList.call(self, event);
+                // console.log('cell click');
+            }, 350);
+
+            self.blockCellClick = true;
+
+            // seperate timeout - first timeout behaviour may be cancelled
+            setTimeout(function() {
+                self.blockCellClick = false;
+            }, 350);
+        });
+    };
+
+    function setupRowClick(obsList) {
+        if (obsList.length == 0) return;
+
+        var execObsList = obsList.reduce(function(preObs, curObs) {
+            return function(event) {
+                if (preObs) preObs(event);
+                curObs(event);
+            }
+        });
+
+        var self = this;
+
+        this.element.on('click', this.rowSelector, function (event) {
+            if (self.blockRowClick == true) return;
+
+            self.rowClickWaiting = setTimeout(function() {
+                execObsList.call(self, event);
+                // console.log('row click');
+            }, 350);
+
+            self.blockRowClick = true;
+
+            // seperate timeout - first timeout behaviour may be cancelled
+            setTimeout(function() {
+                self.blockRowClick = false;
+            }, 350);
+        });
+    };
+
+    function setupCellDoubleClick(obsList) {
+        if (obsList.length == 0) return;
+
+        var execObsList = obsList.reduce(function(preObs, curObs) {
+            return function(event) {
+                if (preObs) preObs(event);
+                curObs(event);
+            }
+        });
+
+        var self = this;
+        this.element.on('dblclick', this.cellSelector, function (event) {
+            if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
+            if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
+
+            execObsList.call(self,event);
+
+            // console.log('cell double click');
+        });
+    };
+
+    function setupRowDoubleClick(obsList) {
+        if (obsList.length == 0) return;
+
+        var execObsList = obsList.reduce(function(preObs, curObs) {
+            return function(event) {
+                if (preObs) preObs(event);
+                curObs(event);
+            }
+        });
+
+        var self = this;
+        this.element.on('dblclick', this.rowSelector, function (event) {
+            if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
+            if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
+
             execObsList.call(self, event);
-            // console.log('cell click');
-        }, 350);
 
-        self.blockCellClick = true;
+            // console.log('row double click');
+        });
+    };
 
-        // seperate timeout - first timeout behaviour may be cancelled
-        setTimeout(function() {
-            self.blockCellClick = false;
-        }, 350);
-    });
-};
+    function getRowIndex(e) {
+        var index = /_row_([0-9]+)/g.exec(ice.ace.jq(e.target).closest('tr').attr('id'))[1];
+        alert(index);
+        return index;
+    }
 
-ice.ace.DataTable.prototype.setupRowClick = function(obsList) {
-    if (obsList.length == 0) return;
+    function getCellIndex(e) {
+        var index = /ui-col-([0-9]+)/g.exec(ice.ace.jq(e.target).closest('td')[0].className)[1];
+        alert(index);
+        return index;
+    }
 
-    var execObsList = obsList.reduce(function(preObs, curObs) {
-        return function(event) {
-            if (preObs) preObs(event);
-            curObs(event);
+
+    var self = this,
+        cellClickObs = [], rowClickObs = [],
+        rowDblClickObs = [], cellDblClickObs = [];
+
+    // Add cell click ace:ajax handler
+    if (this.behaviors && this.behaviors.cellClick)
+        cellClickObs.push(function(e) {
+            var opts = { params : {} };
+
+            opts.params[this.id + '_rowIndex'] = getRowIndex(e),
+            opts.params[this.id + '_colIndex'] = getCellIndex(e)
+
+            ice.ace.ab(ice.ace.extendAjaxArgs(self.behaviors.cellClick, opts));
+        });
+
+    // Add cell dbl click ace:ajax handler
+    if (this.behaviors && this.behaviors.cellDblClick)
+        cellDblClickObs.push(function(e) {
+            var opts = { params : {} };
+
+            opts.params[this.id + '_rowIndex'] = getRowIndex(e),
+            opts.params[this.id + '_colIndex'] = getCellIndex(e)
+
+            ice.ace.ab(ice.ace.extendAjaxArgs(self.behaviors.cellDblClick,opts));
+        });
+
+    // Add selection listeners
+    if (this.isSelectionEnabled()) {
+        if (this.isCellSelectionEnabled()) {
+            if (this.cfg.dblclickSelect)
+                cellDblClickObs.push(function(event) { self.onCellClick(event); });
+            else
+                cellClickObs.push(function(event) { self.onCellClick(event); })
         }
-    });
-
-    var self = this;
-    this.element.on('click', this.rowSelector, function (event) {
-        if (self.blockRowClick == true) return;
-
-        self.rowClickWaiting = setTimeout(function() {
-            execObsList.call(self, event);
-            // console.log('row click');
-        }, 350);
-
-        self.blockRowClick = true;
-
-        // seperate timeout - first timeout behaviour may be cancelled
-        setTimeout(function() {
-            self.blockRowClick = false;
-        }, 350);
-    });
-};
-
-ice.ace.DataTable.prototype.setupCellDoubleClick = function(obsList) {
-    if (obsList.length == 0) return;
-
-    var execObsList = obsList.reduce(function(preObs, curObs) {
-        return function(event) {
-            if (preObs) preObs(event);
-            curObs(event);
+        else {
+            if (this.cfg.dblclickSelect)
+                rowDblClickObs.push(function(event) { self.onRowClick(event); });
+            else
+                rowClickObs.push(function(event) { self.onRowClick(event); })
         }
-    });
 
-    var self = this;
-    this.element.on('dblclick', this.cellSelector, function (event) {
-        if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
-        if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
+        this.setupSelectionHover();
+    }
 
-        execObsList.call(self,event);
-
-        // console.log('cell double click');
-    });
-};
-
-ice.ace.DataTable.prototype.setupRowDoubleClick = function(obsList) {
-    if (obsList.length == 0) return;
-
-    var execObsList = obsList.reduce(function(preObs, curObs) {
-        return function(event) {
-            if (preObs) preObs(event);
-            curObs(event);
-        }
-    });
-
-    var self = this;
-    this.element.on('dblclick', this.rowSelector, function (event) {
-        if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
-        if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
-
-        execObsList.call(self, event);
-
-        // console.log('row double click');
-    });
-};
+    // Initialize listener sets
+    setupCellClick.call(this, cellClickObs);
+    setupRowClick.call(this, rowClickObs);
+    setupCellDoubleClick.call(this, cellDblClickObs);
+    setupRowDoubleClick.call(this, rowDblClickObs);
+}
 
 ice.ace.DataTable.prototype.setupSelectionHover = function () {
     var _self = this,
@@ -1191,6 +1225,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
                 // Set Duplicate Header Sizing to Body Columns
                 // Equiv of max width
+                console.log(bodySingleCols[i].parentNode.className);
                 var index = /ui-col-([0-9]+)/g.exec(bodySingleCols[i].parentNode.className)[1],
                     selector =  this.jqId+' .ui-col-'+index+' > div';
                 if (styleSheet.insertRule)
