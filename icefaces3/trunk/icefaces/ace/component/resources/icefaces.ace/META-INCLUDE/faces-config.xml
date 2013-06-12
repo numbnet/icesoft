@@ -18,6 +18,9 @@
 <faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    <ordering>
+        <after>ICEfacesCore</after>
+    </ordering>
     <application>
         <resource-handler>org.icefaces.ace.component.fileentry.FileEntryResourceHandler</resource-handler>
         <resource-handler>org.icefaces.ace.component.richtextentry.RichTextEntryResourceHandler</resource-handler>
@@ -27,8 +30,8 @@
             <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
-            <system-event-listener-class>org.icefaces.ace.renderkit.UncompressAceResources</system-event-listener-class>
-            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
+            <system-event-listener-class>org.icefaces.ace.renderkit.UncompressAceResources$RegisterListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
         </system-event-listener>
     </application>
    <factory>
