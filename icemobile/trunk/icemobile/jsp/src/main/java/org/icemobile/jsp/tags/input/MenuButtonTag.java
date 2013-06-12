@@ -49,10 +49,12 @@ public class MenuButtonTag extends BaseBodyTag implements IMenuButton{
             writer = new TagWriter(pageContext);
             renderer.encodeBegin(this, writer);
             writer.closeOffTag();
-            if (null != this.selectTitle){  //should we allow an empty string ?
-               // logger.info("selectTitle="+selectTitle);
-                renderer.encodeSelectTitle(this, writer);
+            if (this.selectTitle==null || this.selectTitle.trim()
+                .equals("")){
+                this.selectTitle =  "Select";
             }
+            renderer.encodeSelectTitle(this, writer);
+
         } catch (IOException ioe){
             throw new JspTagException(" Error with startTag of MenuButtonTag");
         }
@@ -97,7 +99,7 @@ public class MenuButtonTag extends BaseBodyTag implements IMenuButton{
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -105,7 +107,7 @@ public class MenuButtonTag extends BaseBodyTag implements IMenuButton{
     }
 
     public String getSelectTitle() {
-        return selectTitle;
+        return this.selectTitle;
     }
 
     public void setSelectTitle(String selectTitle) {
@@ -113,7 +115,7 @@ public class MenuButtonTag extends BaseBodyTag implements IMenuButton{
     }
 
     public String getButtonLabel() {
-        return buttonLabel;
+        return this.buttonLabel;
     }
 
     public void setButtonLabel(String buttonLabel) {
@@ -121,7 +123,7 @@ public class MenuButtonTag extends BaseBodyTag implements IMenuButton{
     }
 
     public boolean isDisabled() {
-        return disabled;
+        return this.disabled;
     }
 
     public void setDisabled(boolean disabled) {
@@ -129,7 +131,7 @@ public class MenuButtonTag extends BaseBodyTag implements IMenuButton{
     }
 
     public String getSelectedValue() {
-        return selectedValue;
+        return this.selectedValue;
     }
 
     public void setSelectedValue(String selectedValue) {
@@ -137,6 +139,7 @@ public class MenuButtonTag extends BaseBodyTag implements IMenuButton{
     }
 
     public void release(){
+        this.selectedValue=null;
         super.release();
         this.writer= null;
         this.renderer=null;
