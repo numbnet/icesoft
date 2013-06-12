@@ -43,7 +43,6 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="panel", value="org.icefaces.ace.component.panel.Panel")
 public class PanelRenderer extends CoreRenderer {
-    private Map<String, Object> domUpdateMap = new HashMap<String, Object>();
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -68,7 +67,6 @@ public class PanelRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        domUpdateMap.clear();
         Panel panel = (Panel) component;
 
         encodeMarkup(facesContext, panel);
@@ -117,6 +115,7 @@ public class PanelRenderer extends CoreRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, Panel panel) throws IOException {
+		Map<String, Object> domUpdateMap = new HashMap<String, Object>();
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
         Menu optionsMenu = panel.getOptionsMenu();
@@ -131,7 +130,7 @@ public class PanelRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeHeader(context, panel);
+        encodeHeader(context, panel, domUpdateMap);
         encodeContent(context, panel);
         encodeFooter(context, panel);
 
@@ -178,7 +177,7 @@ public class PanelRenderer extends CoreRenderer {
 		panel.setPreviousDisableInputs(panel.isDisableInputs());
     }
 
-    protected void encodeHeader(FacesContext context, Panel panel) throws IOException {
+    protected void encodeHeader(FacesContext context, Panel panel, Map<String, Object> domUpdateMap) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String widgetVar = this.resolveWidgetVar(panel);
         UIComponent header = panel.getFacet("header");
