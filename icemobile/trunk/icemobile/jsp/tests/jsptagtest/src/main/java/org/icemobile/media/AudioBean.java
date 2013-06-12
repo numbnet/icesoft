@@ -5,7 +5,8 @@ public class AudioBean extends MediaBean {
 
 
     public AudioBean(){
-        this.controls = true;
+        this.preload="auto";
+        this.controls=true;
     }
 
 }
