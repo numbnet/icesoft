@@ -32,9 +32,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import javax.faces.render.Renderer;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -81,6 +82,18 @@ public class UncompressAceResources implements SystemEventListener {
                     }
                 }
             }
+        }
+    }
+
+    //register UncompressAceResources dynamically to make sure it is invoked last when PreRenderComponentEvent is fired
+    public static class RegisterListener implements SystemEventListener {
+        public void processEvent(SystemEvent event) throws AbortProcessingException {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getApplication().subscribeToEvent(PreRenderComponentEvent.class, new UncompressAceResources());
+        }
+
+        public boolean isListenerForSource(Object source) {
+            return true;
         }
     }
 }
