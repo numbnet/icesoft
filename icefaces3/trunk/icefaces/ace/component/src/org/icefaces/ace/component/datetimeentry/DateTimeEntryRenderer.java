@@ -47,7 +47,6 @@ import org.icefaces.util.EnvUtils;
 
 @MandatoryResourceComponent(tagName="dateTimeEntry", value="org.icefaces.ace.component.datetimeentry.DateTimeEntry")
 public class DateTimeEntryRenderer extends InputRenderer {
-    private Map<String, Object> domUpdateMap = new HashMap<String, Object>();
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -77,7 +76,6 @@ public class DateTimeEntryRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 //        System.out.println("\nDateTimeEntryRenderer.encodeEnd");
 //        printParams();
-        domUpdateMap.clear();
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         String value = DateTimeEntryUtils.getValueAsString(context, dateTimeEntry);
         Map<String, Object> labelAttributes = getLabelAttributes(component);
@@ -86,6 +84,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, DateTimeEntry dateTimeEntry, String value, Map<String, Object> labelAttributes) throws IOException {
+        Map<String, Object> domUpdateMap = new HashMap<String, Object>();
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dateTimeEntry.getClientId(context);
         String inputId = clientId + "_input";
