@@ -79,7 +79,7 @@ import java.util.logging.Logger;
 public class NotificationBean extends ExampleImpl<NotificationBean> implements
         Serializable {
 
-    private final static Logger log =
+    private transient final static Logger log =
             Logger.getLogger(NotificationBean.class.getName());
 
     public static final String BEAN_NAME = "notificationBean";
