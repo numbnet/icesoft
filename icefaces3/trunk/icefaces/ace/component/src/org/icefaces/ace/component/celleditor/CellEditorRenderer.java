@@ -42,14 +42,12 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="cellEditor", value="org.icefaces.ace.component.celleditor.CellEditor")
 public class CellEditorRenderer extends CoreRenderer {
-    String rowStateVar;
-
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CellEditor editor = (CellEditor) component;
 
-        if (rowStateVar == null) rowStateVar = getRowStateVar(editor);
+        String rowStateVar = getRowStateVar(editor);
 
         RowState rowState = (RowState) context.getExternalContext().getRequestMap().get(rowStateVar);
         List<String> selectedEditorIds = rowState.getActiveCellEditorIds();
