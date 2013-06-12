@@ -138,7 +138,8 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 
     public void populateList(FacesContext facesContext, SimpleSelectOneMenu simpleSelectOneMenu) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
-		Object value = simpleSelectOneMenu.getValue();
+		Object submittedValue = simpleSelectOneMenu.getSubmittedValue();
+		Object value = submittedValue != null ? submittedValue : simpleSelectOneMenu.getValue();
 		String clientId = simpleSelectOneMenu.getClientId(facesContext);
 		boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         simpleSelectOneMenu.populateItemList();
