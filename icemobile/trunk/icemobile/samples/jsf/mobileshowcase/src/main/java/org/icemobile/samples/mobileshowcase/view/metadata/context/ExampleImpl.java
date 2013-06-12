@@ -16,20 +16,22 @@
 
 package org.icemobile.samples.mobileshowcase.view.metadata.context;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
 import org.icefaces.util.EnvUtils;
 import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ResourceType;
 
-import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import java.util.ArrayList;
-
 /**
  *
  */
-public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
+public class ExampleImpl<T> implements Example, ExampleResources, ContextBase, Serializable {
 
     private Class<T> parentClass;
 

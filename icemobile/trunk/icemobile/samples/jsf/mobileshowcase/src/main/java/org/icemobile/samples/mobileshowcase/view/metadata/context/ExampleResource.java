@@ -16,12 +16,14 @@
 
 package org.icemobile.samples.mobileshowcase.view.metadata.context;
 
+import java.io.Serializable;
+
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ResourceType;
 
 /**
  *
  */
-public class ExampleResource {
+public class ExampleResource implements Serializable{
 
     public String title;
     public String resource;

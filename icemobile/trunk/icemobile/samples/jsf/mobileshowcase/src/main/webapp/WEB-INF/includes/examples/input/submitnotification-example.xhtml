@@ -50,7 +50,7 @@
             <mobi:fieldsetRow style="text-align:center">
                 <mobi:menuButton buttonLabel="Action Menu" id="menuButton"
                                  var="item" value="#{submitNotificationBean.menuButtons}">
-                     <mobi:menuButtonItem label="Execute Long Task"
+                     <mobi:menuButtonItem label="#{item.label}"
                             actionListener="#{submitNotificationBean.longRunningTask}"
                             submitNotification="submitNotification2"/>
                 </mobi:menuButton>

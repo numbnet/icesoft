@@ -15,9 +15,6 @@
  */
 package org.icemobile.samples.mobileshowcase.view.examples.input.submitnotification;
 
-import org.icemobile.samples.mobileshowcase.util.FacesUtils;
-import org.icemobile.samples.mobileshowcase.view.examples.input.menubutton.Command;
-import org.icemobile.samples.mobileshowcase.view.examples.input.menubutton.MenuButtonBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.menubutton.MenuButtonItemModel;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
@@ -59,12 +56,12 @@ public class SubmitNotificationBean extends ExampleImpl<SubmitNotificationBean> 
         Serializable {
 
     public static final String BEAN_NAME = "submitNotificationBean";
-    private List<Object> menuButtons;
+    private List<MenuButtonItemModel> menuButtons;
 
     public SubmitNotificationBean() {
         super(SubmitNotificationBean.class);
-        menuButtons = new ArrayList<Object>();
-        menuButtons.add(new Object());
+        menuButtons = new ArrayList<MenuButtonItemModel>();
+        menuButtons.add(new MenuButtonItemModel("Execute Long Task",null));
     }
     
     public void longRunningTask(ActionEvent event){
@@ -75,7 +72,7 @@ public class SubmitNotificationBean extends ExampleImpl<SubmitNotificationBean> 
         }
     }
 
-    public List<Object> getMenuButtons() {
+    public List<MenuButtonItemModel> getMenuButtons() {
         return menuButtons;
     }
 }

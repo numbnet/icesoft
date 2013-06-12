@@ -33,16 +33,22 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class ScheduledPushExecutor implements Serializable {
 
-    private final static Logger log =
+    private transient final static Logger log =
             Logger.getLogger(ScheduledPushExecutor.class.getName());
 
     public static final String BEAN_NAME = "scheduledPushExecutor";
 
-    private ScheduledThreadPoolExecutor timerThreadPool =
-            new ScheduledThreadPoolExecutor(10);
+    private transient ScheduledThreadPoolExecutor timerThreadPool;
 
     public void schedule(Runnable runner, long delay, TimeUnit unit) {
-        timerThreadPool.schedule(runner, delay, unit);
+        getExecutor().schedule(runner, delay, unit);
+    }
+    
+    private ScheduledThreadPoolExecutor getExecutor(){
+        if( timerThreadPool == null ){
+            timerThreadPool  = new ScheduledThreadPoolExecutor(10);
+        }
+        return timerThreadPool;
     }
 
     @PreDestroy
