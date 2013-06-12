@@ -33,7 +33,6 @@ import java.util.Map;
 
 @MandatoryResourceComponent(tagName = "textAreaEntry", value = "org.icefaces.ace.component.textareaentry.TextAreaEntry")
 public class TextAreaEntryRenderer extends InputRenderer {
-    Map<String, Object> domUpdateMap = new HashMap<String, Object>();
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -59,6 +58,7 @@ public class TextAreaEntryRenderer extends InputRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Map<String, Object> domUpdateMap = new HashMap<String, Object>();
         TextAreaEntry textAreaEntry = (TextAreaEntry) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = textAreaEntry.getClientId(context);
@@ -72,7 +72,7 @@ public class TextAreaEntryRenderer extends InputRenderer {
         writer.startElement("span", textAreaEntry);
         writer.writeAttribute("id", clientId + "_markup", null);
         writer.writeAttribute("class", "ui-textareaentry-container", null);
-        encodeLabelAndInput(component, labelAttributes);
+        encodeLabelAndInput(component, labelAttributes, domUpdateMap);
         writer.endElement("span");
 
         writer.startElement("script", null);
@@ -109,7 +109,7 @@ public class TextAreaEntryRenderer extends InputRenderer {
     }
 
     @Override
-    protected void writeInputField(UIComponent component, Map<String, Object> labelAttributes) throws IOException {
+    protected void writeInputField(UIComponent component, Map<String, Object> labelAttributes, Map<String, Object> domUpdateMap) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ResponseWriter writer = context.getResponseWriter();
         Map paramMap = context.getExternalContext().getRequestParameterMap();

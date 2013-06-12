@@ -154,13 +154,13 @@ public class InputRenderer extends CoreRenderer {
 		return value;
 	}
 
-    protected void encodeLabelAndInput(UIComponent component, Map<String, Object> labelAttributes) throws IOException {
+    protected void encodeLabelAndInput(UIComponent component, Map<String, Object> labelAttributes, Map<String, Object> domUpdateMap) throws IOException {
         writeLabelAndIndicatorBefore(labelAttributes);
-        writeInputField(component, labelAttributes);
+        writeInputField(component, labelAttributes, domUpdateMap);
         writeLabelAndIndicatorAfter(labelAttributes);
     }
 
-    protected void writeInputField(UIComponent component, Map<String, Object> labelAttributes) throws IOException {
+    protected void writeInputField(UIComponent component, Map<String, Object> labelAttributes, Map<String, Object> domUpdateMap) throws IOException {
     }
 
     private void writeHiddenLabel(ResponseWriter writer, String label) throws IOException {
