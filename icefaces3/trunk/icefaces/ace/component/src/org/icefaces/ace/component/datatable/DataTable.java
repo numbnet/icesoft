@@ -31,6 +31,7 @@ import org.icefaces.ace.component.panelexpansion.PanelExpansion;
 import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.rowexpansion.RowExpansion;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
+import org.icefaces.ace.event.DataTableCellClickEvent;
 import org.icefaces.ace.event.SelectEvent;
 import org.icefaces.ace.event.TableFilterEvent;
 import org.icefaces.ace.event.UnselectEvent;
@@ -39,6 +40,7 @@ import org.icefaces.ace.model.MultipleExpressionComparator;
 import org.icefaces.ace.model.filter.ContainsFilterConstraint;
 import org.icefaces.ace.model.table.*;
 import org.icefaces.ace.util.ComponentUtils;
+import org.icefaces.ace.util.Constants;
 import org.icefaces.ace.util.collections.AllPredicate;
 import org.icefaces.ace.util.collections.AnyPredicate;
 import org.icefaces.ace.util.collections.Predicate;
@@ -275,24 +277,45 @@ public class DataTable extends DataTableBase implements Serializable {
         if (event == null) {
             throw new NullPointerException();
         }
+
+        int rowIndex = getRowIndex();
+
+        if (event instanceof AjaxBehaviorEvent) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Map<String, String> params =  context.getExternalContext()
+                                                 .getRequestParameterMap();
+            String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+
+            if (eventName.equals("cellClick") || eventName.equals("cellDblClick")) {
+                int columnIndex = Integer.parseInt(params.get(getClientId(context) + "_colIndex"));
+                rowIndex = Integer.parseInt(params.get(getClientId(context) + "_rowIndex"));
+                Column column = getColumns().get(columnIndex);
+                event = new DataTableCellClickEvent((AjaxBehaviorEvent)event, column);
+            }
+        }
+
         UIComponent parent = getParent();
         if (parent == null) {
             throw new IllegalStateException();
         } else {
             if (hasTreeDataModel())
-                parent.queueEvent(new TreeWrapperEvent(this, event, getRowIndex(), ((TreeDataModel)model).getRootIndexArray()));
+                parent.queueEvent(new TreeWrapperEvent(this, event, rowIndex, ((TreeDataModel)model).getRootIndexArray()));
             else
-                parent.queueEvent(new WrapperEvent(this, event, getRowIndex()));
+                parent.queueEvent(new WrapperEvent(this, event, rowIndex));
         }
     }
 
     @Override
-    public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        broadcast(event, false);
+    }
+
+    public void broadcast(FacesEvent event, boolean skipRegen) throws AbortProcessingException {
         // The data model that is used in myFaces may have been generated
         // from incorrect getValue() results (I assume) causing it to
         // mistakenly contain 0 rows or the data of a previous ui:repeat
         // iteration.
-        setDataModel(null);
+        if (!skipRegen) setDataModel(null);
 
         boolean treeEvent = event instanceof TreeWrapperEvent;
 
@@ -345,7 +368,11 @@ public class DataTable extends DataTableBase implements Serializable {
                 compositeParent.pushComponentToEL(context, null);
             }
             source.pushComponentToEL(context, null);
-            source.broadcast(rowEvent);
+
+            // Skip regen to prevent losing current row context if broadcasting to ourselves
+            // Alternatively we could remove the DataModel regen added to broadcast for MyFaces as it may no longer be requires
+            if (source.equals(this)) broadcast(rowEvent, true);
+            else source.broadcast(rowEvent);
         } finally {
             source.popComponentFromEL(context);
             if (compositeParent != null) {
