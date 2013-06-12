@@ -56,6 +56,8 @@ public class VideoPlayerTag extends VideoPlayerBaseTag {
         return this.getId();
     }
     public void doTag() throws IOException {
+        this.srcAttribute=null;
+        this.url = null;
         writer = new TagWriter(getContext());
         renderer = new VideoPlayerCoreRenderer();
         renderer.encodeEnd(this, writer);

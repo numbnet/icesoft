@@ -65,6 +65,8 @@ public class AudioTag extends AudioBaseTag {
     }
 
     public void release(){
+        this.srcAttribute=null;
+        this.url = null;
         renderer=null;
         writer = null;
     }
