@@ -235,7 +235,7 @@
 				.addClass('jGrowl-notification ' + o.themeState + ' ui-corner-all' + ((o.group != undefined && o.group != '') ? ' ' + o.group : ''))
 				.append($('<div/>').addClass('jGrowl-close').html(o.closeTemplate))
 				.append($('<div/>').addClass('jGrowl-header').html(o.header))
-				.append($('<div/>').addClass('jGrowl-message').html(message))
+				.append($('<div/>').addClass('jGrowl-message').html("<span class='ui-icon ui-icon-" + o.icon + "'/>" + message))
 				.data("jGrowl", o).addClass(o.theme).children('div.jGrowl-close').bind("click.jGrowl", function() {
 					$(this).parent().trigger('jGrowl.beforeClose');
 				})
@@ -294,7 +294,7 @@
 			/** Add a Global Closer if more than one notification exists **/
 			if ( $('div.jGrowl-notification:parent', self.element).size() > 1 &&
 				 $('div.jGrowl-closer', self.element).size() == 0 && this.defaults.closer !== false ) {
-				$(this.defaults.closerTemplate).addClass('jGrowl-closer ' + this.defaults.themeState + ' ui-corner-all').addClass(this.defaults.theme)
+				$(this.defaults.closerTemplate).addClass('jGrowl-closer ui-state-' + this.defaults.themeState + ' ui-corner-all').addClass(this.defaults.theme)
 					.appendTo(self.element).animate(this.defaults.animateOpen, this.defaults.speed, this.defaults.easing)
 					.bind("click.jGrowl", function() {
 						$(this).siblings().trigger("jGrowl.beforeClose");
@@ -361,4 +361,4 @@
 	/** Reference the Defaults Object for compatibility with older versions of jGrowl **/
 	$.jGrowl.defaults = $.fn.jGrowl.prototype.defaults;
 
-})(jQuery);
+})(ice.ace.jq);
