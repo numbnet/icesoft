@@ -280,6 +280,8 @@
 				<file name="icefaces.ace/selectmenu/selectmenu.js"/>
 				<file name="icefaces.ace/themeselect/themeselect.js"/>
 				<file name="icefaces.ace/messages/messages.js"/>
+				<file name="icefaces.ace/growlmessages/jquery.jgrowl.js"/>
+				<file name="icefaces.ace/growlmessages/growlmessages.js"/>
             </filelist>
         </concat>
         <!-- ace-chart.js -->
