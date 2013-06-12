@@ -72,6 +72,7 @@ public class PositionedListener extends ComponentExampleImpl<PositionedListener>
 	public void setEventText(String eventText) { this.eventText = eventText; }
 	
 	public void changeEvent(PanelPositionedEvent event) {
+		if (event.getIndex() < 0) return;
 	    StringBuilder sb = new StringBuilder(90);
 	    
 	    sb.append("Moved ");
