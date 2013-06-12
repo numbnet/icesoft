@@ -31,7 +31,7 @@
  */
 
 window.logger = new Ice.Log.Logger([ 'window' ]);
-window.console ? new Ice.Log.FirebugLogHandler(window.logger) : new Ice.Log.WindowLogHandler(window.logger, window);
+window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.WindowLogHandler(window.logger, window);
 
 [ Ice.Community ].as(function(This) {
     var registerSession = function(sessionID) {

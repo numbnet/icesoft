@@ -329,7 +329,9 @@
         debug: Function.NOOP, info: Function.NOOP, warn: Function.NOOP, error: Function.NOOP
     };
 
-    This.FirebugLogHandler = Object.subclass({
+    var ieConsole = !window.console.debug;
+
+    This.ConsoleLogHandler = Object.subclass({
         initialize: function(logger) {
             logger.handleWith(this);
             this.logger = logger;
@@ -350,21 +352,37 @@
 
         toggle: Function.NOOP,
 
-        debug: function(category, message, exception) {
-            exception ? this.console.debug(this.format(category, message), exception) : this.console.debug(this.format(category, message));
-        },
+        debug: ieConsole ?
+            function(category, message, exception) {
+                exception ? this.console.log(this.format(category, message), '\n', exception) : this.console.log(this.format(category, message));
+            } :
+            function(category, message, exception) {
+                exception ? this.console.debug(this.format(category, message), exception) : this.console.debug(this.format(category, message));
+            },
 
-        info: function(category, message, exception) {
-            exception ? this.console.info(this.format(category, message), exception) : this.console.info(this.format(category, message));
-        },
+        info: ieConsole ?
+            function(category, message, exception) {
+                exception ? this.console.info(this.format(category, message), '\n', exception) : this.console.info(this.format(category, message));
+            } :
+            function(category, message, exception) {
+                exception ? this.console.info(this.format(category, message), exception) : this.console.info(this.format(category, message));
+            },
 
-        warn: function(category, message, exception) {
-            exception ? this.console.warn(this.format(category, message), exception) : this.console.warn(this.format(category, message));
-        },
+        warn: ieConsole ?
+            function(category, message, exception) {
+                exception ? this.console.warn(this.format(category, message), '\n', exception) : this.console.warn(this.format(category, message));
+            } :
+            function(category, message, exception) {
+                exception ? this.console.warn(this.format(category, message), exception) : this.console.warn(this.format(category, message));
+            },
 
-        error: function(category, message, exception) {
-            exception ? this.console.error(this.format(category, message), exception) : this.console.error(this.format(category, message));
-        },
+        error: ieConsole ?
+            function(category, message, exception) {
+                exception ? this.console.error(this.format(category, message), '\n', exception) : this.console.error(this.format(category, message));
+            } :
+            function(category, message, exception) {
+                exception ? this.console.error(this.format(category, message), exception) : this.console.error(this.format(category, message));
+            },
 
         //private
         format: function(category, message) {
