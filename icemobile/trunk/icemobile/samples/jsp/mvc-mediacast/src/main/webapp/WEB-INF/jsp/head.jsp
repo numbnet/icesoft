@@ -35,7 +35,7 @@
             <script type="text/javascript" src='<c:url value="/resources/javascript/mediacast-dojo.js"/>'></script>
         </c:when>
         <c:otherwise>
-            <script type="text/javascript" src='<c:url value="/resources/javascript/jquery-1.8.1-min.js"/>'></script>
+            <script type="text/javascript" src='<c:url value="/resources/javascript/jquery-1.9.1.min.js"/>'></script>
             <script type="text/javascript" src='<c:url value="/resources/javascript/jquery-ui-1.8.23.custom.min.js"/>'></script>
             <script type="text/javascript" src='<c:url value="/resources/javascript/mediacast-jquery.js"/>'></script>
         </c:otherwise>
