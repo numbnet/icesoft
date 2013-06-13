@@ -91,6 +91,8 @@ public class SecretRenderer
         HtmlInputSecret secret = (HtmlInputSecret) uiComponent;
         //Add the enter key behavior by default
         root.setAttribute("onkeyup", combinedPassThru(secret.getOnkeyup(), this.ICESUBMIT));
+		// avoid double-submission
+		root.setAttribute("onkeypress", combinedPassThru(secret.getOnkeypress(), "ice.cancelEnterKeyEvent(event, this);"));
         // set the focus id
         root.setAttribute("onfocus", combinedPassThru(secret.getOnfocus(), "setFocus(this.id);"));
         // clear focus id
