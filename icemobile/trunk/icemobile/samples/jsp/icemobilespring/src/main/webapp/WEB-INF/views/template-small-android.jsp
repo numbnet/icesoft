@@ -30,7 +30,7 @@
     <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
           type="text/css"/>
     <script type="text/javascript"
-        src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
+        src="<c:url value="/resources/jquery/jquery-1.9.1.min.js" />"></script>
     <script type="text/javascript" src="<c:url value="/resources/icemobilespring.js" />"></script> 
     <mobi:googleAnalytics/>
 </head>
