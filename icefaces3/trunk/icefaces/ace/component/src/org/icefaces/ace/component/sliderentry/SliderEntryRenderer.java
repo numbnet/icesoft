@@ -48,7 +48,6 @@ import javax.faces.event.ValueChangeEvent;
 
 @MandatoryResourceComponent(tagName="sliderEntry", value="org.icefaces.ace.component.sliderentry.SliderEntry")
 public class SliderEntryRenderer extends CoreRenderer{
-    private Map<String, Object> domUpdateMap = new HashMap<String, Object>();
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -103,7 +102,6 @@ public class SliderEntryRenderer extends CoreRenderer{
 
     @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        domUpdateMap.clear();
 		SliderEntry slider = (SliderEntry) component;
 		
 		encodeMarkup(facesContext, slider);
@@ -182,6 +180,7 @@ public class SliderEntryRenderer extends CoreRenderer{
 			writer.endElement("div");
 		}
 		
+		Map<String, Object> domUpdateMap = new HashMap<String, Object>();
         domUpdateMap.put("value", slider.getValue());
         writer.startElement("span", null);
         writer.writeAttribute("data-hashcode", domUpdateMap.hashCode(), null);
