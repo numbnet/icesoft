@@ -94,7 +94,7 @@
     if (nil == [self getCurrentURL])  {
         self.userAgent = [self.webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
         self.nativeInterface.userAgent = self.userAgent;
-        [self loadURL:@"http://www.icemobile.org/demos.html"];
+        [self loadURL:@"http://www.icesoft.org/java/demos/m/icemobile-demos.html"];
     } else {
         if (self.refreshCurrentView)  {
             [self.webView stringByEvaluatingJavaScriptFromString:@"ice.mobiRefresh()"];

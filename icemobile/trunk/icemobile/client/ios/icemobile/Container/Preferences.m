@@ -136,7 +136,7 @@
 
 - (void) clearHistory {
     self.history = [[NSMutableArray alloc] init];
-    [self.history addObject:@"http://www.icemobile.org/demos.html"];
+    [self.history addObject:@"http://www.icesoft.org/java/demos/m/icemobile-demos.html"];
 }
 
 - (void) dismiss {

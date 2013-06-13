@@ -111,7 +111,7 @@ public class ICEmobileContainer extends Activity
 	       ConnectionChangeListener, C2dmRegistrationHandler, SubmitProgressListener {
 
     /* Container configuration constants */
-    protected static final String HOME_URL = "http://www.icemobile.org/demos.html";
+    protected static final String HOME_URL = "http://www.icesoft.org/java/demos/m/icemobile-demos.html";
     protected static final boolean INCLUDE_CAMERA = true;
     protected static final boolean INCLUDE_AUDIO = true;
     protected static final boolean INCLUDE_VIDEO = true;
