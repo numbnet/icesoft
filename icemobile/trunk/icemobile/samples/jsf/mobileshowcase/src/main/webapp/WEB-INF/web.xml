@@ -68,12 +68,18 @@
         <param-name>org.apache.myfaces.SERIALIZE_STATE_IN_SESSION</param-name>
         <param-value>false</param-value>
     </context-param>
+
+@EXTRA_CONTEXT_PARAMS@
     
+@EXTRA_FILTERS@
+
+@EXTRA_SERVLETS@
+
    <!-- Servlet declarations and mappings -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-        <multipart-config/>
+@MULTIPART_CONFIG@
     </servlet>
 
     <!-- Source Code reader servlet-->
@@ -85,12 +91,12 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-name>@FACES_SERVLET@</servlet-name>
         <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-name>@FACES_SERVLET@</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
 
@@ -98,6 +104,11 @@
         <servlet-name>SourceCode Reader</servlet-name>
         <url-pattern>/sourcecodeStream.html</url-pattern>
     </servlet-mapping>
+
+@EXTRA_SERVLET_MAPPINGS@
+
+
+@EXTRA_FILTER_MAPPINGS@
 
     <session-config>
         <session-timeout>15</session-timeout>
