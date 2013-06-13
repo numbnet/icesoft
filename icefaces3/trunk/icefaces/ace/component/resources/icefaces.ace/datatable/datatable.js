@@ -1290,8 +1290,13 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
         // Recheck scrollable, it may have changed again post resize
-        if (ie9 && bodyTable.parent().is(':scrollable(horizontal)'))
+        if (ie9 && bodyTable.parent().is(':scrollable(horizontal)')) {
             bodyTable.css('table-layout','fixed');
+            bodySingleCols.each(function(e) {
+                e.parentNode.style.width = '';
+            });
+        }
+
 
         if (!ie7 && vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
             if (((firefox) || ((safari || chrome) && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
