@@ -18,7 +18,16 @@
 <project name="common-jsf" default="servlet-profile">
 		
 	<import file="common.xml"/>
+	<property file="${icemobile.server.config}" />
 
+    <property name="FACES_SERVLET" value="Faces Servlet"/>
+    <property name="MULTIPART_CONFIG" value="&lt;multipart-config/&gt;"/>
+    <property name="EXTRA_CONTEXT_PARAMS" value=""/>
+    <property name="EXTRA_FILTERS" value=""/>
+    <property name="EXTRA_FILTER_MAPPINGS" value=""/>
+    <property name="EXTRA_SERVLET_MAPPINGS" value=""/>
+    <property name="EXTRA_SERVLETS" value=""/>
+    
     <condition property="jsf.implementation" value="myfaces" else="mojarra">
         <isset property="myfaces"/>
     </condition>
@@ -70,12 +79,26 @@
                 <include name="**/*.java"/>
             </fileset>
         </copy>
+        <copy file="${web.dir}/WEB-INF/web.xml" todir="${webxml.dir}">
+          <filterset>
+            <filter token="FACES_SERVLET" value="${FACES_SERVLET}"/>
+            <filter token="MULTIPART_CONFIG" value="${MULTIPART_CONFIG}"/>
+            <filter token="EXTRA_CONTEXT_PARAMS" value="${EXTRA_CONTEXT_PARAMS}"/>
+            <filter token="EXTRA_FILTERS" value="${EXTRA_FILTERS}"/>
+            <filter token="EXTRA_FILTER_MAPPINGS"
+              value="${EXTRA_FILTER_MAPPINGS}"/>
+            <filter token="EXTRA_SERVLET_MAPPINGS"
+              value="${EXTRA_SERVLET_MAPPINGS}"/>
+            <filter token="EXTRA_SERVLETS" value="${EXTRA_SERVLETS}"/>
+          </filterset>
+        </copy>
     </target>
 
     <target name="war.basic" depends="compile">
     	<war basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war"
-             webxml="${web.dir}/WEB-INF/web.xml">
+             webxml="${webxml.dir}/web.xml"
+             excludes="WEB-INF/web.xml">
 
             <lib dir="${lib.icemobile.dir}">
                 <patternset refid="pattern.distribute.jsf"/>

@@ -35,6 +35,7 @@
 
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
+    <property name="webxml.dir" location="${build.dir}/webxml"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
 
     <patternset id="pattern.all">
