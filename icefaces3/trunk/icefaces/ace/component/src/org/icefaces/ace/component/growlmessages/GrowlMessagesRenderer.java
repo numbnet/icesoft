@@ -33,13 +33,13 @@ import java.util.logging.Logger;
 @MandatoryResourceComponent(tagName = "growlMessages", value = "org.icefaces.ace.component.growlmessages.GrowlMessages")
 public class GrowlMessagesRenderer extends Renderer {
 
-    private static String[] icons = new String[]{"info", "notice", "alert", "alert"};
-    private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
-    private static Set<String> effectSet = new HashSet<String>(Arrays.asList("blind", "bounce", "clip", "drop", "explode", "fade", "fold", "highlight", "puff", "pulsate", "scale", "shake", "size", "slide"));
-    private static Set<String> durationSet = new HashSet<String>(Arrays.asList("slow", "_default", "fast"));
-    private static Set<String> positionSet = new HashSet<String>(Arrays.asList("top-left", "top-right", "bottom-left", "bottom-right", "center"));
-    private static Set<String> glueSet = new HashSet<String>(Arrays.asList("after", "before"));
-    private static Map<String, Integer> severityMap = new HashMap<String, Integer>() {
+    private static final String[] icons = new String[]{"info", "notice", "alert", "alert"};
+    private static final String[] states = new String[]{"highlight", "highlight", "error", "error"};
+    private static final Set<String> effectSet = new HashSet<String>(Arrays.asList("blind", "bounce", "clip", "drop", "explode", "fade", "fold", "highlight", "puff", "pulsate", "scale", "shake", "size", "slide"));
+    private static final Set<String> durationSet = new HashSet<String>(Arrays.asList("slow", "_default", "fast"));
+    private static final Set<String> positionSet = new HashSet<String>(Arrays.asList("top-left", "top-right", "bottom-left", "bottom-right"));
+    private static final Set<String> glueSet = new HashSet<String>(Arrays.asList("after", "before"));
+    private static final Map<String, Integer> severityMap = new HashMap<String, Integer>() {
         {
             put("false", -1);
             put("info", 0);
@@ -51,7 +51,7 @@ public class GrowlMessagesRenderer extends Renderer {
 
         private static final long serialVersionUID = -8266894485504175957L;
     };
-    private Logger logger = Logger.getLogger(this.getClass().getName());
+    private static final Logger logger = Logger.getLogger(GrowlMessagesRenderer.class.getName());
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 
