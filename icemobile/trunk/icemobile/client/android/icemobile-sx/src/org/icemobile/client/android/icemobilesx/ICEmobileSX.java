@@ -72,7 +72,7 @@ public class ICEmobileSX extends Activity
     }
 
     /* Container configuration constants */
-    public static final String HOME_URL = "http://www.icesoft.org/java/demos/icemobile-demos.jsf";
+    public static final String HOME_URL = "http://www.icesoft.org/java/demos/m/icemobile-demos.html";
     protected static final boolean INCLUDE_CAMERA = true;
     protected static final boolean INCLUDE_AUDIO = true;
     protected static final boolean INCLUDE_VIDEO = true;
