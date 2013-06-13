@@ -34,11 +34,11 @@ import java.util.logging.Logger;
 @MandatoryResourceComponent(tagName = "messages", value = "org.icefaces.ace.component.messages.Messages")
 public class MessagesRenderer extends Renderer {
 
-    private static String[] icons = new String[]{"info", "notice", "alert", "alert"};
-    private static String[] states = new String[]{"highlight", "highlight", "error", "error"};
-    private static Set<String> effectSet = new HashSet<String>(Arrays.asList("blind", "bounce", "clip", "drop", "explode", "fade", "fold", "highlight", "puff", "pulsate", "scale", "shake", "size", "slide"));
-    private static Set<String> durationSet = new HashSet<String>(Arrays.asList("slow", "_default", "fast"));
-    private Logger logger = Logger.getLogger(this.getClass().getName());
+    private static final String[] icons = new String[]{"info", "notice", "alert", "alert"};
+    private static final String[] states = new String[]{"highlight", "highlight", "error", "error"};
+    private static final Set<String> effectSet = new HashSet<String>(Arrays.asList("blind", "bounce", "clip", "drop", "explode", "fade", "fold", "highlight", "puff", "pulsate", "scale", "shake", "size", "slide"));
+    private static final Set<String> durationSet = new HashSet<String>(Arrays.asList("slow", "_default", "fast"));
+    private static final Logger logger = Logger.getLogger(MessagesRenderer.class.getName());
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 

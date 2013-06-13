@@ -69,7 +69,7 @@ public class GrowlMessagesMeta extends UIMessagesMeta {
     @Property(tlddoc = "Types of messages to auto hide after display: \"true\" (auto hide all messages), \"false\" (don't auto hide any message), \"info\", \"warn\", \"error\", or \"fatal\" (auto hide messages at or below specified severity.)", defaultValue = "true")
     private String autoHide;
 
-    @Property(tlddoc = "Designates a class which is applied to the growl container and controls its position on the screen. Five options available, top-left, top-right, bottom-left, bottom-right, center.", defaultValue = "top-right")
+    @Property(tlddoc = "Designates a class which is applied to the growl container and controls its position on the screen. Options: top-left, top-right, bottom-left, bottom-right.", defaultValue = "top-right")
     private String position;
 
     @Property(tlddoc = "Designates whether a notification should be appended to the container after all notifications, or whether it should be prepended to the container before all notifications. Options are \"after\" or \"before\".", defaultValue = "after")
