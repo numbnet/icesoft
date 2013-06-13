@@ -49,11 +49,11 @@ public class AudioCoreRenderer extends BaseCoreRenderer{
             writer.writeAttribute("autoplay", "autoplay");
         }
          //   srcAttribute = writeCommonAttributes(writer, audio, facesContext, clientId);
-        String preloadVal = "none";
-        if (audio.getPreload()!=null){
+        String preloadVal = "auto";
+        if (!isStringAttributeEmpty(audio.getPreload())){
             String preload = audio.getPreload();
-            if (preload.toLowerCase().trim().equals("auto")){
-                preloadVal = "auto";
+            if (preload.toLowerCase().trim().equals("none")){
+                preloadVal = "none";
             }
             if (preload.toLowerCase().trim().equals("metadata")){
                 preloadVal="metadata";
@@ -68,10 +68,10 @@ public class AudioCoreRenderer extends BaseCoreRenderer{
             writer.writeAttribute("muted", "muted");
         }
         String mimeType = audio.getType();
-        if (null == mimeType){
-            mimeType = "audio/mpeg"; //do we want a default type this seems to work best???
+        if (!isStringAttributeEmpty(mimeType)){
+          //  mimeType = "audio/mpeg"; //do we want a default type this seems to work best???
+            writer.writeAttribute("type", mimeType);
         }
-        writer.writeAttribute("type", mimeType);
         String srcAttribute = audio.getSrcAttribute();
         if (null == srcAttribute){
             srcAttribute = audio.getUrl();

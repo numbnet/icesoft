@@ -49,14 +49,14 @@
               <option value="metadata" ${audioInfo.preload=='metadata' ? 'selected' : ''}>metadata</option>
           </select>
        </mobi:fieldsetRow>
-       <mobi:fieldsetRow>
+ <!--      <mobi:fieldsetRow>
            <label>src</label>
            <select name="src" >
               <option value="audio_clip.mp3" ${audioInfo.src=='audio_clip.mp3' ? 'selected' : ''}>mp3 example</option>
               <option value="sampleIPad.mp4" ${audioInfo.src=='sampleIPad.mp4' ? 'selected' : ''}>iPad example</option>
               <option value="sampleAndroid.mp4" ${audioInfo.preload=='sampleAndroid.mp4' ? 'selected' : ''}>Android example</option>
           </select>
-       </mobi:fieldsetRow>
+       </mobi:fieldsetRow> -->
        <mobi:fieldsetRow>
            <label>controls: </label>
            <mobi:flipswitch id="fs2" labelOn="true" labelOff="false"

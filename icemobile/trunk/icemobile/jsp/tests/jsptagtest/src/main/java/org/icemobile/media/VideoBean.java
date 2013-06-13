@@ -9,6 +9,7 @@ public class VideoBean extends MediaBean{
 
     public VideoBean(){
         this.controls=true;
+        this.preload="auto";
         this.height=60;
         this.width=200;
         this.src="iPadvideo.mp4";

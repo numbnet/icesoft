@@ -52,14 +52,14 @@
               <option value="metadata" ${videoInfo.preload=='metadata' ? 'selected' : ''}>metadata</option>
           </select>
        </mobi:fieldsetRow>
-       <mobi:fieldsetRow>
+  <!--     <mobi:fieldsetRow>
            <label>src</label>
            <select name="src" >
               <option value="sample_3GPP2.3g2" ${videoInfo.src=='sample_3GPP2.3g2' ? 'selected' : ''}>3G2 example</option>
               <option value="iPadvideo.mp4" ${videoInfo.src=='sampleIPad.mp4' ? 'selected' : ''}>iPad example</option>
               <option value="androidvideo.mp4" ${videoInfo.preload=='androidvideo.mp4' ? 'selected' : ''}>Android example</option>
           </select>
-       </mobi:fieldsetRow>
+       </mobi:fieldsetRow> -->
        <mobi:fieldsetRow>
            <label>controls: </label>
            <mobi:flipswitch id="fs2" labelOn="true" labelOff="false"
@@ -120,7 +120,6 @@
                             height="${videoInfo.height}"
                             preload="${videoInfo.preload}"
                             linkLabel="${videoInfo.linkLabel}"
-                            poster = "${videoInfo.poster}"
                             controls="${videoInfo.controls}"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>

@@ -39,18 +39,15 @@ public class VideoPlayerCoreRenderer extends BaseCoreRenderer{
         // apply style class
         writeStandardLayoutAttributes(writer, video, VIDEO_CLASS );
         writer.startElement("video", video);
-  /*      if (disabled) {
-            writer.writeAttribute("disabled", "disabled");
-        }  */
         if (video.isLoop()){
             writer.writeAttribute("loop", "loop");
         }
          //   srcAttribute = writeCommonAttributes(writer, video, facesContext, clientId);
-        String preloadVal = "none";
-        if (video.getPreload()!=null){
+        String preloadVal = "auto";
+        if (isStringAttributeEmpty(video.getPreload())){
             String preload = video.getPreload();
-            if (preload.toLowerCase().trim().equals("auto")){
-                preloadVal = "auto";
+            if (preload.toLowerCase().trim().equals("none")){
+                preloadVal = "none";
             }
             if (preload.toLowerCase().trim().equals("metadata")){
                 preloadVal="metadata";
@@ -69,7 +66,7 @@ public class VideoPlayerCoreRenderer extends BaseCoreRenderer{
         if (video.isControls()){
             writer.writeAttribute("controls", "controls");
         }
-        if (null != video.getType()) {
+        if (!isStringAttributeEmpty(video.getType())) {
             writer.writeAttribute("type", video.getType());
         }
         if (video.isMuted()){
@@ -79,7 +76,7 @@ public class VideoPlayerCoreRenderer extends BaseCoreRenderer{
         if (srcAttribute==null){
             srcAttribute = video.getUrl();
         }
-        if (null != video.getPoster()){
+        if (!isStringAttributeEmpty(video.getPoster())){
             writer.writeAttribute("poster", video.getPoster());
         }
         writer.writeAttribute("src", srcAttribute);
