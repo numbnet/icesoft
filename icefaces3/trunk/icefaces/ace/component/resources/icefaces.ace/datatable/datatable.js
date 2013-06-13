@@ -1225,7 +1225,6 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
                 // Set Duplicate Header Sizing to Body Columns
                 // Equiv of max width
-                console.log(bodySingleCols[i].parentNode.className);
                 var index = /ui-col-([0-9]+)/g.exec(bodySingleCols[i].parentNode.className)[1],
                     selector =  this.jqId+' .ui-col-'+index+' > div';
                 if (styleSheet.insertRule)
