@@ -45,8 +45,8 @@ import java.util.*;
 
 @MandatoryResourceComponent(tagName="dataTable", value="org.icefaces.ace.component.datatable.DataTable")
 public class DataTableRenderer extends CoreRenderer {
-    private static String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
-    private static String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.datatable.";
+    private static final String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
+    private static final String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.datatable.";
 
     @Override
 	public void decode(FacesContext context, UIComponent component) {

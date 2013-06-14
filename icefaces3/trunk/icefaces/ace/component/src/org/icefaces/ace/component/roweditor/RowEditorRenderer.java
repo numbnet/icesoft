@@ -49,8 +49,8 @@ import java.util.ResourceBundle;
 @MandatoryResourceComponent(tagName="rowEditor", value="org.icefaces.ace.component.roweditor.RowEditor")
 public class RowEditorRenderer extends CoreRenderer {
 
-    private static String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
-    private static String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.roweditor.";
+    private static final String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
+    private static final String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.roweditor.";
 
     private static enum BUTTON {
         START, SUBMIT, CANCEL;
