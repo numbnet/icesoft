@@ -25,6 +25,7 @@ import org.icefaces.impl.util.FormEndRendering;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -33,6 +34,8 @@ import javax.faces.render.RenderKitWrapper;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -105,6 +108,37 @@ public class DOMRenderKit extends RenderKitWrapper {
      */
     public void addRenderer(String family, String rendererType, Renderer r) {
         Class clazz = r.getClass();
+
+        // Test to ensure that every Renderer does not have any instance fields
+        // There are read-only usage patterns where instance fields are ok,
+        // but we can't test for that, so we test for them existing at all.
+        if (FacesContext.getCurrentInstance().getApplication().
+                getProjectStage().equals(ProjectStage.Development)) {
+            for (Class currClass = clazz; currClass != null &&
+                    !javax.faces.render.Renderer.class.equals(currClass);
+                    currClass = currClass.getSuperclass()) {
+                // Many com.sun renderers use read-only instance field pattern
+                if (currClass.getName().startsWith("com.sun")) {
+                    continue;
+                }
+                for (Field field : currClass.getDeclaredFields()) {
+                    int m = field.getModifiers();
+                    if (!Modifier.isStatic(m) || !Modifier.isFinal(m)) {
+                        StringBuilder sb = new StringBuilder().append(
+                            "For class ").append(clazz.getName());
+                        if (currClass != clazz) {
+                            sb.append(", in its superclass ").append(
+                                currClass.getName());
+                        }
+                        sb.append(", the field '").append(field.getName()).
+                            append("' is not declared 'static final'. " +
+                                "Renderer classes must not have instance " +
+                                "fields, and must be re-entrant.");
+                        log.warning(sb.toString());
+                    }
+                }
+            }
+        }
 
         if (ACE_HEAD_RENDERER_CLASSNAME.equals(clazz.getName())) {
             if (!useAceHeadRenderer()) return; // see if org.icefaces.ace.theme context param is set to none
