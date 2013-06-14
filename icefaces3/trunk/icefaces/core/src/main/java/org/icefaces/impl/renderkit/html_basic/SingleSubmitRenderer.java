@@ -23,7 +23,7 @@ import javax.faces.render.Renderer;
 import java.io.IOException;
 
 public class SingleSubmitRenderer extends Renderer {
-    public static String SINGLE_SUBMIT_MARKER = SingleSubmitRenderer.class.getName();
+    public static final String SINGLE_SUBMIT_MARKER = SingleSubmitRenderer.class.getName();
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component)
