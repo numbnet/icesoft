@@ -85,6 +85,24 @@ class PushUtils {
     }
 
     /**
+     * Create a resource name that is unique to the view and the component,
+     * in iteration, that can be used for registering and retrieving the
+     * progress resource with the org.icefaces.application.ResourceRegistry.
+     *
+     * Note: Calling this several times in a lifecycle needs to be
+     * deterministic.
+     *
+     * @param context FacesContext
+     * @param comp The component the resource is tied to
+     * @return Resource name
+     */
+    static String getProgressResourceName(FacesContext context, UIComponent comp) {
+        String identifier = FileEntry.getGloballyUniqueComponentIdentifier(
+                context, comp.getClientId(context));
+        return PROGRESS_PREFIX + identifier + ".txt";
+    }
+
+    /**
      * Create a path that is unique to the view and the component, in
      * iteration, and register a progress resource under that path.
      *
@@ -104,9 +122,8 @@ class PushUtils {
                 comp.getClientId(context);
         String resPath = (String) comp.getAttributes().get(attribKey);
         if (resPath == null) {
-            String identifier = FileEntry.getGloballyUniqueComponentIdentifier(
-                    context, comp.getClientId(context));
-            Resource res = new ProgressResource(identifier);
+            String resName = getProgressResourceName(context, comp);
+            Resource res = new ProgressResource(resName);
             resPath = ResourceRegistry.addSessionResource(res);
             comp.getAttributes().put(attribKey, resPath);
         }
@@ -178,6 +195,7 @@ class PushUtils {
         ExternalContext externalContext = facesContext.getExternalContext();
         HttpServletRequest request = EnvUtils.getSafeRequest(facesContext);
         HttpServletResponse response = EnvUtils.getSafeResponse(facesContext);
+        log.finer("PushUtils.createPushId()\n  request: " + request + "\n  response: " + response);
 
         String id = null;
         // PushContext.getInstance(servletContext).createPushId(
@@ -189,6 +207,7 @@ class PushUtils {
                         invoke(pushContext, request, response);
             }
         } catch (Exception e) {
+            log.log(java.util.logging.Level.WARNING, "Problem creating push id", e);
         }
         return id;
     }
@@ -203,6 +222,7 @@ class PushUtils {
                         pushContext, groupName, pushId);
             }
         } catch (Exception e) {
+            log.log(java.util.logging.Level.WARNING, "Problem adding push group member", e);
         }
     }
 
@@ -216,6 +236,7 @@ class PushUtils {
                         pushContext, groupName, pushId);
             }
         } catch (Exception e) {
+            log.log(java.util.logging.Level.WARNING, "Problem removing push group member", e);
         }
     }
     
@@ -228,6 +249,7 @@ class PushUtils {
                         pushContext, groupName);
             }
         } catch (Exception e) {
+            log.log(java.util.logging.Level.WARNING, "Problem getting push instance", e);
         }
     }
 
@@ -240,6 +262,7 @@ class PushUtils {
                         null, servletContext);
             }
         } catch(Exception e) {
+            log.log(java.util.logging.Level.WARNING, "Problem getting push context instance", e);
         }
         return inst;
     }
