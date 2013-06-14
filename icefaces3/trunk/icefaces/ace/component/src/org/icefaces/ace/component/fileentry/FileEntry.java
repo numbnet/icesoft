@@ -109,11 +109,11 @@ public class FileEntry extends FileEntryBase {
      */
     FileEntryConfig storeConfigForNextLifecycle(FacesContext facesContext,
             String clientId) {
-        String resPath = null;
+        String resName = null;
         String groupName = null;
         if (PushUtils.isPushPresent()) {
             UIForm form = Utils.findParentForm(this);
-            resPath = PushUtils.getProgressResourcePath(facesContext, form);
+            resName = PushUtils.getProgressResourceName(facesContext, form);
             groupName = PushUtils.getPushGroupName(facesContext, form);
         }
 
@@ -135,7 +135,7 @@ public class FileEntry extends FileEntryBase {
             getMaxFileSize(),
             getMaxFileCount(),
             isRequired(),
-            resPath,
+            resName,
             groupName);
         log.finer("FileEntry.storeConfigForNextLifecycle()  config: " + config);
         Object sessionObj = facesContext.getExternalContext().getSession(false);

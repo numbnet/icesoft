@@ -33,16 +33,17 @@ import java.util.logging.Logger;
 public class ProgressResource extends Resource implements Serializable {
     private static Logger log = Logger.getLogger(FileEntry.class.getName()+".push");
 
-    private String uniqueIdentifier;
+    private String resName;
     private String progressInfo;
     private int deltaGottenPushed;
 
-    ProgressResource(String identifier) {
-        this.uniqueIdentifier = identifier + ".txt";
+    ProgressResource(String resName) {
+        this.resName = resName;
         this.progressInfo = "";
         this.deltaGottenPushed = 0;
         setContentType("text/plain");
-        setResourceName(PushUtils.PROGRESS_PREFIX + uniqueIdentifier);
+        setResourceName(resName);
+        log.finest("PR.PR()");
     }
 
     int updateProgressInfo(String progressInfo) {
@@ -63,8 +64,8 @@ public class ProgressResource extends Resource implements Serializable {
     }
 
     public String getRequestPath() {
-        log.finest("PR.getRequestPath()  " + PushUtils.PROGRESS_PREFIX + uniqueIdentifier);
-        return PushUtils.PROGRESS_PREFIX + uniqueIdentifier;
+        log.finest("PR.getRequestPath()  " + resName);
+        return resName;
     }
 
     public URL getURL() {
@@ -81,7 +82,7 @@ public class ProgressResource extends Resource implements Serializable {
         log.fine(
             "PR.getInputStream()\n" +
             "  progressInfo: " + progressInfo + "\n" +
-            "  uniqueIdentifier: " + uniqueIdentifier);
+            "  resName: " + resName);
         deltaGottenPushed--;
         if (progressInfo == null) {
             return null;

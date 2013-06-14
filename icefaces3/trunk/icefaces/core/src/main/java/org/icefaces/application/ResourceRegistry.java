@@ -73,6 +73,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         ExternalContext externalContext = facesContext.getExternalContext();
         Application application = facesContext.getApplication();
         String key = extractResourceId(facesContext);
+        log.finest("extractResourceId: " + key);
 
         boolean useRanges = false;
         int rangeStart = 0;
@@ -120,12 +121,14 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         
         ResourceRegistryHolder holder = (ResourceRegistryHolder) elContext
             .getELResolver().getValue(elContext, null, MAP_PREFIX + key);
+        log.finest("ELResolver ResourceRegistryHolder: " + holder);
 
         //For portlets it may be necessary to use a backup plan for setting and getting
         //session based dynamic resources
         if (null == holder)  {
             holder = (ResourceRegistryHolder) EnvUtils
                 .getSafeSession(facesContext).getAttribute(MAP_PREFIX + key);
+            log.finest("Session ResourceRegistryHolder: " + holder);
             if (null != holder)  {
                 //workaround for ICE-7685 suspecting PFB bug
                 if (log.isLoggable(Level.FINE)) {
@@ -140,6 +143,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         }
         //TODO: also check the name
         Resource resource = holder.resource;
+        log.finest("Resource: " + resource);
         String contentType = resource.getContentType();
         if (contentType != null) {
             externalContext.setResponseContentType(resource.getContentType());
@@ -208,7 +212,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         } else {
             key = prefix + UUID.randomUUID().toString();
         }
-        ResourceRegistryHolder holder = 
+        ResourceRegistryHolder holder =
                 new ResourceRegistryHolder(key, resource);
         scopeMap.put(MAP_PREFIX + key, holder);
         if ("s".equals(prefix))  {
@@ -217,6 +221,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         String[] pathTemplate = EnvUtils.getPathTemplate();
         String path = pathTemplate[0] + key + pathTemplate[1];
         path = FacesContext.getCurrentInstance().getExternalContext().encodeResourceURL(path);
+        log.finest("\nresourceName: " + name + "\nkey: " + key + "\nholder: " + holder + "\npath: " + path);
         return path;
     }
 
@@ -277,21 +282,21 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         }
     }
 
-    public static Resource getResourceByPath(
-            FacesContext facesContext, String resPath) {
-        if (resPath == null) {
+    public static Resource getResourceByName(FacesContext facesContext, String resName) {
+        log.finest("resName: " + resName);
+        log.finest("lookup : '" + MAP_PREFIX + resName + "'");
+        if (resName == null) {
             return null;
         }
-        int prefixIndex = resPath.lastIndexOf(RESOURCE_PREFIX);
-        if (prefixIndex < 0) {
-            return null;
-        }
-        String key = resPath.substring(prefixIndex+RESOURCE_PREFIX.length(),
-                resPath.length() - EnvUtils.getPathTemplate()[1].length());
-
         ELContext elContext = facesContext.getELContext();
         ResourceRegistryHolder holder = (ResourceRegistryHolder) elContext
-            .getELResolver().getValue(elContext, null, MAP_PREFIX + key);
+            .getELResolver().getValue(elContext, null, MAP_PREFIX + resName);
+        log.finest("ELResolver ResourceRegistryHolder: " + holder);
+        if (holder == null) {
+            holder = (ResourceRegistryHolder) EnvUtils
+                .getSafeSession(facesContext).getAttribute(MAP_PREFIX + resName);
+            log.finest("Session ResourceRegistryHolder: " + holder);
+        }
         if (null == holder)  {
             return null;
         }

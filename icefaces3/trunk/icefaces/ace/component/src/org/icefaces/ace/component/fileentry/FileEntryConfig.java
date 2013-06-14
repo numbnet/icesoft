@@ -38,7 +38,7 @@ public class FileEntryConfig implements Serializable {
     private int maxFileCount;
     private boolean required;
 
-    private String progressResourcePath;
+    private String progressResourceName;
     private String progressGroupName;
     
     /**
@@ -70,7 +70,7 @@ public class FileEntryConfig implements Serializable {
         this.maxFileSize = maxFileSize;
         this.maxFileCount = maxFileCount;
         this.required = required;
-        this.progressResourcePath = progressResourcePath;
+        this.progressResourceName = progressResourcePath;
         this.progressGroupName = progressGroupName;
     }
 
@@ -123,8 +123,8 @@ public class FileEntryConfig implements Serializable {
         return required;
     }
 
-    public String getProgressResourcePath() {
-        return progressResourcePath;
+    public String getProgressResourceName() {
+        return progressResourceName;
     }
 
     public String getProgressGroupName() {
@@ -146,7 +146,7 @@ public class FileEntryConfig implements Serializable {
             ",\n  maxFileCount=" + maxFileCount +
             ",\n  required=" + required +
             ",\n  identifier=" + identifier +
-            ",\n  progressResourcePath=" + progressResourcePath +
+            ",\n  progressResourceName=" + progressResourceName +
             ",\n  progressGroupName=" + progressGroupName +
             "\n}";
     }

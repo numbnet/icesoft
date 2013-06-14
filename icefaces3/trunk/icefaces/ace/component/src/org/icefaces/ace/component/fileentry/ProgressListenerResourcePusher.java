@@ -41,6 +41,7 @@ public class ProgressListenerResourcePusher implements ProgressListener {
     ProgressListenerResourcePusher(
             Map<String, FileEntryResults> clientId2Results) {
         this.clientId2Results = clientId2Results;
+        log.finest("ProgressListenerResourcePusher  clientId2Results: " + clientId2Results);
     }
 
     public void update(long read, long total, int chunkIndex) {
@@ -64,6 +65,7 @@ public class ProgressListenerResourcePusher implements ProgressListener {
 
     protected boolean tryPush(long percent, boolean force) {
         if (pushResource == null || pushGroupName == null) {
+            log.finest("tryPush()  pushResource: " + pushResource + "  pushGroupName: " + pushGroupName);
             return false;
         }
         log.fine("tryPush()  percent: " + percent);
@@ -85,8 +87,12 @@ public class ProgressListenerResourcePusher implements ProgressListener {
     }
 
     void setPushResourcePathAndGroupName(FacesContext facesContext,
-            String pushResourcePath, String pushGroupName) {
-        Resource res = ResourceRegistry.getResourceByPath(facesContext, pushResourcePath);
+            String pushResourceName, String pushGroupName) {
+        Resource res = ResourceRegistry.getResourceByName(facesContext, pushResourceName);
+        log.fine("setPushResourcePathAndGroupName()\n" +
+            "\n  pushResourceName: " + pushResourceName +
+            "\n  pushResource: " + res +
+            "\n  pushResource.class: " + (res == null ? "null" : res.getClass().getName()));
         this.pushResource = ((res instanceof ProgressResource) ?
                 (ProgressResource) res : null);
         this.pushGroupName = pushGroupName;

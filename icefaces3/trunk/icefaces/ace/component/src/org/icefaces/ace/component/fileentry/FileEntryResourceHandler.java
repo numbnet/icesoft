@@ -275,7 +275,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                     fileInfo.begin(fileName, contentType);
 
                     progressListenerResourcePusher.setPushResourcePathAndGroupName(
-                            facesContext, config.getProgressResourcePath(),
+                            facesContext, config.getProgressResourceName(),
                             config.getProgressGroupName());
 
                     if (config.isViaCallback()) {
