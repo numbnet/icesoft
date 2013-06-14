@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 @MandatoryResourceComponent(tagName="fileEntry", value="org.icefaces.ace.component.fileentry.FileEntry")
 public class FileEntryRenderer extends Renderer {
-    private static Logger log = Logger.getLogger(FileEntry.class.getName());
+    private static final Logger log = Logger.getLogger(FileEntry.class.getName());
     
     @Override
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)

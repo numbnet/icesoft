@@ -35,7 +35,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 
 @MandatoryResourceComponent(tagName="linkButton", value="org.icefaces.ace.component.linkbutton.LinkButton")
 public class LinkButtonRenderer extends CoreRenderer {
-	private static String[] excludedAttributes = {"onclick", "onkeydown", "hreflang", "href", "target", "style"};
+	private static final String[] excludedAttributes = {"onclick", "onkeydown", "hreflang", "href", "target", "style"};
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
