@@ -36,7 +36,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FormRenderer extends DomBasicRenderer {
-    private static Logger log = Logger.getLogger("com.icesoft.faces.compat");
+    private static final Logger log = Logger.getLogger("com.icesoft.faces.compat");
     public static final String COMMAND_LINK_HIDDEN_FIELD = "command_link_hidden_field";
     public static final String COMMAND_LINK_HIDDEN_FIELDS_KEY = "com.icesoft.faces.FormRequiredHidden";
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_FORMFORM);

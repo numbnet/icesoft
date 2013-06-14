@@ -38,7 +38,7 @@ import java.util.logging.Logger;
 
 public class MenuRenderer extends DomBasicInputRenderer {
 
-    private static Logger log = Logger.getLogger(MenuRenderer.class.getName());
+    private static final Logger log = Logger.getLogger(MenuRenderer.class.getName());
     private static final String[] selectOneMenuPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTONEMENU);
     private static final String[] selectManyMenuPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTMANYMENU);
     private static final String[] selectOneListboxPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTONELISTBOX);

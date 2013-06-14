@@ -38,7 +38,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
     private static final String[] passThruAttributes =
             ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_PANELCOLLAPSIBLE);
 
-    private static Log log = LogFactory.getLog(PanelCollapsibleRenderer.class);
+    private static final Log log = LogFactory.getLog(PanelCollapsibleRenderer.class);
 
 
     public boolean getRendersChildren() {

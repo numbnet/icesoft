@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class ApplyEffectRenderer extends DomBasicRenderer {
 
-    private static Log log = LogFactory.getLog(ApplyEffectRenderer.class);
+    private static final Log log = LogFactory.getLog(ApplyEffectRenderer.class);
 
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {

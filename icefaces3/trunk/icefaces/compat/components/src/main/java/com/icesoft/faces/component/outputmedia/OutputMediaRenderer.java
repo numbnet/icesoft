@@ -36,9 +36,9 @@ import java.util.Properties;
 public class OutputMediaRenderer extends DomBasicRenderer {
     private static final String[] passThruAttributes =
             ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_OUTPUTMEDIA);
-    private static Map players = new HashMap();
+    private static final Map players = new HashMap();
 
-    {
+    static {
         Properties props = new Properties();
         props.setProperty("classid", "clsid:22D6f312-B0F6-11D0-94AB-0080C74C7E95");
         props.setProperty("codebase", "http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112");
