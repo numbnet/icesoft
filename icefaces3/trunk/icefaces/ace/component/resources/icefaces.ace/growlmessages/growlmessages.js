@@ -34,7 +34,8 @@ ice.ace.GrowlMessages = function (id, cfg) {
     }
 
     ice.onElementUpdate(id, function () {
-        jq('#jGrowl').data('jGrowl.instance').shutdown();
+        var instance = jq('#jGrowl').data('jGrowl.instance');
+        instance && instance.shutdown();
         jq('#jGrowl').remove();
     });
 };
