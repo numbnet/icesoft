@@ -151,3 +151,7 @@
 .th-align-left {
     text-align: left;
 }
+
+.growl-attr-col {
+    width: 25%;
+}

@@ -33,7 +33,7 @@ import org.icefaces.resources.ICEResourceLibrary;
         componentType = "org.icefaces.ace.component.GrowlMessages",
         rendererType = "org.icefaces.ace.component.GrowlMessagesRenderer",
         componentFamily = "org.icefaces.ace.Messages",
-        tlddoc = "")
+        tlddoc = "Display Faces messages in a Growl container positioned on one of the four corners of the browser window.")
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
         @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
@@ -78,7 +78,7 @@ public class GrowlMessagesMeta extends UIMessagesMeta {
     @Property(tlddoc = "The lifespan (milliseconds) of an auto-hide message on the screen.", defaultValue = "3000")
     private int displayDuration;
 
-    @Property(tlddoc = "Whether or not the close-all button should be used when more than one notification appears on the screen.", defaultValue = "true")
+    @Property(tlddoc = "Whether or not the close-all button should be used when more than one notification appears on the screen. (Close visible messages only, not hidden messages.)", defaultValue = "true")
     private boolean closeAll;
 
     @Property(tlddoc = "Duration (also called \"speed\" in jQuery) of show effect. One of \"slow\", \"_default\", \"fast\", or an integer of milliseconds. (\"slow\", \"_default\", \"fast\" currently equated to 600, 400 and 200 respectively in jQuery.)", defaultValue = "_default")

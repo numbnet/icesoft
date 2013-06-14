@@ -39,6 +39,7 @@ import org.icefaces.samples.showcase.example.ace.menu.MenuBean;
 import org.icefaces.samples.showcase.example.ace.menuBar.MenuBarBean;
 import org.icefaces.samples.showcase.example.ace.menuButton.MenuButtonBean;
 import org.icefaces.samples.showcase.example.ace.message.MessageBean;
+import org.icefaces.samples.showcase.example.ace.growlmessages.GrowlMessagesBean;
 import org.icefaces.samples.showcase.example.ace.notificationpanel.NotificationPanelBean;
 import org.icefaces.samples.showcase.example.ace.overview.AceSuiteOverviewBean;
 import org.icefaces.samples.showcase.example.ace.panel.PanelBean;
@@ -84,6 +85,7 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.ace.fileentry.title", exampleBeanName = FileEntryBean.BEAN_NAME),
 				@MenuLink(title = "menu.ace.gMap.title", exampleBeanName = MapBean.BEAN_NAME),
 //@MenuLink(title = "menu.ace.logger.title", exampleBeanName = LoggerBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.growlmessages.title", exampleBeanName = GrowlMessagesBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.linkButton.title", exampleBeanName = LinkButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.list.title", exampleBeanName = ListBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.maskedEntry.title", exampleBeanName = MaskedEntryBean.BEAN_NAME),
