@@ -47,7 +47,7 @@ import java.util.StringTokenizer;
  */
 public class PanelPositionedRenderer extends DomBasicRenderer {
 
-    private static Log log = LogFactory.getLog(PanelPositionedRenderer.class);
+    private static final Log log = LogFactory.getLog(PanelPositionedRenderer.class);
 
     private static final String INPUT_ID = "colOrder";
 

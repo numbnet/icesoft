@@ -39,7 +39,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class SelectInputTextRenderer extends DomBasicInputRenderer {
-    private Map domUpdateMap = new HashMap();
     private static final String AUTOCOMPLETE_DIV = "_div";
     static final String AUTOCOMPLETE_INDEX = "_idx";
     private static final Log log =
@@ -55,7 +54,6 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        domUpdateMap.clear();
         validateParameters(facesContext, uiComponent, null);
         if (log.isTraceEnabled()) {
             log.trace("encodeBegin");
@@ -138,6 +136,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
             }
             root.appendChild(scriptEle);
 
+            Map domUpdateMap = new HashMap();
             domUpdateMap.put("rows", component.getRows());
             Element span = domContext.createElement(HTML.SPAN_ELEM);
             span.setAttribute("data-hashcode", String.valueOf(domUpdateMap.hashCode()));

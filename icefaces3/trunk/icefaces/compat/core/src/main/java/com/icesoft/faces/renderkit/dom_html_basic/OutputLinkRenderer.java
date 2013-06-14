@@ -49,8 +49,6 @@ public class OutputLinkRenderer extends DomBasicRenderer {
         return ((UIOutput) uiComponent).getValue();
     }
 
-    String clientId;
-
     /**
      * @param facesContext
      * @param uiComponent
@@ -86,8 +84,6 @@ public class OutputLinkRenderer extends DomBasicRenderer {
         if (null == linkVal || 0 == linkVal.length()) {
             linkVal = "";
         }
-
-        clientId = output.getClientId(facesContext);
 
         linkVal = appendParameters(facesContext, uiComponent, linkVal);
 

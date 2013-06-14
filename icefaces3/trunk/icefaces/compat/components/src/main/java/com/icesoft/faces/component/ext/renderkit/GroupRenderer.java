@@ -54,7 +54,7 @@ public class GroupRenderer
 
     protected static final String DROP = "dropID";
 	protected static final String HIDDEN_FIELD = "iceDND";
-    private static Log log = LogFactory.getLog(GroupRenderer.class);
+    private static final Log log = LogFactory.getLog(GroupRenderer.class);
 
     // Basically, everything is excluded
     private static final String[] PASSTHRU_EXCLUDE =

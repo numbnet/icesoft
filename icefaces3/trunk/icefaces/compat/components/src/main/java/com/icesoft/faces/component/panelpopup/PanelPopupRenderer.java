@@ -49,7 +49,7 @@ import java.util.Random;
  * </p>
  */
 public class PanelPopupRenderer extends GroupRenderer {
-    private static Log log = LogFactory.getLog(PanelPopupRenderer.class);
+    private static final Log log = LogFactory.getLog(PanelPopupRenderer.class);
 
     // Basically, everything is excluded
     private static final String[] PASSTHRU_EXCLUDE =

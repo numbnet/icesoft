@@ -43,8 +43,8 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
             ExtendedAttributeConstants.getAttributes(
                     ExtendedAttributeConstants.ICE_INPUTTEXT,
                     jsEvents);
-    private static Map rendererJavascript;
-    private static Map rendererJavascriptPartialSubmit;
+    private static final Map rendererJavascript;
+    private static final Map rendererJavascriptPartialSubmit;
 
     static {
         rendererJavascript = new HashMap();

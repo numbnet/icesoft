@@ -31,7 +31,8 @@ import org.apache.commons.logging.LogFactory;
 public class ImageRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.ImageRenderer implements java.io.Serializable {
     private static final long serialVersionUID = -1367657940103836512L;
-    private static Log log = LogFactory.getLog(ImageRenderer.class);
+    private static final Log log = LogFactory.getLog(ImageRenderer.class);
+    
     protected String processSrcAttribute(FacesContext facesContext, UIGraphic uiGraphic) {
         Object o = uiGraphic.getValue();
         if (o == null) {

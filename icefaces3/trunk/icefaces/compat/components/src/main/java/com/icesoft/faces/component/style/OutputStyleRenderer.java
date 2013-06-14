@@ -43,7 +43,7 @@ import javax.faces.application.Resource;
  */
 public class OutputStyleRenderer extends DomBasicRenderer {
 
-    private static Log log = LogFactory.getLog(OutputStyleRenderer.class);
+    private static final Log log = LogFactory.getLog(OutputStyleRenderer.class);
     private static final String IE_EXTENTION = "_ie";
     private static final String IE_7_EXTENTION = "_ie7";
     private static final String IE_8_EXTENSION = "_ie8";
@@ -64,8 +64,9 @@ public class OutputStyleRenderer extends DomBasicRenderer {
     private static final int OPERA_MOBILE = 7;
     private static final int IE_8 = 8;
 
-    String[] extensions = {"", IE_EXTENTION, SAFARI_EXTENTION, DT_EXTENTION, IE_7_EXTENTION, SAFARI_MOBILE_EXTENTION, OPERA_EXTENTION, OPERA_MOBILE_EXTENTION, IE_8_EXTENSION};
-    private String browserSpecificFilename;
+    private static final String[] extensions = {"", IE_EXTENTION, SAFARI_EXTENTION, 
+        DT_EXTENTION, IE_7_EXTENTION, SAFARI_MOBILE_EXTENTION, OPERA_EXTENTION,
+        OPERA_MOBILE_EXTENTION, IE_8_EXTENSION};
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -108,7 +109,8 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                             if(browserType == OPERA_MOBILE){
                                 extention = OPERA_MOBILE_EXTENTION;
                             }
-                            if (useSpecific(facesContext, start, extention)) {
+                            String browserSpecificFilename = useSpecific(facesContext, start, extention);
+                            if (browserSpecificFilename != null) {
                                 // W3C spec: To make a style sheet preferred, set the rel attribute to "stylesheet" and name the style sheet with the title attribute
                                 ieStyleEle.setAttribute(HTML.TITLE_ATTR, extention);
                                 String hrefURL = CoreUtils.resolveResourceURL(facesContext, browserSpecificFilename);
@@ -232,11 +234,11 @@ public class OutputStyleRenderer extends DomBasicRenderer {
     }
 
     // Contributed code. See http://jira.icesoft.org/browse/ICE-8758.
-    private boolean useSpecific(FacesContext facesContext, String start, String extention) {
+    private String useSpecific(FacesContext facesContext, String start, String extention) {
         // assume we are not going to use the specific file
         boolean useSpecific=false;
         // this is the file we are going to verify existence of.
-        browserSpecificFilename = start + extention + CSS_EXTENTION;
+        String browserSpecificFilename = start + extention + CSS_EXTENTION;
 
 
         String realRoot = facesContext.getExternalContext().getRealPath("/");
@@ -296,6 +298,6 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                 }
             }
         }
-        return useSpecific;
+        return (useSpecific ? browserSpecificFilename : null);
     }
 }
