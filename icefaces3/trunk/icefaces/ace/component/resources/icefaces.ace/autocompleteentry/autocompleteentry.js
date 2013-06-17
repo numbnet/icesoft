@@ -164,7 +164,9 @@ ice.ace.Autocompleter.prototype = {
         var keyEvent = "keypress";
         if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit) {
             keyEvent = "keydown";
-        }
+        } else {
+			ice.ace.jq(this.element).on("keyup", function(e) { if (!self.justSubmitted) { self.onKeyPress.call(self, e);} } );
+		}
 		ice.ace.jq(this.element).on(keyEvent, function(e) { self.onKeyPress.call(self, e); } );
         // ICE-3830
         if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit)
@@ -775,6 +777,10 @@ ice.ace.Autocompleter.prototype = {
 				ice.s(event, this.element);
 			}
 		}
+		this.justSubmitted = true;
+		var self = this;
+		if (this.justSubmittedObserver) clearTimeout(this.justSubmittedObserver);
+		this.justSubmittedObserver = setTimeout(function() {self.justSubmitted = false;},500);
     },
 	
 	clientSideModeUpdate: function() {
