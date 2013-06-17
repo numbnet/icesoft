@@ -51,7 +51,7 @@ ice.ace.Tree = function (clientId, cfg) {
     // Cleanup
     if (!window[this.cfg.widgetVar]) {
         var self = this;
-        ice.onElementUpdate(this.id, function() { self.unload(); });
+        ice.onElementUpdate(cfg.id, function() { self.unload(); });
     }
 };
 
