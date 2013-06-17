@@ -708,7 +708,7 @@ ice.ace.List.prototype.swapIdPrefix = function(from, to) {
 };
 
 ice.ace.List.prototype.read = function(field) {
-    var contents = this.element.children('input[name="'+this.jqId.substr(1)+'_'+field+'"]').attr('value');
+    var contents = this.element.children('input[name="'+this.jqId.substr(1)+'_'+field+'"]').val();
     if ((contents != "") && (contents != undefined))
         return JSON.parse(contents);
     else return [];
