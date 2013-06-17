@@ -19,6 +19,7 @@
  */
 package com.icesoft.faces.context;
 
+import org.icefaces.impl.context.DOMPartialViewContext;
 import org.icefaces.impl.context.DOMResponseWriter;
 import org.icefaces.impl.util.DOMUtils;
 
@@ -466,5 +467,9 @@ public class DOMContext implements java.io.Serializable {
             }
         }
         return foundItems;
+    }
+
+    public static void enableOnElementUpdateNotify(Element element, String id) {
+        element.setAttribute(DOMPartialViewContext.DATA_ELEMENTUPDATE, id);
     }
 }

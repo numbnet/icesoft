@@ -67,7 +67,7 @@ public class FormRenderer extends DomBasicRenderer {
             final Element root = domContext.createElement("form");
 
             domContext.setRootNode(root);
-            root.setAttribute("id", formClientId);
+            setRootElementId(facesContext, root, uiComponent);
             root.setAttribute("method", "post");
             ExternalContext externalContext = facesContext.getExternalContext();
             root.setAttribute("action", getAction(facesContext));
