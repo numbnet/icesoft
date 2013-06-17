@@ -2119,7 +2119,10 @@ Autocompleter.Base.prototype = {
         var keyEvent = "keypress";
         if (Prototype.Browser.IE || Prototype.Browser.WebKit) {
             keyEvent = "keyup";
-        }
+        } else {
+			var self = this;
+			Event.observe(this.element, "keyup", function(e) { if (!self.justSubmitted) { self.onKeyPress.call(self, e);} } );
+		}
         Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this));
         // ICE-3830
         if (Prototype.Browser.IE || Prototype.Browser.WebKit)
@@ -2626,6 +2629,10 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         var indexName = this.element.id + "_idx";
         form[indexName].value = "";
 		this.inTransit = true;
+		this.justSubmitted = true;
+		var self = this;
+		if (this.justSubmittedObserver) clearTimeout(this.justSubmittedObserver);
+		this.justSubmittedObserver = setTimeout(function() {self.justSubmitted = false;},500);
     },
 
     onComplete: function(request) {
