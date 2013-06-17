@@ -31,6 +31,7 @@ import com.icesoft.util.CoreComponentUtils;
 import com.icesoft.util.pooling.ClientIdPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.impl.context.DOMPartialViewContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
@@ -113,6 +114,8 @@ public class PanelPopupRenderer extends GroupRenderer {
         Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
         setRootElementId(facesContext, rootDiv, uiComponent);
         rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
+        DOMContext.enableOnElementUpdateNotify(rootDiv, clientId);
+
         if (uiComponent instanceof PanelTooltip) {
             if (((PanelTooltip) uiComponent).isDynamic() && !((PanelTooltip) uiComponent).isVisible()) {
                 rootDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
