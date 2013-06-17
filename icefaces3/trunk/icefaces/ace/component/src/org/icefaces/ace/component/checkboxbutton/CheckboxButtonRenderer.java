@@ -37,8 +37,6 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 
 @MandatoryResourceComponent(tagName="checkboxButton", value="org.icefaces.ace.component.checkboxbutton.CheckboxButton")
 public class CheckboxButtonRenderer extends CoreRenderer {
-    List <UIParameter> uiParamChildren;
-
     private enum EventType {
         HOVER, FOCUS
     }
@@ -68,7 +66,6 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         String firstWrapperClass = "yui-button yui-checkboxbutton-button ui-button ui-widget ui-state-default";
         String secondWrapperClass = "first-child";
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
-        uiParamChildren = Utils.captureParameters(checkbox);
 
         // Root Container
         writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -147,6 +144,8 @@ public class CheckboxButtonRenderer extends CoreRenderer {
                               CheckboxButton checkbox, String clientId, EventType type) throws IOException {
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         JSONBuilder jb = JSONBuilder.create();
+        List<UIParameter> uiParamChildren = Utils.captureParameters(checkbox);
+
         jb.beginFunction("ice.ace.lazy")
           .item("checkboxbutton")
           .beginArray()
