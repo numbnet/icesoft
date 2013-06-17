@@ -1396,6 +1396,7 @@ eval(ice.importFrom("ice.lib.functional"));
 eval(ice.importFrom("ice.lib.oo"));
 eval(ice.importFrom("ice.lib.collection"));
 eval(ice.importFrom("ice.lib.window"));
+eval(ice.importFrom("ice.lib.event"));
 var _1cf=operator();
 var info=operator();
 var warn=operator();
