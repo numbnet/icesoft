@@ -56,14 +56,12 @@
                 </h:inputText>
                 <ace:message id="rowsMsg" for="rowsIn"/>
                 
-                <h:outputLabel for="pageIn" value="Selected Page (1-#{dataTablePaginator.startPageMaximum}):"
-                               rendered="#{dataTablePaginator.startPageMaximum != 1}"/>
+                <h:outputLabel for="pageIn" value="Selected Page (1-#{dataTablePaginator.startPageMaximum}):"/>
                 <h:inputText id="pageIn" value="#{dataTablePaginator.startPage}"
                              required="true" size="2" maxlength="2"
-                             disabled="#{!dataTablePaginator.paginator}"
-                             rendered="#{dataTablePaginator.startPageMaximum != 1}">
+                             disabled="#{!dataTablePaginator.paginator}">
                 </h:inputText>
-                <ace:message id="pageMsg" for="pageIn" rendered="#{dataTablePaginator.startPageMaximum != 1}"/>
+                <ace:message id="pageMsg" for="pageIn" />
             </h:panelGrid>
         </h:form>
     
