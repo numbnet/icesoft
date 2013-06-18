@@ -77,6 +77,7 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         renderPane(facesContext, uiComponent, true);
         container.appendChild(dividerContainer);
         dividerContainer.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "Divider"));
+		dividerContainer.setAttribute(HTML.STYLE_ATTR, "font-size: 2px;");
         renderPane(facesContext, uiComponent, false);
         addHiddenField(domContext, root, clientId, PanelDivider.FIRST_PANL_STYLE, panelDivider.getPanePosition(true));
         addHiddenField(domContext, root, clientId, PanelDivider.SECOND_PANL_STYLE, panelDivider.getPanePosition(false));
