@@ -78,11 +78,11 @@ Available ui:params to pass:
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>
             </div>
-            <ace:panel styleClass="instance" rendered="#{navigationModel.renderAsExample}">
+            <h:panelGroup layout="block" styleClass="instance" rendered="#{navigationModel.renderAsExample}">
                 <ui:insert name="example"/>
-            </ace:panel>
+            </h:panelGroup>
         </div>
-            <f:facet name="header">  
+            <f:facet name="header">
 				<h:outputText value="#{title}"  escape="false"/>
 				<ace:menuBar direction="down left" styleClass="documentation-menu">
 					<ace:multiColumnSubmenu label="Documentation">
@@ -102,9 +102,9 @@ Available ui:params to pass:
 						</ace:menuColumn>
 					</ace:multiColumnSubmenu>
 				</ace:menuBar>
-            </f:facet>  
+            </f:facet>
         </ace:panel>
-        
+
         <h:form id="sourceCodeForm" rendered="#{navigationModel.renderAsExample}">
             <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code" styleClass="containerPanelStyle rimeHeightAdjustment">
                 <ace:ajax event="toggle" execute="@this"/>
