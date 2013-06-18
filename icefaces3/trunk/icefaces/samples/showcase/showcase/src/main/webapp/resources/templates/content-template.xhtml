@@ -107,8 +107,8 @@ Available ui:params to pass:
         
         <h:form id="sourceCodeForm" rendered="#{navigationModel.renderAsExample}">
             <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code" styleClass="containerPanelStyle rimeHeightAdjustment">
+                <ace:ajax event="toggle" execute="@this"/>
                 <div class="resources">
-                    <ace:ajax event="toggle" execute="@this"/>
                     <ace:tabSet clientSide="true" selectedIndex="0"
                                 rendered="#{not empty resourceValue}">
                         <c:forEach items="#{resourceValue}"
