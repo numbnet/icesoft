@@ -51,11 +51,18 @@
         <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
     </context-param>
+
+@EXTRA_CONTEXT_PARAMS@
+    
+@EXTRA_FILTERS@
+
+@EXTRA_SERVLETS@
+
     <!-- Faces Servlet -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-        <multipart-config/>
+@MULTIPART_CONFIG@
     </servlet>
 
 
@@ -69,6 +76,11 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
+
+@EXTRA_SERVLET_MAPPINGS@
+
+
+@EXTRA_FILTER_MAPPINGS@
 
     <session-config>
         <session-timeout>15</session-timeout>
