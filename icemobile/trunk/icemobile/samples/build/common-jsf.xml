@@ -18,15 +18,6 @@
 <project name="common-jsf" default="servlet-profile">
 		
 	<import file="common.xml"/>
-	<property file="${icemobile.server.config}" />
-
-    <property name="FACES_SERVLET" value="Faces Servlet"/>
-    <property name="MULTIPART_CONFIG" value="&lt;multipart-config/&gt;"/>
-    <property name="EXTRA_CONTEXT_PARAMS" value=""/>
-    <property name="EXTRA_FILTERS" value=""/>
-    <property name="EXTRA_FILTER_MAPPINGS" value=""/>
-    <property name="EXTRA_SERVLET_MAPPINGS" value=""/>
-    <property name="EXTRA_SERVLETS" value=""/>
     
     <condition property="jsf.implementation" value="myfaces" else="mojarra">
         <isset property="myfaces"/>
