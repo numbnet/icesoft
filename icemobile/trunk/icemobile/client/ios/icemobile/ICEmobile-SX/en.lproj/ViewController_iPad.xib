@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -119,10 +119,10 @@
 							<object class="IBUITextField" id="863220419">
 								<reference key="NSNextResponder" ref="652592736"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 47}, {384, 31}}</string>
+								<string key="NSFrame">{{33, 49}, {384, 31}}</string>
 								<reference key="NSSuperview" ref="652592736"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="197255074"/>
 								<string key="NSReuseIdentifierKey">_NS:320</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -156,7 +156,7 @@
 							<object class="IBUILabel" id="6523839">
 								<reference key="NSNextResponder" ref="652592736"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{23, 0}, {340, 32}}</string>
+								<string key="NSFrame">{{33, 9}, {340, 32}}</string>
 								<reference key="NSSuperview" ref="652592736"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="863220419"/>
@@ -180,7 +180,7 @@
 							<object class="IBUILabel" id="197255074">
 								<reference key="NSNextResponder" ref="652592736"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{61, 104}, {302, 72}}</string>
+								<string key="NSFrame">{{33, 88}, {399, 82}}</string>
 								<reference key="NSSuperview" ref="652592736"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="767895678"/>
@@ -190,7 +190,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">Select photo, video, audio, QR code, or augmented reality to upload:</string>
+								<string key="IBUIText">Select photo, video, audio, QR code, augmented reality, contact, or location to upload, or send SMS:</string>
 								<reference key="IBUITextColor" ref="869549495"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -199,7 +199,7 @@
 								<int key="IBUILineBreakMode">0</int>
 								<reference key="IBUIFontDescription" ref="64997702"/>
 								<reference key="IBUIFont" ref="8383905"/>
-								<double key="preferredMaxLayoutWidth">302</double>
+								<double key="preferredMaxLayoutWidth">399</double>
 							</object>
 							<object class="IBUIButton" id="767895678">
 								<reference key="NSNextResponder" ref="652592736"/>
@@ -432,6 +432,7 @@
 						<string key="NSFrame">{{328, 940}, {112, 44}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -709,9 +710,6 @@
 						<int key="objectID">21</int>
 						<reference key="object" ref="652592736"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="6523839"/>
-							<reference ref="863220419"/>
-							<reference ref="197255074"/>
 							<reference ref="767895678"/>
 							<reference ref="1153836"/>
 							<reference ref="914307360"/>
@@ -720,6 +718,9 @@
 							<reference ref="439624177"/>
 							<reference ref="512243959"/>
 							<reference ref="658751601"/>
+							<reference ref="863220419"/>
+							<reference ref="6523839"/>
+							<reference ref="197255074"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 					</object>
