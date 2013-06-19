@@ -61,7 +61,7 @@ public class ChartDynamicBean extends ComponentExampleImpl<ChartDynamicBean> imp
 {
     public static final String BEAN_NAME = "chartDynamicBean";
     
-    private RowStateMap rowStateMap;
+    private RowStateMap rowStateMap = new RowStateMap();
     private Integer[][] tableData = new Integer[][] {
             {2,3,1,4},
             {5,6,8,7},
@@ -120,6 +120,18 @@ public class ChartDynamicBean extends ComponentExampleImpl<ChartDynamicBean> imp
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
+
+        setupSelection();
+    }
+
+    public void setupSelection() {
+        rowStateMap.get(tableData[0]).setSelected(true);
+
+        CartesianSeries s = lineData.get(0);
+        s.add("A", tableData[0][0]);
+        s.add("B", tableData[0][1]);
+        s.add("C", tableData[0][2]);
+        s.add("D", tableData[0][3]);
     }
     
     public void pointChange(PointValueChangeEvent event) {

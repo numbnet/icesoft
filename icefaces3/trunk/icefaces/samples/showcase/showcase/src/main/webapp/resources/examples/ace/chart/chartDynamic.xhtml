@@ -33,6 +33,12 @@
 
     <ui:define name="example">
         <h:form id="form">
+            <script type="text/javascript">
+                function cancelDeselect() {
+                    ice.ace.jq('tr.ui-state-hover').addClass('ui-state-active');
+                    return false;
+                }
+            </script>
             <ace:dataTable id="table"
                     value="#{chartDynamicBean.tableData}" var="row"
                     stateMap="#{chartDynamicBean.rowStateMap}"
@@ -40,6 +46,7 @@
                     rowSelectListener="#{chartDynamicBean.redrawChartListener}"
                     rowUnselectListener="#{chartDynamicBean.clearChartListener}">
                 <ace:ajax event="select" render="@this form:chart" />
+                <ace:ajax event="deselect" onStart="return cancelDeselect.call(this);" />
                 <ace:column headerText="A">
                     #{row[0]}
                 </ace:column>
