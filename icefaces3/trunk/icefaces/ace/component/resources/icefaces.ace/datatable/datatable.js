@@ -190,7 +190,7 @@ ice.ace.DataTable = function (id, cfg) {
     this.scrollLeft = 0;
     this.scrollTop = 0;
     this.currentPinRegionOffset = 0;
-    this.lastClickedIndex = -1;
+    this.lastSelectIndex = -1;
     this.element = ice.ace.jq(this.jqId);
     this.selectionHolder = this.jqId + '_selection';
     this.deselectionHolder = this.jqId + '_deselection';
@@ -676,114 +676,153 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
 }
 
 ice.ace.DataTable.prototype.setupClickEvents = function() {
-     function setupCellClick(obsList) {
+     function setupCellClick(obsList, options) {
         if (obsList.length == 0) return;
 
         var execObsList = obsList.reduce(function(preObs, curObs) {
-            return function(event) {
-                if (preObs) preObs(event);
-                curObs(event);
-            }
-        });
+                return function(event) {
+                    if (preObs) preObs(event);
+                    curObs(event);
+                }
+            }),
+            self = this,
+            timeout = options.noDbl ? 0 : 350
 
-        var self = this;
         this.element.on('click', this.cellSelector, function (event) {
             if (self.blockCellClick == true) return;
 
-            self.cellClickWaiting = setTimeout(function() {
-                execObsList.call(self, event);
-                // console.log('cell click');
-            }, 350);
+            var target = ice.ace.jq(event.target);
 
-            self.blockCellClick = true;
+            if (target.is('td,span,div')) {
+                // wait for dblclick
+                self.cellClickWaiting = setTimeout(function() {
+                    execObsList.call(self, event);
+                    // console.log('cell click');
+                }, timeout);
 
-            // seperate timeout - first timeout behaviour may be cancelled
-            setTimeout(function() {
-                self.blockCellClick = false;
-            }, 350);
+                // cancel further clicks while waiting for behaviour to eval
+                self.blockCellClick = true;
+
+                // seperate timeout to enable further clicks to occur
+                // above timeout (click behaviour) may be cancelled
+                setTimeout(function() {
+                    self.blockCellClick = false;
+                }, timeout);
+            }
         });
     };
 
-    function setupRowClick(obsList) {
+    function setupRowClick(obsList, options) {
         if (obsList.length == 0) return;
 
         var execObsList = obsList.reduce(function(preObs, curObs) {
-            return function(event) {
-                if (preObs) preObs(event);
-                curObs(event);
-            }
-        });
-
-        var self = this;
+                return function(event) {
+                    if (preObs) preObs(event);
+                    curObs(event);
+                }
+            }),
+            self = this,
+            timeout = options.noDbl ? 0 : 350;
 
         this.element.on('click', this.rowSelector, function (event) {
             if (self.blockRowClick == true) return;
 
-            self.rowClickWaiting = setTimeout(function() {
-                execObsList.call(self, event);
-                // console.log('row click');
-            }, 350);
+            var target = ice.ace.jq(event.target);
 
-            self.blockRowClick = true;
+            if (target.is('td,span,div')) {
+                self.rowClickWaiting = setTimeout(function() {
+                    execObsList.call(self, event);
+                    // console.log('row click');
+                }, timeout);
 
-            // seperate timeout - first timeout behaviour may be cancelled
-            setTimeout(function() {
-                self.blockRowClick = false;
-            }, 350);
+                self.blockRowClick = true;
+
+                // seperate timeout - first timeout behaviour may be cancelled
+                setTimeout(function() {
+                    self.blockRowClick = false;
+                }, timeout);
+            }
         });
     };
 
-    function setupCellDoubleClick(obsList) {
+    function setupCellDoubleClick(obsList, options) {
         if (obsList.length == 0) return;
 
         var execObsList = obsList.reduce(function(preObs, curObs) {
-            return function(event) {
-                if (preObs) preObs(event);
-                curObs(event);
-            }
-        });
+                return function(event) {
+                    if (preObs) preObs(event);
+                    curObs(event);
+                }
+            });
 
         var self = this;
         this.element.on('dblclick', this.cellSelector, function (event) {
-            if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
-            if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
+            var target = ice.ace.jq(event.target);
 
-            execObsList.call(self,event);
+            if (target.is('td,span,div')) {
+                if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
+                if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
 
-            // console.log('cell double click');
+                execObsList.call(self,event);
+
+                // console.log('cell double click');
+            }
         });
     };
 
-    function setupRowDoubleClick(obsList) {
+    function setupRowDoubleClick(obsList, options) {
         if (obsList.length == 0) return;
 
         var execObsList = obsList.reduce(function(preObs, curObs) {
-            return function(event) {
-                if (preObs) preObs(event);
-                curObs(event);
-            }
-        });
+                return function(event) {
+                    if (preObs) preObs(event);
+                    curObs(event);
+                }
+            });
 
         var self = this;
         this.element.on('dblclick', this.rowSelector, function (event) {
-            if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
-            if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
+            var target = ice.ace.jq(event.target);
 
-            execObsList.call(self, event);
+            if (target.is('td,span,div')) {
+                if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
+                if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
 
-            // console.log('row double click');
+                execObsList.call(self, event);
+
+                // console.log('row double click');
+            }
         });
     };
 
+    function doRowSelect (event) {
+        var row = ice.ace.jq(event.currentTarget);
+
+        if (!this.isSingleSelection() && event.shiftKey && this.lastSelectIndex > -1)
+            this.doMultiRowSelectionEvent(this.lastSelectIndex, row);
+        else if (row.hasClass('ui-selected'))
+            this.doSelectionEvent('row', true, row);
+        else
+            this.doSelectionEvent('row', false, row);
+
+        this.lastSelectIndex = row.index();
+    }
+
+    function doCellSelect(event) {
+        var cell = ice.ace.jq(event.currentTarget);
+        if (cell.hasClass('ui-selected'))
+            this.doSelectionEvent('cell', true, cell);
+        else
+            this.doSelectionEvent('cell', false, cell);
+    }
+
     function getRowIndex(e) {
         var index = /_row_([0-9]+)/g.exec(ice.ace.jq(e.target).closest('tr').attr('id'))[1];
-        alert(index);
         return index;
     }
 
     function getCellIndex(e) {
         var index = /ui-col-([0-9]+)/g.exec(ice.ace.jq(e.target).closest('td')[0].className)[1];
-        alert(index);
         return index;
     }
 
@@ -818,25 +857,32 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
     if (this.isSelectionEnabled()) {
         if (this.isCellSelectionEnabled()) {
             if (this.cfg.dblclickSelect)
-                cellDblClickObs.push(function(event) { self.onCellClick(event); });
+                cellDblClickObs.push(function(event) { doCellSelect.call(self, event); });
             else
-                cellClickObs.push(function(event) { self.onCellClick(event); })
+                cellClickObs.push(function(event) { doCellSelect.call(self, event); })
         }
         else {
             if (this.cfg.dblclickSelect)
-                rowDblClickObs.push(function(event) { self.onRowClick(event); });
+                rowDblClickObs.push(function(event) { doRowSelect.call(self, event); });
             else
-                rowClickObs.push(function(event) { self.onRowClick(event); })
+                rowClickObs.push(function(event) { doRowSelect.call(self, event); });
         }
 
         this.setupSelectionHover();
     }
 
     // Initialize listener sets
-    setupCellClick.call(this, cellClickObs);
-    setupRowClick.call(this, rowClickObs);
-    setupCellDoubleClick.call(this, cellDblClickObs);
-    setupRowDoubleClick.call(this, rowDblClickObs);
+    var options = {
+        noDbl : cellDblClickObs.length == 0 && rowDblClickObs.length == 0
+    };
+
+    setupCellClick.call(this, cellClickObs, options);
+    setupRowClick.call(this, rowClickObs, options);
+
+    if (!options.noDbl) {
+        setupCellDoubleClick.call(this, cellDblClickObs, options);
+        setupRowDoubleClick.call(this, rowDblClickObs, options);
+    }
 }
 
 ice.ace.DataTable.prototype.setupSelectionHover = function () {
@@ -2262,33 +2308,6 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
             }
 
         ice.ace.AjaxRequest(options);
-    }
-}
-
-ice.ace.DataTable.prototype.onRowClick = function (event) {
-    var rowElement = event.currentTarget;
-    //Check if rowclick triggered this event not an element in row content
-    if (ice.ace.jq(event.target).is('td,span,div')) {
-        var row = ice.ace.jq(rowElement);
-
-        if (!this.isSingleSelection() && event.shiftKey && this.lastClickedIndex > -1)
-            this.doMultiRowSelectionEvent(this.lastClickedIndex, row);
-        else if (row.hasClass('ui-selected'))
-            this.doSelectionEvent('row', true, row);
-        else
-            this.doSelectionEvent('row', false, row);
-
-        this.lastClickedIndex = row.index();
-    }
-}
-
-ice.ace.DataTable.prototype.onCellClick = function (event) {
-    var cellTarget = ice.ace.jq(event.target);
-    //Check if rowclick triggered this event not an element in row content
-    if (cellTarget.is('div,td,span')) {
-        var cell = cellTarget.closest('td');
-        if (cell.hasClass('ui-selected')) this.doSelectionEvent('cell', true, cell);
-        else this.doSelectionEvent('cell', false, cell);
     }
 }
 
