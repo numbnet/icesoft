@@ -29,6 +29,7 @@ import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @ComponentExample(
@@ -86,5 +87,11 @@ public class TreeSelectionBean extends ComponentExampleImpl<TreeSelectionBean> i
 
     public void setSingleSelect(boolean singleSelect) {
         this.singleSelect = singleSelect;
+    }
+
+    /* Proxy method to avoid JBossEL accessing stateMap like map for method invocations */
+    public List getSelected() {
+        if (stateMap == null) return Collections.emptyList();
+        return stateMap.getSelected();
     }
 }
