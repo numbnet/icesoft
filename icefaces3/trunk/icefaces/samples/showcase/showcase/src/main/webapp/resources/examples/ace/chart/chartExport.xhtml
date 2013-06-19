@@ -36,7 +36,7 @@
     <ui:define name="example">
         <h:form id="exportForm">
             <h:commandButton id="exportButton" value="Export as Image"
-                             disabled="#{chartExportBean.isRequestOldIE()}"
+                             disabled="#{chartExportBean.requestOldIE}"
                              onclick="exportChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
 
             <ace:chart id="chart"
