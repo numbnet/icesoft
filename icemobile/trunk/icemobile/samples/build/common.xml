@@ -38,6 +38,16 @@
     <property name="webxml.dir" location="${build.dir}/webxml"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
 
+	<property file="${icemobile.server.config}" />
+
+    <property name="FACES_SERVLET" value="Faces Servlet"/>
+    <property name="MULTIPART_CONFIG" value="&lt;multipart-config/&gt;"/>
+    <property name="EXTRA_CONTEXT_PARAMS" value=""/>
+    <property name="EXTRA_FILTERS" value=""/>
+    <property name="EXTRA_FILTER_MAPPINGS" value=""/>
+    <property name="EXTRA_SERVLET_MAPPINGS" value=""/>
+    <property name="EXTRA_SERVLETS" value=""/>
+
     <patternset id="pattern.all">
         <include name="*.jar"/>
     </patternset>

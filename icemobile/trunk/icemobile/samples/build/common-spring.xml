@@ -94,12 +94,27 @@
                 <include name="**/*.java"/>
             </fileset>
         </copy>
+        <copy file="${web.dir}/WEB-INF/web.xml" todir="${webxml.dir}">
+          <filterset>
+            <filter token="FACES_SERVLET" value="${FACES_SERVLET}"/>
+            <filter token="MULTIPART_CONFIG" value="${MULTIPART_CONFIG}"/>
+            <filter token="EXTRA_CONTEXT_PARAMS" value="${EXTRA_CONTEXT_PARAMS}"/>
+            <filter token="EXTRA_FILTERS" value="${EXTRA_FILTERS}"/>
+            <filter token="EXTRA_FILTER_MAPPINGS"
+              value="${EXTRA_FILTER_MAPPINGS}"/>
+            <filter token="EXTRA_SERVLET_MAPPINGS"
+              value="${EXTRA_SERVLET_MAPPINGS}"/>
+            <filter token="EXTRA_SERVLETS" value="${EXTRA_SERVLETS}"/>
+          </filterset>
+        </copy>
     </target>
 
     <target name="war.basic" depends="compile">
         <war basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war"
-             webxml="${web.dir}/WEB-INF/web.xml">
+             webxml="${webxml.dir}/web.xml"
+             excludes="WEB-INF/web.xml">
+
             <lib dir="${lib.application.dir}">
                 <patternset refid="pattern.all"/>
             </lib>
