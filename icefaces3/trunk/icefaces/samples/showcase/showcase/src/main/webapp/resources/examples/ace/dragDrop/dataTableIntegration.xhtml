@@ -44,7 +44,7 @@
                                                    value="#{availableItem.image}"
                                                    alt="#{availableItem.name}"
                                                    styleClass="imageStyle">
-                           <ace:draggable revert="true" stack=".imageStyle" opacity="0.7"/>
+                           <ace:draggable revert="true" stack=".imageStyle" opacity="0.7" scope="items"/>
                        </h:graphicImage>
                    </ace:column>
 
@@ -91,7 +91,7 @@
                <ace:droppable tolerance="touch"
                                         datasource="shoppingList"
                                         dropListener="#{dataTableIntegrationBean.handleDrop}"
-                                        activeStyleClass="slot">
+                                        activeStyleClass="slot" scope="items">
 				<ace:ajax execute="@this" render="shoppingCart shoppingList resetPanel" />
 			</ace:droppable>
                
