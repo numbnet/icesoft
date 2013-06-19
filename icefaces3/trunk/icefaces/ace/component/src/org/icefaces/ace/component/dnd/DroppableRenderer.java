@@ -62,18 +62,20 @@ public class DroppableRenderer extends CoreRenderer {
             if(datasourceId != null) {
                 UIData datasource = findDatasource(context, droppable, datasourceId);
                 String[] idTokens = dragId.split(String.valueOf(UINamingContainer.getSeparatorChar(context)));
-                int rowIndex = Integer.parseInt(idTokens[idTokens.length - 2]);
+                int rowIndex;
+				try {
+					rowIndex = Integer.parseInt(idTokens[idTokens.length - 2]);
+				} catch(Exception e) {
+					rowIndex = -1;
+				}
                 datasource.setRowIndex(rowIndex);
                 Object data = datasource.getRowData();
                 datasource.setRowIndex(-1);
 
                 event = new DragDropEvent(droppable, dragId, dropId, data);
-
-            }
-            else {
+            } else {
                 event = new DragDropEvent(droppable, dragId, dropId);
             }
-            
 
             droppable.queueEvent(event);
         }
