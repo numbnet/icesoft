@@ -72,7 +72,7 @@ public class DataTableRowRenderer {
                     ? DataTableConstants.ROW_CLASS + " " + DataTableConstants.EVEN_ROW_CLASS
                     : DataTableConstants.ROW_CLASS + " " + DataTableConstants.ODD_ROW_CLASS;
 
-            if (selected && tableContext.getSelectionMode() != null)
+            if (selected)
                 rowStyleClass = rowStyleClass + " ui-selected ui-state-active";
             if (userRowStyleClass != null)
                 rowStyleClass = rowStyleClass + " " + userRowStyleClass;

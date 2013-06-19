@@ -60,6 +60,7 @@ import java.util.List;
 	title = "menu.ace.dataTable.subMenu.title",
 	menuLinks = {
             @MenuLink(title = "menu.ace.dataTable.subMenu.main", isDefault = true, exampleBeanName = DataTableBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dataTable.subMenu.click", exampleBeanName = DataTableClick.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.columnReordering", exampleBeanName = DataTableColumnReordering.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.columnResizing", exampleBeanName = DataTableColumnResizing.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.stackable", exampleBeanName = DataTableStackable.BEAN_NAME),
