@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -130,7 +130,7 @@
 								<string key="NSFrame">{{0, 32}, {280, 31}}</string>
 								<reference key="NSSuperview" ref="290413788"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="870671882"/>
 								<string key="NSReuseIdentifierKey">_NS:304</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -152,11 +152,11 @@
 									<int key="IBUIKeyboardType">3</int>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
-								<object class="IBUIFontDescription" key="IBUIFontDescription">
+								<object class="IBUIFontDescription" key="IBUIFontDescription" id="160399351">
 									<int key="type">1</int>
 									<double key="pointSize">12</double>
 								</object>
-								<object class="NSFont" key="IBUIFont">
+								<object class="NSFont" key="IBUIFont" id="133102839">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">12</double>
 									<int key="NSfFlags">16</int>
@@ -193,14 +193,14 @@
 								<string key="NSFrame">{{0, 66}, {277, 48}}</string>
 								<reference key="NSSuperview" ref="290413788"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="513554398"/>
+								<reference key="NSNextKeyView" ref="864341465"/>
 								<string key="NSReuseIdentifierKey">_NS:328</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Select photo, video, audio, QR code, or augmented reality to upload:</string>
+								<string key="IBUIText">Select photo, video, audio, QR code, augmented reality, contact or location to upload, or send SMS:</string>
 								<reference key="IBUITextColor" ref="844722745"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -208,8 +208,8 @@
 								<bool key="IBUIAdjustsLetterSpacingToFitWidth">YES</bool>
 								<int key="IBUINumberOfLines">2</int>
 								<int key="IBUILineBreakMode">0</int>
-								<reference key="IBUIFontDescription" ref="726417125"/>
-								<reference key="IBUIFont" ref="535617193"/>
+								<reference key="IBUIFontDescription" ref="160399351"/>
+								<reference key="IBUIFont" ref="133102839"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<double key="preferredMaxLayoutWidth">277</double>
 							</object>
@@ -438,6 +438,7 @@
 								<string key="NSFrame">{{22, 122}, {237, 97}}</string>
 								<reference key="NSSuperview" ref="290413788"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="513554398"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
@@ -460,6 +461,7 @@
 						<string key="NSFrame">{{20, 416}, {73, 44}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
