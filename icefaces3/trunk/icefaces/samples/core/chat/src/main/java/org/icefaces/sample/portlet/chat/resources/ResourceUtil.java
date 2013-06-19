@@ -58,9 +58,12 @@ public class ResourceUtil {
     }
 
     public static String getLocalizedMessage(String messagePatternKey, String[] messageArgs){
+        Locale locale = Locale.getDefault();
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        UIViewRoot root = facesContext.getViewRoot();
-        Locale locale = root.getLocale();
+        if( facesContext != null ){
+            UIViewRoot root = facesContext.getViewRoot();
+            locale = root.getLocale();
+        }
         String localizedPattern = ResourceUtil.getI18NString(locale,messagePatternKey);
         return MessageFormat.format(localizedPattern,(Object[])messageArgs);
     }
