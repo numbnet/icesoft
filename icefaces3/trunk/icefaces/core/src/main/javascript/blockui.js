@@ -127,7 +127,7 @@
         }
     });
 
-    namespace.onAfterUpdate(function() {
+    namespace.onBeforeUpdate(function() {
         stopBlockingUI();
     });
 })();
