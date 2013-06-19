@@ -98,7 +98,7 @@
             <h:panelGroup id="panelGroup" style="display:inline-block; vertical-align:top; padding-left: 1em;">
                 <span style="font-weight:bold; text-align: left">Selections:</span><br/>
                 <ul class="output ui-corner-all ui-widget-content" style="">
-                    <ui:repeat id="repeater" var="selection" value="#{treeSelectionBean.stateMap.getSelected()}">
+                    <ui:repeat id="repeater" var="selection" value="#{treeSelectionBean.selected}">
                         <li><h:outputText id="outputValue" value="#{selection.name}" /></li>
                     </ui:repeat>
                 </ul>

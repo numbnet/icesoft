@@ -28,8 +28,10 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @ComponentExample(
@@ -111,4 +113,11 @@ public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializ
     public void setContractProvinceInit(NodeStateCreationCallback contractProvinceInit) {
         this.contractProvinceInit = contractProvinceInit;
     }
+
+    /* Proxy method to avoid JBossEL accessing stateMap like map for method invocations */
+    public List getSelected() {
+        if (stateMap == null) return Collections.emptyList();
+        return stateMap.getSelected();
+    }
+
 }
