@@ -73,7 +73,7 @@
 	</mobi:fieldsetGroup>
 
 	<h3>Message</h3>
-	<push:region group="notifications" page="/notificationsregion" />
+	<push:region group="${pageContext.session.id}" page="/notificationsregion" />
 
 	<div style="clear: both;"></div>
 	<s:bind path="*">
