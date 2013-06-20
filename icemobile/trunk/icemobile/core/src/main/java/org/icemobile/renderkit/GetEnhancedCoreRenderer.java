@@ -79,6 +79,13 @@ public class GetEnhancedCoreRenderer {
                     msg = iosMsg;
                 }
             }
+            else if( client.isBlackBerry10OS()){
+                link = IGetEnhanced.BLACKBERRY10_LINK; 
+                String blackBerryMsg = component.getBlackberryMsg();
+                if( blackBerryMsg != null ){
+                    msg = blackBerryMsg;
+                }
+            }
             else if( client.isBlackBerryOS()){
                 link = IGetEnhanced.BLACKBERRY_LINK; 
                 String blackBerryMsg = component.getBlackberryMsg();
