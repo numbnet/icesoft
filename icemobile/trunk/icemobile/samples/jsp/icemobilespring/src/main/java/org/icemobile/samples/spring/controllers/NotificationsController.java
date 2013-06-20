@@ -66,13 +66,14 @@ public class NotificationsController extends ICEmobileBaseController{
     }
 
     @RequestMapping(value = "/notifications", method = RequestMethod.POST)
-    public void process(
+    public void process(HttpServletRequest request,
             @RequestParam(value = "pushType", required = false) String pushType,
             @ModelAttribute("notificationsBean") NotificationsBean model)
             throws IOException {
         
         final PushContext pushContext = PushContext.getInstance(
                 context.getServletContext() );
+        final String sessionId = request.getSession().getId();
         final String title = model.getTitle();
         final String message = model.getMessage();
         model.setTitle("");
@@ -84,10 +85,10 @@ public class NotificationsController extends ICEmobileBaseController{
                 notificationsBean.setTitle(title);
                 notificationsBean.setMessage(message);
                 if (isCloud)  {
-                    pushContext.push("notifications",
+                    pushContext.push(sessionId,
                             new PushNotification(title, message));
                 } else  {
-                    pushContext.push("notifications");
+                    pushContext.push(sessionId);
                 }
             }
         };
