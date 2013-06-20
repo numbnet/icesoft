@@ -110,7 +110,7 @@
     </target>
 
     <target name="war.basic" depends="compile">
-        <war basedir="${web.dir}"
+        <war duplicate="preserve" basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war"
              webxml="${webxml.dir}/web.xml"
              excludes="WEB-INF/web.xml">
