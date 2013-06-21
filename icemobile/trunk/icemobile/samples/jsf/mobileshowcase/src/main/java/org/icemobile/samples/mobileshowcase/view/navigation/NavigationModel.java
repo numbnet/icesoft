@@ -39,7 +39,7 @@ import java.util.Map;
 @SessionScoped
 public class NavigationModel implements Serializable {
 
-    public static final String BEAN_NAME = "navigationModel";
+    public static final String BEAN_NAME = "mobiNavigationModel";
 
     // currently selected panel and stack to keep track of history
     private String selectedPanel = "splash";
