@@ -56,7 +56,7 @@ import java.util.List;
 public class ListBean extends ExampleImpl<ListBean> implements
         Serializable {
 
-    public static final String BEAN_NAME = "listBean";
+    public static final String BEAN_NAME = "mobiListBean";
     private List<Car> cars = new ArrayList<Car>();
 
     public ListBean() {
