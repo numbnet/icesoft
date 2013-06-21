@@ -24,7 +24,7 @@
         <f:facet name="header">
             <h:form prependId="false" >
                 <mobi:commandButton buttonType="#{empty buttonType ? 'back' : buttonType}"
-                               action="#{navigationModel.goBack}"
+                               action="#{mobiNavigationModel.goBack}"
                                value="#{empty buttonLabel ? 'Back' : buttonLabel}"
                                openContentPane="#{empty nav ? 'menu' : nav}"
                                singleSubmit="true"/>
