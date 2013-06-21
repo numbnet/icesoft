@@ -27,7 +27,7 @@
     <title>ICEfaces Mobile Showcase</title>
     <mobi:deviceResource theme="#{themeBean.currentTheme}"/>
     <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
-    <c:if test="#{navigationModel.selectedPanel eq 'gmap'}">
+    <c:if test="#{mobiNavigationModel.selectedPanel eq 'gmap'}">
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
     </c:if>
     <link rel="apple-touch-icon" href="./resources/images/touch-icon-iphone.png" />
@@ -45,26 +45,26 @@
                 <f:facet name="header">
                     <h:form id="toolbar2" prependId="false" >
                         <mobi:commandButton buttonType="back"
-                                       action="#{navigationModel.goBack}"
-                                       rendered="#{navigationModel.canGoBack}"
+                                       action="#{mobiNavigationModel.goBack}"
+                                       rendered="#{mobiNavigationModel.canGoBack}"
                                        value="Back"/>
                         <h:commandLink title="&amp;#9776;"
                                        styleClass="ui-icon ui-icon-home"
-                                       action="#{navigationModel.goToHome}"
-                                       rendered="#{navigationModel.selectedPanel eq 'menu'}"/>
+                                       action="#{mobiNavigationModel.goToHome}"
+                                       rendered="#{mobiNavigationModel.selectedPanel eq 'menu'}"/>
                         <h:commandLink title="&amp;#9776;"
                                        styleClass="ui-icon ui-icon-menu"
-                                       action="#{navigationModel.goToMenu}"
-                                       rendered="#{navigationModel.selectedPanel eq 'splash'}"/>
+                                       action="#{mobiNavigationModel.goToMenu}"
+                                       rendered="#{mobiNavigationModel.selectedPanel eq 'splash'}"/>
                     </h:form>
-                    <h1 class="ui-title">#{mmsgs[navigationModel.selectedDestination.title]}</h1>
+                    <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
                     <ui:insert name="toolBarContent"/>
                 </f:facet>
         
                 <f:facet name="body">
                     <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
                         <ui:param name="selectedPanel"
-                                  value="#{navigationModel.selectedPanel}"/>
+                                  value="#{mobiNavigationModel.selectedPanel}"/>
                     </ui:include>
                 </f:facet>
         
