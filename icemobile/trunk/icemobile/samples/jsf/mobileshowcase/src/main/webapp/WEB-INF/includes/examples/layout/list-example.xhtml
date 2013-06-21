@@ -67,7 +67,7 @@
     
         <mobi:outputList  id="listIterator">
             <mobi:outputListItem group="true">List of cars</mobi:outputListItem>
-            <mobi:outputListItems value="#{listBean.cars}" var="currCar" >
+            <mobi:outputListItems value="#{mobiListBean.cars}" var="currCar" >
                 <div style="padding:5px;">Car title "#{currCar.title}"</div>
             </mobi:outputListItems>
         </mobi:outputList>
