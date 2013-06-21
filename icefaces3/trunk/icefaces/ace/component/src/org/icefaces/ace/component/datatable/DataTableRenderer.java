@@ -345,6 +345,7 @@ public class DataTableRenderer extends CoreRenderer {
         final boolean reorder = table.isReorderableColumns();
         final boolean snglSrt = table.isSingleSort();
         final boolean disable = table.isDisabled();
+        final boolean allColClicks = table.isAllColumnClicks();
         final boolean scroll = table.isScrollable();
         final String  ie7Width = table.getScrollWidthIE7();
         final boolean pinning = table.isColumnPinning();
@@ -373,6 +374,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (height) json.entry("height", table.getScrollHeight());
         if (select) json.entry("selectionMode", table.getSelectionMode());
         if (dblSelect) json.entry("dblclickSelect", true);
+        if (allColClicks) json.entry("allColClicks", true);
         if (ajaxSelect) json.entry("instantSelect", true);
         if (resize) json.entry("resizableColumns", true);
         if (reorder) json.entry("reorderableColumns", true);
