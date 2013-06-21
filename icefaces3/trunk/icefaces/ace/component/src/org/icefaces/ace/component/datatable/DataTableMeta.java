@@ -377,6 +377,10 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc = "Enable to require a double-click to fire row/cell selection events.")
     private boolean doubleClickSelect;
 
+    @Property(tlddoc = "Enable to have all column clicks accepted as selection and/or ajax click events. Typically only click events" +
+            "that occur on a child div, span, or the td element itself are captured for processing.")
+    private boolean allColumnClicks;
+
     @Property(tlddoc = "Defines an array to be populated with objects " +
             "referencing selected table cells and the rows they originate from." )
     private CellSelections[] selectedCells;

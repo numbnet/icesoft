@@ -693,7 +693,7 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
 
             var target = ice.ace.jq(event.target);
 
-            if (target.is('td,span,div')) {
+            if (options.allColumnClicks || target.is('td,span,div')) {
                 // wait for dblclick
                 self.cellClickWaiting = setTimeout(function() {
                     execObsList.call(self, event);
@@ -729,7 +729,7 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
 
             var target = ice.ace.jq(event.target);
 
-            if (target.is('td,span,div')) {
+            if (options.allColumnClicks || target.is('td,span,div')) {
                 self.rowClickWaiting = setTimeout(function() {
                     execObsList.call(self, event);
                     // console.log('row click');
@@ -759,7 +759,7 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
         this.element.on('dblclick', this.cellSelector, function (event) {
             var target = ice.ace.jq(event.target);
 
-            if (target.is('td,span,div')) {
+            if (options.allColumnClicks || target.is('td,span,div')) {
                 if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
                 if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
 
@@ -784,7 +784,7 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
         this.element.on('dblclick', this.rowSelector, function (event) {
             var target = ice.ace.jq(event.target);
 
-            if (target.is('td,span,div')) {
+            if (options.allColumnClicks || target.is('td,span,div')) {
                 if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
                 if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
 
@@ -873,7 +873,8 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
 
     // Initialize listener sets
     var options = {
-        noDbl : cellDblClickObs.length == 0 && rowDblClickObs.length == 0
+        noDbl : cellDblClickObs.length == 0 && rowDblClickObs.length == 0,
+        allColumnClicks : this.cfg.allColClicks
     };
 
     setupCellClick.call(this, cellClickObs, options);
