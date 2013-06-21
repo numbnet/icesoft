@@ -26,13 +26,13 @@
             <h:form id="toolbar" prependId="false">
                 <icecore:singleSubmit rendered="false"/>
                 <h:commandLink style="position: absolute;left: 0.5em;top: 3px;"
-                        action="#{navigationModel.navigateToParam}">
+                        action="#{mobiNavigationModel.navigateToParam}">
                     <f:param name="panelID" value="splash"/>
                     <f:param name="beanName" value="null"/>
                     <h:graphicImage library="images"
                                     name="icemobile_thumb.png"/>
                 </h:commandLink>
-                <h1 class="ui-title">#{mmsgs[navigationModel.selectedDestination.title]}</h1>
+                <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
                 <!-- theme selector -->
                 <c:if test="#{!mobiClient.IE8orLessBrowser}">
                      <div style="position: absolute;right: 1.5em;top: 6px;">
@@ -74,7 +74,7 @@
                 <!-- main content include of page content -->
                   <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
                      <ui:param name="selectedPanel"
-                              value="#{navigationModel.selectedPanel == null?'splash':navigationModel.selectedPanel}"/>
+                              value="#{mobiNavigationModel.selectedPanel == null?'splash':mobiNavigationModel.selectedPanel}"/>
                   </ui:include>
                 </f:facet>
             </mobi:splitPane>
