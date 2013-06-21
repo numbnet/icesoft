@@ -97,12 +97,17 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 
         renderPassThruAttributes(facesContext, checkbox, HTML.BUTTON_ATTRS, new String[]{"style"});
 
-        // Another Damn Element. Previously added dynamically with JS.
-        writer.startElement(HTML.SPAN_ELEM, null);
+        if (checkbox.getLabel() != null) {
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-label", null);
+            writer.write(checkbox.getLabel());
+            writer.endElement(HTML.SPAN_ELEM);
+        } else {
+            writer.startElement(HTML.SPAN_ELEM, null);
+            encodeIconStyle(writer, checkbox);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
 
-        encodeIconStyle(writer, checkbox);
-
-        writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.BUTTON_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
@@ -175,16 +180,6 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 
         writer.writeAttribute(eventType, jb.toString(), null);
     }
-
-    private String findCheckboxLabel(CheckboxButton checkbox){
-        String label="";
-        String checkLabel = checkbox.getLabel();
-        if (null!=checkLabel && !checkLabel.equals("")){
-            label=checkLabel;
-        }
-        return label;
-    }
-
 
     /**
      * support similar return values as jsf component

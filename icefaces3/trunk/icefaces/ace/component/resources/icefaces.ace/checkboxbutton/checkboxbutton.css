@@ -17,6 +17,10 @@
 
 .ice-checkboxbutton { display:inline; }
 
+.ice-checkboxbutton .ui-label {
+    padding: .2em;
+}
+
 .ice-checkboxbutton .yui-button > span > button {
     border:none;
 
