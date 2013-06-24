@@ -32,7 +32,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
 import javax.faces.event.PhaseId;
-import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSession;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -71,21 +70,29 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
     @Override
     public void handle() throws FacesException {
         boolean sessionExpired = false;
-        for (Iterator<ExceptionQueuedEvent> iter = getUnhandledExceptionQueuedEvents().iterator(); iter.hasNext();) {
+        for (Iterator<ExceptionQueuedEvent> iter = getUnhandledExceptionQueuedEvents().iterator(); iter.hasNext(); ) {
             ExceptionQueuedEvent event = iter.next();
             ExceptionQueuedEventContext queueContext = (ExceptionQueuedEventContext) event.getSource();
             Throwable ex = queueContext.getException();
 
             FacesContext fc = FacesContext.getCurrentInstance();
-            if(fc.isProjectStage(ProjectStage.Development)){
+            if (fc.isProjectStage(ProjectStage.Development)) {
                 log.log(Level.WARNING,"queued exception", ex);
             }
 
-            if (ex instanceof ViewExpiredException) {
-                if (PhaseId.RESTORE_VIEW.equals(queueContext.getPhaseId())) {
+            if ((ex instanceof ViewExpiredException) && PhaseId.RESTORE_VIEW.equals(queueContext.getPhaseId())) {
 
-		    if (!isValidSession(fc) || true) {                        //At this point, perhaps we should remove the ViewExpiredException and add
-                        //a SessionExpiredException wrapped around it then proceed with normal processing
+                ViewExpiredException vex = (ViewExpiredException)ex;
+                String viewId = vex.getViewId();
+
+                ExternalContext ec = fc.getExternalContext();
+                Object sessObj = ec.getSession(false);
+
+                if (sessObj != null) {
+
+                    if (!isValidSession(fc,viewId)) {
+                        //Remove the ViewExpiredException and set the sessionExpired flag so that we know
+                        //to add the SessionExpiredException which is done late to avoid ConcurrentModificationException.
                         iter.remove();
                         sessionExpired = true;
                         break;
@@ -104,7 +111,7 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
             }
 
             ExceptionQueuedEventContext ctxt =
-                    new ExceptionQueuedEventContext(fc, new SessionExpiredException("Session has expired"));
+                    new ExceptionQueuedEventContext(fc, new SessionExpiredException("session expired (causing view to expire)"));
             app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
         }
 
@@ -113,36 +120,34 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
         getWrapped().handle();
     }
 
-    private boolean isValidSession(FacesContext facesContext) {
-        ExternalContext ec = facesContext.getExternalContext();
-        Object sessObj = ec.getSession(false);
-
-        //If no session was returned, then we're not in a valid session
-        if (sessObj == null) {
-            return false;
-        }
+    private boolean isValidSession(FacesContext fc, String viewId) {
 
         //If the session is available but the getters on the session throw IllegalStateExceptions,
         //then the session is considered invalid.  If the session is not new and the calculation
         //passes, then the session is considered valid.
         boolean validSession = false;
-        try {
-            boolean newSession = false;
-            long lastAccessed = 0;
-            long maxInactive = 0;
-            if (EnvUtils.instanceofPortletSession(sessObj)) {
-//                newSession = ((PortletSession) sessObj).isNew();
-                lastAccessed = ((PortletSession) sessObj).getLastAccessedTime();
-                maxInactive = ((PortletSession) sessObj).getMaxInactiveInterval();
-            } else {
-                newSession = ((HttpSession) sessObj).isNew();
-                lastAccessed = ((HttpSession) sessObj).getLastAccessedTime();
-                maxInactive = ((HttpSession) sessObj).getMaxInactiveInterval();
-            }
+        HttpSession httpSession = EnvUtils.getSafeSession(fc,false);
 
-            if (!newSession && (System.currentTimeMillis() - lastAccessed) <= (maxInactive * 1000)) {
+        try {
+
+            boolean newSession = httpSession.isNew();
+            long lastAccessed = httpSession.getLastAccessedTime();
+            int maxInactive = httpSession.getMaxInactiveInterval();
+            long now = System.currentTimeMillis();
+
+            if (!newSession && (now - lastAccessed) <= (maxInactive * 1000)) {
                 validSession = true;
             }
+
+            log.log(Level.FINE, "checking for session validity: " +
+                    "\n  isNew         : " + newSession +
+                    "\n  now           : " + now +
+                    "\n  last accessed : " + lastAccessed +
+                    "\n  max inactive  : " + (maxInactive * 1000) +
+                    "\n  time is fine  : " + ((now - lastAccessed) <= (maxInactive * 1000)) +
+                    "\n  valid         : " + validSession
+            );
+
         } catch (IllegalStateException ignored) {
             //An IllegalStateException here simply means the session is invalid
         }

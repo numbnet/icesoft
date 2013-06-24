@@ -19,10 +19,9 @@ package org.icefaces.impl.application;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.ResourceHandler;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class SessionTimeoutMonitor extends SessionAwareResourceHandlerWrapper {
@@ -42,26 +41,19 @@ public class SessionTimeoutMonitor extends SessionAwareResourceHandlerWrapper {
             return handler.isResourceRequest(context);
         }
 
-        ExternalContext externalContext = context.getExternalContext();
-        Map sessionMap = externalContext.getSessionMap();
-        Long lastAccessTime = (Long) sessionMap.get(SessionTimeoutMonitor.class.getName());
+        HttpSession httpSession = EnvUtils.getSafeSession(context);
+        Long lastAccessTime = (Long) httpSession.getAttribute(SessionTimeoutMonitor.class.getName());
         boolean isPushRelatedRequest = EnvUtils.isPushRequest(context);
         if (lastAccessTime == null || !isPushRelatedRequest) {
             lastAccessTime = System.currentTimeMillis();
-            sessionMap.put(SessionTimeoutMonitor.class.getName(), System.currentTimeMillis());
+            httpSession.setAttribute(SessionTimeoutMonitor.class.getName(), System.currentTimeMillis());
         }
 
-        Object session = externalContext.getSession(false);
-        int maxInactiveInterval;
-        if (EnvUtils.instanceofPortletSession(session)) {
-            maxInactiveInterval = ((javax.portlet.PortletSession) session).getMaxInactiveInterval();
-        } else {
-            maxInactiveInterval = ((javax.servlet.http.HttpSession) session).getMaxInactiveInterval();
-        }
-
+        int maxInactiveInterval = httpSession.getMaxInactiveInterval();
         if (System.currentTimeMillis() - lastAccessTime > maxInactiveInterval * 1000) {
-            sessionMap.remove(SessionTimeoutMonitor.class.getName());
-            externalContext.invalidateSession();
+            Log.fine("invalidating session enforcing strictSessionTimeout");
+            httpSession.removeAttribute(SessionTimeoutMonitor.class.getName());
+            context.getExternalContext().invalidateSession();
         }
 
         return handler.isResourceRequest(context);

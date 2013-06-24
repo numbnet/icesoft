@@ -130,8 +130,16 @@ public class ProxySession implements HttpSession {
     }
 
     public long getCreationTime() {
-        log.severe("ProxySession unsupported operation");
-        throw new UnsupportedOperationException();
+        Object sess = facesContext.getExternalContext().getSession(true);
+        Class clazz = sess.getClass();
+        long val = -1;
+        try {
+            Method meth = clazz.getMethod("getCreationTime");
+            val = (Long)meth.invoke(sess);
+        } catch (Exception e) {
+            log.log(Level.WARNING, "could not get creation time from PortletSession ", e);
+        }
+        return val;
     }
 
     public String getId() {
@@ -148,13 +156,29 @@ public class ProxySession implements HttpSession {
     }
 
     public long getLastAccessedTime() {
-        log.severe("ProxySession unsupported operation");
-        throw new UnsupportedOperationException();
+        Object sess = facesContext.getExternalContext().getSession(true);
+        Class clazz = sess.getClass();
+        long val = -1;
+        try {
+            Method meth = clazz.getMethod("getLastAccessedTime");
+            val = (Long)meth.invoke(sess);
+        } catch (Exception e) {
+            log.log(Level.WARNING, "could not get last accessed time from PortletSession ", e);
+        }
+        return val;
     }
 
     public int getMaxInactiveInterval() {
-        log.severe("ProxySession unsupported operation");
-        throw new UnsupportedOperationException();
+        Object sess = facesContext.getExternalContext().getSession(true);
+        Class clazz = sess.getClass();
+        int val = -1;
+        try {
+            Method meth = clazz.getMethod("getMaxInactiveInterval");
+            val = (Integer)meth.invoke(sess);
+        } catch (Exception e) {
+            log.log(Level.WARNING, "could not get maximum inactive interval from PortletSession ", e);
+        }
+        return val;
     }
 
     public void invalidate() {
@@ -163,8 +187,16 @@ public class ProxySession implements HttpSession {
     }
 
     public boolean isNew() {
-        log.severe("ProxySession unsupported operation");
-        throw new UnsupportedOperationException();
+        Object sess = facesContext.getExternalContext().getSession(true);
+        Class clazz = sess.getClass();
+        boolean val = false;
+        try {
+            Method meth = clazz.getMethod("isNew");
+            val = (Boolean)meth.invoke(sess);
+        } catch (Exception e) {
+            log.log(Level.WARNING, "could not get isNew from PortletSession ", e);
+        }
+        return val;
     }
 
     public void removeAttribute(String s) {
