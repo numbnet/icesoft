@@ -21,7 +21,7 @@
     <property name="lib.compile.application.includes" value="*.jar"/>
     <property name="lib.distribute.application.includes" value="*.jar"/>
     
-    <property name="compat" value="true" />
+    <property name="compat" value="false" />
     <property name="ace" value="true" />
     <property name="includeSrc" value="true" />
     
