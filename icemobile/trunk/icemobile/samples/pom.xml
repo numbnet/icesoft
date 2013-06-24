@@ -89,6 +89,12 @@
         <!--<icepush.product.name>ICEpush EE</icepush.product.name>-->
         <!--<icepush.lib.name>icepush-ee</icepush.lib.name>-->
 
+        <!--<icemobile.product.group>com.icesoft.icemobile-ee</icemobile.product.group>-->
+        <!--<icemobile.product.name>ICEmobile EE</icemobile.product.name>-->
+        <!-- <icemobile.faces.comps.lib.name>icefaces-mobi-ee</icemobile.faces.comps.lib.name>
+        <icemobile.jsptags.lib.name>icemobile-jsp-ee</icemobile.jsptags.lib.name>
+        <icemobile.spring.lib.name>icemobile-spring-ee</icemobile.spring.lib.name> -->
+
         <icesoft.company.name>ICEsoft Technologies Inc.</icesoft.company.name>
         <icesoft.copyright>ICEsoft Technologies Canada Corp., All Rights Reserved.</icesoft.copyright>
         <icesoft.copyright.year>2013</icesoft.copyright.year>
@@ -96,6 +102,7 @@
         <!-- Versions of JSF implementations -->
         <mojarra.version>2.1.21</mojarra.version>
         <myfaces.version>2.1.10</myfaces.version>
+        <mojarra.api.version>2.1</mojarra.api.version>
 
         <!-- Various library versions settable from one place -->
         <annotation.version>1.0</annotation.version>
