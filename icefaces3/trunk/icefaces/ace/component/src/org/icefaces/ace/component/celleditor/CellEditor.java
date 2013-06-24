@@ -47,4 +47,33 @@ import java.util.*;
 
 })
 public class CellEditor extends CellEditorBase {
+    UIComponent input;
+    UIComponent output;
+    String rowStateVar;
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if (input == null) input = getFacet("input");
+        if (output == null) output = getFacet("output");
+        if (rowStateVar == null) rowStateVar = getRowStateVar();
+        RowState state = (RowState) context.getExternalContext().getRequestMap().get(rowStateVar);
+
+        // Work around MyFaces warning for 'rendered' input w/o incoming value
+        if (!state.getActiveCellEditorIds().contains(getId())) {
+            input.setRendered(false);
+        }
+
+        super.processDecodes(context);
+
+        input.setRendered(true);
+    }
+
+    String getRowStateVar() {
+        UIComponent table = getParent();
+
+        while (table != null && !(table instanceof DataTable))
+            table = table.getParent();
+
+        return ((DataTable)table).getRowStateVar();
+    }
 }
