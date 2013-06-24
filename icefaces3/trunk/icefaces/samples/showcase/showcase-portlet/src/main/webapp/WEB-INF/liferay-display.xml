@@ -127,9 +127,9 @@
             <category name="File">
                 <portlet id="fileEntry"/>
                 <portlet id="fileEntryCallback"/>
-                <portlet id="fileEntryFailPop"/>
+                <!--<portlet id="fileEntryFailPop"/>-->
                 <portlet id="fileEntryListener"/>
-                <portlet id="fileEntryMultiple"/>
+                <!--<portlet id="fileEntryMultiple"/>-->
                 <portlet id="fileEntryValidation"/>
             </category>
             <category name="GMap">
