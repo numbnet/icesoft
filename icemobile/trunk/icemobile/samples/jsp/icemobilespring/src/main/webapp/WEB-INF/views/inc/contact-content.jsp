@@ -41,11 +41,8 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<c:if test="${!mobiClient.SXRegistered}">
-		<!-- SX on iOS auto-submits -->
-		<mobi:commandButton buttonType='important' styleClass="submit"
-			value="Submit" type="submit" />
-	</c:if>
+	<mobi:commandButton buttonType='important' styleClass="submit"
+		value="Submit" type="submit" />
 
 	<h3>Selected Contact</h3>
 	<mobi:fieldsetGroup styleClass="results">
