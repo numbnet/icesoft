@@ -473,22 +473,17 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
      * <p>Prepare for rendering into subtrees.</p>
      */
     public void startSubtreeRendering(Document doc) {
-        Document oldDoc = cloneDocument(doc);
-        //subtree rendering will replace specified
-        //subtrees in the old DOM
-        if (null != oldDoc)  {
-            document = oldDoc;
-            return;
+        if (doc == null) {
+            //This call attempts to get the old DOM from the View map
+            //which should have already been attempted but we try
+            //it here again to make sure.
+            doc = getOldDocument();
+            if (doc == null) {
+                refreshDocument();
+                return;
+            }
         }
-
-        oldDoc = getOldDocument();
-        if (null != oldDoc)  {
-            document = oldDoc;
-            return;
-        }
-        
-        refreshDocument();
-
+        document = cloneDocument(doc);
     }
 
     private Document cloneDocument(Document doc) {
