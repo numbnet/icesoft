@@ -100,7 +100,7 @@ public class DataTableRowRenderer {
                         if (ve != null)
                             cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
                     }
-                    encodeRegularCell(context, cols, i, cellSelected, innerTdDivRequired);
+                    encodeRegularCell(new CellRenderingContext(context, cols, i, cellSelected, innerTdDivRequired));
                 }
             }
 
@@ -185,21 +185,24 @@ public class DataTableRowRenderer {
         writer.endElement(HTML.TD_ELEM);
     }
 
-    private static void encodeRegularCell(FacesContext context, List<Column> columnSiblings, int colIndex, boolean selected, boolean resizable) throws IOException {
-        Column column = columnSiblings.get(colIndex);
-        ResponseWriter writer = context.getResponseWriter();
+    private static void encodeRegularCell(CellRenderingContext cellContext) throws IOException {
+        List<Column> columns = cellContext.columns;
+        Column column = columns.get(cellContext.index);
+        ResponseWriter writer = cellContext.context.getResponseWriter();
 
-        Column nextColumn = DataTableRendererUtil.getNextColumn(column, columnSiblings);
-        boolean isCurrStacked = DataTableRendererUtil.isCurrColumnStacked(columnSiblings, column);
+        Column nextColumn = DataTableRendererUtil.getNextColumn(column, columns);
+        boolean isCurrStacked = DataTableRendererUtil.isCurrColumnStacked(columns, column);
+        boolean isCurrGrouped = column.getCurrGroupLength() > 0;
+
         boolean isNextStacked = (nextColumn == null) ? false
                 : (nextColumn.isRendered() && nextColumn.isStacked());
-        boolean isCurrGrouped = column.getCurrGroupLength() > 0;
+
         boolean isNextGrouped = isCurrGrouped ? false // No need to calculate next group if grouped
                 : column.isNextColumnGrouped();
 
-        if (isCurrGrouped) {
+        if (isCurrGrouped)
             column.setCurrGroupLength(column.getCurrGroupLength()-1);
-        } else {
+        else {
             if (!isCurrStacked) {
                 writer.startElement(HTML.TD_ELEM, null);
 
@@ -211,7 +214,7 @@ public class DataTableRowRenderer {
 
                 CellEditor editor = column.getCellEditor();
 
-                String columnStyleClass = "ui-col-"+colIndex;
+                String columnStyleClass = "ui-col-"+cellContext.index;
 
                 if (column.getStyleClass() != null)
                     columnStyleClass += " " + column.getStyleClass();
@@ -229,22 +232,22 @@ public class DataTableRowRenderer {
                             : " ui-datatable-group-even";
                 }
 
-                if (selected)
+                if (cellContext.selected)
                     columnStyleClass += " ui-state-active ui-selected";
 
                 writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
 
-                if (resizable) writer.startElement(HTML.DIV_ELEM, null);
+                if (cellContext.resizable) writer.startElement(HTML.DIV_ELEM, null);
             }
             else {
                 writer.startElement("hr", null);
                 writer.endElement("hr");
             }
 
-            column.encodeAll(context);
+            column.encodeAll(cellContext.context);
 
             if (!isNextStacked) {
-                if (resizable) writer.endElement(HTML.DIV_ELEM);
+                if (cellContext.resizable) writer.endElement(HTML.DIV_ELEM);
                 writer.endElement(HTML.TD_ELEM);
             }
         }
@@ -328,7 +331,7 @@ public class DataTableRowRenderer {
                                             .contains(ve.getExpressionString());
                             }
 
-                            encodeRegularCell(context, cols, i, cellSelected, false);
+                            encodeRegularCell(new CellRenderingContext(context, cols, i, cellSelected, false));
                         }
                     }
                     writer.endElement(HTML.TR_ELEM);
@@ -412,5 +415,21 @@ public class DataTableRowRenderer {
         writer.endElement(HTML.TD_ELEM);
         writer.endElement(HTML.TR_ELEM);
         table.setRowIndex(-1);
+    }
+
+    private static class CellRenderingContext {
+        FacesContext context;
+        List columns;
+        int index;
+        boolean selected;
+        boolean resizable;
+
+        public CellRenderingContext(FacesContext context, List<Column> columns, int index, boolean selected, boolean innerDiv) {
+            this.context = context;
+            this.columns = columns;
+            this.index = index;
+            this.selected = selected;
+            this.resizable = innerDiv;
+        }
     }
 }

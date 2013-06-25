@@ -304,12 +304,14 @@ public class DataTableDecoder {
         boolean sorting = panel.isColumnSortingConfigurable();
         boolean visibility = panel.isColumnVisibilityConfigurable();
         boolean ordering = panel.isColumnOrderingConfigurable();
+        boolean firstRendered = true;
 
         for (i = 0; i < columns.size(); i++) {
             Column column = columns.get(i);
 
             if (column.isConfigurable()) {
-                boolean disableVisibilityControl = (firstCol && i == 0) || ((lastCol && i == columns.size() - 1));
+                boolean disableVisibilityControl = (firstRendered && firstCol && i == 0) || ((lastCol && isLastRendered(columns, i)));
+                if (column.isRendered()) firstRendered = false;
 
                 String panelId = panel.getClientId();
                 if (visibility && !disableVisibilityControl) decodeColumnVisibility(params, column, i, panelId);
@@ -323,6 +325,13 @@ public class DataTableDecoder {
             decodeSortRequest(context, table, clientId,
                     processConfigPanelSortKeys(clientId, params, table));
         }
+    }
+
+    private static boolean isLastRendered(List<Column> columns, int i) {
+        while (++i < columns.size())
+            if (columns.get(i).isRendered()) return false;
+
+        return true;
     }
 
     static private void decodeColumnName(Map<String, String> params, Column column, int i, String clientId) {

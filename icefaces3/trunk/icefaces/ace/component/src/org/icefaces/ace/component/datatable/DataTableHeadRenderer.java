@@ -57,7 +57,8 @@ public class DataTableHeadRenderer {
         // For each row of a col group, or child of a datatable
         boolean firstHeadElement = true;
         boolean subRows = false;
-        Iterator<UIComponent> headElementIterator = headContainer.iterator();
+        boolean renderingFirstCol = true;
+        ListIterator<UIComponent> headElementIterator = headContainer.listIterator();
 
         do {
             UIComponent headerElem = headElementIterator.next();
@@ -78,20 +79,21 @@ public class DataTableHeadRenderer {
                 if (subRows || firstHeadElement) writer.startElement(HTML.TR_ELEM, null);
 
                 // Either loop through row children or render the single column/columns
-                Iterator<UIComponent> componentIterator = headerRowChildren.iterator();
-                boolean firstComponent = true;
+                ListIterator<UIComponent> componentIterator = headerRowChildren.listIterator();
                 tableContext.setInHeaderSubrows(subRows);
                 List<UIComponent> siblings = (subRows) ? headerRowChildren : headContainer;
                 while (componentIterator.hasNext()) {
                     UIComponent headerRowChild = componentIterator.next();
 
-                    tableContext.setFirstColumn(firstComponent && firstHeadElement);
-                    tableContext.setLastColumn(!headElementIterator.hasNext() && !componentIterator.hasNext());
+                    boolean rendered = headerRowChild.isRendered();
+
+                    tableContext.setFirstColumn(rendered && renderingFirstCol);
+                    tableContext.setLastColumn(!componentIterator.hasNext() && (!headElementIterator.hasNext() || isLastRendered(headElementIterator)));
 
                     if (headerRowChild.isRendered() && headerRowChild instanceof Column)
                         encodeColumn(context, tableContext, (Column) headerRowChild, siblings);
 
-                    firstComponent = false;
+                    if (rendered) renderingFirstCol = false;
                 }
 
                 firstHeadElement = false;
@@ -108,6 +110,25 @@ public class DataTableHeadRenderer {
             writer.endElement(HTML.TABLE_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
+    }
+
+    private static boolean isLastRendered(ListIterator<UIComponent> componentIterator) {
+        int index = 0;
+        boolean last = true;
+        // look ahead
+        while (componentIterator.hasNext()) {
+            index++;
+            if (componentIterator.next().isRendered()) {
+                last = false;
+                break;
+            }
+        }
+        // look back
+        while (index != 0) {
+            index--;
+            componentIterator.previous();
+        }
+        return last;
     }
 
     private static void encodeColumn(FacesContext context, DataTableRenderingContext tableContext, Column column, List columnSiblings) throws IOException {
