@@ -46,6 +46,7 @@ public class FormSubmit implements SystemEventListener {
 
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         final UIForm form = (UIForm) event.getSource();
+        final String formId = form.getClientId();
         String componentId = form.getId() + CAPTURE_SUBMIT_SUFFIX;
 
         UIOutput scriptWriter = new UIOutputWriter() {
@@ -56,7 +57,6 @@ public class FormSubmit implements SystemEventListener {
                 }
                 Object keyMap = form.getAttributes().get(DefaultAction.class.getName());
 
-                String formId = form.getClientId(context);
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", "type");
                 writer.writeAttribute("id", getClientId(context), "id");
