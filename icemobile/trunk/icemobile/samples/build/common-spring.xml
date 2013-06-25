@@ -97,6 +97,7 @@
         <copy file="${web.dir}/WEB-INF/web.xml" todir="${webxml.dir}">
           <filterset>
             <filter token="FACES_SERVLET" value="${FACES_SERVLET}"/>
+            <filter token="WEBXML_PREAMBLE" value="${WEBXML_PREAMBLE}"/>
             <filter token="MULTIPART_CONFIG" value="${MULTIPART_CONFIG}"/>
             <filter token="EXTRA_CONTEXT_PARAMS" value="${EXTRA_CONTEXT_PARAMS}"/>
             <filter token="EXTRA_FILTERS" value="${EXTRA_FILTERS}"/>
