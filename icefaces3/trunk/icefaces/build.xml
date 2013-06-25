@@ -309,7 +309,7 @@
                 <include name="build.packages.xml"/>
             </fileset>
         </delete>
-        <copy todir="${bundle.dir.src}/lib">
+        <copy todir="${bundle.dir.src}/lib" failonerror="false">
             <fileset dir="${bundle.dir.src}/icepush/lib">
                 <include name="jsp-api.jar" />
                 <include name="mail.jar" />
