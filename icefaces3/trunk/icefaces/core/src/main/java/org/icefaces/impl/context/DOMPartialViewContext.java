@@ -60,7 +60,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             Pattern.compile("(selected=\"[^\"]*\")");
     public static final String CUSTOM_UPDATE = "ice.customUpdate";
     public static final String DATA_ELEMENTUPDATE = "data-elementupdate";
-    public static final String XMLNS = "xmlns";
 
     private PartialViewContext wrapped;
     protected FacesContext facesContext;
@@ -156,18 +155,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                         diffs = domDiff(oldDOM, newDOM);
                     }
                 } else {
-                    //cloneNode cannot process xmlns attribute
-                    Element docElement = oldDOM.getDocumentElement();
-                    String xmlnsValue = null;
-                    if (docElement.hasAttribute(XMLNS))  {
-                        xmlnsValue = docElement.getAttribute(XMLNS);
-                        docElement.removeAttribute(XMLNS);
-                    }
-                    Document oldDOMCopy = (Document) oldDOM.cloneNode(true);
-                    if (null != xmlnsValue)  {
-                        docElement.setAttribute(XMLNS, xmlnsValue);
-                    }
-                    writer.startSubtreeRendering(oldDOMCopy);
+                    writer.startSubtreeRendering(oldDOM);
                     Collection<String> renderIds = getRenderIds();
                     customIds = getCustomIds(customUpdate);
                     if (null != customIds) {
