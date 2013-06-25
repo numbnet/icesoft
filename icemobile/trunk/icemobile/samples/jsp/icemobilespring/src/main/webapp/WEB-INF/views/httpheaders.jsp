@@ -13,7 +13,7 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   --%>
-
+<%@ page session="false" trimDirectiveWhitespaces="true"%>
 <%
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");//HTTP 1.1
     response.setHeader("Pragma", "no-cache");//HTTP 1.0

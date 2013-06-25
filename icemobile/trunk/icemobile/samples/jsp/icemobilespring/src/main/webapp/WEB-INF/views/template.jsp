@@ -1,3 +1,4 @@
+<!doctype html>
 <%--
   ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
   ~
@@ -13,7 +14,6 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   --%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
@@ -21,7 +21,6 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <%@ page session="false" trimDirectiveWhitespaces="true"%>
 <c:if test="${!ajaxRequest}">
-<!doctype html>
 <html>
 <jsp:include page="./inc/head.jsp"/>
 <body>
