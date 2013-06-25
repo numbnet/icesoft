@@ -40,8 +40,7 @@
             }
         </style>
 
-        <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="client"
-                       reactiveColumnVisibility="true"
+        <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="server"
                        rowStripe="true">
             <mobi:dataViewDetails>
                 <h:panelGrid columns="3" styleClass="innerBorder">
@@ -96,23 +95,23 @@
         </mobi:dataView>
         <mobi:commandButton value="Cost"
                             styleClass="footButton"
-                            actionListener="#{dataViewBean.setCostColVis(not dataViewBean.costColVis)}"
+                            actionListener="#{dataViewBean.toggleCostColVis}"
                             buttonType="#{dataViewBean.costColVis ? 'important' : null}"/>
         <mobi:commandButton value="Weight"
                             styleClass="footButton"
-                            actionListener="#{dataViewBean.setWeightColVis(not dataViewBean.weightColVis)}"
+                            actionListener="#{dataViewBean.toggleWeightColVis}"
                             buttonType="#{dataViewBean.weightColVis ? 'important' : null}"/>
         <mobi:commandButton value="Accel"
                             styleClass="footButton"
-                            actionListener="#{dataViewBean.setAccelColVis(not dataViewBean.accelColVis)}"
+                            actionListener="#{dataViewBean.toggleAccelColVis}"
                             buttonType="#{dataViewBean.accelColVis ? 'important' : null}"/>
         <mobi:commandButton value="MPG"
                             styleClass="footButton"
-                            actionListener="#{dataViewBean.setMpgColVis(not dataViewBean.mpgColVis)}"
+                            actionListener="#{dataViewBean.toggleMpgColVis}"
                             buttonType="#{dataViewBean.mpgColVis ? 'important' : null}"/>
         <mobi:commandButton value="Text"
                             styleClass="footButton"
-                            actionListener="#{dataViewBean.setTextColVis(not dataViewBean.textColVis)}"
+                            actionListener="#{dataViewBean.toggleTextColVis}"
                             buttonType="#{dataViewBean.textColVis ? 'important' : null}"/>
     </h:form>
 </ui:composition>
