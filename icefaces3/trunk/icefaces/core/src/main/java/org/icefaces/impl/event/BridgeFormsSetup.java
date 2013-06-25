@@ -48,6 +48,8 @@ public class BridgeFormsSetup implements SystemEventListener {
         UIForm uiForm = new ShortIdForm();
         uiForm.setTransient(true);
         uiForm.setId(id);
+        //disable capture submit for this form
+        uiForm.getAttributes().put(FormSubmit.DISABLE_CAPTURE_SUBMIT, FormSubmit.DISABLE_CAPTURE_SUBMIT);
         parent.add(uiForm);
     }
 
