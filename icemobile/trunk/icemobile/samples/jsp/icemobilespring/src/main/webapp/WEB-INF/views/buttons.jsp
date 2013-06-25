@@ -1,3 +1,4 @@
+<!doctype html>
 <%--
   ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
   ~
@@ -13,7 +14,6 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   --%>
-
 <%@ include file="/WEB-INF/views/httpheaders.jsp" %>
 <jsp:include page="template.jsp">
     <jsp:param name="demoID"    value="buttons" />
