@@ -18,6 +18,7 @@ package org.icefaces.impl.context;
 
 import org.icefaces.impl.fastinfoset.com.sun.xml.fastinfoset.dom.DOMDocumentParser;
 import org.icefaces.impl.fastinfoset.com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
+import org.icefaces.impl.fastinfoset.org.jvnet.fastinfoset.FastInfosetException;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Attr;
@@ -471,7 +472,8 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     /**
      * <p>Prepare for rendering into subtrees.</p>
      */
-    public void startSubtreeRendering(Document oldDoc) {
+    public void startSubtreeRendering(Document doc) {
+        Document oldDoc = cloneDocument(doc);
         //subtree rendering will replace specified
         //subtrees in the old DOM
         if (null != oldDoc)  {
@@ -487,6 +489,15 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         
         refreshDocument();
 
+    }
+
+    private Document cloneDocument(Document doc) {
+        try {
+            byte[] data = serializeDocument(doc);
+            return deserializeDocument(data);
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot clone document", e);
+        }
     }
 
     /**
@@ -528,13 +539,18 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
             facesContext.getViewRoot().getViewMap().put(OLD_DOM, document);
             return;
         }
+        byte[] data = serializeDocument(document);
+        facesContext.getViewRoot().getViewMap().put(OLD_DOM, data);
+    }
+
+    private static byte[] serializeDocument(Document document) throws IOException {
         byte[] data;
         DOMDocumentSerializer serializer = new DOMDocumentSerializer();
         ByteArrayOutputStream out = new ByteArrayOutputStream(10000);
         serializer.setOutputStream(out);
         serializer.serialize(document);
         data = out.toByteArray();
-        facesContext.getViewRoot().getViewMap().put(OLD_DOM, data);
+        return data;
     }
 
     public Document getOldDocument() {
@@ -551,18 +567,22 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         if (!EnvUtils.isCompressDOM(facesContext)) {
             return (Document) oldDOMObject;
         }
+
+        try {
+            return deserializeDocument((byte[]) oldDOMObject);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to restore old DOM ", e);
+            return DOMUtils.getNewDocument();
+        }
+    }
+
+    private static Document deserializeDocument(byte[] data) throws FastInfosetException, IOException {
         Document document = DOMUtils.getNewDocument();
         //FastInfoset does not tolerate stray xmlns declarations
         document.setStrictErrorChecking(false);
-        try {
-            byte[] data = (byte[]) oldDOMObject;
-            DOMDocumentParser parser = new DOMDocumentParser();
-            ByteArrayInputStream in = new ByteArrayInputStream(data);
-            parser.parse(document, in);
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Failed to restore old DOM ", e);
-        }
-
+        DOMDocumentParser parser = new DOMDocumentParser();
+        ByteArrayInputStream in = new ByteArrayInputStream(data);
+        parser.parse(document, in);
         return document;
     }
 
