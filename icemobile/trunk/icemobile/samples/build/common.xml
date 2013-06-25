@@ -41,6 +41,12 @@
 	<property file="${icemobile.server.config}" />
 
     <property name="FACES_SERVLET" value="Faces Servlet"/>
+    <property name="WEBXML_PREAMBLE"
+        value="&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+         version=&quot;3.0&quot; metadata-complete=&quot;false&quot;&gt;"/>
     <property name="MULTIPART_CONFIG" value="&lt;multipart-config/&gt;"/>
     <property name="EXTRA_CONTEXT_PARAMS" value=""/>
     <property name="EXTRA_FILTERS" value=""/>
