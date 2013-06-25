@@ -281,6 +281,7 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
                         Util.copyStream(inputStream, out);
                     }
                 } catch (IOException e) {
+					inputStream.close();
                     log.log(Level.WARNING, "Failed to serve resource "
                             + externalContext.getRequestServletPath(), e);
                 }
