@@ -117,8 +117,9 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         boolean sizing = false; //component.isColumnSizingConfigurable();
         boolean visibility = component.isColumnVisibilityConfigurable();
         boolean sorting = component.isColumnSortingConfigurable();
-        boolean firstCol = component.getType().equals("first-col") ;
+        boolean firstCol = component.getType().equals("first-col");
         boolean lastCol = component.getType().equals("last-col");
+        boolean firstRendered = true;
         List<Integer> columnOrdering = component.getTargetedDatatable().getColumnOrdering();
 
         for (i = 0; i < columns.size(); i++) {
@@ -132,7 +133,8 @@ public class TableConfigPanelRenderer extends CoreRenderer {
             if (!column.isConfigurable() && component.isHideDisabledRows())
                 writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
 
-            boolean disableVisibilityControl = (firstCol && i == 0) || ((lastCol && i == columns.size() - 1));
+            boolean disableVisibilityControl = (firstRendered && firstCol && i == 0) || ((lastCol && isLastRendered(columns, i)));
+            if (column.isRendered()) firstRendered = false;
 
             if (ordering) writeColumnOrderingControl(writer, column, i, tableId);
             writeColumnNameControl(writer, column, i, tableId, naming);
@@ -142,6 +144,13 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
             writer.endElement(HTML.TR_ELEM);
         }
+    }
+
+    private boolean isLastRendered(List<Column> columns, int i) {
+        while (++i < columns.size())
+            if (columns.get(i).isRendered()) return false;
+
+        return true;
     }
 
     private void writeHeaderRow(ResponseWriter writer, TableConfigPanel component) throws IOException {
