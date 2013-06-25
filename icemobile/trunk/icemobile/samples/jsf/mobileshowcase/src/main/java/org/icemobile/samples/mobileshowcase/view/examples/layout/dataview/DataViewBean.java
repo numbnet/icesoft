@@ -135,4 +135,24 @@ public class DataViewBean extends ExampleImpl<DataViewBean>
     public void setNope(boolean nope) {
         this.nope = false;
     }
+
+    public void toggleCostColVis() {
+        setCostColVis(!isCostColVis());
+    }
+
+    public void toggleWeightColVis() {
+        setWeightColVis(!isWeightColVis());
+    }
+
+    public void toggleAccelColVis() {
+        setAccelColVis(!isAccelColVis());
+    }
+
+    public void toggleMpgColVis() {
+        setMpgColVis(!isMpgColVis());
+    }
+
+    public void toggleTextColVis() {
+        setTextColVis(!isTextColVis());
+    }
 }
