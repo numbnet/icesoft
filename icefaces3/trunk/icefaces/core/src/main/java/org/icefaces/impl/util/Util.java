@@ -53,6 +53,7 @@ public class Util {
                 out.write(buf, 0, l);
             }
         }
+		in.close();
     }
 
     public static int copyStream(InputStream in, OutputStream out,
