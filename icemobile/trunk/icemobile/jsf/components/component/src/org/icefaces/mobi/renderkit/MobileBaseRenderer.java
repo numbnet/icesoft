@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
 public class MobileBaseRenderer extends Renderer  {
-    public static String COMPRESS_IDS = "org.icemobile.compressIDs";
+    public static final String COMPRESS_IDS = "org.icemobile.compressIDs";
 
     public String convertClientId(FacesContext context, String clientId) {
         boolean compressID = "true".equalsIgnoreCase(
