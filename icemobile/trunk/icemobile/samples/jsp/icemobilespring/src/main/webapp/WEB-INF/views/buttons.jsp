@@ -1,4 +1,3 @@
-<!doctype html>
 <%--
   ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
   ~
