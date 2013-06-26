@@ -109,6 +109,9 @@
         <exclude name="commons-beanutils.jar"   if="myfaces"/>
         <exclude name="commons-collections.jar" if="myfaces"/>
         <exclude name="commons-logging.jar"     if="myfaces"/>
+
+        <!-- Do not include commons-logging.  Necessary for WebSphere 8 builds. -->
+        <exclude name="commons-logging.jar"     if="no-commons-logging"/>
     </patternset>
 
     <patternset id="lib.distribute.portlet">
