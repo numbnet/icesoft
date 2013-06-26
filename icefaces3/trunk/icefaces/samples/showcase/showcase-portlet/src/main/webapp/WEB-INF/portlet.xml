@@ -1838,27 +1838,27 @@
             <keywords>ICEfaces ACE Component Showcase File Entry Callback</keywords>
         </portlet-info>
     </portlet>
-    <portlet>
-        <portlet-name>fileEntryFailPop</portlet-name>
-        <display-name>File Entry Failure Popup</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/portlet-view.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.demo.viewPath</name>
-            <value>/resources/examples/ace/fileentry/failpop.xhtml</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>File Entry Failure Popup</title>
-            <keywords>ICEfaces Component Suite Showcase ACE File Failure Popup</keywords>
-        </portlet-info>
-    </portlet>
+    <!--<portlet>-->
+        <!--<portlet-name>fileEntryFailPop</portlet-name>-->
+        <!--<display-name>File Entry Failure Popup</display-name>-->
+        <!--<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>-->
+        <!--<init-param>-->
+            <!--<name>javax.portlet.faces.defaultViewId.view</name>-->
+            <!--<value>/portlet-view.xhtml</value>-->
+        <!--</init-param>-->
+        <!--<init-param>-->
+            <!--<name>org.icefaces.demo.viewPath</name>-->
+            <!--<value>/resources/examples/ace/fileentry/failpop.xhtml</value>-->
+        <!--</init-param>-->
+        <!--<supports>-->
+            <!--<mime-type>text/html</mime-type>-->
+            <!--<portlet-mode>view</portlet-mode>-->
+        <!--</supports>-->
+        <!--<portlet-info>-->
+            <!--<title>File Entry Failure Popup</title>-->
+            <!--<keywords>ICEfaces Component Suite Showcase ACE File Failure Popup</keywords>-->
+        <!--</portlet-info>-->
+    <!--</portlet>-->
     <portlet>
         <portlet-name>fileEntryListener</portlet-name>
         <display-name>File Entry Listener</display-name>
@@ -1880,27 +1880,27 @@
             <keywords>ICEfaces Component Suite Showcase ACE File Entry Listener</keywords>
         </portlet-info>
     </portlet>
-    <portlet>
-        <portlet-name>fileEntryMultiple</portlet-name>
-        <display-name>File Entry Multiple</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/portlet-view.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.demo.viewPath</name>
-            <value>/resources/examples/ace/fileentry/multiple.xhtml</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>File Entry Multiple</title>
-            <keywords>ICEfaces Component Suite Showcase ACE File Entry Multiple</keywords>
-        </portlet-info>
-    </portlet>
+    <!--<portlet>-->
+        <!--<portlet-name>fileEntryMultiple</portlet-name>-->
+        <!--<display-name>File Entry Multiple</display-name>-->
+        <!--<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>-->
+        <!--<init-param>-->
+            <!--<name>javax.portlet.faces.defaultViewId.view</name>-->
+            <!--<value>/portlet-view.xhtml</value>-->
+        <!--</init-param>-->
+        <!--<init-param>-->
+            <!--<name>org.icefaces.demo.viewPath</name>-->
+            <!--<value>/resources/examples/ace/fileentry/multiple.xhtml</value>-->
+        <!--</init-param>-->
+        <!--<supports>-->
+            <!--<mime-type>text/html</mime-type>-->
+            <!--<portlet-mode>view</portlet-mode>-->
+        <!--</supports>-->
+        <!--<portlet-info>-->
+            <!--<title>File Entry Multiple</title>-->
+            <!--<keywords>ICEfaces Component Suite Showcase ACE File Entry Multiple</keywords>-->
+        <!--</portlet-info>-->
+    <!--</portlet>-->
     <portlet>
         <portlet-name>fileEntryValidation</portlet-name>
         <display-name>File Entry Validation</display-name>
