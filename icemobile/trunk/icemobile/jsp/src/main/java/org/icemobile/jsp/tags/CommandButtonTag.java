@@ -24,8 +24,6 @@ import javax.servlet.jsp.tagext.Tag;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import static org.icemobile.util.HTML.*;
-
 
 /**
  *
@@ -54,6 +52,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     public void setParent(Tag parent) {
         if ((parent instanceof CommandButtonGroupTag)) {
             this.mParent = (CommandButtonGroupTag) parent;
+            logger.info(this+" setting tag parent " + parent);
         }
     }
 
@@ -64,7 +63,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
             mParent = (CommandButtonGroupTag) this.getParent();
             checkSelected();
             this.groupId = mParent.getId();
-      //      logger.info("button has groupId = "+this.groupId);
+            logger.info("button has groupId = "+this.groupId);
         }
         writer = new TagWriter(getContext());
         renderer = new ButtonCoreRenderer();

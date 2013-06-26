@@ -73,11 +73,11 @@
                                      selectedId="${buttonsBean.selectedVertical}"
                                      orientation="vertical"
                                      style="width:80%;margin:0 auto;">
-                <mobi:commandButton value="Yes" 
+                <mobi:commandButton value="Yes"  groupId="verticalGroup"
                          type="button" id="yes_a"/>
-                <mobi:commandButton value="No"
+                <mobi:commandButton value="No"  groupId="verticalGroup"
                         type="button"  id="no_a"/>
-                <mobi:commandButton value="Please"
+                <mobi:commandButton value="Please"  groupId="verticalGroup"
                         type="button" id="please_a"/>
             </mobi:commandButtonGroup>
         </mobi:fieldsetRow>
@@ -90,16 +90,16 @@
     <h3>Horizontal button list</h3>
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <mobi:commandButtonGroup id="horizontalGroup"
+            <mobi:commandButtonGroup id="horizontalGroup" 
                                      name="selectedHorizontal"
                                      selectedId="${buttonsBean.selectedHorizontal}"
                                      orientation="horizontal"
                                      style="width:80%;margin:0 auto;">
-                <mobi:commandButton value="Yes" id="yes_b"
+                <mobi:commandButton value="Yes" id="yes_b" groupId="horizontalGroup"
                          type="button" style="width:33%"/>
-                <mobi:commandButton value="No"
+                <mobi:commandButton value="No" groupId="horizontalGroup"
                         type="button"  id="no_b" style="width:33%"/>
-                <mobi:commandButton value="Please"
+                <mobi:commandButton value="Please" groupId="horizontalGroup"
                         type="button" id="please_b" style="width:33%"/>
             </mobi:commandButtonGroup>
         </mobi:fieldsetRow>
