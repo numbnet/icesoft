@@ -42,6 +42,12 @@
         <param-value>false</param-value>
     </context-param>
 
+    <!-- Default is false. For WebSphere Portal this should be set to true. -->
+    <context-param>
+        <param-name>org.icefaces.clientSideElementUpdateDetermination</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
     <context-param>
         <param-name>com.icesoft.faces.uploadDirectory</param-name>
         <param-value>upload</param-value>
@@ -83,7 +89,7 @@
         <param-value>AIzaSyAATyWVqT2qNusNGmcVTyQ0QmymkpU-B5o&amp;libraries=places</param-value>
     </context-param>
 
-    <!-- Enable resource coalescing for this application. -->
+    <!-- Disable resource coalescing for portlets. -->
     <context-param>
         <description>Resource Coalescing will automatically combine required resources for the initial page load into single .css and .js files
         </description>
@@ -91,7 +97,8 @@
         <param-value>false</param-value>
     </context-param>
 
-    <!-- Specifying these listeners in this order as per http://issues.liferay.com/browse/FACES-1511 -->
+    <!-- Specifying these listeners in this order as per http://issues.liferay.com/browse/FACES-1511.  Remove if you
+         are not using both the LiferayFaces Bridge and Mojarra. -->
     <listener>
     	<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
     </listener>

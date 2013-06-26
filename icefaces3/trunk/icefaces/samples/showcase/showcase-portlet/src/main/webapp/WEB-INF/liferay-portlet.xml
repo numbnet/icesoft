@@ -475,21 +475,21 @@
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-    <portlet>
-        <portlet-name>fileEntryFailPop</portlet-name>
-        <instanceable>false</instanceable>
-        <ajaxable>false</ajaxable>
-    </portlet>
+    <!--<portlet>-->
+        <!--<portlet-name>fileEntryFailPop</portlet-name>-->
+        <!--<instanceable>false</instanceable>-->
+        <!--<ajaxable>false</ajaxable>-->
+    <!--</portlet>-->
     <portlet>
         <portlet-name>fileEntryListener</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-    <portlet>
-        <portlet-name>fileEntryMultiple</portlet-name>
-        <instanceable>false</instanceable>
-        <ajaxable>false</ajaxable>
-    </portlet>
+    <!--<portlet>-->
+        <!--<portlet-name>fileEntryMultiple</portlet-name>-->
+        <!--<instanceable>false</instanceable>-->
+        <!--<ajaxable>false</ajaxable>-->
+    <!--</portlet>-->
     <portlet>
         <portlet-name>fileEntryValidation</portlet-name>
         <instanceable>false</instanceable>
