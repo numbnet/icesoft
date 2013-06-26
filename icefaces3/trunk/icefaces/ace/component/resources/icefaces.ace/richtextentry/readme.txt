@@ -8,3 +8,6 @@ Replaced the contents of url() expressions to contain EL resource expressions in
 
 ICE-9184	ckeditor/ckeditor.js
 Line 96, getData() was modified to check for object 'N' and to exit function if it's not there.
+
+ICE-9374	ckeditor/ckeditor.js
+Line 22, added function call to get contents.css using the mapping, instead of trying to use the standard URL
