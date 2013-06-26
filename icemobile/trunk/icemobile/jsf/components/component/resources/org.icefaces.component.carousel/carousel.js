@@ -37,7 +37,7 @@ if (!window.ice['mobi']) {
 	                    hScrollbar: false,
                         checkDOMChanges: false,
                         bounce: false,
-                        zoom: true,
+                        zoom: false,
 	                    onScrollEnd: function () {
                             if (is_firefox){
                                 var myevent = window.event || null;
