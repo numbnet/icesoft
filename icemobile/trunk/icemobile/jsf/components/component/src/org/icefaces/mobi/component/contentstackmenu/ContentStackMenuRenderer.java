@@ -34,7 +34,7 @@ import org.icefaces.mobi.utils.Utils;
 
 public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
 
-    private static Logger logger = Logger.getLogger(ContentStackMenuRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(ContentStackMenuRenderer.class.getName());
     private static final String JS_NAME = "layoutmenu.js";
     private static final String JS_MIN_NAME = "layoutmenu-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.layoutmenu";

@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 
 public class FieldSetGroupRenderer extends Renderer {
-    private static Logger logger = Logger.getLogger(FieldSetGroupRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(FieldSetGroupRenderer.class.getName());
  
       
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {

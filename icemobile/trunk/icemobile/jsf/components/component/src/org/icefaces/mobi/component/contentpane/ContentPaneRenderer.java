@@ -41,7 +41,7 @@ import org.icemobile.renderkit.IResponseWriter;
 
 public class ContentPaneRenderer extends BaseLayoutRenderer {
 
-    private static Logger logger = Logger.getLogger(ContentPaneRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(ContentPaneRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
         Object parent = uiComponent.getParent();

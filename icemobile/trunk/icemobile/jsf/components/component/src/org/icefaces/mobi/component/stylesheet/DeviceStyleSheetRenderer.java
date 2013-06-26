@@ -51,7 +51,7 @@ import org.icemobile.util.CSSUtils;
 @ListenerFor(systemEventClass = javax.faces.event.PostAddToViewEvent.class)
 public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.event.ComponentSystemEventListener {
 
-    private static Logger log = Logger.getLogger(DeviceStyleSheetRenderer.class.getName());
+    private static final Logger log = Logger.getLogger(DeviceStyleSheetRenderer.class.getName());
 
     // empty string
     public static final String EMPTY_STRING = "";

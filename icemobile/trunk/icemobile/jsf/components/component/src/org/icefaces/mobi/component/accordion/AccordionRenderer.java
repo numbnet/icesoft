@@ -33,7 +33,7 @@ import org.icemobile.renderkit.IResponseWriter;
 
 
 public class AccordionRenderer extends BaseLayoutRenderer {
-    private static Logger logger = Logger.getLogger(AccordionRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(AccordionRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {

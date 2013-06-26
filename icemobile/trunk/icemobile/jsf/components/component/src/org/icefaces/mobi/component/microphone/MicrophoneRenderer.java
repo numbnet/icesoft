@@ -37,7 +37,7 @@ import org.icemobile.renderkit.DeviceCoreRenderer;
 
 
 public class MicrophoneRenderer extends Renderer {
-    private static Logger logger = Logger.getLogger(MicrophoneRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(MicrophoneRenderer.class.getName());
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {

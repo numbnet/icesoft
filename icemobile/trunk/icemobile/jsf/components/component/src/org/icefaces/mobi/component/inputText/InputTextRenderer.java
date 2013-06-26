@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 /* remove mandatory resource annotation so can be used with ace components  in an app MOBI-164
 @MandatoryResourceComponent("org.icefaces.mobi.component.inputText.InputText") */
 public class InputTextRenderer extends BaseInputRenderer {
-    private final static Logger logger = Logger.getLogger(InputTextRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(InputTextRenderer.class.getName());
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         // The RequestParameterMap holds the values received from the browser

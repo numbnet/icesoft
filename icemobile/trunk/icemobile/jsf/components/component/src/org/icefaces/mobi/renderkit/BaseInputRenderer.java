@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * copied over from ace project for mobility support.
  */
 public class BaseInputRenderer extends CoreRenderer {
-    private static Logger logger = Logger.getLogger(BaseInputRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(BaseInputRenderer.class.getName());
 
 
     protected String getOptionAsString(FacesContext facesContext, UIInput uiComponent, Converter converter, Object value) {

@@ -39,7 +39,7 @@ import org.icemobile.renderkit.DeviceCoreRenderer;
 
 
 public class CameraRenderer extends Renderer {
-    private static Logger logger = Logger.getLogger(CameraRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(CameraRenderer.class.getName());
 
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {

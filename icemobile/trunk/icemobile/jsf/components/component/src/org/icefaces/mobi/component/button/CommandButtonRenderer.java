@@ -45,8 +45,7 @@ import org.icemobile.renderkit.ButtonCoreRenderer;
 
 
 public class  CommandButtonRenderer extends CoreRenderer {
-    private static Logger logger = Logger.getLogger(CommandButtonRenderer.class.getName());
-    List <UIParameter> uiParamChildren;
+    private static final Logger logger = Logger.getLogger(CommandButtonRenderer.class.getName());
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
@@ -75,6 +74,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
+        List <UIParameter> uiParamChildren;
         IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         IButton button = (IButton)uiComponent;
         ButtonCoreRenderer renderer = new ButtonCoreRenderer();

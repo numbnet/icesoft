@@ -28,7 +28,7 @@ import org.icemobile.renderkit.GetEnhancedCoreRenderer;
 
 
 public class GetEnhancedRenderer extends CoreRenderer {
-    private static Logger log = Logger.getLogger(GetEnhancedRenderer.class.getName());
+    private static final Logger log = Logger.getLogger(GetEnhancedRenderer.class.getName());
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {

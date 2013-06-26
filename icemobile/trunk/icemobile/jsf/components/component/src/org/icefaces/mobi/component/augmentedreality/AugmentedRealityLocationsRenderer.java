@@ -22,5 +22,5 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AugmentedRealityLocationsRenderer extends BaseLayoutRenderer {
-    private static Logger logger = Logger.getLogger(AugmentedRealityLocationsRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(AugmentedRealityLocationsRenderer.class.getName());
 }

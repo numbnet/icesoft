@@ -35,13 +35,13 @@ import java.util.logging.Logger;
 
 
 public class GeolocationRenderer extends CoreRenderer {
-    private static Logger log = Logger.getLogger(GeolocationRenderer.class.getName());
+    private static final Logger log = Logger.getLogger(GeolocationRenderer.class.getName());
     private static final String JS_NAME = "geolocation.js";
     private static final String JS_MIN_NAME = "geolocation-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.geolocation";
 
-    private final int UNDEFINED_TIMEOUT_VALUE = 0;   // no timeout
-    private final int UNDEFINED_MAXAGE_VALUE = 3600; // 1 hour
+    private static final int UNDEFINED_TIMEOUT_VALUE = 0;   // no timeout
+    private static final int UNDEFINED_MAXAGE_VALUE = 3600; // 1 hour
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {

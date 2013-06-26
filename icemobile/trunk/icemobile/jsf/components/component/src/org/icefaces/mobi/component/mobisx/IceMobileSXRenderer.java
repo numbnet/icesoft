@@ -32,8 +32,8 @@ import org.icemobile.util.ClientDescriptor;
 
 
 public class IceMobileSXRenderer extends Renderer {
-    private static Logger logger = Logger.getLogger(IceMobileSXRenderer.class.getName());
-    private static String ITUNES_LINK = 
+    private static final Logger logger = Logger.getLogger(IceMobileSXRenderer.class.getName());
+    private static final String ITUNES_LINK =
             "http://itunes.apple.com/us/app/icemobile-sx/id485908934?mt=8";
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

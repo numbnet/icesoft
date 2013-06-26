@@ -33,7 +33,7 @@ import org.icefaces.mobi.utils.MobiJSFUtils;
  * components. Should be also used for GraphicImage (yet to be refactored)
  */
 public class BaseResourceRenderer extends CoreRenderer {
-    private static Logger logger = Logger.getLogger(BaseResourceRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(BaseResourceRenderer.class.getName());
 
 
     private String registerAndGetPath(FacesContext facesContext,

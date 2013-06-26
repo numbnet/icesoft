@@ -32,7 +32,7 @@ import org.icemobile.util.CSSUtils;
 
 public class PagePanelRenderer extends BaseLayoutRenderer {
 
-    private static Logger logger = Logger.getLogger(PagePanelRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(PagePanelRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {

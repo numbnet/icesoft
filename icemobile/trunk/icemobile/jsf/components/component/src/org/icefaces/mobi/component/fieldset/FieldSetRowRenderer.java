@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 
 public class FieldSetRowRenderer extends Renderer {
-    private static Logger logger = Logger.getLogger(FieldSetRowRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(FieldSetRowRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {

@@ -27,9 +27,9 @@ import org.icefaces.mobi.renderkit.CoreRenderer;
 import org.icefaces.mobi.utils.HTML;
 
 public class GoogleAnalyticsRenderer extends CoreRenderer {
-	private static String GAR_NAME =
+	private static final String GAR_NAME =
             GoogleAnalyticsRenderer.class.getName();
-	private static Logger log = Logger.getLogger(GAR_NAME);
+	private static final Logger log = Logger.getLogger(GAR_NAME);
 	
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

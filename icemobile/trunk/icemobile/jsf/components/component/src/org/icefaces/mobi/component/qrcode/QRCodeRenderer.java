@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 
 public class QRCodeRenderer extends Renderer {
-    private static Logger logger = Logger.getLogger(QRCodeRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(QRCodeRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {

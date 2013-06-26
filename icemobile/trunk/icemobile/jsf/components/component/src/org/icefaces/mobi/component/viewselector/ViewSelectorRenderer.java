@@ -37,7 +37,7 @@ import org.icefaces.mobi.utils.JSFUtils;
  */
 public class ViewSelectorRenderer extends Renderer {
 
-    private static Logger logger = Logger.getLogger(ViewSelectorRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(ViewSelectorRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {

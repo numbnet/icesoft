@@ -28,6 +28,6 @@ import java.util.logging.Logger;
 
 
 public class UploadHelperRenderer extends Renderer {
-    private static Logger logger = Logger.getLogger(UploadHelperRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(UploadHelperRenderer.class.getName());
 
 }

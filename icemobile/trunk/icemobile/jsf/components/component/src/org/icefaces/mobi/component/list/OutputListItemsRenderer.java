@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 import org.icemobile.util.CSSUtils;
 
 public class OutputListItemsRenderer extends BaseLayoutRenderer {
-    private static Logger logger = Logger.getLogger(OutputListItemsRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(OutputListItemsRenderer.class.getName());
 
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)

@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 
 public class DateSpinnerRenderer extends BaseInputRenderer {
 
-    private static Logger logger = Logger.getLogger(DateSpinnerRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(DateSpinnerRenderer.class.getName());
 
     private static final String JS_NAME = "datespinner.js";
     private static final String JS_MIN_NAME = "datespinner-min.js";

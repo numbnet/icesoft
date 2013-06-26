@@ -34,7 +34,7 @@ import org.icemobile.renderkit.DeviceCoreRenderer;
 
 
 public class VideoCaptureRenderer extends BaseInputResourceRenderer {
-    private final static Logger logger = Logger.getLogger(VideoCaptureRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(VideoCaptureRenderer.class.getName());
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -74,85 +74,5 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         renderer.encode(camcorder, writer, false);
         camcorder.setButtonLabel(oldLabel);
-
- /*       boolean isEnhanced =  cd.isICEmobileContainer()  || cd.isSXRegistered() ;
-        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
-        // root element
-        boolean disabled = camcorder.isDisabled();
-        if (!isEnhanced || camcorder.isUseNative()) {
-            writer.startElement(HTML.SPAN_ELEM, uiComponent);
-            writer.startElement(HTML.INPUT_ELEM, uiComponent);
-            writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_FILE, null);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-            writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-            writer.writeAttribute("accept", "camcorder/*", null);
-            writer.endElement(HTML.INPUT_ELEM);
-            writer.endElement(HTML.SPAN_ELEM);
-            return;
-        }
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        // button element
-        writer.startElement("input", uiComponent);
-        writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-        writer.writeAttribute("id", clientId + "_button", null);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId + "_button", null);
-        writer.writeAttribute("value", "camcorder", null);
-        // write out style for input button, same as default device button.
-        JSFUtils.writeConcatenatedStyleClasses(writer,
-                "mobi-button",
-                video.getStyleClass());
-        writer.writeAttribute(HTML.STYLE_ATTR, video.getStyle(), HTML.STYLE_ATTR);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        int width = video.getMaxwidth();
-        int height = video.getMaxheight();
-        int maxtime = video.getMaxtime();
-
-        String script;
-        if (isAuxUpload)  {
-            script = MobiJSFUtils.getICEmobileSXScript("camcorder", uiComponent);
-        } else {
-            //default value of unset in params is Integer.MIN_VALUE
-            String params = "'" + clientId + "'";
-            //only commonality between iPhone and android is duration or maxTime
-            //simplify this scripting when devices have this implemented and is final api
-            int unset = Integer.MIN_VALUE;
-            int numParams = 0;
-            String attributeSeparator = "&";
-            if (maxtime != unset || width != unset || height != unset) {
-                params += ",'";
-            }
-            if (maxtime != unset) {
-                if (numParams > 0) {
-                    params += attributeSeparator;
-                }
-                params += "maxtime=" + maxtime;
-                numParams++;
-            }
-            if (width != Integer.MIN_VALUE) {
-                if (numParams > 0) {
-                    params += attributeSeparator;
-                }
-                params += "maxwidth=" + width;
-                numParams++;
-            }
-            if (height != Integer.MIN_VALUE) {
-                if (numParams > 0) {
-                    params += attributeSeparator;
-                }
-                params += "maxheight=" + height;
-                numParams++;
-            }
-            if (numParams > 0) {
-                params += "'";
-            }
-            script = "ice.camcorder(" + params + ");";
-        }
-        if (video.isDisabled()) {
-            writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
-        }
-        writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
-        writer.endElement("input");
-        writer.endElement(HTML.SPAN_ELEM);  */
     }
 }
