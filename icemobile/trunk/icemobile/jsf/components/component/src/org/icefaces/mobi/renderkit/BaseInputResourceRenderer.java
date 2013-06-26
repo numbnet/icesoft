@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * still must test converter support
  */
 public class BaseInputResourceRenderer extends CoreRenderer {
-    private static Logger logger = Logger.getLogger(BaseInputResourceRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(BaseInputResourceRenderer.class.getName());
 
 
     protected String getOptionAsString(FacesContext facesContext, UIInput uiComponent, Converter converter, Object value) {

@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 
 public class MenuButtonGroupRenderer extends BaseLayoutRenderer{
-       private static Logger logger = Logger.getLogger(MenuButtonGroupRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(MenuButtonGroupRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {

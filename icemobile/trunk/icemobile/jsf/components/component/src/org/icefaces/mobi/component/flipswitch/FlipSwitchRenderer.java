@@ -34,18 +34,13 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * The sliderRender renders following elements:
- * 1. A div with a client id(e.g.)
- * <div id="xxx" />
- * which will be used by the YUI slider, as a slider holder
- * <p/>
  * In addition to the rendering the renderer performs decode as well. This component
  * doesn't use a hidden field for it value instead takes advantage of param support of JSF2
  */
 
 public class FlipSwitchRenderer extends CoreRenderer {
 
-    private final static Logger logger = Logger.getLogger(FlipSwitchRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(FlipSwitchRenderer.class.getName());
     private static final String JS_NAME = "flipswitch.js";
     private static final String JS_MIN_NAME = "flipswitch-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.flipswitch";

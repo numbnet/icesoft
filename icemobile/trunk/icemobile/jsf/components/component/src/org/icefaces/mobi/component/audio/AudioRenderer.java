@@ -35,7 +35,7 @@ import org.icemobile.util.ClientDescriptor;
 
 
 public class AudioRenderer extends BaseResourceRenderer {
-    private static Logger log = Logger.getLogger(AudioRenderer.class.getName());
+    private static final Logger log = Logger.getLogger(AudioRenderer.class.getName());
 
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

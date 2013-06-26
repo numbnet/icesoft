@@ -42,7 +42,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 public class TimeSpinnerRenderer extends BaseInputRenderer {
-    private static Logger logger = Logger.getLogger(TimeSpinnerRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(TimeSpinnerRenderer.class.getName());
     private static final String JS_NAME = "timespinner.js";
     private static final String JS_MIN_NAME = "timespinner-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.timespinner";

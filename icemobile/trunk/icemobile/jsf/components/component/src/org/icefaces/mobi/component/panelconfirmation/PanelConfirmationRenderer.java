@@ -35,7 +35,7 @@ import org.icemobile.util.CSSUtils;
  * for now the css for this class is just reused from the dateSpinner popup container classes
  */
 public class  PanelConfirmationRenderer extends BaseLayoutRenderer {
-    private static Logger logger = Logger.getLogger(PanelConfirmationRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(PanelConfirmationRenderer.class.getName());
     private static final String JS_NAME = "panelconfirmation.js";
     private static final String JS_MIN_NAME = "panelconfirmation-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.panelconfirmation";

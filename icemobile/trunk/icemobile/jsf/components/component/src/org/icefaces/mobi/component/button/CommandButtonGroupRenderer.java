@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  * only be inserted at child elements but no explicit checking is made.
  */
 public class CommandButtonGroupRenderer extends Renderer {
-    private static Logger logger = Logger.getLogger(CommandButtonGroupRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(CommandButtonGroupRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         IButtonGroup buttonGroup = (IButtonGroup)uiComponent;

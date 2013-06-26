@@ -33,10 +33,6 @@ public class GraphicImageRenderer extends Renderer {
             Logger.getLogger(GraphicImageRenderer.class.toString());
 
 
-    public void decode(FacesContext context, UIComponent component) {
-        //nothing to decode
-    }
-
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         //
         ResponseWriter writer = facesContext.getResponseWriter();

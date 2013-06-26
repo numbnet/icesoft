@@ -38,7 +38,7 @@ import java.util.logging.Logger;
 import javax.faces.context.ResponseWriter;
 
 public class CoreRenderer extends MobileBaseRenderer {
-    private static Logger logger = Logger.getLogger(CoreRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(CoreRenderer.class.getName());
     /**
      * this method created for mobi:inputText
      * @param context

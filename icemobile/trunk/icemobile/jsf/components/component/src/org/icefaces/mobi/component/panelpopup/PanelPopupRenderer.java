@@ -33,7 +33,7 @@ import org.icemobile.util.CSSUtils;
 
 
 public class PanelPopupRenderer extends BaseLayoutRenderer {
-    private static Logger logger = Logger.getLogger(PanelPopupRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(PanelPopupRenderer.class.getName());
     private static final String JS_NAME = "panelpopup.js";
     private static final String JS_MIN_NAME = "panelpopup-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.panelpopup";

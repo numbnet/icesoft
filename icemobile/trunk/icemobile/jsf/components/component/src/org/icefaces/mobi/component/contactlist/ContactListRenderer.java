@@ -33,7 +33,7 @@ import org.icefaces.impl.application.AuxUploadResourceHandler;
 
 public class ContactListRenderer extends Renderer {
     
-    private static Logger log = Logger.getLogger(ContactListRenderer.class.getName());
+    private static final Logger log = Logger.getLogger(ContactListRenderer.class.getName());
     
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {

@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ContentNavBarRenderer extends BaseLayoutRenderer {
-    private static Logger logger = Logger.getLogger(ContentNavBarRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(ContentNavBarRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
         UIComponent parent = findParentContentPane(uiComponent);

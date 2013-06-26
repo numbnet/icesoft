@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 
 
 public class VideoPlayerRenderer extends BaseResourceRenderer {
-    private static Logger log = Logger.getLogger(VideoPlayerRenderer.class.getName());
+    private static final Logger log = Logger.getLogger(VideoPlayerRenderer.class.getName());
 
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -58,46 +58,6 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
         if (srcAttribute!=null){
             video.setSrcAttribute(srcAttribute);
         }
- /*       writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-
-        // apply component style class and append any user defined classes.
-        StringBuilder styleClass = new StringBuilder(VideoPlayer.VIDEO_CLASS);
-        if (video.getStyleClass() != null){
-            styleClass.append(" ").append(video.getStyleClass());
-        }
-        writer.writeAttribute("class", styleClass.toString(), null);
-        // apply style class
-        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, video.getSpanPassThruAttributes());
-
-        writer.startElement("video", uiComponent);
-        // pass though number attributes for span
-        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, video.getVideoPassThruAttributes());
-
-        if (video.isControls())
-            writer.writeAttribute("controls", "controls", null);
-
-        if (video.isLoop()) writer.writeAttribute("loop", "loop", null);
-        String mimeType = video.getType();
-        if (null != mimeType)  {
-            writer.writeAttribute("type", mimeType, null);
-        }
-        if (video.isPlaysinline()) {
-            writer.writeAttribute("webkit-playsinline", "yes", null);
-        }
-
-        writer.writeAttribute("src", srcAttribute, null);
-        writer.endElement("video");
-        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        if (!client.isIOS() && video.getLinkLabel() != null)  {
-            writer.startElement("br", uiComponent);
-            writer.endElement("br");
-            writer.startElement("a", uiComponent);
-            writer.writeAttribute("target", "_blank", null);
-            writer.writeAttribute("href", srcAttribute, null);
-            writer.writeText(video.getLinkLabel(), null);
-            writer.endElement("a");
-        } */
         VideoPlayerCoreRenderer renderer = new VideoPlayerCoreRenderer();
         renderer.encodeEnd(video, writer);
     }

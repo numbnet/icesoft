@@ -45,7 +45,7 @@ import java.util.logging.Logger;
  * Time: 10:47 AM
  */
 public class DataViewRenderer extends Renderer {
-    private static Logger logger = Logger.getLogger(DataViewRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(DataViewRenderer.class.getName());
 
     private DataView dataView;
     private String dvId = null;

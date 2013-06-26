@@ -35,7 +35,7 @@ import org.icemobile.renderkit.MenuButtonCoreRenderer;
 
 
 public class MenuButtonRenderer extends BaseLayoutRenderer {
-    private static Logger logger = Logger.getLogger(MenuButtonRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(MenuButtonRenderer.class.getName());
     private static final String JS_NAME = "menubutton.js";
     private static final String JS_MIN_NAME = "menubutton-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.button";

@@ -42,9 +42,9 @@ import org.icefaces.mobi.utils.JSFUtils;
 
 
 public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
-       private static Logger logger = Logger.getLogger(ContentMenuItemRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(ContentMenuItemRenderer.class.getName());
 
-       public void decode(FacesContext facesContext, UIComponent uiComponent) {
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         ContentMenuItem item = (ContentMenuItem) uiComponent;
         String source = String.valueOf(requestParameterMap.get("ice.event.captured"));

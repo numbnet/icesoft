@@ -41,7 +41,7 @@ import org.icemobile.renderkit.MenuButtonItemCoreRenderer;
 
 
 public class MenuButtonItemRenderer extends BaseLayoutRenderer{
-    private static Logger logger = Logger.getLogger(MenuButtonRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(MenuButtonRenderer.class.getName());
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         MenuButtonItem item = (MenuButtonItem) uiComponent;

@@ -38,7 +38,7 @@ import org.icefaces.mobi.utils.MobiJSFUtils;
 
 
 public class CarouselRenderer extends BaseLayoutRenderer {
-    private static Logger logger = Logger.getLogger(CarouselRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(CarouselRenderer.class.getName());
     private static final String JS_NAME = "carousel.js";
     private static final String JS_MIN_NAME = "carousel-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.carousel";

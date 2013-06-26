@@ -37,7 +37,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements BehaviorHolderAttachedObjectHandler {
-    private static Logger logger = Logger.getLogger(AjaxBehaviorHandler.class.getName());
+    private static final Logger logger = Logger.getLogger(AjaxBehaviorHandler.class.getName());
     protected final boolean wrapping;
 
     public AjaxBehaviorHandler(TagConfig config) {

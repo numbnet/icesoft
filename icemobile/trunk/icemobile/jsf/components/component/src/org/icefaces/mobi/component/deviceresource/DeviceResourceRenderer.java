@@ -46,7 +46,7 @@ import org.icemobile.util.SXUtils;
 
 @ListenerFor(systemEventClass = javax.faces.event.PostAddToViewEvent.class)
 public class DeviceResourceRenderer  extends Renderer implements javax.faces.event.ComponentSystemEventListener {
-    private static Logger log = Logger.getLogger(DeviceResourceRenderer.class.getName());
+    private static final Logger log = Logger.getLogger(DeviceResourceRenderer.class.getName());
 
     
 
