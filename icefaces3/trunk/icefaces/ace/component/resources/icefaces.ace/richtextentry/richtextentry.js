@@ -78,6 +78,7 @@ ice.ace.richtextentry.getToolbar = function(toolbar) {
 
 ice.ace.richtextentry.renderEditor = function(editor, defaultToolbar, lang, _skin, _height, _width, _customConfig, saveOnSubmit, hashCode, behaviors) {
     CKEDITOR.config.defaultLanguage = lang;
+	CKEDITOR.config.language = lang;
     if (_skin == 'default' || _skin == 'silver') {
         _skin = 'v2'
     }
