@@ -167,6 +167,10 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
                         externalContext.getRequestParameterMap();
                 for (Object key : requestParameterMap.keySet())  {
                     auxRequestMap.put(key, requestParameterMap.get(key) );
+                    if (CLOUD_PUSH_KEY.equals(key))  {
+                        session.setAttribute(CLOUD_PUSH_KEY,
+                                requestParameterMap.get(key));
+                    }
                 }
             
             }
