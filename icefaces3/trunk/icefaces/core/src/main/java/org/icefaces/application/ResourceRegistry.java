@@ -29,6 +29,7 @@ import javax.faces.application.Application;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
+import javax.servlet.http.HttpSession;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -110,7 +111,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         if (log.isLoggable(Level.FINE)) {
             log.fine("handleResourceRequest " + key + " path: " +
                     externalContext.getRequestServletPath() + " info: " +
-                    externalContext.getRequestPathInfo() );
+                    externalContext.getRequestPathInfo());
         }
         if (null == key)  {
             wrapped.handleResourceRequest(facesContext);
@@ -126,13 +127,15 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         //For portlets it may be necessary to use a backup plan for setting and getting
         //session based dynamic resources
         if (null == holder)  {
-            holder = (ResourceRegistryHolder) EnvUtils
-                .getSafeSession(facesContext).getAttribute(MAP_PREFIX + key);
-            log.finest("Session ResourceRegistryHolder: " + holder);
-            if (null != holder)  {
-                //workaround for ICE-7685 suspecting PFB bug
-                if (log.isLoggable(Level.FINE)) {
-                    log.fine("Resource lookup required direct sesssion access");
+            HttpSession session = EnvUtils.getSafeSession(facesContext, false);
+            if (session != null) {
+                holder = (ResourceRegistryHolder) session.getAttribute(MAP_PREFIX + key);
+                log.finest("Session ResourceRegistryHolder: " + holder);
+                if (null != holder)  {
+                    //workaround for ICE-7685 suspecting PFB bug
+                    if (log.isLoggable(Level.FINE)) {
+                        log.fine("Resource lookup required direct sesssion access");
+                    }
                 }
             }
         }
@@ -293,9 +296,11 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
             .getELResolver().getValue(elContext, null, MAP_PREFIX + resName);
         log.finest("ELResolver ResourceRegistryHolder: " + holder);
         if (holder == null) {
-            holder = (ResourceRegistryHolder) EnvUtils
-                .getSafeSession(facesContext).getAttribute(MAP_PREFIX + resName);
-            log.finest("Session ResourceRegistryHolder: " + holder);
+            HttpSession session = EnvUtils.getSafeSession(facesContext, false);
+            if (session != null) {
+                holder = (ResourceRegistryHolder) session.getAttribute(MAP_PREFIX + resName);
+                log.finest("Session ResourceRegistryHolder: " + holder);
+            }
         }
         if (null == holder)  {
             return null;
