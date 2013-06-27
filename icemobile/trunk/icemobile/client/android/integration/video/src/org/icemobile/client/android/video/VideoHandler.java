@@ -116,11 +116,9 @@ public class VideoHandler {
 	String[] projection = { MediaStore.Video.Media.DATA, MediaStore.Video.Media.SIZE  }; 
 	Cursor cursor = container.managedQuery(uri, projection, null, null, null);
     if (cursor == null) {
-        String temp = uri.toString();
-        if (!temp.startsWith("file")) {
-            recordedVideoFilePath = "file://" + temp;
-        } else {
-            recordedVideoFilePath = temp;
+        recordedVideoFilePath = uri.toString();
+        if (videoFile.exists()) {
+            videoFile.delete();
         }
     } else {
         int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
