@@ -11,3 +11,6 @@ Line 96, getData() was modified to check for object 'N' and to exit function if 
 
 ICE-9374	ckeditor/ckeditor.js
 Line 22, added function call to get contents.css using the mapping, instead of trying to use the standard URL
+
+ICE-9387	ckeditor/ckeditor.js
+Line 80, modified loading of preview.html to use the mapping function to access it via the right URL
