@@ -452,7 +452,7 @@ public class DataViewRenderer extends Renderer {
     private static final List<Class> htmlValueHolders = new ArrayList<Class>() {{
         add(HtmlInputTextarea.class);
         add(HtmlOutputText.class);
-        add(HtmlOutputLabel.class);å
+        add(HtmlOutputLabel.class);
         add(HtmlCommandLink.class);
     }};
 
