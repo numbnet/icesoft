@@ -75,6 +75,8 @@ public class ResourceUploadArgumentResolver
                 (HttpServletRequest)webRequest.getNativeRequest());
         Resource resource = null;
         if( store != null ){
+            String token = webRequest.getSessionId();
+            store.handleRequest((HttpServletRequest)webRequest.getNativeRequest(), token);
             resource = store.get(webRequest.getSessionId(), id);
             LOG.debug("resolved " + resource + " for " + id);
         }

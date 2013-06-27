@@ -69,9 +69,9 @@
     <bean id="rangingResourceHandler"
                 class="org.icemobile.spring.handler.RangingResourceHttpRequestHandler"/>
     
-    <!-- for ResourceStore request support -->
-    <bean id="resourceStoreRequestHandler"
-                class="org.icemobile.spring.handler.ResourceStoreRequestHandler"/>
+<!-- for ResourceStore request support -->
+<bean id="resourceStoreRequestHandler"
+            class="org.icemobile.spring.handler.ResourceStoreRequestHandler"/>
     
     
     <!-- handle all requests to /media/* with the RangingResourceRequestHandler 
@@ -82,14 +82,14 @@
         </property>
     </bean>
     
-    <!-- handle all requests to /icemobile-store/* with the 
-        ICEmobileResourceStoreRequestHandler 
-        for iOS media support -->
-    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="mappings">
-            <value>/icemobile-store/**=resourceStoreRequestHandler</value>
-        </property>
-    </bean>
+<!-- handle all requests to /icemobile-store/* with the 
+   ICEmobileResourceStoreRequestHandler 
+   for iOS media support -->
+<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="mappings">
+        <value>/icemobile-store/**=resourceStoreRequestHandler</value>
+    </property>
+</bean>
    
     <!-- use Spring resource request handler to serve resources from icemobile-jsp.jar -->
     <mvc:resources mapping="/icemobile-resources/**" 
@@ -97,7 +97,6 @@
     
     <!-- intercept requests for both simulator and regular uploads from ICEmobile -->
     <mvc:interceptors>
-       <bean class="org.icemobile.spring.handler.ResourceUploadInterceptor" />
        <bean class="org.icemobile.spring.handler.SimulatorResourceUploadInterceptor" />
    </mvc:interceptors>
     
@@ -139,8 +138,8 @@
         p:dataSource-ref="dataSource" p:tableName="uploads">
     </bean-->
     
-    <bean class="org.icemobile.spring.handler.support.MapFileStore"
-            name="icemobileResourceStore">
-    </bean>
+<bean class="org.icemobile.spring.handler.support.MapFileStore"
+        name="icemobileResourceStore">
+</bean>
     
 </beans>
