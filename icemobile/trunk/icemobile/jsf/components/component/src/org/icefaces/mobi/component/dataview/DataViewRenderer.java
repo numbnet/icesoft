@@ -449,14 +449,14 @@ public class DataViewRenderer extends Renderer {
     private static final HashSet uiInputProperties = new HashSet() {{ add("value"); }};
     private static final HashSet uiOutputProperties = new HashSet() {{ add("value"); }};
 
-    private static List<Class> htmlValueHolders = new ArrayList<Class>() {{
+    private static final List<Class> htmlValueHolders = new ArrayList<Class>() {{
         add(HtmlInputTextarea.class);
         add(HtmlOutputText.class);
-        add(HtmlOutputLabel.class);
+        add(HtmlOutputLabel.class);å
         add(HtmlCommandLink.class);
     }};
 
-    private static List<Class> attrValueHolders = new ArrayList<Class>() {{
+    private static final List<Class> attrValueHolders = new ArrayList<Class>() {{
         add(HtmlInputText.class);
         add(HtmlInputSecret.class);
         add(HtmlInputText.class);
