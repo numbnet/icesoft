@@ -329,10 +329,6 @@ ice.ace.MenuButton = function(id, cfg) {
  *  ContextMenu Widget
  */
 ice.ace.ContextMenu = function(id, cfg) {
-	this.id = id;
-    this.cfg = cfg;
-    this.jqId = ice.ace.escapeClientId(this.id);
-    this.jq = ice.ace.jq(this.jqId + ' ul:first');
 
     //mouse tracking
     if(!ice.ace.ContextMenu.mouseTracking) {
@@ -344,6 +340,56 @@ ice.ace.ContextMenu = function(id, cfg) {
             ice.ace.ContextMenu.event = e;
         });
     }
+	
+	if (!cfg.forDelegate) {
+		this.initialize(id, cfg);
+	} else {
+		var delegateContainer = ice.ace.jq(ice.ace.escapeClientId(cfg.forDelegate));
+		var delegateNode = delegateContainer.children().get(0);
+		delegateContainer.undelegate('*', 'contextmenu').delegate('*', 'contextmenu', function(event, ignoreEvent) {
+			// 'this' in this scope refers to the current DOM node in the event bubble
+			if (this === delegateNode && !ignoreEvent) { // event bubbled to the highest point, we can now begin
+				var findTargetComponent = function(node) {
+					if (node) {
+						if (node.id && ice.ace.ContextMenu.endsWith(node.id, cfg.forComponent)) {
+							return node.id;
+						} else {
+							return findTargetComponent(node.parentNode);
+						}
+					}
+					return '';
+				}
+				var targetComponent = findTargetComponent(event.target);
+				if (targetComponent) {
+					var formId = ice.ace.jq(ice.ace.escapeClientId(id)).parents('form:first').attr('id');
+					var options = {
+						source: id,
+						execute: id,
+						formId: formId,
+						async: true
+					};
+
+					var params = {};
+					params[id + '_activeComponent'] = targetComponent;
+
+					options.params = params;
+					
+					ice.ace.AjaxRequest(options);
+				}
+			}
+		});
+		if (cfg.showNow) {
+			this.initialize(id, cfg);
+			ice.ace.jq(this.cfg.trigger).trigger('contextmenu', [true]); // flag for delegate node to ignore this simulated event
+		}
+	}
+};
+
+ice.ace.ContextMenu.prototype.initialize = function(id, cfg) {
+	this.id = id;
+    this.cfg = cfg;
+    this.jqId = ice.ace.escapeClientId(this.id);
+    this.jq = ice.ace.jq(this.jqId + ' ul:first');
 
     //configuration
     this.cfg.orientation = 'vertical';
@@ -498,6 +544,10 @@ ice.ace.ContextMenu.shouldDisplayLeft = function(left, width, itemWidth) {
 	}
 	return leftside;
 }
+
+ice.ace.ContextMenu.endsWith = function(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+};
 
 ice.ace.BreadcrumbMenu = function (id, cfg) {
     var $ul = ice.ace.jq(document.getElementById(id + "_ul"));
