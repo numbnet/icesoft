@@ -555,8 +555,8 @@ public class EnvUtils {
 
     public static void createSessionOnPageLoad(FacesContext context) {
         final ExternalContext externalContext = context.getExternalContext();
-        //create session if non-ajax request
-        externalContext.getSession(!context.getPartialViewContext().isAjaxRequest());
+        //create session if GET request
+        externalContext.getSession(externalContext.getRequestContentLength() == 0);
     }
 
     public static boolean isSessionInvalid(FacesContext context) {
