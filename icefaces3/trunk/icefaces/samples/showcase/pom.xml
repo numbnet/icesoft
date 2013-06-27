@@ -71,6 +71,14 @@
         <dependency>
             <groupId>${icefaces.product.group}</groupId>
             <artifactId>${icefaces.lib.name}-compat</artifactId>
+            <!-- WebSphere 8: The commons-logging library should not be included. Uncomment
+                 the following exclusion if you are building for that platform. -->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>commons-logging</groupId>-->
+                    <!--<artifactId>commons-logging</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
         </dependency>
 
         <dependency>
