@@ -439,15 +439,15 @@ public class DataViewRenderer extends Renderer {
         if (!first && valueHolderIterator.hasNext()) detStr.append("|");
     }
 
-    private static HashSet emptySet = new HashSet();
-    private static HashSet mobiInputTextProperties = new HashSet() {{
+    private static final HashSet emptySet = new HashSet();
+    private static final HashSet mobiInputTextProperties = new HashSet() {{
         add("value"); add("type"); add("placeholder"); add("readonly"); add("maxlength");
         add("size"); add("required"); add("results"); add("title"); add("min"); add("max");
         add("step"); add("disabled"); add("style"); add("styleClass");
     }};
-    private static HashSet uiCommandProperties = new HashSet() {{ add("value"); }};
-    private static HashSet uiInputProperties = new HashSet() {{ add("value"); }};
-    private static HashSet uiOutputProperties = new HashSet() {{ add("value"); }};
+    private static final HashSet uiCommandProperties = new HashSet() {{ add("value"); }};
+    private static final HashSet uiInputProperties = new HashSet() {{ add("value"); }};
+    private static final HashSet uiOutputProperties = new HashSet() {{ add("value"); }};
 
     private static List<Class> htmlValueHolders = new ArrayList<Class>() {{
         add(HtmlInputTextarea.class);
