@@ -19,6 +19,7 @@ package org.icefaces.ace.component.contextmenu;
 import org.icefaces.ace.component.menu.AbstractMenu;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.model.MenuModel;
 
@@ -26,6 +27,8 @@ import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
+
+import javax.el.ValueExpression;
 
 @Component(
         tagName = "contextMenu",
@@ -52,6 +55,9 @@ public class ContextMenuMeta extends UIComponentBaseMeta {
 
     @Property(name = "for", tlddoc = "Server side id of the component to attach to.")
     private String forValue;
+	
+    @Property(tlddoc = "Server side id of the ace:delegate component to attach to.")
+    private String forDelegate;
 
     @Property(tlddoc = "Style of the main container element.")
     private String style;
@@ -76,6 +82,12 @@ public class ContextMenuMeta extends UIComponentBaseMeta {
 	
     @Property(tlddoc="Forces the direction in which the context menu will be displayed, regardless of the position of the mouse pointer in the viewport. Possible values are combinations of \"up\" and \"down\" with \"left\" and \"right\", separated by a space, and \"auto\" can also be used in place of any of those values (e.g. \"up\", \"up right\", \"left\", \"left auto\").", defaultValue = "auto")
     private String direction;
+	
+	@Property(tlddoc="")
+	private Object store;
+	
+	@Property(tlddoc="", expression = Expression.VALUE_EXPRESSION)
+	private ValueExpression fetch;
 
     private AbstractMenu am; // need this to resolve dependence on AbstractMenu when compiling Base class
 }

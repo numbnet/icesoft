@@ -31,8 +31,14 @@ import java.io.IOException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.el.ValueExpression;
+import org.icefaces.ace.component.delegate.Delegate;
 import org.icefaces.ace.component.menu.AbstractMenu;
 import org.icefaces.ace.component.menu.BaseMenuRenderer;
 import org.icefaces.ace.component.submenu.Submenu;
@@ -43,9 +49,38 @@ import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.EnumSet;
 
 @MandatoryResourceComponent(tagName="contextMenu", value="org.icefaces.ace.component.contextmenu.ContextMenu")
 public class ContextMenuRenderer extends BaseMenuRenderer {
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        ContextMenu menu = (ContextMenu) component;
+        String clientId = menu.getClientId(context);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		menu.setStore(null);
+		String delegateId = menu.getForDelegate();
+		if (delegateId != null) {
+			UIComponent delegateComponent = findComponentCustom(context.getViewRoot(), delegateId);
+			if (delegateComponent != null) {
+				if (params.containsKey(clientId + "_activeComponent")) {
+					String activeComponentId = params.get(clientId + "_activeComponent");
+					if (activeComponentId != null && !"".equals(activeComponentId)) {
+						ValueExpression fetch = menu.getValueExpression("fetch");
+						if (fetch != null) {
+							String expression = fetch.getExpressionString();
+							Object data = retrieveData(context, delegateComponent, activeComponentId, expression);
+							menu.setStore(data);
+						}
+					}
+				}
+			}
+		}
+    }
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -63,7 +98,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
         ContextMenu menu = (ContextMenu) abstractMenu;
 		String widgetVar = this.resolveWidgetVar(menu);
 		String clientId = menu.getClientId(context);
-		String trigger = findTrigger(context, menu);
+		String delegateId = menu.getForDelegate();
 		
 		writer.startElement("script", menu);
 		writer.writeAttribute("type", "text/javascript", null);
@@ -76,9 +111,27 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
             .item("ContextMenu")
             .beginArray()
             .item(clientId)
-            .beginMap()
-            .entry("target", trigger, true)
-            .entry("zindex", menu.getZindex())
+            .beginMap();
+			
+			if (delegateId == null) {
+				json.entry("target", findTrigger(context, menu), true);
+			} else {
+				UIComponent delegateComponent = findComponentCustom(context.getViewRoot(), delegateId);
+				if (delegateComponent != null && delegateComponent instanceof Delegate) {
+					json.entry("forDelegate", delegateComponent.getClientId(context));
+					json.entry("forComponent", menu.getFor());
+				} else {
+					throw new FacesException("Cannot find delegate component \"" + delegateId + "\" in view or it is not an instance of <ace:delegate>.");
+				}
+				
+				Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+				if (params.containsKey(clientId + "_activeComponent")) {
+					json.entry("target", params.get(clientId + "_activeComponent"));
+					json.entry("showNow", true);
+				}
+			}
+			
+            json.entry("zindex", menu.getZindex())
             .entry("direction", menu.getDirection())
 
             .beginMap("animation")
@@ -87,8 +140,9 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
             .endMap()
 
             .entryNonNullValue("styleClass", menu.getStyleClass())
-            .entryNonNullValue("style", menu.getStyle())
-            .endMap()
+            .entryNonNullValue("style", menu.getStyle());
+			
+            json.endMap()
             .endArray()
             .endFunction();
 
@@ -203,5 +257,45 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		}
 
 		return trigger;
+	}
+	
+	private UIComponent findComponentCustom(UIComponent base, String id) {
+
+		if (base.getId() != null && base.getId().equals(id)) return base;
+		List<UIComponent> children = base.getChildren();
+		UIComponent result = null;
+		for (UIComponent child : children) {
+			result = findComponentCustom(child, id);
+			if (result != null) break;
+		}
+		return result;
+	}
+	
+	private Object retrieveData(FacesContext context, UIComponent delegate, String activeComponentId, String expression) {
+		DataRetrievalVisitCallback callback = new DataRetrievalVisitCallback(activeComponentId, expression);
+		delegate.visitTree(VisitContext.createVisitContext(context, null, EnumSet.of(VisitHint.SKIP_TRANSIENT, VisitHint.SKIP_UNRENDERED)), callback);		
+		return callback.data;
+	}
+	
+	private static class DataRetrievalVisitCallback implements VisitCallback {
+		private String clientId;
+		private String expression;
+		private Object data;
+		
+		private DataRetrievalVisitCallback(String clientId, String expression) {
+			this.clientId = clientId;
+			this.expression = expression;
+			this.data = null;
+		}
+	
+		public VisitResult visit(VisitContext context, UIComponent target) {
+		
+			if (this.clientId.equals(target.getClientId())) {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				this.data = facesContext.getApplication().evaluateExpressionGet(facesContext, expression, Object.class);
+				return VisitResult.COMPLETE;
+			}
+			return VisitResult.ACCEPT;	
+		}
 	}
 }
