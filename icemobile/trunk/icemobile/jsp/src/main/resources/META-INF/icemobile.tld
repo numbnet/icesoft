@@ -804,6 +804,12 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <description>Sets the group id for the commandButton in a commandButtonGroup.</description>
+            <name>groupId</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
     <tag>
         <description>Mobile Styled Button Group</description>
