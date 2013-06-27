@@ -153,8 +153,6 @@ public class SelectInputDateRenderer
     //required for popup calendar
     private static final String[] passThruAttributesWithoutTabindex = new String[]{HTML.DIR_ATTR, HTML.LANG_ATTR, HTML.ONCLICK_ATTR, HTML.ONDBLCLICK_ATTR, HTML.ONKEYDOWN_ATTR, HTML.ONKEYPRESS_ATTR, HTML.ONKEYUP_ATTR, HTML.ONMOUSEDOWN_ATTR, HTML.ONMOUSEMOVE_ATTR, HTML.ONMOUSEOUT_ATTR, HTML.ONMOUSEOVER_ATTR, HTML.ONMOUSEUP_ATTR, HTML.STYLE_ATTR, HTML.TITLE_ATTR};
 
-    private static final String ID_SUFFIX = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + "j_idcl";
-
     private static final String NBSP = HTML.NBSP_ENTITY;
 
     /* (non-Javadoc)
@@ -399,7 +397,7 @@ public class SelectInputDateRenderer
                             OPEN_POPUP_TITLE, calendarButton, HTML.TITLE_ATTR);
                     FormRenderer.addHiddenField(
                             facesContext,
-                            formClientId + ID_SUFFIX);
+                            formClientId + UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + "j_idcl");
                     FormRenderer.addHiddenField(
                             facesContext,
                             clientId + CALENDAR_CLICK);
@@ -1534,7 +1532,7 @@ public class SelectInputDateRenderer
         //this is a fix for bug 340
         UIComponent form = findForm(uiComponent);
         String formId = form.getClientId(facesContext);
-        return formId + ID_SUFFIX;
+        return formId + UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + "j_idcl";
     }
 
     private int checkLink(Object eventCapturedId, String clickedLink, String clientId) {
