@@ -98,12 +98,12 @@
                                          disabled="${buttonGroupInfo.disabled}"
                                          style="${buttonGroupInfo.style}">
                     <mobi:commandButton value="Yes" id="button1"
-                             type="button"  groupId="group1"
+                             type="button"
                              buttonType="${buttonGroupInfo.buttonType}"/>
-                    <mobi:commandButton value="No"  groupId="group1"
+                    <mobi:commandButton value="No"
                             type="button"  id="button2"
                             buttonType="${buttonGroupInfo.buttonType}"/>
-                    <mobi:commandButton value="Please" groupId="group1"
+                    <mobi:commandButton value="Please"
                             type="button" id="button3"
                             buttonType="${buttonGroupInfo.buttonType}" />
                 </mobi:commandButtonGroup>
