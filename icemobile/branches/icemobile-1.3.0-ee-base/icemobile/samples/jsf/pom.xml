@@ -266,11 +266,6 @@
                         &lt;url-pattern&gt;/faces/*&lt;/url-pattern&gt;
                     &lt;/servlet-mapping&gt;
                 </EXTRA_SERVLET_MAPPINGS>
-                <MULTIPART_CONFIG>
-                    &lt;multipart-config/&gt;
-                </MULTIPART_CONFIG>
-                <EXTRA_FILTERS></EXTRA_FILTERS>
-                <EXTRA_FILTER_MAPPINGS></EXTRA_FILTER_MAPPINGS>
             </properties>
 
             <dependencies>
