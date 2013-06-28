@@ -88,15 +88,13 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
                 ExternalContext ec = fc.getExternalContext();
                 Object sessObj = ec.getSession(false);
 
-                if (sessObj != null) {
-
-                    if (!isValidSession(fc,viewId)) {
-                        //Remove the ViewExpiredException and set the sessionExpired flag so that we know
-                        //to add the SessionExpiredException which is done late to avoid ConcurrentModificationException.
-                        iter.remove();
-                        sessionExpired = true;
-                        break;
-                    }
+                boolean isPortalEnvironment = EnvUtils.instanceofPortletSession(sessObj);
+                if (sessObj == null || !isValidSession(fc,viewId) || !isPortalEnvironment) {
+                    //Remove the ViewExpiredException and set the sessionExpired flag so that we know
+                    //to add the SessionExpiredException which is done late to avoid ConcurrentModificationException.
+                    iter.remove();
+                    sessionExpired = true;
+                    break;
                 }
             }
         }
