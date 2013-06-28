@@ -65,26 +65,42 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
             this.groupId = mParent.getId();
             logger.info("button has groupId = "+this.groupId);
         }
+        else {
+            logger.info("parent NOT commandButtonGroupTag  ="+this.getParent().getClass().getName()) ;
+            //use find Ancestor
+            mParent = (CommandButtonGroupTag)findAncestorWithClass(this, CommandButtonGroupTag.class);
+            if (mParent != null){
+                checkSelected();
+                this.groupId = mParent.getId();
+                logger.info("got commandButtonGroupParent tag from ancestor groupId="+this.groupId);
+            }else {
+                logger.info("could not get commandButtonGroup parent from parent or ancestor");
+            }
+        }
         writer = new TagWriter(getContext());
         renderer = new ButtonCoreRenderer();
         renderer.encodeEnd(this, writer);
     }
 
     public void checkSelected(){
-        //logger.info("parent has selected id =" + mParent.getSelectedId());
+        logger.info("parent has selected id =" + mParent.getSelectedId());
         if (mParent.isDisabled()) { //no changes allowed if parent is disabled
             this.parentDisabled=true;
         }
         if (mParent.getSelectedId()!=null){
             String selId = mParent.getSelectedId();
+            logger.info(" parent has selectedId="+selId);
             if (selId.equals(this.id)){
+                logger.info(this.id + " is selected!!!");
                 this.selectedButton = true;
                 this.selected=true;
             }else {
+                logger.info(this.id+ " NOT selected!!");
                 this.selectedButton = false;
                 this.selected = false;
             }
         }else {
+            logger.info(" NO selected Id returned from parent");
             this.selectedButton = false;
             this.selected = false;
         }
@@ -244,6 +260,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
         this.parentDisabled = dis;
     }
     public void release(){
+        logger.info(this.id+" commandButtonTag release");
         super.release();
         this.mParent = null ;
         this.writer= null;

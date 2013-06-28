@@ -118,6 +118,7 @@ public class CommandButtonGroupTag extends BaseBodyTag implements IButtonGroup{
     }
 
     public void release(){
+        logger.info(this.id+ "commandButtonGroupTag release");
         super.release();
         this.writer= null;
         this.renderer=null;
