@@ -21,6 +21,7 @@ import org.icemobile.jsp.tags.TagWriter;
 import org.icemobile.renderkit.ButtonGroupCoreRenderer;
 import org.icemobile.jsp.tags.BaseBodyTag;
 import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.PageContext;
 import java.io.IOException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -40,9 +41,17 @@ public class CommandButtonGroupTag extends BaseBodyTag implements IButtonGroup{
 
      public int doStartTag() throws JspTagException {
         renderer = new ButtonGroupCoreRenderer();
+         String attrName = this.id+"_sel";
         try{
             writer = new TagWriter(pageContext);
+            if (selectedId!=null && !selectedId.equals("null") && !selectedId.trim().equals("")){
+          //      System.out.println("setting selectedId="+selectedId+" into pageContet");
+                pageContext.setAttribute(attrName,selectedId);
+            }
             renderer.encodeBegin(this, writer);
+  /*          if (pageContext.getAttribute(attrName)!=null){
+                logger.info("set page attr to ="+pageContext.getAttribute(attrName));
+            }*/
             writer.closeOffTag();
         } catch (IOException ioe){
             throw new JspTagException(" Error with startTag of CommandButtonGroupTag");
@@ -52,6 +61,7 @@ public class CommandButtonGroupTag extends BaseBodyTag implements IButtonGroup{
 
     public int doEndTag() throws JspTagException {
         try {
+
             renderer.encodeEnd(this,writer);
         }catch (IOException ioe){
             throw new JspTagException(" Error in endTag of CommandButtonGroupTag");
@@ -118,7 +128,7 @@ public class CommandButtonGroupTag extends BaseBodyTag implements IButtonGroup{
     }
 
     public void release(){
-        logger.info(this.id+ "commandButtonGroupTag release");
+    //    System.out.println(this.id+ "commandButtonGroupTag release");
         super.release();
         this.writer= null;
         this.renderer=null;
