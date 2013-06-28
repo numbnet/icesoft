@@ -776,11 +776,15 @@ public class EnvUtils {
         ExternalContext ec = facesContext.getExternalContext();
         String reqPath = ec.getRequestServletPath();
         String pathInfo = ec.getRequestPathInfo();
-        String reqParam = ec.getRequestParameterMap().get("ice.submit.type");
+        Map<String, String> parameterMap = ec.getRequestParameterMap();
+        String reqParam = parameterMap.get("ice.submit.type");
 
         if (reqPath != null && reqPath.contains(ICEpushResourceHandler.BLOCKING_CONNECTION_RESOURCE_NAME) ||
                 pathInfo != null && pathInfo.contains(ICEpushResourceHandler.BLOCKING_CONNECTION_RESOURCE_NAME) ||
                 "ice.push".equals(reqParam)) {
+            return true;
+        }
+        if (parameterMap.containsKey("ice.pushid")) {
             return true;
         }
         return false;
