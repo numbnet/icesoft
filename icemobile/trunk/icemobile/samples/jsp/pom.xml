@@ -33,9 +33,7 @@
         <module>icemobile-jsp</module>
     </modules>
     <!-- Naming the war files this way prevents the version from being appended. -->
-    <build>
-        <finalName>${project.artifactId}</finalName>
-    </build>
+
 
     <dependencies>
 

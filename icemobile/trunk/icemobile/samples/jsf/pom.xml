@@ -31,84 +31,6 @@
         <module>mobileshowcase</module>
         <module>mediacast</module>
     </modules>
-    <properties>
-      <!--  <server.config>icemobile.server.config</server.config> -->
-        <FACES_SERVLET>Faces Servlet</FACES_SERVLET>
-        <EXTRA_SERVLETS> </EXTRA_SERVLETS>
-        <EXTRA_SERVLET_MAPPINGS> </EXTRA_SERVLET_MAPPINGS>
-        <EXTRA_CONTEXT_PARAMS> </EXTRA_CONTEXT_PARAMS>
-        <EXTRA_FILTERS> </EXTRA_FILTERS>
-        <EXTRA_FILTER_MAPPINGS> </EXTRA_FILTER_MAPPINGS>
-    </properties>
-    <!-- Naming the war files this way prevents the version from being appended. -->
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/web.xml</include>
-                </includes>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <failOnMissingWebXml>true</failOnMissingWebXml>
-                    <webResources>
-                        <resource>
-                            <directory>src/main/webapp</directory>
-                            <filtering>true</filtering>
-                            <excludes>
-                                <exclude>web.xml</exclude>
-                            </excludes>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
-
-           <plugin>
-              <artifactId>maven-resources-plugin</artifactId>
-              <version>2.5</version>
-              <executions>
-                  <execution>
-                      <id>copy-resources</id>
-                      <phase>prepare-package</phase>
-                      <goals>
-                          <goal>copy-resources</goal>
-                      </goals>
-                      <configuration>
-                          <outputDirectory>${basedir}/target/${project.artifactId}/WEB-INF</outputDirectory>
-                          <delimiters>
-                             <useDefaultDelimiters>false</useDefaultDelimiters>
-                              <!-- enable maven's standard delimiters -->
-                          <!--   <delimiter>${*}</delimiter>  -->
-                              <!-- enable @delimiters@ -->
-                             <delimiter>@</delimiter>
-                          </delimiters>
-                          <resources>
-                              <resource>
-                                  <directory>src/main/webapp/WEB-INF</directory>
-                                  <filtering>true</filtering>
-                                  <includes>
-                                      <include>web.xml</include>
-                                  </includes>
-                               </resource>
-                          </resources>
-                     <!--      <filters>
-                              <filter>src/main/resources/filters/jboss6-config.properties</filter>
-                              <filter>${icemobile.server.config}</filter>
-                       </filters>   -->
-                       </configuration>
-                  </execution>
-              </executions>
-          </plugin>
-      </plugins>
-
-    </build>
 
     <dependencies>
 
@@ -174,7 +96,7 @@
                 </exclusion>
 			</exclusions>
 		</dependency>
-  <dependency>
+ <!-- <dependency>
     <groupId>ant-contrib</groupId>
     <artifactId>ant-contrib</artifactId>
     <version>1.0b3</version>
@@ -189,7 +111,7 @@
     <groupId>org.apache.ant</groupId>
     <artifactId>ant-nodeps</artifactId>
     <version>1.8.1</version>
-  </dependency>
+  </dependency>  -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -202,21 +124,15 @@
 
         <profile>
             <id>servlet</id>
-            <properties>
-                <EXTRA_FILTERS> </EXTRA_FILTERS>
-                <EXTRA_FILTER_MAPPINGS> </EXTRA_FILTER_MAPPINGS>
-                <MULTIPART_CONFIG> </MULTIPART_CONFIG>
-            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <dependencies>
-                <dependency>
-                    <groupId>javax.faces</groupId>
-                    <artifactId>javax.faces-api</artifactId>
-                    <version>${mojarra.api.version}</version>
-                    <scope>provided</scope>
-                </dependency>
+               <dependency>
+                   <groupId>org.glassfish</groupId>
+                   <artifactId>javax.faces</artifactId>
+                   <version>${mojarra.version}</version>
+               </dependency>
             </dependencies>
         </profile>
 
@@ -226,13 +142,13 @@
                 <dependency>
                     <groupId>javax.faces</groupId>
                     <artifactId>javax.faces-api</artifactId>
-                    <version>${mojarra.api.version}</version>
+                    <version>${jsf.api.version}</version>
                     <scope>provided</scope>
                 </dependency>
             </dependencies>
         </profile>
         <profile>
-            <id>jboss</id>
+            <id>jboss5</id>
             <properties>
                 <EXTRA_FILTERS>
                      &lt;filter&gt;
@@ -246,17 +162,14 @@
                         &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
                     &lt;/filter-mapping&gt;
                 </EXTRA_FILTER_MAPPINGS>
-                <MULTIPART_CONFIG>
-                    &lt;multipart-config/&gt;
-                </MULTIPART_CONFIG>
+                <MULTIPART_CONFIG></MULTIPART_CONFIG>
             </properties>
 
             <dependencies>
                 <dependency>
-                    <groupId>javax.faces</groupId>
-                    <artifactId>javax.faces-api</artifactId>
-                    <version>${mojarra.api.version}</version>
-                    <scope>provided</scope>
+                   <groupId>org.glassfish</groupId>
+                   <artifactId>javax.faces</artifactId>
+                   <version>${mojarra.version}</version>
                 </dependency>
             </dependencies>
         </profile>
@@ -279,20 +192,14 @@
                         &lt;url-pattern&gt;/faces/*&lt;/url-pattern&gt;
                     &lt;/servlet-mapping&gt;
                 </EXTRA_SERVLET_MAPPINGS>
-                <MULTIPART_CONFIG>
-                    &lt;multipart-config/&gt;
-                </MULTIPART_CONFIG>
-                <EXTRA_FILTERS> </EXTRA_FILTERS>
-                <EXTRA_FILTER_MAPPINGS> </EXTRA_FILTER_MAPPINGS>
             </properties>
 
             <dependencies>
-                <dependency>
-                    <groupId>javax.faces</groupId>
-                    <artifactId>javax.faces-api</artifactId>
-                    <version>${mojarra.api.version}</version>
-                    <scope>provided</scope>
-                </dependency>
+               <dependency>
+                   <groupId>org.glassfish</groupId>
+                   <artifactId>javax.faces</artifactId>
+                   <version>${mojarra.version}</version>
+               </dependency>
             </dependencies>
         </profile>
         <profile>

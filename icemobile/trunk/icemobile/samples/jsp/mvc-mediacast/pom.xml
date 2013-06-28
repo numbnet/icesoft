@@ -31,8 +31,8 @@
     <dependencies>
         <!-- app specific -->
         <dependency>
-            <groupId>org.icesoft</groupId>
-            <artifactId>icemobile-spring</artifactId>
+            <groupId>${icemobile.product.group}</groupId>
+            <artifactId>${icemobile.spring.lib.name}</artifactId>
             <version>${icemobile.version}</version>
         </dependency>
         <dependency>
