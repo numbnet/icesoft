@@ -21,7 +21,9 @@ import org.icemobile.jsp.tags.input.CommandButtonGroupTag;
 import org.icemobile.renderkit.ButtonCoreRenderer;
 
 import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.PageContext;
 import java.io.IOException;
+import java.lang.System;
 import java.util.logging.Logger;
 
 
@@ -42,6 +44,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     private boolean selected = false;
     private String groupId;
     private String name;
+    private String selectedGroupId;
 
     private ButtonCoreRenderer renderer;
     private TagWriter writer;
@@ -52,55 +55,75 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
     public void setParent(Tag parent) {
         if ((parent instanceof CommandButtonGroupTag)) {
             this.mParent = (CommandButtonGroupTag) parent;
-            logger.info(this+" setting tag parent " + parent);
+      //      System.out.println(this+" SETTING TAG PARENT " + parent);
         }
     }
 
     public void doTag() throws IOException {
         /* set selected if my id is same as the selectedId of the buttonGroup
         * so application doesn't have ot carry the logic*/
-        if (this.getParent() instanceof CommandButtonGroupTag){
-            mParent = (CommandButtonGroupTag) this.getParent();
-            checkSelected();
-            this.groupId = mParent.getId();
-            logger.info("button has groupId = "+this.groupId);
-        }
-        else {
-            logger.info("parent NOT commandButtonGroupTag  ="+this.getParent().getClass().getName()) ;
-            //use find Ancestor
-            mParent = (CommandButtonGroupTag)findAncestorWithClass(this, CommandButtonGroupTag.class);
-            if (mParent != null){
-                checkSelected();
-                this.groupId = mParent.getId();
-                logger.info("got commandButtonGroupParent tag from ancestor groupId="+this.groupId);
-            }else {
-                logger.info("could not get commandButtonGroup parent from parent or ancestor");
+        boolean haveSelected=false;
+        if (this.groupId!=null && !this.groupId.equals("null")&& !this.groupId.trim().equals("")){
+          //  System.out.println("HAVE GROUP from attribute ="+this.groupId);
+            PageContext pageContext = (PageContext) getJspContext();
+            String attrName = this.groupId+"_sel";
+            Object found = pageContext.getAttribute(attrName);
+            if (found !=null){
+                this.selectedGroupId = found.toString();
+                haveSelected=true;
+             //   System.out.println("  FROM PAGE CONTEXT selectedId ="+selectedGroupId);
             }
         }
+        if (!haveSelected){
+         //   System.out.println("MUST FIND PARENT....");
+            mParent = findParent();
+        }
+        checkSelected();
         writer = new TagWriter(getContext());
         renderer = new ButtonCoreRenderer();
         renderer.encodeEnd(this, writer);
     }
 
-    public void checkSelected(){
-        logger.info("parent has selected id =" + mParent.getSelectedId());
-        if (mParent.isDisabled()) { //no changes allowed if parent is disabled
-            this.parentDisabled=true;
+    private CommandButtonGroupTag findParent(){
+        CommandButtonGroupTag parent = mParent;
+        if (null == parent){
+        //    System.out.println("mParent was null try getParent");
+            if (this.getParent() !=null && this.getParent() instanceof CommandButtonGroupTag){
+                parent = (CommandButtonGroupTag)this.getParent();
+                this.groupId = parent.getId();
+            }
         }
-        if (mParent.getSelectedId()!=null){
-            String selId = mParent.getSelectedId();
-            logger.info(" parent has selectedId="+selId);
-            if (selId.equals(this.id)){
-                logger.info(this.id + " is selected!!!");
+        else  {
+        //    System.out.println("getParent null  try as ancestor ");
+            parent = (CommandButtonGroupTag)findAncestorWithClass(this, CommandButtonGroupTag.class);
+            if (parent != null){
+                this.groupId = mParent.getId();
+        //        logger.info("got commandButtonGroupParent tag from ancestor groupId="+this.groupId);
+            }else {
+                logger.warning ("No CommandButtonGroupTag could be found to show selected button");
+            }
+        }
+        if (parent!=null){
+            this.selectedGroupId = parent.getSelectedId();
+            this.parentDisabled = parent.isDisabled();
+     //       logger.info("parent not null got selected Id from looking for parent="+this.selectedGroupId);
+        }
+        return parent;
+    }
+
+    private void checkSelected(){
+        if (this.selectedGroupId !=null){
+            if (this.selectedGroupId.equals(this.id)){
+             //   logger.info(this.id + "\t\t is selected!!!");
                 this.selectedButton = true;
                 this.selected=true;
             }else {
-                logger.info(this.id+ " NOT selected!!");
+             //   logger.info(this.id+ " \t\tNOT selected!!");
                 this.selectedButton = false;
                 this.selected = false;
             }
         }else {
-            logger.info(" NO selected Id returned from parent");
+      //      logger.info(" \tNO selected Id found");
             this.selectedButton = false;
             this.selected = false;
         }
@@ -260,7 +283,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
         this.parentDisabled = dis;
     }
     public void release(){
-        logger.info(this.id+" commandButtonTag release");
+   //     System.out.println(this.id+" commandButtonTag release");
         super.release();
         this.mParent = null ;
         this.writer= null;
