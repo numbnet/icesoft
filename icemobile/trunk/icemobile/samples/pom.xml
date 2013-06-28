@@ -5,6 +5,8 @@
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the
   ~ License. You may obtain a copy of the License at
+cense at
+  ~ http://www.icesoft.com/license/commercial-source-v1.1.html
   ~
   ~ http://www.apache.org/licenses/LICENSE-2.0
   ~
@@ -69,6 +71,7 @@
         <icefaces.product.name>ICEfaces</icefaces.product.name>
         <icefaces.lib.name>icefaces</icefaces.lib.name>
         <icefaces.version>3.3.0</icefaces.version>
+        <icemobile.product.group>org.icesoft</icemobile.product.group>
         <icemobile.product.name>ICEmobile</icemobile.product.name>
         <icemobile.faces.comps.lib.name>icefaces-mobi</icemobile.faces.comps.lib.name>
         <icemobile.jsptags.lib.name>icemobile-jsp</icemobile.jsptags.lib.name>
@@ -102,7 +105,7 @@
         <!-- Versions of JSF implementations -->
         <mojarra.version>2.1.21</mojarra.version>
         <myfaces.version>2.1.10</myfaces.version>
-        <mojarra.api.version>2.1</mojarra.api.version>
+        <jsf.api.version>2.1</jsf.api.version>
 
         <!-- Various library versions settable from one place -->
         <annotation.version>1.0</annotation.version>
@@ -111,12 +114,85 @@
 
         <!-- To avoid warnings about platform dependent actions when copying resources -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <WEBXML_PREAMBLE>&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+         version=&quot;3.0&quot; metadata-complete=&quot;false&quot;&gt;</WEBXML_PREAMBLE>
+        <MULTIPART_CONFIG>&lt;multipart-config/&gt;</MULTIPART_CONFIG>
+        <EXTRA_SERVLETS></EXTRA_SERVLETS>
+        <EXTRA_SERVLET_MAPPINGS></EXTRA_SERVLET_MAPPINGS>
+        <EXTRA_CONTEXT_PARAMS></EXTRA_CONTEXT_PARAMS>
+        <EXTRA_FILTERS></EXTRA_FILTERS>
+        <EXTRA_FILTER_MAPPINGS></EXTRA_FILTER_MAPPINGS>
+        <FACES_SERVLET>Faces Servlet</FACES_SERVLET>
     </properties>
 
     <!-- Naming the war files this way prevents the version from being appended. -->
     <build>
-        <finalName>${project.artifactId}</finalName>
-    </build>
+         <finalName>${project.artifactId}</finalName>
+         <plugins>
+             <plugin>
+                 <artifactId>maven-war-plugin</artifactId>
+                 <version>2.3</version>
+                 <configuration>
+                     <webResources>
+                         <resource>
+                             <directory>src/main/webapp/WEB-INF</directory>
+                             <filtering>true</filtering>
+                             <targetPath>WEB-INF</targetPath>
+                             <includes>
+                                 <include>web.xml</include>
+                             </includes>
+                         </resource>
+                         <resource>
+                             <directory>src/main/resources</directory>
+                             <includes><include>**/*</include></includes>
+                             <targetPath>WEB-INF/classes</targetPath>
+                         </resource>
+                     </webResources>
+                     <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                     </archive>
+                 </configuration>
+             </plugin>
+
+            <plugin>
+               <artifactId>maven-resources-plugin</artifactId>
+               <version>2.5</version>
+               <executions>
+                   <execution>
+                       <id>copy-resources</id>
+                       <phase>prepare-package</phase>
+                       <goals>
+                           <goal>copy-resources</goal>
+                       </goals>
+                       <configuration>
+                           <outputDirectory>${basedir}/target/${project.artifactId}/WEB-INF</outputDirectory>
+                           <delimiters>
+                              <useDefaultDelimiters>false</useDefaultDelimiters>
+                               <!-- enable maven's standard delimiters -->
+                           <!--   <delimiter>${*}</delimiter>  -->
+                               <!-- enable @delimiters@ -->
+                              <delimiter>@</delimiter>
+                           </delimiters>
+                           <resources>
+                               <resource>
+                                   <directory>src/main/webapp/WEB-INF</directory>
+                                   <filtering>true</filtering>
+                                   <includes>
+                                       <include>web.xml</include>
+                                   </includes>
+                               </resource>
+                           </resources>
+                        </configuration>
+                   </execution>
+               </executions>
+           </plugin>
+       </plugins>
+
+     </build>
+
 
 
 </project>

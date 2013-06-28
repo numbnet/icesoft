@@ -1,4 +1,4 @@
-ICEmobile-Faces-1.3.0 Maven2 Support
+ICEmobile-1.3.0 Maven2 Support
 
 If this is the ICEmobile source distribution, you need to first build the jars so that they are residing in the lib directories 
 of their respective folders. 
