@@ -40,28 +40,19 @@
     <!-- Naming the war files this way prevents the version from being appended. -->
     <build>
         <finalName>${project.artifactId}</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/web.xml</include>
-                </includes>
-            </resource>
-        </resources>
-        <plugins>
+         <plugins>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-                    <failOnMissingWebXml>true</failOnMissingWebXml>
                     <webResources>
                         <resource>
-                            <directory>src/main/webapp</directory>
+                            <directory>src/main/webapp/WEB-INF</directory>
                             <filtering>true</filtering>
-                            <excludes>
-                                <exclude>web.xml</exclude>
-                            </excludes>
+                            <targetPath>WEB-INF</targetPath>
+                            <includes>
+                                <include>web.xml</include>
+                            </includes>
                         </resource>
                         <resource>
                             <directory>src/main/resources</directory>
@@ -69,6 +60,9 @@
                             <targetPath>WEB-INF/classes</targetPath>
                         </resource>
                     </webResources>
+                    <archive>
+                       <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
                 </configuration>
             </plugin>
 
