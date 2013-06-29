@@ -105,7 +105,6 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         
         ResponseWriter writer = context.getResponseWriter();
         
-        writer.write(META_CONTENTTYPE);
         writer.write(String.format(LINK_FAV_ICON, contextRoot));
         writer.write(String.format(LINK_SHORTCUT_ICON, contextRoot));
         if( !desktop ){
