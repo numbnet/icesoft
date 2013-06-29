@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 @SessionAttributes({ "cameraMessage", "cameraUpload", "cameraBean" })
-@ICEmobileResourceStore(bean="icemobileResourceStore")
+@ICEmobileResourceStore(bean="basicResourceStore")
 public class CameraController extends ICEmobileBaseController {
 
     private static final Log LOG = LogFactory.getLog(CameraController.class);
@@ -54,40 +54,40 @@ public class CameraController extends ICEmobileBaseController {
         return new ModelBean();
     }
 
-    @RequestMapping(value = "/camera", method = RequestMethod.POST)
-    public void post(HttpServletRequest request, ModelBean cameraBean,
-            @ICEmobileResource("cam") Resource cameraUpload,
-            Model model) {
-        
-        LOG.info("cameraUpload: " + cameraUpload);
+@RequestMapping(value = "/camera", method = RequestMethod.POST)
+public void post(HttpServletRequest request, ModelBean cameraBean,
+        @ICEmobileResource("cam") Resource cameraUpload,
+        Model model) {
+    
+    LOG.info("cameraUpload: " + cameraUpload);
 
-        if (cameraUpload != null) {
-            // if the uploaded file is not an image display an error
-            if (!cameraUpload.getContentType().startsWith("image")) {
+    if (cameraUpload != null) {
+        // if the uploaded file is not an image display an error
+        if (!cameraUpload.getContentType().startsWith("image")) {
+            model.addAttribute("cameraError",
+                    "Sorry " + cameraBean.getName()
+                            + ", only image uploads are allowed.");
+        } else {
+            try {
+                String photoUrl = "icemobile-store/"+ cameraUpload.getUuid();
+                model.addAttribute("cameraUpload", photoUrl);
+
+                // tell the user their photo has been uploaded
+                model.addAttribute("cameraMessage",
+                        "Hello " + cameraBean.getName()
+                                + ", your file was uploaded successfully.");
+            } catch (Exception e) {
+                //there was some problem opening the uploaded file or 
+                //creating a new one for the media dir
                 model.addAttribute("cameraError",
                         "Sorry " + cameraBean.getName()
-                                + ", only image uploads are allowed.");
-            } else {
-                try {
-                    String photoUrl = "icemobile-store/"+ cameraUpload.getUuid();
-                    model.addAttribute("cameraUpload", photoUrl);
-
-                    // tell the user their photo has been uploaded
-                    model.addAttribute("cameraMessage",
-                            "Hello " + cameraBean.getName()
-                                    + ", your file was uploaded successfully.");
-                } catch (Exception e) {
-                    //there was some problem opening the uploaded file or 
-                    //creating a new one for the media dir
-                    model.addAttribute("cameraError",
-                            "Sorry " + cameraBean.getName()
-                                    + ", there was a problem saving the image file.");
-                }
+                                + ", there was a problem saving the image file.");
             }
         }
-        // always add the bean back to the model to save other form data
-        model.addAttribute("cameraBean", cameraBean);
     }
+    // always add the bean back to the model to save other form data
+    model.addAttribute("cameraBean", cameraBean);
+}
 
     @RequestMapping(value = "/jsoncam", method = RequestMethod.POST)
     public @ResponseBody CamUpdate jsonCamera(

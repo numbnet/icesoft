@@ -30,7 +30,7 @@ public interface ResourceStore<T extends Resource>{
     public void clear();
     public T get(String token, String key);
     public T get(String uuid);
-    public void setRequestAdaptor(ResourceAdapter adapter);
+    public void setResourceAdaptor(ResourceAdapter adapter);
     
 
 }

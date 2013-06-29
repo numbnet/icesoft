@@ -16,24 +16,18 @@
 
 package org.icemobile.samples.spring.controllers;
 
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.icemobile.samples.spring.FileUploadUtils;
+import org.icemobile.application.Resource;
 import org.icemobile.samples.spring.MediaSpotBean;
+import org.icemobile.spring.annotation.ICEmobileResource;
 import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.icemobile.spring.controller.ICEmobileBaseController;
 import org.icemobile.util.Utils;
@@ -42,17 +36,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @SessionAttributes({"augmentedRealityMessage", "augmentedRealityUpload", "mediaspotBean"})
-@ICEmobileResourceStore(bean="icemobileResourceStore")
+@ICEmobileResourceStore(bean="arResourceStore")
 public class MediaSpotController extends ICEmobileBaseController{
     HashMap<String,MediaSpotBean> messages = new HashMap<String,MediaSpotBean>();
     MediaSpotBean selectedMessage = null;
-    static int THUMBSIZE = 128;
     int count = 0;
     String currentFileName = null;
     
@@ -110,12 +101,13 @@ public class MediaSpotController extends ICEmobileBaseController{
 
     @RequestMapping(value = "/mediaspot", method=RequestMethod.POST)
     public void post(HttpServletRequest request, 
-            @RequestParam(value = "spotcam", required = false) MultipartFile photoFile,
+            @ICEmobileResource("spotcam") Resource photoUpload,
             MediaSpotBean spotBean,
             Model model){
         log.info("post(): " + spotBean);
-        if( photoFile != null || request.getParameter("spotcam") != null){
-            processPhotoUpload(request,photoFile,spotBean,model);
+        
+        if( photoUpload != null ){
+            processPhotoUpload(request,photoUpload,spotBean,model);
         }
         else{
             processMarkerSubmit(request, model);
@@ -123,26 +115,24 @@ public class MediaSpotController extends ICEmobileBaseController{
     }
 
 	public void processPhotoUpload(HttpServletRequest request, 
-            MultipartFile photoFile,
+            Resource photoUpload,
             MediaSpotBean spotBean,
             Model model)  {
-	    log.info("postPhotoUpload() photoFile="+photoFile);
-        String newFileName = null;
+	    log.info("postPhotoUpload() photoUpload="+photoUpload);
         try {
-            if (null != photoFile || request.getParameter("spotcam") != null )  {
-                newFileName = FileUploadUtils.saveImage(request, "spotcam", photoFile, null);
-                
-                spotBean.setFileName(newFileName);
+            String photoUrl = null;
+            if (null != photoUpload )  {
+                photoUrl = "icemobile-ar-store/"+ photoUpload.getUuid();
+                spotBean.setFileName(photoUrl);
                 String title = spotBean.getTitle();
                 if ((null == title) || "".equals(title))  {
                     spotBean.setTitle("Marker" + count++);
                 }
                 messages.put(spotBean.getTitle(), spotBean);
-                scaleImage( new File(request.getRealPath("/" + newFileName)) );
             }
     		model.addAttribute("locations", messages.values());
     		model.addAttribute("augmentedRealityMessage", "Hello your file was uploaded successfully, you may now enter augmented reality.");
-    		model.addAttribute("augmentedRealityUpload", newFileName);
+    		model.addAttribute("augmentedRealityUpload", photoUrl);
             String selection = spotBean.getSelection();
             MediaSpotBean mySelectedMessage = messages.get(selection);
             if (null != mySelectedMessage) {
@@ -153,7 +143,7 @@ public class MediaSpotController extends ICEmobileBaseController{
                 model.addAttribute("imgPath", 
                         selectedMessage.getFileName());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             model.addAttribute("augmentedRealityMessage", "Sorry, there was a problem processing the image upload.");
             e.printStackTrace();
         }
@@ -170,47 +160,5 @@ public class MediaSpotController extends ICEmobileBaseController{
         }
     }
     
-    private void scaleImage(File photoFile) throws IOException  {
-
-        if (null == photoFile) {
-            return;
-        }
-
-        BufferedImage image = ImageIO.read(photoFile);
-        // scale the original file into a small thumbNail and the other
-        // into a 1 megapixelish sized image.
-        int width = image.getWidth();
-        int height = image.getHeight();
-
-        // create the thumbnail
-        AffineTransform tx = new AffineTransform();
-        //default image type creates nonstandard all black jpg file
-        BufferedImage thumbNailImage = 
-                new BufferedImage(THUMBSIZE, THUMBSIZE, 
-                        BufferedImage.TYPE_3BYTE_BGR);
-        double imageScale = calculateImageScale(THUMBSIZE, width, height);
-        tx.scale(imageScale, imageScale);
-        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-        op.filter(image, thumbNailImage);
-
-        // clean up the original image.
-        image.flush();
-
-        writeImage(thumbNailImage, photoFile);
-
-    }
-
-    private double calculateImageScale(double intendedSize, int width, int height) {
-        double scaleHeight = height / intendedSize;
-        // change the algorithm, so height is always the same
-        return 1 / scaleHeight;
-    }
-
-    private void writeImage(BufferedImage image, File imageFile)
-            throws IOException {
-        FileOutputStream fs = new FileOutputStream(imageFile);
-        ImageIO.write(image, "jpg", fs);
-        fs.close();
-    }
 
 }

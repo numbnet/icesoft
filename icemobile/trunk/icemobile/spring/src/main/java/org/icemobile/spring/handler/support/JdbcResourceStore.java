@@ -33,17 +33,17 @@ import org.springframework.transaction.annotation.Transactional;
   */
 public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
 
-	private JdbcTemplate jdbcTemplate;
+    protected JdbcTemplate jdbcTemplate;
 
-	private SimpleJdbcInsert insertResource;
+    protected SimpleJdbcInsert insertResource;
 
-	private ResourceAdapter resourceAdapter = new ByteArrayResourceAdapter();
+    protected ResourceAdapter resourceAdapter = new ByteArrayResourceAdapter();
 	
 	private static final Log LOG = LogFactory.getLog(JdbcResourceStore.class);
 	
-	private LobHandler lobHandler = new DefaultLobHandler();
+	protected LobHandler lobHandler = new DefaultLobHandler();
 	
-	private String tableName = "uploads";
+	protected String tableName = "uploads";
 	
 	/**
 	 * Add the resource to the ResourceStore. 
@@ -212,7 +212,7 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
      * @param adapter The ResourceAdapter to handle Resources and define the Resource type.
      * @see ResourceAdapter
      */
-    public void setRequestAdaptor(ResourceAdapter adapter) {
+    public void setResourceAdaptor(ResourceAdapter adapter) {
         this.resourceAdapter = adapter;        
     }
     

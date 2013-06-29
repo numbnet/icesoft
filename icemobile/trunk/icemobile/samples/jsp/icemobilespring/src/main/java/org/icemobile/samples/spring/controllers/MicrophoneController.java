@@ -41,7 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @SessionAttributes({"microphoneBean","micUploadReady","micMessage","micUpload"})
-@ICEmobileResourceStore(bean="icemobileResourceStore")
+@ICEmobileResourceStore(bean="basicResourceStore")
 public class MicrophoneController extends ICEmobileBaseController{
     
     private static final Log log = LogFactory
