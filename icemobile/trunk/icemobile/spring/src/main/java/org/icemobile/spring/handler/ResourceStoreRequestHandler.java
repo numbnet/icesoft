@@ -31,8 +31,7 @@ public class ResourceStoreRequestHandler extends RangingResourceHttpRequestHandl
     private static final Log LOG = LogFactory
             .getLog(ResourceStoreRequestHandler.class);
     
-    @Autowired
-    private ResourceStore icemobileResourceStore;
+    private ResourceStore resourceStore;
 
     @PostConstruct
     public void init()  {
@@ -46,7 +45,7 @@ public class ResourceStoreRequestHandler extends RangingResourceHttpRequestHandl
         
         LOG.debug("requestPath=" + requestPath + ", uuid=" + uuid);
         
-        Resource theResource = icemobileResourceStore.get(uuid);
+        Resource theResource = resourceStore.get(uuid);
         if( theResource != null ){
             return new Object[]{
                     theResource.getInputStream(),
@@ -63,7 +62,7 @@ public class ResourceStoreRequestHandler extends RangingResourceHttpRequestHandl
      * 
      * @param store The ICEmobile ResourceStore
      */
-    public void setICEmobileResourceStore(ResourceStore store){
-        this.icemobileResourceStore = store;
+    public void setResourceStore(ResourceStore store){
+        this.resourceStore = store;
     }
 }

@@ -36,9 +36,9 @@ import org.icemobile.spring.handler.FileResourceAdapter;
  */
 public class MapFileStore implements ResourceStore<FileResource> {
     
-    private Map<String,Map<String, FileResource>> wrappedMap;
-    private Map<String,FileResource> uuidMap;
-    private ResourceAdapter<FileResource> resourceAdapter = new FileResourceAdapter();
+    protected Map<String,Map<String, FileResource>> wrappedMap;
+    protected Map<String,FileResource> uuidMap;
+    protected ResourceAdapter<FileResource> resourceAdapter = new FileResourceAdapter();
     
     /**
      * Create a MapFileStore with a wrapped HashMap.
@@ -161,14 +161,11 @@ public class MapFileStore implements ResourceStore<FileResource> {
     }
 
     /**
-     * Not currently supported. The MapFileStore currently 
-     * only supports the default FileResourceAdapter
      * 
      * @param adapter The ResourceAdapter
      */
-    public void setRequestAdaptor(ResourceAdapter adapter) {
-        throw new UnsupportedOperationException("The MapFileStore currently " +
-        		"only supports the default FileResourceAdapter.");
+    public void setResourceAdaptor(ResourceAdapter adapter) {
+        this.resourceAdapter = adapter;
     }
 
     /**

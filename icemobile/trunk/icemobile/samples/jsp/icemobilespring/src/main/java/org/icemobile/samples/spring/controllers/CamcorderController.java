@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @SessionAttributes({"camcorderBean","camcorderUploadReady","camcorderMessage","camcorderUpload"})
-@ICEmobileResourceStore(bean="icemobileResourceStore")
+@ICEmobileResourceStore(bean="basicResourceStore")
 public class CamcorderController extends ICEmobileBaseController{
 
 	@ModelAttribute("camcorderBean")
