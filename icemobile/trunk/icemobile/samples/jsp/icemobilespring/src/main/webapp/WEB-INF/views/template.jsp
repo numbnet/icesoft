@@ -49,7 +49,7 @@
                 <mobi:pagePanel>
                     <mobi:pagePanelHeader>
                         <a href="<c:url value="/"/>" style="position: absolute;left: 0.5em;top: 3px;">
-                            <img src="resources/images/icemobile_thumb.png"/>
+                            <img src="<c:url value="/resources/images/icemobile_thumb.png"/>"/>
                         </a>
                         <h1 class="ui-title">ICEmobile Spring MVC Showcase</h1>
                     </mobi:pagePanelHeader>
