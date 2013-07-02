@@ -95,8 +95,12 @@
        -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
-            <value>/icemobile-store/**=resourceStoreRequestHandler</value>
-            <value>/icemobile-ar-store/**=arResourceStoreRequestHandler</value>
+<!--             <value>/icemobile-store/**=resourceStoreRequestHandler</value> -->
+<!--             <value>/icemobile-ar-store/**=arResourceStoreRequestHandler</value> -->
+            <props>
+              <prop key="/icemobile-store/**">resourceStoreRequestHandler</prop>
+              <prop key="/icemobile-ar-store/**">arResourceStoreRequestHandler</prop>
+            </props>
         </property>
     </bean>
    
