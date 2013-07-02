@@ -79,15 +79,31 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
     };
 
     var views = window.views = window.views ? window.views : [];
+
+    var allViewsCookie;
+    try {
+        allViewsCookie = Ice.Cookie.lookup('ice.views');
+    } catch (e) {
+        allViewsCookie = new Ice.Cookie('ice.views', '');
+    }
+
     var registerView = function(session, view) {
         registerSession(session);
         views.push(new Ice.Parameter.Association(session, view));
+
+        var allViews = allViewsCookie.loadValue();
+        allViewsCookie.saveValue(allViews + ' ' + session + ':' + view);
     };
 
     var deregisterWindowViews = function() {
+        var allViews = allViewsCookie.loadValue().split(' ');
         views.each(function(v) {
             deregisterSession(v.name);
+            allViews = allViews.reject(function(i) {
+                return i == v.name + ':' + v.value;
+            });
         });
+        allViewsCookie.saveValue(allViews.join(' '));
         views.clear();
     };
 
@@ -113,6 +129,12 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
         views = views.reject(function(i) {
             return i.name == session && i.value == view;
         });
+
+        var allViews = allViewsCookie.loadValue().split(' ');
+        var newAllViews = allViews.reject(function(i) {
+            return i == session + ':' + view;
+        });
+        allViewsCookie.saveValue(newAllViews.join(' '));
     };
 
     var disposeView = function(session, view) {
@@ -232,13 +254,15 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
             commandDispatcher.register('session-expired', function() {
                 try {
                     logger.warn('Session has expired');
-                    statusManager.busy.off();
-                    statusManager.sessionExpired.on();
                     //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
                     deregisterView(sessionID, viewID);
+                    var updatedViews = Ice.Cookie.lookup('updates');
+                    updatedViews.saveValue(allViewsCookie.loadValue());
                 } finally {
                     dispose();
                     sessionExpiredListeners.broadcast();
+                    statusManager.busy.off();
+                    statusManager.sessionExpired.on();
                 }
             });
 
