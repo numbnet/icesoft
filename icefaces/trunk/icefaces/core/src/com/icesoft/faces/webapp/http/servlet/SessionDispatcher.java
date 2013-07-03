@@ -32,8 +32,6 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
-import com.icesoft.faces.async.render.GroupAsyncRenderer;
-import com.icesoft.faces.context.View;
 import com.icesoft.faces.context.ViewStatus;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
@@ -50,6 +48,7 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -377,7 +376,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
     public static class Monitor implements Externalizable {
         private final String POSITIVE_SESSION_TIMEOUT = "positive_session_timeout";
-        private Set contexts = new HashSet();
+        private Set contexts = Collections.synchronizedSet(new HashSet());
         private HttpSession session;
         private long lastAccess;
         private String id;
@@ -435,10 +434,12 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         public void shutdown() {
             //notify all the contexts associated to this monitored session
-            Iterator i = contexts.iterator();
-            while (i.hasNext()) {
-                ServletContext context = (ServletContext) i.next();
-                notifySessionShutdown(session, context);
+            synchronized (contexts){
+                Iterator i = contexts.iterator();
+                while (i.hasNext()) {
+                    ServletContext context = (ServletContext) i.next();
+                    notifySessionShutdown(session, context);
+                }
             }
             try {
                 session.invalidate();
