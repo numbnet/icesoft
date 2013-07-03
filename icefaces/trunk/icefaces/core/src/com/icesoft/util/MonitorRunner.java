@@ -37,11 +37,12 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class MonitorRunner {
     private static final Log log = LogFactory.getLog(MonitorRunner.class);
-    private Collection monitors = new ArrayList();
+    private Collection monitors = Collections.synchronizedList(new ArrayList());
     private Thread thread;
     private boolean run = true;
 
@@ -53,13 +54,15 @@ public class MonitorRunner {
                     while (run) {
                         if (count * 1000 >= interval) {
                             count = 0;
-                            Iterator i = new ArrayList(monitors).iterator();
-                            while (i.hasNext()) {
-                                Runnable monitor = (Runnable) i.next();
-                                try {
-                                    monitor.run();
-                                } catch (Throwable t) {
-                                    log.warn("Failed to run monitor: " + monitor, t);
+                            synchronized (monitors) {
+                                Iterator i = new ArrayList(monitors).iterator();
+                                while (i.hasNext()) {
+                                    Runnable monitor = (Runnable) i.next();
+                                    try {
+                                        monitor.run();
+                                    } catch (Throwable t) {
+                                        log.warn("Failed to run monitor: " + monitor, t);
+                                    }
                                 }
                             }
                         }
