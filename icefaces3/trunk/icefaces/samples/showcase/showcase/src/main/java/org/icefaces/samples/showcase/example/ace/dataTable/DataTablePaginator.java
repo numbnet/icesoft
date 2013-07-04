@@ -82,7 +82,7 @@ public class DataTablePaginator extends ComponentExampleImpl<DataTablePaginator>
     public SelectItem[] getPositionAvailable() { return POSITION_AVAILABLE; }
     public List<Car> getCarsData() { return carsData; }
     public int getStartPageMaximum() {
-        return rows == 0 ? 1 : (int)Math.ceil(30.0/(double)rows);
+        return rows == 0 ? 1 : (int)Math.ceil(carsData.size()/(double)rows);
     }
     
     public void setPaginator(boolean paginator) { this.paginator = paginator; }

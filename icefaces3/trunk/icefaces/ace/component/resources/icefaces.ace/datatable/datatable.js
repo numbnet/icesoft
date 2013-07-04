@@ -184,7 +184,6 @@ ice.ace.DataTable = function (id, cfg) {
     this.columnPinScrollListener = {};
     this.parentResizeDelaySet = false;
     this.delayedFilterCall = null;
-    this.filterSource = null;
     this.behaviors = cfg.behaviors;
     this.parentSize = 0;
     this.scrollLeft = 0;
@@ -259,6 +258,7 @@ ice.ace.DataTable = function (id, cfg) {
     }
 }
 
+
 // Selectors
 ice.ace.DataTable.prototype.sortColumnSelector = ' > div > table > thead > tr > th > div.ui-sortable-column';
 ice.ace.DataTable.prototype.sortControlSelector = ' > div > table > thead > tr > th > div.ui-sortable-column > span > span.ui-sortable-control';
@@ -326,8 +326,8 @@ ice.ace.DataTable.prototype.unload = function() {
             .unbind('keypress');
 
     // Clear YUI paginator
-    if (this.cfg.paginator)
-        this.cfg.paginator.destroy();
+    if (this.paginator)
+        this.paginator.destroy();
 
     var clientState = {scrollTop : this.scrollTop, scrollLeft : this.scrollLeft};
     ice.ace.DataTables[this.id] = clientState;
@@ -360,8 +360,7 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
 }
 
 ice.ace.DataTable.prototype.setupPaginator = function () {
-    if (!this.cfg.disabled) this.cfg.paginator.subscribe('changeRequest', this.paginate, null, this);
-    this.cfg.paginator.render();
+    this.paginator = new ice.ace.DataTable.Paginator(this);
 }
 
 ice.ace.DataTable.prototype.restoreSortState = function(savedState) {
@@ -2153,40 +2152,9 @@ ice.ace.DataTable.prototype.filter = function (evn) {
     };
 
     var _self = this;
-    this.filterSource = (evn.target) ? evn.target : evn.srcElement;
-
-    options.onsuccess = function (responseXML) {
-        var xmlDoc = responseXML.documentElement,
-            updates = xmlDoc.getElementsByTagName("extension");
-
-        var paginator = _self.cfg.paginator;
-        if (paginator) {
-            var extensions = xmlDoc.getElementsByTagName("extension"),
-                totalRecords = _self.cfg.paginator.getTotalRecords();
-
-            for (var i = 0; i < extensions.length; i++) {
-                var callbackParam = extensions[i].attributes.getNamedItem("aceCallbackParam");
-                if ((callbackParam) && (callbackParam.nodeValue == 'totalRecords')) {
-                    totalRecords = ice.ace.jq.parseJSON(extensions[i].firstChild.data).totalRecords;
-
-                    //Reset paginator state
-                    paginator.setPage(1, true);
-                    paginator.setTotalRecords(totalRecords, true);
-                }
-            }
-        }
-
-        // Search by id rather than $(evn.target) to get updated copy now in DOM
-        var newInput = ice.ace.jq(ice.ace.escapeClientId(ice.ace.jq(_self.filterSource).attr('id')));
-        // Reset input value after focus to prevent selection of text
-
-        return false;
-    };
-
     var params = {};
     params[this.id + "_filtering"] = true;
-    params[this.id + "_filteredColumn"] =
-        ice.ace.jq(this.filterSource).attr('id');
+    params[this.id + "_filteredColumn"] = ice.ace.jq((evn.target) ? evn.target : evn.srcElement).attr('id');
     options.params = params;
 
     if (this.behaviors)

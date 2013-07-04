@@ -235,10 +235,6 @@ public class DataTableDecoder {
             Map<String,Column> filterMap = table.getFilterMap();
             filteredColumn = filterMap.get(filteredId);
             if (filteredColumn != null) filteredColumn.setFilterValue(params.get(filteredId).toLowerCase());
-
-            if (table.isPaginator())
-                if (RequestContext.getCurrentInstance() != null)
-                    RequestContext.getCurrentInstance().addCallbackParam("totalRecords", table.getRowCount());
         } else {
             table.savedFilterState = new FilterState(context, table);
             table.applyFilters();

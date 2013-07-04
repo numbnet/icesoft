@@ -460,7 +460,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         configJson.endMap();
 
-        scriptJson.entry("paginator", "new YAHOO.widget.Paginator(" + configJson + ")", true);
+        scriptJson.entry("paginator", configJson.toString(), true);
     }
 
     private void encodeConfigPanel(FacesContext context, DataTable table) throws IOException {
