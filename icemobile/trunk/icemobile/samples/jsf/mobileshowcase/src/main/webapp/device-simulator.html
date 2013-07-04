@@ -12,7 +12,7 @@
         <header class="wrapper">
             <a href="http://www.icesoft.org/java/projects/ICEmobile/overview.jsf"
                 class="icemobile-icon">
-                <img src="./resources/images/icemobile_large.png">
+                <img src="./resources/images/icemobile-logo.png">
             </a>
             <h1>ICEmobile Device Simulator</h1>
             <nav>
@@ -56,9 +56,7 @@
                 Click on a device icon to view a simulator
             </span>
             
-            <a class="logo" href="/java/" id="logoLink" title="ICEsoft Technologies Inc.">
-                <img alt="ICEsoft Technologies Inc." src="./resources/images/icesoft-emblem.png">
-            </a>
+            <button class="choose-device-btn" onclick="openChooseDevicePopup()">Choose Device</button>
             
         </header>
         
@@ -110,7 +108,7 @@
                 <div class="inner">
                 
                     <article id="iphone-portrait-device" class="active">
-                        <span class="device-type">iPhone 3/4 Portrait Mode</span>
+                        <div class="device-type"><div>iPhone 4</div><div class="orientation">Portrait Mode</div></div>
                         <div class='deviceWrap iphone-portrait'>
                             <div class='device'>
                                 <div class='flashingTop' style='height: 20px; width: 320px'>
@@ -125,7 +123,7 @@
                     </article>
                     
                     <article id="iphone-landscape-device">
-                        <span class="device-type">iPhone 3/4 Landscape Mode</span>
+                        <div class="device-type"><div>iPhone 4</div><div class="orientation">Landscape Mode</div></div>
                         <div class='deviceWrap iphone-landscape'>
                             <div class='device'>
                                 <div class='flashingTop' style='height: 20px; width: 480px'>
@@ -140,7 +138,7 @@
                     </article>
                     
                     <article id="ipad-portrait-device">
-                        <span class="device-type">iPad Portrait Mode</span>
+                        <div class="device-type"><div>iPad</div><div class="orientation">Portrait</div></div>
                         <div class='deviceWrap ipad-portrait'>
                             <div class='device'>
                                 <div class='flashingTop' style='height: 124px; width: 768px'>
@@ -152,7 +150,7 @@
                     </article>
                     
                     <article id="ipad-landscape-device">
-                        <span class="device-type">iPad Landscape Mode</span>
+                        <div class="device-type"><div>iPad</div><div class="orientation">Landscape Mode</div></div>
                         <div class='deviceWrap ipad-landscape'>
                             <div class='device'>
                                 <div class='flashingTop' style='height: 96px; width: 1024px'>
@@ -164,7 +162,7 @@
                     </article>
                     
                     <article id="nexus4-portrait-device">
-                        <span class="device-type">Nexus 4 Portrait Mode</span>
+                        <div class="device-type"><div>Nexus 4</div><div class="orientation">Portrait Mode</div></div>
                         <div class='deviceWrap nexus4-portrait'>
                             <div class='device'>
                                 <iframe src='about:blank' id='nexus4-portrait'></iframe>
@@ -173,7 +171,7 @@
                     </article>
                     
                     <article id="nexus7-portrait-device">
-                        <span class="device-type">Nexus 7 Portrait Mode</span>
+                        <div class="device-type"><div>Nexus 7</div><div class="orientation">Portrait Mode</div></div>
                         <div class='deviceWrap nexus7-portrait'>
                             <div class='device'>
                                 <iframe src='about:blank' id='nexus7-portrait'></iframe>
@@ -182,7 +180,7 @@
                     </article>
                     
                     <article id="bbz10-portrait-device">
-                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
+                        <div class="device-type"><div>BlackBerry Z10</div><div class="orientation">Portrait Mode</div></div>
                         <div class='deviceWrap bbz10-portrait'>
                             <div class='device'>
                                 <iframe src='about:blank' id='bbz10-portrait'></iframe>
@@ -191,7 +189,7 @@
                     </article>
                     
                     <article id="bbq10-portrait-device">
-                        <span class="device-type">BlackBerry Q10 Portrait Mode</span>
+                        <div class="device-type"><div>BlackBerry Q10</div><div class="orientation">Portrait Mode</div></div>
                         <div class='deviceWrap bbq10-portrait'>
                             <div class='device'>
                                 <iframe src='about:blank' id='bbq10-portrait'></iframe>
