@@ -44,6 +44,5 @@
 .ui-paginator-previous .ui-icon,
 .ui-paginator-first .ui-icon,
 .ui-paginator-last .ui-icon {
-    height:auto;
     overflow:inherit;
 }
