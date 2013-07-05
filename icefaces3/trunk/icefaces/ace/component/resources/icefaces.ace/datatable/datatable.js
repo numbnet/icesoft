@@ -325,9 +325,7 @@ ice.ace.DataTable.prototype.unload = function() {
             .find(' > div.ui-cell-editor > span > input')
             .unbind('keypress');
 
-    // Clear YUI paginator
-    if (this.paginator)
-        this.paginator.destroy();
+    if (this.paginator) this.paginator.destroy();
 
     var clientState = {scrollTop : this.scrollTop, scrollLeft : this.scrollLeft};
     ice.ace.DataTables[this.id] = clientState;

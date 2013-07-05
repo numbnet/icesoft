@@ -103,11 +103,11 @@ ice.ace.DataTable.Paginator = function(table) {
             control = ice.ace.jq(control);
             if (control.hasClass('ui-paginator-pages')) control.children().each(addHoverEvents);
             else {
-                control.off('mouseenter', function(e) {
+                control.on('mouseenter', function(e) {
                     ice.ace.jq(this).addClass('ui-state-hover');
                 });
 
-                control.off('mouseleave', function(e) {
+                control.on('mouseleave', function(e) {
                     ice.ace.jq(this).removeClass('ui-state-hover');
                 });
             }
