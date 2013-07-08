@@ -39,7 +39,7 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
         ClientDescriptor cd = component.getClient();
         boolean isEnhanced = cd.isICEmobileContainer()  || cd.isSXRegistered();
     //    logger.info("is SX="+cd.isSXRegistered()+" and useCookie="+ component.isUseCookie());
-        if (cd.isICEmobileContainer() || (cd.isSXRegistered() && !isJSP)){
+        if (cd.isICEmobileContainer())  {
             // button element
             writer.startElement(BUTTON_ELEM, component);
             writer.writeAttribute(ID_ATTR, clientId);
@@ -53,7 +53,7 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             writer.writeText(component.getButtonLabel());
             writer.endElement(BUTTON_ELEM);
         }
-        else if (isJSP && cd.isSXRegistered()){
+        else if (cd.isSXRegistered())  {
       //      logger.info(" SX and using Cookie");
             //for iOS until we can store the ICEmobile-SX registration
             //without a session (likely a cookie)  for JSP
@@ -72,7 +72,17 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             }
             writeStandardAttributes(writer, component, baseClass.toString(), IDevice.DISABLED_STYLE_CLASS);
             writer.writeAttribute("data-command", component.getComponentType());
-            writer.writeAttribute(ONCLICK_ATTR, "ice.mobilesx(this)");
+            if (isJSP)  {
+                writer.writeAttribute(ONCLICK_ATTR,
+                        "ice.mobilesx(this)");
+            } else {
+                String postURL = component.getPostURL();
+                if (null != postURL)  {
+                    writer.writeAttribute("data-postURL", postURL);
+                }
+                writer.writeAttribute(ONCLICK_ATTR,
+                        "ice.mobi.invoke(this)");
+            }
             writer.writeText(component.getButtonLabel());
             writer.endElement(BUTTON_ELEM);
         }
