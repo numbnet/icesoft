@@ -32,6 +32,8 @@
 @synthesize quitButton;
 @synthesize reloadButton;
 @synthesize clearButton;
+@synthesize openInButton;
+@synthesize documentController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -86,6 +88,7 @@
     [IceUtil makeFancyButton:quitButton];
     [IceUtil makeFancyButton:reloadButton];
     [IceUtil makeFancyButton:clearButton];
+    [IceUtil makeFancyButton:openInButton];
     self.isFancy = YES;
 }
 
@@ -132,6 +135,25 @@
     NSLog(@"Clear History pressed");
     [self clearHistory];
     [historyPicker reloadAllComponents];
+}
+
+- (IBAction) doOpenIn {
+    NSURL *remoteURL = [mainViewController getCurrentURL];
+    NSString *localName = [[[remoteURL absoluteString] 
+            componentsSeparatedByString:@"/"] lastObject];
+    NSString *filePath = [NSTemporaryDirectory() 
+        stringByAppendingPathComponent:localName];
+    NSData *fileData = [NSData dataWithContentsOfURL:remoteURL];
+    [fileData writeToFile:filePath atomically:YES];
+    NSURL *fileURL = [NSURL fileURLWithPath: filePath];
+    NSLog(@"Open In %@", fileURL);
+
+    self.documentController = 
+            [UIDocumentInteractionController 
+                    interactionControllerWithURL:fileURL];
+    [self.documentController 
+            presentOpenInMenuFromRect:self.openInButton.frame 
+            inView:self.view animated:YES];
 }
 
 - (void) clearHistory {
