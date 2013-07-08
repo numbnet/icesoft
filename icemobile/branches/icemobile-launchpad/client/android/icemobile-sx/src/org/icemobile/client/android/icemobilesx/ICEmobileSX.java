@@ -23,6 +23,8 @@ import java.net.URLDecoder;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.widget.ImageView;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -34,6 +36,22 @@ import android.util.Log;
 import android.view.View;
 import android.net.Uri;
 import android.provider.Browser;
+
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.AdapterView;
+import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
+import java.net.MalformedURLException;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.c2dm.C2dmRegistrationHandler;
@@ -53,12 +71,13 @@ import org.icemobile.client.android.video.VideoInterface;
 import org.icemobile.client.android.video.VideoHandler;
 
 import org.icemobile.client.android.util.UtilInterface;
+import org.icemobile.client.android.util.FileLoader;
 import org.icemobile.client.android.util.SubmitProgressListener;
 
 public class ICEmobileSX extends Activity 
     implements C2dmRegistrationHandler, SubmitProgressListener {
 
-    private static final String LOG_TAG = "ICEmobileSX";
+    private static final String LT = "ICEmobileSX";
 
     private class SxProgress extends ProgressDialog {
 	public SxProgress(Context context) {
@@ -72,7 +91,7 @@ public class ICEmobileSX extends Activity
     }
 
     /* Container configuration constants */
-    public static final String HOME_URL = "http://www.icesoft.org/java/demos/m/icemobile-demos.html";
+    public static final String HOME_URL = "http://www.icesoft.org/java/demos/icemobile-demos.jsf";
     protected static final boolean INCLUDE_CAMERA = true;
     protected static final boolean INCLUDE_AUDIO = true;
     protected static final boolean INCLUDE_VIDEO = true;
@@ -91,11 +110,13 @@ public class ICEmobileSX extends Activity
     protected static final int RECORD_CODE = 5;
     protected static final int ARVIEW_CODE = 6;
     protected static final int ARMVIEW_CODE = 7;
+    protected static final int ADD_LAUNCHABLE = 8;
 
     public static final String SCAN_ID = "org.icemobile.id";
 
     private Handler mHandler = new Handler();
     private UtilInterface utilInterface;
+    private FileLoader fileLoader;
     private CameraHandler mCameraHandler;
     private ContactListInterface mContactListInterface;
     private CameraInterface mCameraInterface;
@@ -121,186 +142,233 @@ public class ICEmobileSX extends Activity
     private boolean doRegister = false;
     private SxProgress progressDialog;
     private boolean stopped;
+    private LaunchManager launchManager;
+    private Dialog workingDialog;
 
     public void returnToBrowser()  {
         if (null == mReturnUri)  {
-            mReturnUri = Uri.parse(HOME_URL);
-        }
-        Intent browserIntent = new 
-                Intent(Intent.ACTION_VIEW, 
-                mReturnUri);
-        browserIntent.putExtra(
-                Browser.EXTRA_APPLICATION_ID, "_icemobilesx");
-        startActivity(browserIntent);
-    }
+	    return;
+	    //            mReturnUri = Uri.parse(HOME_URL);
+	 }
+	 Intent browserIntent = new 
+		 Intent(Intent.ACTION_VIEW, 
+		 mReturnUri);
+	 Launchable app = launchManager.find(mReturnUri.toString());
+	 if (app != null) {
+	     browserIntent.putExtra(Browser.EXTRA_APPLICATION_ID, app.getName());
+	 }
+	 startActivity(browserIntent);
+     }
 
-    public Map parseQuery(String uri)  {
-        HashMap parts = new HashMap();
-        String[] nvpairs = uri.split("&");
-        for (String pair : nvpairs)  {
-            int index = pair.indexOf("=");
-            if (-1 == index)  {
-                parts.put(pair, null);
-            } else {
-                String name = URLDecoder.decode(pair.substring(0, index));
-                String value = URLDecoder.decode(pair.substring(index + 1));
-                parts.put(name, value);
-            }
-        }
+     public Map parseQuery(String uri)  {
+	 HashMap parts = new HashMap();
+	 String[] nvpairs = uri.split("&");
+	 for (String pair : nvpairs)  {
+	     int index = pair.indexOf("=");
+	     if (-1 == index)  {
+		 parts.put(pair, null);
+	     } else {
+		 String name = URLDecoder.decode(pair.substring(0, index));
+		 String value = URLDecoder.decode(pair.substring(index + 1));
+		 parts.put(name, value);
+	     }
+	 }
 
-        return parts;
-        
-    }
+	 return parts;
 
-    /**
-     * Called when the activity is first created.
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        self = this;
-	pendingCloudPush = false;
+     }
 
-        mBrowserReturn = new Runnable()  {
-            public void run()  {
-                returnToBrowser();
-            }
-        };
+     /**
+      * Called when the activity is first created.
+      */
+     @Override
+     public void onCreate(Bundle savedInstanceState) {
+	 super.onCreate(savedInstanceState);
+	 self = (Activity)this;
+	 pendingCloudPush = false;
+	 includeUtil();
+	 fileLoader = new FileLoader(getAssets());
+	 launchManager = new LaunchManager(utilInterface, fileLoader);
+	 workingDialog = new Dialog(this, android.R.style.Theme_NoTitleBar_Fullscreen);
+	 workingDialog.setContentView(R.layout.working);
 
-	this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.main);
-	ImageView myImage = (ImageView) findViewById(R.id.background);
-	myImage.setAlpha(127);
-	progressDialog = new SxProgress(this);
-	stopped = false;
-	progressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
+	 mBrowserReturn = new Runnable()  {
+	     public void run()  {
+		 returnToBrowser();
+		 workingDialog.dismiss();
+	     }
+	 };
 
-        includeUtil();
-        if (INCLUDE_QRCODE) {
-            includeQRCode();
-        }
-        if (INCLUDE_ARVIEW && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            includeARView();
-        }
-        if (INCLUDE_ARVIEW ) {
-            includeARMarkers();
-        }
-        if (INCLUDE_CAMERA) {
-            includeCamera();
-        }
-        if (INCLUDE_AUDIO) {
-            includeAudio();
-        }
-        if (INCLUDE_VIDEO) {
-            includeVideo();
-        }
-        if (INCLUDE_CONTACTS) {
-            includeContacts();
-        }
-        if (INCLUDE_GCM) {
-            includeC2dm();
-        }
+	 //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	 setContentView(R.layout.main);
+	 Log.e(LT, "Content view main");
+	 GridView gridview = (GridView) findViewById(R.id.gridview);
+	 gridview.setAdapter(new LaunchableAdapter(this, launchManager));
 
-	handleIntent(getIntent());
-    }
+	 gridview.setOnItemClickListener(new OnItemClickListener() {
+		 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		     mReturnUri = Uri.parse(launchManager.get(position).getAppUrl().toString());
+		     returnToBrowser();
+		     Log.e("ICEmobileSX", "Grid pressed: " + position);
+		 }
+	     });
+	 //	ImageView myImage = (ImageView) findViewById(R.id.background);
+	 //myImage.setAlpha(127);
+	 //progressDialog = new SxProgress(this);
+	 //stopped = false;
+	 //progressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
 
-    public void onNewIntent(Intent intent) {
-	handleIntent(intent);
-    }
+	 if (INCLUDE_QRCODE) {
+	     includeQRCode();
+	 }
+	 if (INCLUDE_ARVIEW && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+	     includeARView();
+	 }
+	 if (INCLUDE_ARVIEW ) {
+	     includeARMarkers();
+	 }
+	 if (INCLUDE_CAMERA) {
+	     includeCamera();
+	 }
+	 if (INCLUDE_AUDIO) {
+	     includeAudio();
+	 }
+	 if (INCLUDE_VIDEO) {
+	     includeVideo();
+	 }
+	 if (INCLUDE_CONTACTS) {
+	     includeContacts();
+	 }
+	 if (INCLUDE_GCM) {
+	     includeC2dm();
+	 }
 
-    private void handleIntent (Intent intent) {
-        Uri uri = intent.getData();
-	Log.d(LOG_TAG, "URL launched " + uri);
-	Map commandParts = new HashMap();
-	Map commandParams = new HashMap();
-	String commandName = null;
+	 handleIntent(getIntent());
+     }
 
-	if (null != uri)  {
-	    String uriString = uri.toString();
-	    String fullCommand = uriString.substring("icemobile://".length());
-	    commandParts = parseQuery(fullCommand);
+     public void onNewIntent(Intent intent) {
 
-	    Log.d(LOG_TAG, "processing commandParts " + commandParts);
-	    String command = (String) commandParts.get("c");
-	    Log.d(LOG_TAG, "processing command " + command);
+	 handleIntent(intent);
+     }
 
-	    int queryIndex = command.indexOf("?");
-	    if (-1 == queryIndex)  {
-		commandName = command;
-	    } else {
-		commandName = command.substring(0, queryIndex);
-		String commandParamsString = command.substring(queryIndex + 1);
-		commandParams = parseQuery(commandParamsString);
-		mCurrentId = (String) commandParams.get("id");
-	    }
+     private void handleIntent (Intent intent) {
+	 Uri uri = intent.getData();
+	 Log.d(LT, "handleIntent" + uri);
+	 Map commandParts = new HashMap();
+	 Map commandParams = new HashMap();
+	 String commandName = null;
 
-	    mReturnUri = Uri.parse((String) commandParts.get("r"));
-	    mPOSTUri = Uri.parse((String) commandParts.get("u"));
-	    mParameters = (String) commandParts.get("p");
-	    if (null != commandName)  {
-		dispatch(commandName, commandParts, commandParams);
-	    }
-	} else {
-	    returnToBrowser();
-	}
-    }
+	 if (null != uri)  {
+	     String uriString = uri.toString();
+	     String fullCommand = uriString.substring("icemobile://".length());
+	     commandParts = parseQuery(fullCommand);
 
-    public void dispatch(String command, Map env, Map params)  {
-	Log.d(LOG_TAG, "dispatch " + command);
-        mCurrentjsessionid  = (String) env.get("JSESSIONID");
-        String postUriString = mPOSTUri.toString();
+	     Log.d(LT, "processing commandParts " + commandParts);
+	     String command = (String) commandParts.get("c");
+	     Log.d(LT, "processing command " + command);
 
-        if (null != mCurrentjsessionid)  {
-            utilInterface.setCookie(postUriString,
-                    "JSESSIONID=" +
-                    mCurrentjsessionid);
-        }
+	     int queryIndex = command.indexOf("?");
+	     if (-1 == queryIndex)  {
+		 commandName = command;
+	     } else {
+		 commandName = command.substring(0, queryIndex);
+		 String commandParamsString = command.substring(queryIndex + 1);
+		 commandParams = parseQuery(commandParamsString);
+		 mCurrentId = (String) commandParams.get("id");
+	     }
 
-        if ("camera".equals(command))  {
-            String path = mCameraInterface
-                .shootPhoto(mCurrentId, "");
-            mCurrentMediaFile = path;
-	    Log.d(LOG_TAG, "dispatched camera " + path);
-        } else if ("camcorder".equals(command))  {
-            String path = mVideoInterface
-                .shootVideo(mCurrentId, "");
-            mCurrentMediaFile = path;
-	    Log.d(LOG_TAG, "dispatched camcorder " + path);
-        } else if ("fetchContacts".equals(command))  {
-            mContactListInterface
-                .fetchContact(mCurrentId, packParams(params));
-        } else if ("microphone".equals(command))  {
-            String path = mAudioInterface
-                .recordAudio(mCurrentId);
-            mCurrentMediaFile = path;
-	    Log.d(LOG_TAG, "dispatched microphone " + path);
-        } else if ("aug".equals(command))  {
-	    Log.d(LOG_TAG, "checking augmented reality view option " + params.get("v"));
-            if ("vuforia".equals(params.get("v")))  {
-		//will need to implement wrappers to support container invocation
-		Log.d(LOG_TAG, "using Class.forName to load AR Marker view");
-                try {
-                    Intent arIntent = new Intent(getApplicationContext(),
-                            Class.forName("com.qualcomm.QCARSamples.FrameMarkers.FrameMarkers"));
-                    arIntent.putExtra(mCurrentId, ARMVIEW_CODE);
-                    arIntent.putExtra("attributes", packParams(params));
-                    startActivityForResult(arIntent, ARMVIEW_CODE);
-                } catch (Exception e)  {
-Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
-                    returnToBrowser();
-                }
+	     mReturnUri = Uri.parse((String) commandParts.get("r"));
+	     mPOSTUri = Uri.parse((String) commandParts.get("u"));
+	     mParameters = (String) commandParts.get("p");
+
+	     // Set working splash screen;
+	     Log.e(LT, "Content view working");
+	     ImageView imageView = (ImageView) workingDialog.findViewById(R.id.background);
+
+	     Launchable app = launchManager.find(mReturnUri.toString()); 
+
+	     Bitmap splash = null;
+	     if (app != null) {
+		 splash = app.getSplash();
+	     } else {
+		 Log.e(LT, "Couldn't find splash screen for: " + mReturnUri.toString());
+	     }
+
+	     if (splash == null) {
+		splash = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+	     }
+	     imageView.setImageBitmap(splash);
+	     Log.e(LT, "Showing Dialog");
+	     workingDialog.show();
+	     
+	     if (null != commandName)  {
+		 dispatch(commandName, commandParts, commandParams);
+		 }
+
+	 } else {
+	     Log.e(LT, "Dismissing Dialog");
+	     workingDialog.dismiss();
+	     //Log.e(LT, "Content view main");
+	     //setContentView(R.layout.main);
+	 }
+     }
+
+     public void dispatch(String command, Map env, Map params)  {
+	 Log.d(LT, "dispatch " + command);
+	 mCurrentjsessionid  = (String) env.get("JSESSIONID");
+	 String postUriString = mPOSTUri.toString();
+
+	 if (null != mCurrentjsessionid)  {
+	     utilInterface.setCookie(postUriString,
+		     "JSESSIONID=" +
+		     mCurrentjsessionid);
+	 }
+
+	 if ("camera".equals(command))  {
+	     String path = mCameraInterface
+		 .shootPhoto(mCurrentId, "");
+	     mCurrentMediaFile = path;
+	     Log.d(LT, "dispatched camera " + path);
+	 } else if ("camcorder".equals(command))  {
+	     String path = mVideoInterface
+		 .shootVideo(mCurrentId, "");
+	     mCurrentMediaFile = path;
+	     Log.d(LT, "dispatched camcorder " + path);
+	 } else if ("fetchContacts".equals(command))  {
+	     mContactListInterface
+		 .fetchContact(mCurrentId, packParams(params));
+	 } else if ("microphone".equals(command))  {
+	     String path = mAudioInterface
+		 .recordAudio(mCurrentId);
+	     mCurrentMediaFile = path;
+	     Log.d(LT, "dispatched microphone " + path);
+	 } else if ("aug".equals(command))  {
+	     Log.d(LT, "checking augmented reality view option " + params.get("v"));
+	     if ("vuforia".equals(params.get("v")))  {
+		 //will need to implement wrappers to support container invocation
+		 Log.d(LT, "using Class.forName to load AR Marker view");
+		 try {
+		     Intent arIntent = new Intent(getApplicationContext(),
+			     Class.forName("com.qualcomm.QCARSamples.FrameMarkers.FrameMarkers"));
+		     arIntent.putExtra(mCurrentId, ARMVIEW_CODE);
+		     arIntent.putExtra("attributes", packParams(params));
+		     startActivityForResult(arIntent, ARMVIEW_CODE);
+		 } catch (Exception e)  {
+ Log.e(LT, "Augmented Reality marker view not available ", e);
+		     returnToBrowser();
+		 }
             } else {
                 mARViewInterface
                     .arView(mCurrentId, packParams(params));
-	    Log.d(LOG_TAG, "dispatched augmented reality " + packParams(params));
+	    Log.d(LT, "dispatched augmented reality " + packParams(params));
             }
 
         } else if ("scan".equals(command))  {
             mCaptureInterface
                 .scan(mCurrentId, packParams(params));
-	    Log.d(LOG_TAG, "dispatched qr scan " + packParams(params));
+	    Log.d(LT, "dispatched qr scan " + packParams(params));
         } else if ("register".equals(command))  {
-	    Log.d(LOG_TAG, "dispatched register ");
+	    Log.d(LT, "dispatched register ");
 	    if (INCLUDE_GCM) {
 		//if GCM registration does not occur in 3 seconds,
 		//proceed with registration anyway
@@ -328,11 +396,11 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
 	    encodedForm = "hidden-iceCloudPushId=" +
 		URLEncoder.encode(cloudNotificationId);
 	}
-	Log.d(LOG_TAG, "POSTing to " + postUriString);
-	Log.d(LOG_TAG, "POST to register will send " + encodedForm);
+	Log.d(LT, "POSTing to " + postUriString);
+	Log.d(LT, "POST to register will send " + encodedForm);
 	utilInterface.setUrl(postUriString);
 	utilInterface.submitForm("", encodedForm, mBrowserReturn);
-	Log.d(LOG_TAG, "POST to register URL with jsessionid " + mCurrentjsessionid);
+	Log.d(LT, "POST to register URL with jsessionid " + mCurrentjsessionid);
     }
 
     public String packParams(Map params)  {
@@ -364,17 +432,17 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
             encodedForm = mParameters + "&";
         }
 
-	Log.d(LOG_TAG, "onActivityResult: request = " + requestCode + ", result = " + resultCode);
+	Log.d(LT, "onActivityResult: request = " + requestCode + ", result = " + resultCode);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TAKE_PHOTO_CODE:
-		    Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
+		    Log.d(LT, "onActivityResult will POST to " + mPOSTUri);
                     mCameraHandler.gotPhoto();
                     encodedForm += encodeMedia(mCurrentId,
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm, mBrowserReturn);
-		    Log.d(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
+		    Log.d(LT, "onActivityResult completed TAKE_PHOTO_CODE");
                     break;
                 case TAKE_VIDEO_CODE:
                     mVideoHandler.gotVideo(data);
@@ -382,7 +450,7 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm, mBrowserReturn);
-		    Log.d(LOG_TAG, "onActivityResult completed TAKE_VIDEO_CODE");
+		    Log.d(LT, "onActivityResult completed TAKE_VIDEO_CODE");
                     break;
                 case SCAN_CODE:
                     String scanResult = data.getStringExtra(Intents.Scan.RESULT);
@@ -398,29 +466,44 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
                             mCurrentMediaFile);
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm, mBrowserReturn);
-		    Log.d(LOG_TAG, "onActivityResult completed RECORD_CODE");
+		    Log.d(LT, "onActivityResult completed RECORD_CODE");
                     break;
                 case ARVIEW_CODE:
-		    Log.d(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
+		    Log.d(LT, "onActivityResult completed ARVIEW_CODE");
                     returnToBrowser();
                     break;
                 case ARMVIEW_CODE:
 //		mARViewHandler.arViewComplete(data);
-		    Log.d(LOG_TAG, "completed AR Marker View");
+		    Log.d(LT, "completed AR Marker View");
                     returnToBrowser();
                     break;
+	        case ADD_LAUNCHABLE:
+		    try {
+			Launchable newApp = new Launchable(data.getStringExtra("name"),
+							   data.getStringExtra("url"),
+							   data.getStringExtra("suffix"),
+							   data.getStringExtra("splash"),
+							   data.getStringExtra("icon"));
+			launchManager.add(newApp);
+			launchManager.save();
+		    } catch (MalformedURLException e) {
+			Log.e(LT, "BAD URL: Could not add application");
+		    }
+
+		    break;
             }
         } else {
-	    returnToBrowser();
+	    //	    returnToBrowser();
 	}
     }
 
     @Override
 	protected void onResume() {
+	Log.d(LT, "Resuming");
         super.onResume();
 	if (stopped) {
 	    stopped = false;
-	    progressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
+	    //progressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
 	}
 	// Clear any existing C2DM notifications;
 	if (pendingCloudPush) {
@@ -435,15 +518,34 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
         mAudioPlayer.release();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sx_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.add_launchable:
+		startActivityForResult(new Intent(this,AddLaunchable.class),ADD_LAUNCHABLE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void handleC2dmRegistration(String id) {
-	Log.d(LOG_TAG, "handleC2dmRegistration " + id);
+	Log.d(LT, "handleC2dmRegistration " + id);
         if (doRegister)  {
 	    registerSX();
         }
     }
 
     public void handleC2dmNotification() {
-	Log.d(LOG_TAG, "handleC2dmNotification ");
+	Log.d(LT, "handleC2dmNotification ");
         pendingCloudPush = true;
     }
 
@@ -479,7 +581,7 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
                     }
                     utilInterface.setUrl(mPOSTUri.toString());
                     utilInterface.submitForm("", encodedForm);
-		    Log.d(LOG_TAG, "completionCallback completed fetchContacts:" + encodedContact);
+		    Log.d(LT, "completionCallback completed fetchContacts:" + encodedContact);
                     returnToBrowser();
                 }
             });
@@ -517,4 +619,49 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
         mC2dmHandler.start(GCM_SENDER);
     }
 
+    public class LaunchableAdapter extends BaseAdapter {
+	private Context mContext;
+	private LaunchManager manager;
+
+	public LaunchableAdapter(Context c, LaunchManager manager) {
+	    this.manager = manager;
+	    mContext = c;
+	}
+
+	public int getCount() {
+	    return manager.size();
+	}
+
+	public Object getItem(int position) {
+	    return null;
+	}
+
+	public long getItemId(int position) {
+	    return 0;
+	}
+
+	// create a new ImageView for each item referenced by the Adapter
+	public View getView(int position, View convertView, ViewGroup parent) {
+	    LayoutInflater inflater = (LayoutInflater) mContext
+		.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+ 
+	    View gridView;
+	    if (convertView == null) {  // if it's not recycled, initialize some attributes
+		gridView = new View(mContext);
+		gridView = inflater.inflate(R.layout.grid_item, null);
+	    } else {
+		gridView = convertView;
+	    }
+
+	    TextView textView = (TextView) gridView.findViewById(R.id.grid_item_label);
+	    ImageView imageView = (ImageView) gridView.findViewById(R.id.grid_item_image);
+	    textView.setText(manager.get(position).getName());
+	    Bitmap icon = manager.get(position).getIcon();
+	    if (icon == null) {
+		icon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon);
+	    }
+	    imageView.setImageBitmap(icon);
+	    return gridView;
+	}
+    }
 }
