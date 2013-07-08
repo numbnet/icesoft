@@ -487,12 +487,10 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     private Document cloneDocument(Document doc) {
-        try {
-            byte[] data = serializeDocument(doc);
-            return deserializeDocument(data);
-        } catch (Exception e) {
-            throw new RuntimeException("Cannot clone document", e);
-        }
+        Document cloningDoc = DOMUtils.getNewDocument();
+        cloningDoc.setStrictErrorChecking(false);
+        cloningDoc.importNode(doc.getDocumentElement(), true);
+        return cloningDoc;
     }
 
     /**
