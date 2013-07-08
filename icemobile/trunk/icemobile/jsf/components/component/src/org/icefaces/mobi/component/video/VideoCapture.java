@@ -131,4 +131,8 @@ public class VideoCapture extends VideoCaptureBase implements IDevice, Thumbnail
          return null;
      }
 
+    public String getPostURL()  {
+       return MobiJSFUtils.getPostURL();
+    }
+
 }

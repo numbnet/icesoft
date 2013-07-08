@@ -883,13 +883,26 @@ if (window.addEventListener) {
     }, false);
 
     window.addEventListener("hashchange", function () {
-        if ("#icemobilesx" !== window.location.hash)  {
-            return;
+        var sxkey = "#icemobilesx";
+        var sxlen = sxkey.length;
+        var locHash = "" + window.location.hash;
+        if (sxkey === locHash.substring(0, sxlen))  {
+            var data = locHash.substring(sxlen + 1);
+            if (data)  {
+                var parts = unescape(data).split("=");
+                if (parts)  {
+                    var name = parts[0];
+                    var value = parts[1];
+                    ice.mobi.setInput(name, name, value);
+                }
+            } else {
+                ice.ajaxRefresh();
+            }
+            setTimeout( function(){
+                var loc = window.location;
+                history.pushState("", document.title, loc.pathname + loc.search);
+            }, 1);
         }
-        setTimeout( function(){
-            var loc = window.location;
-            history.pushState("", document.title, loc.pathname + loc.search);
-        }, 1);
     }, false);
 
     document.addEventListener("webkitvisibilitychange", function () {
@@ -1044,8 +1057,7 @@ ice.mobi.sx = function (element, uploadURL) {
         if (lastHash > 0) {
             returnURL = returnURL.substring(0, lastHash);
         }
-//ajax page update upon return is not yet implemented
-//        returnURL += "#icemobilesx";
+        returnURL += "#icemobilesx";
     }
 
     if ("" != params) {
@@ -1077,6 +1089,25 @@ ice.mobi.invoke = function(element)  {
     } else {
         ice.mobi.sx(element);
     }
+}
+
+ice.mobi.setInput = function(target, name, value, vtype)  {
+    var hiddenID = name + "-hid";
+    var existing = document.getElementById(hiddenID);
+    if (existing)  {
+        existing.setAttribute("value", value);
+        return;
+    }
+    var targetElm = document.getElementById(target);
+    var hidden = document.createElement("input");
+    hidden.setAttribute("type", "hidden");
+    hidden.setAttribute("id", hiddenID);
+    hidden.setAttribute("name", name);
+    hidden.setAttribute("value", value);
+    if (vtype)  {
+        hidden.setAttribute("data-type", vtype);
+    }
+    targetElm.parentNode.insertBefore(hidden, targetElm);
 }
 
 ice.mobi.storeLocation = function(id, coords) {

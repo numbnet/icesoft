@@ -137,5 +137,9 @@ public class Camera extends CameraBase implements IDevice, ThumbnailProvider {
         return null;
     }
 
+    public String getPostURL()  {
+       return MobiJSFUtils.getPostURL();
+    }
+
 }
 
