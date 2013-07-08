@@ -44,7 +44,7 @@ if (!window.ice.ace['DataTables']) {
     window.ice.ace.DataTables = {};
 }
 
-
+// JQuery Utilities
 (function ($) {
     var rootrx = /^(?:html)$/i;
 
@@ -173,6 +173,10 @@ if (!window.ice.ace['DataTables']) {
     $.browser['os'] = OSDetect.OS;
 })(ice.ace.jq);
 
+
+
+
+
 // Constructor
 ice.ace.DataTable = function (id, cfg) {
     this.id = id;
@@ -267,6 +271,7 @@ ice.ace.DataTable.prototype.sortDownSelector = ice.ace.DataTable.sortControlSele
 ice.ace.DataTable.prototype.rowSelector = ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
 ice.ace.DataTable.prototype.cellSelector = ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td';
 ice.ace.DataTable.prototype.scrollBodySelector = ' > div.ui-datatable-scrollable-body';
+ice.ace.DataTable.prototype.bodyTableSelector = '> div > table > tbody.ui-datatable-data',
 ice.ace.DataTable.prototype.filterSelector = ' > div > table > thead > tr > th > div > input.ui-column-filter';
 ice.ace.DataTable.prototype.panelExpansionSelector = ' > div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
 ice.ace.DataTable.prototype.rowExpansionSelector = ' > div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
@@ -291,12 +296,13 @@ ice.ace.DataTable.prototype.unload = function() {
     this.element.off('keypress', this.sortDownSelector);
 
     // Clear selection events
-    this.element.off('mouseenter click dblclick', this.cellSelector)
-            .off('mouseenter click dblclick', this.rowSelector);
+    this.element.off('click dblclick', this.cellSelector)
+            .off('click dblclick', this.rowSelector);
 
-    ice.ace.jq(this.cellSelector).first()
-            .closest('table').unbind('mouseleave')
-            .find('> thead').unbind('mouseenter');
+    // Unbind hover
+    this.element.off('mouseenter')
+            .find(this.bodyTableSelector).parent().unbind('mouseleave')
+            .find('thead').unbind('mouseenter');
 
     // Clear scrolling
     ice.ace.jq(window).unbind('resize', this.scrollableResizeCallback);
@@ -325,7 +331,10 @@ ice.ace.DataTable.prototype.unload = function() {
             .find(' > div.ui-cell-editor > span > input')
             .unbind('keypress');
 
-    if (this.paginator) this.paginator.destroy();
+    if (this.paginator) {
+        this.paginator.destroy();
+        delete this.paginator;
+    }
 
     var clientState = {scrollTop : this.scrollTop, scrollLeft : this.scrollLeft};
     ice.ace.DataTables[this.id] = clientState;
@@ -888,11 +897,9 @@ ice.ace.DataTable.prototype.setupSelectionHover = function () {
         selector = this.isCellSelectionEnabled()
             ? this.cellSelector
             : this.rowSelector,
-        name = this.isCellSelectionEnabled() ? 'td' : 'tr',
-        bodyTableSelector = '> div > table > tbody.ui-datatable-data',
         hoverSelector = '> tbody.ui-datatable-data > tr.ui-state-hover,  > tbody.ui-datatable-data > tr > td.ui-state-hover';
 
-    this.element.find(bodyTableSelector).parent()
+    this.element.find(this.bodyTableSelector).parent()
         .bind('mouseleave', function () {
             ice.ace.jq(this).find(hoverSelector).removeClass('ui-state-hover');
         })
