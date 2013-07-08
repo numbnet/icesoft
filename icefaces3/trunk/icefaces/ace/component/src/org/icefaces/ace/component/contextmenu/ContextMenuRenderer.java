@@ -62,7 +62,6 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
         String clientId = menu.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-		menu.setStore(null);
 		String delegateId = menu.getForDelegate();
 		if (delegateId != null) {
 			UIComponent delegateComponent = findComponentCustom(context.getViewRoot(), delegateId);
@@ -75,6 +74,8 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 							String expression = fetch.getExpressionString();
 							Object data = retrieveData(context, delegateComponent, activeComponentId, expression);
 							menu.setStore(data);
+						} else {
+							menu.setStore(null);
 						}
 					}
 				}
