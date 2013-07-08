@@ -94,4 +94,6 @@ public interface IDevice extends IMobiComponent{
 
     public String getParams();
 
+    public String getPostURL();
+
 }
