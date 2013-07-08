@@ -161,21 +161,25 @@ public class DataTable extends DataTableBase implements Serializable {
         if (superValue != null) superValueHash = superValue.hashCode();
         else return null;
 
+        // If model is altered or new reapply filters / sorting
         if (getValueHashCode() == null || superValueHash != getValueHashCode()) {
             setValueHashCode(superValueHash);
-            applySorting();
-            if (getFilteredData() != null || filteredData != null) {
-                applyFilters();
-            }
-            if (superValue != null && superValue instanceof List) {
-                List list = (List)superValue;
+
+            if (!(superValue instanceof LazyDataModel)) {
+                applySorting();
+
+                if (getFilteredData() != null || filteredData != null) {
+                    applyFilters();
+                }
             }
         }
 
+        // If we have filtered data return that instead of the standard collection
+        // Lazy case should recalculate filters in the persistence layer with every load
         List filteredValue = getFilteredData();
-        if (filteredValue != null)
-                return filteredValue;
-                else return superValue;
+        if (!(superValue instanceof LazyDataModel) && filteredValue != null)
+            return filteredValue;
+            else return superValue;
     }
 
     @Override
@@ -476,7 +480,6 @@ public class DataTable extends DataTableBase implements Serializable {
 
         popComponentFromEL(context);
     }
-
     @Override
     public void processValidators(FacesContext context) {
         if (context == null) {
