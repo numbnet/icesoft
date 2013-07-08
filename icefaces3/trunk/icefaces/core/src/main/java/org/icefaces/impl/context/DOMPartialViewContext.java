@@ -282,8 +282,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     }
 
     private static void generateElementUpdateNotifications(DOMUtils.EditOperation op, PartialResponseWriter partialWriter, Document oldDOM) throws IOException {
-        final String id = ((Element) op.element).getAttribute("id");
-        final Element e = oldDOM.getElementById(id);
+        final Element e = oldDOM.getElementById(op.id);
         if (e != null) {
             final ArrayList<String> collectedIDs = new ArrayList<String>();
             if (e.hasAttribute(DATA_ELEMENTUPDATE)) {
