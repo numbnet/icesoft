@@ -1,0 +1,505 @@
+body{margin: 0px}h1{font-size:138.5%}h2{font-size:123.1%}h3{font-size:108%}h1,h2,h3{margin:1em 0}h1,h2,h3,h4,h5,h6,strong,dt{font-weight:bold}optgroup{font-weight:normal}abbr,acronym{border-bottom:1px dotted #000;cursor:help}em{font-style:italic}del{text-decoration:line-through}blockquote,ul,ol,dl{margin:1em}ol,ul,dl{margin-left:2em}ol{list-style:decimal outside}ul{list-style:disc outside}dl dd{margin-left:1em}th,td{border:1px solid #000;padding:.5em}th{font-weight:bold;text-align:center}caption{margin-bottom:.5em;text-align:center}sup{vertical-align:super}sub{vertical-align:sub}p,fieldset,table,pre{margin-bottom:1em}button,input[type="checkbox"],input[type="radio"],input[type="reset"],input[type="submit"]{padding:1px}img{-ms-interpolation-mode:bicubic}
+
+@font-face {
+    font-family: MyriadProBold;
+    src: url(../fonts/MyriadPro-Bold.otf);
+    font-weight:400;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin-bottom: 60px;
+    line-height: 100%;
+    font-size: 14px;
+}
+
+img{
+    border: none;
+}
+a {
+    color: #666;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+a#viewAllDevices {
+    margin-top: 50px;
+    display: block;
+}
+
+
+body, button, input, select, textarea {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+body{
+    background-color: #FFF;
+}
+#header-container {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: url("css-images/device-simulator-header.png");
+    background-origin: padding-box;
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+    background-size: 2079px 84px;
+    height: 107px;
+    margin-bottom: 0;
+    min-width: 600px;
+    position: relative;
+    z-index: 999;
+}
+    * {
+        -webkit-transition: all 0.5s ease-out;
+        -moz-transition: all 0.5s ease-out;
+        -o-transition: all 0.5s ease-out;
+        transition: all 0.5s ease-out;
+    }   
+    
+    #header-container .logo {
+        cursor: pointer;
+        display: block;
+        float: right;
+        margin: 7px 15px 0 10px;
+    }
+    
+    header nav {
+        float: left;
+        position: relative;
+        z-index: 999;
+    }
+    header nav ul{
+        margin: 0; padding: 0;
+    }
+    header nav > ul > li {
+        float: left;
+        list-style: none outside none;
+        padding: 0 10px;
+        position: relative;
+        list-style: none outside none;
+        line-height: 70px;
+        height: 70px;
+    }
+    .info{
+        font-size: 12px;
+        float: left;
+        padding: 11px;
+        color: #EFEFEF;
+        max-width: 100px;
+    }
+    
+    
+    #header-container h1{
+        color: #E7E8E9;
+        display: inline-block;
+        float: left;
+        font-size: 20px;
+        font-family: MyriadProBold;
+        text-shadow: 1px 1px 1px #1B5EB3;
+        margin-left: 15px;
+        margin-right: 10px;
+        margin-top: 40px;
+    }
+    @media screen and (max-width: 1100px) {  
+        #header-container .logo{ display: none}
+        #header-container h1{ 
+            font-size: 20px;
+            max-width: 200px;
+            line-height: 20px;
+            margin: 10px;
+         }
+    }
+    @media screen and (max-width: 800px) {  
+         #header-container h1{ 
+            font-size: 20px;
+            max-width: 160px;
+            line-height: 20px;
+            margin: 10px;
+         }
+         header nav > ul > li {
+            padding: 0 5px;
+         }
+    }
+    
+    .icemobile-icon{
+        float:left;
+    }
+    .icemobile-icon img{
+        vertical-align: middle;padding-left: 15px;
+    }
+    @media screen and (max-width: 700px) {  
+        .icemobile-icon img{ 
+            padding-left: 10px;
+            height: 20px;
+            vertical-align: top;
+            margin-top: 11px;
+         }
+         #header-container h1 {
+             font-size: 16px;
+             max-width: 75px;
+             line-height: 16px;
+             margin: 8px;
+         }
+         header nav > ul > li {
+            padding: 0 3px;
+         }
+         .info{
+              padding: 5px;
+              font-size:11px;
+              line-height:11px;
+              max-width: 62px;
+          }
+    }
+    @media screen and (max-width: 500px) {  
+        .info {
+             padding: 5px;
+             font-size: 10px;
+             line-height: 11px;
+             max-width: 320px;
+             margin-left: -243px;
+             z-index: 999;
+             margin-top: 66px;
+             position: absolute;
+             color: black;
+        }
+    }
+    .icon{
+        vertical-align: middle;
+        display: inline-block;
+        cursor: pointer;
+        background-repeat: no-repeat;
+    }
+    .iphone-portrait-icon{
+        background-image: url(css-images/iphone-portrait-icon.png);
+        height: 40px;
+        width: 20px;
+    }
+    .iphone-portrait-icon.active{
+        background-image: url(css-images/iphone-portrait-icon-active.png);
+    }
+    .nexus4-portrait-icon{
+        background-image: url(css-images/nexus4-portrait-icon.png);
+        height: 40px;
+        width: 20px;
+    }
+    .nexus4-portrait-icon.active{
+        background-image: url(css-images/nexus4-portrait-icon-active.png);
+    }
+    .nexus7-portrait-icon{
+        background-image: url(css-images/nexus7-portrait-icon.png);
+        height: 63px;
+        width: 40px;
+    }
+    .nexus7-portrait-icon.active{
+        background-image: url(css-images/nexus7-portrait-icon-active.png);
+    }
+    .bbz10-portrait-icon{
+        background-image: url(css-images/bbz10-portrait-icon.png);
+        height: 50px;
+        width: 24px;
+    }
+    .bbz10-portrait-icon.active{
+        background-image: url(css-images/bbz10-portrait-icon-active.png);
+    }
+    .bbq10-portrait-icon{
+        background-image: url(css-images/bbq10-portrait-icon.png);
+        height: 50px;
+        width: 24px;
+    }
+    .bbq10-portrait-icon.active{
+        background-image: url(css-images/bbq10-portrait-icon-active.png);
+    }
+    .iphone-landscape-icon{
+        background-image: url(css-images/iphone-landscape-icon.png);
+        height: 20px;
+        width: 40px;
+    }
+    .iphone-landscape-icon.active{
+        background-image: url(css-images/iphone-landscape-icon-active.png);
+    }
+    .ipad-portrait-icon{
+        background-image: url(css-images/ipad-portrait-icon.png);
+        height: 60px;
+        width: 48px;
+    }
+    .ipad-portrait-icon.active{
+        background-image: url(css-images/ipad-portrait-icon-active.png);
+    }
+    .ipad-landscape-icon{
+        background-image: url(css-images/ipad-landscape-icon.png);
+        height: 48px;
+        width: 60px;
+    }
+    .ipad-landscape-icon.active{
+        background-image: url(css-images/ipad-landscape-icon-active.png);
+    }
+
+/*
+ * Devices styles start
+ */
+
+.deviceWrap {
+    width: 100%;
+    background-position: top center;
+    background-repeat: no-repeat;
+    margin: 40px 0px 20px 0px;
+}
+
+.device {
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.device .flashingTop,
+.device .flashingBottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+
+.device .flashingTop {
+    top: 0;
+    padding-top: 2px;
+}
+
+.device .flashingBottom {
+    bottom: 0;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 1px solid #d1d1d1;
+}
+
+.iphone-portrait {
+    background-image: url(css-images/iphone4-portrait.png);
+    padding: 115px 0 112px 4px;
+}
+.nexus4-portrait {
+    background-image: url(css-images/nexus4-portrait.png);
+    padding: 100px 0 117px 0px;
+    background-size: 440px 843px;
+}
+.nexus7-portrait {
+    background-image: url(css-images/nexus7-portrait.png);
+    padding: 92px 0 157px 0px;
+    background-size: 760px 1241px;
+}
+.bbz10-portrait {
+    background-image: url(css-images/bbz10-portrait.png);
+    padding: 120px 5px 117px 0px;
+    background-size: 411px 810px;
+}
+.bbq10-portrait {
+    background-image: url(css-images/bbq10-portrait.png);
+    padding: 113px 5px 218px 0px;
+    background-size: 378px 672px;
+}
+.iphone-portrait .device{
+    width: 320px; height: 453px; padding-top: 48px;padding-bottom: 44px;
+}
+.nexus4-portrait .device{
+    width: 384px; height: 571px; padding-top: 20px;padding-bottom: 44px;
+}
+.nexus7-portrait .device{
+    width: 603px; height: 950px; padding-top: 20px;padding-bottom: 44px;
+}
+.bbz10-portrait .device{
+    width: 346px;
+    height: 545px;
+    padding-top: 20px;
+    padding-bottom: 44px;
+}
+.bbq10-portrait .device{
+    width: 320px;
+    height: 302px;
+    padding-top: 12px;
+    padding-bottom: 44px;
+}
+.iphone-landscape .device{
+    width: 482px; height: 299px; padding-top: 31px;padding-bottom: 32px;
+}
+.ipad-portrait .device{
+    width: 768px; height: 945px; padding-top: 198px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.ipad-landscape .device{
+    width: 482px;
+    height: 299px;
+    padding-top: 31px;
+    padding-bottom: 32px;
+}
+#iphone-portrait{ width: 336px }
+.mac #iphone-portrait{ width: 320px }
+#nexus4-portrait{ width: 400px }
+.mac #nexus4-portrait{ width: 384px }
+#nexus7-portrait{ width: 619px }
+.mac #nexus7-portrait{ width: 603px }
+#bbz10-portrait{ width: 361px }
+.mac #bbz10-portrait{ width: 345px }
+#bbq10-portrait{ width: 339px }
+.mac #bbq10-portrait{ width: 323px }
+#iphone-landscape{ width:498px }
+.mac #iphone-landscape{ width:482px }
+#ipad-portrait{width:785px}
+.mac #ipad-portrait{width:768px}
+#ipad-landscape{width:1041px}
+.mac #ipad-landscape{width:1024px}
+
+.device-type{
+    color: #005499;
+    -ms-transform:rotate(-90deg); /* IE 9 */
+    -moz-transform:rotate(-90deg); /* Firefox */
+    -webkit-transform:rotate(-90deg); /* Safari and Chrome */
+    -o-transform:rotate(-90deg); /* Opera */
+    transform:rotate(-90deg);
+    font-size: 24px;
+    display: block;
+    line-height: 25px;
+    font-weight: bold;
+}
+.device-type .orientation{
+    font-size: 32px;
+    font-weight: 100;
+    margin-top: 9px;
+    margin-left: -1px;
+}
+#slides .active .device-type{
+    -ms-transform:rotate(0deg); /* IE 9 */
+    -moz-transform:rotate(0deg); /* Firefox */
+    -webkit-transform:rotate(0deg); /* Safari and Chrome */
+    -o-transform:rotate(0deg); /* Opera */
+    transform:rotate(0deg);
+    margin-left: 18px;
+    top: 10px;
+    position: absolute;
+}
+
+.iphone-landscape {
+    background-image: url(css-images/iphone4-landscape.png);
+    padding: 23px 3px 24px 0;
+}
+
+.ipad-portrait {
+    background-image: url(css-images/ipad2-portrait.png);
+    padding: 0 0 265px 0;
+}
+
+.ipad-landscape {
+    background-image: url(css-images/ipad2-landscape.png);
+    padding: 101px 4px 103px 0;
+}
+
+
+/*
+ * Slider
+ */
+ 
+#slider input {
+    display: none;
+}
+#slide1:checked ~ #slides .inner { margin-left:0; }
+#slide2:checked ~ #slides .inner { margin-left:-100%; }
+#slide3:checked ~ #slides .inner { margin-left:-200%; }
+#slide4:checked ~ #slides .inner { margin-left:-300%; }
+#slide5:checked ~ #slides .inner { margin-left:-400%; }
+#slide6:checked ~ #slides .inner { margin-left:-500%; }
+#slide7:checked ~ #slides .inner { margin-left:-600%; }
+#slide8:checked ~ #slides .inner { margin-left:-700%; }
+#slide9:checked ~ #slides .inner { margin-left:-800%; }
+#slide10:checked ~ #slides .inner { margin-left:-900%; }
+
+
+#overflow {
+    width: 100%;
+    overflow: hidden;
+}
+
+#slides .inner {
+    width: 1000%;
+    line-height: 0;
+}
+
+#slides article {
+    width: 10%;
+    float: left;
+    margin-top:-39px;
+}
+#slides article#ipad-landscape-device{
+    margin-top: 37px;
+}
+
+
+#slides .inner {
+    -webkit-transform: translateZ(0);
+    -webkit-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -moz-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -ms-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -o-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+        transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+
+    -webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -ms-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+        transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+}
+
+#slider {
+    -webkit-transform: translateZ(0);
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+}
+#scale{
+    position: absolute;
+    top: 216px;
+    left: 9px;
+    color: #005499;
+    z-index: 999;
+    padding: 6px 10px 10px;
+}
+#scale span{
+    display: inline-block;
+    width: 181px;
+}
+#scale input[type='radio']{
+    background-color: #666;
+    -webkit-appearance: checkbox;
+}
+
+iframe .mobi-splitpane-scrollable::-webkit-scrollbar {
+    width: 0;
+}
+
+.choose-device-btn{
+    width: 100px;
+    height: 30px;
+    color: #FFF;
+    font-family: MyriadProBold;
+    text-shadow: 1px 1px 1px #555;
+    border-radius: 5px;
+    background: rgb(67,163,207);
+    background: -moz-linear-gradient(top,  rgba(67,163,207,1) 0%, rgba(50,161,208,1) 3%, rgba(48,159,208,1) 6%, rgba(33,144,192,1) 52%, rgba(17,135,186,1) 58%, rgba(3,121,172,1) 97%, rgba(2,113,160,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(67,163,207,1)), color-stop(3%,rgba(50,161,208,1)), color-stop(6%,rgba(48,159,208,1)), color-stop(52%,rgba(33,144,192,1)), color-stop(58%,rgba(17,135,186,1)), color-stop(97%,rgba(3,121,172,1)), color-stop(100%,rgba(2,113,160,1)));
+    background: -webkit-linear-gradient(top,  rgba(67,163,207,1) 0%,rgba(50,161,208,1) 3%,rgba(48,159,208,1) 6%,rgba(33,144,192,1) 52%,rgba(17,135,186,1) 58%,rgba(3,121,172,1) 97%,rgba(2,113,160,1) 100%);
+    background: -o-linear-gradient(top,  rgba(67,163,207,1) 0%,rgba(50,161,208,1) 3%,rgba(48,159,208,1) 6%,rgba(33,144,192,1) 52%,rgba(17,135,186,1) 58%,rgba(3,121,172,1) 97%,rgba(2,113,160,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(67,163,207,1) 0%,rgba(50,161,208,1) 3%,rgba(48,159,208,1) 6%,rgba(33,144,192,1) 52%,rgba(17,135,186,1) 58%,rgba(3,121,172,1) 97%,rgba(2,113,160,1) 100%);
+    background: linear-gradient(to bottom,  rgba(67,163,207,1) 0%,rgba(50,161,208,1) 3%,rgba(48,159,208,1) 6%,rgba(33,144,192,1) 52%,rgba(17,135,186,1) 58%,rgba(3,121,172,1) 97%,rgba(2,113,160,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#43a3cf', endColorstr='#0271a0',GradientType=0 );
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
+    border: none;
+}
