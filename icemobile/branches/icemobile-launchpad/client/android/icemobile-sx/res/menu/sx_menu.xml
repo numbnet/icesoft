@@ -16,16 +16,8 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<resources>
-    <string name="app_name">ICEmobile-SX</string>
-    <string name="add_launchable">Add App</string>
-    <string name="add_launchable_title">SX Add Application</string>
-    <string name="add_app">Add Application</string>
-    <string name="add">Add</string>
-    <string name="cancel">Cancel</string>
-    <string name="app_name_hint">Application Name</string>
-    <string name="app_url_hint">Application URL</string>
-    <string name="sx_suffix_hint">SX Suffix</string>
-    <string name="app_splash_hint">Application Splash Screen (optional)</string>
-    <string name="app_icon_hint">Application Icon (optional)</string>
-</resources>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/add_launchable"
+          android:icon="@drawable/ic_menu_add"
+          android:title="@string/add_launchable" />
+</menu>
