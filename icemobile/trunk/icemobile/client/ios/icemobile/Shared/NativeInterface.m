@@ -433,8 +433,9 @@ static char base64EncodingTable[64] = {
 }
 
 - (void)scanResult: (NSString*)text  {
+NSLog(@"scanResult %@", text);
     NSString *scanName = self.activeDOMElementId;
-    [controller completePost:text forComponent:scanName
+    [controller completeSmallPost:text forComponent:scanName
             withName:scanName];
 }
 

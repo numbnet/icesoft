@@ -46,8 +46,8 @@
 
 - (void)zxingController:(ZXingWidgetController*)controller didScanResult:(NSString *)resultString {
     NSLog(@"didScanResult %@", resultString);
-    [self.nativeInterface dismissScan];
     [self.nativeInterface scanResult:resultString];
+    [self.nativeInterface dismissScan];
 }
 
 - (void)zxingControllerDidCancel:(ZXingWidgetController*)controller {

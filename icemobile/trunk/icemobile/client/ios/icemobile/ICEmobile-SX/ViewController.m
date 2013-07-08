@@ -82,6 +82,21 @@
     [nativeInterface multipartPost:params toURL:self.currentURL];
 }
 
+- (void)completeSmallPost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
+    if ([self.returnURL hasSuffix:@"#icemobilesx"])  {
+        self.returnURL = [self.returnURL stringByAppendingString:@"_"];
+        self.returnURL = [self.returnURL stringByAppendingString:
+            [componentID stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+        self.returnURL = [self.returnURL stringByAppendingString:
+            [@"=" stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+        self.returnURL = [self.returnURL stringByAppendingString:
+                [value stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+        return;
+    }
+
+    [self completePost:value forComponent:componentID withName:componentName];
+}
+
 - (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
     [self completePostRaw:value forComponent:componentID
             withName:[@"text-" stringByAppendingString:componentName]];
@@ -105,7 +120,7 @@
     }
 
     LogInfo(@"ICEmobile-SX will open %@", safariURL);
-    [[UIApplication sharedApplication] 
+    [[UIApplication sharedApplication]
             openURL:[NSURL URLWithString:safariURL]];
 }
 
