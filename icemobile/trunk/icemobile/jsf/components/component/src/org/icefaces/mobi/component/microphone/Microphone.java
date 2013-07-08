@@ -139,4 +139,9 @@ public class Microphone extends MicrophoneBase implements IDevice{
     public ClientDescriptor getClient() {
          return MobiJSFUtils.getClientDescriptor();
     }
+
+    public String getPostURL()  {
+       return MobiJSFUtils.getPostURL();
+    }
+
 }

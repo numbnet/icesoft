@@ -79,4 +79,9 @@ public class Scan extends ScanBase implements IDevice{
     public ClientDescriptor getClient() {
          return MobiJSFUtils.getClientDescriptor();
     }
+
+    public String getPostURL()  {
+       return MobiJSFUtils.getPostURL();
+    }
+
 }
