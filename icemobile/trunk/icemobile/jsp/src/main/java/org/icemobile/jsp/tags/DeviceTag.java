@@ -149,6 +149,11 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
     public String getParams() {
         return this.params;
     }
+
+    public String getPostURL() {
+        return null;
+    }
+
     public void release(){
         command = "undefined";
         params = null;
