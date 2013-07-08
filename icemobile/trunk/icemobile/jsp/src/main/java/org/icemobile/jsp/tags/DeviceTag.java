@@ -162,3 +162,4 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
     }
 
 }
+
