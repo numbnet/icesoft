@@ -282,7 +282,7 @@ iframe {
 /* IPHONE PORTRAIT */
 .iphone-portrait {
     background-image: url(css-images/iphone4-portrait-darker-highlight.png);
-    padding: 115px 0 112px 0px;
+    padding: 115px 0 140px 0px;
     background-size: 384px auto;
     opacity: 0;
 }
