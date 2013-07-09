@@ -282,7 +282,24 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     }
 
     private static void generateElementUpdateNotifications(DOMUtils.EditOperation op, PartialResponseWriter partialWriter, Document oldDOM) throws IOException {
-        final Element e = oldDOM.getElementById(op.id);
+        final String id;
+        if (op.id == null) {
+            if (op.element instanceof Element) {
+                id = ((Element) op.element).getAttribute("id");
+            } else {
+                id = null;
+            }
+        } else {
+            id = op.id;
+        }
+
+        if (id == null) {
+            //give up on trying to find onElementUpdate marked elements
+            log.warning("Cannot search for onElementUpdate markers into the update " + op);
+            return;
+        }
+
+        final Element e = oldDOM.getElementById(id);
         if (e != null) {
             final ArrayList<String> collectedIDs = new ArrayList<String>();
             if (e.hasAttribute(DATA_ELEMENTUPDATE)) {
