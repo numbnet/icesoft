@@ -760,6 +760,10 @@ NSLog(@"Found record %@", result);
     return YES;
 }
 
+- (NSString*)deviceID  {
+    return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+}
+
 - (void)locationManager:(CLLocationManager *)manager
         didUpdateLocations:(NSArray *)locations {
    CLLocation* location = [locations lastObject];

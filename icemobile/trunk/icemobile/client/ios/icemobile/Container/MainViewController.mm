@@ -478,17 +478,33 @@ NSLog(@"handleResponse for ICEmobile Container");
 }
 
 - (void)setCustomCookie:(NSURLRequest*) req {
-    NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
+    NSDictionary *properties;
+    NSHTTPCookie *cookie;
+
+    properties = [[NSDictionary alloc] initWithObjectsAndKeys:
             @"com.icesoft.user-agent", NSHTTPCookieName,
             @"HyperBrowser/1.0", NSHTTPCookieValue,
             @"/", NSHTTPCookiePath,
             [[req URL] host], NSHTTPCookieDomain,
             nil ];
 
-    NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
+    cookie = [NSHTTPCookie cookieWithProperties:properties];
     NSLog(@"setCookie %@ for request %@ ", cookie, [[req URL] absoluteString] );
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
     [properties release];
+
+    properties = [[NSDictionary alloc] initWithObjectsAndKeys:
+            @"com.icesoft.device-id", NSHTTPCookieName,
+            [self.nativeInterface deviceID], NSHTTPCookieValue,
+            @"/", NSHTTPCookiePath,
+            [[req URL] host], NSHTTPCookieDomain,
+            nil ];
+
+    cookie = [NSHTTPCookie cookieWithProperties:properties];
+    NSLog(@"setCookie %@ for request %@ ", cookie, [[req URL] absoluteString] );
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
+    [properties release];
+
 }
 
 - (void)reloadCurrentPage {

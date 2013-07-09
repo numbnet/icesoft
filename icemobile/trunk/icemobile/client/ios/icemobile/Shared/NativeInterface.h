@@ -118,5 +118,6 @@
 - (void)dismissScan;
 - (NSString *) base64StringFromData: (NSData *)data;
 - (void)multipartPost: (NSDictionary *)parts toURL: (NSString *)url;
+- (NSString*)deviceID;
 
 @end
