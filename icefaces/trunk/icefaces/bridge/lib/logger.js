@@ -329,7 +329,7 @@
         debug: Function.NOOP, info: Function.NOOP, warn: Function.NOOP, error: Function.NOOP
     };
 
-    var ieConsole = !window.console.debug;
+    var ieConsole = window.console && window.console.log;
 
     This.ConsoleLogHandler = Object.subclass({
         initialize: function(logger) {
