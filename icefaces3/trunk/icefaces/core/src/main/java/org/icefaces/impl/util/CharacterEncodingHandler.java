@@ -94,7 +94,7 @@ public class CharacterEncodingHandler extends ResourceHandlerWrapper {
         }
     }
 
-    private String calculateCharacterEncoding(FacesContext context) {
+    public static String calculateCharacterEncoding(FacesContext context) {
         ExternalContext extContext = context.getExternalContext();
         Map<String, String> headerMap = extContext.getRequestHeaderMap();
         String contentType = headerMap.get("Content-Type");

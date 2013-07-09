@@ -89,6 +89,21 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
 
         if (isMultipart) {
             final ServletFileUpload uploader = new ServletFileUpload();
+
+            String reqCharEnc = request.getCharacterEncoding();
+            String extCharEnc = externalContext.getRequestCharacterEncoding();
+            String iceHandlerCharEnc = org.icefaces.impl.util.CharacterEncodingHandler.calculateCharacterEncoding(facesContext);
+            String resolvedCharacterEncoding = (reqCharEnc != null) ? reqCharEnc : ((extCharEnc != null) ? extCharEnc : (iceHandlerCharEnc));
+            log.finer("FileEntryResourceHandler\n" +
+                "  request.getCharacterEncoding: " + reqCharEnc + "\n" +
+                "  externalContext.getRequestCharacterEncoding: " + extCharEnc + "\n" +
+                "  CharacterEncodingHandler.calculateCharacterEncoding: " + iceHandlerCharEnc + "\n" +
+                "  resolvedCharacterEncoding: " + resolvedCharacterEncoding + "\n" +
+                "  Charset.defaultCharset().displayName(): " + java.nio.charset.Charset.defaultCharset().displayName());
+            if (resolvedCharacterEncoding != null) {
+                uploader.setHeaderEncoding(resolvedCharacterEncoding);
+            }
+
             Map<String, FileEntryResults> clientId2Results =
                     new HashMap<String, FileEntryResults>(6);
             ProgressListenerResourcePusher progressListenerResourcePusher =
@@ -100,15 +115,14 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                     new HashMap<String, List<String>>();
             byte[] buffer = new byte[16*1024];
             try {
-                String reqCharEnc = request.getCharacterEncoding();
                 FileItemIterator iter = uploader.getItemIterator(request);
                 while (iter.hasNext()) {
                     FileItemStream item = iter.next();
                     if (item.isFormField()) {
                         String name = item.getFieldName();
                         String value;
-                        if(null != reqCharEnc){
-                            value = Streams.asString(item.openStream(), reqCharEnc);
+                        if (null != resolvedCharacterEncoding){
+                            value = Streams.asString(item.openStream(), resolvedCharacterEncoding);
                         } else {
                             value = Streams.asString(item.openStream());
                         }
