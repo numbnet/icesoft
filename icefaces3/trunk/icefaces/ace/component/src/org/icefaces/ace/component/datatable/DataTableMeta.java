@@ -18,7 +18,6 @@ package org.icefaces.ace.component.datatable;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
-import org.icefaces.ace.model.table.CellSelections;
 import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.ace.resources.ACEResourceNames;
 
@@ -28,7 +27,6 @@ import org.icefaces.resources.ICEResourceLibrary;
 
 import javax.el.MethodExpression;
 import java.util.List;
-import java.util.Map;
 
 
 @Component(
