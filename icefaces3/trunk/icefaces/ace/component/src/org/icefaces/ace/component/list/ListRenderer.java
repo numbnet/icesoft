@@ -200,6 +200,11 @@ public class ListRenderer extends CoreRenderer {
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ACEList list = (ACEList)component;
+
+        //reset data model
+        list.setDataModel(null);
+        list.getDataModel();
+
         String dropGroup = list.getDropGroup();
         String style = list.getBodyStyle();
         String bodyHeight = list.getHeight();
