@@ -87,6 +87,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
     private Boolean keyboardNavigationEnabled;    
     private MethodBinding _actionListener;
     private Boolean disabled = null;
+	private Boolean checkPageConsistency;
 
     /**
      * @return COMPONENT_TYPE
@@ -890,7 +891,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[25];
+        Object values[] = new Object[26];
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = _fastStep;
@@ -916,6 +917,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         values[22] = new Integer(pageIndex);  
         values[23] = keyboardNavigationEnabled;
         values[24] = tabindex;
+		values[25] = checkPageConsistency;
                 
         return values;
     }
@@ -952,6 +954,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         pageIndex = ((Integer) values[22]).intValue();
         keyboardNavigationEnabled = (Boolean) values[23];
         tabindex = (Integer) values[24];
+		checkPageConsistency = (Boolean) values[25];
     }
 
     /**
@@ -1153,6 +1156,20 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
     public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
         this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
     }      
+	
+    public boolean isCheckPageConsistency() {
+        if (checkPageConsistency != null) {
+            return checkPageConsistency.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("checkPageConsistency");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setCheckPageConsistency(boolean checkPageConsistency) {
+        this.checkPageConsistency = new Boolean(checkPageConsistency);
+    }
     
     public void decode(FacesContext context) {
         //each cycle can have new component

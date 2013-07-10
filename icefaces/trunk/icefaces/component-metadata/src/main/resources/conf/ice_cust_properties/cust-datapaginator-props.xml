@@ -293,3 +293,16 @@
           </editor-class>	
 	</property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[<p>Sets the behaviour of the paginator when dynamically modifying or changing the data model of the table. When the value is 'true', the paginator will check that the new data model has enough rows to stay on the current page; otherwise, the page will be set to the last available page. In some cases, the page will be set to the first page when the data model is not available at the time the paginator is being rendered. When the value is 'false', the paginator will not make any consistency checks and will stay on the current page. Default value is 'true'.
+        </p>]]>
+    </description>
+    <property-name>checkPageConsistency</property-name>
+    <property-class>boolean</property-class>    
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>true</default-value>
+    </property-extension>
+</property>
