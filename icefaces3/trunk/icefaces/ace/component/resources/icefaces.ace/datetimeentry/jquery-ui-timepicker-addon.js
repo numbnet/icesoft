@@ -181,7 +181,10 @@
                 },
                 onChangeMonthYear: function (year, month, dp_inst) {
                     // Update the time as well : this prevents the time from disappearing from the $input field.
-                    tp_inst._updateDateTime(dp_inst);
+                    // ICE-9392
+                    if (!(dp_inst.gotoToday && !dp_inst.settings.todayNowButtonsAlsoSelect) && !dp_inst.gotoPrevMo && !dp_inst.gotoNextMo) {
+                        tp_inst._updateDateTime(dp_inst);
+                    }
                     if ($.isFunction(tp_inst._defaults.evnts.onChangeMonthYear)) {
                         tp_inst._defaults.evnts.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
                     }
@@ -748,7 +751,8 @@
             }
 
             this.timeDefined = true;
-            if (hasChanged) {
+            // ICE-9392
+            if (hasChanged && !(this.inst.gotoToday && !this.inst.settings.todayNowButtonsAlsoSelect)) {
                 this._updateDateTime();
             }
         },
@@ -1401,12 +1405,14 @@
     $.datepicker._gotoToday = function(id) {
         var inst = this._getInst($(id)[0]),
             $dp = inst.dpDiv;
+        // ICE-9392
+        inst.gotoToday = true;
         this._base_gotoToday(id);
         var tp_inst = this._get(inst, 'timepicker');
         selectLocalTimeZone(tp_inst);
         var now = new Date();
         this._setTime(inst, now);
-        $('.ui-datepicker-today', $dp).click();
+        inst.gotoToday = false;
     };
 
     /*
@@ -1459,7 +1465,10 @@
             tp_inst._limitMinMaxDateTime(inst, true);
 
             tp_inst._onTimeChange();
-            tp_inst._updateDateTime(inst);
+            // ICE-9392
+            if (!(inst.gotoToday && !inst.settings.todayNowButtonsAlsoSelect)) {
+                tp_inst._updateDateTime(inst);
+            }
         }
     };
 

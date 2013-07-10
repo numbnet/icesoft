@@ -207,4 +207,7 @@ public class DateTimeEntryMeta extends UIInputMeta {
 
     @Property(tlddoc = "The maximum number of characters that may be entered in this field.")
     private int maxlength;
+
+    @Property(defaultValue = "false", tlddoc = "The Today (or Now) button can be set to navigate the popup to the current month without selecting date/time, or select the date/time as well.")
+    private boolean todayNowButtonsAlsoSelect;
 }

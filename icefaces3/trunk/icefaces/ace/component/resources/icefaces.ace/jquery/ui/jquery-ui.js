@@ -9121,12 +9121,17 @@
             var stepMonths = this._get(inst, 'stepMonths');
             var id = '#' + inst.id.replace( /\\\\/g, "\\" );
             inst.dpDiv.find('[data-handler]').map(function () {
+                // ICE-9392
                 var handler = {
                     prev: function () {
+                        inst.gotoPrevMo = true;
                         window['DP_jQuery_' + dpuuid].datepicker._adjustDate(id, -stepMonths, 'M');
+                        inst.gotoPrevMo = false;
                     },
                     next: function () {
+                        inst.gotoNextMo = true;
                         window['DP_jQuery_' + dpuuid].datepicker._adjustDate(id, +stepMonths, 'M');
+                        inst.gotoNextMo = false;
                     },
                     hide: function () {
                         window['DP_jQuery_' + dpuuid].datepicker._hideDatepicker();
@@ -9135,7 +9140,7 @@
                         window['DP_jQuery_' + dpuuid].datepicker._gotoToday(id);
                         // ICE-8820
                         var sel = $('td.ui-datepicker-today:not(.' + $.datepicker._currentClass + ')', inst.dpDiv);
-                        if (sel[0]) {
+                        if (sel[0] && inst.settings.todayNowButtonsAlsoSelect) {
                             inst.keepPopupShowing = true;
                             window['DP_jQuery_' + dpuuid].datepicker._selectDay(id, +sel[0].getAttribute('data-month'), +sel[0].getAttribute('data-year'), sel[0]);
                             inst.keepPopupShowing = false;

@@ -281,6 +281,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         json.entry("withinSingleSubmit", Util.withinSingleSubmit(dateTimeEntry));
         json.entry("buttonText", dateTimeEntry.getButtonText());
         json.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
+        json.entry("todayNowButtonsAlsoSelect", dateTimeEntry.isTodayNowButtonsAlsoSelect());
 
         json.endMap();
 
