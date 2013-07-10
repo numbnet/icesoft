@@ -204,8 +204,10 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             throws IOException {
         validateParameters(facesContext, uiComponent, DataPaginator.class);
         DataPaginator scroller = (DataPaginator) uiComponent;
-		UIData table = scroller.getUIData();
-		if (table != null && table instanceof HtmlDataTable) ((HtmlDataTable) table).ensureFirstRowInRange(); // ICE-8610
+		if (scroller.isCheckPageConsistency()) {
+			UIData table = scroller.getUIData();
+			if (table != null && table instanceof HtmlDataTable) ((HtmlDataTable) table).ensureFirstRowInRange(); // ICE-8610
+		}
         if (!scroller.isModelResultSet()) {
             super.encodeBegin(facesContext, uiComponent);
                 
