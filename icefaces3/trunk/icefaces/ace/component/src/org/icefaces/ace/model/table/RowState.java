@@ -118,7 +118,7 @@ public class RowState implements Serializable {
         this.selectedColumnIds = selectedColumnIds;
     }
 
-    public void addSelectedCell(UIComponent column) {
+    public void addSelectedColumn(UIComponent column) {
         if (column != null) {
             String id = column.getId();
             if (!getSelectedColumnIds().contains(id))
@@ -126,7 +126,7 @@ public class RowState implements Serializable {
         }
     }
 
-    public void removedSelectedCell(UIComponent column) {
+    public void removeSelectedColumn(UIComponent column) {
         if (column != null) {
             getSelectedColumnIds().remove(column.getId());
         }

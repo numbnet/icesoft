@@ -54,12 +54,6 @@ public class ColumnMeta extends UIColumnMeta {
                    "a single column cell.")
     private Object groupBy;
 
-    @Property(expression = Expression.VALUE_EXPRESSION,
-            tlddoc="Defines a value expression representing the value of this column per row when using " +
-                    "cell selection. Defining this attribute, or the \"value\" attribute, enables cell " +
-                    "selection for this column when also enabled at the table level.")
-    private Object selectBy;
-
 	@Property(expression = Expression.VALUE_EXPRESSION,
             tlddoc="Defines a value expression representing the value of this column per row when sorting. " +
                    "Setting this attribute, or the \"value\" attribute for a column enables sorting.")

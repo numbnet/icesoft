@@ -172,13 +172,13 @@ public class SelectionDeltaState {
         for (CellRecord o : cellsToSelect) {
             RowState state = map.get(o.rowData);
             if (state.isSelectable())
-                state.addSelectedCell(o.column);
+                state.addSelectedColumn(o.column);
         }
 
         for (CellRecord o : cellsToDeselect) {
             RowState state = map.get(o.rowData);
             if (state.isSelectable())
-                state.removedSelectedCell(o.column);
+                state.removeSelectedColumn(o.column);
         }
     }
 
