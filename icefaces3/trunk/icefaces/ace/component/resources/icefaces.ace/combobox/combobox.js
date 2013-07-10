@@ -766,12 +766,14 @@ ice.ace.ComboBox.prototype = {
 		var rowCount = 0;
 		var result = ice.ace.jq('<div />');
 		for (var i = 0; i < length; i++) {
-			var item = caseSensitive ? model[i] : model[i].toLowerCase();
-			if (filter(item, value)) {
-				rowCount++;
-				result.append(this.$content.get(i).cloneNode(true));
+			if (model[i]) {
+				var item = caseSensitive ? model[i] : model[i].toLowerCase();
+				if (filter(item, value)) {
+					rowCount++;
+					result.append(this.$content.get(i).cloneNode(true));
+				}
+				if (rowCount >= rows) break;
 			}
-			if (rowCount >= rows) break;
 		}
 		this.updateNOW('<div>'+result.html()+'</div>');
 		if (filter == this.noFilter) {
