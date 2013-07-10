@@ -2177,7 +2177,7 @@ ice.ace.DataTable.prototype.filter = function (evn) {
 
 ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, element) {
     // Get Id(s) //
-    var targetId, deselectedId, firstRowSelected;
+    var targetId, deselectedId, firstRowSelected, adjustStyle = !this.cfg.instantSelect;
     if (type == 'row') {
         targetId = element.attr('id').split('_row_')[1];
     }
@@ -2196,10 +2196,12 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
     if (!deselection) {
         if (this.isSingleSelection()) {
             // If single selection unselect previous selection
-            if (type == 'row')
-                element.siblings('.ui-selected').removeClass('ui-selected ui-state-active');
-            else if (type == 'cell')
-                ice.ace.jq(this.jqId + ' tbody.ui-datatable-data:first > tr > td').removeClass('ui-selected ui-state-active');
+            if (adjustStyle) {
+                if (type == 'row')
+                    element.siblings('.ui-selected').removeClass('ui-selected ui-state-active');
+                else if (type == 'cell')
+                    ice.ace.jq(this.jqId + ' tbody.ui-datatable-data:first > tr > td').removeClass('ui-selected ui-state-active');
+            }
 
             // Add current selection to deselection delta
             this.deselection = [];
@@ -2210,8 +2212,10 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
             this.selection = [];
         }
 
-        // Add selected styling
-        element.addClass('ui-state-active ui-selected');
+        if (adjustStyle) {
+            // Add selected styling
+            element.addClass('ui-state-active ui-selected');
+        }
         // Filter id from deselection delta
         this.deselection = ice.ace.jq.grep(this.deselection, function (r) {
             return r != targetId;
@@ -2219,8 +2223,11 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
         // Add filter id to selection delta
         this.selection.push(targetId);
     } else {
-        // Remove selected styling
-        element.removeClass('ui-selected ui-state-active');
+        if (adjustStyle) {
+            // Remove selected styling
+            element.removeClass('ui-selected ui-state-active');
+        }
+
         // Remove from selection
         this.selection = ice.ace.jq.grep(this.selection, function (r) {
             return r != targetId;

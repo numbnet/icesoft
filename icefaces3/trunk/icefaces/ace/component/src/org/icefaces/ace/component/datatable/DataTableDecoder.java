@@ -46,10 +46,9 @@ public class DataTableDecoder {
     static void decodeSelection(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String selection = params.get(clientId + "_selection");
 
-        if (table.isSingleSelectionMode()) decodeSingleSelection(table, selection, params.get(clientId + "_deselection"));
-        else decodeMultipleSelection(table, selection, params.get(clientId + "_deselection"));
+        table.savedSelectionChanges = new SelectionDeltaState(context, table);
+
         queueInstantSelectionEvent(context, table, clientId, params);
     }
 
@@ -104,118 +103,6 @@ public class DataTableDecoder {
 
         table.setRowIndex(-1);
     }
-
-    static void decodeSingleSelection(DataTable table, String selection, String deselection) {
-        RowStateMap stateMap = table.getStateMap();
-
-        if (isValueBlank(selection)) {
-            if (table.isCellSelection())
-                table.clearCellSelection();
-            else if (deselection != null && !"".equals(deselection))
-                stateMap.setAllSelected(false);
-        }
-        else if (table.isCellSelection()) {
-            table.clearCellSelection();
-            table.addSelectedCell(selection);
-            if (deselection != null && deselection.length() > 0)
-                table.removeSelectedCell(deselection);
-        }
-        else {
-            TreeDataModel treeModel = null;
-            Object model = (Object) table.getDataModel();
-
-            if (table.hasTreeDataModel()) treeModel = (TreeDataModel) model;
-
-            // Tree case handling enhancement
-            if (treeModel != null & selection.indexOf('.') > 0) {
-                int lastSepIndex = selection.lastIndexOf('.');
-                treeModel.setRootIndex(selection.substring(0, lastSepIndex));
-                selection = selection.substring(lastSepIndex+1);
-            }
-
-            // Deselect all previous
-            stateMap.setAllSelected(false);
-
-            // Standard case handling
-            int selectedRowIndex = Integer.parseInt(selection);
-            table.setRowIndex(selectedRowIndex);
-            Object rowData = table.getRowData();
-            RowState state = stateMap.get(rowData);
-            if (state.isSelectable()) state.setSelected(true);
-            if (treeModel != null) treeModel.setRootIndex(null);
-            table.setRowIndex(-1);
-        }
-    }
-
-    static void decodeMultipleSelection(DataTable table, String selection, String deselection) {
-        Object value = table.getDataModel();
-        TreeDataModel model = null;
-        if (table.hasTreeDataModel()) model = (TreeDataModel) value;
-        RowStateMap stateMap = table.getStateMap();
-
-        // Process selections
-        if (isValueBlank(selection)) {}
-        else if (table.isCellSelection()) {
-            table.addSelectedCells(selection.split(","));
-        } else {
-            String[] rowSelectValues = selection.split(",");
-
-            for (String s : rowSelectValues) {
-                // Handle tree case indexes
-                if (s.indexOf(".") != -1 && model != null) {
-                    int lastSepIndex = s.lastIndexOf('.');
-                    model.setRootIndex(s.substring(0, lastSepIndex));
-                    s = s.substring(lastSepIndex+1);
-                }
-                table.setRowIndex(Integer.parseInt(s));
-
-                RowState state = stateMap.get(table.getRowData());
-                if (!state.isSelected() && state.isSelectable())
-                    state.setSelected(true);
-
-                // Cleanup after tree case indexes
-                if (model != null) model.setRootIndex(null);
-            }
-        }
-
-        // Process deselections
-        if (table.isCellSelection()) {
-            if (deselection != null && deselection.length() > 0)
-                table.removeSelectedCells(deselection.split(","));
-        } else {
-            String[] rowDeselectValues = new String[0];
-            if (deselection != null && !deselection.equals(""))
-                rowDeselectValues = deselection.split(",");
-
-            int x = 0;
-            for (String s : rowDeselectValues) {
-                // Handle tree case indexes
-                if (s.indexOf(".") != -1 && model != null) {
-                    int lastSepIndex = s.lastIndexOf('.');
-                    model.setRootIndex(s.substring(0, lastSepIndex));
-                    s = s.substring(lastSepIndex+1);
-                }
-
-                table.setRowIndex(Integer.parseInt(s));
-
-                RowState state = stateMap.get(table.getRowData());
-                if (state.isSelected())
-                    state.setSelected(false);
-
-                if (model != null) model.setRootIndex(null);
-            }
-        }
-
-        table.setRowIndex(-1);
-    }
-
-    // Util ---------------------------------------------------------------- //
-    static boolean isValueBlank(String value) {
-        if (value == null) return true;
-        return value.trim().equals("");
-    }
-
-    
 
     // --------------------------------------------------------------------- //
     // Filter -------------------------------------------------------------- //

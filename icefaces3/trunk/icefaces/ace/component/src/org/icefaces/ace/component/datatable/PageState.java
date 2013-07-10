@@ -47,7 +47,7 @@ public class PageState {
         page = Integer.valueOf(pageParam);
     }
 
-    public void restoreState(DataTable table) {
+    public void apply(DataTable table) {
         table.setRows(rows);
         table.setPage(page);
         table.setFirst((table.getPage() - 1) * table.getRows());

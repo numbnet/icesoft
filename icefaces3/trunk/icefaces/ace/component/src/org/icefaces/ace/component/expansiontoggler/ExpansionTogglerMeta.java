@@ -19,6 +19,7 @@ package org.icefaces.ace.component.expansiontoggler;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 import javax.el.MethodExpression;
@@ -46,4 +47,7 @@ public class ExpansionTogglerMeta extends UIComponentBaseMeta {
                     "element is expanded. The method receives a single " +
                     "argument, ExpansionChangeEvent.")
     private MethodExpression changeListener;
+
+    @Field(defaultValue = "false", defaultValueIsStringLiteral = false)
+    private Boolean toggled;
 }

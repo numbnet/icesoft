@@ -212,9 +212,6 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean staticHeaders;
 
-    // Map from row data to field names (cells) that are selected
-    @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
-    protected Map<Object, List<String>> rowToSelectedFieldsMap;
     // ID of the configPanel that has been associated with this table, used for
     // component lookups during decodes.
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
@@ -380,10 +377,6 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc = "Enable to have all column clicks accepted as selection and/or ajax click events. Typically only click events" +
             "that occur on a child div, span, or the td element itself are captured for processing.")
     private boolean allColumnClicks;
-
-    @Property(tlddoc = "Defines an array to be populated with objects " +
-            "referencing selected table cells and the rows they originate from." )
-    private CellSelections[] selectedCells;
 
 
 

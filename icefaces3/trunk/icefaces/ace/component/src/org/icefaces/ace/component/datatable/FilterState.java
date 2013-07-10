@@ -67,7 +67,7 @@ public class FilterState {
             column.setFilterValue(val);
     }
 
-    public void restoreState(DataTable table) {
+    public void apply(DataTable table) {
         List<Column> columnList = table.getColumns(true);
         for (Column column : columnList)
             restoreState(column);

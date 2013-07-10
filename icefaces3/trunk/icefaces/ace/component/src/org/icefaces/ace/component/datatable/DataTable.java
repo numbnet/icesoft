@@ -88,6 +88,7 @@ public class DataTable extends DataTableBase implements Serializable {
     transient protected SortState savedSortState;
     transient protected FilterState savedFilterState;
     transient protected PageState savedPageState;
+    transient protected SelectionDeltaState savedSelectionChanges;
     transient protected boolean decoded = false;
 
     static {
@@ -101,16 +102,6 @@ public class DataTable extends DataTableBase implements Serializable {
     /*#######################################################################*/
     /*###################### Overridden API #################################*/
     /*#######################################################################*/
-    protected void refreshSelectedCells() {
-        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
-        Object[] keySet = map.keySet().toArray();
-        CellSelections[] array = new CellSelections[keySet.length];
-        for (int i = 0; i < keySet.length; i++) {
-            array[i] = new CellSelections(keySet[i], map.get(keySet[i]));
-        }
-        super.setSelectedCells(array);
-    }
-
     @Override
     public Integer getScrollHeight() {
         Integer height = super.getHeight();
@@ -121,17 +112,6 @@ public class DataTable extends DataTableBase implements Serializable {
             return height;
         // Else return the value of scrollHeight
         return super.getScrollHeight();
-    }
-    
-    @Override
-    public void setSelectedCells(CellSelections[] cellSelection) {
-        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
-        map.clear();
-        for (CellSelections s : cellSelection) {
-            map.remove(s.getRowObject());
-            map.put(s.getRowObject(), s.getSelectedFieldNames());
-        }
-        super.setSelectedCells(cellSelection);
     }
 
     @Override
@@ -437,17 +417,20 @@ public class DataTable extends DataTableBase implements Serializable {
             iterate(context, PhaseId.UPDATE_MODEL_VALUES);
 
         if (savedPageState != null)
-            savedPageState.restoreState(this);
+            savedPageState.apply(this);
+
+        if (savedSelectionChanges != null)
+            savedSelectionChanges.apply(this);
 
         if (isApplyingFilters()) {
             if (savedFilterState != null)
-                savedFilterState.restoreState(this);
+                savedFilterState.apply(this);
             setFilteredData(processFilters(context));
         }
 
         if (isApplyingSorts()) {
             if (savedSortState != null)
-                savedSortState.restoreState(this);
+                savedSortState.apply(this);
             processSorting();
         }
 
@@ -765,113 +748,113 @@ public class DataTable extends DataTableBase implements Serializable {
 
         return super.isApplyingFilters() || globalFilterChanged;
     }
-    
-    public void removeSelectedCell(String deselection) {
-        removeSelectedCell(deselection, false);
-    }
 
-    public void removeSelectedCells(String[] deselections) {
-        for (String s : deselections) removeSelectedCell(s, true);
-        refreshSelectedCells();
-    }
-
-    private void removeSelectedCell(String deselection, boolean skipPropertyRefresh) {
-        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
-        if (map == null) {
-            map = new HashMap<Object, List<String>>();
-            setRowToSelectedFieldsMap(map);
-        }
-
-        String[] cellCoords = deselection.split("#");
-        Column c = getColumns().get(Integer.parseInt(cellCoords[1]));
-
-        setRowIndex(Integer.parseInt(cellCoords[0]));
-        Object rowObject = getRowData();
-        setRowIndex(-1);
-
-        List<String> selectedFields = map.get(rowObject);
-        if (selectedFields == null) {
-            selectedFields = new ArrayList<String>();
-            map.put(rowObject, selectedFields);
-        }
-
-        String selectedFieldName = null;
-        ValueExpression selectByExpression = c.getValueExpression("selectBy");
-        if (selectByExpression != null) {
-            selectedFieldName = selectByExpression.getExpressionString();
-        } else {
-            ValueExpression valueExpression = c.getValueExpression("value");
-            if (valueExpression != null) {
-                selectedFieldName = valueExpression.getExpressionString();
-            }
-        }
-
-        if (selectedFieldName != null) {
-            // Remove cell selection from row
-            selectedFields.remove(selectedFieldName);
-
-            // Remove rows with empty cell selections from the map
-            if (selectedFields.size() == 0)
-                map.remove(rowObject);
-
-            if (!skipPropertyRefresh)
-                refreshSelectedCells();
-        }
-    }
-
-    public void addSelectedCells(String[] selections) {
-        for (String s : selections) addSelectedCell(s, true);
-        refreshSelectedCells();
-    }
-
-    public void addSelectedCell(String selection) {
-        addSelectedCell(selection, false);
-    }
-
-    private void addSelectedCell(String selection, boolean skipPropertyRefresh) {
-        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
-        if (map == null) {
-            map = new HashMap<Object, List<String>>();
-            setRowToSelectedFieldsMap(map);
-        }
-
-        String[] cellCoords = selection.split("#");
-        Column c = getColumns().get(Integer.parseInt(cellCoords[1]));
-
-        setRowIndex(Integer.parseInt(cellCoords[0]));
-        Object rowObject = getRowData();
-        setRowIndex(-1);
-
-        List<String> selectedFields = map.get(rowObject);
-        if (selectedFields == null) {
-            selectedFields = new ArrayList<String>();
-            map.put(rowObject, selectedFields);
-        }
-
-        String selectedFieldName = null;
-        ValueExpression selectByExpression = c.getValueExpression("selectBy");
-        if (selectByExpression != null) {
-            selectedFieldName = selectByExpression.getExpressionString();
-        } else {
-            ValueExpression valueExpression = c.getValueExpression("value");
-            if (valueExpression != null) {
-                selectedFieldName = valueExpression.getExpressionString();
-            }
-        }
-
-        if (selectedFieldName != null) {
-            selectedFields.add(selectedFieldName);
-
-            if (!skipPropertyRefresh)
-                refreshSelectedCells();
-        } else throw new FacesException("Column " + c.getClientId() +
-                " requires the property 'value' or 'selectBy' to be set to use cell selection.'");
-    }
-
-    public void clearCellSelection() {
-        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
-        if (map != null) map.clear();
-    }
+//    public void removeSelectedCell(String deselection) {
+//        removeSelectedCell(deselection, false);
+//    }
+//
+//    public void removeSelectedCells(String[] deselections) {
+//        for (String s : deselections) removeSelectedCell(s, true);
+//        refreshSelectedCells();
+//    }
+//
+//    private void removeSelectedCell(String deselection, boolean skipPropertyRefresh) {
+//        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
+//        if (map == null) {
+//            map = new HashMap<Object, List<String>>();
+//            setRowToSelectedFieldsMap(map);
+//        }
+//
+//        String[] cellCoords = deselection.split("#");
+//        Column c = getColumns().get(Integer.parseInt(cellCoords[1]));
+//
+//        setRowIndex(Integer.parseInt(cellCoords[0]));
+//        Object rowObject = getRowData();
+//        setRowIndex(-1);
+//
+//        List<String> selectedFields = map.get(rowObject);
+//        if (selectedFields == null) {
+//            selectedFields = new ArrayList<String>();
+//            map.put(rowObject, selectedFields);
+//        }
+//
+//        String selectedFieldName = null;
+//        ValueExpression selectByExpression = c.getValueExpression("selectBy");
+//        if (selectByExpression != null) {
+//            selectedFieldName = selectByExpression.getExpressionString();
+//        } else {
+//            ValueExpression valueExpression = c.getValueExpression("value");
+//            if (valueExpression != null) {
+//                selectedFieldName = valueExpression.getExpressionString();
+//            }
+//        }
+//
+//        if (selectedFieldName != null) {
+//            // Remove cell selection from row
+//            selectedFields.remove(selectedFieldName);
+//
+//            // Remove rows with empty cell selections from the map
+//            if (selectedFields.size() == 0)
+//                map.remove(rowObject);
+//
+//            if (!skipPropertyRefresh)
+//                refreshSelectedCells();
+//        }
+//    }
+//
+//    public void addSelectedCells(String[] selections) {
+//        for (String s : selections) addSelectedCell(s, true);
+//        refreshSelectedCells();
+//    }
+//
+//    public void addSelectedCell(String selection) {
+//        addSelectedCell(selection, false);
+//    }
+//
+//    private void addSelectedCell(String selection, boolean skipPropertyRefresh) {
+//        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
+//        if (map == null) {
+//            map = new HashMap<Object, List<String>>();
+//            setRowToSelectedFieldsMap(map);
+//        }
+//
+//        String[] cellCoords = selection.split("#");
+//        Column c = getColumns().get(Integer.parseInt(cellCoords[1]));
+//
+//        setRowIndex(Integer.parseInt(cellCoords[0]));
+//        Object rowObject = getRowData();
+//        setRowIndex(-1);
+//
+//        List<String> selectedFields = map.get(rowObject);
+//        if (selectedFields == null) {
+//            selectedFields = new ArrayList<String>();
+//            map.put(rowObject, selectedFields);
+//        }
+//
+//        String selectedFieldName = null;
+//        ValueExpression selectByExpression = c.getValueExpression("selectBy");
+//        if (selectByExpression != null) {
+//            selectedFieldName = selectByExpression.getExpressionString();
+//        } else {
+//            ValueExpression valueExpression = c.getValueExpression("value");
+//            if (valueExpression != null) {
+//                selectedFieldName = valueExpression.getExpressionString();
+//            }
+//        }
+//
+//        if (selectedFieldName != null) {
+//            selectedFields.add(selectedFieldName);
+//
+//            if (!skipPropertyRefresh)
+//                refreshSelectedCells();
+//        } else throw new FacesException("Column " + c.getClientId() +
+//                " requires the property 'value' or 'selectBy' to be set to use cell selection.'");
+//    }
+//
+//    public void clearCellSelection() {
+//        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
+//        if (map != null) map.clear();
+//    }
 
     public enum SearchType {
         CONTAINS, ENDS_WITH, STARTS_WITH, EXACT
