@@ -26,7 +26,7 @@ public class PathDispatcherServer implements Server {
             }
         }
 
-        request.respondWith(new NotFoundHandler("Could not find resource at " + path));
+        request.respondWith(new NotFoundHandler("Could not find resource."));
     }
 
     public void dispatchOn(String pathExpression, final Server toServer) {
