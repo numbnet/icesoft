@@ -34,7 +34,8 @@ public class RowState implements Serializable {
     boolean expandable = true;
     boolean editable = true;
     boolean visible = true;
-    List<String> activeCellEditorIds = new ArrayList<String>();
+    List<String> activeCellEditorIds;
+    List<String> selectedColumnIds;
 
 
     public RowState() {}
@@ -104,7 +105,31 @@ public class RowState implements Serializable {
     }
 
     public List<String> getActiveCellEditorIds() {
+        if (activeCellEditorIds == null) activeCellEditorIds = new ArrayList<String>();
         return activeCellEditorIds;
+    }
+
+    public List<String> getSelectedColumnIds() {
+        if (selectedColumnIds == null) selectedColumnIds = new ArrayList<String>();
+        return selectedColumnIds;
+    }
+
+    public void setSelectedColumnIds(List<String> selectedColumnIds) {
+        this.selectedColumnIds = selectedColumnIds;
+    }
+
+    public void addSelectedCell(UIComponent column) {
+        if (column != null) {
+            String id = column.getId();
+            if (!getSelectedColumnIds().contains(id))
+                getSelectedColumnIds().add(id);
+        }
+    }
+
+    public void removedSelectedCell(UIComponent column) {
+        if (column != null) {
+            getSelectedColumnIds().remove(column.getId());
+        }
     }
 
     public void setActiveCellEditorIds(List<String> activeCellEditorIds) {

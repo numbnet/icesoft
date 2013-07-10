@@ -33,15 +33,16 @@
 package org.icefaces.ace.component.expansiontoggler;
 
 import org.icefaces.ace.component.datatable.DataTable;
-import org.icefaces.ace.event.*;
+import org.icefaces.ace.event.ExpansionChangeEvent;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.model.table.TreeDataModel;
 
 import javax.el.MethodExpression;
-import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
 
 public class ExpansionToggler extends ExpansionTogglerBase {
     private boolean isRowExpansionRequest(FacesContext x, String tableId)    { return isIdPrefixedParamSet(tableId, "_rowExpansion", x); }
@@ -52,26 +53,44 @@ public class ExpansionToggler extends ExpansionTogglerBase {
     @Override
     public void decode(FacesContext context) {
         super.decode(context);
-        UIComponent parent = getParent();
-        while (!(parent instanceof DataTable)) { parent = parent.getParent(); }
-        DataTable table = (DataTable)parent;
+        DataTable table = getTable();
         String tableId = table.getClientId(context);
 
         if (isRowExpansionRequest(context, tableId)) {
             RowState rowState = (RowState) context.getExternalContext().getRequestMap().get(table.getRowStateVar());
             if (rowState.isExpandable()) {
-                rowState.setExpanded(!rowState.isExpanded());
+                setToggled(true);
 
+                FacesEvent event;
                 if (table.hasTreeDataModel())
-                    queueEvent(new ExpansionChangeEvent(
-                            this,
-                            table.getRowData(),
-                            rowState.isExpanded(),
-                            ((TreeDataModel)table.getModel()).getRowEntry().getValue()));
+                    event = new ExpansionChangeEvent(this, table.getRowData(), rowState.isExpanded(), ((TreeDataModel)table.getModel()).getRowEntry().getValue());
                 else
-                    queueEvent(new ExpansionChangeEvent(this, table.getRowData(), rowState.isExpanded()));
+                    event = new ExpansionChangeEvent(this, table.getRowData(), rowState.isExpanded());
+
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                queueEvent(event);
             }
         }
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        DataTable table = getTable();
+
+        if (isRendered() && isToggled()) {
+            RowState rowState = (RowState) context.getExternalContext().getRequestMap().get(table.getRowStateVar());
+            rowState.setExpanded(!rowState.isExpanded());
+        }
+
+        setToggled(false);
+
+        super.processUpdates(context);
+    }
+
+    private DataTable getTable() {
+        UIComponent parent = getParent();
+        while (!(parent instanceof DataTable)) { parent = parent.getParent(); }
+        return (DataTable)parent;
     }
 
     @Override

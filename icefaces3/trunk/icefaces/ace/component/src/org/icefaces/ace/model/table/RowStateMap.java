@@ -36,6 +36,7 @@ public class RowStateMap implements Map<Object, RowState>, Serializable {
     private static Predicate visiblePredicate = new VisiblePredicate();
     private static Predicate rowExpansionPredicate = new RowExpansionPredicate();
     private static Predicate panelExpansionPredicate = new PanelExpansionPredicate();
+    private static Predicate hasSelectedCellsPredicate = new SelectedCellsPredicate();
 
 
     public RowState put(Object o, RowState s) {
@@ -216,6 +217,9 @@ public class RowStateMap implements Map<Object, RowState>, Serializable {
     public List getSelected() {
         return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), selectedPredicate));
     }
+    public List getRowsWithSelectedCells() {
+        return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), hasSelectedCellsPredicate));
+    }
     public List getSelectable() {
         return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), selectablePredicate));
     }
@@ -336,6 +340,15 @@ public class RowStateMap implements Map<Object, RowState>, Serializable {
             return false;
         }
     }
+    static class SelectedCellsPredicate implements Predicate {
+        public boolean evaluate(Object o) {
+            if (o instanceof Entry)
+                if (((RowState)((Entry)o).getValue()).getSelectedColumnIds().size() > 0)
+                    return true;
+            return false;
+        }
+    }
+
 
     private class EditingPredicate implements Predicate {
         String id;

@@ -531,7 +531,6 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = table.getClientId(context);
         String rowIndexVar = table.getRowIndexVar();
 
-        Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
         Boolean topVisibleRowRendered = false;
         for (int i = scrollOffset; i < (scrollOffset + table.getRows()); i++) {
             if (DataTableRowRenderer.encodeRow(context, tableContext, clientId, i, null, topVisibleRowRendered))

@@ -121,7 +121,7 @@ public class SortState {
         }
     }
 
-    public void restoreState(DataTable table) {
+    public void apply(DataTable table) {
         List<Column> columnList = table.getColumns(true);
 
         for (Column column : columnList) {

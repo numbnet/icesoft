@@ -51,10 +51,7 @@ public class DataTableRowRenderer {
         boolean unselectable = !rowState.isSelectable();
         boolean expanded = rowState.isExpanded();
         boolean visible = rowState.isVisible();
-
-        List<String> selectedCellExpressions = (tableContext.getRowToSelectedFieldsMap() != null)
-                ? (List<String>)(tableContext.getRowToSelectedFieldsMap().get(table.getRowData()))
-                : null;
+        List<String> selectedColumnIds = rowState.getSelectedColumnIds();
 
         context.getExternalContext().getRequestMap().put(tableContext.getRowStateVar(), rowState);
 
@@ -91,16 +88,11 @@ public class DataTableRowRenderer {
             for (int i = 0; i < cols.size(); i++) {
                 Column kid = cols.get(i);
                 if (kid.isRendered()) {
-                    boolean cellSelected = false;
-                    if (selectedCellExpressions != null) {
-                        ValueExpression ve = kid.getValueExpression("selectBy") != null
-                                ? kid.getValueExpression("selectBy")
-                                : kid.getValueExpression("value");
-
-                        if (ve != null)
-                            cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
-                    }
-                    encodeRegularCell(new CellRenderingContext(context, cols, i, cellSelected, innerTdDivRequired));
+                    encodeRegularCell(new CellRenderingContext(
+                            context, cols, i,
+                            selectedColumnIds.contains(kid.getId()),
+                            innerTdDivRequired)
+                    );
                 }
             }
 
@@ -291,11 +283,7 @@ public class DataTableRowRenderer {
                 boolean expanded = rowState.isExpanded();
                 boolean unselectable = !rowState.isSelectable();
                 boolean visible = rowState.isVisible();
-                Map<Object, List<String>> rowToSelectedFieldsMap = tableContext.getRowToSelectedFieldsMap();
-                List<String> selectedCellExpressions = null;
-
-                if (rowToSelectedFieldsMap != null)
-                    selectedCellExpressions = (List<String>)(rowToSelectedFieldsMap.get(table.getRowData()));
+                List<String> selectedColumnIds = rowState.getSelectedColumnIds();
 
                 context.getExternalContext().getRequestMap()
                         .put(tableContext.getRowStateVar(), rowState);
@@ -322,16 +310,7 @@ public class DataTableRowRenderer {
                         Column kid = cols.get(i);
                         if (kid.isRendered()) {
                             boolean cellSelected = false;
-                            if (selectedCellExpressions != null) {
-                                ValueExpression ve = kid.getValueExpression("selectBy") != null
-                                        ? kid.getValueExpression("selectBy")
-                                        : kid.getValueExpression("value");
-                                if (ve != null)
-                                    cellSelected = selectedCellExpressions
-                                            .contains(ve.getExpressionString());
-                            }
-
-                            encodeRegularCell(new CellRenderingContext(context, cols, i, cellSelected, false));
+                            encodeRegularCell(new CellRenderingContext(context, cols, i, selectedColumnIds.contains(kid.getId()), false));
                         }
                     }
                     writer.endElement(HTML.TR_ELEM);

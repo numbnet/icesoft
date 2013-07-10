@@ -27,7 +27,6 @@ public class DataTableRenderingContext {
 
     private RowStateMap stateMap;
 
-    private Map<Object, List<String>> rowToSelectedFieldsMap;
     private List<Column> columns;
     private Integer rows;
     private Integer firstRowIndex;
@@ -64,7 +63,6 @@ public class DataTableRenderingContext {
         rows = table.getRows();
         firstRowIndex = table.getFirst();
         pagPose = table.getPage();
-        rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
         columns = table.getColumns();
         rowStateVar = table.getRowStateVar();
         selectionMode = table.getSelectionMode();
@@ -115,10 +113,6 @@ public class DataTableRenderingContext {
 
     public Integer getPagPose() {
         return pagPose;
-    }
-
-    public Map<Object, List<String>> getRowToSelectedFieldsMap() {
-        return rowToSelectedFieldsMap;
     }
 
     public List<Column> getColumns() {
