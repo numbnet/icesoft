@@ -226,6 +226,8 @@ public class ComboBoxRenderer extends InputRenderer {
 			jb.endFunction();
 
 			writer.writeText(jb.toString(), null);
+		} else {
+			writer.writeText("ice.ace.ComboBox.setDimensionsOnly('"+clientId+"');", null);
 		}
 
 		writer.endElement("script");
