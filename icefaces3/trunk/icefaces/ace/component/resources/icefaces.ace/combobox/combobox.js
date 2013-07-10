@@ -32,12 +32,12 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 	var $element = this.root.find('input');
 	this.element = $element.get(0);
 	this.element.id = this.id + "_input";
-	$element.css('width', $box.width() - 26);
+	$element.css('width', $box.width() - ice.ace.ComboBox.DELTA_WIDTH);
 	var $downArrowButton = $box.find('div');
 	this.downArrowButton = $downArrowButton.eq(0);
 	this.downArrowButton.css('height', $box.height());
 	var height = this.downArrowButton.height();
-	var padding = (height - 16) / 2;
+	var padding = (height - ice.ace.ComboBox.DELTA_HEIGHT) / 2;
 	this.downArrowButton.children().eq(0).css('height', padding);
 	if (ice.ace.jq.browser.msie) {// ie7 fix
 		if (ice.ace.jq.browser.version < 8) {
@@ -73,9 +73,31 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 	}
 };
 
+ice.ace.ComboBox.setDimensionsOnly = function(id) {
+	var root = ice.ace.jq(ice.ace.escapeClientId(id));
+	var $box = root.find('.ui-combobox-value');
+	var $element = root.find('input');
+	$element.css('width', $box.width() - ice.ace.ComboBox.DELTA_WIDTH);
+	var $downArrowButton = $box.find('div');
+	var downArrowButton = $downArrowButton.eq(0);
+	downArrowButton.css('height', $box.height());
+	var height = downArrowButton.height();
+	var padding = (height - ice.ace.ComboBox.DELTA_HEIGHT) / 2;
+	downArrowButton.children().eq(0).css('height', padding);
+	if (ice.ace.jq.browser.msie) {// ie7 fix
+		if (ice.ace.jq.browser.version < 8) {
+			if (navigator.userAgent.indexOf("Trident/5") < 0) {
+				$downArrowButton.css('height', '').css('position', 'absolute');
+			}
+		}
+	}
+};
+
 ice.ace.ComboBox.LABEL_CLASS = 'ui-combobox-item-label';
 ice.ace.ComboBox.VALUE_CLASS = 'ui-combobox-item-value';
 ice.ace.ComboBox.IGNORE_CLASS = 'ui-combobox-item-ignore';
+ice.ace.ComboBox.DELTA_WIDTH = 26;
+ice.ace.ComboBox.DELTA_HEIGHT = 16;
 
 ice.ace.ComboBox.keys = {
 KEY_BACKSPACE: 8,
