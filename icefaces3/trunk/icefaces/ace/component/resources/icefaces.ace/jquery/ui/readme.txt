@@ -14,3 +14,4 @@ ICE-8692: Add ARIA Roles for ace:dateTimeEntry.
 ICE-8820: ace:dateTimeEntry - Now and Today button functionality is inconsistent.
 ICE-8868: Add ARIA role and attributes to Accordion.
 ICE-8869: prevent getting stuck forever with draggable when clicking on a scrollbar in Webkit and IE9 browsers
+ICE-9392: REGRESSION:  ace:dateTimeEntry - Clicking Today button closes popup.
