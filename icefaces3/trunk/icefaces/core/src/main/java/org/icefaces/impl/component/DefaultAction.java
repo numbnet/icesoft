@@ -94,6 +94,7 @@ public class DefaultAction extends UICommand {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", "", null);
         writer.endElement("input");
     }

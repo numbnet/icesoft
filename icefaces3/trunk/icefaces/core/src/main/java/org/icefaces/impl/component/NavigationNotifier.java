@@ -57,6 +57,7 @@ public class NavigationNotifier extends UICommand {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", "", null);
         writer.endElement("input");
 

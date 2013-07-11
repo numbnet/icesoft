@@ -301,6 +301,7 @@ var singleSubmit;
                 fakeClick.setAttribute("type", "hidden");
                 fakeClick.setAttribute("name", eventElement.name);
                 fakeClick.setAttribute("value", eventElement.value);
+                fakeClick.setAttribute("autocomplete", "off");
                 f.appendChild(fakeClick);
                 f.nativeSubmit();
                 f.removeChild(fakeClick);
