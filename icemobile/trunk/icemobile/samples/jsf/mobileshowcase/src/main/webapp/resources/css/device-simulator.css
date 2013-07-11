@@ -363,14 +363,17 @@ iframe {
 .nexus4-portrait {
     background-image: url(css-images/nexus4-portrait.png);
     padding: 100px 0 117px 0px;
-    background-size: 440px 843px;
+    background-size: 440px auto;
     opacity: 0;
 }
 #nexus4-portrait-device.active .nexus4-portrait{ 
     opacity: 1;
 }
 .nexus4-portrait .device{
-    width: 384px; height: 571px; padding-top: 20px;padding-bottom: 44px;
+    width: 384px; 
+    height: 572px; 
+    padding-top: 20px;
+    padding-bottom: 44px;
 }
 #nexus4-portrait{ width: 400px }
 .mac #nexus4-portrait{ width: 384px }
@@ -378,19 +381,18 @@ iframe {
 /* NEXUS 4 LANDSCAPE */
 .nexus4-landscape {
     background-image: url(css-images/nexus4-landscape.png);
-    padding: 55px 0 117px 0px;
-    background-size: 904px auto;
+    padding: 54px 36px 101px 0px;
+    background-size: 887px auto;
     opacity: 0;
 }
 #nexus4-landscape-device.active .nexus4-landscape{ 
     opacity: 1;
 }
 .nexus4-landscape .device{
-    width: 640px;
-    height: 386px;
+    width: 639px;
+    height: 379px;
     padding-top: 0px;
     padding-bottom: 44px;
-    padding-left: 59px;
 }
 #nexus4-landscape{ width: 656px }
 .mac #nexus4-landscape{ width: 640px }
@@ -499,10 +501,16 @@ iframe {
     display: block;
     line-height: 25px;
     font-weight: bold;
-    margin-left: 25px;
-    top: 10px;
+    margin-left: 6px;
+    min-width: 200px;
+    top: 0px;
     position: absolute;
+    padding: 20px;
+    background-color: #FFF;
+    border-radius: 10px;
     opacity: 0;
+    height: 100px;
+    z-index: 100;
 }
 .device-type .orientation{
     font-size: 26px;
@@ -511,7 +519,7 @@ iframe {
     margin-left: -1px;
 }
 #slides .active .device-type{
-    opacity: 1;
+    opacity: 0.8;
 }
 
 /*
@@ -562,7 +570,7 @@ iframe {
 }
 #scale{
     position: absolute;
-    top: 180px;
+    top: 190px;
     left: 15px;
     color: #005499;
     z-index: 999;
