@@ -18,6 +18,7 @@
             <button class="choose-device-btn" onclick="toggleChooseDevicePopup()">Choose Device</button>
             
             <div id="device-selector">
+                <button id="change-orientation" onclick="toggleOrientation()"></button>
                 <div class="col1">
                     <label id="iphone4-btn" for="iphoneRadio"></label>
                     <label id="bbz10-btn" for="bbz10Radio"></label>
@@ -28,7 +29,6 @@
                     <label id="nexus7-btn" for="nexus7Radio"></label>
                     <label id="ipad-btn" for='ipadRadio'></label>
                 </div>
-                <button id="change-orientation" onclick="toggleOrientation()"></button>
             </div>
             
         </header>
@@ -64,9 +64,9 @@
     
         <input type="radio" name="slider" id="iphoneRadio" onchange="openIphone()" checked="" >
         <input type="radio" name="slider" id="ipadRadio" onchange="openIpad()">
-        <input type="radio" name="slider" id="nexus4Radio" onchange="openNexus4Portrait()">
-        <input type="radio" name="slider" id="nexus7Radio" onchange="openNexus7Portrait()">
-        <input type="radio" name="slider" id="bbz10Radio" onchange="openBBZ10Portrait()">
+        <input type="radio" name="slider" id="nexus4Radio" onchange="openNexus4()">
+        <input type="radio" name="slider" id="nexus7Radio" onchange="openNexus7()">
+        <input type="radio" name="slider" id="bbz10Radio" onchange="openBBZ10()">
         <input type="radio" name="slider" id="bbq10Radio" onchange="openBBQ10Portrait()">
     
         <!-- The Slider -->
@@ -105,6 +105,71 @@
                             </div>
                         </div>
                     </article>
+                     
+                    <article id="nexus4-portrait-device">
+                        <div class="device-type"><div>Nexus 4</div><div class="orientation">Portrait Mode</div></div>
+                        <div class='deviceWrap nexus4-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='nexus4-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="nexus4-landscape-device">
+                        <div class="device-type"><div>Nexus 4</div><div class="orientation">Landscape Mode</div></div>
+                        <div class='deviceWrap nexus4-landscape'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='nexus4-landscape'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="bbz10-portrait-device">
+                        <div class="device-type"><div>BlackBerry Z10</div><div class="orientation">Portrait Mode</div></div>
+                        <div class='deviceWrap bbz10-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="bbz10-landscape-device">
+                        <div class="device-type"><div>BlackBerry Z10</div><div class="orientation">Landscape Mode</div></div>
+                        <div class='deviceWrap bbz10-landscape'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='bbz10-landscape'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="nexus7-portrait-device">
+                        <div class="device-type"><div>Nexus 7</div><div class="orientation">Portrait Mode</div></div>
+                        <div class='deviceWrap nexus7-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='nexus7-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article id="nexus7-landscape-device">
+                        <div class="device-type"><div>Nexus 7</div><div class="orientation">Landscape Mode</div></div>
+                        <div class='deviceWrap nexus7-landscape'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='nexus7-landscape'></iframe>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    
+                    
+                    <article id="bbq10-portrait-device">
+                        <div class="device-type"><div>BlackBerry Q10</div><div class="orientation">Portrait Mode</div></div>
+                        <div class='deviceWrap bbq10-portrait'>
+                            <div class='device'>
+                                <iframe src='about:blank' id='bbq10-portrait'></iframe>
+                            </div>
+                        </div>
+                    </article>
                     
                     <article id="ipad-portrait-device">
                         <div class="device-type"><div>iPad</div><div class="orientation">Portrait</div></div>
@@ -126,69 +191,6 @@
                                     <span class='time'></span>
                                 </div>
                                 <iframe src='about:blank' id='ipad-landscape'></iframe>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article id="nexus4-portrait-device">
-                        <div class="device-type"><div>Nexus 4</div><div class="orientation">Portrait Mode</div></div>
-                        <div class='deviceWrap nexus4-portrait'>
-                            <div class='device'>
-                                <iframe src='about:blank' id='nexus4-portrait'></iframe>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article id="nexus7-portrait-device">
-                        <div class="device-type"><div>Nexus 7</div><div class="orientation">Portrait Mode</div></div>
-                        <div class='deviceWrap nexus7-portrait'>
-                            <div class='device'>
-                                <iframe src='about:blank' id='nexus7-portrait'></iframe>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article id="bbz10-portrait-device">
-                        <div class="device-type"><div>BlackBerry Z10</div><div class="orientation">Portrait Mode</div></div>
-                        <div class='deviceWrap bbz10-portrait'>
-                            <div class='device'>
-                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article id="bbq10-portrait-device">
-                        <div class="device-type"><div>BlackBerry Q10</div><div class="orientation">Portrait Mode</div></div>
-                        <div class='deviceWrap bbq10-portrait'>
-                            <div class='device'>
-                                <iframe src='about:blank' id='bbq10-portrait'></iframe>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article id="bbz10-portrait-device3">
-                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
-                        <div class='deviceWrap bbz10-portrait'>
-                            <div class='device'>
-                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article id="bbz10-portrait-device4">
-                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
-                        <div class='deviceWrap bbz10-portrait'>
-                            <div class='device'>
-                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article id="bbz10-portrait-device5">
-                        <span class="device-type">BlackBerry Z10 Portrait Mode</span>
-                        <div class='deviceWrap bbz10-portrait'>
-                            <div class='device'>
-                                <iframe src='about:blank' id='bbz10-portrait'></iframe>
                             </div>
                         </div>
                     </article>
@@ -222,46 +224,56 @@
             setSlider(1);
         }
     }
-    function openIpad(){
+    function openNexus4(){
         closeAllDevices();
         if( window.deviceOrientation === 'portrait' ){
-            document.getElementById('ipad-portrait').setAttribute('src','./showcase-large.jsf?theme=ipad&simulator=true');
+            document.getElementById('nexus4-portrait').setAttribute('src','./showcase-small.jsf?theme=android_light&simulator=true');
             if( document.documentElement.classList ){
-                document.getElementById('ipad-portrait-device').classList.add('active');
+                document.getElementById('nexus4-portrait-device').classList.add('active');
             }
             setSlider(2);
         }
         else{
-            document.getElementById('ipad-landscape').setAttribute('src','./showcase-large.jsf?theme=ipad&simulator=true');
+            document.getElementById('nexus4-landscape').setAttribute('src','./showcase-small.jsf?theme=android_light&simulator=true');
             if( document.documentElement.classList ){
-                document.getElementById('ipad-landscape-device').classList.add('active');
+                document.getElementById('nexus4-landscape-device').classList.add('active');
             }
             setSlider(3);
         }
     }
-    function openNexus4Portrait(){
+    function openBBZ10(){
         closeAllDevices();
-        document.getElementById('nexus4-portrait').setAttribute('src','./showcase-small.jsf?theme=android_light&simulator=true');
-        if( document.documentElement.classList ){
-            document.getElementById('nexus4-portrait-device').classList.add('active');
+        if( window.deviceOrientation === 'portrait' ){
+            document.getElementById('bbz10-portrait').setAttribute('src','./showcase-small.jsf?theme=bb10&simulator=true');
+            if( document.documentElement.classList ){
+                document.getElementById('bbz10-portrait-device').classList.add('active');
+            }
+            setSlider(4);
         }
-        setSlider(4);
+        else{
+            document.getElementById('bbz10-landscape').setAttribute('src','./showcase-small.jsf?theme=bb10&simulator=true');
+            if( document.documentElement.classList ){
+                document.getElementById('bbz10-landscape-device').classList.add('active');
+            }
+            setSlider(5);
+        }
     }
-    function openNexus7Portrait(){
+    function openNexus7(){
         closeAllDevices();
-        document.getElementById('nexus7-portrait').setAttribute('src','./showcase-large.jsf?theme=android_dark&simulator=true');
-        if( document.documentElement.classList ){
-            document.getElementById('nexus7-portrait-device').classList.add('active');
+        if( window.deviceOrientation === 'portrait' ){
+            document.getElementById('nexus7-portrait').setAttribute('src','./showcase-small.jsf?theme=android_dark&simulator=true');
+            if( document.documentElement.classList ){
+                document.getElementById('nexus7-portrait-device').classList.add('active');
+            }
+            setSlider(6);
         }
-        setSlider(5);
-    }
-    function openBBZ10Portrait(){
-        closeAllDevices();
-        document.getElementById('bbz10-portrait').setAttribute('src','./showcase-small.jsf?theme=bb10&simulator=true');
-        if( document.documentElement.classList ){
-            document.getElementById('bbz10-portrait-device').classList.add('active');
+        else{
+            document.getElementById('nexus7-landscape').setAttribute('src','./showcase-small.jsf?theme=android_dark&simulator=true');
+            if( document.documentElement.classList ){
+                document.getElementById('nexus7-landscape-device').classList.add('active');
+            }
+            setSlider(7);
         }
-        setSlider(6);
     }
     function openBBQ10Portrait(){
         closeAllDevices();
@@ -269,7 +281,24 @@
         if( document.documentElement.classList ){
             document.getElementById('bbq10-portrait-device').classList.add('active');
         }
-        setSlider(7);
+        setSlider(8);
+    }
+    function openIpad(){
+        closeAllDevices();
+        if( window.deviceOrientation === 'portrait' ){
+            document.getElementById('ipad-portrait').setAttribute('src','./showcase-large.jsf?theme=ipad&simulator=true');
+            if( document.documentElement.classList ){
+                document.getElementById('ipad-portrait-device').classList.add('active');
+            }
+            setSlider(9);
+        }
+        else{
+            document.getElementById('ipad-landscape').setAttribute('src','./showcase-large.jsf?theme=ipad&simulator=true');
+            if( document.documentElement.classList ){
+                document.getElementById('ipad-landscape-device').classList.add('active');
+            }
+            setSlider(10);
+        }
     }
     function closeAllDevices(){
         document.getElementById('iphone-portrait').setAttribute('src','about:blank');
@@ -277,8 +306,11 @@
         document.getElementById('ipad-portrait').setAttribute('src','about:blank');
         document.getElementById('ipad-landscape').setAttribute('src','about:blank');
         document.getElementById('nexus4-portrait').setAttribute('src','about:blank');
+        document.getElementById('nexus4-landscape').setAttribute('src','about:blank');
         document.getElementById('nexus7-portrait').setAttribute('src','about:blank');
+        document.getElementById('nexus7-landscape').setAttribute('src','about:blank');
         document.getElementById('bbz10-portrait').setAttribute('src','about:blank');
+        document.getElementById('bbz10-landscape').setAttribute('src','about:blank');
         document.getElementById('bbq10-portrait').setAttribute('src','about:blank');
         if( document.documentElement.classList ){
             document.getElementById('iphone-portrait-device').classList.remove('active');
@@ -286,8 +318,11 @@
             document.getElementById('ipad-portrait-device').classList.remove('active');
             document.getElementById('ipad-landscape-device').classList.remove('active');
             document.getElementById('nexus4-portrait-device').classList.remove('active');
+            document.getElementById('nexus4-landscape-device').classList.remove('active');
             document.getElementById('nexus7-portrait-device').classList.remove('active');
+            document.getElementById('nexus7-landscape-device').classList.remove('active');
             document.getElementById('bbz10-portrait-device').classList.remove('active');
+            document.getElementById('bbz10-landscape-device').classList.remove('active');
             document.getElementById('bbq10-portrait-device').classList.remove('active');
         }
     }
@@ -321,6 +356,9 @@
     function toggleOrientation(){
         window.deviceOrientation = (window.deviceOrientation === 'portrait' ? 'landscape' : 'portrait' );
         document.documentElement.className = window.deviceOrientation;
+        if (navigator.appVersion.indexOf("Mac")!=-1){
+            document.documentElement.className += " mac";
+        }
         var radios = document.getElementsByName('slider');
         for (var i = 0, length = radios.length; i < length; i++) {
             if (radios[i].checked) {
@@ -331,27 +369,25 @@
                 else if( sel.id === 'ipadRadio'){
                     openIpad();
                 }
-                /*
+                
                 else if( sel.id === 'nexus4Radio'){
-                    openNexus4Portrait();
+                    openNexus4();
                 }
                 else if( sel.id === 'nexus7Radio'){
-                    openNexus7Portrait();
+                    openNexus7();
                 }
                 else if( sel.id === 'bbz10Radio'){
                     openBBZ10Portrait();
                 }
-                else if( sel.id === 'bbq10Radio'){
-                    openBBQ10Portrait();
-                }*/
                 break;
             }
         }
     }
+    window.deviceOrientation = document.documentElement.className = 'portrait';
     if (navigator.appVersion.indexOf("Mac")!=-1){
         document.documentElement.className += " mac";
     }
-    window.deviceOrientation = document.documentElement.className = 'portrait';
+    
     </script>
 
 </body>
