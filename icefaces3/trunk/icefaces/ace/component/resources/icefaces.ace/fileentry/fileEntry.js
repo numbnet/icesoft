@@ -252,6 +252,7 @@ ice.ace.fileentry = {
         var inputElem = document.createElement('input');
         inputElem.setAttribute('type','hidden');
         inputElem.setAttribute('name',hiddenName);
+        inputElem.setAttribute('autocomplete', 'off');
         inputElem.setAttribute('value',val);
         formElem.appendChild(inputElem);
         return inputElem;

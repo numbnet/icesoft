@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.selectmenu;
 
 import org.icefaces.ace.renderkit.InputRenderer;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.util.EnvUtils;
@@ -150,6 +151,7 @@ public class SelectMenuRenderer extends InputRenderer {
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("name", inputClientId, null);
         writer.writeAttribute("value", value, null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement("input");
 
         String divId = clientId + AUTOCOMPLETE_DIV;

@@ -320,18 +320,21 @@ public class ListRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ID_ATTR, id + "_selections", null);
         writer.writeAttribute(HTML.NAME_ATTR, id + "_selections", null);
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement(HTML.INPUT_ELEM);
 
         writer.startElement(HTML.INPUT_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, id + "_deselections", null);
         writer.writeAttribute(HTML.NAME_ATTR, id + "_deselections", null);
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement(HTML.INPUT_ELEM);
 
         writer.startElement(HTML.INPUT_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, id + "_reorderings", null);
         writer.writeAttribute(HTML.NAME_ATTR, id + "_reorderings", null);
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement(HTML.INPUT_ELEM);
     }
 

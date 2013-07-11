@@ -95,6 +95,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
         writer.writeAttribute(HTML.ID_ATTR, id, null);
         writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement(HTML.INPUT_ELEM);
 
         id = clientId + "_deselect";
@@ -102,6 +103,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
         writer.writeAttribute(HTML.ID_ATTR, id, null);
         writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement(HTML.INPUT_ELEM);
 
         id = clientId + "_expand";
@@ -109,6 +111,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
         writer.writeAttribute(HTML.ID_ATTR, id, null);
         writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement(HTML.INPUT_ELEM);
 
         id = clientId + "_contract";
@@ -116,6 +119,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
         writer.writeAttribute(HTML.ID_ATTR, id, null);
         writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement(HTML.INPUT_ELEM);
     }
 

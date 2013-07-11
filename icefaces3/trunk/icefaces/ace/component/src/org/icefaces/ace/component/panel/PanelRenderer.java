@@ -37,6 +37,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.component.menu.Menu;
 import org.icefaces.ace.renderkit.CoreRenderer;
 
+import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -284,6 +285,7 @@ public class PanelRenderer extends CoreRenderer {
         writer.writeAttribute("id", name, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("value", value, null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement("input");
     }
 

@@ -39,7 +39,8 @@ public class TabSetProxy extends TabSetProxyBase{
     	writer.startElement(HTML.INPUT_ELEM, this); 	
     	writer.writeAttribute(HTML.ID_ATTR, id, HTML.ID_ATTR);
     	writer.writeAttribute(HTML.NAME_ATTR, id, HTML.NAME_ATTR);    	
-    	writer.writeAttribute(HTML.TYPE_ATTR, "hidden", HTML.TYPE_ATTR);    	
+    	writer.writeAttribute(HTML.TYPE_ATTR, "hidden", HTML.TYPE_ATTR);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
     	writer.endElement(HTML.INPUT_ELEM);
     }
 

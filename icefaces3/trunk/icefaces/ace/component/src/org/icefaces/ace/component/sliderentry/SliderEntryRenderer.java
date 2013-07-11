@@ -40,6 +40,7 @@ import org.icefaces.ace.event.SlideEndEvent;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
@@ -127,6 +128,7 @@ public class SliderEntryRenderer extends CoreRenderer{
 		writer.writeAttribute("name", clientId + "_hidden" , "name");
 		writer.writeAttribute("type", "hidden" , "type");
 		writer.writeAttribute("value", slider.getValue() , "value");
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
 		writer.endElement("input");
 
 		// top/left label
