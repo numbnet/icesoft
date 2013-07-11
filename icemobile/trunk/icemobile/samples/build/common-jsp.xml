@@ -30,7 +30,7 @@
 
     <patternset id="pattern.distribute.icemobile.jsp">
         <include name="${icemobile-jsp.lib.name}.jar"/>
-        <include name="icemobile-simulator.jar"/>
+        <include name="icemobile-ee-simulator.jar"/>
         <include name="jstl-1.2.jar"/>
     	<include name="mail.jar"/>
 	</patternset>
