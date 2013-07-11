@@ -206,7 +206,7 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
     }
 
     /**
-     * Set the RequestAdapter for the ResourceStore, such as the FileResourceAdapter
+     * Set the ResourceAdapter for the ResourceStore, such as the FileResourceAdapter
      * or ByteArrayResourceAdapter(default). 
      * 
      * @param adapter The ResourceAdapter to handle Resources and define the Resource type.
