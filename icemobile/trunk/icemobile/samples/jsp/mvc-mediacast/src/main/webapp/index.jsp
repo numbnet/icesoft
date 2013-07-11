@@ -14,5 +14,5 @@
   ~ governing permissions and limitations under the License.
   --%>
 <%
-   response.sendRedirect("app");
+   response.sendRedirect("app?"+request.getQueryString());
 %>
