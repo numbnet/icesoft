@@ -89,6 +89,7 @@ public class FormRenderer extends DomBasicRenderer {
             formHiddenField.setAttribute("type", "hidden");
             formHiddenField.setAttribute("name", formClientId);
             formHiddenField.setAttribute("value", formClientId);
+            formHiddenField.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
             root.appendChild(formHiddenField);
 
             //JSF 2.0 portlet hidden field
@@ -103,6 +104,7 @@ public class FormRenderer extends DomBasicRenderer {
                     encodedURLField.setAttribute("type", "hidden");
                     encodedURLField.setAttribute("name", "javax.faces.encodedURL");
                     encodedURLField.setAttribute("value", encodedPartialActionURL);
+                    encodedURLField.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
                     root.appendChild(encodedURLField);
                 }
             }

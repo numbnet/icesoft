@@ -50,6 +50,7 @@ public class HiddenRenderer extends DomBasicInputRenderer {
             String clientId = uiComponent.getClientId(facesContext);
             root.setAttribute("name", clientId);
             root.setAttribute("type", "hidden");
+            root.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         }
         Element root = (Element) domContext.getRootNode();
         if (currentValue != null) {

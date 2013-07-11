@@ -173,6 +173,7 @@ public class ExtrasSetup implements SystemEventListener {
             //css input field is required by some renderers (such as DnD)
             writer.startElement("input", component);
             writer.writeAttribute("type", "hidden", null);
+            writer.writeAttribute("autocomplete", "off", null);
             writer.writeAttribute("name", CurrentStyle.CSS_UPDATE_FIELD, null);
             writer.writeAttribute("value", "", null);
             writer.endElement("input");
@@ -202,6 +203,7 @@ public class ExtrasSetup implements SystemEventListener {
                     if (FormRenderer.COMMAND_LINK_HIDDEN_FIELD.equals(nextField.getValue())) {
                         writer.startElement("input", component);
                         writer.writeAttribute("type", "hidden", null);
+                        writer.writeAttribute("autocomplete", "off", null);
                         writer.writeAttribute("name", nextField.getKey().toString(), null);
                         writer.endElement("input");
                     }

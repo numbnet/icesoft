@@ -377,6 +377,7 @@ public class GroupRenderer
         ele.setAttribute(HTML.NAME_ATTR, n);
         ele.setAttribute(HTML.ID_ATTR, n);
         ele.setAttribute(HTML.VALUE_ATTR, "");
+        ele.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         return ele;
     }
 

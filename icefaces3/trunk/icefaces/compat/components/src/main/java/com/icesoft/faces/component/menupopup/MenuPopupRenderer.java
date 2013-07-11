@@ -59,6 +59,7 @@ public class MenuPopupRenderer extends MenuBarRenderer {
                 progressListenerFld.setAttribute(HTML.TYPE_ATTR, "hidden");
                 progressListenerFld.setAttribute(HTML.STYLE_ATTR, "display:none;");
                 progressListenerFld.setAttribute(HTML.VALUE_ATTR, "");
+                progressListenerFld.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
                 menuDiv.appendChild(progressListenerFld);
             }
             

@@ -180,6 +180,7 @@ public class TableRenderer
                         clientOnly.setAttribute(HTML.TYPE_ATTR, "hidden");
                         clientOnly.setAttribute(HTML.ID_ATTR, clientId + "clientOnly");
                         clientOnly.setAttribute(HTML.NAME_ATTR, clientId + "clientOnly");
+                        clientOnly.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
                         root.appendChild(clientOnly);
                         uiData.resetResizableTblColumnsWidthIndex();
                     }
@@ -667,6 +668,7 @@ public class TableRenderer
             rowSelectedField.setAttribute(HTML.ID_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.NAME_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.TYPE_ATTR, "hidden");
+            rowSelectedField.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
             hiddenInputNode = rowSelectedField;
             rowSelectionFunctionName = "Ice.tableRowClicked";
             
@@ -674,12 +676,14 @@ public class TableRenderer
             Element clickedRowField = domContext.createElement(HTML.INPUT_ELEM);
             String clickedRowParam = getClickedRowParameterName(facesContext, uiData);
             clickedRowField.setAttribute(HTML.TYPE_ATTR, "hidden");
-            clickedRowField.setAttribute(HTML.NAME_ATTR, clickedRowParam); 
+            clickedRowField.setAttribute(HTML.NAME_ATTR, clickedRowParam);
+            clickedRowField.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
             
             Element clickCountField = domContext.createElement(HTML.INPUT_ELEM);
             String clickCountParam = getClickCountParameterName(facesContext, uiData);
             clickCountField.setAttribute(HTML.TYPE_ATTR, "hidden");
-            clickCountField.setAttribute(HTML.NAME_ATTR, clickCountParam); 
+            clickCountField.setAttribute(HTML.NAME_ATTR, clickCountParam);
+            clickCountField.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
             
             hiddenClickedRowField = clickedRowField;
             hiddenClickCountField = clickCountField;
