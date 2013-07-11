@@ -61,6 +61,7 @@ public class CoalescingResource extends Resource {
             ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
             Resource resource = handler.createResource(next.name, next.library);
             streams.add(resource.getInputStream());
+            streams.add(new ByteArrayInputStream("\n\n".getBytes()));
         }
 
         return new SequenceInputStream(Collections.enumeration(streams));
