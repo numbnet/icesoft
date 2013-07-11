@@ -285,7 +285,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
         json.endMap();
 
-        writer.write("ice.ace.Calendar.init(" + json + ");");
+        writer.write("ice.ace.create('CalendarInit',[" + json + "]);");
         writer.endElement("script");
     }
 

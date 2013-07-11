@@ -179,7 +179,7 @@ ice.ace.Calendar.prototype.destroy = function() {
     window[this.cfg.widgetVar] = this.jq = this.cfg.altField = null;
 };
 
-ice.ace.Calendar.init = function(options) {
+ice.ace.CalendarInit = function(options) {
     ice.ace.jq().ready(function() {
         var widgetVar = options.widgetVar, id = options.id;
         var input = ice.ace.jq(ice.ace.escapeClientId(id) + "_input");
