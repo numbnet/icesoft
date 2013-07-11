@@ -104,20 +104,37 @@ public class RowState implements Serializable {
         this.visible = visible;
     }
 
+    /**
+     * Get the backing List of Strings containing the Ids of the CellEditor components active in this row. The reference returned is not to a List copy but to the actual list defining the selection state.
+     * @return the List<String> of UIComponent Ids defining the active CellEditor components
+     */
     public List<String> getActiveCellEditorIds() {
         if (activeCellEditorIds == null) activeCellEditorIds = new ArrayList<String>();
         return activeCellEditorIds;
     }
 
+    /**
+     * Get the backing List of Strings containing the Ids of the Column components selected in this row. The reference returned is not to a List copy but to the actual list defining the selection state.
+     * @return the List<String> of UIComponent Ids defining the selected Column components
+     */
     public List<String> getSelectedColumnIds() {
         if (selectedColumnIds == null) selectedColumnIds = new ArrayList<String>();
         return selectedColumnIds;
     }
 
+    /**
+     * Set a List of Strings containing the Ids of the Column components selected in this row.
+     * @param selectedColumnIds
+     */
     public void setSelectedColumnIds(List<String> selectedColumnIds) {
         this.selectedColumnIds = selectedColumnIds;
     }
 
+    /**
+     * Convenience method to take the id of the Column component and add it to the list of selected columns
+     * in the RowState for the given row object.
+     * @param column
+     */
     public void addSelectedColumn(UIComponent column) {
         if (column != null) {
             String id = column.getId();
@@ -126,12 +143,21 @@ public class RowState implements Serializable {
         }
     }
 
+    /**
+     * Convenience method to take the id of the Column component and remove it from the list of selected columns
+     * in the RowState for the given row object.
+     * @param column
+     */
     public void removeSelectedColumn(UIComponent column) {
         if (column != null) {
             getSelectedColumnIds().remove(column.getId());
         }
     }
 
+    /**
+     * Set a List of Strings containing the Ids of the CellEditor components active in this row.
+     * @param activeCellEditorIds
+     */
     public void setActiveCellEditorIds(List<String> activeCellEditorIds) {
         this.activeCellEditorIds = activeCellEditorIds;
     }
@@ -139,8 +165,6 @@ public class RowState implements Serializable {
     /**
      * Convenience method to take the id of the CellEditor component and add it to the list of active editors
      * in the row state for a given row object.
-     *
-     * Only call this method while DataTable has a row index set or the editor will be disabled for all rows.
      * @param editor
      */
     public void addActiveCellEditor(UIComponent editor) {
@@ -154,8 +178,6 @@ public class RowState implements Serializable {
     /**
      * Convenience method to take the id of the CellEditor component and remove it from the list of active editors
      * in the row state for a given row object.
-     *
-     * Only call this method while DataTable has a row index set or the editor will be disabled for all rows.
      * @param editor
      */
     public void removeActiveCellEditor(UIComponent editor) {
