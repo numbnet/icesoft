@@ -610,8 +610,10 @@ public class TreeRenderer extends DomBasicRenderer {
         hiddenTreeExpand.setAttribute(HTML.TYPE_ATTR, "hidden");
         hiddenTreeExpand.setAttribute(HTML.NAME_ATTR, hiddenTreeExpandFieldName);
         hiddenTreeExpand.setAttribute(HTML.ID_ATTR, hiddenTreeExpandFieldName);
+        hiddenTreeExpand.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         Element hiddenTreeAction = domContext.createElement(HTML.INPUT_ELEM);
         hiddenTreeAction.setAttribute(HTML.TYPE_ATTR, "hidden");
+        hiddenTreeAction.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         hiddenTreeAction.setAttribute(HTML.NAME_ATTR, CustomComponentUtils.getHiddenTreeActionFieldName(
                 uiComponent.getClientId(
                         facesContext),

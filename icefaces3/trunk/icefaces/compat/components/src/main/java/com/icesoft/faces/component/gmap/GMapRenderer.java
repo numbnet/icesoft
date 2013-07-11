@@ -108,6 +108,7 @@ public class GMapRenderer extends DomBasicRenderer {
             hidden.setAttribute(HTML.VALUE_ATTR, value);
         }
         hidden.setAttribute(HTML.TYPE_ATTR, "hidden");
+        hidden.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         td.appendChild(hidden);
     }
 

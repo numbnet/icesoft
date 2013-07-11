@@ -74,11 +74,13 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
             hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
             hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
+            hiddenField.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
             root.appendChild(hiddenField);
             hiddenField = domContext.createElement(HTML.INPUT_ELEM);
             String clickedNodeName = uiComponent.getClientId(facesContext) + "ClickedNodeName";
             hiddenField.setAttribute(HTML.NAME_ATTR, clickedNodeName);
             hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
+            hiddenField.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
             root.appendChild(hiddenField);
             UIComponent form = findForm(uiComponent);
             if (form == null) {

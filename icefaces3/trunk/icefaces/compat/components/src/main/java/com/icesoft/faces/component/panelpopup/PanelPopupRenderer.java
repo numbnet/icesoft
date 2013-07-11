@@ -256,6 +256,7 @@ public class PanelPopupRenderer extends GroupRenderer {
                 Element clientOnly = domContext.createElement(HTML.INPUT_ELEM);
                 clientOnly.setAttribute(HTML.TYPE_ATTR, "hidden");
                 clientOnly.setAttribute(HTML.ID_ATTR, clientId + "clientOnly");
+                clientOnly.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
                 root.appendChild(clientOnly);
             }
         }
