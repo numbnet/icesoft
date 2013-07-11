@@ -21,6 +21,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Defines the view state of an individual row object within an ace:dataTable.
+ * Associated with row objects by entries in a RowStateMap where the keys are row
+ * objects and the values are instances of this class.
+ */
 public class RowState implements Serializable {
     public enum ExpansionType { PANEL, ROW, NONE }
     ExpansionType expansionType = ExpansionType.PANEL;
@@ -40,66 +45,141 @@ public class RowState implements Serializable {
 
     public RowState() {}
 
+    /**
+     * Get the expansion mode defined for this row.
+     * @return ExpansionType enum
+     */
     public ExpansionType getExpansionType() {
         return expansionType;
     }
 
+    /**
+     * Set the expansion mode (row, panel or none) for this row.
+     * @param expansionType expansion mode enum
+     */
     public void setExpansionType(ExpansionType expansionType) {
         this.expansionType = expansionType;
     }
 
+    /**
+     * Get the String defining the set of columns rendered by this row. Column
+     * sets are defined by ColumnGroup components, whose type attributes are
+     * matched to this field to determine which column set is rendered. The String
+     * "default" matches all Columns outside of ColumnGroups. Not currently
+     * implemented, all values behave like "default".
+     *
+     * @return column set name
+     */
     public String getType() {
         return type;
     }
 
+
+    /**
+     * Set the String defining the set of columns rendered by this row. Column
+     * sets are defined by ColumnGroup components, whose type attributes are
+     * matched to this field to determine which column set is rendered. The String
+     * "default" matches all Columns outside of ColumnGroups. Not currently
+     * implemented, all values behave like "default".
+     *
+     * @param type column set name
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Get the selected state of the row.
+     * @return if the row is selected
+     */
     public boolean isSelected() {
         return selected;
     }
 
+    /**
+     * Set the selected state of the row.
+     * @param selected is the row selected
+     */
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
+    /**
+     * Get the selectable state of the row.
+     * @return if the row or child columns can be selected
+     */
     public boolean isSelectable() {
         return selectable;
     }
 
+    /**
+     * Set the selectable state of the row.
+     * @param selectable if the row or child columns can be selected
+     */
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
 
+    /**
+     * Get the expanded state of the row.
+     * @return is the row expanded
+     */
     public boolean isExpanded() {
         return expanded;
     }
 
+    /**
+     * Set the expanded state of the row.
+     * @param expanded is the row expanded
+     */
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
 
+    /**
+     * Get the expandibility of the row.
+     * @return is the row expandible
+     */
     public boolean isExpandable() {
         return expandable;
     }
 
+    /**
+     * Set the expandibility of the row.
+     * @param expandable is the row expandible
+     */
     public void setExpandable(boolean expandable) {
         this.expandable = expandable;
     }
 
+    /**
+     * Get the editibility of the row.
+     * @return is the row editable
+     */
     public boolean isEditable() {
         return editable;
     }
 
+    /**
+     * Set the editibility of the row.
+     * @param editable is the row editable
+     */
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
 
+    /**
+     * Get if the row is visible.
+     * @return is the row visible
+     */
     public boolean isVisible() {
         return visible;
     }
 
+    /**
+     * Set if the row is visible.
+      * @param visible is the row visible
+     */
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
