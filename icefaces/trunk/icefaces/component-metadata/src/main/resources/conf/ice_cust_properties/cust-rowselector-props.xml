@@ -373,3 +373,19 @@
         <default-value>false</default-value>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[<p>This attribute only applies when the table is contained in an ice:panelGroup component. When true,
+		the horizontal scroll position of the panel group will be saved when selecting a row and sending the request to the server, 
+		and it will be restored when the response comes. This is to avoid issues on FF and IE browsers related to resetting the
+		horizontal scroll position when selecting a row. Note that when the value of this attribute is true, keyboardNavigationEnabled
+		will not be functional. Default value is false.</p>]]>
+    </description>
+    <property-name>preserveHorizontalScrolling</property-name>
+    <property-class>boolean</property-class>    
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
+</property>

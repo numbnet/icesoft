@@ -81,6 +81,7 @@ public class RowSelector extends UIPanel {
     private String renderedOnUserRole = null;
     transient private List selectedRowsList = new ArrayList();
     private Boolean keyboardNavigationEnabled;     
+	private Boolean preserveHorizontalScrolling;
     private Boolean singleRowAutoSelect;  
     public static final String COMPONENT_TYPE = "com.icesoft.faces.RowSelector";
     public static final String COMPONENT_FAMILY =
@@ -594,7 +595,7 @@ public class RowSelector extends UIPanel {
 	}
 
 	public Object saveState(FacesContext context) {
-        Object[] state = new Object[24];
+        Object[] state = new Object[25];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -619,6 +620,7 @@ public class RowSelector extends UIPanel {
         state[21] = currentSelection;
         state[22] = tabindex;
         state[23] = lastSelectedRow;
+		state[24] = preserveHorizontalScrolling;
         return state;
     }
 
@@ -652,6 +654,7 @@ public class RowSelector extends UIPanel {
         currentSelection = (List)state[21];
         tabindex = (String) state[22];
         lastSelectedRow = state[23];
+		preserveHorizontalScrolling = (Boolean) state[24];
     }
     
     private String styleClass;
@@ -761,6 +764,20 @@ public class RowSelector extends UIPanel {
     public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
         this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
     }  
+	
+    public boolean isPreserveHorizontalScrolling() {
+        if (preserveHorizontalScrolling != null) {
+            return preserveHorizontalScrolling.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("preserveHorizontalScrolling");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : false;
+    }
+
+    public void setPreserveHorizontalScrolling(boolean preserveHorizontalScrolling) {
+        this.preserveHorizontalScrolling = new Boolean(preserveHorizontalScrolling);
+    }
     
     public boolean isSingleRowAutoSelect() {
         if (singleRowAutoSelect != null) {
