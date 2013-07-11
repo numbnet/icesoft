@@ -30,7 +30,7 @@
         <include name="mail.jar"/>
         <include name="icefaces-ee-ext.jar"/>
     	<include name="${icefaces-mobi.lib.name}.jar" />
-        <include name="icemobile-simulator.jar"/>
+        <include name="icemobile-ee-simulator.jar"/>
     </patternset>
 
     <target name="compile" depends="pre.compile">
