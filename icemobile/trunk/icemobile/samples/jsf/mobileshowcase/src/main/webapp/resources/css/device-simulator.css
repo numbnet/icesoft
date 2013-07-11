@@ -104,7 +104,7 @@ body{
         text-shadow: 1px 1px 1px #1B5EB3;
         margin-left: 15px;
         margin-right: 10px;
-        margin-top: 40px;
+        margin-top: 44px;
     }
     @media screen and (max-width: 1100px) {  
         #header-container .logo{ display: none}
@@ -131,7 +131,10 @@ body{
         float:left;
     }
     .icemobile-icon img{
-        vertical-align: middle;padding-left: 15px;
+        vertical-align: middle;
+        padding-left: 25px;
+        height: 86px;
+        margin-top: 10px;
     }
     @media screen and (max-width: 700px) {  
         .icemobile-icon img{ 
@@ -281,7 +284,7 @@ iframe {
 }
 /* IPHONE PORTRAIT */
 .iphone-portrait {
-    background-image: url(css-images/iphone4-portrait-darker-highlight.png);
+    background-image: url(css-images/iphone4-portrait.png);
     padding: 115px 0 140px 0px;
     background-size: 384px auto;
     opacity: 0;
@@ -301,19 +304,19 @@ iframe {
 /* IPHONE LANDSCAPE */
 .iphone-landscape {
     background-image: url(css-images/iphone4-landscape.png);
-    padding: 23px 3px 24px 0;
+    padding: 23px 2px 24px 0;
     opacity: 0;
 }
 #iphone-landscape-device.active .iphone-landscape{ 
     opacity: 1;
 }
 .iphone-landscape .device{
-    width: 482px; 
-    height: 299px; 
+    width: 483px;
+    height: 268px;
     padding-top: 31px;
     padding-bottom: 32px;
 }
-#iphone-landscape{ width:498px }
+#iphone-landscape{ width:499px }
 .mac #iphone-landscape{ width:482px }
 /* IPAD PORTRAIT */
 .ipad-portrait {
@@ -372,6 +375,26 @@ iframe {
 #nexus4-portrait{ width: 400px }
 .mac #nexus4-portrait{ width: 384px }
 
+/* NEXUS 4 LANDSCAPE */
+.nexus4-landscape {
+    background-image: url(css-images/nexus4-landscape.png);
+    padding: 55px 0 117px 0px;
+    background-size: 904px auto;
+    opacity: 0;
+}
+#nexus4-landscape-device.active .nexus4-landscape{ 
+    opacity: 1;
+}
+.nexus4-landscape .device{
+    width: 640px;
+    height: 386px;
+    padding-top: 0px;
+    padding-bottom: 44px;
+    padding-left: 59px;
+}
+#nexus4-landscape{ width: 656px }
+.mac #nexus4-landscape{ width: 640px }
+
 /* NEXUS 7 PORTRAIT */
 .nexus7-portrait {
     background-image: url(css-images/nexus7-portrait.png);
@@ -391,6 +414,25 @@ iframe {
 #nexus7-portrait{ width: 618px }
 .mac #nexus7-portrait{ width: 603px }
 
+/* NEXUS 7 LANDSCAPE */
+.nexus7-landscape {
+    background-image: url(css-images/nexus7-landscape.png);
+    padding: 80px 0 157px 0px;
+    background-size: 1271px auto;
+    opacity: 0;
+}
+#nexus7-landscape-device.active .nexus7-landscape{ 
+    opacity: 1;
+}
+.nexus7-landscape .device{
+    width: 905px;
+    height: 611px;
+    padding-bottom: 47px;
+    padding-left: 28px;
+}
+#nexus7-landscape{ width: 921px }
+.mac #nexus7-landscape{ width: 905px }
+
 /* BBZ10 PORTRAIT */
 .bbz10-portrait {
     background-image: url(css-images/bbz10-portrait.png);
@@ -409,6 +451,26 @@ iframe {
 }
 #bbz10-portrait{ width: 361px }
 .mac #bbz10-portrait{ width: 345px }
+
+/* BBZ10 LANDSCAPE */
+.bbz10-landscape {
+    background-image: url(css-images/bbz10-landscape.png);
+    padding: 43px 0px 117px 0px;
+    background-size: 907px auto;
+    opacity: 0;
+}
+#bbz10-landscape-device.active .bbz10-landscape{ 
+    opacity: 1;
+}
+.bbz10-landscape .device{
+    width: 640px;
+    height: 355px;
+    padding-top: 21px;
+    padding-bottom: 44px;
+    padding-left: 10px;
+}
+#bbz10-landscape{ width: 656px }
+.mac #bbz10-landscape{ width: 640px }
 
 /* BBQ10 PORTRAIT */
 .bbq10-portrait {
@@ -433,17 +495,17 @@ iframe {
 
 .device-type{
     color: #005499;
-    font-size: 24px;
+    font-size: 26px;
     display: block;
     line-height: 25px;
     font-weight: bold;
-    margin-left: 18px;
+    margin-left: 25px;
     top: 10px;
     position: absolute;
     opacity: 0;
 }
 .device-type .orientation{
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 100;
     margin-top: 9px;
     margin-left: -1px;
@@ -466,19 +528,15 @@ iframe {
 }
 
 #slides .inner {
-    width: 1000%;
+    width: 2000%;
     line-height: 0;
 }
 
 #slides article {
-    width: 10%;
+    width: 5%;
     float: left;
     margin-top:-39px;
 }
-#slides article#ipad-landscape-device{
-    margin-top: 37px;
-}
-
 
 #slides .inner {
     -webkit-transform: translateZ(0);
@@ -505,7 +563,7 @@ iframe {
 #scale{
     position: absolute;
     top: 180px;
-    left: 9px;
+    left: 15px;
     color: #005499;
     z-index: 999;
     padding: 6px 10px 10px;
@@ -534,7 +592,7 @@ iframe .mobi-splitpane-scrollable::-webkit-scrollbar {
     background-size: 120px auto;
     background-repeat: no-repeat;
     float: right;
-    margin-right: 92px;
+    margin-right: 25px;
     margin-top: 15px;
     border: none;
     text-indent: -9999px;
@@ -543,13 +601,13 @@ iframe .mobi-splitpane-scrollable::-webkit-scrollbar {
     background-image: url(css-images/choose-device-hover.png);
 }
 #device-selector{
-    background-image: url(css-images/choose-device-menu-background.png);
+    background-image: url(css-images/simulator-device-menu.png);
+    background-repeat: no-repeat;
     position: absolute;
-    width: 363px;
-    height: 718px;
+    width: 279px;
+    height: 507px;
     top: 47px;
-    right: 15px;
-    padding-top: 20px;
+    right: 25px;
     text-align: center;
     opacity: 0.8;
     display: none;
@@ -566,8 +624,18 @@ iframe .mobi-splitpane-scrollable::-webkit-scrollbar {
     background-color: transparent;
     background-repeat: no-repeat;
     display: block;
-    margin: 10px auto;
+    margin: 20px auto;
 }
+#device-selector .col1{
+    margin-left: 18px;
+}
+#device-selector #bbz10-btn, #device-selector #nexus7-btn{ 
+    margin-top: 25px;
+}
+#device-selector #bbq10-btn{
+    margin-top: 40px;
+}
+
 #iphone4-btn{
     height: 100px;
     width: 100px;
@@ -579,14 +647,24 @@ html.landscape #iphone4-btn{
     background-image: url(css-images/iphone3-4-h.png);
 }
 #nexus4-btn{
-    background-image: url(css-images/nexus4-v.png);
     height: 100px;
     width: 100px;
 }
+html.portrait #nexus4-btn{
+    background-image: url(css-images/nexus4-v.png);
+}
+html.landscape #nexus4-btn{
+    background-image: url(css-images/nexus4-h.png);
+}
 #nexus7-btn{
-    background-image: url(css-images/nexus7-v.png);
     height: 120px;
     width: 120px;
+}
+html.portrait #nexus7-btn{
+    background-image: url(css-images/nexus7-v.png);
+}
+html.landscape #nexus7-btn{
+    background-image: url(css-images/nexus7-h.png);
 }
 #bbq10-btn{
     background-image: url(css-images/bbq10-v.png);
@@ -594,9 +672,14 @@ html.landscape #iphone4-btn{
     width: 100px;
 }
 #bbz10-btn{
-    background-image: url(css-images/bbz10-v.png);
     height: 100px;
     width: 100px;
+}
+html.portrait #bbz10-btn{
+    background-image: url(css-images/bbz10-v.png);
+}
+html.landscape #bbz10-btn{
+    background-image: url(css-images/bbz10-h.png);
 }
 #ipad-btn{
     height: 150px;
@@ -609,16 +692,17 @@ html.landscape #ipad-btn{
     background-image: url(css-images/ipad-h.png);
 }
 #change-orientation{
-    width: 20px;
-    height: 23px;
+    width: 279px;
+    height: 52px;
     border: none;
-    position: absolute;
-    right: 15px;
     background-repeat: no-repeat;
+    background-position: 50% 65%;
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0);
 }
 html.portrait #change-orientation{
-    background-image: url(css-images/change-orientation-landscape.png);
+    background-image: url(css-images/rotate-right.png);
 }
 html.landscape #change-orientation{
-    background-image: url(css-images/change-orientation-portrait.png);
+    background-image: url(css-images/rotate-left.png);
 }
