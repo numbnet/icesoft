@@ -89,6 +89,7 @@ MvcUtil.enhanceForm = function(theForm)  {
                     mimeType = "application/x-www-form-urlencoded";
                 }
 
+console.log("submitting form");
                 $.ajax({
                     url:$(this).attr("action"),
                     data:formData,
@@ -155,6 +156,9 @@ window.onload = function() {
     if( window.history && window.history.pushState ){
         window.setTimeout(function() {
             window.addEventListener("popstate", function(e) {
+                if (null != ice.mobi.getDeviceCommand())  {
+                    return;
+                }
                 $('.ajaxzone').load(location.pathname, {cache:false});
             }, false);
         }, 1);
