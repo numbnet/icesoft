@@ -900,6 +900,10 @@ if (window.addEventListener) {
             }
             setTimeout( function(){
                 var loc = window.location;
+                //changing hash to temporary value ensures changes
+                //to repeated values are detected
+                history.pushState("", document.title,
+                        loc.pathname + loc.search + "#clear-icemobilesx");
                 history.pushState("", document.title, loc.pathname + loc.search);
             }, 1);
         }
