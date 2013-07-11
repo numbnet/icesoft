@@ -16,6 +16,6 @@
 
 <%
 
-   response.sendRedirect("./showcase.jsf");
+   response.sendRedirect("./showcase.jsf?"+request.getQueryString());
 %>
 
