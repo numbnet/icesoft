@@ -2143,7 +2143,9 @@ Autocompleter.Base.prototype = {
                 this.iefix = $(this.update.id + '_iefix');
             }
             if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
-            this.element.focus();
+            if (document.activeElement == null || document.activeElement == document.body) {
+                this.element.focus();
+            }
         } catch (e) {
             logger.info(e);
         }
