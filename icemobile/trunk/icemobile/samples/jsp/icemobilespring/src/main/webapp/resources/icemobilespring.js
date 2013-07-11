@@ -156,7 +156,7 @@ window.onload = function() {
     if( window.history && window.history.pushState ){
         window.setTimeout(function() {
             window.addEventListener("popstate", function(e) {
-                if (null != ice.mobi.getDeviceCommand())  {
+                if (ice.mobi.getDeviceCommand())  {
                     return;
                 }
                 $('.ajaxzone').load(location.pathname, {cache:false});
