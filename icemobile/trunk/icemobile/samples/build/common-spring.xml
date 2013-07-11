@@ -41,6 +41,7 @@
 		<include name="${icemobile-jsp.lib.name}.jar"/>
 		<include name="${icepush.lib.name}.jar"    unless="no-icepush"/>
         <include name="${icemobile-spring.lib.name}.jar"/>
+        <include name="icemobile-simulator.jar"/>
         <include name="jstl-1.2.jar"/>
         <include name="commons-logging.jar"/>
         <include name="mail.jar"/>
