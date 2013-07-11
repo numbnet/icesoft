@@ -366,6 +366,7 @@ ice.ace.tabset = {
 	   field.setAttribute('type', 'hidden');
 	   field.setAttribute('id', id);
 	   field.setAttribute('name', 'yti');
+       field.setAttribute('autocomplete', 'off');
 	   parent.appendChild(field);
 	   return field;
    },

@@ -138,6 +138,7 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("name",clientId+"_hidden", null);
         writer.writeAttribute("value",val, null);
         writer.endElement("input");

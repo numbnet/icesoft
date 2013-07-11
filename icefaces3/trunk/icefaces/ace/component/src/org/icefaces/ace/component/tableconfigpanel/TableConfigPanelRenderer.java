@@ -100,6 +100,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
         writer.writeAttribute(HTML.NAME_ATTR, "absRend", null);
         writer.writeAttribute(HTML.VALUE_ATTR, component.getForcedRenderCount(), null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement(HTML.INPUT_ELEM);
         writer.endElement(HTML.DIV_ELEM);
 

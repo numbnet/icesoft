@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
@@ -133,6 +134,7 @@ public class GMapRenderer extends CoreRenderer {
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("id", clientId + "_" + fieldName, null);
         writer.writeAttribute("name", clientId + "_" + fieldName, null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement("input");
     }
 }
