@@ -53,11 +53,11 @@ public class ClientDescriptor implements Serializable{
     
     private UserAgentInfo _userAgentInfo;
     
-    private ClientDescriptor(HttpServletRequest request){
+    private ClientDescriptor(HttpServletRequest request, String view){
         updateHttpAccepted(request);
         updateUserAgent(request);
         updateOS();
-        updateFormFactor();
+        updateFormFactor(view);
         updateICEmobileContainer(request);
         updateSXRegistered(request);
         updateSimulator(request);
@@ -68,9 +68,10 @@ public class ClientDescriptor implements Serializable{
     public static ClientDescriptor getInstance(HttpServletRequest request){
         //TODO use getSession(false)
         ClientDescriptor cd = (ClientDescriptor)request.getSession().getAttribute(SESSION_KEY);
+        String view = request.getParameter("view");
         //always update if user agent changed
-        if( cd == null || cd.isUserAgentUpdateRequired(request)){
-            cd = new ClientDescriptor(request);
+        if( cd == null || cd.isUserAgentUpdateRequired(request) || view != null){
+            cd = new ClientDescriptor(request,view);
         }
         //check if sx has been newly registered
         if( !cd.isSXRegistered() ){
@@ -243,6 +244,9 @@ public class ClientDescriptor implements Serializable{
         }
         //settings below cannot change after deployment
         String simulatorSetting = System.getProperty(SIMULATOR_KEY);
+        if( simulatorSetting == null ){
+            simulatorSetting = request.getParameter("simulator");
+        }
         if ("true".equalsIgnoreCase(simulatorSetting))  {
             isSimulator = true;
             return;
@@ -259,12 +263,12 @@ public class ClientDescriptor implements Serializable{
         }
     }
     
-    private void updateFormFactor(){
+    private void updateFormFactor(String view){
         if( _userAgentInfo != null ){
-            if (_userAgentInfo.isTabletBrowser()) {
+            if ("large".equals(view) || _userAgentInfo.isTabletBrowser()) {
                 formFactor = FORM_FACTOR.TABLET;
             }
-            else if (_userAgentInfo.isMobileBrowser()){
+            else if ("small".equals(view) || _userAgentInfo.isMobileBrowser()){
                 formFactor = FORM_FACTOR.HANDHELD;
             }
             else {
