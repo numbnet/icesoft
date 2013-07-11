@@ -203,6 +203,16 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
     ice.mobi.deviceCommandExec(command, id, options);
 }
 
+ice.mobi.getDeviceCommand = function()  {
+    var sxkey = "#icemobilesx";
+    var sxlen = sxkey.length;
+    var locHash = "" + window.location.hash;
+    if (sxkey === locHash.substring(0, sxlen))  {
+        return locHash.substring(sxlen + 1);
+    }
+    return null;
+}
+
 ice.mobi.deviceCommandExec = function(command, id, options)  {
     var ampchar = String.fromCharCode(38);
     var uploadURL;
@@ -259,8 +269,7 @@ ice.mobi.deviceCommandExec = function(command, id, options)  {
         if (lastHash > 0) {
             returnURL = returnURL.substring(0, lastHash);
         }
-//ajax page update upon return is not yet implemented
-//        returnURL += "#icemobilesx";
+        returnURL += "#icemobilesx";
     }
 
     if ("" != params) {
@@ -2435,14 +2444,11 @@ if (window.addEventListener) {
     }, false);
 
     window.addEventListener("hashchange", function () {
-        var sxkey = "#icemobilesx";
-        var sxlen = sxkey.length;
-        var locHash = "" + window.location.hash;
-        if (sxkey === locHash.substring(0, sxlen))  {
-            var data = locHash.substring(sxlen + 1);
+        var data = ice.mobi.getDeviceCommand();
+        if (null != data)  {
             var name;
             var value;
-            if (data)  {
+            if ("" != data)  {
                 var parts = unescape(data).split("=");
                 if (parts)  {
                     name = parts[0];
@@ -2450,7 +2456,9 @@ if (window.addEventListener) {
                     ice.mobi.setInput(name, name, value);
                 }
             } else {
-                ice.ajaxRefresh();
+                if (window.ice.ajaxRefresh())  {
+                    ice.ajaxRefresh();
+                }
             }
             setTimeout( function(){
                 var loc = window.location;
