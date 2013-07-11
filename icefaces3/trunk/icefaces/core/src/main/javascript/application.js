@@ -235,6 +235,7 @@ if (!window.ice.icefaces) {
             hiddenInput.setAttribute('name', name);
             hiddenInput.setAttribute('value', value);
             hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('autocomplete', 'off');
             if (defaultValue) {
                 hiddenInput.defaultValue = defaultValue;
             }

@@ -387,6 +387,7 @@ var singleSubmit;
                     clonedElement.setAttribute('name', element.id);
                     clonedElement.setAttribute('value', element.id);
                     clonedElement.setAttribute('type', 'hidden');
+                    clonedElement.setAttribute('autocomplete', 'off');
                 } else {
                     clonedElement = element.cloneNode(true);
                     //copy the value for textareas since some browsers (Chrome 22 and Firefox 16) are to lazy to do it
