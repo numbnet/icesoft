@@ -659,6 +659,8 @@ public class TableRenderer
         if (rowSelectorFound) {
             FormRenderer.addHiddenField(facesContext, paramId + "ctrKy");            
             FormRenderer.addHiddenField(facesContext, paramId + "sftKy");
+			FormRenderer.addHiddenField(facesContext, paramId + "scrCont");
+			FormRenderer.addHiddenField(facesContext, paramId + "scrPos");
             
             toggleOnClick = rowSelector.getToggleOnClick().booleanValue();
             Element rowSelectedField =
@@ -721,7 +723,8 @@ public class TableRenderer
                     if (null == rowSelector.getClickListener() && null == rowSelector.getClickAction()) {
                     tr.setAttribute("onclick", rowSelectionFunctionName +
                             "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
-                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "', this);");
+                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "', this, " 
+							+ rowSelector.isPreserveHorizontalScrolling() + ");");
                     } else {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
