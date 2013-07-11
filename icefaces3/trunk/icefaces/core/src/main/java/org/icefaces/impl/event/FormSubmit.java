@@ -131,6 +131,7 @@ class AjaxDisabledWriter extends UIOutputWriter {
         }
         writer.startElement("input", this);
         writer.writeAttribute("type", "hidden", "type");
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("id", getClientId(context), "id");
         writer.writeAttribute("disabled", "true", "disabled");
         writer.writeAttribute("value", value, "value");
