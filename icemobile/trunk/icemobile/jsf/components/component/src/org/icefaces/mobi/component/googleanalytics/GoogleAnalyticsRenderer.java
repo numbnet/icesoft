@@ -35,7 +35,6 @@ public class GoogleAnalyticsRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
         GoogleAnalytics ga = (GoogleAnalytics) uiComponent;
         String account = ga.getAccount();
         if( account == null ){
