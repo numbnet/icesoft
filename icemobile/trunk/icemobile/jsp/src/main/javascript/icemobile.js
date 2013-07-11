@@ -192,20 +192,66 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
     if (!uploadURL) {
         uploadURL = element.getAttribute("data-posturl");
     }
-    if (!uploadURL) {        
-        if (0 === formAction.indexOf("/")) {
-            uploadURL = window.location.origin + formAction;
-        } else if ((0 === formAction.indexOf("http://")) ||
-                (0 === formAction.indexOf("https://"))) {
-            uploadURL = formAction;
-        } else {
-            uploadURL = baseURL + formAction;
+    
+    var options = {
+        postURL : uploadURL,
+        JSESSIONID : sessionid,
+        parameters : params,
+        element : element
+    };
+    
+    ice.mobi.deviceCommandExec(command, id, options);
+}
+
+ice.mobi.deviceCommandExec = function(command, id, options)  {
+    var ampchar = String.fromCharCode(38);
+    var uploadURL;
+    var sessionid;
+    var params;
+    var element;
+    var formID;
+
+    if (options)  {
+        if (options.postURL)  {
+            uploadURL = options.postURL;
+        }
+        if (options.JSESSIONID)  {
+            sessionid = options.JSESSIONID;
+        }
+        if (options.parameters)  {
+            params = options.parameters;
+        }
+        if (options.element)  {
+            element = options.element;
         }
     }
-//    else {
-//        uploadURL += '/';
-//    }
 
+    var windowLocation = window.location;
+    var barURL = windowLocation.toString();
+    var baseURL = barURL.substring(0,
+            barURL.lastIndexOf("/")) + "/";
+
+    if (!element)  {
+        uploadURL = baseURL;
+    } else {
+        var form = ice.formOf(element);
+        formID = form.getAttribute('id');
+        var formAction = form.getAttribute("action");
+
+        if (!uploadURL) {
+            uploadURL = element.getAttribute("data-posturl");
+        }
+        if (!uploadURL) {        
+            if (0 === formAction.indexOf("/")) {
+                uploadURL = window.location.origin + formAction;
+            } else if ((0 === formAction.indexOf("http://")) ||
+                    (0 === formAction.indexOf("https://"))) {
+                uploadURL = formAction;
+            } else {
+                uploadURL = baseURL + formAction;
+            }
+        }
+    }
 
     var returnURL = "" + window.location;
     if ("" == window.location.hash) {
@@ -225,11 +271,20 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
     if ("" != sessionid) {
         sessionidClause = "&JSESSIONID=" + escape(sessionid);
     }
+    var serializedFormClause = "";
+    if (formID)  {
+        serializedFormClause = "&p=" + escape(ice.mobiserial(formID, false));
+    }
+    var uploadURLClause = "";
+    if (uploadURL)  {
+        uploadURLClause = "&u=" + escape(uploadURL);
+    }
     var sxURL = "icemobile://c=" + escape(command +
             "?id=" + id + ampchar + (params ? params : '')) +
-            "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
+            uploadURLClause + 
+            "&r=" + escape(returnURL) +
             sessionidClause +
-            "&p=" + escape(ice.mobiserial(formID, false));
+            serializedFormClause;
 
     window.location = sxURL;
 }
@@ -248,6 +303,39 @@ ice.mobi.invoke = function(element)  {
     } else {
         ice.mobi.sx(element);
     }
+}
+
+ice.mobi.deviceCommand = function(command, id, callback, options)  {
+    console.log(command + " " + id);
+    ice.mobi.deviceCommandCallback = callback;
+    ice.mobi.deviceCommandExec(command, id, options);
+}
+
+ice.mobi.scan = function(id, callback, options)  {
+    ice.mobi.deviceCommand("scan", id, callback, options);
+}
+
+ice.mobi.setInput = function(target, name, value, vtype)  {
+    var hiddenID = name + "-hid";
+    var existing = document.getElementById(hiddenID);
+    if (existing)  {
+        existing.setAttribute("value", value);
+        return;
+    }
+    var targetElm = document.getElementById(target);
+    if (!targetElm)  {
+        return;
+    }
+    var hidden = document.createElement("input");
+
+    hidden.setAttribute("type", "hidden");
+    hidden.setAttribute("id", hiddenID);
+    hidden.setAttribute("name", name);
+    hidden.setAttribute("value", value);
+    if (vtype)  {
+        hidden.setAttribute("data-type", vtype);
+    }
+    targetElm.parentNode.insertBefore(hidden, targetElm);
 }
 
 ice.formOf = function formOf(element) {
@@ -2347,13 +2435,41 @@ if (window.addEventListener) {
     }, false);
 
     window.addEventListener("hashchange", function () {
-        if ("#icemobilesx" !== window.location.hash)  {
-            return;
+        var sxkey = "#icemobilesx";
+        var sxlen = sxkey.length;
+        var locHash = "" + window.location.hash;
+        if (sxkey === locHash.substring(0, sxlen))  {
+            var data = locHash.substring(sxlen + 1);
+            var name;
+            var value;
+            if (data)  {
+                var parts = unescape(data).split("=");
+                if (parts)  {
+                    name = parts[0];
+                    value = parts[1];
+                    ice.mobi.setInput(name, name, value);
+                }
+            } else {
+                ice.ajaxRefresh();
+            }
+            setTimeout( function(){
+                var loc = window.location;
+                //changing hash to temporary value ensures changes
+                //to repeated values are detected
+                history.pushState("", document.title,
+                        loc.pathname + loc.search + "#clear-icemobilesx");
+                history.pushState("", document.title,
+                        loc.pathname + loc.search);
+                var sxEvent = {
+                    name : name,
+                    value : value
+                };
+                if (ice.mobi.deviceCommandCallback)  {
+                    ice.mobi.deviceCommandCallback(sxEvent);
+                    ice.mobi.deviceCommandCallback = null;
+                }
+            }, 1);
         }
-        setTimeout( function(){
-            var loc = window.location;
-            history.pushState("", document.title, loc.pathname + loc.search);
-        }, 1);
     }, false);
 
 };
