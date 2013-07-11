@@ -119,7 +119,11 @@ public class DeviceResourceTag extends BaseSimpleTag {
 				}
 			}
 		}
-		writeOutDeviceStyleSheets(client);
+		String theme = pageContext.getRequest().getParameter("theme");
+        if( theme == null ){
+            theme = getName();
+        }
+		writeOutDeviceStyleSheets(client, theme);
 		boolean prod = MobiEnvUtils.isProductionStage(getServletContext());
 		if (prod)  {
 		    out.write(String.format(SCRIPT_ICEMOBILE_PROD, contextRoot, MobiJspConstants.RESOURCE_BASE_URL));
@@ -160,13 +164,13 @@ public class DeviceResourceTag extends BaseSimpleTag {
         return (includeIOSSmartAppBanner && !client.isSXRegistered());
     }
 
-	private void writeOutDeviceStyleSheets(ClientDescriptor client) throws IOException {
+	private void writeOutDeviceStyleSheets(ClientDescriptor client, String theme) throws IOException {
 		
 		PageContext pageContext = getContext();
 		JspWriter out = pageContext.getOut();
 		
-		String theme = getName();
-		if( theme == null || "".equals(theme) ){
+		
+        if( theme == null || "".equals(theme) ){
 		    theme = CSSUtils.deriveTheme((HttpServletRequest)pageContext.getRequest()).fileName();
 		}
 		//android and honeycomb themes deprecated
@@ -191,6 +195,9 @@ public class DeviceResourceTag extends BaseSimpleTag {
         }
         if( client.isDesktopBrowser()){
             markers += " desktop";
+        }
+        if( client.isSimulator() ){
+            markers += " simulator";
         }
         out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+'" 
                 + markers + "';if (window.addEventListener) window.addEventListener('load', function() {document.body.className = 'ui-body-c';});</script>");
