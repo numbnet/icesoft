@@ -401,7 +401,7 @@ public class TabSetRenderer extends CoreRenderer {
         writer.startElement("em", tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
         //tab header can have input elements, we don't want tab to consume any event that was initiated by an input 
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "if(ice.ace.util.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "if(ice.ace.util.isEventSourceInputElementWithin(event,this)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);
         
         if (labelFacet!= null)
             Utils.renderChild(facesContext, ((TabPane)tab).getLabelFacet());

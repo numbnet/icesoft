@@ -108,6 +108,18 @@ ice.ace.util.isEventSourceInputElement = function(event) {
     }
 };
 
+ice.ace.util.isEventSourceInputElementWithin = function(event, container) {
+    var elem = ice.ace.util.eventTarget(event);
+    while (elem && elem != container) {
+        var tag = elem.tagName.toLowerCase();
+        if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea' || tag == 'button') {
+            return true;
+        }
+        elem = elem.parentNode;
+    }
+    return false;
+};
+
 ice.ace.util.eventTarget = function(event) {
        event = event || window.event;           
        return(event.target || event.srcElement);
