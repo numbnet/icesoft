@@ -14,10 +14,10 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android.icemobilesx;
+package mobi.bridgeit;
 
 import org.icemobile.client.android.sxcore.SxCore;
 
-public class ICEmobileSX extends SxCore
+public class BridgeIt extends SxCore
 {
 }
