@@ -2314,6 +2314,19 @@ Autocompleter.Base.prototype = {
 
     onFocus: function(event) {
         this.hasFocus = true;
+      if (this.element.createTextRange) {
+       //IE  
+		if (this.element.value.length > 0) {
+			var fieldRange = this.element.createTextRange();  
+			fieldRange.moveStart('character', this.element.value.length);  
+			fieldRange.collapse(false);  
+			fieldRange.select();
+		}
+       }  
+      else {
+       var length = this.element.value.length;  
+       this.element.setSelectionRange(length, length);  
+      } 
     },
 
     onBlur: function(event) {
