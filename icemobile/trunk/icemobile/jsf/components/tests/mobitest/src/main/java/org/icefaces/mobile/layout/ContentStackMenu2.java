@@ -17,6 +17,7 @@ package org.icefaces.mobile.layout;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
 
 @ManagedBean
 @SessionScoped
@@ -30,6 +31,11 @@ public class ContentStackMenu2 {
 
     public void setSelectedPane(String selectedPane) {
         this.selectedPane = selectedPane;
+    }
+    
+    public void goToMenu(ActionEvent evt){
+        System.out.println("goToMenu()");
+        this.selectedPane = "menu";
     }
 
 }
