@@ -35,6 +35,7 @@
 						<ace:dataTable id="dynamicTable" value="#{todoListBean.items}" var="item"
                                        selectionMode="single" rowSelectListener="#{todoListBean.rowSelectListener}">
 							<ace:ajax event="deselect" render="@form" execute="@form" listener="#{todoListBean.rowDeselectListener}"/>
+							<ace:ajax event="select" render="@form" execute="@form" />
 							<ace:column headerText="Description" sortBy="#{item.description}" id="description">
 								<h:outputText value="#{item.description}" id="descriptionText"/>
 							</ace:column>
