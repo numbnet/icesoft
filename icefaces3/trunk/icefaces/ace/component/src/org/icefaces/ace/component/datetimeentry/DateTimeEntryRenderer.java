@@ -178,19 +178,14 @@ public class DateTimeEntryRenderer extends InputRenderer {
         if (popup) {
             writeLabelAndIndicatorAfter(labelAttributes);
         }
-		
-		encodeScript(context, dateTimeEntry, value, labelAttributes);
 
         domUpdateMap.put("styleClasses", styleClasses);
-        writer.startElement("span", dateTimeEntry);
-        writer.writeAttribute("data-hashcode", domUpdateMap.hashCode(), null);
-        writer.writeAttribute("style", "display: none;", null);
-        writer.endElement("span");
+		encodeScript(context, dateTimeEntry, value, labelAttributes, domUpdateMap);
 
         writer.endElement("span");
     }
 
-    protected void encodeScript(FacesContext context, DateTimeEntry dateTimeEntry, String value, Map<String, Object> labelAttributes) throws IOException {
+    protected void encodeScript(FacesContext context, DateTimeEntry dateTimeEntry, String value, Map<String, Object> labelAttributes, Map<String, Object> domUpdateMap) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dateTimeEntry.getClientId(context);
 
@@ -285,7 +280,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
         json.endMap();
 
-        writer.write("ice.ace.create('CalendarInit',[" + json + "]);");
+        writer.write("ice.ace.create('CalendarInit',[" + json + "]);//" + domUpdateMap.hashCode());
         writer.endElement("script");
     }
 
