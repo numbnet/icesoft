@@ -66,7 +66,7 @@
                   stateMap="${dataTableSelector.stateMap}"
                   doubleClickSelect="#{dataTableSelector.dblClick}">
         <ace:ajax event="select" render="@this form:status" execute="@this" disabled="#{!dataTableSelector.instantUpdate}" />
-        <ace:ajax event="deselect" render="@this form.:status" execute="@this" disabled="#{!dataTableSelector.instantUpdate}" />
+        <ace:ajax event="deselect" render="@this form:status" execute="@this" disabled="#{!dataTableSelector.instantUpdate}" />
 
         <ace:column id="id">
             <f:facet name="header">
