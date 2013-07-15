@@ -132,8 +132,13 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
          *  styling apply --don't bother putting this in the core renderer.
          */
         if (button.getOpenContentPane()!=null){
-            writer.writeAttribute(ONCLICK_ATTR, button.getJsCall().toString());
-            writer.endElement(INPUT_ELEM);
+            if( button.getJsCall() != null ){
+                writer.writeAttribute(ONCLICK_ATTR, button.getJsCall().toString());
+            }
+            else{
+                logger.warning("commandButton specified openContentPane: '" + button.getOpenContentPane() 
+                        + "', but client side JavaScript handler not set");
+            }
         }else if ( !button.getType().trim().toLowerCase().equals(IButton.BUTTON_SUBMIT)){
             StringBuilder sb = new StringBuilder("ice.mobi.button.select('");
             sb.append(clientId).append("', event, {");
