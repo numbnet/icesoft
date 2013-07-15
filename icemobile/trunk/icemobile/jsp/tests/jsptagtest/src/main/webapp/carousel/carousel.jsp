@@ -76,28 +76,28 @@
                  previousLabel="${info.previousLabel}"
                  disabled="${info.disabled}"
 		         selectedItem="${info.selectedIndex}">
-			<mobi:carouselItem>
+			<mobi:carouselItem >
                 <strong>1.</strong> <em>A robot may not injure a human being or, through inaction, allow a human being to come to harm.</em>
             </mobi:carouselItem>
-            <mobi:carouselItem>
+            <mobi:carouselItem >
                 <strong>2.</strong> <em>A robot must obey any orders given to it by human beings, except where such orders would conflict with the First Law.</em>
             </mobi:carouselItem>
-            <mobi:carouselItem>
+            <mobi:carouselItem >
                 <strong>3.</strong> <em>A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.</em>
             </mobi:carouselItem>
-            <mobi:carouselItem>
+            <mobi:carouselItem >
                 <strong>4.</strong> <em>A robot may not injure a human being or, through inaction, allow a human being to come to harm.</em>
             </mobi:carouselItem>
-            <mobi:carouselItem>
+            <mobi:carouselItem >
                 <strong>5.</strong> <em>A robot must obey any orders given to it by human beings, except where such orders would conflict with the First Law.</em>
             </mobi:carouselItem>
-            <mobi:carouselItem>
+            <mobi:carouselItem >
                 <strong>6.</strong> <em>A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.</em>
             </mobi:carouselItem>
 	    </mobi:carousel>
 
 	<div style="clear: both; padding-top: 10px;">
-		<mobi:commandButton type="submit" buttonType="important"
+		<mobi:commandButton id="submitButton" type="submit" buttonType="important"
 			styleClass="submit" />
 	</div>
 </form>
