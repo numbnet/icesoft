@@ -21,6 +21,7 @@ import java.io.Serializable;
 public class ColumnModel implements Serializable {
     String value;
     String headerText;
+    boolean rendered = true;
 
     public ColumnModel(String value, String headerText) {
         this.value = value;
@@ -43,5 +44,13 @@ public class ColumnModel implements Serializable {
 
     public void setHeaderText(String headerText) {
         this.headerText = headerText;
+    }
+
+    public boolean isRendered() {
+        return rendered;
+    }
+
+    public void setRendered(boolean rendered) {
+        this.rendered = rendered;
     }
 }

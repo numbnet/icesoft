@@ -132,17 +132,18 @@ public class DataTableDynamicColumns extends ComponentExampleImpl<DataTableDynam
 
     public void removeColumn(String name) {
         for (int i = 0; i < columns.size(); i++)
-            if (columns.get(i).getValue().equals(name))
-                columns.remove(i);
+            if (columns.get(i).getValue().equals(name)) {
+                columns.get(i).setRendered(false);
+                return;
+            }
     }
 
     public void addColumn(String name) {
-        columns.add(
-                new ColumnModel(
-                        name,
-                        name.substring(0, 1).toUpperCase() + name.substring(1)
-                )
-        );
+        for (int i = 0; i < columns.size(); i++)
+            if (columns.get(i).getValue().equals(name)) {
+                columns.get(i).setRendered(true);
+                return;
+            };
     }
 
     public void checkboxChange(ValueChangeEvent event) {
