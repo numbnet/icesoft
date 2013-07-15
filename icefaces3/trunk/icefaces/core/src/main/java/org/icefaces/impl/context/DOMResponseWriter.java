@@ -21,12 +21,7 @@ import org.icefaces.impl.fastinfoset.com.sun.xml.fastinfoset.dom.DOMDocumentSeri
 import org.icefaces.impl.fastinfoset.org.jvnet.fastinfoset.FastInfosetException;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
-import org.w3c.dom.Attr;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import org.w3c.dom.*;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
@@ -489,7 +484,15 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     private Document cloneDocument(Document doc) {
         Document cloningDoc = DOMUtils.getNewDocument();
         cloningDoc.setStrictErrorChecking(false);
-        cloningDoc.importNode(doc.getDocumentElement(), true);
+        Node root = cloningDoc.importNode(doc.getDocumentElement(), true);
+        cloningDoc.appendChild(root);
+        NodeList elements = cloningDoc.getElementsByTagName("*");
+        for (int i = 0, l = elements.getLength(); i < l; i++) {
+            Element e = (Element) elements.item(i);
+            if (e.hasAttribute("id")) {
+                e.setIdAttribute("id", true);
+            }
+        }
         return cloningDoc;
     }
 
