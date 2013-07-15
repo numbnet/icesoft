@@ -131,7 +131,7 @@ ice.ace.DataTable.Paginator = function(table) {
             function rowsPerPageChangeListener(e) {
                 e.preventDefault();
                 cfg.rowsPerPage = parseInt(e.currentTarget.children[e.currentTarget.selectedIndex].value);
-                submit(true);
+                submit({ rowChangeEvent : true});
             }
 
             function pageLinkClick(control) {
@@ -181,8 +181,11 @@ ice.ace.DataTable.Paginator = function(table) {
         };
     }
 
-    function submit(rowChangeEvent) {
-        var newState = getState();
+    function submit(conf) {
+        if (conf == undefined) conf = {};
+        var newState = getState(),
+            rowChangeEvent = conf.rowChangeEvent;
+
 
         var options = {
             source:table.id,
@@ -203,14 +206,20 @@ ice.ace.DataTable.Paginator = function(table) {
 
         options.params = params;
 
-        if (table.behaviors)
-            if (table.behaviors.page && !rowChangeEvent) {
-                ice.ace.ab(ice.ace.extendAjaxArgs(
-                    table.behaviors.page,
+
+        if (table.behaviors && table.behaviors.page && !rowChangeEvent) {
+            ice.ace.ab(ice.ace.extendAjaxArgs(
+                table.behaviors.page,
+                ice.ace.clearExecRender(options)
+            ));
+            return;
+        } else if (table.behaviors && table.behaviors.rowsPerPage && rowChangeEvent) {
+            ice.ace.ab(ice.ace.extendAjaxArgs(
+                    table.behaviors.rowsPerPage,
                     ice.ace.clearExecRender(options)
-                ));
-                return;
-            }
+            ));
+            return;
+        }
 
         ice.ace.AjaxRequest(options);
     }

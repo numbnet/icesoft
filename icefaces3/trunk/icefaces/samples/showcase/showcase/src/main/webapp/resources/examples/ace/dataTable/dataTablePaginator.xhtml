@@ -34,17 +34,19 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <icecore:singleSubmit/>
             <h:panelGrid columns="3">
                 <h:outputLabel for="paginatorIn" value="Enable Paginator:"/>
-                <h:selectBooleanCheckbox id="paginatorIn" value="#{dataTablePaginator.paginator}"/>
+                <h:selectBooleanCheckbox id="paginatorIn" value="#{dataTablePaginator.paginator}">
+                    <f:ajax render="@this carTable" execute="@this" />
+                </h:selectBooleanCheckbox>
                 <ace:message id="pagMsg" for="paginatorIn"/>
                 
                 <h:outputLabel for="positionIn" value="Paginator Position:"/>
                 <h:selectOneRadio id="positionIn" value="#{dataTablePaginator.position}"
                                   required="true"
                                   disabled="#{!dataTablePaginator.paginator}">
-                      <f:selectItems value="#{dataTablePaginator.positionAvailable}"/>
+                    <f:selectItems value="#{dataTablePaginator.positionAvailable}"/>
+                    <f:ajax render="@this carTable" execute="@this" />
                 </h:selectOneRadio>
                 <ace:message id="posMsg" for="positionIn"/>
                 
@@ -52,21 +54,21 @@
                 <h:inputText id="rowsIn" value="#{dataTablePaginator.rows}"
                              required="true" size="2" maxlength="2"
                              disabled="#{!dataTablePaginator.paginator}">
-                     <f:validateLongRange minimum="1" maximum="30"/>
+                    <f:ajax render="@this carTable pageLabel pageIn" execute="@this" />
+                    <f:validateLongRange minimum="1" maximum="30"/>
                 </h:inputText>
                 <ace:message id="rowsMsg" for="rowsIn"/>
                 
-                <h:outputLabel for="pageIn" value="Selected Page (1-#{dataTablePaginator.startPageMaximum}):"/>
+                <h:outputLabel id="pageLabel" for="pageIn" value="Selected Page (1-#{dataTablePaginator.startPageMaximum}):"/>
                 <h:inputText id="pageIn" value="#{dataTablePaginator.startPage}"
                              required="true" size="2" maxlength="2"
                              disabled="#{!dataTablePaginator.paginator}">
+                    <f:ajax render="@this carTable" execute="@this" />
                 </h:inputText>
                 <ace:message id="pageMsg" for="pageIn" />
             </h:panelGrid>
-        </h:form>
-    
-        <h:form id="form2">
-           <ace:dataTable id="carTable"
+
+            <ace:dataTable id="carTable"
                           value="#{dataTablePaginator.carsData}"
                           var="car"
                           paginator="#{dataTablePaginator.paginator}"
@@ -75,6 +77,8 @@
                           rowsPerPageTemplate="5,10,15,all"
                           page="#{dataTablePaginator.startPage}"
                           rows="#{dataTablePaginator.rows}">
+                <ace:ajax event="page" render="@form" execute="@this" />
+                <ace:ajax event="rowsPerPage" render="@form" execute="@this" />
                 <ace:column id="id">
                     <f:facet name="header">
                        <h:outputText value="ID"/>

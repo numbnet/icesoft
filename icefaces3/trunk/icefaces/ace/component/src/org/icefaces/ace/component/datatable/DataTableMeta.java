@@ -52,7 +52,10 @@ import java.util.List;
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name="page", javadoc="Fired when the page is changed on the DataTable.",
-                tlddoc="Fired when the page is changed on the DataTable.", defaultRender="@all", defaultExecute="@this"),
+                    tlddoc="Fired when the page is changed on the DataTable.", defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="rowsPerPage", javadoc="Fired when the rows per page is changed on the DataTable via the paginator control.",
+                     tlddoc="Fired when the rows per page is changed on the DataTable via the paginator control.", defaultRender="@all", defaultExecute="@this"),
 
         @ClientEvent(name="cellClick",
                      javadoc="Fired when a cell is clicked on the DataTable.",
