@@ -2,6 +2,7 @@ package icemobile.junit;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -40,6 +41,7 @@ public class TestChrome2Test extends TestCase {
     private static String testCarouselId = "cartwo" ;
  //   private static String pathToApp = "http://10.0.1.21:8080/jsptagtest";
     private static int swipeDistance = -175;
+    private static int swipeTolerance = 2;
     private static String pathToApp = "http://10.18.39.103:8080/jsptagtest";
     @BeforeClass
     public static void createAndStartService() {
@@ -175,9 +177,15 @@ public class TestChrome2Test extends TestCase {
             Point point2 = firstElementToGrab.getLocation();
             int x2 = point2.getX();
             System.out.println("   AFTER action location="+firstElementToGrab.getLocation());
-            System.out.println(" \t\t x2 ="+x2);
-            System.out.println(" x2 less x1="+(x2-x));
-            assertEquals(x2-x, swipeDistance );
+          //  System.out.println(" \t\t x2 ="+x2);
+           // System.out.println(" x2 less x1="+(x2-x));
+            int calcSwipeDistance = x2-x;
+            int upperRange = calcSwipeDistance + swipeTolerance;
+            int lowerRange = calcSwipeDistance - swipeTolerance;
+            System.out.println(" calc = "+calcSwipeDistance+" low="+lowerRange+" high="+upperRange);
+            assertTrue("Error swipe greater than tolerance.", upperRange >= swipeDistance);
+            assertTrue("Error swipe greater than tolerance.", lowerRange <= swipeDistance);
+         //   assertEquals(calcSwipeDistance, swipeDistance );
         }
     }
 
