@@ -708,14 +708,14 @@ ice.ace.List.prototype.swapIdPrefix = function(from, to) {
 };
 
 ice.ace.List.prototype.read = function(field) {
-    var contents = this.element.children('input[name="'+this.jqId.substr(1)+'_'+field+'"]').val();
+    var contents = ice.ace.jq(ice.ace.escapeClientId(this.element.attr('id'))).children('input[name="'+this.jqId.substr(1)+'_'+field+'"]').val();
     if ((contents != "") && (contents != undefined))
         return JSON.parse(contents);
     else return [];
 };
 
 ice.ace.List.prototype.write= function(field, data) {
-    var element = this.element.children('input[name="'+this.jqId.substr(1)+'_'+field+'"]');
+    var element = ice.ace.jq(ice.ace.escapeClientId(this.element.attr('id'))).children('input[name="'+this.jqId.substr(1)+'_'+field+'"]');
     element.attr('value', JSON.stringify(data));
 };
 
