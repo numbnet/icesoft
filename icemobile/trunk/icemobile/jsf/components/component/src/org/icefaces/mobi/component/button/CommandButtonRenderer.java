@@ -16,6 +16,7 @@
 package org.icefaces.mobi.component.button;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -107,6 +108,9 @@ public class  CommandButtonRenderer extends CoreRenderer {
          */
         if(button.getOpenContentPane() != null ){
             UIComponent stack = findParentContentStack(uiComponent);
+            if( stack == null ){ //if not in stack try to find the first one in the tree
+                stack = findContentStack(facesContext.getViewRoot());
+            }
             if (stack!=null){
                 StringBuilder noPanelConf = new StringBuilder("mobi.layoutMenu.showContent('").append(stack.getClientId());
                 noPanelConf.append("', event");
@@ -124,6 +128,9 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 button.setJsCall(noPanelConf);
                 renderer.encodeEnd(button, writer);
                 return;
+            }
+            else{
+                logger.warning("CommandButtonRenderer openContentPane:'" + button.getOpenContentPane() + "' specified but can't find accompanying contentStack");
             }
         }
         // get the params and set into button
@@ -181,6 +188,22 @@ public class  CommandButtonRenderer extends CoreRenderer {
 
         return parent;
     }
+    
+    protected static UIComponent findContentStack(UIComponent component) {
+        if( component instanceof ContentStack ){
+            return component;
+        }
+        Iterator<UIComponent> iter = component.getFacetsAndChildren();
+        while( iter.hasNext() ){
+            UIComponent child = iter.next();
+            UIComponent target = findContentStack(child);
+            if( target != null ){
+                return target;
+            }
+        }
+        return null;
+    }
+
 
 
     private UIComponent findClientId(FacesContext facesContext, UIComponent button, String id){
