@@ -41,7 +41,7 @@
     <mobi:fieldsetGroup>
        <mobi:fieldsetRow>
            <label>ButtonType</label>
-           <select name="buttonType" >
+           <select id="selButType" name="buttonType" >
               <option value="default" ${buttonInfo.buttonType=='default' ? 'selected' : ''}>default</option>
               <option value="important" ${buttonInfo.buttonType=='important' ? 'selected' : ''}>important</option>
               <option value="back" ${buttonInfo.buttonType=='back' ? 'selected' : ''}>back</option>
@@ -72,8 +72,8 @@
 				placeholder="StyleClass string" value="${buttonInfo.styleClass}" />
 		</mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <label>html submit button</label>
-            <input type="submit" value="Submit" />
+            <label>html updateOptions button</label>
+            <input id="updateBtn" type="submit" value="Submit" />
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 </form>
