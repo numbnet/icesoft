@@ -196,6 +196,8 @@ ice.ace.CalendarInit = function(options) {
             ice.onElementUpdate(id, function () {
                 widget.destroy();
                 initEltSet.remove();
+                window[widgetVar] = null;
+                delete window[widgetVar];
             });
             return widget;
         };
@@ -249,6 +251,8 @@ ice.ace.CalendarInit = function(options) {
         ice.onElementUpdate(id, function() {
             // .remove cleans jQuery state unlike .unbind
             initEltSet.remove();
+            window[widgetVar] = null;
+            delete window[widgetVar];
         });
     });
 };
