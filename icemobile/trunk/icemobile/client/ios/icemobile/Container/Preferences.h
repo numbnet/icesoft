@@ -34,7 +34,6 @@
     UIButton *reloadButton;
     UIButton *clearButton;
     UIButton *openInButton;
-    UIDocumentInteractionController *documentController;
 }
 
 - (IBAction) doDone;
@@ -61,6 +60,5 @@
 @property (nonatomic, retain) IBOutlet UIButton *reloadButton;
 @property (nonatomic, retain) IBOutlet UIButton *clearButton;
 @property (nonatomic, retain) IBOutlet UIButton *openInButton;
-@property (nonatomic, retain) UIDocumentInteractionController *documentController;
 
 @end

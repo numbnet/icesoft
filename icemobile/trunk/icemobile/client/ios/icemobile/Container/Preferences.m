@@ -33,7 +33,6 @@
 @synthesize reloadButton;
 @synthesize clearButton;
 @synthesize openInButton;
-@synthesize documentController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -139,21 +138,8 @@
 
 - (IBAction) doOpenIn {
     NSURL *remoteURL = [mainViewController getCurrentURL];
-    NSString *localName = [[[remoteURL absoluteString] 
-            componentsSeparatedByString:@"/"] lastObject];
-    NSString *filePath = [NSTemporaryDirectory() 
-        stringByAppendingPathComponent:localName];
-    NSData *fileData = [NSData dataWithContentsOfURL:remoteURL];
-    [fileData writeToFile:filePath atomically:YES];
-    NSURL *fileURL = [NSURL fileURLWithPath: filePath];
-    NSLog(@"Open In %@", fileURL);
-
-    self.documentController = 
-            [UIDocumentInteractionController 
-                    interactionControllerWithURL:fileURL];
-    [self.documentController 
-            presentOpenInMenuFromRect:self.openInButton.frame 
-            inView:self.view animated:YES];
+    [self.mainViewController.nativeInterface open:@""
+            url:[remoteURL absoluteString]];
 }
 
 - (void) clearHistory {

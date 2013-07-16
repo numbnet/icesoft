@@ -437,6 +437,7 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
             @"Address Book", @"fetchContacts", 
             @"Send SMS", @"sms", 
             @"Location Upload", @"geospy", 
+            @"Open File", @"open", 
             nil];
     self.confirmMessages = [NSDictionary dictionaryWithObjectsAndKeys:
             @"Register with server ", @"register", 
@@ -448,6 +449,7 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
             @"Send contact to ", @"fetchContacts", 
             @"Send SMS", @"sms", 
             @"Periodically send location to ", @"geospy", 
+            @"Open file referenced by ", @"open", 
             nil];
     self.commandNames = [NSArray arrayWithObjects:
             @"camera", 
@@ -458,6 +460,7 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
             @"fetchContacts", 
             @"sms", 
             @"geospy", 
+            @"open", 
             nil];
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"initialized"])  {
         NSLog(@"firstLaunch detected");
