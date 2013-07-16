@@ -33,6 +33,12 @@ public class MenuButtonCoreRenderer extends BaseCoreRenderer {
         String clientId = menu.getClientId();
         writer.startElement(DIV_ELEM, menu);
         writer.writeAttribute(ID_ATTR, clientId);
+        if (null!=menu.getStyle()){
+            String style= menu.getStyle();
+            if ( style.trim().length() > 0) {
+                writer.writeAttribute(STYLE_ATTR, style);
+            }
+        }
         // apply button type style classes
         StringBuilder baseClass = new StringBuilder(IMenuButton.BASE_STYLE_CLASS);
         StringBuilder buttonClass = new StringBuilder(IMenuButton.BUTTON_STYLE_CLASS) ;
@@ -72,12 +78,7 @@ public class MenuButtonCoreRenderer extends BaseCoreRenderer {
         if (!menu.isDisabled()){
             writer.writeAttribute(ONCHANGE_ATTR, "ice.mobi.menubutton.select('"+clientId+"');");
         }
-        if (null!=menu.getStyle()){
-            String style= menu.getStyle();
-            if ( style.trim().length() > 0) {
-                writer.writeAttribute(STYLE_ATTR, style);
-            }
-        }
+
     }
 
     public void encodeEnd(IMenuButton button, IResponseWriter writer) throws IOException {
