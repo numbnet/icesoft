@@ -96,11 +96,14 @@ ice.ace.Calendar = function(id, cfg) {
 };
 
 ice.ace.Calendar.prototype.configureLocale = function() {
+    var q = ice.ace.jq;
     var localeSettings = ice.ace.locales[this.cfg.locale];
 
     if(localeSettings) {
         for(var setting in localeSettings) {
-            this.cfg[setting] = localeSettings[setting];
+            if (q.inArray(setting, ["monthNames", "monthNamesShort", "dayNames", "dayNamesShort", "dayNamesMin", "firstDay"]) < 0) {
+                this.cfg[setting] = localeSettings[setting];
+            }
         }
     }
 };

@@ -28,6 +28,8 @@
 package org.icefaces.ace.component.datetimeentry;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -199,11 +201,12 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
         script.append("ice.ace.jq(function(){").append(resolveWidgetVar(dateTimeEntry)).append(" = new ");
 
+        Locale locale = dateTimeEntry.calculateLocale(context);
         json.beginMap()
             .entry("widgetVar", resolveWidgetVar(dateTimeEntry))
             .entry("id", clientId)
             .entry("popup", dateTimeEntry.isPopup())
-            .entry("locale", dateTimeEntry.calculateLocale(context).toString())
+            .entry("locale", locale.toString())
             .entryNonNullValue("pattern", DateTimeEntryUtils.convertPattern(dateTimeEntry.getPattern()));
 
         if(dateTimeEntry.getPages() != 1)
@@ -278,6 +281,16 @@ public class DateTimeEntryRenderer extends InputRenderer {
         json.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
         json.entry("todayNowButtonsAlsoSelect", dateTimeEntry.isTodayNowButtonsAlsoSelect());
 
+        Calendar calendar = Calendar.getInstance(locale);
+        SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale);
+        DateFormatSymbols dateFormatSymbols = formatter.getDateFormatSymbols();
+        buildUnicodeArray(json, "monthNames", dateFormatSymbols.getMonths(), 0);
+        buildUnicodeArray(json, "monthNamesShort", dateFormatSymbols.getShortMonths(), 0);
+        buildUnicodeArray(json, "dayNames", dateFormatSymbols.getWeekdays(), 1);
+        buildUnicodeArray(json, "dayNamesShort", dateFormatSymbols.getShortWeekdays(), 1);
+        buildUnicodeArray(json, "dayNamesMin", dateFormatSymbols.getShortWeekdays(), 1);
+        json.entry("firstDay", calendar.getFirstDayOfWeek() - 1);
+
         json.endMap();
 
         writer.write("ice.ace.create('CalendarInit',[" + json + "]);//" + domUpdateMap.hashCode());
@@ -330,5 +343,28 @@ public class DateTimeEntryRenderer extends InputRenderer {
             }
             System.out.println();
         }
+    }
+
+    public static String convertToEscapedUnicode(String s) {
+        char[] chars = s.toCharArray();
+        String hexStr;
+        StringBuffer stringBuffer = new StringBuffer(chars.length * 6);
+        String[] leadingZeros = {"0000", "000", "00", "0", ""};
+        for (int i = 0; i < chars.length; i++) {
+            hexStr = Integer.toHexString(chars[i]).toUpperCase();
+            stringBuffer.append("\\u");
+            stringBuffer.append(leadingZeros[hexStr.length()]);
+//            stringBuffer.append("0000".substring(0, 4 - hexStr.length()));
+            stringBuffer.append(hexStr);
+        }
+        return stringBuffer.toString();
+    }
+
+    public static void buildUnicodeArray(JSONBuilder json, String arrayName, String[] array, int start) {
+        json.beginArray(arrayName);
+        for (int i = start; i < array.length; i++) {
+            json.item("'" + convertToEscapedUnicode(array[i]) + "'", false);
+        }
+        json.endArray();
     }
 }
