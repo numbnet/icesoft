@@ -79,8 +79,22 @@ public class ResourceOrdering implements SystemEventListener {
                 }
                 masterDependencyList.add(entry);
             }
+
+            fc.getExternalContext().getApplicationMap().put(ResourceOrdering.class.getName(), this);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public interface ResourceIterator {
+        void resource(String name, String library, String target);
+    }
+
+    public void traverseOrderedResources(ResourceIterator iterator) {
+        Iterator i = masterDependencyList.iterator();
+        while (i.hasNext()) {
+            ResourceEntry next = (ResourceEntry) i.next();
+            iterator.resource(next.name, next.library, next.target);
         }
     }
 
