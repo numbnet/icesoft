@@ -26,6 +26,7 @@ import org.icemobile.samples.mobileshowcase.view.examples.device.camcorder.Camco
 import org.icemobile.samples.mobileshowcase.view.examples.device.camera.CameraBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.contacts.ContactsBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.microphone.MicrophoneBean;
+import org.icemobile.samples.mobileshowcase.view.examples.device.open.OpenBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.notification.NotificationBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.qrcode.QrCodeBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.reality.RealityBean;
@@ -49,6 +50,9 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
                 @MenuLink(title = "menu.native.notification.title",
                         exampleBeanName = NotificationBean.BEAN_NAME,
                         examplePanelId = "notification"),
+                @MenuLink(title = "menu.native.open.title",
+                        exampleBeanName = OpenBean.BEAN_NAME,
+                        examplePanelId = "open"),
                 @MenuLink(title = "menu.native.contacts.title",
                         exampleBeanName = ContactsBean.BEAN_NAME,
                         examplePanelId = "contacts"),
