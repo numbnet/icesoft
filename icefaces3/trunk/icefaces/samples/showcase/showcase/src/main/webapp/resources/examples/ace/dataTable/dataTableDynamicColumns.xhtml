@@ -32,19 +32,34 @@
 
     <ui:define name="example">
         <h:form id="dynColForm">
+            <style>
+                .checkboxes {
+                    width:35%;
+                    border:1px solid black;
+                    margin-bottom:1em;
+                    padding:.5em;
+                }
+                .checkboxes tr, .checkboxes td{
+                    display:inline-block;
+                    /* IE7 inline block hack */
+                    *display:inline;
+                    zoom:1;
+                }
+                .checkboxes td {
+                    width:32%;
+                }
+            </style>
+
             <h:selectManyCheckbox value="#{dataTableDynamicColumns.selectedCheckboxes}"
                                   valueChangeListener="#{dataTableDynamicColumns.checkboxChange}"
-                                  style="width:100%; border: 1px solid black; text-align: center;">
+                                  styleClass="checkboxes">
                 <f:ajax render="@form" execute="@this"/>
                 <f:selectItems value="#{dataTableDynamicColumns.checkboxes}"/>
             </h:selectManyCheckbox>
 
             <ace:dataTable value="#{dataTableDynamicColumns.cars}" var="car">
                 <c:forEach items="#{dataTableDynamicColumns.columns}" var="colModel">
-                    <ace:column headerText="#{colModel.headerText}"
-                                rendered="#{colModel.rendered}">
-                            #{car[colModel.value]}
-                    </ace:column>
+                    <ace:column headerText="#{colModel.headerText}">#{car[colModel.value]}</ace:column>
                 </c:forEach>
             </ace:dataTable>
         </h:form>
