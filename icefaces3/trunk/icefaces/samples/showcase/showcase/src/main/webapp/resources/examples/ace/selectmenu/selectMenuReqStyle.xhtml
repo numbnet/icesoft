@@ -99,6 +99,7 @@
                                          optionalIndicator="(Optional)"
                                          indicatorPosition="right"
                                          styleClass="#{selectMenuReqStyleBean.optColor}">
+					<f:selectItem itemValue="" itemLabel="" /> <!-- so to make it optional -->
 					<f:selectItems value="#{selectMenuBean.cities}" />
 					<ace:ajax execute="@this" render="@all" />
 					<ace:ajax event="blur" execute="@this" />
