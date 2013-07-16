@@ -222,9 +222,13 @@ var Class = (function() {
         return OBJECT_TYPE;
     }
 
-    function extend(destination, source) {
+    function extend(destination, source, overwrite) {
+        if (overwrite == null) overwrite = true;
+
         for (var property in source)
-            destination[property] = source[property];
+            if (destination[property] == undefined || overwrite)
+                destination[property] = source[property];
+
         return destination;
     }
 
@@ -484,7 +488,7 @@ Object.extend(Function.prototype, (function() {
         wrap:                wrap,
         methodize:           methodize
     }
-})());
+})(), false);
 
 
 (function(proto) {
@@ -563,7 +567,7 @@ Object.extend(String, {
         '\r': '\\r',
         '\\': '\\\\'
     }
-});
+}, false);
 
 Object.extend(String.prototype, (function() {
     var NATIVE_JSON_PARSE_SUPPORT = window.JSON &&
@@ -816,7 +820,7 @@ Object.extend(String.prototype, (function() {
         blank:          blank,
         interpolate:    interpolate
     };
-})());
+})(), false);
 
 var Template = Class.create({
     initialize: function(template, pattern) {
@@ -1225,7 +1229,7 @@ Array.from = $A;
         return array;
     }
 
-    Object.extend(arrayProto, Enumerable);
+    Object.extend(arrayProto, Enumerable, false);
 
     if (!arrayProto._reverse)
         arrayProto._reverse = arrayProto.reverse;
@@ -1245,7 +1249,7 @@ Array.from = $A;
         toArray:   clone,
         size:      size,
         inspect:   inspect
-    });
+    }, false);
 
     var CONCAT_ARGUMENTS_BUGGY = (function() {
         return [].concat(arguments)[0][0] !== 1;
@@ -1423,7 +1427,7 @@ Object.extend(Number.prototype, (function() {
         ceil:           ceil,
         floor:          floor
     };
-})());
+})(), false);
 
 function $R(start, end, exclusive) {
     return new ObjectRange(start, end, exclusive);
@@ -1506,7 +1510,7 @@ Ajax.Responders = {
     }
 };
 
-Object.extend(Ajax.Responders, Enumerable);
+Object.extend(Ajax.Responders, Enumerable, false);
 
 Ajax.Responders.register({
     onCreate:   function() {
