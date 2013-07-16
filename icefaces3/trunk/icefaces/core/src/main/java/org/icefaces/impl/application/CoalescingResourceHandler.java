@@ -214,6 +214,13 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                             viewMergedResources.add(info);
                         }
                     }
+                    //append remaining unordered resources
+                    HashSet<CoalescingResource.Info> remainingResources = new HashSet();
+                    remainingResources.addAll(currentResources);
+                    remainingResources.addAll(previousResources);
+                    remainingResources.removeAll(viewMergedResources);
+                    viewMergedResources.addAll(remainingResources);
+
                     resourceInfos.resources = viewMergedResources;
                     resourceInfos.modified = true;
                     sess.setAttribute(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
