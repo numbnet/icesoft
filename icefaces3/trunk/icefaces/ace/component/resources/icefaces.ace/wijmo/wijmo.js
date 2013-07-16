@@ -3238,6 +3238,7 @@ function wijmoASPNetParseOptions(o) {
 						link = activeItem.children(":first");
 						link.focus();
 						link.trigger("click");
+						self._preventEvent(event); // ICE-9426
 					}
 					else {
 						self.select();
