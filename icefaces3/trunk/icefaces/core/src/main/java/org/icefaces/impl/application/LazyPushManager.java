@@ -33,7 +33,7 @@ public class LazyPushManager {
         }
 
         State state = getState(context);
-        if (state.noOfRegistrations > 0) {
+        if (state.sessionViewsEnabled) {
             return true;
         }
 
@@ -67,12 +67,12 @@ public class LazyPushManager {
 
     public static void enablePushForSessionViews(FacesContext context) {
         State state = getState(context);
-        state.noOfRegistrations++;
+        state.sessionViewsEnabled = true;
     }
 
     public static void disablePushForSessionViews(FacesContext context) {
         State state = getState(context);
-        state.noOfRegistrations--;
+        state.sessionViewsEnabled = false;
     }
 
     private static State getState(FacesContext context) {
@@ -88,7 +88,7 @@ public class LazyPushManager {
 
     //it is okay to serialize *static* inner classes: http://java.sun.com/javase/6/docs/platform/serialization/spec/serial-arch.html#7182
     private static class State implements Serializable {
-        private int noOfRegistrations = 0;
+        private boolean sessionViewsEnabled = false;
         private HashMap individualyRegisteredViews = new HashMap();
     }
 }
