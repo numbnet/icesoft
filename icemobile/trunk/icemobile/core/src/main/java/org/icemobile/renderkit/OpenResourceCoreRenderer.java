@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import static org.icemobile.util.HTML.*;
 
 public class OpenResourceCoreRenderer extends BaseCoreRenderer{
-    public static final String BASE_CLASS = "mobi-opemresource";
+    public static final String BASE_CLASS = "mobi-openresource";
     private static final Logger logger =
             Logger.getLogger(OpenResourceCoreRenderer.class.toString());
 
@@ -47,13 +47,21 @@ public class OpenResourceCoreRenderer extends BaseCoreRenderer{
         writer.startElement(ANCHOR_ELEM, comp);
         writer.writeAttribute(ID_ATTR, clientId);
         String name = clientId;
+        writer.writeAttribute("data-id", comp.getClientId());
+//        if (null != comp.getSessionId())  {
+//            writer.writeAttribute("data-jsessionid", comp.getSessionId());
+//        }
+        writer.writeAttribute("data-command", "open");
+        writer.writeAttribute("data-ub", ".");
         writer.writeAttribute("target", "_blank");
         String srcAttribute = "none"; //not sure what you want for a null value?
         //does target need to be a component attribute?
         if (!isStringAttributeEmpty(comp.getSrcAttribute())){
             srcAttribute = comp.getSrcAttribute();
         }
-        writer.writeAttribute(HREF_ATTR, srcAttribute);
+        writer.writeAttribute("data-params", "url=" + srcAttribute);
+        writer.writeAttribute(ONCLICK_ATTR, "ice.mobi.invoke(this)");
+//        writer.writeAttribute(HREF_ATTR, srcAttribute);
         String label = "openResourceLabel";
         if (!isStringAttributeEmpty(comp.getLabel())){
             label = comp.getLabel();
