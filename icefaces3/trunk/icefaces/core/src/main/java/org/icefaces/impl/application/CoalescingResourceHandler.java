@@ -16,6 +16,7 @@
 
 package org.icefaces.impl.application;
 
+import org.icefaces.impl.event.ResourceOrdering;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.Resource;
@@ -115,7 +116,20 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
         return this.createResource(resourceName, libraryName, null);
     }
 
-    public static class ResourceCollector implements SystemEventListener {
+    public static class ResourceCollector implements SystemEventListener, ResourceOrdering.ResourceIterator {
+        private ArrayList<CoalescingResource.Info> orderedResourceInfos = new ArrayList<CoalescingResource.Info>();
+
+        public void resource(String name, String library, String target) {
+            orderedResourceInfos.add(new CoalescingResource.Info(name, library));
+        }
+
+        public ResourceCollector() {
+            FacesContext context = FacesContext.getCurrentInstance();
+            ResourceOrdering resourceOrdering = (ResourceOrdering) context.getExternalContext().getApplicationMap().get(ResourceOrdering.class.getName());
+            resourceOrdering.traverseOrderedResources(this);
+
+        }
+
         public boolean isListenerForSource(Object source) {
             return EnvUtils.isICEfacesView(FacesContext.getCurrentInstance()) && (source instanceof UIViewRoot);
         }
@@ -184,12 +198,24 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             if (previousResourceInfos == null) {
                 sess.setAttribute(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
             } else {
-                Collection newResourceInfos = new ArrayList(resourceInfos.resources);
-                newResourceInfos.removeAll(previousResourceInfos.resources);
+                ArrayList<CoalescingResource.Info> currentResources = resourceInfos.resources;
+                ArrayList<CoalescingResource.Info> previousResources = previousResourceInfos.resources;
                 //replace the resource infos only if there are new resources found in the new list
-                if (newResourceInfos.isEmpty()) {
+                if (previousResources.equals(currentResources)) {
                     previousResourceInfos.modified = false;
                 } else {
+                    //the resources collected previously are merged with the currently collected ones so that when multiple
+                    //views are processed (such as in portlets) the coalescing resource contains the resources needed by all the views
+                    ArrayList<CoalescingResource.Info> viewMergedResources = new ArrayList<CoalescingResource.Info>();
+                    Iterator<CoalescingResource.Info> i = orderedResourceInfos.iterator();
+                    while (i.hasNext()) {
+                        CoalescingResource.Info info = i.next();
+                        if (currentResources.contains(info) || previousResources.contains(info)) {
+                            viewMergedResources.add(info);
+                        }
+                    }
+                    resourceInfos.resources = viewMergedResources;
+                    resourceInfos.modified = true;
                     sess.setAttribute(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
                 }
             }
