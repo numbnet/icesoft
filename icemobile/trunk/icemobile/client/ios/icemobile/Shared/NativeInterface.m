@@ -52,6 +52,7 @@
 @synthesize popoverSource;
 @synthesize motionManager;
 @synthesize locationManager;
+@synthesize documentController;
 
 static char base64EncodingTable[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -67,7 +68,7 @@ static char base64EncodingTable[64] = {
         self.qrScanner.nativeInterface = self;
         NSString *tempDir = NSTemporaryDirectory ();
         self.soundFilePath = [tempDir stringByAppendingString: @"sound.mp4"];
-        self.popoverSource = CGRectMake(200.0, 200.0, 0.0, 0.0);
+        self.popoverSource = CGRectMake(200.0, 200.0, 40.0, 40.0);
     }
     
     return self;
@@ -109,6 +110,8 @@ static char base64EncodingTable[64] = {
         [self scan:[params objectForKey:@"id"]];
     } else if ([@"aug" isEqualToString:commandName])  {
         [self aug:[params objectForKey:@"id"] locations:params];
+    } else if ([@"open" isEqualToString:commandName])  {
+        [self open:[params objectForKey:@"id"] url:[params objectForKey:@"url"]];
     } else if ([@"fetchContacts" isEqualToString:commandName])  {
         [self address:[params objectForKey:@"id"]];
     } else if ([@"sms" isEqualToString:commandName])  {
@@ -198,6 +201,26 @@ static char base64EncodingTable[64] = {
     [audioController release];
     
     return YES;
+}
+
+- (void)open:(NSString*)openId url:(NSString*)url  {
+    NSURL *remoteURL = [NSURL URLWithString:url];
+NSLog(@"open %@ -- %@", openId, url);
+    NSString *localName = [[[remoteURL absoluteString] 
+            componentsSeparatedByString:@"/"] lastObject];
+    NSString *filePath = [NSTemporaryDirectory() 
+        stringByAppendingPathComponent:localName];
+    NSData *fileData = [NSData dataWithContentsOfURL:remoteURL];
+    [fileData writeToFile:filePath atomically:YES];
+    NSURL *fileURL = [NSURL fileURLWithPath: filePath];
+    NSLog(@"open %@", fileURL);
+
+    self.documentController = 
+            [UIDocumentInteractionController 
+                    interactionControllerWithURL:fileURL];
+    [self.documentController 
+            presentOpenInMenuFromRect:popoverSource 
+            inView:self.controller.view animated:YES];
 }
 
 - (void)recordStart  {

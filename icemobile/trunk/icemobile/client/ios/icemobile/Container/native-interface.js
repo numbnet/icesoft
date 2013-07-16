@@ -287,6 +287,10 @@ if (!window.ice.mobile) {
             ice.native('upload?id=' + id);
         }
 
+        namespace.open = function(id, atts)  {
+            ice.native('open?id=' + id + (atts ? '&' + atts : ''));
+        }
+
         namespace.play = function(id)  {
             ice.native('play?id=' + id);
         }
