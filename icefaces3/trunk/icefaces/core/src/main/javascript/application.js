@@ -493,6 +493,10 @@ if (!window.ice.icefaces) {
             ice.push.register([viewID], retrieveUpdate(viewID));
         };
 
+        namespace.unsetupPush = function(viewID) {
+            ice.push.deregister([viewID]);
+        };
+
         namespace.setupRefresh = function(viewID, interval, duration, id) {
             var times = duration < 0 ? null : Math.floor(duration / interval);
             var requestUpdate = retrieveUpdate(viewID);
