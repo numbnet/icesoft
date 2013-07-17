@@ -11,6 +11,8 @@
 		9C058592162F679F003D1890 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C058591162F679F003D1890 /* AddressBook.framework */; };
 		9C1B7A0616FBC5550015C815 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C1B7A0516FBC5550015C815 /* MessageUI.framework */; };
 		9C1F8D1F15670CC6004E59EB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C1F8D1E15670CC6004E59EB /* MapKit.framework */; };
+		9C31CD401796FF0800A92773 /* open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C31CD3E1796FF0800A92773 /* open@2x.png */; };
+		9C31CD411796FF0800A92773 /* open.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C31CD3F1796FF0800A92773 /* open.png */; };
 		9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C403FCB14845E4200FBA6BC /* QRScanner.mm */; };
 		9C42F738158277E00011FECC /* E.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F730158277E00011FECC /* E.png */; };
 		9C42F739158277E00011FECC /* E@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F731158277E00011FECC /* E@2x.png */; };
@@ -96,6 +98,8 @@
 		9C058591162F679F003D1890 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		9C1B7A0516FBC5550015C815 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9C1F8D1E15670CC6004E59EB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9C31CD3E1796FF0800A92773 /* open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open@2x.png"; sourceTree = "<group>"; };
+		9C31CD3F1796FF0800A92773 /* open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = open.png; sourceTree = "<group>"; };
 		9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
 		9C403FCA14845E4200FBA6BC /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRScanner.h; path = Shared/QRScanner.h; sourceTree = "<group>"; };
 		9C403FCB14845E4200FBA6BC /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QRScanner.mm; path = Shared/QRScanner.mm; sourceTree = "<group>"; };
@@ -310,6 +314,8 @@
 		9CA51B6914730D110065F681 /* ICEmobile-SX */ = {
 			isa = PBXGroup;
 			children = (
+				9C31CD3E1796FF0800A92773 /* open@2x.png */,
+				9C31CD3F1796FF0800A92773 /* open.png */,
 				9C654E9E174D8F1C00758CA6 /* Default-Portrait@2x~ipad.png */,
 				9C654E9F174D8F1C00758CA6 /* Default-Portrait~ipad.png */,
 				9CA2E88A1731BFF1001D1CFC /* Default@2x.png */,
@@ -469,6 +475,8 @@
 				9C4B206F17566B20009C6477 /* geospy@2x.png in Resources */,
 				9CF13E60175E57A100E0DF90 /* sms.png in Resources */,
 				9CF13E61175E57A100E0DF90 /* sms@2x.png in Resources */,
+				9C31CD401796FF0800A92773 /* open@2x.png in Resources */,
+				9C31CD411796FF0800A92773 /* open.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
