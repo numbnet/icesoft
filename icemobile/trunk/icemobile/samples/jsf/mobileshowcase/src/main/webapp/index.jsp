@@ -15,7 +15,7 @@
   --%>
 
 <%
-
-   response.sendRedirect("./showcase.jsf?"+request.getQueryString());
+   String query = request.getQueryString();
+   response.sendRedirect("./showcase.jsf?"+(query != null ? query : ""));
 %>
 
