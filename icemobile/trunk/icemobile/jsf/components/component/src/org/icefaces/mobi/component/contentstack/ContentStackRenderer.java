@@ -148,7 +148,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         String selectedPaneClientId = null;
         String homeId = null;
         boolean client = false;
-        int hashcode = MobiJSFUtils.generateHashCode(stack.getSelectedId());
+        int hashcode = MobiJSFUtils.generateHashCode(System.currentTimeMillis());
         UIComponent selPane = stack.findComponent(selectedPaneId);
         StringBuilder sb = new StringBuilder("mobi.layoutMenu.initClient('").append(clientId).append("'");
         sb.append(",{stackId: '").append(clientId).append("'");
