@@ -46,6 +46,7 @@
     UIButton *camcorderButton;
     UIButton *microphoneButton;
     UIButton *qrButton;
+    UIButton *openButton;
 }
 
 @property (retain) NativeInterface *nativeInterface;
@@ -73,6 +74,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *camcorderButton;
 @property (nonatomic, retain) IBOutlet UIButton *microphoneButton;
 @property (nonatomic, retain) IBOutlet UIButton *qrButton;
+@property (nonatomic, retain) IBOutlet UIButton *openButton;
 
 - (void) applicationWillResignActive;
 - (void) applicationDidEnterBackground;
