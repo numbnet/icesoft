@@ -601,7 +601,7 @@ iframe .mobi-splitpane-scrollable::-webkit-scrollbar {
     background-repeat: no-repeat;
     float: right;
     margin-right: 25px;
-    margin-top: 15px;
+    margin-top: 17px;
     border: none;
     text-indent: -9999px;
 }
@@ -719,4 +719,36 @@ html.landscape #change-orientation{
     #header-container h1, .choose-device-btn{
         font-family: Arial;
     }
+}
+#showcase-btns{
+    display:inline-block;
+    position: absolute;
+    right: 154px;
+}
+.jsf-showcase{
+    height: 65px;
+    width: 114px;
+    background-image: url(css-images/jsf-active.png);
+    background-repeat: no-repeat;
+    display:inline-block;
+    margin-left:50px;
+    margin-top: 4px;
+}
+.jsp-showcase{
+    height: 65px;
+    width: 114px;
+    background-image: url(css-images/jsp-inactive.png);
+    background-repeat: no-repeat;
+    display:inline-block;
+}
+.jsp-showcase:hover{
+    background-image: url(css-images/jsp-rollover.png);
+}
+.divider{
+    background-image: url(css-images/divider.png);
+    background-repeat: no-repeat;
+    height: 28px;
+    width: 2px;
+    display: inline-block;
+    margin-bottom: 17px;
 }
