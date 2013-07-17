@@ -490,11 +490,6 @@ public class DataTableRenderer extends CoreRenderer {
 
         String styleClass = "ui-paginator ui-paginator-" + position + " ui-widget-header";
 
-        if (!position.equals("top") && table.getFooter() == null)
-            styleClass = styleClass + " ui-corner-bl ui-corner-br";
-        else if (!position.equals("bottom") && table.getHeader() == null)
-            styleClass = styleClass + " ui-corner-tl ui-corner-tr";
-
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_paginator" + position, null);
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
