@@ -35,7 +35,7 @@ public class ContentStackMenu2 {
     
     public void goToMenu(ActionEvent evt){
         System.out.println("goToMenu()");
-        this.selectedPane = "menu";
+        this.selectedPane = "pane2";
     }
 
 }
