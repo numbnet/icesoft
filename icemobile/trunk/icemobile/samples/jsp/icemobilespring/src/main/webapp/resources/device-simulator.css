@@ -304,7 +304,7 @@ iframe {
 /* IPHONE LANDSCAPE */
 .iphone-landscape {
     background-image: url(images/iphone4-landscape.png);
-    padding: 23px 2px 24px 0;
+    padding: 23px 2px 40px 0;
     opacity: 0;
 }
 #iphone-landscape-device.active .iphone-landscape{ 
@@ -477,7 +477,7 @@ iframe {
 /* BBQ10 PORTRAIT */
 .bbq10-portrait {
     background-image: url(images/bbq10-portrait.png);
-    padding: 113px 2px 218px 0;
+    padding: 113px 2px 250px 0;
     background-size: 424px auto;
     opacity: 0;
 }
