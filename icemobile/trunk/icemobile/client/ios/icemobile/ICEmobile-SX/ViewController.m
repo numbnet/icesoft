@@ -31,6 +31,7 @@
 @synthesize currentParameters;
 @synthesize currentCommand;
 @synthesize currentSessionId;
+@synthesize splashParameters;
 @synthesize uploadProgress;
 @synthesize uploadLabel;
 @synthesize appTitle;
@@ -51,6 +52,7 @@
 @synthesize confirmTitles;
 @synthesize commandNames;
 @synthesize launchedFromApp;
+@synthesize splashImage;
 
 
 - (void) dealloc  {
