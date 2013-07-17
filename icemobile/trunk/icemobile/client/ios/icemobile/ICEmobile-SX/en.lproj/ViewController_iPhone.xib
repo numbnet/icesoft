@@ -13,6 +13,7 @@
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
 			<string>IBUIButton</string>
+			<string>IBUIImageView</string>
 			<string>IBUILabel</string>
 			<string>IBUIProgressView</string>
 			<string>IBUITextField</string>
@@ -487,7 +488,7 @@
 						<string key="NSFrame">{{20, 416}, {73, 44}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="936933630"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -509,6 +510,17 @@
 							<double key="NSSize">10</double>
 							<int key="NSfFlags">16</int>
 						</object>
+					</object>
+					<object class="IBUIImageView" id="936933630">
+						<reference key="NSNextResponder" ref="774585933"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{40, 231}, {240, 190}}</string>
+						<reference key="NSSuperview" ref="774585933"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
@@ -647,6 +659,14 @@
 					<int key="connectionID">65</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">splashImage</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="936933630"/>
+					</object>
+					<int key="connectionID">68</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">returnPressed</string>
 						<reference key="source" ref="490980418"/>
@@ -774,6 +794,7 @@
 							<reference ref="290413788"/>
 							<reference ref="118519622"/>
 							<reference ref="766040935"/>
+							<reference ref="936933630"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -893,6 +914,12 @@
 						<reference key="parent" ref="864341465"/>
 						<string key="objectName">open</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">67</int>
+						<reference key="object" ref="936933630"/>
+						<reference key="parent" ref="774585933"/>
+						<string key="objectName">splashImage</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -918,13 +945,14 @@
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="63.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="64.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="67.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">66</int>
+			<int key="maxID">68</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -933,7 +961,6 @@
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="actionPressed:">id</string>
-						<string key="chooseAction">id</string>
 						<string key="doMediacast">id</string>
 						<string key="doMobileshowcase">id</string>
 						<string key="returnPressed">id</string>
@@ -942,10 +969,6 @@
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="actionPressed:">
 							<string key="name">actionPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="chooseAction">
-							<string key="name">chooseAction</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="doMediacast">
@@ -978,6 +1001,7 @@
 						<string key="openButton">UIButton</string>
 						<string key="qrButton">UIButton</string>
 						<string key="smsButton">UIButton</string>
+						<string key="splashImage">UIImageView</string>
 						<string key="uploadLabel">UILabel</string>
 						<string key="uploadProgress">UIProgressView</string>
 						<string key="urlField">UITextField</string>
@@ -1030,6 +1054,10 @@
 						<object class="IBToOneOutletInfo" key="smsButton">
 							<string key="name">smsButton</string>
 							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="splashImage">
+							<string key="name">splashImage</string>
+							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="uploadLabel">
 							<string key="name">uploadLabel</string>

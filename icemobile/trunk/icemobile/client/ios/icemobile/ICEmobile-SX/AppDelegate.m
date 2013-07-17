@@ -108,8 +108,21 @@
     self.viewController.returnURL = [params objectForKey:@"r"];
     self.viewController.currentParameters = [params objectForKey:@"p"];
     self.viewController.currentCommand = [params objectForKey:@"c"];
+    self.viewController.splashParameters = [params objectForKey:@"s"];
     self.viewController.currentSessionId = [params objectForKey:@"JSESSIONID"];
     LogDebug(@"found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]);
+
+    NSDictionary *splashParts = 
+       [self.viewController.nativeInterface parseQuery:self.viewController.splashParameters];
+    NSString *splashImageURL = [splashParts objectForKey:@"i"];
+    if (nil != splashImageURL)  {
+NSLog(@"splash image URL %@", splashImageURL);
+        NSURL *imageURL = [NSURL URLWithString:splashImageURL];
+        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+        UIImage *image = [UIImage imageWithData:imageData];
+        [self.viewController.splashImage setImage:image];
+    }
+
     [self.viewController dispatchCurrentCommand];
 
     return YES;
