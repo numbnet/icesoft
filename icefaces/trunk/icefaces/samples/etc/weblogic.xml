@@ -1,0 +1,20 @@
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/weblogic-web-app">
+    <session-descriptor>
+        <persistent-store-type>replicated_if_clustered</persistent-store-type>
+    </session-descriptor>
+    <container-descriptor>
+        <prefer-application-packages>
+            <package-name>javax.faces.*</package-name>
+            <package-name>com.sun.faces.*</package-name>
+            <package-name>com.bea.faces.*</package-name>
+        </prefer-application-packages>
+        <prefer-application-resources>
+            <resource-name>javax.faces.*</resource-name>
+            <resource-name>com.sun.faces.*</resource-name>
+            <resource-name>com.bea.faces.*</resource-name>
+            <resource-name>META-INF/services/javax.servlet.ServletContainerInitializer</resource-name>
+            <resource-name>META-INF/services/com.sun.faces.spi.FacesConfigResourceProvider</resource-name>
+        </prefer-application-resources>
+        <show-archived-real-path-enabled>true</show-archived-real-path-enabled>
+    </container-descriptor>
+</weblogic-web-app>

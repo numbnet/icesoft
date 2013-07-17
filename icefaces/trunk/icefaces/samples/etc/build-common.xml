@@ -150,6 +150,7 @@
                 <fileset dir="${dist.dir}"/>
                 <fileset dir="${classes.dir}" includes="**/*"/>
                 <fileset dir="${app.lib.dir}" includes="*"/>
+                <fileset dir="${web.inf.dir}" includes="weblogic.xml"/>
              </delete>
         </sequential>
     </macrodef>
@@ -201,6 +202,9 @@
             <copy todir="${web.inf.dir}" preservelastmodified="true">
                 <fileset dir="${build.common.basedir}" includes="web.xml">
                     <present present="srconly" targetdir="${web.inf.dir}"/>
+                </fileset>
+                <fileset dir="${build.common.basedir}">
+                    <include name="weblogic.xml" if="weblogic.xml"/>
                 </fileset>
             </copy>
             
@@ -334,8 +338,8 @@ build.war        - to build the web application archive (war file) for jsf1.1 ve
             Tomcat5.x
             JBoss4.0.5
             OC4J
-            Weblogic 8.1
-            Weblogic9.2
+            WebLogic 8.1
+            WebLogic9.2
             Websphere6.0
             Websphere6.1
             
@@ -348,8 +352,8 @@ build.myfaces.war - to build the web application archive (war file) for myfaces 
             Tomcat5.x
             JBoss4.0.5
             OC4J
-            Weblogic 8.1
-            Weblogic9.2
+            WebLogic 8.1
+            WebLogic9.2
             Websphere6.0
             Websphere6.1
             
@@ -388,15 +392,25 @@ Combinations:
     <target name="tomcat5.x" depends="build.war" description="Tomcat 5.x"/>
     <target name="oc4j" depends="build.war" description="OC4J"/>
     <target name="jboss4.0" depends="build.war" description="JBoss 4.0.5"/>
-    <target name="weblogic8.1" depends="build.war" description="Weblogic 8.1"/>
-    <target name="weblogic9.2" depends="build.war" description="Weblogic 9.2"/>
-	<target name="weblogic10" description="Weblogic 10">
-		<antcall target="build.war">
-			<param name="jsf12" value=""/>
+    <target name="weblogic8.1" depends="build.war" description="WebLogic 8.1"/>
+    <target name="weblogic9.2" depends="build.war" description="WebLogic 9.2"/>
+    <target name="weblogic10" description="WebLogic 10">
+        <antcall target="build.war">
+            <param name="jsf12" value=""/>
             <param name="noelapi" value=""/>
-			<param name="noelri" value=""/>
+            <param name="noelri" value=""/>
         </antcall>
-	</target>
+    </target>
+    <target name="weblogic12" description="WebLogic 12">
+        <echo message="build.common.basedir: '${build.common.basedir}'"/>
+        <echo message="web.inf.dir: '${web.inf.dir}'"/>
+        <antcall target="build.war">
+            <param name="jsf12" value=""/>
+            <param name="noelapi" value=""/>
+            <param name="noelri" value=""/>
+            <param name="weblogic.xml" value=""/>
+        </antcall>
+    </target>
     
     <target name="websphere6.1" description="IBM WebSphere Application Server 6.1">
 	       <antcall target="build.war">
