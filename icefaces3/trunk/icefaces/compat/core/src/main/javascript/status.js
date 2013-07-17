@@ -189,11 +189,12 @@ var ComponentIndicators;
     function OverlayIndicator() {
         return object(function(method) {
             var isIEBrowser = /MSIE/.test(navigator.userAgent);
+            var isIEGreater8 = isIEBrowser ? parseInt(navigator.userAgent.match(/MSIE ([0-9]+)\.0;/)[1]) > 8 : false;
             var overlay;
             var delayedOverlayRender;
 
             function createOverlay() {
-                if (isIEBrowser) {
+                if (isIEBrowser && !isIEGreater8) {
                     overlay = document.createElement('iframe');
                     overlay.setAttribute('src', 'javascript:document.write(\'<html><body style="cursor: wait;"></body><html>\');document.close();');
                     overlay.setAttribute('frameborder', '0');
@@ -216,7 +217,7 @@ var ComponentIndicators;
             }
 
             function deleteOverlay() {
-                if (isIEBrowser) {
+                if (isIEBrowser && !isIEGreater8) {
                     var blankOverlay = document.createElement('iframe');
                     blankOverlay.setAttribute('src', 'javascript:document.write("<html></html>");document.close();');
                     blankOverlay.setAttribute('frameborder', '0');
