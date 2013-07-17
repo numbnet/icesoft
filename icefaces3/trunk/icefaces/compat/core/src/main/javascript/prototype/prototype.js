@@ -1044,7 +1044,7 @@ var Enumerable = (function() {
     }
 
     function toArray() {
-        return this.map();
+        return this.collect();
     }
 
     function zip() {
@@ -1063,7 +1063,7 @@ var Enumerable = (function() {
     }
 
     function inspect() {
-        return '#<Enumerable:' + this.toArray().inspect() + '>';
+        return '#<Enumerable:' + this + '>';
     }
 
 
@@ -1103,7 +1103,6 @@ var Enumerable = (function() {
 
 function $A(iterable) {
     if (!iterable) return [];
-    if ('toArray' in Object(iterable)) return iterable.toArray();
     var length = iterable.length || 0, results = new Array(length);
     while (length--) results[length] = iterable[length];
     return results;
