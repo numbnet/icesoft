@@ -43,6 +43,7 @@
 @synthesize camcorderButton;
 @synthesize microphoneButton;
 @synthesize qrButton;
+@synthesize openButton;
 @synthesize arButton;
 @synthesize contactsButton;
 @synthesize deviceToken;
@@ -320,31 +321,6 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
                     URLWithString:@"http://www.icesoft.org/java/initicemobilesx.html"]];
 }
 
-- (IBAction) chooseAction  {
-    LogDebug(@"ViewController chooseAction %d", actionSelector.selectedSegmentIndex);
-    if (-1 == actionSelector.selectedSegmentIndex)  {
-        return;
-    }
-    self.currentURL = urlField.text;
-    [urlField resignFirstResponder];
-    self.returnURL = self.currentURL;
-    self.currentParameters = nil;
-    NSString *theCommand = [self.commandNames 
-            objectAtIndex:actionSelector.selectedSegmentIndex];
-    CGRect selectionFrame = actionSelector.frame;
-    selectionFrame = [actionSelector.superview convertRect:selectionFrame 
-            toView:self.view];
-    CGFloat cellWidth = 
-            selectionFrame.size.width / actionSelector.numberOfSegments;
-    CGFloat popOffset = selectionFrame.origin.x + 
-            cellWidth * actionSelector.selectedSegmentIndex;
-    self.nativeInterface.popoverSource = CGRectMake(popOffset, 
-            selectionFrame.origin.y, cellWidth, selectionFrame.size.height);
-    self.currentCommand = [NSString stringWithFormat:@"%@?id=undefined", theCommand];
-    [actionSelector setSelectedSegmentIndex:-1];
-    self.launchedFromApp = YES;
-    [self dispatchCurrentCommand];
-}
 
 - (IBAction) returnPressed  {
     LogDebug(@"ViewController returnPressed");
@@ -378,13 +354,19 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     [urlField resignFirstResponder];
     self.returnURL = self.currentURL;
     self.currentParameters = nil;
+
+    if ([@"open" isEqualToString:theCommand])  {
+        params = [@"&url=" stringByAppendingString:
+            [self.currentURL  stringByAddingPercentEscapesUsingEncoding:
+                    NSASCIIStringEncoding]];
+    }
+
     CGRect selectionFrame = theButton.frame;
     selectionFrame = [theButton.superview convertRect:selectionFrame
             toView:self.view];
-    CGFloat popOffset = selectionFrame.size.width / 2;
-    self.nativeInterface.popoverSource = CGRectMake(
-            popOffset, selectionFrame.origin.y,
-            selectionFrame.size.width, selectionFrame.size.height);
+    self.nativeInterface.popoverSource = 
+            [self.urlField convertRect:self.urlField.frame 
+                toView:nativeInterface.controller.view];
     self.currentCommand = [NSString stringWithFormat:
             @"%@?id=undefined%@", theCommand, params];
     self.launchedFromApp = YES;
@@ -421,6 +403,8 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     self.smsButton.tag = 6;
     [IceUtil makeFancyButton:self.geospyButton];
     self.geospyButton.tag = 7;
+    [IceUtil makeFancyButton:self.openButton];
+    self.openButton.tag = 8;
 
     [self hideProgress];
     [self showControls];
