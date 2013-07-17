@@ -92,7 +92,8 @@ html.bberry .ui-icon{
 }
 html.iphone .ui-icon,
 html.ipad .ui-icon,
-html.bb10 .ui-icon {
+html.bb10 .ui-icon,
+html.android_light .ui-icon {
    background-image: url(icons-white.png);
 }
 html.bberry .ui-icon {
