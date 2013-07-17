@@ -1,7 +1,4 @@
 <weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/weblogic-web-app">
-    <session-descriptor>
-        <persistent-store-type>replicated_if_clustered</persistent-store-type>
-    </session-descriptor>
     <container-descriptor>
         <prefer-application-packages>
             <package-name>javax.faces.*</package-name>
