@@ -24,6 +24,9 @@ if (!window['ice.mobi']) {
 if (!window['mobi']) {
     window.mobi = {};
 }
+if (!window.ice.mobi.impl) {
+    window.ice.mobi.impl = {};
+}
 
 if (!window.console) {
     console = {};
@@ -93,8 +96,12 @@ ice.mobi.hasClass = function(ele, remove_cls) {
     return ele.className.replace( /(?:^|\s)remove_cls(?!\S)/ , '' );
 };
 ice.registerAuxUpload = function registerAuxUpload(sessionid, uploadURL) {
+
+    var splashClause = ice.mobi.impl.getSplashClause();
+
     var sxURL = "icemobile://c=register&r=" +
                         escape(window.location) + "&JSESSIONID=" + sessionid +
+                        splashClause +
                         "&u=" + escape(uploadURL);
 
     if (window.chrome)  {
@@ -276,6 +283,8 @@ ice.mobi.deviceCommandExec = function(command, id, options)  {
         params = "ub=" + escape(baseURL) + ampchar + params;
     }
 
+//    var splashClause = ice.mobi.impl.getSplashClause();
+
     var sessionidClause = "";
     if ("" != sessionid) {
         sessionidClause = "&JSESSIONID=" + escape(sessionid);
@@ -293,9 +302,19 @@ ice.mobi.deviceCommandExec = function(command, id, options)  {
             uploadURLClause + 
             "&r=" + escape(returnURL) +
             sessionidClause +
+//            splashClause +
             serializedFormClause;
 
     window.location = sxURL;
+}
+
+ice.mobi.impl.getSplashClause = function()  {
+    var splashClause = "";
+    if (null != ice.mobi.splashImageURL)  {
+        var splashImage = "i=" + escape(ice.mobi.splashImageURL);
+        splashClause = "&s=" + escape(splashImage);
+    }
+    return splashClause;
 }
 
 ice.mobi.sx = ice.mobilesx;
