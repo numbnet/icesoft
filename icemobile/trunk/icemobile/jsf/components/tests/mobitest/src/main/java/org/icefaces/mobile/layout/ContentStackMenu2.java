@@ -18,10 +18,11 @@ package org.icefaces.mobile.layout;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 
 @ManagedBean
 @SessionScoped
-public class ContentStackMenu2 {
+public class ContentStackMenu2 implements Serializable{
     
     private String selectedPane = "menu";
 
@@ -35,7 +36,15 @@ public class ContentStackMenu2 {
     
     public void goToMenu(ActionEvent evt){
         System.out.println("goToMenu()");
-        this.selectedPane = "pane2";
+        this.selectedPane = "menu";
+    }
+    public void goToPage1(ActionEvent evt){
+        System.out.println("go to page 1");
+        this.selectedPane = "page1" ;
+    }
+    public void goToPage2(ActionEvent ae){
+        System.out.println("go to page 2");
+        this.selectedPane = "page2" ;
     }
 
 }
