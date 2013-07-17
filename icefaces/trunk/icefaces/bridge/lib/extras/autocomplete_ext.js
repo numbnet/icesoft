@@ -172,6 +172,12 @@ Autocompleter.Base.prototype = {
     },
 
     onKeyPress: function(event) {
+		if (Prototype.Browser.IE && Ice.modal.running.length) { // ICE-5958
+			this.justPressedKey = true;
+			if (this.justPressedKeyObserver) clearTimeout(this.justPressedKeyObserver);
+			var self = this;
+			this.justPressedKeyObserver = setTimeout(function(){self.justPressedKey = false;},500);
+		}
         if (!this.active) {
             Ice.Autocompleter.logger.debug("Key press ignored. Not active.");
             switch (event.keyCode) {
@@ -333,6 +339,7 @@ Autocompleter.Base.prototype = {
     },
 
     onBlur: function(event) {
+		if (Prototype.Browser.IE && Ice.modal.running.length && this.justPressedKey) return; // ICE-5958
     	setFocus(''); 
         if (navigator.userAgent.indexOf("MSIE") >= 0) { // ICE-2225
             var strictMode = document.compatMode && document.compatMode == "CSS1Compat";
