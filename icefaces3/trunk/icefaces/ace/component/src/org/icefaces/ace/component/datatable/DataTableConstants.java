@@ -25,10 +25,10 @@ public class DataTableConstants {
     public static final String DATA_CLASS = "ui-datatable-data ui-widget-content";
     public static final String EMPTY_DATA_CLASS = "ui-datatable-data-empty";
     public static final String ROW_CLASS = "";
-    public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header ui-corner-tl ui-corner-tr";
+    public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header";
     public static final String HEADER_RIGHT_CLASS = "ui-header-right";
     public static final String HEADER_LEFT_CLASS = "ui-header-left";
-    public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header ui-corner-bl ui-corner-br";
+    public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header";
     public static final String HEAD_TEXT_CLASS = "ui-header-text";
 
     public static final String PIN_COLUMN_CONTROL_CLASS = "ui-pin-control";
