@@ -15,5 +15,5 @@
   --%>
 <%
     String query = request.getQueryString();
-    response.sendRedirect("app?"+ (query != null ? query : ""));
+    response.sendRedirect("app"+ (query != null ? "?" + query : ""));
 %>
