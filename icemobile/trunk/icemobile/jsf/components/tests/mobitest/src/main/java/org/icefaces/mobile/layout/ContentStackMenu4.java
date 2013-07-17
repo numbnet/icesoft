@@ -12,9 +12,6 @@ public class ContentStackMenu4 {
     private String currentPane;
 
     public String getCurrentPane() {
-        if( currentPane == null || currentPane.length() == 0 ){
-            currentPane = MobiJSFUtils.getClientDescriptor().isHandheldBrowser() ? "menu" : "dataTable";
-        }
         return currentPane;
     }
 
