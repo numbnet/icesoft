@@ -138,6 +138,12 @@ public class CoalescingResource extends Resource {
 
             return true;
         }
+
+        public int hashCode() {
+            int result = name != null ? name.hashCode() : 0;
+            result = 31 * result + (library != null ? library.hashCode() : 0);
+            return result;
+        }
     }
 
     public static class Infos implements Externalizable {
