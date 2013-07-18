@@ -54,6 +54,13 @@
     text-align: center;
 }
 
+.ui-datatable tbody.ui-datatable-data > tr.ui-state-active > td,
+.ui-datatable tbody.ui-datatable-data > tr.ui-state-highlight > td,
+.ui-datatable tbody.ui-datatable-data > tr.ui-state-active,
+.ui-datatable tbody.ui-datatable-data > tr.ui-state-highlight {
+    border-style:double;
+}
+
 .ui-datatable .ui-paginator {
     text-align:center;
     margin:0;
