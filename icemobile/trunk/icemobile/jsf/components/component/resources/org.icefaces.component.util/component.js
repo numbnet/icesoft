@@ -890,20 +890,27 @@ if (window.addEventListener) {
     }, false);
 
     window.addEventListener("hashchange", function () {
-        var sxkey = "#icemobilesx";
-        var sxlen = sxkey.length;
-        var locHash = "" + window.location.hash;
-        if (sxkey === locHash.substring(0, sxlen))  {
-            var data = locHash.substring(sxlen + 1);
-            if (data)  {
+        var data = ice.mobi.getDeviceCommand();
+        if (null != data)  {
+            var name;
+            var value;
+            var needRefresh = true;
+            if ("" != data)  {
                 var parts = unescape(data).split("=");
                 if (parts)  {
-                    var name = parts[0];
-                    var value = parts[1];
+                    name = parts[0];
+                    value = parts[1];
                     ice.mobi.setInput(name, name, value);
+                    //do not refresh the page if valid local data is provided
+                    if ("!" !== name.substring(0,1))  {
+                        needRefresh = false;
+                    }
                 }
-            } else {
-                ice.ajaxRefresh();
+            }
+            if (needRefresh)  {
+                if (window.ice.ajaxRefresh)  {
+                    ice.ajaxRefresh();
+                }
             }
             setTimeout( function(){
                 var loc = window.location;
@@ -911,24 +918,25 @@ if (window.addEventListener) {
                 //to repeated values are detected
                 history.pushState("", document.title,
                         loc.pathname + loc.search + "#clear-icemobilesx");
-                history.pushState("", document.title, loc.pathname + loc.search);
+                history.pushState("", document.title,
+                        loc.pathname + loc.search);
+                var sxEvent = {
+                    name : name,
+                    value : value
+                };
+                if ("!r" === name.substring(0,2))  {
+                    //need to implement iteration over the full set
+                    //of response values
+                    sxEvent.response = value;
+                    sxEvent.name = "";
+                    sxEvent.value = "";
+                }
+                if (ice.mobi.deviceCommandCallback)  {
+                    ice.mobi.deviceCommandCallback(sxEvent);
+                    ice.mobi.deviceCommandCallback = null;
+                }
             }, 1);
         }
-    }, false);
-
-    document.addEventListener("webkitvisibilitychange", function () {
-	if (document.webkitHidden) {
-            if (ice.push) {
-		ice.log.debug(ice.log, 'PAUSING from visibility change');
-		ice.push.connection.pauseConnection();
-            }
-	}
-	else {
-            if (ice.push) {
-		ice.log.debug(ice.log, 'RESUMING from visibility change');
-		ice.push.connection.resumeConnection();
-            }
-	}
     }, false);
 }
 /* javascript for mobi:commandButton component put into component.js as per MOBI-200 */
@@ -1018,6 +1026,16 @@ ice.mobi.formOf = function(element) {
         }
         parent = parent.parentNode;
     }
+}
+
+ice.mobi.getDeviceCommand = function()  {
+    var sxkey = "#icemobilesx";
+    var sxlen = sxkey.length;
+    var locHash = "" + window.location.hash;
+    if (sxkey === locHash.substring(0, sxlen))  {
+        return locHash.substring(sxlen + 1);
+    }
+    return null;
 }
 
 ice.mobi.sx = function (element, uploadURL) {
@@ -1122,7 +1140,11 @@ ice.mobi.setInput = function(target, name, value, vtype)  {
         return;
     }
     var targetElm = document.getElementById(target);
+    if (!targetElm)  {
+        return;
+    }
     var hidden = document.createElement("input");
+
     hidden.setAttribute("type", "hidden");
     hidden.setAttribute("id", hiddenID);
     hidden.setAttribute("name", name);
