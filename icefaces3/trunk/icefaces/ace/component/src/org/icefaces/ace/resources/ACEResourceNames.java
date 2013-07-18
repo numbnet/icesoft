@@ -21,7 +21,6 @@ import java.lang.String;
 public class ACEResourceNames {
     public static final String ACE_LIBRARY = "icefaces.ace";
     public static final String JQUERY_JS = "util/ace-jquery.js";
-    public static final String JQUERY_UI_CSS = "jquery/ui/jquery-ui.css";
     public static final String COMBINED_CSS = "util/combined.css";
     public static final String COMPONENTS_JS = "util/ace-components.js";
 }
