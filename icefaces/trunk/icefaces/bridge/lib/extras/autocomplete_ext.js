@@ -176,7 +176,9 @@ Autocompleter.Base.prototype = {
 			this.justPressedKey = true;
 			if (this.justPressedKeyObserver) clearTimeout(this.justPressedKeyObserver);
 			var self = this;
-			this.justPressedKeyObserver = setTimeout(function(){self.justPressedKey = false;},500);
+			var version = parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5));
+			var delay = version == 7 || version == 8 ? 700 : 500;
+			this.justPressedKeyObserver = setTimeout(function(){self.justPressedKey = false;},delay);
 		}
         if (!this.active) {
             Ice.Autocompleter.logger.debug("Key press ignored. Not active.");
