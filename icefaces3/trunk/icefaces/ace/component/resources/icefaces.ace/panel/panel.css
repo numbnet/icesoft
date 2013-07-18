@@ -18,14 +18,37 @@
     padding: 0.2em;
 }
 .ui-panel .ui-panel-titlebar {
-    padding: 0.5em 1em 0.3em;
-    position: relative;
+    padding: 0.3em 1em;
 }
 .ui-panel .ui-panel-title {
-    margin: 0.1em 16px 0.2em 0;
+    display:inline-block;
+    vertical-align: middle;
+    width:70%;
+    /* IE7 inline-block hack */
+    zoom: 1;
+    *display:inline;
+}
+.ui-panel .ui-panel-titlebar-icons {
+    display:inline-block;
+    vertical-align: middle;
+    text-align: right;
+    width:30%;
+    /* IE7 inline-block hack */
+    zoom: 1;
+    *display:inline;
 }
 .ui-panel .ui-panel-titlebar-icon {
-    float: right;
+    display:inline-block;
+    /* IE7 inline-block hack */
+    zoom: 1;
+    *display:inline;
+}
+.ui-panel .ui-panel-titlebar-icon:not(:last-child) {
+    margin-right:.5em;
+}
+.ui-panel .ui-panel-titlebar-icon .ui-icon {
+    width:19px;
+    height:19px;
 }
 .ui-panel .ui-panel-content {
     border: 0;
