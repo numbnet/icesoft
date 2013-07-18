@@ -243,32 +243,14 @@ ice.mobi.deviceCommandExec = function(command, id, options)  {
         }
     }
 
+    if (!uploadURL)  {
+        uploadURL = ice.mobi.impl.getUploadURL(element);
+    }
+
     var windowLocation = window.location;
     var barURL = windowLocation.toString();
     var baseURL = barURL.substring(0,
             barURL.lastIndexOf("/")) + "/";
-
-    if (!element)  {
-        uploadURL = baseURL;
-    } else {
-        var form = ice.formOf(element);
-        formID = form.getAttribute('id');
-        var formAction = form.getAttribute("action");
-
-        if (!uploadURL) {
-            uploadURL = element.getAttribute("data-posturl");
-        }
-        if (!uploadURL) {        
-            if (0 === formAction.indexOf("/")) {
-                uploadURL = window.location.origin + formAction;
-            } else if ((0 === formAction.indexOf("http://")) ||
-                    (0 === formAction.indexOf("https://"))) {
-                uploadURL = formAction;
-            } else {
-                uploadURL = baseURL + formAction;
-            }
-        }
-    }
 
     var returnURL = "" + window.location;
     if ("" == window.location.hash) {
@@ -317,6 +299,39 @@ ice.mobi.impl.getSplashClause = function()  {
     return splashClause;
 }
 
+ice.mobi.impl.getUploadURL = function(element)  {
+    var uploadURL;
+
+    var windowLocation = window.location;
+    var barURL = windowLocation.toString();
+    var baseURL = barURL.substring(0,
+            barURL.lastIndexOf("/")) + "/";
+
+    if (!element)  {
+        uploadURL = baseURL;
+    } else {
+        var form = ice.formOf(element);
+        formID = form.getAttribute('id');
+        var formAction = form.getAttribute("action");
+
+        if (!uploadURL) {
+            uploadURL = element.getAttribute("data-posturl");
+        }
+        if (!uploadURL) {        
+            if (0 === formAction.indexOf("/")) {
+                uploadURL = window.location.origin + formAction;
+            } else if ((0 === formAction.indexOf("http://")) ||
+                    (0 === formAction.indexOf("https://"))) {
+                uploadURL = formAction;
+            } else {
+                uploadURL = baseURL + formAction;
+            }
+        }
+    }
+    return uploadURL;
+}
+
+
 ice.mobi.sx = ice.mobilesx;
 
 ice.mobi.invoke = function(element)  {
@@ -341,6 +356,24 @@ ice.mobi.deviceCommand = function(command, id, callback, options)  {
 
 ice.mobi.scan = function(id, callback, options)  {
     ice.mobi.deviceCommand("scan", id, callback, options);
+}
+ice.mobi.camera = function(id, callback, options)  {
+    ice.mobi.deviceCommand("camera", id, callback, options);
+}
+ice.mobi.camcorder = function(id, callback, options)  {
+    ice.mobi.deviceCommand("camcorder", id, callback, options);
+}
+ice.mobi.microphone = function(id, callback, options)  {
+    ice.mobi.deviceCommand("microphone", id, callback, options);
+}
+ice.mobi.fetchContacts = function(id, callback, options)  {
+    ice.mobi.deviceCommand("fetchContacts", id, callback, options);
+}
+ice.mobi.sms = function(id, callback, options)  {
+    ice.mobi.deviceCommand("sms", id, callback, options);
+}
+ice.mobi.open = function(id, callback, options)  {
+    ice.mobi.deviceCommand("open", id, callback, options);
 }
 
 ice.mobi.setInput = function(target, name, value, vtype)  {
@@ -2467,15 +2500,21 @@ if (window.addEventListener) {
         if (null != data)  {
             var name;
             var value;
+            var needRefresh = true;
             if ("" != data)  {
                 var parts = unescape(data).split("=");
                 if (parts)  {
                     name = parts[0];
                     value = parts[1];
                     ice.mobi.setInput(name, name, value);
+                    //do not refresh the page if valid local data is provided
+                    if ("!" !== name.substring(0,1))  {
+                        needRefresh = false;
+                    }
                 }
-            } else {
-                if (window.ice.ajaxRefresh())  {
+            }
+            if (needRefresh)  {
+                if (window.ice.ajaxRefresh)  {
                     ice.ajaxRefresh();
                 }
             }
@@ -2491,6 +2530,13 @@ if (window.addEventListener) {
                     name : name,
                     value : value
                 };
+                if ("!r" === name.substring(0,2))  {
+                    //need to implement iteration over the full set
+                    //of response values
+                    sxEvent.response = value;
+                    sxEvent.name = "";
+                    sxEvent.value = "";
+                }
                 if (ice.mobi.deviceCommandCallback)  {
                     ice.mobi.deviceCommandCallback(sxEvent);
                     ice.mobi.deviceCommandCallback = null;
