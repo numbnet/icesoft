@@ -59,6 +59,7 @@ public class Panel extends PanelBase {
 
 	public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content ui-corner-all";
 	public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-corner-all";
+    public static final String PANEL_ICONS_CLASS = "ui-panel-titlebar-icons";
 	public static final String PANEL_TITLE_CLASS = "ui-panel-title";
 	public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-corner-all ui-state-default";
 	public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
