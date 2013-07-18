@@ -15,76 +15,18 @@
  */
 package org.icefaces.ace.component.messages;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Messages extends MessagesBase {
-    private Logger logger = Logger.getLogger(this.getClass().getName());
 
-    class AceFacesMessage {
-        String getClientId() {
-            return clientId;
-        }
-
-        FacesMessage getFacesMessage() {
-            return facesMessage;
-        }
-
-        private String clientId;
-        private FacesMessage facesMessage;
-
-        AceFacesMessage(String clientId, FacesMessage facesMessage) {
-            this.clientId = clientId;
-            this.facesMessage = facesMessage;
-        }
+    public Map<String, ArrayList<String>> getPrevMsgs() {
+        Object o = getStateHelper().get("prevMsgs");
+        return o == null ? new HashMap<String, ArrayList<String>>() : (Map<String, ArrayList<String>>) o;
     }
 
-    public Iterator getMsgList(FacesContext context) {
-        String sourceMethod = "getMsgList";
-        List<AceFacesMessage> msgList = new ArrayList<AceFacesMessage>();
-        String forId = (forId = getFor()) == null ? "@all" : forId.trim();
-        Iterator messageIter;
-        if (forId.equals("@all")) {
-            if (isGlobalOnly()) {
-                messageIter = context.getMessages(null);
-                while (messageIter.hasNext()) {
-                    msgList.add(new AceFacesMessage(null, (FacesMessage) messageIter.next()));
-                }
-            } else {
-                Iterator<String> clientIdIter = context.getClientIdsWithMessages();
-                while (clientIdIter.hasNext()) {
-                    String clientId = clientIdIter.next();
-                    messageIter = context.getMessages(clientId);
-                    while (messageIter.hasNext()) {
-                        msgList.add(new AceFacesMessage(clientId, (FacesMessage) messageIter.next()));
-                    }
-                }
-            }
-        } else {
-            UIComponent forComponent = forId.equals("") ? null : findComponent(forId);
-            if (forComponent == null) {
-                logger.logp(Level.WARNING, logger.getName(), sourceMethod, "'for' attribute value cannot be empty or non-existent id.");
-                msgList = Collections.emptyList();
-            } else {
-                String clientId = forComponent.getClientId(context);
-                messageIter = context.getMessages(clientId);
-                while (messageIter.hasNext()) {
-                    msgList.add(new AceFacesMessage(clientId, (FacesMessage) messageIter.next()));
-                }
-            }
-        }
-        return msgList.iterator();
-    }
-
-    public void setPrevMsgSet(Set msgSet) {
-        getStateHelper().put("prevMsgSet", msgSet);
-    }
-
-    public Set getPrevMsgSet() {
-        return (Set) getStateHelper().get("prevMsgSet");
+    public void setPrevMsgs(Map<String, ArrayList<String>> msgs) {
+        getStateHelper().put("prevMsgs", msgs);
     }
 }
