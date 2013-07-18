@@ -46,7 +46,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 @ICEResourceDependencies({
      @ICEResourceDependency(name="gmap/api.js"),
      @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
-     @ICEResourceDependency(name = ACEResourceNames.JQUERY_UI_CSS),
+
      @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
      @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
