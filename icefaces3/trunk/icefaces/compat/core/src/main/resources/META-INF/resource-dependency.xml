@@ -43,4 +43,20 @@
             <resource name="ICEfacesSetup" library="ice.core" target="body"/>
         </depends-on>
     </resource>
+    <resource name="ckeditor/ckeditor.mapping.js" library="inputrichtext" target="head">
+        <depends-on>
+            <resource name="compat.js" library="ice.compat" target="head"/>
+            <resource name="compat.uncompressed.js" library="ice.compat" target="head"/>
+        </depends-on>
+    </resource>
+    <resource name="ckeditor/ckeditor.js" library="inputrichtext" target="head">
+        <depends-on>
+            <resource name="ckeditor/ckeditor.mapping.js" library="inputrichtext" target="head"/>
+        </depends-on>
+    </resource>
+    <resource name="ckeditor_ext.js" library="inputrichtext" target="head">
+        <depends-on>
+            <resource name="ckeditor/ckeditor.js" library="inputrichtext" target="head"/>
+        </depends-on>
+    </resource>
 </dependencies>

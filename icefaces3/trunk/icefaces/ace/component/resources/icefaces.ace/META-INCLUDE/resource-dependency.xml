@@ -52,6 +52,17 @@
             <resource name="bridge.js" library="ice.core"/>
         </depends-on>
     </resource>
+    <resource name="richtextentry/richtextentry.js" library="icefaces.ace">
+        <depends-on>
+            <resource name="util/ace-components.js" library="icefaces.ace"/>
+            <resource name="richtextentry/ckeditor/ckeditor.js" library="icefaces.ace"/>
+        </depends-on>
+    </resource>
+    <resource name="richtextentry/ckeditor/ckeditor.js" library="icefaces.ace">
+        <depends-on>
+            <resource name="richtextentry/ckeditor/ckeditor.mapping.js" library="icefaces.ace"/>
+        </depends-on>
+    </resource>
     <resource name="autocompleteentry/autocompleteentry.js" library="icefaces.ace">
         <depends-on>
             <resource name="util/ace-components.js" library="icefaces.ace"/>
