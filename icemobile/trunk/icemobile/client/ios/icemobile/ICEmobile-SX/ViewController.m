@@ -204,6 +204,9 @@ NSLog(@"hideControls");
 - (void) handleResponse:(NSString *)responseString  {
 NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     if (!self.launchedFromApp)  {
+        if (responseString.length < 1500)  {
+            [self completeSmallPost:responseString forComponent:@"!r" withName:@"!r"];
+        }
         [self reloadCurrentURL];
     } else {
         [self hideProgress];
