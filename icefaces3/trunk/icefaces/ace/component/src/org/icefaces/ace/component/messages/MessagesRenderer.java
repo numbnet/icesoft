@@ -44,26 +44,10 @@ public class MessagesRenderer extends Renderer {
 
         ResponseWriter writer = context.getResponseWriter();
         Messages messages = (Messages) component;
-        String forId = (forId = messages.getFor()) == null ? "@all" : forId.trim();
-        Iterator messageIter;
         String style = messages.getStyle();
         String styleClass = (styleClass = messages.getStyleClass()) == null ? "" : " " + styleClass;
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
-        String sourceMethod = "encodeEnd";
 
-/*
-        if (forId.equals("@all")) {
-            messageIter = messages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
-        } else {
-            UIComponent forComponent = forId.equals("") ? null : messages.findComponent(forId);
-            if (forComponent == null) {
-                logger.logp(Level.WARNING, logger.getName(), sourceMethod, "'for' attribute value cannot be empty or non-existent id.");
-                return;
-            }
-            messageIter = context.getMessages(forComponent.getClientId(context));
-        }
-*/
-        messageIter = messages.getMsgList(context);
         writer.startElement("div", messages);
         String clientId = messages.getClientId();
         writer.writeAttribute("id", clientId, "id");
@@ -78,28 +62,55 @@ public class MessagesRenderer extends Renderer {
             writer.writeAttribute("aria-live", "polite", null);
             writer.writeAttribute("aria-relevant", "all", null);
         }
-        Set<String> msgSet = new HashSet<String>();
+
         int count = 1;
-        while (messageIter.hasNext()) {
-            Messages.AceFacesMessage aceFacesMessage = (Messages.AceFacesMessage) messageIter.next();
-            FacesMessage facesMessage = aceFacesMessage.getFacesMessage();
-            if (!facesMessage.isRendered() || messages.isRedisplay()) {
-                encodeMessage(writer, messages, facesMessage, aceFacesMessage.getClientId(), msgSet, count++);
+        Map<String, ArrayList<String>> prevMsgs = messages.getPrevMsgs(), currMsgs = new HashMap<String, ArrayList<String>>();
+        ArrayList<String> prevMsgsForId, currMsgsForId;
+        Map<String, ArrayList<FacesMessage>> msgs = getMsgs(messages, context);
+        String msgClientId, msgText;
+        ArrayList<FacesMessage> msgList;
+        ArrayList<Integer> removeList = new ArrayList<Integer>();
+        FacesMessage facesMessage;
+        for (Map.Entry<String, ArrayList<FacesMessage>> entry : msgs.entrySet()) {
+            msgClientId = entry.getKey();
+            msgList = entry.getValue();
+            removeList.clear();
+            prevMsgsForId = (prevMsgsForId = prevMsgs.get(msgClientId)) == null ? new ArrayList<String>() : prevMsgsForId;
+            currMsgsForId = new ArrayList<String>();
+            for (int i = 0; i < msgList.size(); i++) {
+                facesMessage = msgList.get(i);
+                if (!facesMessage.isRendered() || messages.isRedisplay()) {
+                    msgText = getMsgText(messages, facesMessage);
+                    if (prevMsgsForId.contains(msgText)) {
+                        encodeMessage(writer, messages, facesMessage, msgClientId, count++, msgText, "");
+                        prevMsgsForId.remove(msgText);
+                        removeList.add(i);
+                        currMsgsForId.add(msgText);
+                    }
+                }
+            }
+            for (Integer integer : removeList) {
+                msgList.remove(integer.intValue());
+            }
+            for (int i = 0; i < msgList.size(); i++) {
+                facesMessage = msgList.get(i);
+                if (!facesMessage.isRendered() || messages.isRedisplay()) {
+                    msgText = getMsgText(messages, facesMessage);
+                    encodeMessage(writer, messages, facesMessage, msgClientId, count++, msgText, i >= prevMsgsForId.size() ? "init" : "change");
+                    currMsgsForId.add(msgText);
+                }
+            }
+            if (!currMsgsForId.isEmpty()) {
+                currMsgs.put(msgClientId, currMsgsForId);
             }
         }
         writer.endElement("div");
-        messages.setPrevMsgSet(msgSet);
+        messages.setPrevMsgs(currMsgs);
     }
 
-    private void encodeMessage(ResponseWriter writer, Messages messages, FacesMessage facesMessage, String clientId, Set<String> msgSet, int count) throws IOException {
+    private void encodeMessage(ResponseWriter writer, Messages messages, FacesMessage facesMessage, String clientId, int count, String text, String event) throws IOException {
 
         String sourceMethod = "encodeMessage";
-        clientId = clientId != null ? clientId : "global";
-        boolean showSummary = messages.isShowSummary();
-        boolean showDetail = messages.isShowDetail();
-        String summary = (null != (summary = facesMessage.getSummary())) ? summary : "";
-        String detail = (null != (detail = facesMessage.getDetail())) ? detail : ""; // Mojarra defaults to summary. Not good.
-        String text = ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
         int ordinal = (ordinal = FacesMessage.VALUES.indexOf(facesMessage.getSeverity())) > -1 && ordinal < states.length ? ordinal : 0;
 
         writer.startElement("div", messages);
@@ -111,39 +122,26 @@ public class MessagesRenderer extends Renderer {
         writer.writeAttribute("class", "ui-icon ui-icon-" + icons[ordinal], null);
         writer.endElement("span");
 
-        String currClientIdPlusText = clientId + ":" + text;
         if (!text.equals("")) {
             if (messages.isEscape()) {
                 writer.writeText(text, messages, null);
             } else {
                 writer.write(text);
             }
-            if (!msgSet.contains(currClientIdPlusText)) {
-                msgSet.add(currClientIdPlusText);
-            }
         }
         writer.endElement("div");
 
-        String event = "", effect = "", duration = "";
-        Set preMsgSet = (preMsgSet = messages.getPrevMsgSet()) != null ? preMsgSet : Collections.emptySet();
-        System.out.println("currClientIdPlusText = " + currClientIdPlusText);
-        for (Object msg : preMsgSet) {
-            System.out.println("msg = " + msg);
-        }
-        if (!preMsgSet.contains(currClientIdPlusText)) {
-            event = "init";
+        String effect = "", duration = "";
+        if (event.equals("init")) {
             effect = (effect = messages.getInitEffect()) != null ? effect.trim() : "";
             logInvalid(effectSet, "effect", effect, sourceMethod);
             effect = effectSet.contains(effect) ? effect : "";
             duration = (duration = messages.getInitEffectDuration()) != null ? duration.trim() : "";
-/*
-        } else if (!prevText.equals("") && !currText.equals("") && !prevText.equals(currText)) {
-            event = "change";
+        } else if (event.equals("change")) {
             effect = (effect = messages.getChangeEffect()) != null ? effect.trim() : "";
             logInvalid(effectSet, "effect", effect, sourceMethod);
             effect = effectSet.contains(effect) ? effect : "";
             duration = (duration = messages.getChangeEffectDuration()) != null ? duration.trim() : "";
-*/
         }
         if (!(event.equals("") || effect.equals(""))) {
             JSONBuilder jb = JSONBuilder.create();
@@ -187,5 +185,49 @@ public class MessagesRenderer extends Renderer {
         if (!value.equals("") && !validSet.contains(value)) {
             log(Level.WARNING, sourceMethod, "Invalid " + name + " \"" + value + "\" reset to default. Read TLD doc.");
         }
+    }
+
+    private Map<String, ArrayList<FacesMessage>> getMsgs(Messages component, FacesContext context) {
+        Map<String, ArrayList<FacesMessage>> msgs = new HashMap<String, ArrayList<FacesMessage>>();
+        String forId = (forId = component.getFor()) == null ? "@all" : forId.trim();
+        if (forId.equals("@all")) {
+            if (component.isGlobalOnly()) {
+                addMsgs(context, null, msgs);
+            } else {
+                Iterator<String> iterator = context.getClientIdsWithMessages();
+                while (iterator.hasNext()) {
+                    addMsgs(context, iterator.next(), msgs);
+                }
+            }
+        } else {
+            UIComponent forComponent = forId.equals("") ? null : component.findComponent(forId);
+            if (forComponent == null) {
+                logger.logp(Level.WARNING, logger.getName(), "getMsgs", "'for' attribute value cannot be empty or non-existent id.");
+            } else {
+                addMsgs(context, forComponent.getClientId(context), msgs);
+            }
+        }
+        return msgs;
+    }
+
+    private void addMsgs(FacesContext context, String clientId, Map<String, ArrayList<FacesMessage>> msgs) {
+        Iterator<FacesMessage> iterator = context.getMessages(clientId);
+        if (clientId == null) {
+            clientId = "*";
+        }
+        while (iterator.hasNext()) {
+            if (!msgs.containsKey(clientId)) {
+                msgs.put(clientId, new ArrayList<FacesMessage>());
+            }
+            msgs.get(clientId).add(iterator.next());
+        }
+    }
+
+    private String getMsgText(Messages messages, FacesMessage facesMessage) throws IOException {
+        boolean showSummary = messages.isShowSummary();
+        boolean showDetail = messages.isShowDetail();
+        String summary = (null != (summary = facesMessage.getSummary())) ? summary : "";
+        String detail = (null != (detail = facesMessage.getDetail())) ? detail : ""; // Mojarra defaults to summary. Not good.
+        return ((showSummary ? summary : "") + " " + (showDetail ? detail : "")).trim();
     }
 }
