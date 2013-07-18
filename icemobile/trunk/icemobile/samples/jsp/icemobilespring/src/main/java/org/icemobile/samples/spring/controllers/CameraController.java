@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icemobile.application.Resource;
 import org.icemobile.samples.spring.ModelBean;
+import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.spring.annotation.ICEmobileResource;
 import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.icemobile.spring.controller.ICEmobileBaseController;
@@ -33,8 +34,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @SessionAttributes({ "cameraMessage", "cameraUpload", "cameraBean" })
@@ -88,6 +91,19 @@ public void post(HttpServletRequest request, ModelBean cameraBean,
     // always add the bean back to the model to save other form data
     model.addAttribute("cameraBean", cameraBean);
 }
+
+    @RequestMapping(value = "/html5cam", method = RequestMethod.POST)
+    public @ResponseBody CamUpdate html5Camera(
+            HttpServletRequest request,
+            @RequestParam(value = "_cam") MultipartFile cameraUpload,
+            Model model) throws IOException {
+
+            String newFileName = FileUploadUtils.saveImage(
+                request, "cam", cameraUpload, null);
+            String photoUrl = request.getContextPath() + "/" + newFileName;
+
+        return new CamUpdate("Thanks!", photoUrl);
+    }
 
     @RequestMapping(value = "/jsoncam", method = RequestMethod.POST)
     public @ResponseBody CamUpdate jsonCamera(
