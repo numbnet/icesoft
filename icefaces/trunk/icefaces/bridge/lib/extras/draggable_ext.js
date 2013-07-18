@@ -87,6 +87,7 @@ Draggable.prototype.startDrag = function(event) {
             this._original = this.element;
             Position.clone(this._original, this._ghost);
             var z = parseInt(this._original.style.zIndex);
+            z = isNaN(z) ? 0 : z;
             this._ghost.style.left =  Event.pointerX(event) + "px";
             this._ghost.style.zIndex = ++z;
             this.element = this._ghost;
