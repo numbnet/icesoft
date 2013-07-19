@@ -159,7 +159,7 @@ window.onload = function() {
                 if (ice.mobi.getDeviceCommand())  {
                     return;
                 }
-                $('.ajaxzone').load(location.pathname, {cache:false});
+                $('.ajaxzone').load(location.pathname);
             }, false);
         }, 1);
     }
