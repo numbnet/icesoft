@@ -64,7 +64,7 @@
             <fieldset>
                 <input id="name" name="name" type="text" placeholder="Name" value=""/>
             </fieldset>
-           <a data-role="button" id="go" onclick="ice.mobi.camera('_cam',handleCam, {postURL:'/icemobilespring/html5cam/'});">Camera ...</a>
+           <a data-role="button" id="go" onclick="ice.mobi.camera('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Camera ...</a>
            <h2>
                <span id="output">
                </span>
