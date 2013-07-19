@@ -379,6 +379,12 @@ ice.mobi.sms = function(id, callback, options)  {
 ice.mobi.open = function(id, callback, options)  {
     ice.mobi.deviceCommand("open", id, callback, options);
 }
+ice.mobi.augmentedReality = function(id, callback, options)  {
+    ice.mobi.deviceCommand("aug", id, callback, options);
+}
+ice.mobi.geoSpy = function(id, callback, options)  {
+    ice.mobi.deviceCommand("geospy", id, callback, options);
+}
 
 ice.mobi.setInput = function(target, name, value, vtype)  {
     var hiddenID = name + "-hid";
