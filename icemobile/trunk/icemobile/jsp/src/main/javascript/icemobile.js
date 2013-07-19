@@ -204,7 +204,8 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
         postURL : uploadURL,
         JSESSIONID : sessionid,
         parameters : params,
-        element : element
+        element : element,
+        form: form
     };
     
     ice.mobi.deviceCommandExec(command, id, options);
@@ -240,6 +241,9 @@ ice.mobi.deviceCommandExec = function(command, id, options)  {
         }
         if (options.element)  {
             element = options.element;
+        }
+        if (options.form)  {
+            formID = options.form.getAttribute("id");
         }
     }
 
