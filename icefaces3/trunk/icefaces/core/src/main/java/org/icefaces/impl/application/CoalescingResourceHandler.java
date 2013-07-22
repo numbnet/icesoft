@@ -31,6 +31,9 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.URI;
 import java.util.*;
@@ -195,6 +198,7 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                 root.addComponentResource(context, next);
             }
 
+            HttpServletRequest originalRequest = EnvUtils.getOriginalServletRequest(context);
             if (previousResourceInfos == null) {
                 sess.setAttribute(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
             } else {
@@ -204,28 +208,33 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                 if (previousResources.equals(currentResources)) {
                     previousResourceInfos.modified = false;
                 } else {
-                    //the resources collected previously are merged with the currently collected ones so that when multiple
-                    //views are processed (such as in portlets) the coalescing resource contains the resources needed by all the views
-                    ArrayList<CoalescingResource.Info> viewMergedResources = new ArrayList<CoalescingResource.Info>();
-                    Iterator<CoalescingResource.Info> i = orderedResourceInfos.iterator();
-                    while (i.hasNext()) {
-                        CoalescingResource.Info info = i.next();
-                        if (currentResources.contains(info) || previousResources.contains(info)) {
-                            viewMergedResources.add(info);
+                    ArrayList<CoalescingResource.Info> sameRequestPreviousResources = (ArrayList<CoalescingResource.Info>) originalRequest.getAttribute(CoalescingResourceHandler.class.getName() + extension);
+                    //merge resources that are required by different views but for the same request
+                    if (sameRequestPreviousResources != null) {
+                        //the resources collected previously are merged with the currently collected ones so that when multiple
+                        //views are processed (such as in portlets) the coalescing resource contains the resources needed by all the views
+                        ArrayList<CoalescingResource.Info> viewMergedResources = new ArrayList<CoalescingResource.Info>();
+                        Iterator<CoalescingResource.Info> i = orderedResourceInfos.iterator();
+                        while (i.hasNext()) {
+                            CoalescingResource.Info info = i.next();
+                            if (currentResources.contains(info) || sameRequestPreviousResources.contains(info)) {
+                                viewMergedResources.add(info);
+                            }
                         }
-                    }
-                    //append remaining unordered resources
-                    HashSet<CoalescingResource.Info> remainingResources = new HashSet();
-                    remainingResources.addAll(currentResources);
-                    remainingResources.addAll(previousResources);
-                    remainingResources.removeAll(viewMergedResources);
-                    viewMergedResources.addAll(remainingResources);
+                        //append remaining unordered resources
+                        HashSet<CoalescingResource.Info> remainingResources = new HashSet();
+                        remainingResources.addAll(currentResources);
+                        remainingResources.addAll(sameRequestPreviousResources);
+                        remainingResources.removeAll(viewMergedResources);
+                        viewMergedResources.addAll(remainingResources);
 
-                    resourceInfos.resources = viewMergedResources;
-                    resourceInfos.modified = true;
+                        resourceInfos.resources = viewMergedResources;
+                        resourceInfos.modified = true;
+                    }
                     sess.setAttribute(CoalescingResourceHandler.class.getName() + extension, resourceInfos);
                 }
             }
+            originalRequest.setAttribute(CoalescingResourceHandler.class.getName() + extension, resourceInfos.resources);
 
             resourceContainer.setInView(true);
         }
