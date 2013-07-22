@@ -34,6 +34,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -248,7 +250,64 @@ public class EnvUtils {
         JAVA_RESERVED_WORDS.add("while");
     }
 
+    private static interface OriginalRequestGetter {
+        public HttpServletRequest get(FacesContext context);
+    }
 
+    private static OriginalRequestGetter ORIGINAL_REQUEST_GETTER;
+
+    private static class ServletEnvironmentRequestGetter implements OriginalRequestGetter {
+        public HttpServletRequest get(FacesContext context) {
+            return (HttpServletRequest) context.getExternalContext().getRequest();
+        }
+    }
+
+    private static class LiferayOriginalRequestGetter implements OriginalRequestGetter {
+        private Class PortalUtilClass;
+        private Method GetHttpServletRequest;
+        private Method GetOriginalServletRequest;
+
+        private LiferayOriginalRequestGetter() throws ClassNotFoundException, NoSuchMethodException {
+            PortalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
+            GetHttpServletRequest = PortalUtilClass.getDeclaredMethod("getHttpServletRequest", javax.portlet.PortletRequest.class);
+            GetOriginalServletRequest = PortalUtilClass.getDeclaredMethod("getOriginalServletRequest", HttpServletRequest.class);
+        }
+
+        public HttpServletRequest get(FacesContext context) {
+            try {
+                javax.portlet.PortletRequest portletRequest = (javax.portlet.PortletRequest) context.getExternalContext().getRequest();
+                HttpServletRequest httpPortletRequest = (HttpServletRequest) GetHttpServletRequest.invoke(PortalUtilClass, portletRequest);
+                return (HttpServletRequest) GetOriginalServletRequest.invoke(PortalUtilClass, httpPortletRequest);
+            } catch (InvocationTargetException e) {
+                return null;
+            } catch (IllegalAccessException e) {
+                return null;
+            }
+        }
+    }
+
+    private static class WebspherePortalOriginalRequestGetter implements OriginalRequestGetter {
+        public HttpServletRequest get(FacesContext context) {
+            Map requestMap = context.getExternalContext().getRequestMap();
+            return (HttpServletRequest) requestMap.get("javax.portlet.request");
+        }
+    }
+
+    static {
+        try {
+            if (isLiferay()) {
+                ORIGINAL_REQUEST_GETTER = new LiferayOriginalRequestGetter();
+            } else if (isWebSpherePortal()) {
+                ORIGINAL_REQUEST_GETTER = new WebspherePortalOriginalRequestGetter();
+            } else {
+                ORIGINAL_REQUEST_GETTER = new ServletEnvironmentRequestGetter();
+            }
+        } catch (ClassNotFoundException e) {
+            log.warning("Cannot find portal class: " + e.getMessage());
+        } catch (NoSuchMethodException e) {
+            log.warning("Cannot get method of class: " + e.getMessage());
+        }
+    }
 
     /**
      * Returns the value of the context parameter org.icefaces.aria.enabled.  The default value is true and indicates
@@ -755,6 +814,10 @@ public class EnvUtils {
 
     public static HttpSession getSafeApplicationScopeSession(FacesContext fc, boolean createSession) {
         return getSafeSession(fc, ProxySession.APPLICATION_SCOPE, createSession);
+    }
+
+    public static HttpServletRequest getOriginalServletRequest(FacesContext context) {
+        return ORIGINAL_REQUEST_GETTER.get(context);
     }
 
     public static boolean isSecure(FacesContext fc){
