@@ -71,6 +71,7 @@ public class MessagesRenderer extends Renderer {
         ArrayList<FacesMessage> msgList;
         ArrayList<Integer> removeList = new ArrayList<Integer>();
         FacesMessage facesMessage;
+        // Logic to distinguish between "init" and "change" done according to Mark's suggestion.
         for (Map.Entry<String, ArrayList<FacesMessage>> entry : msgs.entrySet()) {
             msgClientId = entry.getKey();
             msgList = entry.getValue();
