@@ -18,7 +18,7 @@
     padding: 0.2em;
 }
 .ui-panel .ui-panel-titlebar {
-    padding: 0.3em 1em;
+    padding: 0.3em .5em;
 }
 .ui-panel .ui-panel-title {
     display:inline-block;
@@ -39,16 +39,14 @@
 }
 .ui-panel .ui-panel-titlebar-icon {
     display:inline-block;
+    vertical-align: middle;
+    padding: 1px 2px 2px 1px;
     /* IE7 inline-block hack */
     zoom: 1;
     *display:inline;
 }
 .ui-panel .ui-panel-titlebar-icon:not(:last-child) {
     margin-right:.5em;
-}
-.ui-panel .ui-panel-titlebar-icon .ui-icon {
-    width:19px;
-    height:19px;
 }
 .ui-panel .ui-panel-content {
     border: 0;
