@@ -58,6 +58,14 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
+ * <i><b>* Important API Note:</b> While it's possible to directly use instances of PersistentFacesState
+ * and its methods for performing server-initiated rendering (Ajax Push),
+ * it is not the supported approach. The  proper technique is to use the
+ * {@link com.icesoft.faces.async.render.SessionRenderer} or {@link com.icesoft.faces.async.render.RenderManager}
+ * APIs. For details about using the correct Ajax Push APIs in your
+ * application, see the section titled <a href="http://res.icesoft.org/docs/v1_8_2/htmlguide/devguide/AdvancedTopics2.html#1075177">
+ * Server-initiated Rendering (Ajax Push) APIs</a> in the official documentation.</i>
+ * <p/>
  * The {@link PersistentFacesState} class allows an application to initiate
  * rendering asynchronously and independently of user interaction.
  * <p/>
@@ -116,6 +124,14 @@ public class PersistentFacesState implements Serializable {
     }
 
     /**
+     * <i><b>* Important API Note:</b> While it's possible to directly use instances of PersistentFacesState
+     * and its methods for performing server-initiated rendering (Ajax Push),
+     * it is not the supported approach. The  proper technique is to use the
+     * {@link com.icesoft.faces.async.render.SessionRenderer} or {@link com.icesoft.faces.async.render.RenderManager}
+     * APIs. For details about using the correct Ajax Push APIs in your
+     * application, see the section titled <a href="http://res.icesoft.org/docs/v1_8_2/htmlguide/devguide/AdvancedTopics2.html#1075177">
+     * Server-initiated Rendering (Ajax Push) APIs</a> in the official documentation.</i>
+     * <p/>
      * Obtain the <code>PersistentFacesState</code> instance appropriate for the
      * current context.  This is managed through InheritableThreadLocal
      * variables.  The recommended approach is to call this method from a
@@ -160,6 +176,14 @@ public class PersistentFacesState implements Serializable {
     }
 
     /**
+     * <i><b>* Important API Note:</b> While it's possible to directly use instances of PersistentFacesState
+     * and its methods for performing server-initiated rendering (Ajax Push),
+     * it is not the supported approach. The  proper technique is to use the
+     * {@link com.icesoft.faces.async.render.SessionRenderer} or {@link com.icesoft.faces.async.render.RenderManager}
+     * APIs. For details about using the correct Ajax Push APIs in your
+     * application, see the section titled <a href="http://res.icesoft.org/docs/v1_8_2/htmlguide/devguide/AdvancedTopics2.html#1075177">
+     * Server-initiated Rendering (Ajax Push) APIs</a> in the official documentation.</i>
+     * <p/>
      * Render the view associated with this <code>PersistentFacesState</code>.
      * The user's browser will be immediately updated with any changes.
      */
@@ -190,6 +214,14 @@ public class PersistentFacesState implements Serializable {
     }
 
     /**
+     * <i><b>* Important API Note:</b> While it's possible to directly use instances of PersistentFacesState
+     * and its methods for performing server-initiated rendering (Ajax Push),
+     * it is not the supported approach. The  proper technique is to use the
+     * {@link com.icesoft.faces.async.render.SessionRenderer} or {@link com.icesoft.faces.async.render.RenderManager}
+     * APIs. For details about using the correct Ajax Push APIs in your
+     * application, see the section titled <a href="http://res.icesoft.org/docs/v1_8_2/htmlguide/devguide/AdvancedTopics2.html#1075177">
+     * Server-initiated Rendering (Ajax Push) APIs</a> in the official documentation.</i>
+     * <p/>
      * Render the view associated with this <code>PersistentFacesState</code>.
      * This takes place on a separate thread to guard against potential deadlock
      * from calling {@link #render} during view rendering.
@@ -205,6 +237,14 @@ public class PersistentFacesState implements Serializable {
     }
 
     /**
+     * <i><b>* Important API Note:</b> While it's possible to directly use instances of PersistentFacesState
+     * and its methods for performing server-initiated rendering (Ajax Push),
+     * it is not the supported approach. The  proper technique is to use the
+     * {@link com.icesoft.faces.async.render.SessionRenderer} or {@link com.icesoft.faces.async.render.RenderManager}
+     * APIs. For details about using the correct Ajax Push APIs in your
+     * application, see the section titled <a href="http://res.icesoft.org/docs/v1_8_2/htmlguide/devguide/AdvancedTopics2.html#1075177">
+     * Server-initiated Rendering (Ajax Push) APIs</a> in the official documentation.</i>
+     * <p/>
      * @param setup    Runnable to run, in the proper thread context, before
      *                 doing the JSF lifecycle
      * @param warnSync Whether warn if in synchronous mode
@@ -217,6 +257,14 @@ public class PersistentFacesState implements Serializable {
     }
 
     /**
+     * <i><b>* Important API Note:</b> While it's possible to directly use instances of PersistentFacesState
+     * and its methods for performing server-initiated rendering (Ajax Push),
+     * it is not the supported approach. The  proper technique is to use the
+     * {@link com.icesoft.faces.async.render.SessionRenderer} or {@link com.icesoft.faces.async.render.RenderManager}
+     * APIs. For details about using the correct Ajax Push APIs in your
+     * application, see the section titled <a href="http://res.icesoft.org/docs/v1_8_2/htmlguide/devguide/AdvancedTopics2.html#1075177">
+     * Server-initiated Rendering (Ajax Push) APIs</a> in the official documentation.</i>
+     * <p/>
      * Execute  the view associated with this <code>PersistentFacesState</code>.
      * This is typically followed immediatly by a call to
      * {@link PersistentFacesState#render}.
@@ -300,6 +348,14 @@ public class PersistentFacesState implements Serializable {
     }
 
     /**
+     * <i><b>* Important API Note:</b> While it's possible to directly use instances of PersistentFacesState
+     * and its methods for performing server-initiated rendering (Ajax Push),
+     * it is not the supported approach. The  proper technique is to use the
+     * {@link com.icesoft.faces.async.render.SessionRenderer} or {@link com.icesoft.faces.async.render.RenderManager}
+     * APIs. For details about using the correct Ajax Push APIs in your
+     * application, see the section titled <a href="http://res.icesoft.org/docs/v1_8_2/htmlguide/devguide/AdvancedTopics2.html#1075177">
+     * Server-initiated Rendering (Ajax Push) APIs</a> in the official documentation.</i>
+     * <p/>
      * Execute the JSF lifecycle (essentially calling <code> execute()</code> and
      * <code>render()</code> ) without releasing the FacesContext monitor
      * at any point between.
