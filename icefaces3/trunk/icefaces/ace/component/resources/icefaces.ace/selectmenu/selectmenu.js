@@ -255,7 +255,7 @@ ice.ace.SelectMenu.prototype = {
 				var savedPos = element.style.position;
 				element.style.position = "relative";
 				update.style.left = element.offsetLeft + "px";
-				update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+				update.style.top = (element.offsetTop + element.offsetHeight + 2) + "px";
 				element.style.position = savedPos;
 			}
 		}

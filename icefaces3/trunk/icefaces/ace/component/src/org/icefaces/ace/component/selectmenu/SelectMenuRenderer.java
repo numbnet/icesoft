@@ -94,8 +94,8 @@ public class SelectMenuRenderer extends InputRenderer {
 
 		// root
         writer.startElement("div", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", "ui-selectmenu " + selectMenu.getStyleClass(), null);
+        writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("class", "ui-selectmenu ui-widget" + selectMenu.getStyleClass(), null);
 		String dir = selectMenu.getDir();
 		if (dir != null) writer.writeAttribute("dir", dir, null);
 		String lang = selectMenu.getLang();
@@ -110,7 +110,7 @@ public class SelectMenuRenderer extends InputRenderer {
 		boolean disabled = selectMenu.isDisabled();
 		String disabledClass = "";
 		if (disabled) disabledClass = " ui-state-disabled ";
-		writer.writeAttribute("class", "ui-widget ui-corner-all ui-state-default ui-selectmenu-value " + disabledClass, null);
+		writer.writeAttribute("class", "ui-widget-content ui-corner-all ui-selectmenu-value " + disabledClass, null);
         writer.writeAttribute("style", "display: inline-block; width: " + width + "px;", null);
 		String tabindex = selectMenu.getTabindex();
 		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
@@ -128,8 +128,8 @@ public class SelectMenuRenderer extends InputRenderer {
 		
 		// text span
 		writer.startElement("span", null);
-		writer.writeAttribute("style", selectMenu.getStyle() + "; display: inline-block; overflow: hidden; border-top:0;border-bottom:0;border-left:0;", null);
-		writer.writeAttribute("class", "ui-inputfield ui-state-default ui-corner-left " + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass, null);
+		writer.writeAttribute("style", selectMenu.getStyle(), null);
+		writer.writeAttribute("class", "ui-inputfield ui-widget-content ui-corner-left " + getStateStyleClasses(selectMenu) + inFieldLabelStyleClass, null);
 		writer.endElement("span");
 		
 		// down arrow span
@@ -158,7 +158,7 @@ public class SelectMenuRenderer extends InputRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", divId, null);
-        writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all ui-selectmenu-list", null);
+        writer.writeAttribute("class", "ui-selectmenu-list", null);
         writer.writeAttribute("style", "display:none;z-index:500;", null);
         writer.endElement("div");
 
@@ -260,20 +260,27 @@ public class SelectMenuRenderer extends InputRenderer {
             Map requestMap = facesContext.getExternalContext().getRequestMap();
             //set index to 0, so child components can get client id from selectMenu component
             selectMenu.setIndex(0);
-            while (matches.hasNext()) {
 
+            boolean first = true;
+            while (matches.hasNext()) {
 				requestMap.put(listVar, matches.next());
+                boolean last = !matches.hasNext();
 				Object value = itemValue.getValue(elContext);
 				boolean disabled = false;
 				
 				try {
 					disabled = (Boolean) itemDisabled.getValue(elContext);
 				} catch (Exception e) {}
-			
+
+                String styleClass = "ui-selectmenu-facet";
+
 				writer.startElement("div", null);
-				writer.writeAttribute("style", "border: 0;", null);
 				if (ariaEnabled) writer.writeAttribute("role", "option", null);
-				if (disabled) writer.writeAttribute("class", "ui-state-disabled", null);
+                if (first) styleClass += " ui-corner-tl ui-corner-tr";
+                if (last) styleClass += " ui-corner-bl ui-corner-br";
+				if (disabled) styleClass += " ui-state-disabled";
+
+                writer.writeAttribute("class", styleClass, null);
 				
 				writer.startElement("span", null); // span to display
 				writer.writeAttribute("class", LABEL_CLASS, null);
@@ -297,6 +304,7 @@ public class SelectMenuRenderer extends InputRenderer {
 				writer.endElement("div");
 				
 				requestMap.remove(listVar);
+                first = false;
             }
             selectMenu.setIndex(-1);
 
@@ -311,8 +319,11 @@ public class SelectMenuRenderer extends InputRenderer {
                 SelectItem item = null;
 				String role = "";
 				if (ariaEnabled) role = " role=\"option\"";
+
+				boolean first = true;
                 while (matches.hasNext()) {
                     item = (SelectItem) matches.next();
+                    boolean last = !matches.hasNext();
 					String itemLabel = item.getLabel();
 					Object itemValue = item.getValue();
 					if (itemValue != null) {
@@ -324,19 +335,27 @@ public class SelectMenuRenderer extends InputRenderer {
 					}
 					
 					itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
-					
+
+					String styleClass = "";
 					if (item.isDisabled()) {
-						sb.append("<div style=\"border: 0;\" class=\"ui-state-disabled\"" + role + ">");
-					} else {
-						sb.append("<div style=\"border: 0;\"" + role + ">");
+                        styleClass += " ui-state-disabled";
 					}
-					
+					if (first){
+						styleClass += " ui-corner-tr ui-corner-tl";
+					}
+					if (last){
+						styleClass += " ui-corner-br ui-corner-bl";
+					}
+
+                    sb.append("<div class=\""+ styleClass +"\" "+ role +">");
+
 					// label span
 					sb.append("<span class=\"" + LABEL_CLASS + "\">").append(itemLabel).append("</span>");
 					// value span
 					sb.append("<span class=\"" + VALUE_CLASS + "\" style=\"visibility:hidden;display:none;\">").append(itemValue).append("</span>");
 					
 					sb.append("</div>");
+					first = false;
                 }
                 sb.append("</div>");
                 String call = "ice.ace.SelectMenus[\"" + clientId + "\"]" +

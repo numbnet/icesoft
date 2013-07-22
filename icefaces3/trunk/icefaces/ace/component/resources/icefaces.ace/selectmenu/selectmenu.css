@@ -1,0 +1,15 @@
+.ui-inputfield {
+    display: inline-block;
+    overflow: hidden;
+    border-top:0;
+    border-bottom:0;
+    border-left:0;
+}
+
+.ui-selectmenu-list > div > div:not(:last-child) {
+    border-bottom: 0px;
+}
+
+.ui-selectmenu-list > div > div {
+    padding: .2em;
+}
