@@ -374,12 +374,12 @@
                 force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="yui/2_8_2/button/assets/button-core.css"/>
-                <file name="icefaces.ace/jquery/ui/jquery-ui.css"/>
             </filelist>
             <fileset dir="${resources}">
                 <include name="icefaces.ace/*/*.css"/>
                 <exclude name="icefaces.ace/fileentry/*.css"/>
                 <exclude name="icefaces.ace/util/*.css"/>
+                <exclude name="icefaces.ace/jquery/ui/jquery-ui.css"/>
                 <exclude name="${skins.lib}/*.css"/>
             </fileset>
         </concat>

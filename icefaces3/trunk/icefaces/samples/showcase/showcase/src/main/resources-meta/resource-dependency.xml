@@ -67,17 +67,10 @@
             <resource name="jsf.js" library="javax.faces"/>
         </depends-on>
     </resource>
-    <resource name="util/ace-yui.js" library="icefaces.ace">
-        <depends-on>
-            <resource name="jsf.js" library="javax.faces"/>
-        </depends-on>
-    </resource>
     <resource name="util/ace-jquery.js" library="icefaces.ace">
         <depends-on>
             <resource name="jsf.js" library="javax.faces"/>
         </depends-on>
     </resource>
-
-
 </dependencies>
 
