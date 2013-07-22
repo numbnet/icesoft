@@ -290,6 +290,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         buildUnicodeArray(json, "dayNamesShort", dateFormatSymbols.getShortWeekdays(), 1);
         buildUnicodeArray(json, "dayNamesMin", dateFormatSymbols.getShortWeekdays(), 1);
         json.entry("firstDay", calendar.getFirstDayOfWeek() - 1);
+        json.entry("overrideClientLocaleSettings", dateTimeEntry.isOverrideClientLocaleSettings());
 
         json.endMap();
 
