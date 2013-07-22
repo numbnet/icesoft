@@ -17,36 +17,45 @@
 
 <dependencies>
     <resource name="util/ace-jquery.js" library="icefaces.ace">
-        <resource name="themes/rime/theme.css" library="icefaces.ace"/>
-        <resource name="themes/sam/theme.css" library="icefaces.ace"/>
-        <resource name="theme.css" library="ace-black-tie"/>
-        <resource name="theme.css" library="ace-blitzer"/>
-        <resource name="theme.css" library="ace-cupertino"/>
-        <resource name="theme.css" library="ace-dark-hive"/>
-        <resource name="theme.css" library="ace-dot-luv"/>
-        <resource name="theme.css" library="ace-eggplant"/>
-        <resource name="theme.css" library="ace-excite-bike"/>
-        <resource name="theme.css" library="ace-flick"/>
-        <resource name="theme.css" library="ace-hot-sneaks"/>
-        <resource name="theme.css" library="ace-humanity"/>
-        <resource name="theme.css" library="ace-le-frog"/>
-        <resource name="theme.css" library="ace-mint-choc"/>
-        <resource name="theme.css" library="ace-overcast"/>
-        <resource name="theme.css" library="ace-pepper-grinder"/>
-        <resource name="theme.css" library="ace-redmond"/>
-        <resource name="theme.css" library="ace-smoothness"/>
-        <resource name="theme.css" library="ace-south-street"/>
-        <resource name="theme.css" library="ace-start"/>
-        <resource name="theme.css" library="ace-sunny"/>
-        <resource name="theme.css" library="ace-swanky-purse"/>
-        <resource name="theme.css" library="ace-trontastic"/>
-        <resource name="theme.css" library="ace-ui-darkness"/>
-        <resource name="theme.css" library="ace-ui-lightness"/>
-        <resource name="theme.css" library="ace-vader"/>
+        <depends-on>
+            <resource name="util/combined.css"  library="icefaces.ace"/>
+        </depends-on>
     </resource>
+
+    <resource name="util/combined.css"  library="icefaces.ace">
+        <depends-on>
+            <resource name="jquery/ui/jquery-ui.css" library="icefaces.ace"/>
+            <resource name="themes/rime/theme.css" library="icefaces.ace"/>
+            <resource name="themes/sam/theme.css" library="icefaces.ace"/>
+            <resource name="theme.css" library="ace-black-tie"/>
+            <resource name="theme.css" library="ace-blitzer"/>
+            <resource name="theme.css" library="ace-cupertino"/>
+            <resource name="theme.css" library="ace-dark-hive"/>
+            <resource name="theme.css" library="ace-dot-luv"/>
+            <resource name="theme.css" library="ace-eggplant"/>
+            <resource name="theme.css" library="ace-excite-bike"/>
+            <resource name="theme.css" library="ace-flick"/>
+            <resource name="theme.css" library="ace-hot-sneaks"/>
+            <resource name="theme.css" library="ace-humanity"/>
+            <resource name="theme.css" library="ace-le-frog"/>
+            <resource name="theme.css" library="ace-mint-choc"/>
+            <resource name="theme.css" library="ace-overcast"/>
+            <resource name="theme.css" library="ace-pepper-grinder"/>
+            <resource name="theme.css" library="ace-redmond"/>
+            <resource name="theme.css" library="ace-smoothness"/>
+            <resource name="theme.css" library="ace-south-street"/>
+            <resource name="theme.css" library="ace-start"/>
+            <resource name="theme.css" library="ace-sunny"/>
+            <resource name="theme.css" library="ace-swanky-purse"/>
+            <resource name="theme.css" library="ace-trontastic"/>
+            <resource name="theme.css" library="ace-ui-darkness"/>
+            <resource name="theme.css" library="ace-ui-lightness"/>
+            <resource name="theme.css" library="ace-vader"/>
+        </depends-on>
+    </resource>
+
     <resource name="util/ace-components.js" library="icefaces.ace">
         <depends-on>
-            <resource name="util/ace-yui.js" library="icefaces.ace"/>
             <resource name="util/ace-jquery.js" library="icefaces.ace"/>
             <resource name="bridge.uncompressed.js" library="ice.core"/>
             <resource name="bridge.js" library="ice.core"/>
@@ -92,136 +101,6 @@
         <depends-on>
             <resource name="util/ace-components.js" library="icefaces.ace"/>
             <resource name="fileentry/fileEntry.css" library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="themes/rime/theme.css" library="icefaces.ace">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="themes/sam/theme.css" library="icefaces.ace">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-black-tie">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-blitzer">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-cupertino">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-dark-hive">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-dot-luv">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-eggplant">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-excite-bike">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-flick">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-hot-sneaks">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-humanity">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-le-frog">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-mint-choc">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-overcast">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-pepper-grinder">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-redmond">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-smoothness">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-south-street">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-start">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-sunny">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-swanky-purse">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-trontastic">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-ui-darkness">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-ui-lightness">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="theme.css" library="ace-vader">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
         </depends-on>
     </resource>
 </dependencies>
