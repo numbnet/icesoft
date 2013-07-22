@@ -240,7 +240,7 @@ a:link, a:visited {
 .example * span, .example * div { margin: 0;}
 */
 div .resources { font-size: 10pt;}
-.content ul { padding:.5em 40px .5em 0; }
+.content ul.info { padding:.5em 40px .5em 0; }
 .content .yui-nav { padding: 0; }
 .content .instance ul li { 
     text-align:left; 
