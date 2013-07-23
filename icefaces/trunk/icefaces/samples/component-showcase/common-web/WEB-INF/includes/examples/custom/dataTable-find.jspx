@@ -124,6 +124,10 @@ with more data than can be displayed in a single page.
 
         <ice:panelGroup styleClass="clearer" />
 
+		<ice:outputText value="No results found." style="color:#f00;font-weight:bold;" rendered="#{dataTableFind.noResultsFound}" />
+		
+		<ice:panelGroup styleClass="clearer" />
+		
         <!-- DataTable with 5 rows per page -->
         <ice:dataTable id="data"
                var="employee"
