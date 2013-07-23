@@ -100,9 +100,7 @@ ice.ace.Calendar.prototype.configureLocale = function() {
 
     if(localeSettings) {
         for(var setting in localeSettings) {
-            if (ice.ace.jq.inArray(setting, ["monthNames", "monthNamesShort", "dayNames", "dayNamesShort", "dayNamesMin", "firstDay"]) < 0 || !this.cfg.overrideClientLocaleSettings) {
-                this.cfg[setting] = localeSettings[setting];
-            }
+            this.cfg[setting] = localeSettings[setting];
         }
     }
 };
