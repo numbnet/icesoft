@@ -35,46 +35,45 @@
     <ui:param name="tldResources" value="#{selectMenuResources.tldResources}"/>
 
     <ui:define name="example">
-        <style type="text/css">
-        .grid td {
-            vertical-align: top;
-        }
+        <style>
+            .inlineBlock {
+                display: inline-block;
+                vertical-align: top;
+            }
         </style>
         <h:form id="form">
-            
             <ace:panel id="panel">
-			<h:panelGrid columns="2" class="grid">
-				<h:panelGroup>
-				<ace:selectMenu id="selectProvince" value="#{selectMenuBean.province}" valueChangeListener="#{selectMenuBean.provinceChange}" label="Select province: " labelPosition="top">
-					<f:selectItem itemValue="British Columbia" itemLabel="British Columbia" />
-					<f:selectItem itemValue="Alberta" itemLabel="Alberta" />
-					<f:selectItem itemValue="Saskatchewan" itemLabel="Saskatchewan" />
-					<f:selectItem itemValue="Manitoba" itemLabel="Manitoba" />
-					<f:selectItem itemValue="Ontario" itemLabel="Ontario" />
-					<f:selectItem itemValue="Quebec" itemLabel="Quebec" />
-					<f:selectItem itemValue="Newfoundland and Labrador" itemLabel="Newfoundland and Labrador" />
-					<f:selectItem itemValue="Prince Edward Island" itemLabel="Prince Edward Island" />
-					<f:selectItem itemValue="New Brunswick" itemLabel="New Brunswick" />
-					<f:selectItem itemValue="Nova Scotia" itemLabel="Nova Scotia" />
-					<f:selectItem itemValue="Yukon" itemLabel="Yukon" />
-					<f:selectItem itemValue="Northwest Territories" itemLabel="Northwest Territories" />
-					<f:selectItem itemValue="Nunavut" itemLabel="Nunavut" />
-					<ace:ajax execute="@this" render="@all" />
-				</ace:selectMenu>
-				<br />
-				<ace:selectMenu id="selectCity" value="#{selectMenuBean.city}" rendered="#{selectMenuBean.displayCities}" label="Select city: " labelPosition="top">
-					<f:selectItems value="#{selectMenuBean.cities}" />
-					<ace:ajax execute="@this" render="@all" />
-				</ace:selectMenu>
-				</h:panelGroup>
-				<h:panelGroup>
-					<h:outputText id="outputTxtProvince" style="margin-left:20px;" value="Province: #{selectMenuBean.province}" />
-					<br />
-					<h:outputText id="outputTxtCity" style="margin-left:20px;" value="City: #{selectMenuBean.city}" />
-				</h:panelGroup>
-			</h:panelGrid>
-            </ace:panel>            
-            
+                <h:panelGroup styleClass="inlineBlock" style="width:60%">
+                    <ace:selectMenu id="selectProvince" value="#{selectMenuBean.province}" valueChangeListener="#{selectMenuBean.provinceChange}" label="Select province: " labelPosition="top">
+                        <f:selectItem itemValue="British Columbia" itemLabel="British Columbia" />
+                        <f:selectItem itemValue="Alberta" itemLabel="Alberta" />
+                        <f:selectItem itemValue="Saskatchewan" itemLabel="Saskatchewan" />
+                        <f:selectItem itemValue="Manitoba" itemLabel="Manitoba" />
+                        <f:selectItem itemValue="Ontario" itemLabel="Ontario" />
+                        <f:selectItem itemValue="Quebec" itemLabel="Quebec" />
+                        <f:selectItem itemValue="Newfoundland and Labrador" itemLabel="Newfoundland and Labrador" />
+                        <f:selectItem itemValue="Prince Edward Island" itemLabel="Prince Edward Island" />
+                        <f:selectItem itemValue="New Brunswick" itemLabel="New Brunswick" />
+                        <f:selectItem itemValue="Nova Scotia" itemLabel="Nova Scotia" />
+                        <f:selectItem itemValue="Yukon" itemLabel="Yukon" />
+                        <f:selectItem itemValue="Northwest Territories" itemLabel="Northwest Territories" />
+                        <f:selectItem itemValue="Nunavut" itemLabel="Nunavut" />
+                        <ace:ajax execute="@this" render="@all" />
+                    </ace:selectMenu>
+                    <br />
+
+                    <ace:selectMenu id="selectCity" value="#{selectMenuBean.city}" rendered="#{selectMenuBean.displayCities}" label="Select city: " labelPosition="top">
+                        <f:selectItems value="#{selectMenuBean.cities}" />
+                        <ace:ajax execute="@this" render="@all" />
+                    </ace:selectMenu>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="inlineBlock">
+                    <h:outputText id="outputTxtProvince" style="margin-left:20px;" value="Province: #{selectMenuBean.province}" />
+                    <br />
+                    <h:outputText id="outputTxtCity" style="margin-left:20px;" value="City: #{selectMenuBean.city}" />
+                </h:panelGroup>
+            </ace:panel>
         </h:form>
     </ui:define>
 </ui:composition>
