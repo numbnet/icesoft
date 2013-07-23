@@ -91,7 +91,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 					if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
 					if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
 				} else {
-					writer.writeAttribute("href", "javascript:void 0;", null);
+					writer.writeAttribute("style", "cursor:pointer;", null);
 
 					UIComponent form = ComponentUtils.findParentForm(context, menuItem);
 					if(form == null) {
@@ -208,7 +208,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		if (disabled) {
 			writer.writeAttribute("class", "ui-state-disabled", null);
 		} else {
-			writer.writeAttribute("href", "javascript:void 0;", null);
+			writer.writeAttribute("style", "cursor:pointer;", null);
 		}
 		
 		if(icon != null) {
