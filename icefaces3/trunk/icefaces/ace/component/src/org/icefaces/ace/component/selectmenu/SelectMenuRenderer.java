@@ -134,8 +134,7 @@ public class SelectMenuRenderer extends InputRenderer {
 		
 		// down arrow span
 		writer.startElement("div", null);
-		writer.writeAttribute("class", "ui-state-default ui-corner-right", null);
-		writer.writeAttribute("style", "float:right; width:17px; border:0;", null);
+		writer.writeAttribute("class", "ui-state-default ui-corner-right ui-selectmenu-button", null);
 		writer.startElement("div", null);
 		writer.endElement("div");
 		writer.startElement("div", null);

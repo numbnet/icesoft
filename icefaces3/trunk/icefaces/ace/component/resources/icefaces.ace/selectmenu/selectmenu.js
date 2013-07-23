@@ -63,7 +63,7 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selec
 				$element.data("labelIsInField", false);
 				self.cfg.labelIsInField = false;
 			}
-			self.initialize(self.element, self.update, options, rowClass, highlightedRowClass, selectedRowClass, behaviors); 
+			self.initialize(self.element, self.update, options, rowClass, highlightedRowClass, selectedRowClass, behaviors);
 			if (ice.ace.SelectMenu.Browser.IE) {
 				self.updateNOW(self.content);
 			}
@@ -190,7 +190,9 @@ ice.ace.SelectMenu.prototype = {
         ice.ace.jq(this.update).hide();
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
-		ice.ace.jq(this.element).on("click", function(e) { self.onElementClick.call(self, e); });
+		ice.ace.jq(this.element).on("click", function(e) {
+            self.onElementClick.call(self, e);
+        });
 		if (ice.ace.SelectMenu.Browser.IE) {
 			ice.ace.jq(this.element).children().on("click", function(e) { 
 				self.onElementClick.call(self, e); 
@@ -255,7 +257,7 @@ ice.ace.SelectMenu.prototype = {
 				var savedPos = element.style.position;
 				element.style.position = "relative";
 				update.style.left = element.offsetLeft + "px";
-				update.style.top = (element.offsetTop + element.offsetHeight + 2) + "px";
+				update.style.top = (element.offsetTop + element.offsetHeight - 1) + "px";
 				element.style.position = savedPos;
 			}
 		}
