@@ -475,7 +475,7 @@ ResizableUtil = {
 //this function added to fix ICE-4044 (Issue when setting panelDivider to a non-fixed height )
 Ice.PanelDivider.adjustPercentBasedHeight = function(divider, isHorizontal) {
     if (isHorizontal)return;         
-    var rootElementId = divider.replace("Divider",""); 
+    var rootElementId = divider.replace(/Divider$/,""); 
     var rootElement = $(rootElementId);
     
     var rootHeight = Element.getStyle(rootElement, 'height');
