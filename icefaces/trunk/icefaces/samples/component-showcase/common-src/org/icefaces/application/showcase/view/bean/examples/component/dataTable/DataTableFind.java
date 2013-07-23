@@ -37,6 +37,7 @@ public class DataTableFind implements Serializable {
     public String[] selectedColumns = new String[]{"id", "firstName", "lastName", "phone"};
     public int lastFoundIndex = -1;
     private boolean caseSensitive;
+	private boolean noResultsFound = false;
 
     public final SelectItem[] SEARCH_MODES = {new SelectItem("startsWith", "Starts With"),
             new SelectItem("endsWith", "Ends With"),
@@ -93,16 +94,22 @@ public class DataTableFind implements Serializable {
     public void find(javax.faces.event.ActionEvent e) {
         lastFoundIndex = iceTable.findRow(searchQuery, selectedColumns, lastFoundIndex + 1, selectedSearchMode, caseSensitive);
 
-        if (selectedEffectType.equals("default"))
-            iceTable.navigateToRow(lastFoundIndex);
-        else if (selectedEffectType.equals("pulsate"))
-            iceTable.navigateToRow(lastFoundIndex, new Pulsate());
-        else if (selectedEffectType.equals("none"))
-            iceTable.navigateToRow(lastFoundIndex, null);
+        if (lastFoundIndex != -1) {
+			noResultsFound = false;
+			if (selectedEffectType.equals("default"))
+				iceTable.navigateToRow(lastFoundIndex);
+			else if (selectedEffectType.equals("pulsate"))
+				iceTable.navigateToRow(lastFoundIndex, new Pulsate());
+			else if (selectedEffectType.equals("none"))
+				iceTable.navigateToRow(lastFoundIndex, null);
+		} else {
+			noResultsFound = true;
+		}
     }
 
     public void reset(javax.faces.event.ActionEvent e) {
         lastFoundIndex = -1;
+		noResultsFound = false;
     }
 
     public String getSearchQuery() {
@@ -127,5 +134,13 @@ public class DataTableFind implements Serializable {
 
     public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
+    }
+	
+    public boolean isNoResultsFound() {
+        return noResultsFound;
+    }
+
+    public void setNoResultsFound(boolean noResultsFound) {
+        this.noResultsFound = noResultsFound;
     }
 }
