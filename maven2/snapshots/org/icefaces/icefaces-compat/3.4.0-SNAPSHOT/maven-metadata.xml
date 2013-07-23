@@ -29,8 +29,8 @@
       <snapshotVersion>
         <classifier>javadoc</classifier>
         <extension>jar</extension>
-        <value>3.4.0-20130715.224710-3</value>
-        <updated>20130715224710</updated>
+        <value>3.4.0-20130723.214239-4</value>
+        <updated>20130723214239</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom.asc</extension>
