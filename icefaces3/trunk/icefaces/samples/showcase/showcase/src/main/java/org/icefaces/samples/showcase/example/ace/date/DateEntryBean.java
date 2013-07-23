@@ -69,7 +69,9 @@ import java.util.Date;
             @MenuLink(title = "menu.ace.dateentry.subMenu.indicator",
                 exampleBeanName = DateIndicatorBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.dateentry.subMenu.reqStyle",
-                exampleBeanName = DateReqStyleBean.BEAN_NAME)
+                exampleBeanName = DateReqStyleBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dateentry.subMenu.locale",
+            exampleBeanName = DateLocaleBean.BEAN_NAME)
     }
 )
 @ManagedBean(name= DateEntryBean.BEAN_NAME)
