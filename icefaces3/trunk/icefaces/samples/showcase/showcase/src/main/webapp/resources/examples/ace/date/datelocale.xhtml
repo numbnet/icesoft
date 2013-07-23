@@ -39,9 +39,15 @@
                     <h:panelGroup>
                         <ace:simpleSelectOneMenu value="#{dateLocale.locale}" label="Locale: " labelPosition="left">
                             <f:selectItem itemValue="default" itemLabel="default"/>
-                            <f:selectItem itemValue="fr_CA" itemLabel="Canadian French"/>
-                            <f:selectItem itemValue="es_MX" itemLabel="Mexican Spanish"/>
-                            <f:selectItem itemValue="zh_HK" itemLabel="Hong Kong Chinese"/>
+                            <f:selectItem itemValue="fr_CA" itemLabel="French (Canada)"/>
+                            <f:selectItem itemValue="es_MX" itemLabel="Spanish (Mexico)"/>
+                            <f:selectItem itemValue="pt_BR" itemLabel="Portuguese (Brazil)"/>
+                            <f:selectItem itemValue="zh_HK" itemLabel="Chinese (Hong Kong)"/>
+                            <f:selectItem itemValue="ko_KR" itemLabel="Korean (South Korea)"/>
+                            <f:selectItem itemValue="ja_JP" itemLabel="Japanese (Japan)"/>
+                            <f:selectItem itemValue="it_IT" itemLabel="Italian (Italy)"/>
+                            <f:selectItem itemValue="de_DE" itemLabel="German (Germany)"/>
+                            <f:selectItem itemValue="ru_RU" itemLabel="Russian (Russia)"/>
                             <ace:ajax render="calLocale"/>
                         </ace:simpleSelectOneMenu>
                     </h:panelGroup>
