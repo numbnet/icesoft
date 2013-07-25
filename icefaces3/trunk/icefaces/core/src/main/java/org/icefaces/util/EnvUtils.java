@@ -160,6 +160,17 @@ public class EnvUtils {
         }
     }
 
+    //Use reflection to identify if a Pluto Portal specific class is available.
+    private static Class PlutoPortalClass;
+
+    static {
+        try {
+            PlutoPortalClass = Class.forName("org.apache.pluto.container.PortletRequestContext");
+        } catch (Throwable t) {
+            log.log(Level.FINE, "Pluto Portal class not available: ", t);
+        }
+    }
+
     //Use reflection to identify if ICEpush is available.
     private static boolean icepushPresent;
 
@@ -296,12 +307,37 @@ public class EnvUtils {
         }
     }
 
+    private static class PlutoPortalOriginalRequestGetter implements OriginalRequestGetter {
+        private Class PortalUtilClass;
+        private Method GetHttpServletRequest;
+
+        private PlutoPortalOriginalRequestGetter() throws ClassNotFoundException, NoSuchMethodException {
+            PortalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
+            GetHttpServletRequest = PortalUtilClass.getDeclaredMethod("getContainerRequest", HttpServletRequest.class);
+        }
+
+        public HttpServletRequest get(FacesContext context) {
+            try {
+                Map requestMap = context.getExternalContext().getRequestMap();
+                Object requestContext = requestMap.get("org.apache.pluto.container.PortletRequestContext");
+                HttpServletRequest httpServletRequest = (HttpServletRequest) GetHttpServletRequest.invoke(requestContext);
+                return  httpServletRequest;
+            } catch (IllegalAccessException e) {
+                return null;
+            } catch (InvocationTargetException e) {
+                return null;
+            }
+        }
+    }
+
     static {
         try {
             if (isLiferay()) {
                 ORIGINAL_REQUEST_GETTER = new LiferayOriginalRequestGetter();
             } else if (isWebSpherePortal()) {
                 ORIGINAL_REQUEST_GETTER = new WebspherePortalOriginalRequestGetter();
+            } else if (isPlutoPortal()) {
+                ORIGINAL_REQUEST_GETTER = new PlutoPortalOriginalRequestGetter();
             } else {
                 ORIGINAL_REQUEST_GETTER = new ServletEnvironmentRequestGetter();
             }
@@ -515,6 +551,15 @@ public class EnvUtils {
      */
     public static boolean isWebSpherePortal() {
         return WebSpherePortalClass != null;
+    }
+
+    /**
+     * Returns true if Pluto Portal class is detected via reflection.
+     *
+     * @return Returns true if Pluto Portal class is detected via reflection.
+     */
+    public static boolean isPlutoPortal() {
+        return PlutoPortalClass != null;
     }
 
 
