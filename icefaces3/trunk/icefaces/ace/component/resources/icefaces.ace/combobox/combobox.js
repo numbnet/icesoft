@@ -29,10 +29,11 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 	var options = {};
 	this.root = ice.ace.jq(ice.ace.escapeClientId(this.id));
 	var $box = this.root.find('.ui-combobox-value');
-	var $element = this.root.find('input');
+	var $element = this.root.find('input[type=text]');
 	this.element = $element.get(0);
 	this.element.id = this.id + "_input";
 	$element.css('width', $box.width() - ice.ace.ComboBox.DELTA_WIDTH);
+	this.hidden = this.root.find('input[type=hidden]').get(0);
 	var $downArrowButton = $box.find('div');
 	this.downArrowButton = $downArrowButton.eq(0);
 	this.downArrowButton.css('height', $box.height());
@@ -319,6 +320,7 @@ ice.ace.ComboBox.prototype = {
     },
 
     onKeyPress: function(event) {
+		this.hidden.value = this.element.value;
         if (!this.active) {
             switch (event.keyCode) {
                 case ice.ace.ComboBox.keys.KEY_TAB:
@@ -342,6 +344,7 @@ ice.ace.ComboBox.prototype = {
 					event.preventDefault();
                     return;
 				default:
+					this.hidden.value = this.element.value;
 					if (this.showListOnInput) {
 						var self = this;
 						setTimeout(function(){self.clientSideModeUpdate();},50);
@@ -603,13 +606,17 @@ ice.ace.ComboBox.prototype = {
 		for (i = 0; i < this.entryCount; i++) {
 			var entry = this.getEntry(i);
 			if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
-				var entryValue = ice.ace.ComboBox.collectTextNodesIgnoreClass(entry, ice.ace.ComboBox.LABEL_CLASS);
-				if (entryValue) {
-					entryValue = entryValue.toLowerCase();
-					var mainValue = this.element.value.toLowerCase();
-					if (entryValue.indexOf(mainValue) == 0) {
-						found = true;
-						break;
+				var labelRoot = ice.ace.jq(entry).children('.'+ice.ace.ComboBox.LABEL_CLASS).get(0);
+				if (labelRoot) {
+					var entryValue = ice.ace.ComboBox.collectTextNodesIgnoreClass(labelRoot, ice.ace.ComboBox.IGNORE_CLASS);
+					if (entryValue) {
+						entryValue = ice.ace.jq.trim(entryValue);
+						entryValue = entryValue.toLowerCase();
+						var mainValue = this.element.value.toLowerCase();
+						if (entryValue.indexOf(mainValue) == 0) {
+							found = true;
+							break;
+						}
 					}
 				}
 			}
@@ -857,8 +864,16 @@ ice.ace.ComboBox.prototype = {
 			for (i = 0; i < n; i++) {
 				var entry = this.$content.get(i);
 				if (entry && !ice.ace.jq(entry).hasClass('ui-state-disabled')) {
-					var value = ice.ace.ComboBox.collectTextNodesIgnoreClass(entry, ice.ace.ComboBox.LABEL_CLASS);
-					model.push(value);
+					var labelRoot = ice.ace.jq(entry).children('.'+ice.ace.ComboBox.LABEL_CLASS).get(0);
+					if (labelRoot) {
+						var entryValue = ice.ace.ComboBox.collectTextNodesIgnoreClass(labelRoot, ice.ace.ComboBox.IGNORE_CLASS);
+						if (entryValue) {
+							entryValue = ice.ace.jq.trim(entryValue);
+						} else {
+							entryValue = '';
+						}
+						model.push(entryValue);
+					}
 				} else {
 					model.push(null);
 				}
@@ -880,13 +895,26 @@ ice.ace.ComboBox.prototype = {
 	
 	updateValue: function(value) {
 		if (value) {
-			this.element.value = value;
+			this.hidden.value = value;
 		} else {
+			this.hidden.value = '';
 			var element = ice.ace.jq(this.element);
 			if (this.cfg.inFieldLabel) {
 				this.element.value = this.cfg.inFieldLabel;
 				element.addClass(this.cfg.inFieldLabelStyleClass);
 				element.data("labelIsInField", true);
+			} else {
+				this.element.value = '';
+			}
+		}
+		this.updateSelectedIndex();
+		// update label
+		if (value) {
+			var currentEntry = this.getEntry(this.selectedIndex);
+			if (currentEntry) {
+				var labelSpan = ice.ace.jq(currentEntry).find('.'+ice.ace.ComboBox.LABEL_CLASS).get(0);
+				var label = ice.ace.ComboBox.collectTextNodesIgnoreClass(labelSpan, ice.ace.ComboBox.IGNORE_CLASS);
+				this.element.value = label;
 			} else {
 				this.element.value = '';
 			}
@@ -900,12 +928,12 @@ ice.ace.ComboBox.prototype = {
 			this.selectedIndex = -1;
 			return;
 		}
-		if ((currentEntry && (this.element.value != ice.ace.ComboBox.collectTextNodesIgnoreClass(currentEntry, ice.ace.ComboBox.LABEL_CLASS)))
-			|| (this.selectedIndex == -1 && this.element.value)) {
+		if ((currentEntry && (this.hidden.value != ice.ace.ComboBox.collectTextNodesIgnoreClass(currentEntry, ice.ace.ComboBox.LABEL_CLASS)))
+			|| (this.selectedIndex == -1 && this.hidden.value)) {
 			var found = false;
 			for (var i = 0; i < this.entryCount - 1; i++) {
 				var entry = this.getEntry(i);
-				if (entry && (this.element.value == ice.ace.ComboBox.collectTextNodesIgnoreClass(entry, ice.ace.ComboBox.LABEL_CLASS))) {
+				if (entry && (this.hidden.value == ice.ace.ComboBox.collectTextNodesIgnoreClass(entry, ice.ace.ComboBox.LABEL_CLASS))) {
 					found = true;
 					this.selectedIndex = i;
 					break;
