@@ -54,7 +54,7 @@ public class ComboBoxRenderer extends InputRenderer {
 		comboBox.setItemList(null);
 		Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
 		String clientId = comboBox.getClientId(facesContext);
-		String value = (String) requestMap.get(clientId + "_input");
+		String value = (String) requestMap.get(clientId + "_hidden");
 		
 		comboBox.setSubmittedValue(value);
 		
@@ -139,6 +139,12 @@ public class ComboBoxRenderer extends InputRenderer {
 		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
 		String title = comboBox.getTitle();
 		if (title != null) writer.writeAttribute("title", title, null);
+		writer.endElement("input");
+		
+		// hidden input
+		writer.startElement("input", null);
+		writer.writeAttribute("type", "hidden", null);
+		writer.writeAttribute("name", clientId + "_hidden", null);
 		writer.endElement("input");
 		
 		// down arrow span
@@ -447,27 +453,25 @@ public class ComboBoxRenderer extends InputRenderer {
 	}
 
 	@Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+	public String getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		ComboBox comboBox = (ComboBox) component;
-		String value = (String) submittedValue;
 		Converter converter = comboBox.getConverter();
 		
-			if(converter != null) {
-				return converter.getAsObject(context, comboBox, value);
-			}
-			else {
-				ValueExpression ve = comboBox.getValueExpression("value");
+		if(converter != null) {
+			return converter.getAsString(context, comboBox, value);
+		} else {
+			ValueExpression ve = comboBox.getValueExpression("value");
 
-				if(ve != null) {
-					Class<?> valueType = ve.getType(context.getELContext());
-					Converter converterForType = context.getApplication().createConverter(valueType);
+			if(ve != null) {
+				Class<?> valueType = ve.getType(context.getELContext());
+				Converter converterForType = context.getApplication().createConverter(valueType);
 
-					if(converterForType != null) {
-						return converterForType.getAsObject(context, comboBox, value);
-					}
+				if(converterForType != null) {
+					return converterForType.getAsString(context, comboBox, value);
 				}
 			}
+		}
 		
-		return value;
+		return (value != null ? value.toString() : "");
 	}
 }
