@@ -30,10 +30,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -288,8 +285,14 @@ public class EnvUtils {
 
     private static class WebspherePortalOriginalRequestGetter implements OriginalRequestGetter {
         public HttpServletRequest get(FacesContext context) {
-            Map requestMap = context.getExternalContext().getRequestMap();
-            return (HttpServletRequest) requestMap.get("javax.portlet.request");
+            //get original HTTP request using method described here: http://wpcertification.blogspot.ro/2010/05/accessing-underlying-httpservletrequest.html
+            Object request = context.getExternalContext().getRequest();
+            HttpServletRequest httpServletRequest = (HttpServletRequest)request;
+            while(httpServletRequest instanceof HttpServletRequestWrapper){
+                HttpServletRequestWrapper httpServletRequestWrapper = (HttpServletRequestWrapper)httpServletRequest;
+                httpServletRequest =  (HttpServletRequest)httpServletRequestWrapper.getRequest();
+            }
+            return httpServletRequest;
         }
     }
 
