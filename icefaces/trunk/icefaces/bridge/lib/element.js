@@ -135,6 +135,18 @@
             throw 'Cannot find enclosing form.';
         },
 
+        beforeUpdateDOM: function() {
+            //modify the iframes included in the element to forc the browser into honoring the 'beforeunload' and 'unload' events
+            if (this.element.nodeName == 'iframe') {
+                this.element.src = 'about:blank';
+            } else {
+                var iframes = this.element.getElementsByTagName('iframe');
+                for (var i = 0, l = iframes.length; i < l; i++) {
+                    iframes[i].src = 'about:blank';
+                }
+            }
+        },
+
         updateDOM: function(update, optimizedJSListenerCleanup) {
             this.replaceHtml(update.asHTML(), optimizedJSListenerCleanup);
         },

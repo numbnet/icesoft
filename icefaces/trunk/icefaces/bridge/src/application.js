@@ -234,6 +234,7 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
                         var update = new Ice.ElementModel.Update(updateElement);
                         var scripts = update.scriptTags();
                         var extElem = address.asExtendedElement();
+                        extElem.beforeUpdateDOM();
                         extElem.updateDOM(update, optimizedJSListenerCleanup);
                         logger.debug('applied update : ' + update.asString());
                         var updatedElement = address.asElement();

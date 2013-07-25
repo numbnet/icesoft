@@ -311,7 +311,7 @@ public class InputFile extends UICommand implements Serializable {
                             "document.getElementsByTagName('form')[0].onsubmit = submit;" +
                             //trigger form submit when the upload ends
                             "var uploadEnd = function() { submit(1);};" +
-                            "if (window.attachEvent) { window.attachEvent('onunload', uploadEnd); } else { window.onunload = uploadEnd; }");
+                                    "if (window.attachEvent) { window.attachEvent('onbeforeunload', uploadEnd); } else { window.addEventListener('beforeunload', uploadEnd, true); }");
                 writer.write("</script>");
             }
         }
