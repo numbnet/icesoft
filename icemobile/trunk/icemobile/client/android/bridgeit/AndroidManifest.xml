@@ -24,6 +24,7 @@
     <application android:label="@string/app_name" >
         <activity android:name="BridgeIt"
 		  android:icon="@drawable/icon"
+		  android:launchMode="singleTask"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
