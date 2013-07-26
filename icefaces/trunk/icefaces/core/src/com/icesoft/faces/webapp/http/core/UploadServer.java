@@ -56,13 +56,17 @@ import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.application.ViewHandler;
+import javax.faces.context.ExternalContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 public class UploadServer implements Server {
@@ -97,6 +101,10 @@ public class UploadServer implements Server {
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object req, Object resp) throws Exception {
                 final HttpServletRequest servletRequest = (HttpServletRequest) req;
+                String characterEncoding = calculateCharacterEncoding(servletRequest);
+                if (characterEncoding != null) {
+                    uploader.setHeaderEncoding(characterEncoding);
+                }
                 FileItemIterator iter = uploader.getItemIterator(servletRequest);
                 String viewIdentifier = null;
                 String componentID = null;
@@ -106,9 +114,17 @@ public class UploadServer implements Server {
                         if (item.isFormField()) {
                             String name = item.getFieldName();
                             if ("ice.component".equals(name)) {
-                                componentID = Streams.asString(item.openStream());
+                                if (characterEncoding != null) {
+                                    componentID = Streams.asString(item.openStream(), characterEncoding);
+                                } else {
+                                    componentID = Streams.asString(item.openStream());
+                                }
                             } else if ("ice.view".equals(name)) {
-                                viewIdentifier = Streams.asString(item.openStream());
+                                if (characterEncoding != null) {
+                                    viewIdentifier = Streams.asString(item.openStream(), characterEncoding);
+                                } else {
+                                    viewIdentifier = Streams.asString(item.openStream());
+                                }
                             }
                         } else {
                             if (ViewIdVerifier.isValid(viewIdentifier)) {
@@ -347,6 +363,97 @@ public class UploadServer implements Server {
                 throw new IllegalAccessError("Cannot upload using a portlet request/response.");
             }
         });
+    }
+
+    /**
+     * There are times when the Content-Type HTTP header only has the charset
+     * given when doing regular AJAX POSTs, but won't have it when doing a
+     * multipart file upload, so we need to remember it for later.
+     */
+    public static void saveCharacterEncoding(ExternalContext extContext) {
+        String charEnc = getExternalContextRequestCharacterEncoding(extContext);
+        if (null == charEnc) {
+            Map headerMap = extContext.getRequestHeaderMap();
+            String contentType = (String) headerMap.get("Content-Type");
+            if (null == contentType) {
+                contentType = (String) headerMap.get("content-type");
+            }
+            charEnc = parseCharsetFromContentType(contentType);
+        }
+        if (null != charEnc) {
+            if (null != extContext.getSession(false)) {
+                if (!extContext.getSessionMap().containsKey(ViewHandler.CHARACTER_ENCODING_KEY)) {
+                    extContext.getSessionMap().put(ViewHandler.CHARACTER_ENCODING_KEY, charEnc);
+                }
+            }
+        }
+    }
+
+    public static String calculateCharacterEncoding(HttpServletRequest servletRequest) {
+        String charEnc = servletRequest.getCharacterEncoding();
+        if (null == charEnc) {
+            String contentType = servletRequest.getHeader("Content-Type");
+            if (null == contentType) {
+                contentType = servletRequest.getHeader("content-type");
+            }
+            charEnc = parseCharsetFromContentType(contentType);
+        }
+        if (null == charEnc) {
+            HttpSession session = servletRequest.getSession(false);
+            if (null != session) {
+                charEnc = (String) session.getAttribute(ViewHandler.CHARACTER_ENCODING_KEY);
+            }
+        } else {
+            HttpSession session = servletRequest.getSession(false);
+            if (null != session) {
+                if (null == session.getAttribute(ViewHandler.CHARACTER_ENCODING_KEY)) {
+                    session.setAttribute(ViewHandler.CHARACTER_ENCODING_KEY, charEnc);
+                }
+            }
+        }
+        if (null == charEnc) {
+            charEnc = "UTF-8";
+        }
+        return charEnc;
+    }
+
+    /**
+     * This API only exists in JSF 1.2+
+     */
+    private static String getExternalContextRequestCharacterEncoding(ExternalContext extContext) {
+        if (ExternalContext_getRequestCharacterEncoding != null) {
+            try {
+                return (String) ExternalContext_getRequestCharacterEncoding.invoke(extContext, new Object[0]);
+            } catch(Exception e) {}
+        }
+        return null;
+    }
+
+    private static Method ExternalContext_getRequestCharacterEncoding;
+    static {
+        try {
+            ExternalContext_getRequestCharacterEncoding = ExternalContext.class.getMethod("getRequestCharacterEncoding", new Class[0]);
+        } catch(Exception e) {}
+    }
+
+    private static String parseCharsetFromContentType(String contentType) {
+        // look for a charset in the Content-Type header
+        String charEnc = null;
+        if (null != contentType) {
+            // see if this header had a charset
+            String charsetStr = "charset=";
+            int len = charsetStr.length();
+
+            //It's possible for Content-Type header to have multiple charset entries
+            int idx = contentType.lastIndexOf(charsetStr);
+
+            // if we have a charset in this Content-Type header AND it
+            // has a non-zero length.
+            if (idx != -1 && idx + len < contentType.length()) {
+                charEnc = contentType.substring(idx + len);
+            }
+        }
+        return charEnc;
     }
 
     public void shutdown() {
