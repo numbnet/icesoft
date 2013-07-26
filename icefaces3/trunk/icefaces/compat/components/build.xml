@@ -124,7 +124,7 @@
         </sequential>
     </macrodef>
 
-    <target name="compile" depends="generate.metadata, inputrichtext-resources">
+    <target name="compile" depends="generate.metadata">
         <delete dir="${build.classes.dir}"/>
         <mkdir dir="${build.classes.dir}"/>
 
@@ -167,14 +167,6 @@
         <gen.tld.doc tld.file="${tld.file}"/>
     </target>
 
-    <target name="inputrichtext-resources">
-        <ant antfile="src/main/java/com/icesoft/faces/component/inputrichtext/build.xml"/>
-    </target>
-
-    <target name="clean-inputrichtext-resources">
-        <ant antfile="src/main/java/com/icesoft/faces/component/inputrichtext/build.xml" target="clean-inputrichtext-resources" />
-    </target>
-
     <target name="javadoc">
         <delete dir="${build.api.doc.dir}"/>
         <javadoc destdir="${build.api.doc.dir}"
@@ -214,7 +206,7 @@
         </javadoc>
     </target>
 
-    <target name="clean" depends="clean-inputrichtext-resources" >
+    <target name="clean">
         <delete dir="${build.dir}"/>
         <delete file="src/main/resources/META-INF/icefaces.taglib.xml"/>
         <delete dir="${dist.dir}"/>
