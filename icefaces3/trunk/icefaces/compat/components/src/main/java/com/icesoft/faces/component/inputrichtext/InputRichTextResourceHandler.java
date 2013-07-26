@@ -29,143 +29,48 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import javax.el.ELException;
+import javax.el.ValueExpression;
+import javax.el.ELContext;
+import java.util.regex.Pattern;
 
 public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     private static final String CKEDITOR_DIR = "ckeditor/";
     private static final String INPUTRICHTEXT_LIB = "inputrichtext";
     private static final String META_INF_RESOURCES = "/META-INF/resources/";
     private static final String CKEDITOR_MAPPING_JS = "ckeditor.mapping.js";
-    private static final String CKEDITOR_JS = "ckeditor.js";
+
     private ResourceHandler handler;
-    private String extensionMapping;
-    private HashMap<String, ResourceEntry> cssResources = new HashMap();
-    private ResourceEntry codeResource;
-    private String prefixMapping;
+    private Resource apiJS = null;
 
     public InputRichTextResourceHandler(ResourceHandler handler) {
         this.handler = handler;
-
-        final ArrayList imageResources = new ArrayList();
-        final ArrayList allResources = new ArrayList();
-        try {
-            //collecting resource relative paths
-            Class thisClass = this.getClass();
-            InputStream in = thisClass.getResourceAsStream(META_INF_RESOURCES + INPUTRICHTEXT_LIB + "/ckeditor.resources");
-            String resourceList = new String(readIntoByteArray(in), "UTF-8");
-            String[] paths = resourceList.split(" ");
-            for (int i = 0; i < paths.length; i++) {
-                String localPath = paths[i];
-                byte[] content = readIntoByteArray(thisClass.getResourceAsStream(META_INF_RESOURCES + INPUTRICHTEXT_LIB + "/" + localPath));
-                if (localPath.endsWith(".css")) {
-                    cssResources.put(localPath, new ResourceEntry(localPath, content));
-                } else if (localPath.endsWith(".jpg") || localPath.endsWith(".gif") || localPath.endsWith(".png")) {
-                    imageResources.add(localPath);
-                } else {
-                    allResources.add(localPath);
+        FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreRenderViewEvent.class, new SystemEventListener() {
+            public void processEvent(SystemEvent event) throws AbortProcessingException {
+                try {
+                    if (apiJS == null) createResource(CKEDITOR_DIR + CKEDITOR_MAPPING_JS);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
-            //calculate mappings when the first request comes in (to find out the context path)
-            FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreRenderViewEvent.class, new SystemEventListener() {
-                public void processEvent(SystemEvent event) throws AbortProcessingException {
-                    FacesContext context = FacesContext.getCurrentInstance();
-                    try {
-                        calculateExtensionMapping();
-                        calculateMappings(context, allResources, cssResources, imageResources);
-                    } catch (UnsupportedEncodingException e) {
-                        throw new AbortProcessingException(e);
-                    }
-                }
-
-                public boolean isListenerForSource(Object source) {
-                    return EnvUtils.isICEfacesView(FacesContext.getCurrentInstance());
-                }
-            });
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            public boolean isListenerForSource(Object source) {
+                return EnvUtils.isICEfacesView(FacesContext.getCurrentInstance());
+            }
+        });
     }
-
-    private void calculateExtensionMapping() {
-        if (extensionMapping == null || prefixMapping == null) {
-            Resource resource = super.createResource(CKEDITOR_DIR + CKEDITOR_JS, INPUTRICHTEXT_LIB);
-            String path = resource.getRequestPath();
-
-            int extensionPosition = path.indexOf(".js");
-            int queryPosition = path.indexOf("?");
-            if (queryPosition > 0 && queryPosition < extensionPosition) {
-                //there is no exception mapping used, most probably we're running as a portlet with URLs seriously mangled
-                extensionMapping = "";
-            } else {
-                extensionMapping = extensionPosition < 0 ? "" : path.substring(extensionPosition + 3/*".js".length()*/);
-            }
-
-            int prefixPosition = path.indexOf(ResourceHandler.RESOURCE_IDENTIFIER + "/" + CKEDITOR_DIR);
-            prefixMapping = prefixPosition < 0 ? "" : path.substring(0, prefixPosition);
-        }
-    }
-
-    private void calculateMappings(FacesContext context, ArrayList allResources, HashMap cssResources, ArrayList imageResources) throws UnsupportedEncodingException {
-        ExternalContext externalContext = context.getExternalContext();
-        Map applicationMap = externalContext.getApplicationMap();
-
-        String value = (String) applicationMap.get(InputRichTextResourceHandler.class.getName());
-        if (value == null) {
-            //rewrite relative request paths
-            Iterator<ResourceEntry> i = cssResources.values().iterator();
-            while (i.hasNext()) {
-                ResourceEntry css = i.next();
-                String content = css.getContentAsString("UTF-8");
-                String dir = toRelativeLocalDir(css.localPath);
-
-                Iterator<String> ri = imageResources.iterator();
-                while (ri.hasNext()) {
-                    String entry = ri.next();
-                    String path = toRelativeLocalPath(entry);
-                    if (path.startsWith(dir)) {
-                        String relativePath = path.substring(dir.length() + 1);
-                        String requestPath = externalContext.encodeResourceURL(toRequestPath(context, entry));
-                        content = content.replaceAll(relativePath, requestPath);
-                    }
-                }
-
-                css.setContentAsString(content, "UTF-8");
-            }
-
-            //add modified css resources
-            allResources.addAll(cssResources.keySet());
-            //add images
-            allResources.addAll(imageResources);
-
-            StringBuffer code = new StringBuffer();
-            code.append("window.CKEDITOR_GETURL = function(r) { var mappings = [");
-            Iterator<String> entries = allResources.iterator();
-            while (entries.hasNext()) {
-                String next = entries.next();
-                code.append("{i: '");
-                code.append(toRelativeLocalPath(next));
-                code.append("', o: '");
-                code.append(externalContext.encodeResourceURL(toRequestPath(context, next)));
-                code.append("'}");
-                if (entries.hasNext()) {
-                    code.append(",");
-                }
-            }
-            code.append("]; if (r.indexOf('://') > -1) { var i = document.location.href.lastIndexOf('/'); r = r.substring(i + 1); }; for (var i = 0, l = mappings.length; i < l; i++) { var m = mappings[i]; if (m.i == r) { return m.o;} } return false; };");
-
-            value = code.toString();
-            applicationMap.put(InputRichTextResourceHandler.class.getName(), value);
-        }
-
-        if (codeResource == null) {
-            codeResource = new ResourceEntry(CKEDITOR_DIR + CKEDITOR_MAPPING_JS, value.getBytes("UTF-8"));
-        }
-    }
-
+	
     public ResourceHandler getWrapped() {
         return handler;
     }
@@ -179,16 +84,25 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     public Resource createResource(String resourceName, String libraryName, String contentType) {
-        if (codeResource != null && codeResource.localPath != null && codeResource.localPath.equals(resourceName)) {
-            //serving up the mapping as a referenced JS resource
-            return codeResource;
-        } else if (cssResources != null && cssResources.containsKey(resourceName)) {
-            //serve the modified CSS resources
-            return cssResources.get(resourceName);
+        if ((CKEDITOR_DIR + CKEDITOR_MAPPING_JS).equals(resourceName)) {
+            if (apiJS == null) {
+				apiJS = recreateResource(super.createResource(resourceName, INPUTRICHTEXT_LIB));
+            }
+            return apiJS;
         } else {
-            //let JSF serve the rest of resources
             return super.createResource(resourceName, libraryName, contentType);
         }
+    }
+
+    private Resource recreateResource(Resource resource) {
+		byte[] content;
+        try {
+			InputStream in = this.getClass().getResourceAsStream(META_INF_RESOURCES + INPUTRICHTEXT_LIB + "/" + CKEDITOR_DIR + CKEDITOR_MAPPING_JS);
+            content = readIntoByteArray(in);
+        } catch (IOException e) {
+            content = new byte[0];
+        }
+        return new ResourceEntry(CKEDITOR_DIR + CKEDITOR_MAPPING_JS, resource, content);
     }
 
     private static byte[] readIntoByteArray(InputStream in) throws IOException {
@@ -197,50 +111,39 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         while ((bytesRead = in.read(buffer)) != -1) {
-            out.write(buffer, 0, bytesRead); // write
+            out.write(buffer, 0, bytesRead);
         }
         out.flush();
 
         return out.toByteArray();
     }
 
-    private static String toRelativeLocalPath(String localPath) {
-        return localPath.substring(CKEDITOR_DIR.length());
-    }
-
-    public String toRequestPath(FacesContext context, String localPath) {
-        return prefixMapping + ResourceHandler.RESOURCE_IDENTIFIER + "/" + localPath + extensionMapping;
-    }
-
-    private String toRelativeLocalDir(String localPath) {
-        int position = localPath.lastIndexOf("/");
-        return CKEDITOR_DIR.length() > position ? "/" : localPath.substring(CKEDITOR_DIR.length(), position);
-    }
-
-    private class ResourceEntry extends Resource {
+    private static class ResourceEntry extends Resource {
         private Date lastModified = new Date();
         private String localPath;
+        private Resource wrapped;
         private byte[] content;
         private String mimeType;
 
-        private ResourceEntry(String localPath, byte[] content) {
+        private ResourceEntry(String localPath, Resource wrapped, byte[] content) {
             this.localPath = localPath;
+            this.wrapped = wrapped;
             this.content = content;
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ExternalContext externalContext = facesContext.getExternalContext();
             this.mimeType = externalContext.getMimeType(localPath);
         }
 
-        public String getResourceName() {
-            return localPath;
-        }
-
         public String getLibraryName() {
             return INPUTRICHTEXT_LIB;
         }
 
+        public String getResourceName() {
+            return localPath;
+        }
+
         public InputStream getInputStream() throws IOException {
-            return new ByteArrayInputStream(content);
+            return new ELEvaluatingInputStream(FacesContext.getCurrentInstance(), new ByteArrayInputStream(content), INPUTRICHTEXT_LIB);
         }
 
         public Map<String, String> getResponseHeaders() {
@@ -260,7 +163,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
         }
 
         public String getRequestPath() {
-            return toRequestPath(FacesContext.getCurrentInstance(), localPath);
+            return wrapped.getRequestPath();
         }
 
         public URL getURL() {
@@ -280,16 +183,181 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
             }
         }
 
-        private String getContentAsString(String encoding) throws UnsupportedEncodingException {
-            return new String(content, encoding);
-        }
-
-        private void setContentAsString(String newContent, String encoding) throws UnsupportedEncodingException {
-            content = newContent.getBytes(encoding);
-        }
-
         private String eTag() {
             return Base64.encode(String.valueOf(localPath.hashCode()));
         }
+    }
+
+    // Taken from Mojarra
+	private static class ELEvaluatingInputStream extends InputStream {
+
+        private List<Integer> buf = new ArrayList<Integer>(1024);
+        private boolean failedExpressionTest = false;
+        private boolean writingExpression = false;
+        private InputStream inner;
+        private FacesContext ctx;
+		private String libraryName;
+        private boolean expressionEvaluated;
+		private static Pattern pattern = Pattern.compile(":");
+
+        // ---------------------------------------------------- Constructors
+
+
+        public ELEvaluatingInputStream(FacesContext ctx,
+                                       InputStream inner,
+									   String libraryName) {
+
+            this.inner = inner;
+            this.ctx = ctx;
+			this.libraryName = libraryName;
+
+        }
+
+
+        // ------------------------------------------------ Methods from InputStream
+
+
+        @Override
+        public int read() throws IOException {
+            int i;
+            char c;
+
+            if (failedExpressionTest) {
+                i = nextRead;
+                nextRead = -1;
+                failedExpressionTest = false;
+            } else if (writingExpression) {
+                if (0 < buf.size()) {
+                    i = buf.remove(0);
+                } else {
+                    writingExpression = false;
+                    i = inner.read();
+                }
+            } else {
+                // Read a character.
+                i = inner.read();
+                c = (char) i;
+                // If it *might* be an expression...
+                if (c == '#') {
+                    // read another character.
+                    i = inner.read();
+                    c = (char) i;
+                    // If it's '{', assume we have an expression.
+                    if (c == '{') {
+                        // read it into the buffer, and evaluate it into the
+                        // same buffer.
+                        readExpressionIntoBufferAndEvaluateIntoBuffer();
+                        // set the flag so that we need to return content
+                        // from the buffer.
+                        writingExpression = true;
+                        // Make sure to swallow the '{'.
+                        i = this.read();
+                    } else {
+                        // It's not an expression, we need to return '#',
+                        i = (int) '#';
+                        // then return whatever we just read, on the
+                        // *next* read;
+                        nextRead = (int) c;
+                        failedExpressionTest = true;
+                    }
+                }
+            }
+
+            return i;
+        }
+
+
+        private int nextRead = -1;
+
+
+        private void readExpressionIntoBufferAndEvaluateIntoBuffer()
+              throws IOException {
+            int i;
+            char c;
+            do {
+                i = inner.read();
+                c = (char) i;
+                if (c == '}') {
+                    evaluateExpressionIntoBuffer();
+                } else {
+                    buf.add(i);
+                }
+            } while (c != '}' && i != -1);
+        }
+
+        /*
+        * At this point, we know that getBuf() returns a List<Integer>
+        * that contains the bytes of the expression.
+        * Turn it into a String, turn the String into a ValueExpression,
+        * evaluate it, store the toString() of it in
+        * expressionResult;
+        */
+        private void evaluateExpressionIntoBuffer() {
+            char chars[] = new char[buf.size()];
+            for (int i = 0, len = buf.size(); i < len; i++) {
+                chars[i] = (char) (int) buf.get(i);
+            }
+            String expressionBody = new String(chars);
+            int colon;
+            // If this expression contains a ":"
+            if (-1 != (colon = expressionBody.indexOf(":"))) {
+                // Make sure it contains only one ":"
+                if (!isPropertyValid(expressionBody)) {
+                    String message = "INVALID_RESOURCE_FORMAT_COLON_ERROR: " + expressionBody;
+                    throw new ELException(message);
+                }
+                String[] parts = pattern.split(expressionBody, 0);
+                if (null == parts[0] || null == parts[1]) {
+                    String message = "INVALID_RESOURCE_FORMAT_NO_LIBRARY_NAME_ERROR: " + expressionBody;
+                    throw new ELException(message);
+
+                }
+                try {
+                    int mark = parts[0].indexOf("[") + 2;
+                    char quoteMark = parts[0].charAt(mark - 1);
+                    parts[0] = parts[0].substring(mark, colon);
+                    if (parts[0].equals("this")) {
+                        parts[0] = libraryName;
+                        mark = parts[1].indexOf("]") - 1;
+                        parts[1] = parts[1].substring(0, mark);
+                        expressionBody = "resource[" + quoteMark + parts[0] +
+                                         ":" + parts[1] + quoteMark + "]";
+                    }
+                }
+                catch (Exception e) {
+                    String message = "INVALID_RESOURCE_FORMAT_ERROR: " + expressionBody;
+                    throw new ELException(message);
+
+                }
+            }
+            ELContext elContext = ctx.getELContext();
+            expressionEvaluated = true;
+            ValueExpression ve =
+                  ctx.getApplication().getExpressionFactory().
+                        createValueExpression(elContext, "#{" + expressionBody +
+                                                         "}", String.class);
+            Object value = ve.getValue(elContext);
+            String expressionResult = ((value != null) ? value.toString() : "");
+            buf.clear();
+            for (int i = 0, len = expressionResult.length(); i < len; i++) {
+                buf.add((int) expressionResult.charAt(i));
+            }
+        }
+
+
+        @Override
+        public void close() throws IOException {
+
+            inner.close();
+            super.close();
+
+        }
+
+        
+        private boolean isPropertyValid(String property) {
+            int idx = property.indexOf(':');
+            return (property.indexOf(':', idx + 1) == -1);
+        }
+
     }
 }
