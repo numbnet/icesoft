@@ -41,6 +41,7 @@ import com.icesoft.faces.env.CommonEnvironmentRequest;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import com.icesoft.faces.webapp.http.core.UploadServer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
@@ -208,6 +209,7 @@ public class InputFile extends UICommand implements Serializable {
                 if (log.isDebugEnabled())
                     log.debug("  session map key: " + key);
                 map.put(key, uploadConfig);
+                UploadServer.saveCharacterEncoding(facesContext.getExternalContext());
             }
         }
         if (log.isDebugEnabled())
