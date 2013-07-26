@@ -647,6 +647,10 @@ ice.ace.ComboBox.prototype = {
             return null;
         }
     },
+	
+	getEntryFromContent: function(index) {
+		return this.$content.get(index);
+	},
 
     getCurrentEntry: function() {
         return this.getEntry(this.index);
@@ -910,7 +914,7 @@ ice.ace.ComboBox.prototype = {
 		this.updateSelectedIndex();
 		// update label
 		if (value) {
-			var currentEntry = this.getEntry(this.selectedIndex);
+			var currentEntry = this.getEntryFromContent(this.selectedIndex);
 			if (currentEntry) {
 				var labelSpan = ice.ace.jq(currentEntry).find('.'+ice.ace.ComboBox.LABEL_CLASS).get(0);
 				var label = ice.ace.ComboBox.collectTextNodesIgnoreClass(labelSpan, ice.ace.ComboBox.IGNORE_CLASS);
@@ -923,11 +927,8 @@ ice.ace.ComboBox.prototype = {
 	
 	// update selected index if value was changed programmatically or was pre-selected
 	updateSelectedIndex: function() {
+		if (typeof this.selectedIndex != 'number' && !this.selectedIndex) this.selectedIndex = -1;
 		var currentEntry = this.getEntry(this.selectedIndex);
-		if (!currentEntry) {
-			this.selectedIndex = -1;
-			return;
-		}
 		if ((currentEntry && (this.hidden.value != ice.ace.ComboBox.collectTextNodesIgnoreClass(currentEntry, ice.ace.ComboBox.LABEL_CLASS)))
 			|| (this.selectedIndex == -1 && this.hidden.value)) {
 			var found = false;
