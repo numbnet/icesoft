@@ -50,6 +50,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     private static final String INPUTRICHTEXT_LIB = "inputrichtext";
     private static final String META_INF_RESOURCES = "/META-INF/resources/";
     private static final String CKEDITOR_MAPPING_JS = "ckeditor.mapping.js";
+	private final Object lock = new Object();
 
     private ResourceHandler handler;
     private Resource apiJS = null;
@@ -59,7 +60,9 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
         FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreRenderViewEvent.class, new SystemEventListener() {
             public void processEvent(SystemEvent event) throws AbortProcessingException {
                 try {
-                    if (apiJS == null) createResource(CKEDITOR_DIR + CKEDITOR_MAPPING_JS);
+					synchronized(lock) {
+						if (apiJS == null) createResource(CKEDITOR_DIR + CKEDITOR_MAPPING_JS);
+					}
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
