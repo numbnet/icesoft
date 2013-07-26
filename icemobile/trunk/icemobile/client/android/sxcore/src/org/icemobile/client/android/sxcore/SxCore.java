@@ -18,8 +18,11 @@ package org.icemobile.client.android.sxcore;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
+import java.net.URL;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -34,6 +37,8 @@ import android.util.Log;
 import android.view.View;
 import android.net.Uri;
 import android.provider.Browser;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.c2dm.C2dmRegistrationHandler;
@@ -121,6 +126,9 @@ public class SxCore extends Activity
     private boolean doRegister = false;
     private SxProgress progressDialog;
     private boolean stopped;
+    private ImageView myImage;
+    private Hashtable<String,String> splashScreenMap;
+    private Hashtable<String,Bitmap> splashScreens;
 
     public void returnToBrowser()  {
         if (null == mReturnUri)  {
@@ -169,11 +177,14 @@ public class SxCore extends Activity
 
 	this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
-	ImageView myImage = (ImageView) findViewById(R.id.background);
+	myImage = (ImageView) findViewById(R.id.background);
 	myImage.setAlpha(127);
-	progressDialog = new SxProgress(this);
-	stopped = false;
-	progressDialog.show( self, getString(R.string.app_name), getString(R.string.spinner_message) ,false, true);
+	myImage.setVisibility(View.INVISIBLE);
+	splashScreenMap = new Hashtable();
+	splashScreens = new Hashtable();
+	//progressDialog = new SxProgress(this);
+	//stopped = false;
+	//progressDialog.show( self, getString(R.string.app_name), getString(R.string.spinner_message) ,false, true);
 
         includeUtil();
         if (INCLUDE_QRCODE) {
@@ -209,6 +220,7 @@ public class SxCore extends Activity
     }
 
     private void handleIntent (Intent intent) {
+	myImage.setVisibility(View.INVISIBLE);
         Uri uri = intent.getData();
 	Log.d(LOG_TAG, "URL launched " + uri);
 	Map commandParts = new HashMap();
@@ -238,10 +250,56 @@ public class SxCore extends Activity
 	    mPOSTUri = Uri.parse((String) commandParts.get("u"));
 	    mParameters = (String) commandParts.get("p");
 	    if (null != commandName)  {
+		displaySplashScreen((String)commandParts.get("s"));
 		dispatch(commandName, commandParts, commandParams);
 	    }
 	} else {
 	    returnToBrowser();
+	}
+    }
+
+    public void displaySplashScreen(String params) {
+	Bitmap splash=null;
+	if (params != null) {
+	    // Splash screen specified;
+	    String[] nvpairs = URLDecoder.decode(params).split("&");
+	    for (String pair : nvpairs)  {
+		int index = pair.indexOf("=");
+		if (-1 != index)  {
+		    String name = pair.substring(0, index);
+		    String value = pair.substring(index + 1);
+		    if (name.equals("i")) {
+			if (splashScreens.containsKey(value)) {
+			    // Get cached bitmap;
+			    splash = splashScreens.get(value);
+			} else {
+			    // Download and cache bitmap;
+			    try {
+				splash = BitmapFactory.decodeStream(new URL(value).openStream());
+				splashScreens.put(value, splash);
+			    } catch (IOException e) {
+			    }
+			}
+			// Cache splash screen uri for app uri
+			splashScreenMap.put(mReturnUri.toString(), value);
+		    }
+		}
+	    }
+	} else {
+	    // Get cached splash screen if there is one;
+	    String splashUri = splashScreenMap.get(mReturnUri.toString());
+	    if (splashUri != null) {
+		splash = splashScreens.get(splashUri);
+	    } else {
+		// Default splashScreen;
+		splash = BitmapFactory.decodeResource(self.getResources(), R.drawable.background);
+	    }
+	}
+
+	// Set the imageView to splash screen;
+	if (splash != null) {
+	    myImage.setImageBitmap(splash);
+	    myImage.setVisibility(View.VISIBLE);
 	}
     }
 
@@ -286,7 +344,7 @@ public class SxCore extends Activity
                     arIntent.putExtra("attributes", packParams(params));
                     startActivityForResult(arIntent, ARMVIEW_CODE);
                 } catch (Exception e)  {
-Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
+		    Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
                     returnToBrowser();
                 }
             } else {
@@ -420,7 +478,7 @@ Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
         super.onResume();
 	if (stopped) {
 	    stopped = false;
-	    progressDialog.show( self, "ICEmobile-SX", "is working...",false, true);
+	    progressDialog.show( self, getString(R.string.app_name), getString(R.string.spinner_message) ,false, true);
 	}
 	// Clear any existing C2DM notifications;
 	if (pendingCloudPush) {
