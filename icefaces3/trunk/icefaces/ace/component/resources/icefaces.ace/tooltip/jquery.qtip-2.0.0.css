@@ -15,6 +15,8 @@
 
 	border-width: 1px;
 	border-style: solid;
+
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
 }
 
 	/* Fluid class for determining actual width in IE */
