@@ -190,6 +190,16 @@ padding-right: 4em;
 vertical-align:baseline;
 }
 
+/* Override duplicate border from JQUI rules */
+.yui-nav > li.ui-state-default {
+    border-bottom:none;
+}
+
+/* Override duplicate border from JQUI rules */
+.yui-nav > li.ui-state-active > div.yui-navdiv > em {
+    border:none;
+}
+
 /* ----- custom rules ----- */
 
 .ui-tabs-vertical {
