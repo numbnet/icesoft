@@ -53,17 +53,17 @@ import javax.el.MethodExpression;
     events = {
         @ClientEvent(name="click", defaultRender = "@all", defaultExecute = "@this",
                 tlddoc = "Fired when data point is clicked plot."),
-        @ClientEvent(name="dragStart", defaultRender="@this", defaultExecute="@this",
+        @ClientEvent(name="dragStart", defaultRender="@all", defaultExecute="@this",
                 tlddoc = "Fired when a drag has begun on a particular drag-enabled plot data point."),
-        @ClientEvent(name="dragStop", defaultRender="@this", defaultExecute="@this",
+        @ClientEvent(name="dragStop", defaultRender="@all", defaultExecute="@this",
                 tlddoc = "Fired when a drag has ceased on a particular drag-enabled plot data point."),
-        @ClientEvent(name="mouseInData", defaultRender="@this", defaultExecute="@this",
+        @ClientEvent(name="mouseInData", defaultRender="@all", defaultExecute="@this",
                 tlddoc = "Fired when the mouse is inside a filled plot region."),
-        @ClientEvent(name="mouseOutData", defaultRender="@this", defaultExecute="@this",
+        @ClientEvent(name="mouseOutData", defaultRender="@all", defaultExecute="@this",
                 tlddoc = "Fired when the mouse is outside a filled plot region."),
-        @ClientEvent(name="showHighlighter", defaultRender="@this", defaultExecute="@this",
+        @ClientEvent(name="showHighlighter", defaultRender="@all", defaultExecute="@this",
                 tlddoc = "Fired when the highlighter is being displayed by the mouse being near an enabled data point."),
-        @ClientEvent(name="hideHighlighter", defaultRender="@this", defaultExecute="@this",
+        @ClientEvent(name="hideHighlighter", defaultRender="@all", defaultExecute="@this",
                 tlddoc = "Fired when the highlighter is being hidden by the mouse moving away from an enabled data point.")
     }
 )
