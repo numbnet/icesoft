@@ -128,14 +128,34 @@ version: 2.8.2r1
             this._initTabEvents(tab);
         },
 
+        _onTabHoverIn: function(event) {
+            var target;
+            if (event.target) target = event.target;
+            else if (event.srcElement) target = event.srcElement;
+
+            ice.ace.jq(target).closest('li').addClass('ui-state-hover');
+        },
+
+        _onTabHoverOut: function(event) {
+            var target;
+            if (event.target) target = event.target;
+            else if (event.srcElement) target = event.srcElement;
+
+            ice.ace.jq(target).closest('li').removeClass('ui-state-hover');
+        },
+
         _initTabEvents: function(tab) {
             tab.addListener( tab.get('activationEvent'), tab._onActivate, this, tab);
             tab.addListener( tab.get('activationEventChange'), tab._onActivationEventChange, this, tab);
+            tab.addListener( 'mouseover', this._onTabHoverIn, this, tab);
+            tab.addListener( 'mouseout', this._onTabHoverOut, this, tab);
         },
 
         _removeTabEvents: function(tab) {
             tab.removeListener(tab.get('activationEvent'), tab._onActivate, this, tab);
             tab.removeListener('activationEventChange', tab._onActivationEventChange, this, tab);
+            tab.removeListener('mouseover', this._onTabHoverIn, this, tab);
+            tab.removeListener('mouseout', this._onTabHoverOut, this, tab);
         },
 
         /**
@@ -382,8 +402,8 @@ version: 2.8.2r1
             // In IE there's a noticeable CPU cost for all these listeners,
             // so disable the ones we're not specifically using ourselves
             this.DOM_EVENTS.mousemove = false;
-            this.DOM_EVENTS.mouseover = false;
-            this.DOM_EVENTS.mouseout = false;
+            this.DOM_EVENTS.mouseover = true;
+            this.DOM_EVENTS.mouseout = true;
             this.DOM_EVENTS.dblclick = false;
             this.DOM_EVENTS.keyup = false;
             this.DOM_EVENTS.mousedown = false;
