@@ -95,7 +95,7 @@ public class SelectMenuRenderer extends InputRenderer {
 		// root
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", "ui-selectmenu ui-widget" + selectMenu.getStyleClass(), null);
+		writer.writeAttribute("class", "ui-selectmenu ui-widget " + selectMenu.getStyleClass(), null);
 		String dir = selectMenu.getDir();
 		if (dir != null) writer.writeAttribute("dir", dir, null);
 		String lang = selectMenu.getLang();
