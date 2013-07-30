@@ -308,12 +308,12 @@ public class EnvUtils {
     }
 
     private static class PlutoPortalOriginalRequestGetter implements OriginalRequestGetter {
-        private Class PortalUtilClass;
+        private Class PortletRequestContext;
         private Method GetHttpServletRequest;
 
         private PlutoPortalOriginalRequestGetter() throws ClassNotFoundException, NoSuchMethodException {
-            PortalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
-            GetHttpServletRequest = PortalUtilClass.getDeclaredMethod("getContainerRequest", HttpServletRequest.class);
+            PortletRequestContext = Class.forName("org.apache.pluto.container.PortletRequestContext");
+            GetHttpServletRequest = PortletRequestContext.getDeclaredMethod("getContainerRequest");
         }
 
         public HttpServletRequest get(FacesContext context) {
