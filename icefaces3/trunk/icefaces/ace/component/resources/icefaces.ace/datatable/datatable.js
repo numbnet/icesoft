@@ -40,9 +40,6 @@
 if (!window.ice['ace']) {
     window.ice.ace = {};
 }
-if (!window.ice.ace['DataTables']) {
-    window.ice.ace.DataTables = {};
-}
 
 // JQuery Utilities
 (function ($) {
@@ -200,7 +197,7 @@ ice.ace.DataTable = function (id, cfg) {
     this.selection = [];
     this.deselection = [];
 
-    var oldInstance = ice.ace.DataTables[this.id];
+    var oldInstance = arguments[2];
     var rowEditors = this.getRowEditors();
 
     // Persist State
@@ -253,12 +250,10 @@ ice.ace.DataTable = function (id, cfg) {
     oldInstance = null;
     rowEditors = null;
 
-    ice.ace.DataTables[this.id] = this;
-
     // Setup unload callback if not already done
     if (!window[this.cfg.widgetVar]) {
         var self = this;
-        ice.onElementUpdate(this.id, function() { self.unload(); });
+        ice.onElementUpdate(this.id, function() { ice.ace.destroy(self.id); });
     }
 }
 
@@ -283,7 +278,7 @@ ice.ace.DataTable.prototype.cellEditorSelector = ' > div > table > tbody.ui-data
 /* ########################################################################
    ########################## Event Binding & Setup #######################
    ######################################################################## */
-ice.ace.DataTable.prototype.unload = function() {
+ice.ace.DataTable.prototype.destroy = function() {
     // Remove dynamic stylesheet
     // ice.ace.util.removeStyleSheet(this.jqId.substr(1)+'_colSizes');
 
@@ -335,10 +330,11 @@ ice.ace.DataTable.prototype.unload = function() {
         this.paginator.destroy();
         delete this.paginator;
     }
+    window[this.cfg.widgetVar] = undefined;
 
     var clientState = {scrollTop : this.scrollTop, scrollLeft : this.scrollLeft};
-    ice.ace.DataTables[this.id] = clientState;
-    window[this.cfg.widgetVar] = undefined;
+
+    return clientState;
 }
 
 ice.ace.DataTable.prototype.setupFilterEvents = function () {

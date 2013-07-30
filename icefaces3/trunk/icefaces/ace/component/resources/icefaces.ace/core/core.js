@@ -27,34 +27,59 @@ ice.ace.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
 ice.ace.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
 ice.ace.VIEW_STATE = "javax.faces.ViewState";
 
+// Store minimal client states for component reinitialization (scroll position, etc.)
+ice.ace.deadStates = {};
+
 ice.ace.escapeClientId = function(id) {
     return "#" + id.replace(/:/g,"\\:");
 };
 
+ice.ace.instance = function(id) {
+    return document.getElementById(id).widget;
+}
+
+ice.ace.destroy = function(id) {
+    var elem = document.getElementById(id);
+    if (elem.widget.destroy) {
+        var deadState = elem.widget.destroy();
+        if (deadState) {
+            ice.ace.deadStates[id] = deadState;
+        }
+    }
+    delete elem.widget;
+}
+
 ice.ace.lazy = function(name, args) {
     var clientId = args[0], // lazy requires clientId is first arg
-        jqId = ice.ace.escapeClientId(clientId),
-        elem = ice.ace.jq(jqId),
-        registerComponent = function(component) {
-            elem.attr('widget', component);
-        };
+        elem = document.getElementById(clientId);
 
-    if (elem.attr('widget') == undefined) {
+    if (elem.widget == undefined) {
         var component = ice.ace.create(name, args);
-        registerComponent(component);
         return component;
     }
     else
-        return elem.attr('widget');
+        return elem.widget;
 }
 
 ice.ace.create = function(name, args) {
+    // if first arg is clientId, registerComponent func will attach js instance to DOM
+    var clientId = args[0], registerComponent = function(x){};
+    var elem = document.getElementById(clientId);
+    if (elem) registerComponent = function(component) {
+        elem.widget = component;
+    };
+
+    // if dead state is available append to arguments
+    if (ice.ace.deadStates[clientId]) {
+        args.push(ice.ace.deadStates[clientId]);
+    }
+
     if (ice.ace.jq.isFunction(ice.ace[name])) {
         // Use ECMAScript 5 to construct if available
         if (typeof Object.create == 'function') {
             var o = Object.create(ice.ace[name].prototype);
             ice.ace[name].apply(o, args);
-
+            registerComponent(o);
             return o;
         } else {
             var temp = function(){}, // constructor-less duplicate class
@@ -64,6 +89,7 @@ ice.ace.create = function(name, args) {
             inst = new temp; // init constructor-less class
             ret = ice.ace[name].apply(inst, args); // apply original constructor
             ret = Object(ret) === ret ? ret : inst;
+            registerComponent(ret);
             return ret;
         }
     }
