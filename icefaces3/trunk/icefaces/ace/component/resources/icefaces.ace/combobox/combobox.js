@@ -649,7 +649,11 @@ ice.ace.ComboBox.prototype = {
     },
 	
 	getEntryFromContent: function(index) {
-		return this.$content.get(index);
+		if (index >= 0) {
+			return this.$content.get(index);
+		} else {
+			return null;
+		}
 	},
 
     getCurrentEntry: function() {
@@ -920,7 +924,7 @@ ice.ace.ComboBox.prototype = {
 				var label = ice.ace.ComboBox.collectTextNodesIgnoreClass(labelSpan, ice.ace.ComboBox.IGNORE_CLASS);
 				this.element.value = label;
 			} else {
-				this.element.value = '';
+				this.element.value = value;
 			}
 		}
 	},
