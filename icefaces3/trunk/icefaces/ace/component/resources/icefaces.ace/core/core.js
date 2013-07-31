@@ -72,6 +72,7 @@ ice.ace.create = function(name, args) {
     // if dead state is available append to arguments
     if (ice.ace.deadStates[clientId]) {
         args.push(ice.ace.deadStates[clientId]);
+        ice.ace.deadStates[clientId] = undefined;
     }
 
     if (ice.ace.jq.isFunction(ice.ace[name])) {
