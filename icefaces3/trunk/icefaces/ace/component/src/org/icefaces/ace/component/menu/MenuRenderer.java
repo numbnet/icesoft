@@ -29,6 +29,7 @@ package org.icefaces.ace.component.menu;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -37,6 +38,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.component.menuitem.MenuItem;
 import org.icefaces.ace.component.submenu.Submenu;
 import org.icefaces.ace.component.menuseparator.MenuSeparator;
+import org.icefaces.ace.component.multicolumnsubmenu.MultiColumnSubmenu;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -104,6 +106,8 @@ public class MenuRenderer extends BaseMenuRenderer {
         } else {
             json.entry("position", "static");
         }
+		
+		if (isPlainMultiColumn(menu)) json.entry("plainMultiColumnMenu", true);
 
         json.entryNonNullValue("styleClass", menu.getStyleClass())
             .entryNonNullValue("style", menu.getStyle())
@@ -124,21 +128,32 @@ public class MenuRenderer extends BaseMenuRenderer {
         writer.startElement("span", menu);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("style", "display:none;", null);
+		
+		boolean isPlainMultiColumnMenu = isPlainMultiColumn(menu);
 
-		writer.startElement("ul", null);
+		if (!isPlainMultiColumnMenu) writer.startElement("ul", null);
 
         if(tiered) {
             encodeTieredMenuContent(context, menu);
         }
         else {
-            encodePlainMenuContent(context, menu, false);
+			if (isPlainMultiColumnMenu) {
+				encodePlainMultiColumnContent(context, menu);
+			} else {
+				encodePlainMenuContent(context, menu, false);
+			}
         }
 
-		writer.endElement("ul");
+		if (!isPlainMultiColumnMenu) writer.endElement("ul");
 		
 		encodeScript(context, menu);
 
         writer.endElement("span");
+	}
+	
+	protected boolean isPlainMultiColumn(Menu menu) {
+		List<UIComponent> children = menu.getChildren();
+		return (children.size() == 1 && children.get(0) instanceof MultiColumnSubmenu);
 	}
 
     protected void encodeTieredMenuContent(FacesContext context, UIComponent component) throws IOException {
@@ -157,7 +172,9 @@ public class MenuRenderer extends BaseMenuRenderer {
                     // we just need <li></li>
                 } else if(child instanceof Submenu) {
                     encodeTieredSubmenu(context, (Submenu) child);
-                }
+                } else if(child instanceof MultiColumnSubmenu) {
+					encodeMultiColumnSubmenu(context, (MultiColumnSubmenu) child);
+				}
 
                 writer.endElement("li");
             }
@@ -223,11 +240,23 @@ public class MenuRenderer extends BaseMenuRenderer {
                     encodeMenuSeparator(context);
                 } else if(child instanceof Submenu) {
                     encodePlainSubmenu(context, (Submenu) child, disableChildren);
-                }
+                } else if(child instanceof MultiColumnSubmenu) {
+					writer.startElement("li", null);
+					encodeMultiColumnSubmenu(context, (MultiColumnSubmenu) child);
+					writer.endElement("li");
+				}
                 
             }
         }
     }
+	
+	protected void encodePlainMultiColumnContent(FacesContext context, UIComponent component) throws IOException {
+		UIComponent child = component.getChildren().get(0);
+		
+		if (child.isRendered()) {
+			encodeMultiColumnSubmenu(context, (MultiColumnSubmenu) child, true);
+		}
+	}
 
     protected void encodePlainSubmenu(FacesContext context, Submenu submenu, boolean disableChildren) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
