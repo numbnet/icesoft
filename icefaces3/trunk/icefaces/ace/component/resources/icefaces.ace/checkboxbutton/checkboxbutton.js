@@ -16,6 +16,12 @@
 
 // Constructor
 ice.ace.checkboxbutton = function(clientId, options) {
+    var groups = ice.ace.checkboxbutton.groups,
+        groupId = options.groupId;
+    if (groupId) {
+        groups[groupId] = groups[groupId] || {};
+        groups[groupId][clientId] = clientId;
+    }
     this.options = options;
 
     // Selectors
@@ -39,7 +45,12 @@ ice.ace.checkboxbutton = function(clientId, options) {
             .on("mouseleave", function() { self.removeStateCSSClasses('hover') ; });
 
     if (!options.disabled)
-        ice.ace.jq(this.jqId).on("click", function() { self.toggleCheckbox(); });
+        ice.ace.jq(this.jqId).on("click", function () {
+            self.toggleCheckbox();
+            if (self.isChecked()) {
+                ice.ace.checkboxbutton.toggleOthers(self.options, self.id)
+            }
+        });
 
     if (options.ariaEnabled)
         ice.ace.jq(this.jqId).on("keypress", function() { self.onAriaKeypress(); });
@@ -121,5 +132,24 @@ ice.ace.checkboxbutton.prototype.toggleCheckbox = function (e) {
             this.options.behaviors.activate,
             {params: this.options.uiParams}
         ));
+    }
+};
+
+ice.ace.checkboxbutton.groups = {};
+
+ice.ace.checkboxbutton.toggleOthers = function (options, clientId) {
+    var groups = ice.ace.checkboxbutton.groups,
+        groupId = options.groupId,
+        id, widget;
+    if (groupId) {
+        groups[groupId] = groups[groupId] || {};
+        for (id in groups[groupId]) {
+            if (groups[groupId].hasOwnProperty(id) && id != clientId) {
+                widget = document.getElementById(id).widget;
+                if (widget && widget.isChecked()) {
+                    widget.toggleCheckbox();
+                }
+            }
+        }
     }
 };
