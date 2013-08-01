@@ -76,4 +76,7 @@ public class CheckboxButtonMeta extends UISelectBooleanMeta {
     @Property (defaultValue="false",
     		tlddoc="If true no input may be submitted via this component.")
     private boolean disabled;
+
+    @Property(tlddoc = "ID of button group component if this button is outside of the button group but wants to logically belong to the group.")
+    private String group;
 }

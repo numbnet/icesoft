@@ -26,6 +26,7 @@
  */
 package org.icefaces.ace.component.buttongroup;
 
+import org.icefaces.ace.component.checkboxbutton.CheckboxButton;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
@@ -33,6 +34,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
 @MandatoryResourceComponent(tagName = "buttonGroup", value = "org.icefaces.ace.component.buttongroup.ButtonGroup")
 public class ButtonGroupRenderer extends CoreRenderer {
@@ -64,6 +66,22 @@ public class ButtonGroupRenderer extends CoreRenderer {
                 writer.write(headerText);
             }
             writer.endElement("div");
+        }
+    }
+
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        if (context == null || component == null) {
+            throw new NullPointerException();
+        }
+        if (component.getChildCount() > 0) {
+            Iterator<UIComponent> kids = component.getChildren().iterator();
+            while (kids.hasNext()) {
+                UIComponent kid = kids.next();
+                if (kid instanceof CheckboxButton) {
+                    kid.encodeAll(context);
+                }
+            }
         }
     }
 

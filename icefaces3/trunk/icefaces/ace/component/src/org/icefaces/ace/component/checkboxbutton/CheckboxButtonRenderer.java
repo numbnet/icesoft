@@ -29,6 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
+import org.icefaces.ace.component.buttongroup.ButtonGroup;
 import org.icefaces.ace.util.*;
 
 import org.icefaces.util.EnvUtils;
@@ -148,6 +149,13 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 
     private void encodeScript(FacesContext facesContext, ResponseWriter writer,
                               CheckboxButton checkbox, String clientId, EventType type) throws IOException {
+        UIComponent groupComp = checkbox.getParent();
+        String groupId;
+        if (!(groupComp instanceof ButtonGroup)) {
+            groupId = (groupId = checkbox.getGroup()) == null ? "" : groupId.trim();
+            groupComp = groupId.length() > 0 ? checkbox.findComponent(groupId) : null;
+        }
+        groupId = groupComp instanceof ButtonGroup ? groupComp.getClientId(facesContext) : "";
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         JSONBuilder jb = JSONBuilder.create();
         List<UIParameter> uiParamChildren = Utils.captureParameters(checkbox);
@@ -157,6 +165,7 @@ public class CheckboxButtonRenderer extends CoreRenderer {
           .beginArray()
           .item(clientId)
           .beginMap()
+          .entry("groupId", groupId)
           .entry("ariaEnabled", ariaEnabled);
 
         if (checkbox.isDisabled())

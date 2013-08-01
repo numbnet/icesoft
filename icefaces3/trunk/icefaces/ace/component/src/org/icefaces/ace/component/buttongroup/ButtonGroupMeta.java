@@ -40,7 +40,7 @@ import org.icefaces.resources.ICEResourceLibrary;
         @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 public class ButtonGroupMeta extends UIComponentBaseMeta {
-    @Property(tlddoc = "If true, only one checkboxButton in the group can be selected at one time, selecting a new checkboxButton deselects the previously selected one. ")
+    @Property(tlddoc = "If true, only one checkboxButton in the group can be selected at one time, selecting a new checkboxButton deselects the previously selected one.", defaultValue = "false")
     private boolean mutuallyExclusive;
 
     @Property(tlddoc = "Header text for the button group.")
