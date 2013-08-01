@@ -3742,6 +3742,7 @@ function wijmoASPNetParseOptions(o) {
 			menucontainer.addClass("ui-widget ui-widget-content " + menuCss +
 				" ui-corner-all ui-helper-clearfix")
 			.attr("aria-activedescendant", "ui-active-menuitem");
+			if (o.plainMultiColumnMenu) menucontainer.width(ele.width()); // ICE-9446
 			if (o.orientation === "horizontal" && o.mode === "flyout") {
 				menucontainer.addClass(menuCss + "-" + o.orientation);
 			}

@@ -194,6 +194,10 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeMultiColumnSubmenu(FacesContext context, MultiColumnSubmenu submenu) throws IOException {
+		encodeMultiColumnSubmenu(context, submenu, false);
+	}
+	
+	protected void encodeMultiColumnSubmenu(FacesContext context, MultiColumnSubmenu submenu, boolean isPlainMultiColumnMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String label = submenu.getLabel();
 		String icon = submenu.getIcon();
@@ -204,31 +208,33 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 			if (child instanceof MenuColumn) menuColumns.add((MenuColumn) child);
 		}
 
-		writer.startElement("a", null);
-		if (disabled) {
-			writer.writeAttribute("class", "ui-state-disabled", null);
-		} else {
-			writer.writeAttribute("style", "cursor:pointer;", null);
-		}
-		
-		if(icon != null) {
-			writer.startElement("span", null);
-			writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
-			writer.endElement("span");
-		}
-
-		if(label != null) {
-			writer.startElement("span", null);
-			String style = submenu.getStyle();
-			if (style != null && style.trim().length() > 0) {
-				writer.writeAttribute("style", style, "style");
+		if (!isPlainMultiColumnMenu) {
+			writer.startElement("a", null);
+			if (disabled) {
+				writer.writeAttribute("class", "ui-state-disabled", null);
+			} else {
+				writer.writeAttribute("style", "cursor:pointer;", null);
 			}
-			Utils.writeConcatenatedStyleClasses(writer, "wijmo-wijmenu-text", submenu.getStyleClass());
-			writer.write(submenu.getLabel());
-			writer.endElement("span");
-		}
+			
+			if(icon != null) {
+				writer.startElement("span", null);
+				writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
+				writer.endElement("span");
+			}
 
-		writer.endElement("a");
+			if(label != null) {
+				writer.startElement("span", null);
+				String style = submenu.getStyle();
+				if (style != null && style.trim().length() > 0) {
+					writer.writeAttribute("style", style, "style");
+				}
+				Utils.writeConcatenatedStyleClasses(writer, "wijmo-wijmenu-text", submenu.getStyleClass());
+				writer.write(submenu.getLabel());
+				writer.endElement("span");
+			}
+
+			writer.endElement("a");
+		}
 		
 		if (disabled) return;
 		
@@ -254,7 +260,11 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 			}
 		}
 		
-		writer.startElement("div", null);
+		if (isPlainMultiColumnMenu) {
+			writer.startElement("ul", null);
+		} else {
+			writer.startElement("div", null);
+		}
 		writer.writeAttribute("class", "wijmo-wijmenu ui-menu-multicolumn", "class");
 		writer.writeAttribute("style", "width: " + totalWidth + "px;", "style");
 		Integer top = submenu.getPositionTop();
@@ -336,7 +346,11 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		}
 		writer.endElement("div");
 		
-		writer.endElement("div");
+		if (isPlainMultiColumnMenu) {
+			writer.endElement("ul");
+		} else {
+			writer.endElement("div");
+		}
 	}
 
     protected void encodeFlatSubmenu(FacesContext context, Submenu submenu, boolean disabled) throws IOException {
