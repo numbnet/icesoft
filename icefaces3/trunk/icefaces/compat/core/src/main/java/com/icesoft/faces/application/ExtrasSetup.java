@@ -52,8 +52,6 @@ public class ExtrasSetup implements SystemEventListener {
     };
     private static final FormEndRenderer FormHiddenInputFields = new FormHiddenInputFieldsRenderer();
     private boolean fastBusyIndicator;
-    private String compatResourceName;
-    private String extraCompatResourceName;
     private boolean includeScrollOffsets;
 
     private static final String ICE_COMPAT_LIB = "ice.compat";
@@ -63,10 +61,6 @@ public class ExtrasSetup implements SystemEventListener {
 
         fastBusyIndicator = EnvUtils.isFastBusyIndicator(context);
         includeScrollOffsets = EnvUtils.isIncludeScrollOffsets(context);
-
-        boolean developmentStage = context.isProjectStage(ProjectStage.Development);
-        compatResourceName = developmentStage ? "compat.uncompressed.js" : "compat.js";
-        extraCompatResourceName = developmentStage ? "icefaces-compat.uncompressed.js" : "icefaces-compat.js";
     }
 
     public boolean isListenerForSource(Object source) {
@@ -79,8 +73,8 @@ public class ExtrasSetup implements SystemEventListener {
         if (EnvUtils.isICEfacesView(context)) {
             UIViewRoot root = context.getViewRoot();
 
-            root.addComponentResource(context, ResourceOutputUtil.createTransientScriptResourceComponent(compatResourceName, ICE_COMPAT_LIB), "head");
-            root.addComponentResource(context, ResourceOutputUtil.createTransientScriptResourceComponent(extraCompatResourceName, ICE_COMPAT_LIB), "head");
+            root.addComponentResource(context, ResourceOutputUtil.createTransientScriptResourceComponent("compat.js", ICE_COMPAT_LIB), "head");
+            root.addComponentResource(context, ResourceOutputUtil.createTransientScriptResourceComponent("icefaces-compat.js", ICE_COMPAT_LIB), "head");
 
             UIOutput output = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {

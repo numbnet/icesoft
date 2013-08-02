@@ -52,9 +52,6 @@ public class BridgeSetup implements SystemEventListener {
     private final boolean deltaSubmit;
     private final boolean focusManaged;
     private int seed = 0;
-    private String bridgeSupportResourceName;
-    private String bridgeResourceName;
-    private String icepushResourceName;
 
     public BridgeSetup() {
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -62,9 +59,6 @@ public class BridgeSetup implements SystemEventListener {
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
         focusManaged = EnvUtils.isFocusManaged(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
-        bridgeSupportResourceName = fc.isProjectStage(ProjectStage.Development) ? "bridge-support.uncompressed.js" : "bridge-support.js";
-        bridgeResourceName = fc.isProjectStage(ProjectStage.Development) ? "bridge.uncompressed.js" : "bridge.js";
-        icepushResourceName = fc.isProjectStage(ProjectStage.Development) ? "icepush.uncompressed.js" : "icepush.js";
         fc.getExternalContext().getApplicationMap().put(BRIDGE_SETUP, this);
     }
 
@@ -117,14 +111,14 @@ public class BridgeSetup implements SystemEventListener {
     private List<UIComponent> getHeadResources(FacesContext context) {
         ArrayList<UIComponent> resources = new ArrayList();
 
-        //always add bridge support code
-        resources.add(ResourceOutputUtil.createTransientScriptResourceComponent(bridgeSupportResourceName, ICE_CORE_LIB));
-        //add ICEpush code only when needed
-        if (EnvUtils.isICEpushPresent()) {
-            resources.add(ResourceOutputUtil.createTransientScriptResourceComponent(icepushResourceName, ICE_PUSH_LIB));
-        }
-        //always add ICEfaces bridge code
-        resources.add(ResourceOutputUtil.createTransientScriptResourceComponent(bridgeResourceName, ICE_CORE_LIB));
+//        //always add bridge support code
+//        resources.add(ResourceOutputUtil.createTransientScriptResourceComponent("bridge-support.js", ICE_CORE_LIB));
+//        //add ICEpush code only when needed
+//        if (EnvUtils.isICEpushPresent()) {
+//            resources.add(ResourceOutputUtil.createTransientScriptResourceComponent("icepush.js", ICE_PUSH_LIB));
+//        }
+//        //always add ICEfaces bridge code
+//        resources.add(ResourceOutputUtil.createTransientScriptResourceComponent("bridge.js", ICE_CORE_LIB));
         resources.add(new TestScript());
         resources.add(new CoreCSSOutput());
 

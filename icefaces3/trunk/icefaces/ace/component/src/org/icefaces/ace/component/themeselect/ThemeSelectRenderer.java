@@ -19,9 +19,11 @@ import org.icefaces.ace.renderkit.InputRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.Constants;
 import org.icefaces.ace.util.JSONBuilder;
+import org.icefaces.impl.event.UIOutputWriter;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.*;
@@ -155,50 +157,53 @@ public class ThemeSelectRenderer extends InputRenderer {
         decodeBehaviors(context, component);
     }
 
-    public static class AddTheme implements SystemEventListener {
-        public void processEvent(SystemEvent event) throws AbortProcessingException {
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            String theme = (String) externalContext.getSessionMap().get(Constants.THEME_PARAM);
-            if (theme == null) {
-                String defaultTheme = externalContext.getInitParameter(Constants.THEME_PARAM);
-                theme = defaultTheme == null ? "sam" : defaultTheme;
-            } else {
-                theme = theme.trim();
-            }
-
-            String name;
-            String library;
-            if (theme.equalsIgnoreCase("sam")) {
-                library = "icefaces.ace";
-                name = "themes/sam/theme.css";
-            } else if (theme.equalsIgnoreCase("rime")) {
-                library = "icefaces.ace";
-                name = "themes/rime/theme.css";
-            } else {
-                library = "ace-" + theme;
-                name = "theme.css";
-            }
-
-            UIComponent resource = createThemeResource(context, library, name);
-            context.getViewRoot().addComponentResource(context, resource);
-        }
-
-        public boolean isListenerForSource(Object source) {
-            return source instanceof UIViewRoot;
-        }
-
-        private static UIComponent createThemeResource(FacesContext fc, String library, String resourceName) {
-            UIComponent resource = fc.getApplication().createComponent("javax.faces.Output");
-            resource.setRendererType("javax.faces.resource.Stylesheet");
-            resource.setTransient(true);
-
-            Map<String, Object> attrs = resource.getAttributes();
-            attrs.put("name", resourceName);
-            attrs.put("library", library);
-            attrs.put("target", "head");
-
-            return resource;
-        }
-    }
+//    public static class AddTheme implements SystemEventListener {
+//        public void processEvent(SystemEvent event) throws AbortProcessingException {
+//            FacesContext context = FacesContext.getCurrentInstance();
+//            context.getViewRoot().addComponentResource(context, createThemeResource());
+//        }
+//
+//        public boolean isListenerForSource(Object source) {
+//            return source instanceof UIViewRoot;
+//        }
+//
+//        private static UIComponent createThemeResource() {
+//            UIComponent resourceComponent = new UIOutputWriter() {
+//                public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+//                    ExternalContext externalContext = context.getExternalContext();
+//                    String theme = (String) externalContext.getSessionMap().get(Constants.THEME_PARAM);
+//                    if (theme == null) {
+//                        String defaultTheme = externalContext.getInitParameter(Constants.THEME_PARAM);
+//                        theme = defaultTheme == null ? "sam" : defaultTheme;
+//                    } else {
+//                        theme = theme.trim();
+//                    }
+//                    //acquire the selected theme
+//                    String name;
+//                    String library;
+//                    if (theme.equalsIgnoreCase("sam")) {
+//                        library = "icefaces.ace";
+//                        name = "themes/sam/theme.css";
+//                    } else if (theme.equalsIgnoreCase("rime")) {
+//                        library = "icefaces.ace";
+//                        name = "themes/rime/theme.css";
+//                    } else {
+//                        library = "ace-" + theme;
+//                        name = "theme.css";
+//                    }
+//
+//                    Resource resource = context.getApplication().getResourceHandler().createResource(name, library);
+//                    writer.startElement("stylesheet", this);
+//                    writer.writeAttribute("type", "text/css", null);
+//                    writer.writeAttribute("src", resource.getRequestPath(), null);
+//                    writer.endElement("stylesheet");
+//                }
+//            };
+//            resourceComponent.setTransient(true);
+//            Map attributes = resourceComponent.getAttributes();
+//            attributes.put("name", "theme.css");
+//            attributes.put("library", "icefaces.ace");
+//            return resourceComponent;
+//        }
+//    }
 }
