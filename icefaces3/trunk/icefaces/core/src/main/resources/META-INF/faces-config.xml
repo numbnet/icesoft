@@ -74,6 +74,7 @@
         <resource-handler>org.icefaces.application.ResourceRegistry</resource-handler>
         <resource-handler>org.icefaces.impl.application.WindowScopeManager</resource-handler>
         <resource-handler>org.icefaces.impl.component.NavigationNotifierHandler</resource-handler>
+        <resource-handler>org.icefaces.impl.event.BridgeSymbolicResourceHandler</resource-handler>
         <!-- SessionTimeoutMonitor needs be the last in the list of resource handlers so that it executes first. -->
         <resource-handler>org.icefaces.impl.application.SessionTimeoutMonitor</resource-handler>
         <el-resolver>org.icefaces.impl.application.WindowELResolver</el-resolver>

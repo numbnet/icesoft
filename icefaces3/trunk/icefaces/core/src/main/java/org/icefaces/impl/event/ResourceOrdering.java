@@ -22,7 +22,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -129,6 +131,7 @@ public class ResourceOrdering implements SystemEventListener {
 
                             ResourceEntry targetResourceEntry = lookupOrCreateResource(dependencyName, dependencyLibrary, dependencyTarget);
                             targetResourceEntry.addDependant(sourceResourceEntry);
+                            sourceResourceEntry.addDependency(targetResourceEntry);
                         }
                     }
                 }
@@ -154,14 +157,64 @@ public class ResourceOrdering implements SystemEventListener {
         if (event.getSource() instanceof UIViewRoot) {
             FacesContext context = FacesContext.getCurrentInstance();
             UIViewRoot root = (UIViewRoot) event.getSource();
+            collectTransitiveDependencies(context, root, "head");
+            collectTransitiveDependencies(context, root, "body");
             orderResources(context, root, "head");
             orderResources(context, root, "body");
         }
     }
 
+    private void collectTransitiveDependencies(FacesContext context, UIViewRoot root, String target) {
+        UIComponent resourceContainer = getResourceContainer(root, target);
+        HashSet<ResourceEntry> collectedResourceEntries = new HashSet<ResourceEntry>();
+        HashSet<ResourceEntry> currentResourceEntries = new HashSet<ResourceEntry>();
+        List children = resourceContainer.getChildren();
+
+        //iterate over the added resources (through annotation) and collect the transitive dependencies for each one
+        for (UIComponent next : new ArrayList<UIComponent>(children)) {
+            Map attributes = next.getAttributes();
+            String name = (String) attributes.get("name");
+            String library = normalizeLibraryName((String) attributes.get("library"));
+            ResourceEntry entry = resourceMap.get(ResourceEntry.key(name, library, target));
+            currentResourceEntries.add(entry);
+            LinkedList<ResourceEntry> queue = new LinkedList();
+            queue.add(entry);
+            //traverse the transitive dependencies
+            while (!queue.isEmpty()) {
+                ResourceEntry e = queue.removeFirst();
+                if (e != null) {
+                    List<ResourceEntry> dependencies = e.getDependencies();
+                    queue.addAll(dependencies);
+                    //add the found resources to the set
+                    collectedResourceEntries.addAll(dependencies);
+                }
+            }
+        }
+        //avoid adding entries that are already present in the resource container
+        collectedResourceEntries.removeAll(currentResourceEntries);
+        //make resource containers transient so that the removal and addition of resource is not track by the JSF state saving
+        resourceContainer.setInView(false);
+        //add corresponding UIOutput components for the collected resources
+        for (ResourceEntry next: collectedResourceEntries) {
+            if (target.equals(next.target)) {
+                UIOutput c = new UIOutput();
+                String rendererType = context.getApplication().getResourceHandler().getRendererTypeForResourceName(next.name);
+                c.setTransient(true);
+                c.setRendererType(rendererType);
+                Map attributes = c.getAttributes();
+                attributes.put("name", next.name);
+                attributes.put("library", next.library);
+                attributes.put("version", "fubar");
+
+                root.addComponentResource(context, c, next.target);
+            }
+        }
+        //restore resource container to non transient state
+        resourceContainer.setInView(true);
+    }
+
     private void orderResources(FacesContext context, UIViewRoot root, String target) {
-        String facetName = EnvUtils.isMojarra() ? "javax_faces_location_" + target.toUpperCase() : target;
-        UIComponent resourceContainer = root.getFacets().get(facetName);
+        UIComponent resourceContainer = getResourceContainer(root, target);
         //make resource containers transient so that the removal and addition of resource is not track by the JSF state saving
         resourceContainer.setInView(false);
 
@@ -195,6 +248,11 @@ public class ResourceOrdering implements SystemEventListener {
         resourceContainer.setInView(true);
     }
 
+    private static UIComponent getResourceContainer(UIViewRoot root, String target) {
+        String facetName = EnvUtils.isMojarra() ? "javax_faces_location_" + target.toUpperCase() : target;
+        return root.getFacets().get(facetName);
+    }
+
     public boolean isListenerForSource(final Object source) {
         return EnvUtils.isICEfacesView(FacesContext.getCurrentInstance()) && (source instanceof UIViewRoot);
     }
@@ -204,7 +262,7 @@ public class ResourceOrdering implements SystemEventListener {
         private String library;
         private String target;
         private List<ResourceEntry> dependants = new ArrayList<ResourceEntry>();
-
+        private List<ResourceEntry> dependencies = new ArrayList<ResourceEntry>();
 
         private ResourceEntry(String name, String library, String target) {
             this.name = name;
@@ -218,6 +276,14 @@ public class ResourceOrdering implements SystemEventListener {
 
         public List<ResourceEntry> getDependants() {
             return dependants;
+        }
+
+        public void addDependency(ResourceEntry entry) {
+            dependencies.add(entry);
+        }
+
+        public List<ResourceEntry> getDependencies() {
+            return dependencies;
         }
 
         public boolean equals(Object o) {

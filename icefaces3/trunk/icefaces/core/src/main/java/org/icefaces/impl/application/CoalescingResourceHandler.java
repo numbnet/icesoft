@@ -158,7 +158,6 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
             coallescedResourceComponent.setRendererType(rendererType);
             coallescedResourceComponent.setTransient(true);
 
-            ExternalContext ec = context.getExternalContext();
             HttpSession sess = EnvUtils.getSafeSession(context);
             CoalescingResource.Infos previousResourceInfos = getResourceInfos(context,extension);
 
@@ -206,7 +205,8 @@ public class CoalescingResourceHandler extends ResourceHandlerWrapper {
                 ArrayList<CoalescingResource.Info> previousResources = previousResourceInfos.resources;
                 //replace the resource infos only if there are new resources found in the new list
                 if (previousResources.equals(currentResources)) {
-                    previousResourceInfos.modified = false;
+                    //force a reload of the coalesced resource -- this is mostly to make theme changing work
+                    previousResourceInfos.modified = !context.isPostback();
                 } else {
                     ArrayList<CoalescingResource.Info> sameRequestPreviousResources = (ArrayList<CoalescingResource.Info>) originalRequest.getAttribute(CoalescingResourceHandler.class.getName() + extension);
                     //merge resources that are required by different views but for the same request
