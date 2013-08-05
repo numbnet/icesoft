@@ -295,7 +295,7 @@ public class BridgeSetup implements SystemEventListener {
     private static class TestScript extends UIOutput {
         private TestScript() {
             setTransient(true);
-            getAttributes().put("name", "TestScript.js");
+            getAttributes().put("name", "TestScript");
             getAttributes().put("ice.type", "dynamic");
         }
 
@@ -311,7 +311,7 @@ public class BridgeSetup implements SystemEventListener {
     private static class CoreCSSOutput extends UIOutputWriter {
         private CoreCSSOutput() {
             setTransient(true);
-            getAttributes().put("name", "CoreCSSOutput.css");
+            getAttributes().put("name", "CoreCSSOutput");
             getAttributes().put("ice.type", "dynamic");
         }
 

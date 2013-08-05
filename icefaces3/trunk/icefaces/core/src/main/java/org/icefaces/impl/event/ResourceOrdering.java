@@ -175,7 +175,7 @@ public class ResourceOrdering implements SystemEventListener {
             Map attributes = next.getAttributes();
             String name = (String) attributes.get("name");
             String library = normalizeLibraryName((String) attributes.get("library"));
-            ResourceEntry entry = resourceMap.get(ResourceEntry.key(name, library, target));
+            ResourceEntry entry = lookupOrCreateResource(name, library, target);
             currentResourceEntries.add(entry);
             LinkedList<ResourceEntry> queue = new LinkedList();
             queue.add(entry);
