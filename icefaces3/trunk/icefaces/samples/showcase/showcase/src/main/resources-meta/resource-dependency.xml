@@ -34,12 +34,12 @@
     </resource>
     <resource name="rime/rime.css" library="ice.compat">
         <depends-on>
-            <resources name="showcase_styles.css" library="ice.samples.showcase"/>
+            <resource name="showcase_styles.css" library="ice.samples.showcase"/>
         </depends-on>
     </resource>
     <resource name="rime/rime-accessible.css" library="ice.compat">
         <depends-on>
-            <resources name="showcase_styles.css" library="ice.samples.showcase"/>
+            <resource name="showcase_styles.css" library="ice.samples.showcase"/>
         </depends-on>
     </resource>
     <resource name="override_header.css" library="ice.samples.showcase">
