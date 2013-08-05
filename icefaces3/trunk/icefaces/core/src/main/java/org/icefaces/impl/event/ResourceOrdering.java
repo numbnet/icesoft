@@ -22,7 +22,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
@@ -115,23 +114,32 @@ public class ResourceOrdering implements SystemEventListener {
                     Node node = resourceElements.item(i);
                     if (node instanceof Element) {
                         Element resourceElement = (Element) node;
-                        String name = resourceElement.getAttribute("name");
-                        String library = normalizeLibraryName(resourceElement.getAttribute("library"));
-                        String target = normalizeTargetName(resourceElement.getAttribute("target"));
-                        ResourceEntry sourceResourceEntry = lookupOrCreateResource(name, library, target);
+                        ResourceEntry sourceResourceEntry = processResourceDependency(resourceElement);
 
                         nonRootDependencies.add(sourceResourceEntry);
 
-                        NodeList dependencies = resourceElement.getElementsByTagName("resource");
-                        for (int j = 0, ll = dependencies.getLength(); j < ll; j++) {
-                            Element dependOnResourceElement = (Element) dependencies.item(j);
-                            String dependencyName = dependOnResourceElement.getAttribute("name");
-                            String dependencyLibrary = normalizeLibraryName(dependOnResourceElement.getAttribute("library"));
-                            String dependencyTarget = normalizeTargetName(dependOnResourceElement.getAttribute("target"));
+                        NodeList dependOnElements = resourceElement.getElementsByTagName("depends-on");
+                        for (int j = 0, dependOnsLength = dependOnElements.getLength(); j < dependOnsLength; j++) {
+                            Element dependsOnElement = (Element) dependOnElements.item(j);
+                            NodeList hardDependencies = dependsOnElement.getElementsByTagName("resource");
+                            for (int k = 0, hardDependenciesLength = hardDependencies.getLength(); k < hardDependenciesLength; k++) {
+                                ResourceEntry entry = processResourceDependency((Element) hardDependencies.item(k));
+                                //record all dependants, including soft ("load-after") dependants, they are used too in the ordering later on
+                                entry.addDependant(sourceResourceEntry);
+                                //record only hard hardDependencies, they are the ones that need to be collected as transitive dependencies later on
+                                sourceResourceEntry.addDependency(entry);
+                            }
+                        }
 
-                            ResourceEntry targetResourceEntry = lookupOrCreateResource(dependencyName, dependencyLibrary, dependencyTarget);
-                            targetResourceEntry.addDependant(sourceResourceEntry);
-                            sourceResourceEntry.addDependency(targetResourceEntry);
+                        NodeList loadAfterElements = resourceElement.getElementsByTagName("load-after");
+                        for (int j = 0, loadAftersLength = loadAfterElements.getLength(); j < loadAftersLength; j++) {
+                            Element loadAfterElement = (Element) loadAfterElements.item(j);
+                            NodeList softDependencies = loadAfterElement.getElementsByTagName("resource");
+                            for (int k = 0, softDependenciesLength = softDependencies.getLength(); k < softDependenciesLength; k++) {
+                                ResourceEntry entry = processResourceDependency((Element) softDependencies.item(k));
+                                //record all dependants, including soft ("load-after") dependants, they are used in the ordering later on
+                                entry.addDependant(sourceResourceEntry);
+                            }
                         }
                     }
                 }
@@ -139,6 +147,14 @@ public class ResourceOrdering implements SystemEventListener {
                 Log.warning("Failed to process resource dependency metadata at " + url);
             }
         }
+    }
+
+    private ResourceEntry processResourceDependency(Element dependOnResourceElement) {
+        String dependencyName = dependOnResourceElement.getAttribute("name");
+        String dependencyLibrary = normalizeLibraryName(dependOnResourceElement.getAttribute("library"));
+        String dependencyTarget = normalizeTargetName(dependOnResourceElement.getAttribute("target"));
+
+        return lookupOrCreateResource(dependencyName, dependencyLibrary, dependencyTarget);
     }
 
     private ResourceEntry lookupOrCreateResource(String name, String library, String target) {
