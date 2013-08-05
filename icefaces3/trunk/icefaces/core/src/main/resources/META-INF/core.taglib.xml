@@ -172,6 +172,24 @@
     </tag>
 
     <tag>
+        <tag-name>idleMonitor</tag-name>
+        <description>
+            This tag can be used to make its children visible when user there is not user activity and hide them when user resumes
+        </description>
+        <component>
+            <component-type>org.icefaces.impl.component.IdleMonitor</component-type>
+        </component>
+        <attribute>
+            <description>
+                The interval of user inactivity (in seconds) after which the children are made visible
+            </description>
+            <name>interval</name>
+            <required>true</required>
+            <type>java.lang.Long</type>
+        </attribute>
+    </tag>
+
+    <tag>
         <tag-name>push</tag-name>
         <description>
             This tag can be used to configure push behavior on a per-view basis.
