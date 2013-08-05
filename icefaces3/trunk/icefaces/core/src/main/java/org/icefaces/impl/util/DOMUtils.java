@@ -494,7 +494,9 @@ public class DOMUtils {
             success = compareNodes(config, nodeDiffs, oldNode, newNode);
             if (!success)  {
                 log.severe("Diff propagated to root but no ID set " + newNode);
-                dumpDebugAB(oldNode, newNode);
+                if (isDebugAB(config)) {
+                    dumpDebugAB(oldNode, newNode);
+                }
             }
             assert checkPrunes(nodeDiffs.asList());
         } catch (Throwable t)  {
