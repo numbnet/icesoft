@@ -38,7 +38,7 @@ public class SXUtils {
     /**
      * Get the SX Register URL.
      * 
-     * Format is icemobile://c=register&r=<current-url>&JSESSIONID=<session-id>&u=<upload-url>
+     * Format is icemobile:c=register&r=<current-url>&JSESSIONID=<session-id>&u=<upload-url>
      * 
      * @param request The servlet request
      * @param uploadPath The path of the upload post from the context, eg 'icemobile'
@@ -69,7 +69,7 @@ public class SXUtils {
         redirectParm += forward + params;
         String jsessionParam = "&JSESSIONID=" + sessionID;
         String uploadParam = "&u=" + Utils.getBaseURL(request)+uploadPath;
-        String url = "icemobile://c=register" + redirectParm + jsessionParam
+        String url = "icemobile:c=register" + redirectParm + jsessionParam
                 + uploadParam;
         return url;
     }
@@ -96,7 +96,7 @@ public class SXUtils {
         redirectParm += forward + params;
         String jsessionParam = "&JSESSIONID=" + sessionID;
         String uploadParam = "&u="+Utils.getBaseURL(request) + "/icemobile";
-        String url = "icemobile://c=register"+redirectParm+jsessionParam+uploadParam;
+        String url = "icemobile:c=register"+redirectParm+jsessionParam+uploadParam;
         return url;
     }
 
@@ -182,7 +182,7 @@ public class SXUtils {
             String id, String sessionID, String uploadPath) {
         String uploadURL = Utils.getBaseURL(request)+uploadPath;
         String fullCommand = command + "?id=" + id + encodeParams(params);
-        String script = "window.location='icemobile://c=";
+        String script = "window.location='icemobile:c=";
         try{
             script += URLEncoder.encode(fullCommand, "UTF-8")
                     + "&r='+escape(window.location)+'";

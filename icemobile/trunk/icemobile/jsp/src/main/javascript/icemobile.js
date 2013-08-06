@@ -99,7 +99,7 @@ ice.registerAuxUpload = function registerAuxUpload(sessionid, uploadURL) {
 
     var splashClause = ice.mobi.impl.getSplashClause();
 
-    var sxURL = "icemobile://c=register&r=" +
+    var sxURL = "icemobile:c=register&r=" +
                         escape(window.location) + "&JSESSIONID=" + sessionid +
                         splashClause +
                         "&u=" + escape(uploadURL);
@@ -283,7 +283,7 @@ ice.mobi.deviceCommandExec = function(command, id, options)  {
     if (uploadURL)  {
         uploadURLClause = "&u=" + escape(uploadURL);
     }
-    var sxURL = "icemobile://c=" + escape(command +
+    var sxURL = "icemobile:c=" + escape(command +
             "?id=" + id + ampchar + (params ? params : '')) +
             uploadURLClause + 
             "&r=" + escape(returnURL) +

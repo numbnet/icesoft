@@ -96,7 +96,10 @@
     self.viewController.launchedFromApp = NO;
     NSLog(@"handleOpenURL %@ %@", sourceApplication, url);
     NSString *reqString = [url absoluteString];
-    NSString *body = [reqString substringFromIndex:[@"icemobile://" length]];
+    NSString *body = [reqString substringFromIndex:[@"icemobile:" length]];
+    if ([body hasPrefix:@"//"])  {
+        body = [reqString substringFromIndex:[@"//" length]];
+    }
     NSDictionary *params = 
             [self.viewController.nativeInterface parseQuery:body];
 

@@ -67,7 +67,7 @@ if (!#{auxUpload.enabled})  {
         auxiframe.setAttribute("id", "auxiframe");
         auxiframe.setAttribute("style", "width:0px; height:0px; border: 0px");
         auxiframe.setAttribute("src", 
-            "icemobile://c=register" + ampstr + "r=" +
+            "icemobile:c=register" + ampstr + "r=" +
                 escape(window.location) + ampstr + "JSESSIONID=#{session.id}" +
                 ampstr + "u=" + escape('#{auxUpload.uploadURL}')
         );
