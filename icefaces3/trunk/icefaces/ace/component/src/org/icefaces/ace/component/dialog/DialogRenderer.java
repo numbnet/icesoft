@@ -97,11 +97,13 @@ public class DialogRenderer extends CoreRenderer {
         int minWidth = dialog.getMinWidth();
         String onShow = dialog.getOnShow();
         String onHide = dialog.getOnHide();
+		String handle = dialog.getHandle();
 
         if (styleClass != null) jb.entry("dialogClass", styleClass);
         if (width > 0) jb.entry("width", width);
         if (height > 0) jb.entry("height", height);
         if (!dialog.isDraggable()) jb.entry("draggable", false);
+		if (handle != null) jb.entry("handle", handle);
         if (dialog.isModal()) jb.entry("modal", true);
         if (zIndex != 1000) jb.entry("zIndex", zIndex);
         if (!dialog.isResizable()) jb.entry("resizable", false);
