@@ -6515,8 +6515,8 @@
             }
 
             self.uiDialog.draggable({
-                cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
-                handle: '.ui-dialog-titlebar',
+                cancel: options.handle ? '.ui-dialog-titlebar-close' : '.ui-dialog-content, .ui-dialog-titlebar-close', // ICE-9147
+                handle: options.handle || '.ui-dialog-titlebar', // ICE-9147
                 containment: 'document',
                 start: function(event, ui) {
                     heightBeforeDrag = options.height === "auto" ? "auto" : $(this).height();
