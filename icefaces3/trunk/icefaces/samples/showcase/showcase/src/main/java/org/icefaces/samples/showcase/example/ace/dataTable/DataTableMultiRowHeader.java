@@ -47,7 +47,7 @@ import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData
                 @ExampleResource(type = ResourceType.java,
                         title="DataTableMultiRowHeader.java",
                         resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                                "/example/ace/dataTable/DataTableColumnResizing.java")
+                                "/example/ace/dataTable/DataTableMultiRowHeader.java")
         }
 )
 @ManagedBean(name= DataTableMultiRowHeader.BEAN_NAME)

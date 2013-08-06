@@ -44,9 +44,9 @@ import java.util.List;
                         "list/listBlockComplex.xhtml"),
         // Java Source
         @ExampleResource(type = ResourceType.java,
-                title="ListBlockComplexBean.java",
+                title="ListBean.java",
                 resource = "/WEB-INF/classes/org/icefaces/samples/"+
-                        "showcase/example/ace/list/ListBlockComplexBean.java")
+                        "showcase/example/ace/list/ListBean.java")
     }
 )
 

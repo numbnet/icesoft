@@ -47,7 +47,7 @@ import java.util.Set;
                         "list/listSelection.xhtml"),
         // Java Source
         @ExampleResource(type = ResourceType.java,
-                title="ListReorderBean.java",
+                title="ListSelectionBean.java",
                 resource = "/WEB-INF/classes/org/icefaces/samples/"+
                         "showcase/example/ace/list/ListSelectionBean.java")
     }
