@@ -38,9 +38,9 @@ import java.io.Serializable;
                     resource = "/resources/examples/ace/menuBar/menuBarDynamic.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="MenuBarDynamic.java",
+                    title="MenuDynamic.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/menuBar/MenuBarDynamic.java")
+                    "/example/ace/menu/MenuDynamic.java")
         }
 )
 @ManagedBean(name= MenuBarDynamic.BEAN_NAME)

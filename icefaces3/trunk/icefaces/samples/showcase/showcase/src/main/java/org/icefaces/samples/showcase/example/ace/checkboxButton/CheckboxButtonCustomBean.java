@@ -42,8 +42,8 @@ import java.io.Serializable;
                          resource = "/resources/examples/ace/checkboxButton/checkboxbuttoncustom.xhtml"),
         // Java Source
         @ExampleResource(type = ResourceType.java,
-                         title="CheckboxButtonCustomBean.java",
-                         resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/checkboxButton/CheckboxButtonCustomBean.java")
+                         title="CheckboxButtonBean.java",
+                         resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/checkboxButton/CheckboxButtonBean.java")
     }
 )
 @ManagedBean(name= CheckboxButtonCustomBean.BEAN_NAME)

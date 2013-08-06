@@ -38,9 +38,9 @@ import java.io.Serializable;
                     resource = "/resources/examples/ace/contextMenu/contextMenuTable.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="ContextMenuTable.java",
+                    title="DataTableDynamic.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/contextMenu/ContextMenuTable.java")
+                    "/example/compat/dataTable/DataTableDynamic.java")
         }
 )
 @ManagedBean(name= ContextMenuTable.BEAN_NAME)
