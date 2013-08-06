@@ -564,7 +564,7 @@ mobi.registerAuxUpload = function (sessionid, uploadURL) {
 
     var splashClause = ice.mobi.impl.getSplashClause();
 
-    var sxURL = "icemobile://c=register&r=" +
+    var sxURL = "icemobile:c=register&r=" +
                         escape(window.location) + "&JSESSIONID=" + sessionid +
                         splashClause +
                         "&u=" + escape(uploadURL);
@@ -1099,7 +1099,7 @@ ice.mobi.sx = function (element, uploadURL) {
     if ("" != sessionid) {
         sessionidClause = "&JSESSIONID=" + escape(sessionid);
     }
-    var sxURL = "icemobile://c=" + escape(command +
+    var sxURL = "icemobile:c=" + escape(command +
             "?id=" + id + ampchar + params) +
             "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
             sessionidClause +

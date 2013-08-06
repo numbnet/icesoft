@@ -229,7 +229,10 @@ public class SxCore extends Activity
 
 	if (null != uri)  {
 	    String uriString = uri.toString();
-	    String fullCommand = uriString.substring("icemobile://".length());
+	    String fullCommand = uriString.substring("icemobile:".length());
+        if (fullCommand.startsWith("//"))  {
+            fullCommand = fullCommand.substring("//".length());
+        }
 	    commandParts = parseQuery(fullCommand);
 
 	    Log.d(LOG_TAG, "processing commandParts " + commandParts);

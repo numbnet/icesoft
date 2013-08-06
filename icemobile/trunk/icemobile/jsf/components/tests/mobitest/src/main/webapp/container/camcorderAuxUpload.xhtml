@@ -31,7 +31,7 @@
     <h3>Camcorder Component</h3>
     <div style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
         <h:form prependId="false" class="centered" enctype="multipart/form-data" >
-            <h:commandButton value="ICEmobileBud" onclick="window.location='icemobile://c=camcorder%3Fid%3Dcamcorder&amp;r='+escape(window.location)+'&amp;JSESSIONID=#{session.id}'+'&amp;u='+escape('#{auxUpload.uploadURL}')+'&amp;p='+escape('');" />
+            <h:commandButton value="ICEmobileBud" onclick="window.location='icemobile:c=camcorder%3Fid%3Dcamcorder&amp;r='+escape(window.location)+'&amp;JSESSIONID=#{session.id}'+'&amp;u='+escape('#{auxUpload.uploadURL}')+'&amp;p='+escape('');" />
             <mobi:camcorder id="camcorder" value="#{videoBean.clip}"
                     valueChangeListener="#{videoBean.methodOne}"/>
             <mobi:thumbnail for="camcorder"/>
@@ -80,7 +80,7 @@ if (!#{auxUpload.enabled})  {
         auxiframe.setAttribute("id", "auxiframe");
         auxiframe.setAttribute("style", "width:0px; height:0px; border: 0px");
         auxiframe.setAttribute("src", 
-            "icemobile://c=register" + ampstr + "r=" +
+            "icemobile:c=register" + ampstr + "r=" +
                 escape(window.location) + ampstr + "JSESSIONID=#{session.id}" +
                 ampstr + "u=" + escape('#{auxUpload.uploadURL}')
         );
