@@ -31,6 +31,7 @@
 @synthesize currentParameters;
 @synthesize currentCommand;
 @synthesize currentSessionId;
+@synthesize currentEncodedThumbnail;
 @synthesize splashParameters;
 @synthesize uploadProgress;
 @synthesize uploadLabel;
@@ -94,6 +95,12 @@
             [@"=" stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
         self.returnURL = [self.returnURL stringByAppendingString:
                 [value stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+        if (nil != self.currentEncodedThumbnail)  {
+            self.returnURL = [self.returnURL stringByAppendingString:@"&!p="];
+            self.returnURL = [self.returnURL stringByAppendingString:
+                    [self.currentEncodedThumbnail
+                    stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+        }
         return;
     }
 
@@ -218,8 +225,13 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     LogDebug(@"Hitch cant play audio from an ID in the page");
 }
 
-- (void)setThumbnail: (UIImage*)image at: (NSString *)thumbID  {
-    LogDebug(@"Hitch would show a thumbnail");
+- (void) setThumbnail: (UIImage*)image at: (NSString *)thumbID  {
+    NSData *scaledData =  UIImageJPEGRepresentation(image, 0.5);
+    NSString *image64 = [self.nativeInterface  base64StringFromData:scaledData];
+    NSString *dataURL = [@"data:image/jpg;base64," 
+            stringByAppendingString:image64];
+    self.currentEncodedThumbnail = dataURL;
+    NSLog(@"scaled and encoded thumbnail %d", [image64 length]);
 }
 
 
