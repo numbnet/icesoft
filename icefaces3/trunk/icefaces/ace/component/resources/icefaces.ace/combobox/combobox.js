@@ -932,20 +932,17 @@ ice.ace.ComboBox.prototype = {
 	// update selected index if value was changed programmatically or was pre-selected
 	updateSelectedIndex: function() {
 		if (typeof this.selectedIndex != 'number' && !this.selectedIndex) this.selectedIndex = -1;
-		var currentEntry = this.getEntry(this.selectedIndex);
-		if ((currentEntry && (this.hidden.value != ice.ace.ComboBox.collectTextNodesIgnoreClass(currentEntry, ice.ace.ComboBox.LABEL_CLASS)))
-			|| (this.selectedIndex == -1 && this.hidden.value)) {
-			var found = false;
-			for (var i = 0; i < this.entryCount - 1; i++) {
-				var entry = this.getEntry(i);
-				if (entry && (this.hidden.value == ice.ace.ComboBox.collectTextNodesIgnoreClass(entry, ice.ace.ComboBox.LABEL_CLASS))) {
-					found = true;
-					this.selectedIndex = i;
-					break;
-				}
+		var found = false;
+		var size = this.$content.length;
+		for (var i = 0; i < size; i++) {
+			var entry = this.getEntryFromContent(i);
+			if (entry && (this.hidden.value == ice.ace.ComboBox.collectTextNodesIgnoreClass(entry, ice.ace.ComboBox.LABEL_CLASS))) {
+				found = true;
+				this.selectedIndex = i;
+				break;
 			}
-			if (!found) this.selectedIndex = -1;
 		}
+		if (!found) this.selectedIndex = -1;
 	},
 	
 	showEffect: function(update) {
