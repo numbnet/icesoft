@@ -244,7 +244,7 @@
         <delete file="${ace-components.js.uncompressed}" verbose="${ace-components.js.uncompressed.present}"/>
         <concat destfile="${ace-components.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
-                <file name="icefaces.ace/checkboxbutton/checkboxbutton.js"/>
+                <file name="icefaces.ace/radiobutton/radiobutton.js"/>
                 <file name="icefaces.ace/datetimeentry/jquery-ui-timepicker-addon.js"/>
                 <file name="icefaces.ace/datetimeentry/datetimeentry.js"/>
                 <file name="icefaces.ace/maskedentry/maskedentry.js"/>
