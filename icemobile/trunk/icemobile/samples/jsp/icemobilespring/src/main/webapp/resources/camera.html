@@ -39,6 +39,13 @@
         width: 80px;
         padding: 10px;
     }
+    .thumb {
+        height: 90px;
+        line-height : 90px;
+    }
+    .thumb img {
+        float:right;
+    }
     </style>
 </head>
 <body>
@@ -54,6 +61,9 @@
             $("#images").append("<img src='" + theResponse.path + "'>");
         }
         $("#output").html(text);
+        if (event.preview)  {
+            $("#thumb").attr("src", event.preview);
+        }
     }
     </script>
 	<div data-role="page">
@@ -64,7 +74,7 @@
             <fieldset>
                 <input id="name" name="name" type="text" placeholder="Name" value=""/>
             </fieldset>
-           <a data-role="button" id="go" onclick="ice.mobi.camera('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Camera ...</a>
+           <a data-role="button" class="thumb" id="go" onclick="ice.mobi.camera('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Camera ... <img id="thumb" ></a>
            <h2>
                <span id="output">
                </span>
