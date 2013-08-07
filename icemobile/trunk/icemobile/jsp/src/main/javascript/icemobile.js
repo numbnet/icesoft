@@ -2491,6 +2491,26 @@ document.documentElement.className = document.documentElement.className + ' js';
 ice.mobi.noop = function(){};
 ice.mobi.addListener(document, "touchstart", ice.mobi.noop);
 
+ice.mobi.impl.unpackDeviceResponse = function(data)  {
+    var result = {};
+    var params = data.split("&");
+    var len = params.length;
+    for (var i = 0; i < len; i++) {
+        var splitIndex = params[i].indexOf("=");
+        var paramName = unescape(params[i].substring(0, splitIndex));
+        var paramValue = unescape(params[i].substring(splitIndex + 1));
+        if ("!" === paramName.substring(0,1))  {
+            //ICEmobile parameters are set directly
+            result[paramName.substring(1)] = paramValue;
+        } else  {
+            //only one user value is supported
+            result.name = paramName;
+            result.value = paramValue;
+        }
+    }
+    return result;
+}
+
 if (window.addEventListener) {
 
     window.addEventListener("pagehide", function () {
@@ -2507,20 +2527,17 @@ if (window.addEventListener) {
 
     window.addEventListener("hashchange", function () {
         var data = ice.mobi.getDeviceCommand();
+        var deviceParams;
         if (null != data)  {
             var name;
             var value;
             var needRefresh = true;
             if ("" != data)  {
-                var parts = unescape(data).split("=");
-                if (parts)  {
-                    name = parts[0];
-                    value = parts[1];
-                    ice.mobi.setInput(name, name, value);
-                    //do not refresh the page if valid local data is provided
-                    if ("!" !== name.substring(0,1))  {
-                        needRefresh = false;
-                    }
+                deviceParams = ice.mobi.impl.unpackDeviceResponse(data);
+                if (deviceParams.name)  {
+                    ice.mobi.setInput(deviceParams.name, deviceParams.name,
+                            deviceParams.value);
+                    needRefresh = false;
                 }
             }
             if (needRefresh)  {
@@ -2540,12 +2557,13 @@ if (window.addEventListener) {
                     name : name,
                     value : value
                 };
-                if ("!r" === name.substring(0,2))  {
-                    //need to implement iteration over the full set
-                    //of response values
-                    sxEvent.response = value;
-                    sxEvent.name = "";
-                    sxEvent.value = "";
+                if (deviceParams)  {
+                    if (deviceParams.r)  {
+                        sxEvent.response = deviceParams.r;
+                    }
+                    if (deviceParams.p)  {
+                        sxEvent.preview = deviceParams.p;
+                    }
                 }
                 if (ice.mobi.deviceCommandCallback)  {
                     ice.mobi.deviceCommandCallback(sxEvent);
