@@ -27,6 +27,7 @@
     NSString *currentParameters;
     NSString *currentCommand;
     NSString *currentSessionId;
+    NSString *currentEncodedThumbnail;
     NSString *splashParameters;
     NSData *deviceToken;
     NSDictionary *confirmMessages;
@@ -57,6 +58,7 @@
 @property (retain) NSString *currentParameters;
 @property (retain) NSString *currentCommand;
 @property (retain) NSString *currentSessionId;
+@property (retain) NSString *currentEncodedThumbnail;
 @property (retain) NSString *splashParameters;
 @property (retain) NSData *deviceToken;
 @property (retain) NSDictionary *confirmMessages;
