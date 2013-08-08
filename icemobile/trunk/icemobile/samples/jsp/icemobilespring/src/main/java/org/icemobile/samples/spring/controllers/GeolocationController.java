@@ -23,19 +23,26 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.icemobile.samples.spring.GeolocationBean;
 import org.icemobile.spring.controller.ICEmobileBaseController;
+import org.icepush.PushContext;
+import org.icepush.PushNotification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.WebApplicationContext;
 
 /** Spring MVC Controller for the Geolocation example. */
 @Controller
 @SessionAttributes({ "geolocationBean" })
 public class GeolocationController extends ICEmobileBaseController {
+
+    @Autowired
+    private WebApplicationContext context;
 
     private ArrayList markers = new ArrayList();
     {
@@ -91,6 +98,10 @@ public class GeolocationController extends ICEmobileBaseController {
             HttpServletRequest request,
             @RequestParam(value = "_geo") String[] coordinates,
             Model model)  {
+
+        PushContext pushContext = PushContext.getInstance(
+                context.getServletContext() );
+        pushContext.push("geospy");
 
         markers.add(coordinates);
         return "Thanks!";
