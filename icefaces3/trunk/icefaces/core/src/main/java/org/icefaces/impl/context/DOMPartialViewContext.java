@@ -813,6 +813,9 @@ class DOMPartialRenderCallback implements VisitCallback {
         try {
             //trigger creation of a new document that will contain the new subtree
             domWriter.startDocument();
+            //write document element
+            domWriter.startElement("div", null);
+
             component.encodeAll(facesContext);
 
             final Node newSubtree = domWriter.getDocument().getElementById(clientId);
