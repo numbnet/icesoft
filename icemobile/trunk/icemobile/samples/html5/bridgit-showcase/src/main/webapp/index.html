@@ -3,6 +3,7 @@
 <head>
   <title>BridgeIt HTML5 Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <meta name='apple-itunes-app' content="app-id=485908934, app-argument=icemobile:c=register&r=./index.html"/>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="bridgeit-logo-touch-icon.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,28 +33,32 @@
     </div>
    
     <div id="home" class="panel" title="BridgeIt" selected="true">
-        <div id="splash">
-            <div id="splash-ctr">
+        <div class="splash">
+            <div class="splash-ctr">
                 <img src="./images/bridgeit-splash.png"/>
+            </div>
+            <div class="platforms">
+                <i class="icon-android"></i><i class="icon-apple"></i><i class="icon-windows soon"></i>
+                <img src="./images/blackberry-logo.png" class="bb-logo soon"/>
             </div>
             <p class="intro">
                 <span class="first-line">Meet BridgeIt...</span>
                  <br/>The easiest way to add native features to your web application. 
-            </p>
-            <p>
-            A simple JavaScript API to access native features.  
+                 <br/>A simple JavaScript API to access native features.  
             </p>
             <p>
             Go beyond HTML5...
             </p>
         </div>
         <ul id="menu">
-            <li><a href="#camera">Camera</a></li>
-            <li><a href="#camcorder">Camcorder</a></li>
-            <li><a href="#scanner">Scanner</a></li>
-            <li><a href="#microphone">Microphone</a></li>
-            <li><a href="#contactlist">Contact List</a></li>
-            <li><a href="#ar">Augmented Reality</a></li>
+            <li><a href="#camera"><i class="icon-camera"></i>Camera</a></li>
+            <li><a href="#camcorder"><i class="icon-film"></i>Camcorder</a></li>
+            <li><a href="#scanner"><i class="icon-qrcode"></i>Scanner</a></li>
+            <li><a href="#microphone"><i class="icon-microphone"></i>Microphone</a></li>
+            <li><a href="#contactlist"><i class="icon-group"></i>Contact List</a></li>
+            <li><a href="#ar"><i class="icon-eye-open"></i>Augmented Reality</a></li>
+            <li><a href="#openin"><i class="icon-share-alt"></i>Open In</a></li>
+            <li><a href="#about"><i class="icon-info-sign"></i>About</a></li>
         </ul>
         <div class="footer">
             <a href="#">
@@ -75,8 +80,8 @@
             </div>
         </fieldset>
         
-        <a type="button" class="redButton bridgeItBtn"
-            onclick="ice.mobi.camera('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo!</a>
+        <a type="button" class="whiteButton bridgeItBtn"
+            onclick="ice.mobi.camera('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo</a>
             
         <fieldset>
             <div class="row"></div>
@@ -119,8 +124,8 @@
             </div>
         </fieldset>
         
-        <a type="button" class="grayButton bridgeItBtn"
-            onclick="ice.mobi.camcorder('_cam',handleVideo, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video!</a>
+        <a type="button" class="whiteButton bridgeItBtn"
+            onclick="ice.mobi.camcorder('_cam',handleVideo, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video</a>
             
         <fieldset>
             <div class="row"></div>
@@ -157,8 +162,7 @@
             <div class="row"><p class="normalText">Scan a QR Code with a simple line of JavaScript...</p></div>
             <div class="row">
                 <code>
-                    ice.mobi.scan(id,callback, 
-                    &nbsp;&nbsp;{postURL:myURL});
+                    ice.mobi.scan(id,callback);
                 </code>
             </div>
         </fieldset>
@@ -204,8 +208,8 @@
             </div>
         </fieldset>
         
-        <a type="button" class="blueButton bridgeItBtn"
-            onclick="ice.mobi.microphone('_cam',handleAudio, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some audio!</a>
+        <a type="button" class="whiteButton bridgeItBtn"
+            onclick="ice.mobi.microphone('_cam',handleAudio, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some audio</a>
             
         <fieldset>
             <div class="row"></div>
@@ -236,11 +240,140 @@
        
     </div>
     
-    <ul id="contactlist" title="Contact It" class="panel">
-       
-    </ul>
+    <div id="contactlist" title="Contact It" class="panel">
+        <h2>Contact List Access</h2>
+        <fieldset>
+            <div class="row"><p class="normalText">Access the device contact list with a simple line of JavaScript...</p></div>
+            <div class="row">
+                <code>
+                    ice.mobi.fetchContact(id,callback);
+                </code>
+            </div>
+        </fieldset>
+        
+        <a type="button" class="whiteButton bridgeItBtn"
+            onclick="ice.mobi.fetchContact('_cam',handleContact);">Grab a Contact</a>
+            
+        <fieldset>
+            <div class="row"></div>
+        </fieldset>
+        <fieldset id="contacts">
+        </fieldset>
     
+        
+        <script>
+        function handleContact(event)  {
+            var HTTP = "http";
+            var text = event.value;
+            document.getElementById("contacts").append("<div class='row'>" + text + "</div>");
+        }
+        </script>
+        <div class="footer">
+            <a href="#">
+                <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+            </a>
+            &copy; 2013 ICEsoft Technologies
+        </div>
+       
+    </div>
+    
+    <div id="openin" title="Open It" class="panel">
+        <h2>Open Document</h2>
+        <fieldset>
+            <div class="row"><p class="normalText">Open a document in a helper application...</p></div>
+            <div class="row">
+                <code>
+                    ice.mobi.openIn(id,callback);
+                </code>
+            </div>
+        </fieldset>
+        
+        <a type="button" class="whiteButton bridgeItBtn"
+            onclick="ice.mobi.openIn('_cam',handleDocument);">Open a Document</a>
+            
+        <fieldset>
+            <div class="row"></div>
+        </fieldset>
+        <fieldset id="documents">
+        </fieldset>
+    
+        
+        <script>
+        function handleDocument(event)  {
+            alert(event);
+        }
+        </script>
+        <div class="footer">
+            <a href="#">
+                <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+            </a>
+            &copy; 2013 ICEsoft Technologies
+        </div>
+    </div>
      
+     <div id="about" title="About It" class="panel">
+        <h2>About BridgeIt</h2>
+        <div class="splash">
+            <div class="platforms">
+                <i class="icon-android"></i><i class="icon-apple"></i><i class="icon-windows soon"></i>
+                <img src="./images/blackberry-logo.png" class="bb-logo soon"/>
+            </div>
+        </div>
+        <fieldset>
+            <div class="row">
+                <h3><i class="icon-html5"></i>Instant HTML5 Hybrids</h3>
+            </div>
+            <div class="row">
+                <h3><i class="icon-mobile-phone"></i>BridgeIt Is Mobile</h3>
+                <ul>
+                    <li>Access mobile device capabilities directly from your HTML5 applications.</li>
+                    <li>Support major mobile device platforms, including Android and iOS, with Blackberry 10, and Windows Phone soon to come.</li>
+                </ul>
+            </div>
+            <div class="row">
+                <h3><i class="icon-crop"></i>BridgeIt Is Flexible</h3>
+                 <ul>
+                     <li>Works with any HTML5/JavaScript-based development approach.</li>
+                     <li>Works seamlessly with any standard mobile browser.</li>
+                 </ul>
+             </div>
+             <div class="row">
+                <h3><i class="icon-glass"></i>BridgeIt Is Easy</h3>
+                 <ul>
+                     <li>Add hybrid capabilities to your HTML5 application in 5 minutes or less.  See how...</li>
+                     <li>No native development, packaging, or app store publication required.</li>
+                 </ul>
+             </div>
+             <div class="row">
+                <h3><i class="icon-thumbs-up-alt"></i>BridgeIt Is Cheap</h3>
+                 <ul>
+                    <li>Actually, it is free and open sourced under the Apache 2 licence.</li>
+                 </ul>
+             </div>
+             <div class="row">
+                <h3><i class="icon-cloud-download"></i>BridgeIt Is Available</h3>
+                 <ul>
+                    <li>Download it now for your mobile device and take her for a whirl.</li>
+                    <li>BridgeIt is Open Source under the Apache 2 licence.</li>
+                 </ul>
+             </div>
+             <div class="row">
+                <h3><img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+                    <span>Developed by ICEsoft Technologies Inc.</span>
+                </h3>
+             </div>
+          </fieldset>
+          <h3>Go beyond HTML5...</h3>
+            <div id="flexible">
+                <img src="./images/flexible.jpg"/>
+            </div>
+            <div class="footer">
+                <a href="#">
+                    <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+                </a>
+                &copy; 2013 ICEsoft Technologies
+            </div>
+     </div>
 
 </body>
 </html>
