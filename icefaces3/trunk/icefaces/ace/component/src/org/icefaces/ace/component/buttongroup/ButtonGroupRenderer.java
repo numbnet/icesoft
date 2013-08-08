@@ -27,6 +27,7 @@
 package org.icefaces.ace.component.buttongroup;
 
 import org.icefaces.ace.component.checkboxbutton.CheckboxButton;
+import org.icefaces.ace.component.radiobutton.RadioButton;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
@@ -78,7 +79,7 @@ public class ButtonGroupRenderer extends CoreRenderer {
             Iterator<UIComponent> kids = component.getChildren().iterator();
             while (kids.hasNext()) {
                 UIComponent kid = kids.next();
-                if (kid instanceof CheckboxButton) {
+                if (kid instanceof CheckboxButton || kid instanceof RadioButton) {
                     kid.encodeAll(context);
                 }
             }
