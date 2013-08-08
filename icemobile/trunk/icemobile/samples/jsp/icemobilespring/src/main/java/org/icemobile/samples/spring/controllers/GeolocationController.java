@@ -15,6 +15,7 @@
  */
 package org.icemobile.samples.spring.controllers;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +28,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 /** Spring MVC Controller for the Geolocation example. */
 @Controller
 @SessionAttributes({ "geolocationBean" })
 public class GeolocationController extends ICEmobileBaseController {
+
+    private ArrayList markers = new ArrayList();
+    {
+        //sample data for verification on startup
+        markers.add(new String[]{
+                "+51.07","-114.09","+1000"});
+    }
 
     /** Create the geolocationBean.
      *  @param request The servlet request
@@ -76,4 +86,28 @@ public class GeolocationController extends ICEmobileBaseController {
         model.addAttribute("geolocationBean", geolocationBean);
     }
 
+    @RequestMapping(value = "/geospy", method = RequestMethod.POST)
+    public @ResponseBody String geospy(
+            HttpServletRequest request,
+            @RequestParam(value = "_geo") String[] coordinates,
+            Model model)  {
+
+        markers.add(coordinates);
+        return "Thanks!";
+    }
+
+    @RequestMapping(value = "/geospymarkers", method = RequestMethod.GET)
+    public @ResponseBody GeoMarkers geospyMarkers(
+            HttpServletRequest request,
+            Model model)  {
+
+        GeoMarkers geoMarkers = new GeoMarkers();
+        geoMarkers.markers = this.markers;
+        return geoMarkers;
+    }
+
+}
+
+class GeoMarkers {
+    public ArrayList markers;
 }
