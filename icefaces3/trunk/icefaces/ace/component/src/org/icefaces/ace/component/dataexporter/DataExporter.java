@@ -33,8 +33,10 @@ public class DataExporter extends DataExporterBase {
         super.broadcast(event);
 
         if (event != null) {
+			DataTable table = null;
+			UIComponent compositeParent = null;
+			FacesContext facesContext = getFacesContext();
 			try {
-				FacesContext facesContext = getFacesContext();
 				Object customExporter = getCustomExporter();
 				Exporter exporter;
 				if (customExporter == null) {
@@ -52,10 +54,24 @@ public class DataExporter extends DataExporterBase {
 				if (targetComponent == null) throw new FacesException("Cannot find component \"" + getTarget() + "\" in view.");
 				if (!(targetComponent instanceof DataTable)) throw new FacesException("Unsupported datasource target:\"" + targetComponent.getClass().getName() + "\", exporter must target a ACE DataTable.");
 				
-				DataTable table = (DataTable) targetComponent;
+				table = (DataTable) targetComponent;
+				if (!UIComponent.isCompositeComponent(table)) {
+					compositeParent = UIComponent.getCompositeComponentParent(table);
+				}
+				if (compositeParent != null) {
+					compositeParent.pushComponentToEL(facesContext, null);
+				}
+				table.pushComponentToEL(facesContext, null);
 				this.path = exporter.export(facesContext, this, table);
 			} catch (IOException e) { 
 				throw new FacesException(e); 
+			} finally {
+				if (table != null) {
+					table.popComponentFromEL(facesContext);
+				}
+				if (compositeParent != null) {
+					compositeParent.popComponentFromEL(facesContext);
+				}
 			}
         }
 	}
