@@ -478,51 +478,6 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
                 return;
             }
         }
-        document = cloneDocument(doc);
-    }
-
-    private Document cloneDocument(Document doc) {
-        Document cloningDoc = DOMUtils.getNewDocument();
-        cloningDoc.setStrictErrorChecking(false);
-        Node root = cloningDoc.importNode(doc.getDocumentElement(), true);
-        cloningDoc.appendChild(root);
-        NodeList elements = cloningDoc.getElementsByTagName("*");
-        for (int i = 0, l = elements.getLength(); i < l; i++) {
-            Element e = (Element) elements.item(i);
-            if (e.hasAttribute("id")) {
-                e.setIdAttribute("id", true);
-            }
-        }
-        return cloningDoc;
-    }
-
-    /**
-     * <p>Seek to the subtree specified by the id parameter and clear it
-     * to prepare for new rendered output.</p>
-     *
-     * @param id DOM id of component subtree
-     * @return old DOM subtree
-     */
-    public Node seekSubtree(String id) {
-        Node oldSubtree = null;
-        //seek to position in document
-        cursor = document.getElementById(id);
-        if (null == cursor) {
-            //If the cursor is null, it means we couldn't find the subtree
-            //in the current document.  We may have navigated during the lifecycle.
-            if (log.isLoggable(Level.FINE)) {
-                log.log(Level.FINE, "unable to seek to component DOM subtree " + id);
-            }
-            return null;
-        }
-        oldSubtree = cursor;
-        Node newSubtree = document.createElement(cursor.getNodeName());
-        Node cursorParent = cursor.getParentNode();
-        //remove subtree for fresh rendering operation
-        cursorParent.replaceChild(newSubtree, cursor);
-        cursor = newSubtree;
-        suppressNextNode = true;
-        return oldSubtree;
     }
 
     public Document getDocument() {
@@ -599,6 +554,11 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         Element root = document.createElement("html");
         document.appendChild(root);
         cursor = document.getDocumentElement();
+    }
+
+    public void setDocument(Document doc) {
+        this.document = doc;
+        this.cursor = doc;
     }
 
 
