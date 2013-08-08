@@ -97,13 +97,12 @@ public class DialogRenderer extends CoreRenderer {
         int minWidth = dialog.getMinWidth();
         String onShow = dialog.getOnShow();
         String onHide = dialog.getOnHide();
-		String handle = dialog.getHandle();
+		boolean hasHeaderFacet = dialog.getFacet("header") != null;
 
         if (styleClass != null) jb.entry("dialogClass", styleClass);
         if (width > 0) jb.entry("width", width);
         if (height > 0) jb.entry("height", height);
         if (!dialog.isDraggable()) jb.entry("draggable", false);
-		if (handle != null) jb.entry("handle", handle);
         if (dialog.isModal()) jb.entry("modal", true);
         if (zIndex != 1000) jb.entry("zIndex", zIndex);
         if (!dialog.isResizable()) jb.entry("resizable", false);
@@ -112,9 +111,10 @@ public class DialogRenderer extends CoreRenderer {
         if (hideEffect != null) jb.entry("hide", hideEffect);
         if (!dialog.isCloseOnEscape()) jb.entry("closeOnEscape", false);
         if (!dialog.isClosable()) jb.entry("closable", false);
-        if (!dialog.isShowHeader()) jb.entry("showHeader", false);
+        if (!dialog.isShowHeader() || hasHeaderFacet) jb.entry("showHeader", false);
         if (onShow != null) jb.entry("onShow", "function(event, ui) {" + onShow + "}", true);
         if (onHide != null) jb.entry("onHide", "function(event, ui) {" + onHide + "}", true);
+		if (hasHeaderFacet) jb.entry("headerFacet", true);
 
         //Position
         if (position != null) {
@@ -138,7 +138,7 @@ public class DialogRenderer extends CoreRenderer {
 			}
 		}
 
-        jb.entryNonNullValue("title", headerText);
+        if (!hasHeaderFacet) jb.entryNonNullValue("title", headerText);
 		jb.entry("ariaEnabled", ariaEnabled);
 
         //Behaviors
@@ -159,8 +159,13 @@ public class DialogRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_main", null);
         writer.writeAttribute("style", "display:none", null);
-        if (headerText != null) {
-//            writer.writeAttribute("title", headerText, null);
+
+		UIComponent headerFacet = (UIComponent) dialog.getFacet("header");
+        if (headerFacet != null) {
+			writer.startElement("div", null);
+			writer.writeAttribute("class", "ui-dialog-titlebar", null);
+			org.icefaces.ace.component.menu.BaseMenuRenderer.encodeParentAndChildren(facesContext, headerFacet);
+			writer.endElement("div");
         }
 
         renderChildren(facesContext, dialog);
