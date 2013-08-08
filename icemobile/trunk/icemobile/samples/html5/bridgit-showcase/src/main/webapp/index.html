@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./iui/iui.css" type="text/css" />
   <link rel="stylesheet" title="Default" href="./iui/t/bridgeit/bridgeit-theme.css"  type="text/css"/>
   <link rel="stylesheet" href="./css/iui-panel-list.css" type="text/css" />
+  <link href='http://fonts.googleapis.com/css?family=Euphoria+Script' rel='stylesheet' type='text/css'>
   <script type="application/x-javascript" src="./iui/iui.js"></script>
   <!--  script type="text/javascript">
     var _gaq = _gaq || [];
@@ -29,23 +30,18 @@
         <a id="backButton" class="button" href="#"></a>
         <a id="bridgeItLink" class="button" href="#"><img src="./images/bridgeit-icon.png"/></a>
     </div>
-    <div class="footer">
-        <a href="#">
-            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
-        </a>
-        &copy; 2013 ICEsoft Technologies
-    </div>
-    <div id="home" class="panel" title="BridgeIt!" selected="true">
+   
+    <div id="home" class="panel" title="BridgeIt" selected="true">
         <div id="splash">
             <div id="splash-ctr">
                 <img src="./images/bridgeit-splash.png"/>
             </div>
             <p class="intro">
-            Meet BridgeIt! <br/>The easiest way to add native features to your web application. 
+                <span class="first-line">Meet BridgeIt...</span>
+                 <br/>The easiest way to add native features to your web application. 
             </p>
             <p>
-            Use a simple JavaScript API to access native features, such as the camera, camcorder,
-            contact list, microphone, scanner, and even augmented reality!  
+            A simple JavaScript API to access native features.  
             </p>
             <p>
             Go beyond HTML5...
@@ -59,9 +55,15 @@
             <li><a href="#contactlist">Contact List</a></li>
             <li><a href="#ar">Augmented Reality</a></li>
         </ul>
+        <div class="footer">
+            <a href="#">
+                <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+            </a>
+            &copy; 2013 ICEsoft Technologies
+        </div>
     </div>
     
-    <div id="camera" title="Shoot It!" class="panel">
+    <div id="camera" title="Shoot It" class="panel">
         <h2>Camera Access</h2>
         <fieldset>
             <div class="row"><p class="normalText">Access the native device camera features with a simple line of JavaScript...</p></div>
@@ -96,9 +98,16 @@
             }
         }
         </script>
+        <div class="footer">
+            <a href="#">
+                <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+            </a>
+            &copy; 2013 ICEsoft Technologies
+        </div>
+
     </div>
     
-    <div id="camcorder" title="Film It!" class="panel">
+    <div id="camcorder" title="Film It" class="panel">
         <h2>Video Recording</h2>
         <fieldset>
             <div class="row"><p class="normalText">Access the native video recording features with a simple line of JavaScript...</p></div>
@@ -110,7 +119,7 @@
             </div>
         </fieldset>
         
-        <a type="button" class="redButton bridgeItBtn"
+        <a type="button" class="grayButton bridgeItBtn"
             onclick="ice.mobi.camcorder('_cam',handleVideo, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video!</a>
             
         <fieldset>
@@ -133,9 +142,16 @@
             }
         }
         </script>
+        <div class="footer">
+            <a href="#">
+                <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+            </a>
+            &copy; 2013 ICEsoft Technologies
+        </div>
+
     </div>
     
-    <div id="scanner" title="Scan It!" class="panel">
+    <div id="scanner" title="Scan It" class="panel">
         <h2>QR Code Scanning</h2>
         <fieldset>
             <div class="row"><p class="normalText">Scan a QR Code with a simple line of JavaScript...</p></div>
@@ -147,7 +163,7 @@
             </div>
         </fieldset>
         
-        <a type="button" class="redButton bridgeItBtn"
+        <a type="button" class="whiteButton bridgeItBtn"
             onclick="ice.mobi.scan('_cam',handleScan);">Scan a Code</a>
             
         <fieldset>
@@ -167,9 +183,16 @@
             document.getElementById("scans").append("<div class='row'>" + text + "</div>");
         }
         </script>
+        <div class="footer">
+            <a href="#">
+                <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+            </a>
+            &copy; 2013 ICEsoft Technologies
+        </div>
+
     </div>
     
-    <div id="microphone" title="Record It!" class="panel">
+    <div id="microphone" title="Record It" class="panel">
        <h2>Audio Recording</h2>
         <fieldset>
             <div class="row"><p class="normalText">Access the native audio recording features with a simple line of JavaScript...</p></div>
@@ -181,7 +204,7 @@
             </div>
         </fieldset>
         
-        <a type="button" class="redButton bridgeItBtn"
+        <a type="button" class="blueButton bridgeItBtn"
             onclick="ice.mobi.microphone('_cam',handleAudio, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some audio!</a>
             
         <fieldset>
@@ -200,17 +223,24 @@
             }
         }
         </script>
+        <div class="footer">
+            <a href="#">
+                <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+            </a>
+            &copy; 2013 ICEsoft Technologies
+        </div>
+
     </div>
     
-    <div id="ar" title="See It!" class="panel">
+    <div id="ar" title="See It" class="panel">
        
     </div>
     
-    <ul id="contactlist" title="Contact It!" class="panel">
+    <ul id="contactlist" title="Contact It" class="panel">
        
     </ul>
     
-    
+     
 
 </body>
 </html>
