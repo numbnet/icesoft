@@ -97,12 +97,20 @@
         map.fitBounds(bounds);
     }
 
-    $.ajax({
-        url: (''+window.location).match(/.*\//) + '../geospymarkers',
-        cache: false
-    }).done(function( data ) {
-        processMarkers(data);
-    });
+    function updateMarkers()  {
+        $.ajax({
+            url: (''+window.location).match(/.*\//) + '../geospymarkers',
+            cache: false
+        }).done(function( data ) {
+            processMarkers(data);
+        });
+    }
+    
+    ice.ajaxRefresh = function()  {
+        updateMarkers();
+    }
+
+    updateMarkers();
     </script>
 
     <div id="map-canvas"></div>
