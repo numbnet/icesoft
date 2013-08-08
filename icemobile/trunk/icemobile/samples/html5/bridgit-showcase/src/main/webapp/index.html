@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BridgeIt HTML5 Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="bridgeit-logo-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="stylesheet" href="./iui/iui.css" type="text/css" />
+  <link rel="stylesheet" title="Default" href="./iui/t/bridgeit/bridgeit-theme.css"  type="text/css"/>
+  <link rel="stylesheet" href="./css/iui-panel-list.css" type="text/css" />
+  <script type="application/x-javascript" src="./iui/iui.js"></script>
+  <!--  script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-8634743-10'], ['_trackPageview']);
+  </script>
+  <script type="application/x-javascript" src="../iui/ext-sandbox/google-analytics/iui-google-analytics.js"></script>
+  <script type="text/javascript">
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script-->
+</head>
+<body>
+    <div class="toolbar">
+        <h1 id="pageTitle"></h1>
+        <a id="backButton" class="button" href="#"></a>
+        <a id="bridgeItLink" class="button" href="#"><img src="./images/bridgeit-icon.png"/></a>
+    </div>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+    <div id="home" class="panel" title="BridgeIt!" selected="true">
+        <div id="splash">
+            <div id="splash-ctr">
+                <img src="./images/bridgeit-splash.png"/>
+            </div>
+            <p class="intro">
+            Meet BridgeIt! <br/>The easiest way to add native features to your web application. 
+            </p>
+            <p>
+            Use a simple JavaScript API to access native features, such as the camera, camcorder,
+            contact list, microphone, scanner, and even augmented reality!  
+            </p>
+            <p>
+            Go beyond HTML5...
+            </p>
+        </div>
+        <ul id="menu">
+            <li><a href="#camera">Camera</a></li>
+            <li><a href="#camcorder">Camcorder</a></li>
+            <li><a href="#scanner">Scanner</a></li>
+            <li><a href="#microphone">Microphone</a></li>
+            <li><a href="#contactlist">Contact List</a></li>
+            <li><a href="#ar">Augmented Reality</a></li>
+        </ul>
+    </div>
+    
+    <div id="camera" title="Shoot It!" class="panel">
+        <h2>Camera Access</h2>
+        <fieldset>
+            <div class="row"><p class="normalText">Access the native device camera features with a simple line of JavaScript...</p></div>
+            <div class="row">
+                <code>
+                    ice.mobi.camera(id,callback, 
+                    &nbsp;&nbsp;{postURL:myURL});
+                </code>
+            </div>
+        </fieldset>
+        
+        <a type="button" class="redButton bridgeItBtn"
+            onclick="ice.mobi.camera('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo!</a>
+            
+        <fieldset>
+            <div class="row"></div>
+            <div class="row"><img id="thumbnail"/></div>
+        </fieldset>
+        <fieldset id="images">
+        </fieldset>
+    
+        
+        <script>
+        function handleCam(event)  {
+            var text = event.value;
+            if (event.response)  {
+                var theResponse = JSON.parse(event.response);
+                document.getElementById("images").append("<div class='row'><img src='" + theResponse.path + "'></div>");
+            }
+            if (event.preview)  {
+                document.getElementById("thumbnail").attr("src", event.preview);
+            }
+        }
+        </script>
+    </div>
+    
+    <div id="camcorder" title="Film It!" class="panel">
+        <h2>Video Recording</h2>
+        <fieldset>
+            <div class="row"><p class="normalText">Access the native video recording features with a simple line of JavaScript...</p></div>
+            <div class="row">
+                <code>
+                    ice.mobi.camcorder(id,callback, 
+                    &nbsp;&nbsp;{postURL:myURL});
+                </code>
+            </div>
+        </fieldset>
+        
+        <a type="button" class="redButton bridgeItBtn"
+            onclick="ice.mobi.camcorder('_cam',handleVideo, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video!</a>
+            
+        <fieldset>
+            <div class="row"></div>
+            <div class="row"><img id="thumbnail"/></div>
+        </fieldset>
+        <fieldset id="videos">
+        </fieldset>
+    
+        
+        <script>
+        function handleVideo(event)  {
+            var text = event.value;
+            if (event.response)  {
+                var theResponse = JSON.parse(event.response);
+                document.getElementById("videos").append("<div class='row'><video src='" + theResponse.path + "'></div>");
+            }
+            if (event.preview)  {
+                document.getElementById("thumbnail").attr("src", event.preview);
+            }
+        }
+        </script>
+    </div>
+    
+    <div id="scanner" title="Scan It!" class="panel">
+        <h2>QR Code Scanning</h2>
+        <fieldset>
+            <div class="row"><p class="normalText">Scan a QR Code with a simple line of JavaScript...</p></div>
+            <div class="row">
+                <code>
+                    ice.mobi.scan(id,callback, 
+                    &nbsp;&nbsp;{postURL:myURL});
+                </code>
+            </div>
+        </fieldset>
+        
+        <a type="button" class="redButton bridgeItBtn"
+            onclick="ice.mobi.scan('_cam',handleScan);">Scan a Code</a>
+            
+        <fieldset>
+            <div class="row"></div>
+        </fieldset>
+        <fieldset id="scans">
+        </fieldset>
+    
+        
+        <script>
+        function handleScan(event)  {
+            var HTTP = "http";
+            var text = event.value;
+            if (HTTP === text.substring(0, HTTP.length))  {
+                text = "<a href='" + text + "'>" + text + "</a>";
+            }
+            document.getElementById("scans").append("<div class='row'>" + text + "</div>");
+        }
+        </script>
+    </div>
+    
+    <div id="microphone" title="Record It!" class="panel">
+       <h2>Audio Recording</h2>
+        <fieldset>
+            <div class="row"><p class="normalText">Access the native audio recording features with a simple line of JavaScript...</p></div>
+            <div class="row">
+                <code>
+                    ice.mobi.microphone(id,callback, 
+                    &nbsp;&nbsp;{postURL:myURL});
+                </code>
+            </div>
+        </fieldset>
+        
+        <a type="button" class="redButton bridgeItBtn"
+            onclick="ice.mobi.microphone('_cam',handleAudio, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some audio!</a>
+            
+        <fieldset>
+            <div class="row"></div>
+        </fieldset>
+        <fieldset id="recordings">
+        </fieldset>
+    
+        
+        <script>
+        function handleAudio(event)  {
+            var text = event.value;
+            if (event.response)  {
+                var theResponse = JSON.parse(event.response);
+                document.getElementById("recordings").append("<div class='row'><audio src='" + theResponse.path + "'></div>");
+            }
+        }
+        </script>
+    </div>
+    
+    <div id="ar" title="See It!" class="panel">
+       
+    </div>
+    
+    <ul id="contactlist" title="Contact It!" class="panel">
+       
+    </ul>
+    
+    
+
+</body>
+</html>
+
