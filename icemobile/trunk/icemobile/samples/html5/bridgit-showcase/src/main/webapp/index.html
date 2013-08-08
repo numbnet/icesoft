@@ -56,6 +56,7 @@
             <li><a href="#scanner"><i class="icon-qrcode"></i>Scanner</a></li>
             <li><a href="#microphone"><i class="icon-microphone"></i>Microphone</a></li>
             <li><a href="#contactlist"><i class="icon-group"></i>Contact List</a></li>
+            <li><a href="#geospy"><i class="icon-map-marker"></i>GeoSpy</a></li>
             <li><a href="#ar"><i class="icon-eye-open"></i>Augmented Reality</a></li>
             <li><a href="#openin"><i class="icon-share-alt"></i>Open In</a></li>
             <li><a href="#about"><i class="icon-info-sign"></i>About</a></li>
@@ -252,7 +253,7 @@
         </fieldset>
         
         <a type="button" class="whiteButton bridgeItBtn"
-            onclick="ice.mobi.fetchContact('_cam',handleContact);">Grab a Contact</a>
+            onclick="ice.mobi.fetchContact('_cam',handleContact);">Fetch a Contact</a>
             
         <fieldset>
             <div class="row"></div>
@@ -266,6 +267,41 @@
             var HTTP = "http";
             var text = event.value;
             document.getElementById("contacts").append("<div class='row'>" + text + "</div>");
+        }
+        </script>
+        <div class="footer">
+            <a href="#">
+                <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+            </a>
+            &copy; 2013 ICEsoft Technologies
+        </div>
+       
+    </div>
+    
+    <div id="geospy" title="Locate It" class="panel">
+        <h2>GeoSpy Location Tracking</h2>
+        <fieldset>
+            <div class="row"><p class="normalText">Continual geolocation tracking with a simple line of JavaScript...</p></div>
+            <div class="row">
+                <code>
+                    ice.mobi.geoSpy('_geo',handleSpy, {postURL:myURL});
+                </code>
+            </div>
+        </fieldset>
+        
+        <a type="button" class="whiteButton bridgeItBtn"
+            onclick="ice.mobi.geoSpy('_geo',handleSpy, {postURL:(''+window.location).match(/.*\//) + '../geospy/'});">Start Tracking</a>
+            
+        <fieldset>
+            <div class="row"></div>
+        </fieldset>
+        <fieldset id="contacts">
+        </fieldset>
+    
+        
+        <script>
+        function handleSpy(event)  {
+            alert(event);
         }
         </script>
         <div class="footer">
