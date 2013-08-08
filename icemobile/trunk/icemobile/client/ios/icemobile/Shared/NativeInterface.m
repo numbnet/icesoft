@@ -761,10 +761,11 @@ NSLog(@"Found record %@", result);
 
 - (BOOL)geospy:(NSString*) geoId withStrategy:(NSString*) strategy  {
     self.geospyName = geoId;
-    if (nil == self.locationManager)
+    if (nil == self.locationManager)  {
         self.locationManager = [[CLLocationManager alloc] init];
- 
-    self.locationManager.delegate = self;
+        self.locationManager.delegate = self;
+    }
+
     if ([@"continuous" isEqualToString:strategy]) {
         NSLog(@"geospy starting continuous updates");
         [self.locationManager startUpdatingLocation];
@@ -779,7 +780,22 @@ NSLog(@"Found record %@", result);
         [self.locationManager startMonitoringSignificantLocationChanges];
         self.monitoringLocation = YES;
     };
-    [self.controller doCancel];
+
+    if (self.monitoringLocation)  {
+        CLLocation* location = self.locationManager.location;
+        NSString *geoResult = [NSString stringWithFormat:@"%+.6f,%+.6f,%+.6f",
+            location.coordinate.latitude,
+            location.coordinate.longitude,
+            location.altitude];
+        NSLog(@"initial location  %@", geoResult);
+    }
+
+    //don't immediately return to the browser if the user has not confirmed
+    //geolocation permission
+    if (kCLAuthorizationStatusNotDetermined !=
+            [CLLocationManager authorizationStatus])  {
+        [self.controller doCancel];
+    }
     return YES;
 }
 
