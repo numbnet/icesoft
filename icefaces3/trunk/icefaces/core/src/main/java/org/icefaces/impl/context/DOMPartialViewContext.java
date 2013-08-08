@@ -139,6 +139,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 List<DOMUtils.EditOperation> diffs = null;
                 Collection<String> customIds = null;
                 Document newDOM = null;
+                List<DocumentOperation> documentOperations = null;
+
                 writer.startDocument();
 
                 if (isRenderAll()) {
@@ -163,8 +165,11 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     }
                     if (renderIds == null || renderIds.isEmpty()) {
                     } else {
-                        diffs = renderSubtrees(viewRoot, renderIds);
+                        DOMPartialRenderCallback visitor = renderSubtrees(viewRoot, renderIds);
+                        diffs = visitor.getDiffs();
+                        documentOperations = visitor.getDocumentOperations();
                     }
+
                     writer.endDocument();
                     newDOM = writer.getOldDocument();
                 }
@@ -258,6 +263,15 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                             partialWriter.endUpdate();
                         }
                     }
+                }
+
+                //apply subtree changes to old DOM and then save it as the new DOM
+                if (documentOperations != null) {
+                    for (DocumentOperation op: documentOperations) {
+                        op.operateOn(oldDOM);
+                    }
+                    writer.setDocument(oldDOM);
+                    writer.saveOldDocument();
                 }
 
                 renderState();
@@ -434,7 +448,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         return;
     }
 
-    private List<DOMUtils.EditOperation> renderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds) {
+    private DOMPartialRenderCallback renderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds) {
         EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
         VisitContext visitContext =
                 VisitContext.createVisitContext(facesContext, renderIds, hints);
@@ -443,7 +457,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         viewRoot.visitTree(visitContext, renderCallback);
         //if subtree diffs fail, consider throwing an exception to trigger
         //a full page diff.  This may depend on development vs production
-        return renderCallback.getDiffs();
+        return renderCallback;
     }
 
     private void applyBrowserChanges(Map parameters, Document document) {
@@ -739,6 +753,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
 }
 
+interface DocumentOperation {
+    void operateOn(Document document);
+}
+
 class DOMPartialRenderCallback implements VisitCallback {
     private static Logger log = Logger.getLogger(DOMPartialRenderCallback.class.getName());
     private FacesContext facesContext;
@@ -746,6 +764,7 @@ class DOMPartialRenderCallback implements VisitCallback {
     private ArrayList<DOMUtils.EditOperation> diffs;
     private DOMUtils.DiffConfig diffConfig = null;
     private boolean exception;
+    private ArrayList<DocumentOperation> documentOperations = new ArrayList<DocumentOperation>();
 
 
     public DOMPartialRenderCallback(DOMUtils.DiffConfig diffConfig,
@@ -760,10 +779,10 @@ class DOMPartialRenderCallback implements VisitCallback {
         FacesContext facesContext = visitContext.getFacesContext();
         boolean isDevMode =
                 !facesContext.isProjectStage(ProjectStage.Production);
-        String clientId = component.getClientId(facesContext);
+        final String clientId = component.getClientId(facesContext);
         DOMResponseWriter domWriter = (DOMResponseWriter)
                 facesContext.getResponseWriter();
-        Node oldSubtree = domWriter.seekSubtree(clientId);
+        Node oldSubtree = domWriter.getOldDocument().getElementById(clientId);
         if (null == oldSubtree) {
             log.fine("DOM Subtree rendering for " + clientId +
                     " could not be found and is reverting to standard rendering.");
@@ -792,8 +811,11 @@ class DOMPartialRenderCallback implements VisitCallback {
             return VisitResult.REJECT;
         }
         try {
+            //trigger creation of a new document that will contain the new subtree
+            domWriter.startDocument();
             component.encodeAll(facesContext);
-            Node newSubtree = domWriter.getDocument().getElementById(clientId);
+
+            final Node newSubtree = domWriter.getDocument().getElementById(clientId);
             //these should be non-overlapping by application design
             if (log.isLoggable(Level.FINEST)) {
                 log.finest("Subtree rendering for " + clientId +
@@ -804,6 +826,7 @@ class DOMPartialRenderCallback implements VisitCallback {
                 //and likely indicates an application design flaw
                 if (null != newSubtree) {
                     diffs.add(new DOMUtils.ReplaceOperation(newSubtree));
+                    documentOperations.add(new ReplaceNodeOperation(clientId, newSubtree));
                 }
                 if (isDevMode) {
                     log.warning("Subtree rendering " + clientId +
@@ -812,12 +835,15 @@ class DOMPartialRenderCallback implements VisitCallback {
             } else {
                 if (null != newSubtree) {
                     //typical case
-                    diffs.addAll((DOMUtils.nodeDiff(diffConfig,
-                            oldSubtree, newSubtree)));
+                    List<DOMUtils.EditOperation> editOperations = DOMUtils.nodeDiff(diffConfig, oldSubtree, newSubtree);
+                    diffs.addAll(editOperations);
+                    documentOperations.add(new ReplaceNodeOperation(clientId, newSubtree));
                 } else {
                     //delete component no longer rendered, but there is now
                     //no way to add it again
                     diffs.add(new DOMUtils.DeleteOperation(clientId));
+                    documentOperations.add(new DeleteNodeOperation(clientId));
+
                     if (isDevMode) {
                         log.warning("Subtree rendering deleting " + clientId +
                                 " and subsequent updates may fail.");
@@ -838,12 +864,56 @@ class DOMPartialRenderCallback implements VisitCallback {
         return VisitResult.REJECT;
     }
 
+    public List<DocumentOperation> getDocumentOperations() {
+        return documentOperations;
+    }
+
     public List<DOMUtils.EditOperation> getDiffs() {
         return diffs;
     }
 
     public boolean didFail() {
         return exception;
+    }
+
+    private static class ReplaceNodeOperation implements DocumentOperation {
+        private final String clientId;
+        private final Node newSubtree;
+
+        public ReplaceNodeOperation(String clientId, Node newSubtree) {
+            this.clientId = clientId;
+            this.newSubtree = newSubtree;
+        }
+
+        public void operateOn(Document document) {
+            Node node = document.getElementById(clientId);
+            Element newNode = (Element) node.getOwnerDocument().importNode(newSubtree, true);
+
+            //make sure the new elements can be looked up
+            newNode.setIdAttribute("id", true);
+            NodeList elements = newNode.getElementsByTagName("*");
+            for (int i = 0, l = elements.getLength(); i < l; i++) {
+                Element e = (Element) elements.item(i);
+                if (e.hasAttribute("id")) {
+                    e.setIdAttribute("id", true);
+                }
+            }
+
+            node.getParentNode().replaceChild(newNode, node);
+        }
+    }
+
+    private static class DeleteNodeOperation implements DocumentOperation {
+        private final String clientId;
+
+        public DeleteNodeOperation(String clientId) {
+            this.clientId = clientId;
+        }
+
+        public void operateOn(Document document) {
+            Node node = document.getElementById(clientId);
+            node.getParentNode().removeChild(node);
+        }
     }
 }
 
