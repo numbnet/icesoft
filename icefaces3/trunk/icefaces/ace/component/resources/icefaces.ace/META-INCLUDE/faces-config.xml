@@ -27,10 +27,6 @@
 		<resource-handler>org.icefaces.ace.component.gmap.GMapResourceHandler</resource-handler>
         <resource-handler>org.icefaces.ace.component.themeselect.ThemeSymbolicResourceHandler</resource-handler>
         <system-event-listener>
-            <!--<system-event-listener-class>org.icefaces.ace.component.themeselect.ThemeSelectRenderer$AddTheme</system-event-listener-class>-->
-            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
-        </system-event-listener>
-        <system-event-listener>
             <system-event-listener-class>org.icefaces.ace.renderkit.UncompressAceResources$RegisterListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
         </system-event-listener>
