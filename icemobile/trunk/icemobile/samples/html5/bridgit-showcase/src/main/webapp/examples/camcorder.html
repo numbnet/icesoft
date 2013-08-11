@@ -1,0 +1,29 @@
+<div id="camcorder" title="Film It" class="panel" >
+    <h2>Video Recording</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Access the native video recording features with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.camcorder(id,callback, 
+                &nbsp;&nbsp;{postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.camcorder('_cam',handleVideo, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video</a>
+        
+    <fieldset>
+        <div class="row"></div>
+        <div class="row"><img id="thumbnail"/></div>
+    </fieldset>
+    <fieldset id="videos">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+
+</div>

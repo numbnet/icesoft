@@ -1,0 +1,29 @@
+<div id="camera" title="Shoot It" class="panel" >
+    <h2>Camera Access</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Access the native device camera features with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.camera(id,callback, 
+                &nbsp;&nbsp;{postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.camera('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo</a>
+        
+    <fieldset>
+        <div class="row"></div>
+        <div class="row"><img id="thumbnail"/></div>
+    </fieldset>
+    <fieldset id="images">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+
+</div>

@@ -19,6 +19,7 @@ var currentHeight = 0;
 var currentHash = location.hash;
 var hashPrefix = "#_";
 var pageHistory = [];			// Navigation stack (poorly named, different from browser history)
+var pageOffsets = {};
 var newPageCount = 0;
 var checkTimer;
 var hasOrientationEvent = false;
@@ -130,10 +131,15 @@ window.iui =
 			*/
 			else
 			{
-				sendEvent("load", page);    						// EVENT: LOAD
+			    sendEvent("load", page);    						// EVENT: LOAD
 													// 127(stylesheet), 128(script), 129(onload)
 													// 130(onFocus), 133(loadActionButton)
 				var fromPage = currentPage;
+				if( currentPage ){
+				    pageOffsets[currentPage.id] = window.pageYOffset;
+                    console.log(currentPage.id + ' stored scroll  ' + window.pageYOffset);
+				}
+                
 				sendEvent("blur", currentPage);						// EVENT: BLUR
 				currentPage = page;
 				sendEvent("focus", page);							// EVENT: FOCUS
@@ -535,6 +541,11 @@ addEventListener("unload", function(event)
 {
 	return;
 }, false);
+
+addEventListener("scroll", function(event)
+{
+    return;
+}, false);
 	
 /*
 click: Link Click Handling
@@ -809,7 +820,7 @@ function updatePage(page, fromPage)
 	}
 		
 	pageHistory.push(page.id);
-
+	
 	var pageTitle = $("pageTitle");
 	if (page.title)
 		pageTitle.innerHTML = page.title;
@@ -834,6 +845,7 @@ function updatePage(page, fromPage)
 			backButton.style.display = "none";
 	}
 	iui.busy = false;
+	 
 }
 /*
 events:
@@ -860,8 +872,19 @@ function slidePages(fromPage, toPage, backwards)
 
 	function slideDone()
 	{
-	  if (!hasClass(toPage, "dialog"))
+	    setTimeout(function(){
+	        if( pageOffsets[toPage.id]){
+	            window.scrollTo(0,pageOffsets[toPage.id]);
+	            console.log( toPage.id + ' scrolled to ' + pageOffsets[toPage.id]);
+	        }
+	        else{
+	            window.scrollTo(0,0);
+	        }
+	    },50);
+	    
+	  if (!hasClass(toPage, "dialog")){
 		  fromPage.removeAttribute("selected");
+	  }
 	  checkTimer = setInterval(checkOrientAndLocation, 300);
 	  setTimeout(updatePage, 0, toPage, fromPage);
 	  fromPage.removeEventListener('webkitTransitionEnd', slideDone, false);

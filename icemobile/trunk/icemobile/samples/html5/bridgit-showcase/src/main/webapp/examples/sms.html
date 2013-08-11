@@ -1,0 +1,28 @@
+<div id="sms" title="Text It" class="panel" >
+    <h2>SMS</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Send an SMS with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.sms(id,callback, 
+                &nbsp;&nbsp;{postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.sms('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo</a>
+        
+    <fieldset>
+        <div class="row"></div>
+    </fieldset>
+    <fieldset id="images">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+
+</div>

@@ -1,0 +1,27 @@
+<div id="geospy" title="Locate It" class="panel">
+    <h2>GeoSpy Location Tracking</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Continual geolocation tracking with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.geoSpy('_geo',handleSpy, {postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.geoSpy('_geo',handleSpy, {postURL:(''+window.location).match(/.*\//) + '../geospy/'});">Start Tracking</a>
+        
+    <fieldset>
+        <div class="row"></div>
+    </fieldset>
+    <fieldset id="contacts">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+   
+</div>

@@ -1,0 +1,29 @@
+<div id="ar" title="See It" class="panel" >
+    <h2>Augmented Reality</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Access an augmented world with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.aug(id,callback, 
+                &nbsp;&nbsp;{postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.aug('_cam',handleAR, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video</a>
+        
+    <fieldset>
+        <div class="row"></div>
+        <div class="row"><img id="thumbnail"/></div>
+    </fieldset>
+    <fieldset id="videos">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+   
+</div>
