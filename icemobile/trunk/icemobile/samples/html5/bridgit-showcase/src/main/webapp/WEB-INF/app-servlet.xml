@@ -109,7 +109,7 @@
     
     <!-- Configurer that replaces ${...} placeholders with values from a properties file -->
     <!-- (in this case, JDBC-related settings for the dataSource definition below) -->
-    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- context:property-placeholder location="classpath:jdbc.properties"/ -->
     
     <!-- Database initializer. If any of the script fails, the initialization stops. -->
     <!-- As an alternative, for embedded databases see <jdbc:embedded-database/>. 
@@ -151,10 +151,7 @@
     <!-- A Resource Store that scales all uploaded images -->
     <bean class="org.icemobile.spring.handler.support.MapFileStore"
             name="arResourceStore">
-           <property name="resourceAdaptor" ref="scaledImageResourceAdapter"/>
     </bean>
-    
-    <bean class="org.icemobile.samples.spring.ScaledImageFileResourceAdapter" 
-        name="scaledImageResourceAdapter" />    
+ 
 
 </beans>
