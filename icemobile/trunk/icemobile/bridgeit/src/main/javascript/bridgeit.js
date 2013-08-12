@@ -39,7 +39,7 @@ if (!window.console) {
         };
     }
 }
-(function(i,im,ib) {
+(function(im,ib) {
     
     /************************ PRIVATE ******************************/
     function addListener(obj, event, fnc){
@@ -175,7 +175,7 @@ if (!window.console) {
             returnURL += "#icemobilesx";
         }
 
-        if ("" != params) {
+        if (params !== undefined && "" != params) {
             params = "ub=" + escape(baseURL) + ampchar + params;
         }
 
@@ -351,6 +351,7 @@ if (!window.console) {
         }, false);
 
         window.addEventListener("hashchange", function () {
+            console.log('entered hashchange listener');
             var data = getDeviceCommand();
             var deviceParams;
             if (null != data)  {
@@ -371,6 +372,7 @@ if (!window.console) {
                     }
                 }
                 setTimeout( function(){
+                    console.log('entered setTimeout');
                     var loc = window.location;
                     //changing hash to temporary value ensures changes
                     //to repeated values are detected
