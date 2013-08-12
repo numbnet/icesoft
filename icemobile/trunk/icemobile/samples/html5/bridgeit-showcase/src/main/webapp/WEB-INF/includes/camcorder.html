@@ -4,14 +4,14 @@
         <div class="row"><p class="normalText">Access the native video recording features with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.mobi.camcorder(id,callback, 
+                ice.bridgeIt.camcorder(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
-    <a type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.mobi.camcorder('_cam',handleVideo, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video</a>
+    <a id="camcorderBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.bridgeIt.camcorder('camcorderBtn',handleVideo, {postURL:(''+window.location).match(/.*\//) + 'service/video-upload'});">Record some video</a>
         
     <fieldset>
         <div class="row"></div>
@@ -25,5 +25,17 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
-
+    <script type="text/javascript">
+    function handleVideo(event)  {
+        var text = event.value;
+        if (event.response)  {
+            var theResponse = JSON.parse(event.response);
+            var elem = document.getElementById("videos");
+            elem.innerHTML = elem.innerHTML + "<div class='row'><a href='" + theResponse.path + "' target='_self' rel='iuiposter'></a></div>";
+        }
+        if (event.preview)  {
+            document.getElementById("thumbnail").setAttribute("src", event.preview);
+        }
+    }
+    </script>
 </div>

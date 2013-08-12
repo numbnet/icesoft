@@ -49,7 +49,7 @@ public class UploadController {
     
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST)
     public void cameraUpload(HttpServletRequest request, 
-            @ICEmobileResource("camera") Resource cameraUpload, 
+            @ICEmobileResource("cameraBtn") Resource cameraUpload, 
             @ModelAttribute("photos") List<String> photos) throws IOException {
         if( cameraUpload != null ){
             if (cameraUpload.getContentType().startsWith("image")) {
@@ -62,6 +62,31 @@ public class UploadController {
         }
     }
     
+    @RequestMapping(value = "/audio-upload", method=RequestMethod.POST)
+    public void audioUpload(HttpServletRequest request, 
+            @ICEmobileResource("micBtn") Resource audioUpload, 
+            @ModelAttribute("recordings") List<String> recordings) throws IOException {
+        if( audioUpload != null ){
+            if (audioUpload.getContentType().startsWith("audio")) {
+                try {
+                    recordings.add( "icemobile-store/"+ audioUpload.getUuid() );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    @RequestMapping(value = "/ar", method=RequestMethod.POST)
+    public void postAugmentedReality(HttpServletRequest request) throws IOException {
+        System.out.println("postAugmentedReality()");
+    }
+    
+    @RequestMapping(value = "/geospy", method=RequestMethod.POST)
+    public void postGeoSpy(HttpServletRequest request) throws IOException {
+        System.out.println("postGeoSpy()");
+    }
+    
     @RequestMapping(value="/photo-list", method=RequestMethod.GET, produces="application/json")
     public @ResponseBody List<String> getPhotoList(
             @RequestParam(value="since") long since,
@@ -71,9 +96,9 @@ public class UploadController {
         return photos;
     }
     
-    @RequestMapping(value = "/camcorder-upload", method=RequestMethod.POST)
+    @RequestMapping(value = "/video-upload", method=RequestMethod.POST)
     public void camcorderUpload(HttpServletRequest request, 
-            @ICEmobileResource("camcorder") Resource camcorderUpload, 
+            @ICEmobileResource("camcorderBtn") Resource camcorderUpload, 
             @ModelAttribute("videos") List<String> videos) throws IOException {
         if( camcorderUpload != null ){
             if (camcorderUpload.getContentType().startsWith("video")) {

@@ -4,14 +4,14 @@
         <div class="row"><p class="normalText">Send an SMS with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.mobi.sms(id,callback, 
+                ice.bridgeIt.sms(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
-    <a type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.mobi.sms('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo</a>
+    <a id="smsBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.bridgeIt.sms('smsBtn',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo</a>
         
     <fieldset>
         <div class="row"></div>
@@ -24,5 +24,10 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
+    <script type="text/javascript">
+    function handleAR(event)  {
+        alert(event);
+    }
+    </script>
 
 </div>

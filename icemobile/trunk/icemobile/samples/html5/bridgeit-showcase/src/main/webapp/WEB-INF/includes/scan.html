@@ -4,13 +4,13 @@
         <div class="row"><p class="normalText">Scan a QR Code with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.mobi.scan(id,callback);
+                ice.bridgeIt.scan(id,callback);
             </code>
         </div>
     </fieldset>
     
-    <a type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.mobi.scan('_cam',handleScan);">Scan a Code</a>
+    <a id="scanBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.bridgeIt.scan('scanBtn',handleScan);">Scan a Code</a>
         
     <fieldset>
         <div class="row"></div>
@@ -23,5 +23,16 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
+    <script type="text/javascript">
+    function handleScan(event)  {
+        var HTTP = "http";
+        var text = event.value;
+        if (HTTP === text.substring(0, HTTP.length))  {
+            text = "<a href='" + text + "'>" + text + "</a>";
+        }
+        var elem = document.getElementById("scans");
+        elem.innerHTML = elem.innerHTML + "<div class='row'>" + text + "</div>";
+    }
+    </script>
 
 </div>

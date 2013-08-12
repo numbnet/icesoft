@@ -4,14 +4,14 @@
         <div class="row"><p class="normalText">Access the native audio recording features with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.mobi.microphone(id,callback, 
+                ice.bridgeIt.microphone(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
-    <a type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.mobi.microphone('_cam',handleAudio, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some audio</a>
+    <a id="micBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.bridgeIt.microphone('micBtn',handleAudio, {postURL:(''+window.location).match(/.*\//) + 'service/audio-upload/'});">Record some audio</a>
         
     <fieldset>
         <div class="row"></div>
@@ -24,5 +24,15 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
+    <script type="text/javascript">
+    function handleAudio(event)  {
+        var text = event.value;
+        if (event.response)  {
+            var theResponse = JSON.parse(event.response);
+            var elem = document.getElementById("recordings");
+            elem.innerHTML = elem.innerHTML + "<div class='row'><audio src='" + theResponse.path + "'></div>";
+        }
+    }
+    </script>
 
 </div>

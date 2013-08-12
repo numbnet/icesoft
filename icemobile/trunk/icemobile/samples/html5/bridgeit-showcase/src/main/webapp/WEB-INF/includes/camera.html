@@ -4,14 +4,14 @@
         <div class="row"><p class="normalText">Access the native device camera features with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.mobi.camera(id,callback, 
+                ice.bridgeIt.camera(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
-    <a type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.mobi.camera('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo</a>
+    <a id="cameraBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.bridgeIt.camera('cameraBtn',handleCam, {postURL:(''+window.location).match(/.*\//) + 'service/camera-upload/'});">Take a Photo</a>
         
     <fieldset>
         <div class="row"></div>
@@ -25,5 +25,18 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
-
+    <script type="text/javascript">
+    function handleCam(event)  {
+        alert(event);
+        var text = event.value;
+        if (event.response)  {
+            var theResponse = JSON.parse(event.response);
+            var elem = document.getElementById("images");
+            elem.innerHTML = elem.innerHTML + "<div class='row'><img src='" + theResponse.path + "'></div>";
+        }
+        if (event.preview)  {
+            document.getElementById("thumbnail").setAttribute("src", event.preview);
+        }
+    }
+    </script>
 </div>

@@ -4,13 +4,13 @@
         <div class="row"><p class="normalText">Access the device contact list with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.mobi.fetchContact(id,callback);
+                ice.bridgeIt.fetchContact(id,callback);
             </code>
         </div>
     </fieldset>
     
-    <a type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.mobi.fetchContact('_cam',handleContact);">Fetch a Contact</a>
+    <a id="contactListBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.bridgeIt.fetchContact('contactListBtn',handleContact);">Fetch a Contact</a>
         
     <fieldset>
         <div class="row"></div>
@@ -23,5 +23,13 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
+    <script type="text/javascript">
+    function handleContact(event)  {
+        var HTTP = "http";
+        var text = event.value;
+        var elem = document.getElementById("contacts");
+        elem.innerHTML = elem.innerHTML + "<div class='row'>" + text + "</div>";
+    }
+    </script>
    
 </div>
