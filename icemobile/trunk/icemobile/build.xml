@@ -84,6 +84,9 @@
     	<ice:subant target="all">
             <fileset dir="./spring" includes="build.xml" />
         </ice:subant>
+    	<ice:subant target="all">
+            <fileset dir="./filter" includes="build.xml" />
+        </ice:subant>
         <ice:subant target="all">
             <fileset dir="./jsf" includes="build.xml" />
         </ice:subant>
@@ -102,6 +105,9 @@
 	        <ice:subant target="all">
 	            <fileset dir="./spring" includes="build.xml" />
 	        </ice:subant>
+            <ice:subant target="all">
+                <fileset dir="./filter" includes="build.xml" />
+            </ice:subant>
 	        <ice:subant target="all">
 	            <fileset dir="./jsf" includes="build.xml" />
 	        </ice:subant>
@@ -121,6 +127,12 @@
     <target name="build.jsf" description="Build JSF library.">
         <ice:subant target="all">
             <filelist dir="." files="core, jsf"/>
+        </ice:subant>
+    </target>
+	
+    <target name="build.filter" description="Build Mobile Redirect library.">
+        <ice:subant target="all">
+            <filelist dir="." files="core, filter"/>
         </ice:subant>
     </target>
     
@@ -156,16 +168,16 @@
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
         <delete dir="${docs.jsf.dir}"/>
-    	<delete dir="${docs.jsp.dir}"/>
-    	<delete dir=".sass-cache"/>
+        <delete dir="${docs.jsp.dir}"/>
+        <delete dir=".sass-cache"/>
         <ice:subant target="clean">
-            <filelist dir="." files="core, jsf, jsp, spring, samples, resources"/>
+            <filelist dir="." files="core, jsf, jsp, filter, spring, samples, resources"/>
         </ice:subant>
     </target>
 
     <target name="clean.bin">
         <ice:subant target="clean">
-            <filelist dir="." files="core, jsf, jsp, spring, samples"/>
+            <filelist dir="." files="core, jsf, jsp, filter, spring, samples"/>
         </ice:subant>
     </target>
 
