@@ -1,10 +1,29 @@
+body{
+    background-image: url(../images/bridgeit-bg.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+ }
 @media screen and (min-width: 768px) { 
     body{
-        background-image: url(../images/bridgeit-bg.png);
-        background-repeat: no-repeat;
-        background-size: 100%;
-        background-attachment: fixed;
-        background-position: 0px -50px
+        background-size: 90%;
+        background-position: 0px -50px;
+        -webkit-transition: background-position 20s ease-in-out;
+        -moz-transition: background-position 20s ease-in-out;
+        -o-transition: background-position 20s ease-in-out;
+        transition: background-position 20s ease-in-out;
+    }
+    body.endAnim{
+        background-position: 150px -110px;
+        background-size: 105%;
+    }
+}
+@media screen and (max-width: 767px) { 
+    body{
+       background-size: 100%;
+    }
+    .carousel-caption{
+        left: 0%;
+        right: 0%;
     }
 }
 
@@ -47,6 +66,7 @@
     -moz-border-image: none;
     float: left;
     margin-top: 10px;
+    position: absolute;
 }
 .platforms{
     position: absolute;
@@ -65,14 +85,33 @@
     vertical-align: bottom;
     margin-left: -3px;
 }
+.jumbotron{
+    background-color: transparent;
+}
+
+@media screen and (max-width: 767px) { 
+    .platforms{
+        font-size: 14px;
+        left: 5px;
+        float: left;
+    }
+    .bb-logo{
+        width: 17px;
+    }
+    .jumbotron{
+        background-color: rgba(255,255,255,0.8);
+        padding: 0 10px;
+    }
+    #bridgeItLink{
+       display:none;
+    }
+}
+
 .navbar .platforms{
    float: right;
 }
 .coming-soon{
     opacity: 0.35;
-}
-.jumbotron{
-    background-color: rgba(228,250,225,0.3);
 }
 @media screen and (min-width: 768px) {  
     .jumbotron{
@@ -81,7 +120,7 @@
     }
 }
 .jumbotron h1{
-    font-family: 'Euphoria Script', cursive;
+    font-family: 'Euphoria Script', "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: rgba(234,85,7,1);
 }
 body > .container{
@@ -110,9 +149,6 @@ body > .container{
     border-top-color: rgba(234,85,7,1);
     border-bottom-color: rgba(234,85,7,1);
 }
-.jumbotron{
-    background-color: transparent;
-}
 .jumbotron i{
     color: #217265;
     font-size: 40px;
@@ -130,8 +166,45 @@ body > .container{
     min-height: 200px;
     margin-bottom: 60px;
     margin-top: -30px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.2);
     padding-top: 20px;
+}
+.carousel-inner{
+    margin-top: -20px;
+}
+#carousel .item{
+    min-height: 200px;
+}
+.jumbotron .br{
+    margin-left: 200px;
+    opacity: 0;
+}
+body.endAnim .jumbotron .br{
+    margin-left: 0;
+    opacity: 1;
+    -webkit-transition: margin-left 5s, opacity 5s ease-in-out;
+    -moz-transition: margin-left 5s, opacity 5s ease-in-out;
+    -o-transition: margin-left 5s, opacity 5s ease-in-out;
+    transition: margin-left 5s, opacity 5s ease-in-out;
+}
+@media screen and (max-width: 767px) { 
+    #carousel{
+        min-height: 300px;
+        background-color: rgba(0,0,0,0.2);
+    }
+    #carousel .item{
+        min-height: 300px;
+    }
+    .carousel-caption{
+        top: 0;
+        padding-top: 10px;
+    }
+    .jumbotron i{
+        font-size: 20px;
+    }
+    .jumbotron .br{
+       display:block;
+    }
 }
 .carousel-indicators{
     top: 0;
@@ -139,18 +212,19 @@ body > .container{
 }
 #carousel i{
     font-size: 34px;
-    color: rgb(234, 85, 7);
+    color: rgb(255, 109, 32);
     text-shadow: 0 0 40px rgb(255, 255, 255);
     margin: 10px;
 }
-#carousel .item{
-    min-height: 200px;
-}
+
 #intro{
     width: 100%;
     background-color: rgba(255, 255, 255, 0.5);
     margin-bottom: 30px;
     padding-bottom: 0;
+}
+#intro a{
+    text-decoration: none;
 }
 .footer{
     position: fixed;
@@ -165,3 +239,12 @@ body > .container{
     width: 12px;
     vertical-align: text-top;
 }
+.navbar-inverse .navbar-toggle {
+    border-color: rgb(238, 196, 175);
+}
+@media screen and (min-width: 768px) {
+    .navbar-brand {
+        margin-left: 30px;
+    }
+}
+
