@@ -76,15 +76,18 @@
 
     <target name="build.all" description="Build ICEmobile project and samples.">
         <ice:subant target="all">
+            <fileset dir="./bridgeit" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
             <fileset dir="./core" includes="build.xml" />
         </ice:subant>
         <ice:subant target="all">
             <fileset dir="./jsp" includes="build.xml" />
         </ice:subant>
-    	<ice:subant target="all">
+        <ice:subant target="all">
             <fileset dir="./spring" includes="build.xml" />
         </ice:subant>
-    	<ice:subant target="all">
+        <ice:subant target="all">
             <fileset dir="./filter" includes="build.xml" />
         </ice:subant>
         <ice:subant target="all">
@@ -94,24 +97,24 @@
             <fileset dir="./samples" includes="build.xml" />
         </ice:subant>
     </target>
-	
-	<target name="build.libs" description="Build ICEmobile project libraries.">
-	        <ice:subant target="all">
-	            <fileset dir="./core" includes="build.xml" />
-	        </ice:subant>
-	        <ice:subant target="all">
-	            <fileset dir="./jsp" includes="build.xml" />
-	        </ice:subant>
-	        <ice:subant target="all">
-	            <fileset dir="./spring" includes="build.xml" />
-	        </ice:subant>
+
+    <target name="build.libs" description="Build ICEmobile project libraries.">
+        <ice:subant target="all">
+            <fileset dir="./core" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
+            <fileset dir="./jsp" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
+            <fileset dir="./spring" includes="build.xml" />
+        </ice:subant>
             <ice:subant target="all">
                 <fileset dir="./filter" includes="build.xml" />
             </ice:subant>
-	        <ice:subant target="all">
-	            <fileset dir="./jsf" includes="build.xml" />
-	        </ice:subant>
-	    </target>
+        <ice:subant target="all">
+            <fileset dir="./jsf" includes="build.xml" />
+        </ice:subant>
+    </target>
 
     <target name="build.bin" >
         <build.bin.bundle />
@@ -129,7 +132,7 @@
             <filelist dir="." files="core, jsf"/>
         </ice:subant>
     </target>
-	
+
     <target name="build.filter" description="Build Mobile Redirect library.">
         <ice:subant target="all">
             <filelist dir="." files="core, filter"/>
@@ -141,8 +144,8 @@
     <target name="zip.src">
         <zip.src />
     </target>
-	
-	<target name="clean.build.all" depends="clean,build.all"/>
+
+    <target name="clean.build.all" depends="clean,build.all"/>
 
     <target name="build.bin.bundle" depends="build.bin, clean.bin"
             description="Creates ICEmobile binary bundle.">
@@ -200,7 +203,7 @@
                     <exclude name="client/"/>
                     <exclude name="jsf/"/>
                     <exclude name="jsp/"/>
-                	<exclude name="spring/"/>
+                <exclude name="spring/"/>
                     <exclude name="lib/generator/"/>
                     <!-- trim component build script for binary bundle -->
                     <exclude name="build.xml" />
@@ -246,9 +249,9 @@
                 <fileset dir="./jsp" includes="build.xml" />
                 <propertyset refid="product.info"/>
             </ice:subant>
-        	<ice:subant target="all">
-	            <fileset dir="./spring" includes="build.xml" />
-	        </ice:subant>
+        <ice:subant target="all">
+            <fileset dir="./spring" includes="build.xml" />
+        </ice:subant>
             <ice:subant target="all">
                 <fileset dir="./samples" includes="build.xml" />
                 <propertyset refid="product.info"/>
