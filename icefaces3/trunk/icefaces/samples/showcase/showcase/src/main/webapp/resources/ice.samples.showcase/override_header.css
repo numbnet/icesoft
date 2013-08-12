@@ -14,6 +14,102 @@
  * governing permissions and limitations under the License.
  */
 
+.ui-inputfield.ui-state-optional.blueRS {
+    border-color: #9999cc;
+}
+
+.ui-state-optional.ui-state-error.blueRS {
+    border-color: #ccccff;
+}
+
+.ui-inputfield.ui-state-required.blueRS {
+    border-color: #0000cc;
+}
+
+.ui-state-required.ui-state-error.blueRS {
+    border-color: #0000ff;
+}
+
+.blueRS .ui-inputfield.ui-state-optional {
+    border-color: #9999cc;
+}
+
+.blueRS .ui-state-optional.ui-state-error {
+    border-color: #ccccff;
+}
+
+.blueRS .ui-inputfield.ui-state-required {
+    border-color: #0000cc;
+}
+
+.blueRS .ui-state-required.ui-state-error {
+    border-color: #0000ff;
+}
+
+.ui-inputfield.ui-state-optional.redRS {
+    border-color: #cc9999;
+}
+
+.ui-state-optional.ui-state-error.redRS {
+    border-color: #ffcccc;
+}
+
+.ui-inputfield.ui-state-required.redRS {
+    border-color: #cc0000;
+}
+
+.ui-state-required.ui-state-error.redRS {
+    border-color: #ff0000;
+}
+
+.redRS .ui-inputfield.ui-state-optional {
+    border-color: #cc9999;
+}
+
+.redRS .ui-state-optional.ui-state-error {
+    border-color: #ffcccc;
+}
+
+.redRS .ui-inputfield.ui-state-required {
+    border-color: #cc0000;
+}
+
+.redRS .ui-state-required.ui-state-error {
+    border-color: #ff0000;
+}
+
+.ui-inputfield.ui-state-optional.greenRS {
+    border-color: #99cc99;
+}
+
+.ui-state-optional.ui-state-error.greenRS {
+    border-color: #ccffcc;
+}
+
+.ui-inputfield.ui-state-required.greenRS {
+    border-color: #00cc00;
+}
+
+.ui-state-required.ui-state-error.greenRS {
+    border-color: #00ff00;
+}
+
+.greenRS .ui-inputfield.ui-state-optional {
+    border-color: #99cc99;
+}
+
+.greenRS .ui-state-optional.ui-state-error {
+    border-color: #ccffcc;
+}
+
+.greenRS .ui-inputfield.ui-state-required {
+    border-color: #00cc00;
+}
+
+.greenRS .ui-state-required.ui-state-error {
+    border-color: #00ff00;
+}
+
 .icePnlTbSetHdrIconLft, .icePnlTbSetHdrIconRt {
     display: inline;
     width: auto;
@@ -26,126 +122,6 @@
 
 .textEntryInputTable .ui-input-label-left {
     width: 100px;
-}
-
-.ui-inputfield.ui-state-optional.blueRS {
-    background-color: #7B7BDC;
-	background-image: none;
-}
-
-.ui-state-optional.ui-state-error.blueRS {
-    background-color: #1B1BDC;
-	background-image: none;
-}
-
-.ui-inputfield.ui-state-required.redRS {
-    background-color: #FF5555;
-	background-image: none;
-}
-
-.ui-state-required.ui-state-error.redRS {
-    background-color: #FF1111;
-	background-image: none;
-}
-
-.ui-inputfield.ui-state-optional.redRS {
-    background-color: #DC7B7B;
-	background-image: none;
-}
-
-.ui-state-optional.ui-state-error.redRS {
-    background-color: #DC1B1B;
-	background-image: none;
-}
-
-.ui-inputfield.ui-state-optional.greenRS {
-    background-color: #7BDC7B;
-	background-image: none;
-}
-
-.ui-state-optional.ui-state-error.greenRS {
-    background-color: #1BDC1B;
-	background-image: none;
-}
-
-.ui-inputfield.ui-state-required.blueRS {
-    background-color: #5555FF;
-	background-image: none;
-}
-
-.ui-state-required.ui-state-error.blueRS {
-    background-color: #1111FF;
-	background-image: none;
-}
-
-.ui-inputfield.ui-state-required.greenRS {
-    background-color: #55FF55;
-	background-image: none;
-}
-
-.ui-state-required.ui-state-error.greenRS {
-    background-color: #11FF11;
-	background-image: none;
-}
-
-.blueRS .ui-inputfield.ui-state-optional {
-    background-color: #7B7BDC;
-	background-image: none;
-}
-
-.blueRS .ui-state-optional.ui-state-error {
-    background-color: #1B1BDC;
-	background-image: none;
-}
-
-.redRS .ui-inputfield.ui-state-required {
-    background-color: #FF5555;
-	background-image: none;
-}
-
-.redRS .ui-state-required.ui-state-error {
-    background-color: #FF1111;
-	background-image: none;
-}
-
-.redRS .ui-inputfield.ui-state-optional {
-    background-color: #DC7B7B;
-	background-image: none;
-}
-
-.redRS .ui-state-optional.ui-state-error {
-    background-color: #DC1B1B;
-	background-image: none;
-}
-
-.greenRS .ui-inputfield.ui-state-optional {
-    background-color: #7BDC7B;
-	background-image: none;
-}
-
-.greenRS .ui-state-optional.ui-state-error {
-    background-color: #1BDC1B;
-	background-image: none;
-}
-
-.blueRS .ui-inputfield.ui-state-required {
-    background-color: #5555FF;
-	background-image: none;
-}
-
-.blueRS .ui-state-required.ui-state-error {
-    background-color: #1111FF;
-	background-image: none;
-}
-
-.greenRS .ui-inputfield.ui-state-required {
-    background-color: #55FF55;
-	background-image: none;
-}
-
-.greenRS .ui-state-required.ui-state-error {
-    background-color: #11FF11;
-	background-image: none;
 }
 
 .th-align-left {

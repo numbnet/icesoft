@@ -503,23 +503,37 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
 }
 
 .required-styling-demo .ui-inputfield.ui-state-required {
-    background-color: #33ffff;
-	background-image: none;
+    border-color: #009999;
+	border-width: 2px;
+	margin:1px;
 }
 
 .required-styling-demo .ui-inputfield.ui-state-optional {
-    background-color: #ffff33;
-	background-image: none;
+    border-color: #666666;
+	border-width: 2px;
+	margin:1px;
 }
 
 .required-styling-demo .ui-state-required.ui-state-error {
-    background-color: #cd0a0a;
-	background-image: none;
+    border-color: #00cccc;
+	border-width: 3px;
+	margin:0;
 }
 
 .required-styling-demo .ui-state-optional.ui-state-error {
-    background-color: #ff9999;
-	background-image: none;
+    border-color: #cccccc;
+	border-width: 3px;
+	margin:0;
+}
+
+.required-styling-demo .ui-combobox-value .ui-inputfield.ui-state-required,
+.required-styling-demo .ui-combobox-value .ui-inputfield.ui-state-optional {
+	margin: 0;
+}
+
+.required-styling-demo .ui-combobox-value .ui-state-required.ui-state-error,
+.required-styling-demo .ui-combobox-value .ui-state-optional.ui-state-error {
+	border-width: 2px;
 }
 
 div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.plainMenu {
