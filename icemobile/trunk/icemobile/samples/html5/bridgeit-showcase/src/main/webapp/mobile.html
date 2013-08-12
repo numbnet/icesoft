@@ -53,14 +53,14 @@
             </p>
         </div>
         <ul id="menu">
-            <li><a href="./examples/camera.html"><i class="icon-camera"></i>Camera</a></li>
-            <li><a href="./examples/camcorder.html"><i class="icon-film"></i>Camcorder</a></li>
-            <li><a href="./examples/scan.html"><i class="icon-qrcode"></i>Scan</a></li>
-            <li><a href="./examples/microphone.html"><i class="icon-microphone"></i>Microphone</a></li>
-            <li><a href="./examples/contact-list.html"><i class="icon-group"></i>Contact List</a></li>
-            <li><a href="./examples/geospy.html"><i class="icon-map-marker"></i>GeoSpy</a></li>
-            <li><a href="./examples/augmented-reality.html"><i class="icon-eye-open"></i>Augmented Reality</a></li>
-            <li><a href="./examples/sms.html"><i class="icon-mobile-phone"></i>SMS</a></li>
+            <li><a href="#camera"><i class="icon-camera"></i>Camera</a></li>
+            <li><a href="#camcorder"><i class="icon-film"></i>Camcorder</a></li>
+            <li><a href="#scan"><i class="icon-qrcode"></i>Scan</a></li>
+            <li><a href="#microphone"><i class="icon-microphone"></i>Microphone</a></li>
+            <li><a href="#contactlist"><i class="icon-group"></i>Contact List</a></li>
+            <li><a href="#geospy"><i class="icon-map-marker"></i>GeoSpy</a></li>
+            <li><a href="#ar"><i class="icon-eye-open"></i>Augmented Reality</a></li>
+            <li><a href="#sms"><i class="icon-mobile-phone"></i>SMS</a></li>
             <li><a href="./docs/ice.bridgeIt.html"><i class="icon-book"></i>Documentation</a></li>
             <li><a href="#about"><i class="icon-info-sign"></i>About</a></li>
         </ul>
@@ -71,6 +71,244 @@
             &copy; 2013 ICEsoft Technologies
         </div>
     </div>
+    
+    <div id="camera" title="Shoot It" class="panel" >
+    <h2>Camera Access</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Access the native device camera features with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.camera(id,callback, 
+                &nbsp;&nbsp;{postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.camera('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo</a>
+        
+    <fieldset>
+        <div class="row"></div>
+        <div class="row"><img id="thumbnail"/></div>
+    </fieldset>
+    <fieldset id="images">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+
+</div>
+    
+    <div id="camcorder" title="Film It" class="panel" >
+    <h2>Video Recording</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Access the native video recording features with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.camcorder(id,callback, 
+                &nbsp;&nbsp;{postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.camcorder('_cam',handleVideo, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video</a>
+        
+    <fieldset>
+        <div class="row"></div>
+        <div class="row"><img id="thumbnail"/></div>
+    </fieldset>
+    <fieldset id="videos">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+
+</div>
+
+    
+    <div id="ar" title="See It" class="panel" >
+    <h2>Augmented Reality</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Access an augmented world with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.aug(id,callback, 
+                &nbsp;&nbsp;{postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.aug('_cam',handleAR, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video</a>
+        
+    <fieldset>
+        <div class="row"></div>
+        <div class="row"><img id="thumbnail"/></div>
+    </fieldset>
+    <fieldset id="videos">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+   
+</div>
+
+    
+    <div id="contactlist" title="Contact It" class="panel">
+    <h2>Contact List Access</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Access the device contact list with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.fetchContact(id,callback);
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.fetchContact('_cam',handleContact);">Fetch a Contact</a>
+        
+    <fieldset>
+        <div class="row"></div>
+    </fieldset>
+    <fieldset id="contacts">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+   
+</div>
+
+    
+    <div id="geospy" title="Locate It" class="panel">
+    <h2>GeoSpy Location Tracking</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Continual geolocation tracking with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.geoSpy('_geo',handleSpy, {postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.geoSpy('_geo',handleSpy, {postURL:(''+window.location).match(/.*\//) + '../geospy/'});">Start Tracking</a>
+        
+    <fieldset>
+        <div class="row"></div>
+    </fieldset>
+    <fieldset id="contacts">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+   
+</div>
+
+    
+    <div id="microphone" title="Record It" class="panel" >
+   <h2>Audio Recording</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Access the native audio recording features with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.microphone(id,callback, 
+                &nbsp;&nbsp;{postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.microphone('_cam',handleAudio, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some audio</a>
+        
+    <fieldset>
+        <div class="row"></div>
+    </fieldset>
+    <fieldset id="recordings">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+
+</div>
+
+    
+    <div id="scan" title="Scan It" class="panel" >
+    <h2>QR Code Scanning</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Scan a QR Code with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.scan(id,callback);
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.scan('_cam',handleScan);">Scan a Code</a>
+        
+    <fieldset>
+        <div class="row"></div>
+    </fieldset>
+    <fieldset id="scans">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+
+</div>
+
+    
+    <div id="sms" title="Text It" class="panel" >
+    <h2>SMS</h2>
+    <fieldset>
+        <div class="row"><p class="normalText">Send an SMS with a simple line of JavaScript...</p></div>
+        <div class="row">
+            <code>
+                ice.mobi.sms(id,callback, 
+                &nbsp;&nbsp;{postURL:myURL});
+            </code>
+        </div>
+    </fieldset>
+    
+    <a type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.mobi.sms('_cam',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo</a>
+        
+    <fieldset>
+        <div class="row"></div>
+    </fieldset>
+    <fieldset id="images">
+    </fieldset>
+    <div class="footer">
+        <a href="#">
+            <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+        </a>
+        &copy; 2013 ICEsoft Technologies
+    </div>
+
+</div>
     
      <div id="about" title="About It" class="panel">
         <h2>About BridgeIt</h2>
@@ -216,6 +454,7 @@
             console.log('scroll ' + window.pageYOffset);
         }        
     }
+    
     </script>
 </body>
 </html>

@@ -21,16 +21,16 @@
     <import file="../../build/common-html5.xml"/>
 
     <target name="war">
-        <loadfile property="camera.html" srcFile="${web.dir}/examples/camera.html"/>
-        <loadfile property="camcorder.html" srcFile="${web.dir}/examples/camcorder.html"/>
-        <loadfile property="ar.html" srcFile="${web.dir}/examples/augmented-reality.html"/>
-        <loadfile property="contacts.html" srcFile="${web.dir}/examples/contact-list.html"/>
-        <loadfile property="microphone.html" srcFile="${web.dir}/examples/microphone.html"/>
-        <loadfile property="scan.html" srcFile="${web.dir}/examples/scan.html"/>
-        <loadfile property="geospy.html" srcFile="${web.dir}/examples/geospy.html"/>
-        <loadfile property="sms.html" srcFile="${web.dir}/examples/sms.html"/>
+        <loadfile property="camera.html" srcFile="${web.dir}/WEB-INF/includes/camera.html"/>
+        <loadfile property="camcorder.html" srcFile="${web.dir}/WEB-INF/includes/camcorder.html"/>
+        <loadfile property="ar.html" srcFile="${web.dir}/WEB-INF/includes/augmented-reality.html"/>
+        <loadfile property="contacts.html" srcFile="${web.dir}/WEB-INF/includes/contact-list.html"/>
+        <loadfile property="microphone.html" srcFile="${web.dir}/WEB-INF/includes/microphone.html"/>
+        <loadfile property="scan.html" srcFile="${web.dir}/WEB-INF/includes/scan.html"/>
+        <loadfile property="geospy.html" srcFile="${web.dir}/WEB-INF/includes/geospy.html"/>
+        <loadfile property="sms.html" srcFile="${web.dir}/WEB-INF/includes/sms.html"/>
         
-        <copy file="${web.dir}/examples/mobile.html" todir="${web.dir}" overwrite="true">
+        <copy file="${web.dir}/WEB-INF/includes/mobile.html" todir="${web.dir}" overwrite="true">
            <filterset>
                <filter token="CAMERA_DEMO" value="${camera.html}"/>
                <filter token="CAMCORDER_DEMO" value="${camcorder.html}"/>
