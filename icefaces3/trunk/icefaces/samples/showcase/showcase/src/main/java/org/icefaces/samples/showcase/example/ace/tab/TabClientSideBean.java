@@ -46,10 +46,7 @@ import java.io.Serializable;
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/tab/TabSetBean.java"),
             @ExampleResource(type = ResourceType.java,
                         title = "ImageSet.java",
-                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase/dataGenerators/ImageSet.java"),
-            @ExampleResource(type = ResourceType.java,
-                    title="TabClientSideBean.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/tab/TabClientSideBean.java")
+                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase/dataGenerators/ImageSet.java")
         }
 )
 @ManagedBean(name = TabClientSideBean.BEAN_NAME)

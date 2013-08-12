@@ -35,12 +35,7 @@ import java.io.Serializable;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="panelMenu.xhtml",
-                    resource = "/resources/examples/ace/panel/panelMenu.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="PanelMenu.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/panel/PanelMenu.java")
+                    resource = "/resources/examples/ace/panel/panelMenu.xhtml")
         }
 )
 @ManagedBean(name= PanelMenu.BEAN_NAME)

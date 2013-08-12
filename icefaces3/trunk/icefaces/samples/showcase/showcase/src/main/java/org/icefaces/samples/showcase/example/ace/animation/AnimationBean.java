@@ -34,12 +34,7 @@ import java.io.Serializable;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="animation.xhtml",
-                    resource = "/resources/examples/ace/animation/animation.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="AnimationBean.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/animation/AnimationBean.java")
+                    resource = "/resources/examples/ace/animation/animation.xhtml")
         }
 )
 @Menu(

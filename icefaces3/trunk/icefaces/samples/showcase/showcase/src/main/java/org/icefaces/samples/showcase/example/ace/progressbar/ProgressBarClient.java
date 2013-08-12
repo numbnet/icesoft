@@ -36,11 +36,7 @@ import java.io.Serializable;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="progressBarClient.xhtml",
-                    resource = "/resources/examples/ace/progressbar/progressBarClient.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="ProgressBarClient.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/progressbar/ProgressBarClient.java")
+                    resource = "/resources/examples/ace/progressbar/progressBarClient.xhtml")
         }
 )
 @ManagedBean(name= ProgressBarClient.BEAN_NAME)

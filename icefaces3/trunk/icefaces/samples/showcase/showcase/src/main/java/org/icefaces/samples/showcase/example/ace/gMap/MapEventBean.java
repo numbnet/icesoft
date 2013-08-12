@@ -43,11 +43,7 @@ import java.util.Map;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="gMapEvent.xhtml",
-                    resource = "/resources/examples/ace/gMap/gMapEvent.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="MapEventBean.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/gMap/MapEventBean.java")
+                    resource = "/resources/examples/ace/gMap/gMapEvent.xhtml")
         }
 )
 @ManagedBean(name= MapEventBean.BEAN_NAME)

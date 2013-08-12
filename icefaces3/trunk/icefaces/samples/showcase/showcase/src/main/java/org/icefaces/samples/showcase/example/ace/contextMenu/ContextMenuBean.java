@@ -34,12 +34,7 @@ import java.io.Serializable;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="contextMenu.xhtml",
-                    resource = "/resources/examples/ace/contextMenu/contextMenu.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="ContextMenuBean.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/contextMenu/ContextMenuBean.java")
+                    resource = "/resources/examples/ace/contextMenu/contextMenu.xhtml")
         }
 )
 @Menu(

@@ -34,12 +34,7 @@ import java.io.Serializable;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="resizable.xhtml",
-                    resource = "/resources/examples/ace/resizable/resizable.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="ResizableBean.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/resizable/ResizableBean.java")
+                    resource = "/resources/examples/ace/resizable/resizable.xhtml")
         }
 )
 @Menu(

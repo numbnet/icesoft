@@ -36,12 +36,7 @@ import java.io.Serializable;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="confirmationDialogModal.xhtml",
-                    resource = "/resources/examples/ace/confirmationdialog/confirmationDialogModal.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="ConfirmationDialogModal.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/confirmationdialog/ConfirmationDialogModalBean.java")
+                    resource = "/resources/examples/ace/confirmationdialog/confirmationDialogModal.xhtml")
         }
 )
 @ManagedBean(name= ConfirmationDialogModalBean.BEAN_NAME)
