@@ -38,9 +38,13 @@ import java.io.Serializable;
                     resource = "/resources/examples/ace/autocompleteentry/autoCompleteEntrySelect.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="AutoCompleteEntrySelectBean.java",
+                    title="...SelectBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/autocompleteentry/AutoCompleteEntrySelectBean.java")
+                               "/example/ace/autocompleteentry/AutoCompleteEntrySelectBean.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="AutoCompleteEntryBean.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                               "/example/ace/autocompleteentry/AutoCompleteEntryBean.java")
         }
 )
 @ManagedBean(name= AutoCompleteEntrySelectBean.BEAN_NAME)

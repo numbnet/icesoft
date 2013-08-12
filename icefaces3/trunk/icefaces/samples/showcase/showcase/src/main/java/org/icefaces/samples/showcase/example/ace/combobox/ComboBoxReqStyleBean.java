@@ -40,7 +40,11 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.java,
                     title="ComboBoxReqStyleBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/combobox/ComboBoxReqStyleBean.java")
+                    "/example/ace/combobox/ComboBoxReqStyleBean.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="ComboBoxBean.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/example/ace/combobox/ComboBoxBean.java")
         }
 )
 @ManagedBean(name= ComboBoxReqStyleBean.BEAN_NAME)

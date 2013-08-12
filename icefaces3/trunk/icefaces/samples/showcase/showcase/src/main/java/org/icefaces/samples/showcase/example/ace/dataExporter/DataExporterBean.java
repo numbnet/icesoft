@@ -39,7 +39,11 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.java,
                     title="DataExporterBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/dataExporter/DataExporterBean.java")
+                    "/example/ace/dataExporter/DataExporterBean.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="DataTableSort.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/example/compat/dataTable/DataTableSort.java")
         }
 )
 @Menu(

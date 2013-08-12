@@ -56,7 +56,11 @@ import java.util.ArrayList;
                 @ExampleResource(type = ResourceType.java,
                                  title="DataTableClick.java",
                                  resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                                         "/example/ace/dataTable/DataTableClick.java")
+                                         "/example/ace/dataTable/DataTableClick.java"),
+                @ExampleResource(type = ResourceType.java,
+                                title="DataTableBean.java",
+                                resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                                         "/example/ace/dataTable/DataTableBean.java")
         }
 )
 @ManagedBean(name= DataTableClick.BEAN_NAME)
