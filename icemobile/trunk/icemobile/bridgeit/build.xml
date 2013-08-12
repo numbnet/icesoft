@@ -49,7 +49,6 @@
     <target name="all">
         <mkdir dir="${build.dir}" />
         <ant target="process-js"/>
-        <ant target="docs"/>
     </target>
 	
     <macrodef name="clean">
@@ -68,12 +67,5 @@
         <clean/>
     </target>
 	
-    <target name="docs">
-        <mkdir dir="${build.dir}/docs" />
-        <exec command="${lib.dir}/jsdoc" dir=".">
-            <arg line="../../bridgeit/src/main/javascript/bridgeit.js"/>
-        </exec>
-    </target>
-
 </project>
 
