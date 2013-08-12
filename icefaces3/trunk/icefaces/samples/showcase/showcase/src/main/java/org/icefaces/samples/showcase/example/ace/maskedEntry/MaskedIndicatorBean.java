@@ -38,7 +38,7 @@ import java.io.Serializable;
                     resource = "/resources/examples/ace/maskedEntry/maskedIndicator.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="MaskedIndicator.java",
+                    title="MaskedIndicatorBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
                     "/example/ace/maskedEntry/MaskedIndicatorBean.java")
         }

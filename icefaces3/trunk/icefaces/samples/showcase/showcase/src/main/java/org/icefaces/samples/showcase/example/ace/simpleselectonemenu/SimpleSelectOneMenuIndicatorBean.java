@@ -38,9 +38,13 @@ import java.io.Serializable;
                     resource = "/resources/examples/ace/simpleselectonemenu/simpleSelectOneMenuIndicator.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="SimpleSelectOneMenuIndicatorBean.java",
+                    title="...IndicatorBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/simpleselectonemenu/SimpleSelectOneMenuIndicatorBean.java")
+                    "/example/ace/simpleselectonemenu/SimpleSelectOneMenuIndicatorBean.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="SimpleSelectOneMenuBean.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/example/ace/simpleselectonemenu/SimpleSelectOneMenuBean.java")
         }
 )
 @ManagedBean(name= SimpleSelectOneMenuIndicatorBean.BEAN_NAME)

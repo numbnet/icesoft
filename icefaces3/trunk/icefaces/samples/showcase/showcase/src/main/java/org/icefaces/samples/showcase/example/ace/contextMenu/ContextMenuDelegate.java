@@ -40,7 +40,11 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.java,
                     title="ContextMenuDelegate.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/contextMenu/ContextMenuDelegate.java")
+                    "/example/ace/contextMenu/ContextMenuDelegate.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="DataTableDynamic.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/example/compat/dataTable/DataTableDynamic.java")
         }
 )
 @ManagedBean(name= ContextMenuDelegate.BEAN_NAME)

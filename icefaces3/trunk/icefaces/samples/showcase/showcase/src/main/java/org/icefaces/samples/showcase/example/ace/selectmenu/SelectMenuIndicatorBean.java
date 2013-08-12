@@ -40,7 +40,11 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.java,
                     title="SelectMenuIndicatorBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/selectmenu/SelectMenuIndicatorBean.java")
+                    "/example/ace/selectmenu/SelectMenuIndicatorBean.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="SelectMenuBean.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/example/ace/selectmenu/SelectMenuBean.java")
         }
 )
 @ManagedBean(name= SelectMenuIndicatorBean.BEAN_NAME)
