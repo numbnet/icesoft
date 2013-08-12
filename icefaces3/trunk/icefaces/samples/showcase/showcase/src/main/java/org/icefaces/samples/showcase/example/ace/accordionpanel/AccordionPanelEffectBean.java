@@ -41,12 +41,7 @@ import java.util.Date;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="accordionPanelEffect.xhtml",
-                    resource = "/resources/examples/ace/accordionpanel/accordionPanelEffect.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="AccordionPanelEffect.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/accordionpanel/AccordionPanelEffectBean.java")
+                    resource = "/resources/examples/ace/accordionpanel/accordionPanelEffect.xhtml")
         }
 )
 @ManagedBean(name= AccordionPanelEffectBean.BEAN_NAME)

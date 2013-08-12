@@ -36,11 +36,7 @@ import java.io.Serializable;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="globalTooltip.xhtml",
-                    resource = "/resources/examples/ace/tooltip/globalTooltip.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="GlobalTooltipBean.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/tooltip/GlobalTooltipBean.java")
+                    resource = "/resources/examples/ace/tooltip/globalTooltip.xhtml")
         }
 )
 

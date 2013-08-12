@@ -34,12 +34,7 @@ import java.io.Serializable;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="notificationPanelClient.xhtml",
-                    resource = "/resources/examples/ace/notificationpanel/notificationPanelClient.xhtml"),
-            // Java Source
-            @ExampleResource(type = ResourceType.java,
-                    title="NotificationPanelClient.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/notificationpanel/NotificationPanelClientBean.java")
+                    resource = "/resources/examples/ace/notificationpanel/notificationPanelClient.xhtml")
         }
 )
 @ManagedBean(name= NotificationPanelClientBean.BEAN_NAME)
