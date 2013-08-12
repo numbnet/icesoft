@@ -4,13 +4,13 @@
         <div class="row"><p class="normalText">Continual geolocation tracking with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.mobi.geoSpy('_geo',handleSpy, {postURL:myURL});
+                ice.bridgeIt.geoSpy('_geo',handleSpy, {postURL:myURL});
             </code>
         </div>
     </fieldset>
     
-    <a type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.mobi.geoSpy('_geo',handleSpy, {postURL:(''+window.location).match(/.*\//) + '../geospy/'});">Start Tracking</a>
+    <a id="geoSpyBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.bridgeIt.geoSpy('geoSpyBtn',handleSpy, {postURL:(''+window.location).match(/.*\//) + 'service/geospy/'});">Start Tracking</a>
         
     <fieldset>
         <div class="row"></div>
@@ -23,5 +23,10 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
+    <script type="text/javascript">
+    function handleSpy(event)  {
+        alert(event);
+    }
+    </script>
    
 </div>

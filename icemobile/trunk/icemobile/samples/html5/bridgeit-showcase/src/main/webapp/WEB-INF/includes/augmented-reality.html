@@ -4,14 +4,14 @@
         <div class="row"><p class="normalText">Access an augmented world with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.mobi.aug(id,callback, 
+                ice.bridgeIt.augmentedReality(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
-    <a type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.mobi.aug('_cam',handleAR, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Record some video</a>
+    <a id="arBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="ice.bridgeIt.augmentedReality('arBtn',handleAR, {postURL:(''+window.location).match(/.*\//) + 'service/ar'});">Enter Augmented Reality</a>
         
     <fieldset>
         <div class="row"></div>
@@ -25,5 +25,10 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
+    <script type="text/javascript">
+    function handleAR(event)  {
+        alert(event);
+    }
+    </script>
    
 </div>
