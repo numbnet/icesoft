@@ -905,7 +905,7 @@ public class DataTable extends DataTableBase implements Serializable {
         if (effect != null)
             if (effect.equals(SearchEffect.HIGHLIGHT))
                 JavaScriptRunner.runScript(context,
-                        "ice.ace.jq(ice.ace.escapeClientId('" + id + "')).effect('highlight'),focus();");
+                        "ice.ace.jq(ice.ace.escapeClientId('" + id + "')).effect('highlight').focus();");
             else if (effect.equals(SearchEffect.PULSATE))
                 JavaScriptRunner.runScript(context,
                         "ice.ace.jq(ice.ace.escapeClientId('" + id + "')).effect('pulsate').focus();");
