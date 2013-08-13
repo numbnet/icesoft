@@ -20,3 +20,4 @@ ICE-8568 added hack to avoid closing a dynamic ace:submenu right away after it's
 ICE-8515 fix for clearing out multi-column submenus on mouseleave
 ICE-9426 fix to prevent double submit when pressing enter
 ICE-9446 added support for a single ace:multiColumnSubmenu in ace:menu
+ICE-9420 added CSS class name to submenus to apply the drop shadow rule
