@@ -30,10 +30,12 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class FocusManager extends UIComponentBase {
     private final static Logger log = Logger.getLogger(FocusManager.class.getName());
+    private final static Random RANDOM = new Random();
 
     public String getFamily() {
         return "javax.faces.Output";
@@ -95,9 +97,12 @@ public class FocusManager extends UIComponentBase {
                 id = source.getClientId(context);
             }
 
-            writer.writeText("try { document.getElementById('" + id +
-                    "').focus(); } catch (ex) {ice.log.warn(ice.logger, 'failed to focus element " + id +
-                    "'); }", null);
+            writer.writeText("try { document.getElementById('", null);
+            writer.writeText(id, null);
+            writer.writeText("').focus(); } catch (ex) {ice.log.warn(ice.logger, 'failed to focus element ", null);
+            writer.writeText(id, null);
+            writer.writeText("'); }//", null);
+            writer.writeText(RANDOM.nextLong(), null);
             writer.endElement("script");
         }
 
