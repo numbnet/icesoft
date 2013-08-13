@@ -319,6 +319,8 @@ ice.ace.MenuButton = function(id, cfg) {
 
     this.jqMenu.parent().parent().css('z-index', this.cfg.zindex);      //overlay element
 	
+	this.root.addClass('wijmo-wijmenu-menubutton');
+	
     if(this.cfg.style)
         this.root.attr('style', this.cfg.style);
     if(this.cfg.styleClass)
@@ -511,6 +513,8 @@ ice.ace.ContextMenu.prototype.initialize = function(id, cfg) {
     this.element = this.jq.parent().parent();   //overlay element
     this.element.css('z-index', this.cfg.zindex);
 
+	this.element.addClass('wijmo-wijmenu-flyout');
+	
     if(this.cfg.style)
         this.element.attr('style', this.cfg.style + ';' + this.element.attr('style'));
     if(this.cfg.styleClass)
