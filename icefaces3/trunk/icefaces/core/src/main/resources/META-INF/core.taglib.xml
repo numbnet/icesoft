@@ -190,6 +190,24 @@
     </tag>
 
     <tag>
+        <tag-name>focusManager</tag-name>
+        <description>
+            This tag can be used to manage the focus on the included components.
+        </description>
+        <component>
+            <component-type>org.icefaces.impl.component.FocusManager</component-type>
+        </component>
+        <attribute>
+            <description>
+                The ID of the compon ent that should receive focus when loaded.
+            </description>
+            <name>for</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+
+    <tag>
         <tag-name>push</tag-name>
         <description>
             This tag can be used to configure push behavior on a per-view basis.
