@@ -17,13 +17,11 @@
 package org.icefaces.impl.component;
 
 import org.icefaces.component.Focusable;
-import org.icefaces.impl.util.Util;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
