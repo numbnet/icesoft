@@ -30,12 +30,10 @@
     
     <!-- #################### Application configuration ##################### -->
     
-    <context:component-scan base-package="org.icemobile.samples.bridgeit" />
-    
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     
 
-    <context:component-scan base-package="org.icemobile.samples.spring.controllers"/>
+    <context:component-scan base-package="org.icemobile.samples.bridgeit"/>
 
 
     <!-- #################### ICEmobile standard configuration ##################### -->
