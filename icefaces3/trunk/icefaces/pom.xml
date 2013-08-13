@@ -116,8 +116,11 @@
         </tld.title>
 
         <!-- Versions of JSF implementations -->
-        <mojarra.version>2.1.21</mojarra.version>
-        <myfaces.version>2.1.10</myfaces.version>
+        <mojarra.version>2.1.24</mojarra.version>
+        <!--<mojarra.version>2.2.1</mojarra.version>-->
+
+        <myfaces.version>2.1.12</myfaces.version>
+        <!--<myfaces.version>2.2.0-SNAPSHOT</myfaces.version>-->
 
         <!-- Various library versions settable from one place -->
         <annotation.version>1.0</annotation.version>
@@ -132,13 +135,13 @@
          -->
 
         <!-- Use with Liferay 6.1 -->
-        <liferayfaces.version>3.1.2-ga3</liferayfaces.version>
+        <liferayfaces.version>3.1.3-ga4-SNAPSHOT</liferayfaces.version>
 
         <!-- Use with Liferay 6.0 -->
-        <!--<liferayfaces.version>3.0.2-ga3</liferayfaces.version>-->
+        <!--<liferayfaces.version>3.0.3-ga4</liferayfaces.version>-->
 
         <!-- Use with Liferay 5.2 -->
-        <!--<liferayfaces.version>3.0.2-legacy-ga3</liferayfaces.version>-->
+        <!--<liferayfaces.version>3.0.3-legacy-ga4</liferayfaces.version>-->
 
         <!-- For backwards compatibility and use with WebSphere Portal -->
         <portletfaces.version>2.0.2-ice-8986</portletfaces.version>
@@ -221,7 +224,7 @@
         </repository>
         <repository>
             <id>apache.org</id>
-            <url>https://repository.apache.org</url>
+            <url>https://repository.apache.org/content/repositories/snapshots</url>
         </repository>
     </repositories>
 

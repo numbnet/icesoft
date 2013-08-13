@@ -26,6 +26,9 @@
     <property name="java.dir" location="./src/main/java"/>
     <property name="meta.dir" location="./src/main/resources/META-INF"/>
     <property name="lib.dir" location="../lib"/>
+    <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
+    <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
+    <property name="myfaces.common.dir" value="${myfaces.lib.dir}/common" />
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
@@ -37,9 +40,17 @@
     <property name="tld.file" location="${meta.dir}/core.tld"/>
 
     <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
-    <condition property="jsf.lib.dir" value="${lib.dir}/myfaces" else="${lib.dir}/mojarra">
-        <isset property="myfaces-core"/>
+    <condition property="jsf.impl.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
+        <isset property="myfaces"/>
     </condition>
+
+    <!-- Check which JSF version to use and set the appropriate sub-directory  -->
+    <condition property="jsf.ver.dir" value="2.2" else="2.1">
+        <isset property="jsf22"/>
+    </condition>
+
+    <property name="jsf.lib.dir" value="${jsf.impl.dir}/${jsf.ver.dir}" />
+    <echo message="JSF lib dir: ${jsf.lib.dir}"/>
 
 	<!-- Check if release.type is set, and if so append it after the tertiary value -->
 	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">

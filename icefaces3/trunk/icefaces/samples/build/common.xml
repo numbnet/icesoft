@@ -29,6 +29,7 @@
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
     <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
     <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
+    <property name="myfaces.common.dir" value="${myfaces.lib.dir}/common" />
     <property name="lib.ace.dir" location="${lib.dir}/ace"/>
     <property name="lib.ace.dir.includes" value=""/>
     <property name="lib.compat.dir" location="${lib.dir}/compat"/>
@@ -60,9 +61,17 @@
     <property name="icefaces-compat.lib.name" value="icefaces-compat" />
 
     <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
-    <condition property="jsf.lib.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
+    <condition property="jsf.impl.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
         <isset property="myfaces"/>
     </condition>
+
+    <!-- Check which JSF version to use and set the appropriate sub-directory  -->
+    <condition property="jsf.ver.dir" value="2.2" else="2.1">
+        <isset property="jsf22"/>
+    </condition>
+
+    <property name="jsf.lib.dir" value="${jsf.impl.dir}/${jsf.ver.dir}" />
+    <echo message="JSF lib dir: ${jsf.lib.dir}"/>
 
     <patternset id="lib.compile">
         <include name="*.jar"/>
@@ -91,6 +100,10 @@
 
     <patternset id="lib.distribute.jsf">
         <exclude name="*.jar" unless="jsf"/>
+    </patternset>
+
+    <patternset id="lib.myfaces.common">
+        <exclude name="*.jar" unless="myfaces"/>
     </patternset>
 
     <patternset id="lib.distribute.ace" includes="itext-2.1.7.jar poi-3.7.jar ${lib.distribute.ace.includes}">
@@ -153,6 +166,9 @@
                 <fileset dir="${jsf.lib.dir}">
                     <patternset refid="lib.compile"/>
                 </fileset>
+                <fileset dir="${myfaces.common.dir}">
+                    <patternset refid="lib.myfaces.common"/>
+                </fileset>
                 <fileset dir="${lib.dir}" >
                     <patternset refid="lib.compile"/>
                 </fileset>
@@ -174,6 +190,14 @@
     </target>
 
     <target name="war.basic" depends="compile">
+
+        <condition property="myfaces.common.include" value="true">
+            <and>
+                <isset property="myfaces"/>
+                <isset property="jsf"/>
+            </and>
+        </condition>
+
         <war basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war" 
              webxml="${web.dir}/WEB-INF/web.xml">
@@ -195,6 +219,10 @@
             </lib>
             <lib dir="${jsf.lib.dir}" erroronmissingdir="false">
                 <patternset refid="lib.distribute.jsf"/>
+            </lib>
+
+            <lib dir="${myfaces.common.dir}" erroronmissingdir="false">
+                <exclude name="*.jar" unless="myfaces.common.include"/>
             </lib>
 
             <!-- Add the icefaces-ee-ext.jar only if it exists.  There are
