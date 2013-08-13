@@ -36,7 +36,7 @@
                     <li class="dropdown device-link">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Open in your Device <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><img src="./images/qr-device-link.png"/></li>
+                            <li id="qrDeviceLink"></li>
                         </ul>
                     </li>
                 </ul>
@@ -154,11 +154,13 @@
     <script src="javascript/jquery-1.10.1.min.js"></script>
     <script src="javascript/bootstrap.js"></script>
     <script src="javascript/respond.min.js"></script>
+    <script src="javascript/jquery.qrcode-0.6.0.min.js"></script>
     <script>
-    $('.carousel').carousel({interval:5000,pause:"hover"})
+    $('.carousel').carousel({interval:5000,pause:"hover"});
     setTimeout(function(){
         document.body.classList.add('endAnim');
     },100);
     </script>
+    <script src="javascript/load-qr-link.js"></script>
   </body>
 </html>

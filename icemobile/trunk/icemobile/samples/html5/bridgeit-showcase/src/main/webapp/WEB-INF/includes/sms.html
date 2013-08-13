@@ -11,7 +11,7 @@
     </fieldset>
     
     <a id="smsBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeIt.sms('smsBtn',handleCam, {postURL:(''+window.location).match(/.*\//) + '../html5cam/'});">Take a Photo</a>
+        onclick="ice.bridgeIt.sms('smsBtn',handleSMS, {postURL:(''+window.location).match(/.*\//) + 'service/sms'});">Take a Photo</a>
         
     <fieldset>
         <div class="row"></div>
@@ -25,7 +25,7 @@
         &copy; 2013 ICEsoft Technologies
     </div>
     <script type="text/javascript">
-    function handleAR(event)  {
+    function handleSMS(event)  {
         alert(event);
     }
     </script>
