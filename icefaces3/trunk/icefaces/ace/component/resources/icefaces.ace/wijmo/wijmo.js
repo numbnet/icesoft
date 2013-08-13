@@ -3815,6 +3815,7 @@ function wijmoASPNetParseOptions(o) {
 				if ($(this).parents(".ui-menu-multicolumn").size() > 0) return; // ICE-7827 
 				$(this).addClass(menuCss + "-list ui-widget-content ui-corner-all " +
 					"ui-helper-clearfix " + menuCss + "-child"); // ICE-7668 removed ui-helper-reset
+				if (o.mode === "flyout") $(this).addClass("wijmo-wijmenu-flyout"); // ICE-9420
 				$(this).hide();
 			});
 			this[o.mode === "flyout" ? "_flyout" : "_drilldown"]();
