@@ -151,4 +151,162 @@ public class Base64 {
         }
         return _bytes;
     }
+
+	//
+	// Base64 decoding utility, extracted from Apache Commons Codec 1.8
+	//
+
+	private static final int DECODE_SIZE = 3;
+	private static final int BYTES_PER_ENCODED_BLOCK = 4;
+	private static final int BITS_PER_ENCODED_BYTE = 6;
+	private static final int MASK_8BITS = 0xff;
+	private static final int EOF = -1;
+	private static final java.nio.charset.Charset UTF_8 = java.nio.charset.Charset.forName("UTF-8");
+
+	private static final byte[] DECODE_TABLE = {
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, 62, -1, 63, 52, 53, 54,
+			55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1, -1, 0, 1, 2, 3, 4,
+			5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+			24, 25, -1, -1, -1, -1, 63, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34,
+			35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51
+	};
+
+	public static byte[] decode(final String pArray) {
+		return decode(getBytesUtf8(pArray));
+	}
+
+	public static byte[] decode(final byte[] pArray) {
+		if (pArray == null || pArray.length == 0) {
+			return pArray;
+		}
+		final Context context = new Context();
+		decode(pArray, 0, pArray.length, context);
+		decode(pArray, 0, EOF, context); // Notify decoder of EOF.
+		final byte[] result = new byte[context.pos];
+		readResults(result, 0, result.length, context);
+		return result;
+	}
+
+	private static void decode(final byte[] in, int inPos, final int inAvail, final Context context) {
+		if (context.eof) {
+			return;
+		}
+		if (inAvail < 0) {
+			context.eof = true;
+		}
+		for (int i = 0; i < inAvail; i++) {
+			final byte[] buffer = ensureBufferSize(DECODE_SIZE, context);
+			final byte b = in[inPos++];
+			if (b == PAD) {
+				// We're done.
+				context.eof = true;
+				break;
+			} else {
+				if (b >= 0 && b < DECODE_TABLE.length) {
+					final int result = DECODE_TABLE[b];
+					if (result >= 0) {
+						context.modulus = (context.modulus+1) % BYTES_PER_ENCODED_BLOCK;
+						context.ibitWorkArea = (context.ibitWorkArea << BITS_PER_ENCODED_BYTE) + result;
+						if (context.modulus == 0) {
+							buffer[context.pos++] = (byte) ((context.ibitWorkArea >> 16) & MASK_8BITS);
+							buffer[context.pos++] = (byte) ((context.ibitWorkArea >> 8) & MASK_8BITS);
+							buffer[context.pos++] = (byte) (context.ibitWorkArea & MASK_8BITS);
+						}
+					}
+				}
+			}
+		}
+
+		// Two forms of EOF as far as base64 decoder is concerned: actual
+		// EOF (-1) and first time '=' character is encountered in stream.
+		// This approach makes the '=' padding characters completely optional.
+		if (context.eof && context.modulus != 0) {
+			final byte[] buffer = ensureBufferSize(DECODE_SIZE, context);
+
+			// We have some spare bits remaining
+			// Output all whole multiples of 8 bits and ignore the rest
+			switch (context.modulus) {
+//              case 0 : // impossible, as excluded above
+				case 1 : // 6 bits - ignore entirely
+					// TODO not currently tested; perhaps it is impossible?
+					break;
+				case 2 : // 12 bits = 8 + 4
+					context.ibitWorkArea = context.ibitWorkArea >> 4; // dump the extra 4 bits
+					buffer[context.pos++] = (byte) ((context.ibitWorkArea) & MASK_8BITS);
+					break;
+				case 3 : // 18 bits = 8 + 8 + 2
+					context.ibitWorkArea = context.ibitWorkArea >> 2; // dump 2 bits
+					buffer[context.pos++] = (byte) ((context.ibitWorkArea >> 8) & MASK_8BITS);
+					buffer[context.pos++] = (byte) ((context.ibitWorkArea) & MASK_8BITS);
+					break;
+				default:
+					throw new IllegalStateException("Impossible modulus "+context.modulus);
+			}
+		}
+	}
+
+	private static byte[] ensureBufferSize(final int size, final Context context){
+		if ((context.buffer == null) || (context.buffer.length < context.pos + size)){
+			return resizeBuffer(context);
+		}
+		return context.buffer;
+	}
+
+	private static byte[] resizeBuffer(final Context context) {
+		if (context.buffer == null) {
+			context.buffer = new byte[8192];
+			context.pos = 0;
+			context.readPos = 0;
+		} else {
+			final byte[] b = new byte[context.buffer.length * 2];
+			System.arraycopy(context.buffer, 0, b, 0, context.buffer.length);
+			context.buffer = b;
+		}
+		return context.buffer;
+	}
+
+	private static int readResults(final byte[] b, final int bPos, final int bAvail, final Context context) {
+		if (context.buffer != null) {
+			final int len = Math.min(available(context), bAvail);
+			System.arraycopy(context.buffer, context.readPos, b, bPos, len);
+			context.readPos += len;
+			if (context.readPos >= context.pos) {
+				context.buffer = null; // so hasData() will return false, and this method can return -1
+			}
+			return len;
+		}
+		return context.eof ? EOF : 0;
+	}
+
+	private static int available(final Context context) {
+		return context.buffer != null ? context.pos - context.readPos : 0;
+	}
+
+	private static byte[] getBytesUtf8(final String string) {
+		return string.getBytes(UTF_8);
+	}
+
+	private static class Context {
+
+		int ibitWorkArea;
+		long lbitWorkArea;
+		byte[] buffer;
+		int pos;
+		int readPos;
+		boolean eof;
+		int currentLinePos;
+		int modulus;
+
+		Context() {}
+
+		@SuppressWarnings("boxing") // OK to ignore boxing here
+		@Override
+		public String toString() {
+			return String.format("%s[buffer=%s, currentLinePos=%s, eof=%s, ibitWorkArea=%s, lbitWorkArea=%s, " +
+					"modulus=%s, pos=%s, readPos=%s]", this.getClass().getSimpleName(), java.util.Arrays.toString(buffer),
+					currentLinePos, eof, ibitWorkArea, lbitWorkArea, modulus, pos, readPos);
+		}
+	}
 }
