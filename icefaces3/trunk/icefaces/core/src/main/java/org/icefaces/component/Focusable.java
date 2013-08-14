@@ -16,7 +16,15 @@
 
 package org.icefaces.component;
 
+/**
+ * Components that are focus managed and want to specify the element that should receive focus (other than the root element)
+ * need to implement this interface.
+ */
 public interface Focusable {
 
+    /**
+     * Provide the client ID of the element that should be focused.
+     * @return the ID of the element
+     */
      String getFocusedElementId();
 }
