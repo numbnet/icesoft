@@ -30,7 +30,10 @@
     <property name="lib.distribute.application.includes" value=""/>
     <property name="lib.distribute.compat.includes" value="commons-digester.jar commons-beanutils.jar commons-collections.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
     <property name="lib.compile.compat.includes" value="commons-digester.jar commons-beanutils.jar commons-collections.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar el-api.jar" />
-    <property name="lib.mojarra.dir" location="${lib.dir}/mojarra" />
+
+    <property name="mojarra.lib.dir" location="${lib.dir}/mojarra" />
+    <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
+    <property name="myfaces.common.dir" value="${myfaces.lib.dir}/common" />
 
     <property name="lib.portlet.dir" location="${lib.dir}/portlets"/>
     <property name="lib.liferay.dir" location="${lib.dir}/portlets/liferayfaces"/>
@@ -49,10 +52,25 @@
     <property name="icefaces-compat.lib.name" value="icefaces-compat" /> 
     <property name="icepush.lib.name" value="icepush" />    
     
+    <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
+    <condition property="jsf.impl.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
+         <isset property="myfaces"/>
+    </condition>
+ 
+    <!-- Check which JSF version to use and set the appropriate sub-directory  -->
+    <condition property="jsf.ver.dir" value="2.2" else="2.1">
+        <isset property="jsf22"/>
+    </condition>
 
+    <property name="jsf.lib.dir" value="${jsf.impl.dir}/${jsf.ver.dir}" />
+    <echo message="JSF lib dir: ${jsf.lib.dir}"/>
 
     <patternset id="lib.compile">
         <include name="*.jar"/>
+    </patternset>
+
+    <patternset id="lib.myfaces.common">
+        <exclude name="*.jar" unless="myfaces"/>
     </patternset>
 
     <patternset id="lib.distribute">
@@ -86,8 +104,8 @@
 
     <patternset id="lib.compile.mojarra" includes="*.jar"/>
     
-    <patternset id="lib.distribute.mojarra">
-        <include name="*.jar" if="jsf"/>
+    <patternset id="lib.distribute.jsf">
+        <exclude name="*.jar" unless="jsf"/>
     </patternset>
     
     <patternset id="lib.distribute.portlet">
@@ -95,7 +113,7 @@
         <include name="slf4j*.jar"/>
         <exclude name="*.jar" unless="portlet"/>
     </patternset>
-	
+    
     <patternset id="lib.distribute.liferay">
         <include name="*.jar"/>
         <exclude name="*.jar" unless="liferay"/>
@@ -130,9 +148,12 @@
                 <fileset dir="${lib.compat.dir}">
                     <patternset refid="lib.compile.compat"/>
                 </fileset>
-            	<fileset dir="${lib.mojarra.dir}/2.1">
-            	    <patternset refid="lib.compile.mojarra"/>
-            	</fileset>
+                <fileset dir="${jsf.lib.dir}">
+                    <patternset refid="lib.compile.mojarra"/>
+                </fileset>
+                <fileset dir="${myfaces.common.dir}">
+                    <patternset refid="lib.myfaces.common"/>
+                </fileset>
                 <fileset dir="${lib.dir}" >
                     <patternset refid="lib.compile"/>
                 </fileset>
@@ -150,6 +171,14 @@
     </target>
 
     <target name="war.basic" depends="compile">
+
+        <condition property="myfaces.common.include" value="true">
+            <and>
+                <isset property="myfaces"/>
+                <isset property="jsf"/>
+            </and>
+        </condition>
+
         <war basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war" 
              webxml="${web.dir}/WEB-INF/web.xml">
@@ -159,9 +188,12 @@
             <lib dir="${lib.compat.dir}">
                 <patternset refid="lib.distribute.compat"/>
             </lib>
-        	<lib dir="${lib.mojarra.dir}/2.1">
-        	    <patternset refid="lib.distribute.mojarra"/>
-        	</lib>
+            <lib dir="${jsf.lib.dir}">
+                <patternset refid="lib.distribute.jsf"/>
+            </lib>
+            <lib dir="${myfaces.common.dir}" erroronmissingdir="false">
+                <exclude name="*.jar" unless="myfaces.common.include"/>
+            </lib>
             <lib dir="${lib.portlet.dir}">
                 <patternset refid="lib.distribute.portlet"/>
             </lib>
