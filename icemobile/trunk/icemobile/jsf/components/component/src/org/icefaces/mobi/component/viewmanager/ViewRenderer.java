@@ -19,8 +19,10 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 
 public class ViewRenderer extends BaseLayoutRenderer {
@@ -31,6 +33,16 @@ public class ViewRenderer extends BaseLayoutRenderer {
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+       View view = (View)uiComponent;
+       validate(view);
+       ResponseWriter writer = facesContext.getResponseWriter();
+       writer.startElement(HTML.DIV_ELEM, view);
+       writer.writeAttribute(HTML.ID_ATTR, view.getId(), null);
+       writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view", null);
+       String title = view.getTitle();
+       if( title != null ){
+    	   writer.writeAttribute("data-title", title, null);
+       }
        
     }
 
@@ -45,5 +57,13 @@ public class ViewRenderer extends BaseLayoutRenderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.endElement(HTML.DIV_ELEM);
+    }
+    
+    private void validate(View view){
+       if( view.getParent() instanceof ViewManager ){
+    	   throw new IllegalStateException("The view component must be a child of the viewManager component");
+       }
     }
 }
