@@ -221,3 +221,17 @@ ice.ace.Chart.prototype.exportToImage = function(img) {
     ice.ace.jq(img).attr('src',
         this.chart_region.jqplotToImageStr());
 }
+
+ice.ace.Chart.prototype.exportToServer = function() {
+    var options = {
+            source: this.id,
+            execute: '@this',
+            render: '@this'
+        };
+
+    var params = {};
+    params[this.id+'_export'] = this.chart_region.jqplotToImageStr();
+    options.params = params;
+
+    ice.ace.AjaxRequest(options);
+}

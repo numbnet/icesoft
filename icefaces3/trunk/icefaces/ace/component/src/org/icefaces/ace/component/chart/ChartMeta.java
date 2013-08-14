@@ -210,4 +210,13 @@ public class ChartMeta extends UIComponentBaseMeta {
                     "element is dragged to a new x or y value. The method receives a single " +
                     "argument, PointValueChangeEvent.")
     private MethodExpression pointChangeListener;
+
+    @Property(expression = Expression.METHOD_EXPRESSION,
+            methodExpressionArgument = "org.icefaces.ace.event.ChartImageExportEvent",
+            tlddoc = "MethodExpression reference called whenever an exportToServer() call " +
+                    "is made for this chart in the client side. The method receives a single " +
+                    "argument, ChartImageExportEvent. The bytes representing the PNG image " +
+                    "are obtained as a byte array by calling getBytes() on the " +
+                    "ChartImageExportEvent object.")
+    private MethodExpression imageExportListener;
 }

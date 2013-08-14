@@ -18,6 +18,7 @@ package org.icefaces.ace.component.chart;
 
 import org.icefaces.ace.event.PointValueChangeEvent;
 import org.icefaces.ace.event.SeriesSelectionEvent;
+import org.icefaces.ace.event.ChartImageExportEvent;
 import org.icefaces.ace.json.JSONArray;
 import org.icefaces.ace.json.JSONException;
 import org.icefaces.ace.model.SimpleEntry;
@@ -26,6 +27,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.impl.util.Base64;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -44,13 +46,16 @@ public class ChartRenderer extends CoreRenderer {
         String id = chart.getClientId(context);
         String select = id + "_selection";
         String drag = id + "_drag";
+        String export = id + "_export";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String selectInput = params.get(select);
         String dragInput = params.get(drag);
+        String exportInput = params.get(export);
 
         if (selectInput != null) processSelections(chart, selectInput.split(","));
         if (dragInput != null) processDraggings(chart, dragInput);
+        if (exportInput != null) processExport(chart, exportInput);
 
         decodeBehaviors(context, component);
     }
@@ -96,6 +101,14 @@ public class ChartRenderer extends CoreRenderer {
         int seriesIndex = Integer.parseInt(select[0]);
         int pointIndex = Integer.parseInt(select[1]);
         chart.queueEvent(new SeriesSelectionEvent(chart, seriesIndex, pointIndex));
+    }
+
+    private void processExport(Chart chart, String exportInput) {
+        if (chart.getImageExportListener() != null) {
+            exportInput = exportInput.substring(22); // remove "data:image/png;base64,"
+            byte[] bytes = Base64.decode(exportInput);
+            chart.queueEvent(new ChartImageExportEvent(chart, bytes));
+        }
     }
 
     @Override
