@@ -18,6 +18,7 @@ package org.icefaces.ace.component.chart;
 
 import org.icefaces.ace.event.PointValueChangeEvent;
 import org.icefaces.ace.event.SeriesSelectionEvent;
+import org.icefaces.ace.event.ChartImageExportEvent;
 import org.icefaces.ace.event.TableFilterEvent;
 import org.icefaces.ace.event.UnselectEvent;
 import org.icefaces.ace.model.chart.ChartSeries;
@@ -57,7 +58,8 @@ public class Chart extends ChartBase {
         MethodExpression me = null;
 
         if (event instanceof SeriesSelectionEvent) me = getSelectListener();
-        if (event instanceof PointValueChangeEvent) me = getPointChangeListener();
+        else if (event instanceof PointValueChangeEvent) me = getPointChangeListener();
+        else if (event instanceof ChartImageExportEvent) me = getImageExportListener();
 
         if (me != null)
             me.invoke(context.getELContext(), new Object[] {event});
