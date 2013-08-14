@@ -100,6 +100,10 @@ public class CharacterEncodingHandler extends ResourceHandlerWrapper {
         String contentType = headerMap.get("Content-Type");
         String charEnc = null;
 
+        if (null == contentType) {
+            contentType = headerMap.get("content-type");
+        }
+
         // look for a charset in the Content-Type header first.
         if (null != contentType) {
             // see if this header had a charset

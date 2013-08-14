@@ -460,7 +460,7 @@ public abstract class FileUploadBase {
      * @param pContentDisposition The content-disposition headers value.
      * @return The file name
      */
-    private String getFileName(String pContentDisposition) {
+    public static String getFileName(String pContentDisposition) {
         String fileName = null;
         if (pContentDisposition != null) {
             String cdl = pContentDisposition.toLowerCase();
