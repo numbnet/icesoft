@@ -908,7 +908,7 @@ ice.ace.SelectMenu.prototype = {
 		if ((currentEntry && (this.input.value != ice.ace.SelectMenu.collectTextNodesIgnoreClass(currentEntry, ice.ace.SelectMenu.LABEL_CLASS)))
 			|| (this.selectedIndex == -1 && this.input.value)) {
 			var found = false;
-			for (var i = 0; i < this.entryCount - 1; i++) {
+			for (var i = 0; i < this.entryCount; i++) {
 				var entry = this.getEntry(i);
 				if (entry && (this.input.value == ice.ace.SelectMenu.collectTextNodesIgnoreClass(entry, ice.ace.SelectMenu.LABEL_CLASS))) {
 					found = true;
