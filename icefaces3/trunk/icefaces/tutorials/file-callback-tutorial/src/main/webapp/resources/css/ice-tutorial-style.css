@@ -101,9 +101,3 @@ body {
     margin:0;
 }
 #example .messages li { font-size:12px; }
-
-/* Tutorial Specific Styling */
-/* Progress Bar */
-.ice-file-entry div, .ice-file-entry div div {
-    display:inline-block !important;
-}

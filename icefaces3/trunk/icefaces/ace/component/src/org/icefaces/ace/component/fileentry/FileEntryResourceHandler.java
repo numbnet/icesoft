@@ -16,11 +16,10 @@
 
 package org.icefaces.ace.component.fileentry;
 
+import org.icefaces.apache.commons.fileupload.*;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.context.DOMPartialViewContext;
 import org.icefaces.impl.util.CoreUtils;
-import org.icefaces.apache.commons.fileupload.FileItemStream;
-import org.icefaces.apache.commons.fileupload.FileItemIterator;
 import org.icefaces.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.icefaces.apache.commons.fileupload.util.Streams;
 import org.icefaces.util.EnvUtils;
@@ -58,6 +57,8 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         return wrapped;
     }
 
+    private static int counter;
+
     @Override
     public boolean isResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
@@ -65,7 +66,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         HttpServletRequest request = EnvUtils.getSafeRequest(facesContext);
         Object fileEntryMarker = request.getParameter(FileEntryFormSubmit.FILE_ENTRY_MULTIPART_MARKER);  // String "true"
         log.finest("FileEntryResourceHandler  fileEntryMarker: " + fileEntryMarker +
-            "  requireJS: " + EnvUtils.isFileEntryRequireJavascript(facesContext));
+            "  requireJS: " + EnvUtils.isFileEntryRequireJavascript(facesContext) + "  this: " + this + "  count: " + counter++);
         if (fileEntryMarker == null && EnvUtils.isFileEntryRequireJavascript(facesContext)) {
             return wrapped.isResourceRequest(facesContext);
         }
@@ -85,64 +86,64 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
 
         boolean isPortlet = EnvUtils.instanceofPortletRequest(requestObject);
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        log.finer("FileEntryResourceHandler  isMultipart: " + isMultipart + "  isPortlet: " + isPortlet);
+        log.finer("FileEntryResourceHandler\n" +
+            "  isMultipart: " + isMultipart + "\n" +
+            "  isPortlet: " + isPortlet);
 
         if (isMultipart) {
-            final ServletFileUpload uploader = new ServletFileUpload();
-
+            long requestContentLength = (long) request.getContentLength();
             String reqCharEnc = request.getCharacterEncoding();
             String extCharEnc = externalContext.getRequestCharacterEncoding();
             String iceHandlerCharEnc = org.icefaces.impl.util.CharacterEncodingHandler.calculateCharacterEncoding(facesContext);
             String resolvedCharacterEncoding = (reqCharEnc != null) ? reqCharEnc : ((extCharEnc != null) ? extCharEnc : (iceHandlerCharEnc));
             log.finer("FileEntryResourceHandler\n" +
+                "  requestContentLength: " + requestContentLength + "\n" +
                 "  request.getCharacterEncoding: " + reqCharEnc + "\n" +
                 "  externalContext.getRequestCharacterEncoding: " + extCharEnc + "\n" +
                 "  CharacterEncodingHandler.calculateCharacterEncoding: " + iceHandlerCharEnc + "\n" +
                 "  resolvedCharacterEncoding: " + resolvedCharacterEncoding + "\n" +
                 "  Charset.defaultCharset().displayName(): " + java.nio.charset.Charset.defaultCharset().displayName());
-            if (resolvedCharacterEncoding != null) {
-                uploader.setHeaderEncoding(resolvedCharacterEncoding);
-            }
 
             Map<String, FileEntryResults> clientId2Results =
                     new HashMap<String, FileEntryResults>(6);
             ProgressListenerResourcePusher progressListenerResourcePusher =
                     new ProgressListenerResourcePusher(clientId2Results);
-            uploader.setProgressListener(progressListenerResourcePusher);
             Map<String, FileEntryCallback> clientId2Callbacks =
                     new HashMap<String, FileEntryCallback>(6);
             Map<String, List<String>> parameterListMap =
                     new HashMap<String, List<String>>();
             byte[] buffer = new byte[16*1024];
-            try {
-                FileItemIterator iter = uploader.getItemIterator(request);
-                while (iter.hasNext()) {
-                    FileItemStream item = iter.next();
-                    if (item.isFormField()) {
-                        String name = item.getFieldName();
-                        String value;
-                        if (null != resolvedCharacterEncoding){
-                            value = Streams.asString(item.openStream(), resolvedCharacterEncoding);
-                        } else {
-                            value = Streams.asString(item.openStream());
-                        }
-                        log.finer("FileEntryResourceHandler  Form field name: " + name + "  value: " + value);
-                        
-                        List<String> parameterList = parameterListMap.get(name);
-                        if (parameterList == null) {
-                            parameterList = new ArrayList<String>(6);
-                            parameterListMap.put(name, parameterList);
-                        }
-                        parameterList.add(value);
 
-                        if ("ice.window".equals(name)) {
-                            WindowScopeManager.associateWindowIDToRequest(value, facesContext);
-                        }
-                    } else {
-                        uploadFile(facesContext, item,
-                                clientId2Results, clientId2Callbacks,
-                                progressListenerResourcePusher, buffer);
-                    }
+            try {
+                Collection<javax.servlet.http.Part> parts = request.getParts();
+                log.finer("FileEntryResourceHandler  Parts size: " + parts.size());
+                PartsManualProgress partsManualProgress = new PartsManualProgress(
+                    (ProgressListener) progressListenerResourcePusher,
+                    requestContentLength);
+                for (javax.servlet.http.Part part : parts) {
+                    handleMultipartPortion(facesContext,
+                        resolvedCharacterEncoding, clientId2Results,
+                        clientId2Callbacks, parameterListMap,
+                        partsManualProgress,
+                        (PushResourceSetup) progressListenerResourcePusher,
+                        buffer, new PartFile(part, partsManualProgress));
+                }
+                
+
+                final ServletFileUpload uploader = new ServletFileUpload();
+                if (resolvedCharacterEncoding != null) {
+                    uploader.setHeaderEncoding(resolvedCharacterEncoding);
+                }
+                uploader.setProgressListener(progressListenerResourcePusher);
+                FileItemIterator iter = uploader.getItemIterator(request);
+                log.finer("FileEntryResourceHandler  Commons FileUpload has data: " + iter.hasNext());
+                while (iter.hasNext()) {
+                    handleMultipartPortion(facesContext,
+                        resolvedCharacterEncoding, clientId2Results,
+                        clientId2Callbacks, parameterListMap,
+                        null, // ServletFileUpload uses ProgressListener
+                        (PushResourceSetup) progressListenerResourcePusher,
+                        buffer, new CommonsFileUploadFile(iter.next()));
                 }
             }
             catch(Exception e) {
@@ -156,6 +157,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                         "closing their browser tab or window.", e);
                 }
             }
+
             FileEntry.storeResultsForLaterInLifecycle(facesContext, clientId2Results);
             progressListenerResourcePusher.clear();
             clientId2Callbacks.clear();
@@ -235,25 +237,77 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         }
     }
 
-    private static void uploadFile(
+    private static void handleMultipartPortion(
             FacesContext facesContext,
-            FileItemStream item,
+            String resolvedCharacterEncoding,
             Map<String, FileEntryResults> clientId2Results,
             Map<String, FileEntryCallback> clientId2Callbacks,
-            ProgressListenerResourcePusher progressListenerResourcePusher,
-            byte[] buffer) {
+            Map<String, List<String>> parameterListMap,
+            PartsManualProgress partsManualProgress,
+            PushResourceSetup pushResourceSetup,
+            byte[] buffer,
+            MultipartFile mf)
+            throws IOException {
+        if (mf.isFormField()) {
+            captureFormField(facesContext, parameterListMap,
+                    resolvedCharacterEncoding, mf);
+        } else {
+            uploadFile(facesContext, clientId2Results, clientId2Callbacks,
+                pushResourceSetup, buffer, mf);
+        }
+        if (partsManualProgress != null) {
+            partsManualProgress.nextChunk();
+        }
+    }
+    
+    private static void captureFormField(
+            FacesContext facesContext,
+            Map<String, List<String>> parameterListMap,
+            String resolvedCharacterEncoding,
+            MultipartFile mf)
+            throws IOException {
+        String value;
+        InputStream valueStream = mf.getInputStream();
+        if (null != resolvedCharacterEncoding){
+            value = Streams.asString(valueStream, resolvedCharacterEncoding);
+        } else {
+            value = Streams.asString(valueStream);
+        }
+        valueStream.close();
+
+        String name = mf.getFieldName();
+        log.finer("FileEntryResourceHandler  Form field name: " + name + "  value: " + value);
+
+        List<String> parameterList = parameterListMap.get(name);
+        if (parameterList == null) {
+            parameterList = new ArrayList<String>(6);
+            parameterListMap.put(name, parameterList);
+        }
+        parameterList.add(value);
+
+        if ("ice.window".equals(name)) {
+            WindowScopeManager.associateWindowIDToRequest(value, facesContext);
+        }
+    }
+
+    private static void uploadFile(
+            FacesContext facesContext,
+            Map<String, FileEntryResults> clientId2Results,
+            Map<String, FileEntryCallback> clientId2Callbacks,
+            PushResourceSetup pushResourceSetup,
+            byte[] buffer, MultipartFile item) {
         FileEntryResults results = null;
         FileEntryCallback callback = null;
         FileEntryResults.FileInfo fileInfo = null;
         FileEntryConfig config = null;
 
         File file = null;
-        long fileSizeRead = 0L;
+        long[] fileSizeRead = new long[] {0L};
         FileEntryStatus status = FileEntryStatuses.UPLOADING;
 
         log.fine("vvvvvvvvvvvvvvv");
         try {
-            String name = item.getName();
+            String name = item.getFileName();
             String fieldName = item.getFieldName();
             String contentType = item.getContentType();
             log.fine(
@@ -261,11 +315,15 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                 "File  fieldName: " + fieldName + "\n" +
                 "File  contentType: " + contentType);
 
+            // Remove \ escaping for ; ' "
             // IE gives us the whole path on the client, but we just
             //  want the client end file name, not the path
             String fileName = null;
             if (name != null && name.length() > 0) {
-                fileName = trimInternetExplorerPath(name);
+                fileName = name.replace("\\;", ";");
+                fileName = fileName.replace("\\'", "'");
+                fileName = fileName.replace("\\\"", "\"");
+                fileName = trimInternetExplorerPath(fileName);
             }
             log.fine("File    IE adjusted fileName: " + fileName);
             
@@ -288,7 +346,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                     fileInfo = new FileEntryResults.FileInfo();
                     fileInfo.begin(fileName, contentType);
 
-                    progressListenerResourcePusher.setPushResourcePathAndGroupName(
+                    pushResourceSetup.setPushResourcePathAndGroupName(
                             facesContext, config.getProgressResourceName(),
                             config.getProgressGroupName());
 
@@ -298,8 +356,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                             try {
                                 callback = evaluateCallback(facesContext, config);
                             } catch(javax.el.ELException e) {
-                                status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
-                                throw e;
+                                throw new CallbackException(e);
                             }
                         }
                     }
@@ -315,87 +372,38 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                     if (results.getFiles().size() >= maxFileCount) {
                         status = FileEntryStatuses.MAX_FILE_COUNT_EXCEEDED;
                         fileInfo.prefail(status);
-                        InputStream in = item.openStream();
-                        while (in.read(buffer) >= 0) {}
+                        item.discardPrefailedFile(buffer);
                         if (callback != null) {
                             try {
                                 callback.begin(fileInfo);
                                 callback.end(fileInfo);
                             } catch(RuntimeException e) {
-                                status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
-                                handleCallbackException(
-                                        facesContext, config.getClientId(), e);
-                                throw e;
+                                throw new CallbackException(e);
                             }
                         }
                     }
                     else {
-                        OutputStream output = null;
                         if (callback != null) {
                             try {
                                 callback.begin(fileInfo);
                             } catch(RuntimeException e) {
-                                status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
-                                handleCallbackException(
-                                        facesContext, config.getClientId(), e);
-                                throw e;
+                                throw new CallbackException(e);
                             }
                         }
                         else {
                             String folder = calculateFolder(facesContext, config);
                             file = makeFile(config, folder, fileName);
                             log.fine("File    file: " + file);
-                            output = new FileOutputStream(file);
                         }
-
-                        InputStream in = item.openStream();
-                        try {
-                            boolean overQuota = false;
-                            while (true) {
-                                int read = in.read(buffer);
-                                if (read < 0) {
-                                    break;
-                                }
-                                fileSizeRead += read;
-                                if (!overQuota) {
-                                    if (fileSizeRead > availableFileSize) {
-                                        overQuota = true;
-                                        status = FileEntryStatuses.MAX_FILE_SIZE_EXCEEDED;
-                                    }
-                                    else if (fileSizeRead > availableTotalSize) {
-                                        overQuota = true;
-                                        status = FileEntryStatuses.MAX_TOTAL_SIZE_EXCEEDED;
-                                    }
-                                    if (!overQuota) {
-                                        if (callback != null) {
-                                            try {
-                                                callback.write(buffer, 0, read);
-                                            } catch(RuntimeException e) {
-                                                status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
-                                                handleCallbackException(
-                                                        facesContext, config.getClientId(), e);
-                                                throw e;
-                                            }
-                                        }
-                                        else if (output != null) {
-                                            output.write(buffer, 0, read);
-                                        }
-                                    }
-                                }
-                            }
-                            log.fine("File    fileSizeRead: " + fileSizeRead);
-                            if (status == FileEntryStatuses.UPLOADING) {
-                                status = FileEntryStatuses.SUCCESS;
-                            }
-                        }
-                        catch(Exception e) {
-                            throw e;
-                        }
-                        finally {
-                            if (output != null) {
-                                output.flush();
-                                output.close();
-                            }
+                        
+                        item.transferFile(callback, file, buffer, fileSizeRead, availableFileSize, availableTotalSize);
+                        log.fine("File    fileSizeRead: " + fileSizeRead[0]);
+                        if (fileSizeRead[0] > availableFileSize) {
+                            status = FileEntryStatuses.MAX_FILE_SIZE_EXCEEDED;
+                        } else if (fileSizeRead[0] > availableTotalSize) {
+                            status = FileEntryStatuses.MAX_TOTAL_SIZE_EXCEEDED;
+                        } else if (status == FileEntryStatuses.UPLOADING) {
+                            status = FileEntryStatuses.SUCCESS;
                         }
                     }
                 }
@@ -403,9 +411,13 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
             else { // If no file name specified
                 log.fine("File    UNSPECIFIED_NAME");
                 status = FileEntryStatuses.UNSPECIFIED_NAME;
-                InputStream in = item.openStream();
-                while (in.read(buffer) >= 0) {}
+                item.discardPrefailedFile(buffer);
             }
+        }
+        catch(CallbackException e) {
+            status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+            handleCallbackException(
+                facesContext, config.getClientId(), e.getCause());
         }
         catch(Exception e) {
             log.fine("File    Exception: " + e);
@@ -427,7 +439,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         log.fine("File    Ending  status: " + status);
         if (results != null && fileInfo != null) {
             log.fine("File    Have results and fileInfo to fill-in");
-            fileInfo.finish(file, fileSizeRead, status);
+            fileInfo.finish(file, fileSizeRead[0], status);
             results.addCompletedFile(fileInfo);
             if (callback != null) {
                 try {
@@ -472,7 +484,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
     }
 
     protected static void handleCallbackException(FacesContext facesContext,
-            String clientId, RuntimeException e) {
+            String clientId, Throwable e) {
         if (facesContext.isProjectStage(ProjectStage.Development)) {
             log.log(Level.SEVERE, "An exception was thrown by the callback " +
                     "for the fileEntry component with clientId of '" +
@@ -547,7 +559,258 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         }
         return str;
     }
-    
+
+
+    public static class CallbackException extends RuntimeException {
+        CallbackException(RuntimeException e) {
+            super(e);
+        }
+    }
+
+    private static interface MultipartFile {
+        public boolean isFormField();
+
+        /**
+         * @return content-type header
+         */
+        public String getContentType();
+
+        /**
+         * @return content-disposition header's name entry
+         */
+        public String getFieldName();
+
+        /**
+         * @return content-disposition header's filename entry
+         */
+        public String getFileName();
+
+        public InputStream getInputStream() throws IOException;
+
+        public void discardPrefailedFile(byte[] buffer) throws IOException;
+
+        public void transferFile(FileEntryCallback callback, File file,
+                byte[] buffer, long[] fileSizeRead, long availableFileSize,
+                long availableTotalSize) throws Exception;
+    }
+
+
+    private static class CommonsFileUploadFile implements MultipartFile {
+        private FileItemStream item;
+
+        private CommonsFileUploadFile(FileItemStream item) {
+            this.item = item;
+        }
+
+        public boolean isFormField() {
+            return item.isFormField();
+        }
+
+        /**
+         * @return content-type header
+         */
+        public String getContentType() {
+            return item.getContentType();
+        }
+
+        /**
+         * @return content-disposition header's name entry
+         */
+        public String getFieldName() {
+            return item.getFieldName();
+        }
+
+        /**
+         * @return content-disposition header's filename entry
+         */
+        public String getFileName() {
+            return item.getName();
+        }
+
+        public InputStream getInputStream() throws IOException {
+            return item.openStream();
+        }
+
+        /**
+         * Since we use the ServletFileUpload.getItemIterator, it parses the
+         * multipart as we read from it, so we need to read and discard bytes
+         */
+        public void discardPrefailedFile(byte[] buffer) throws IOException {
+            InputStream in = getInputStream();
+            try {
+                while (in.read(buffer) >= 0) {}
+            } finally {
+                in.close();
+            }
+        }
+
+        public void transferFile(FileEntryCallback callback, File file,
+                byte[] buffer, long[] fileSizeRead, long availableFileSize,
+                long availableTotalSize) throws Exception {
+            OutputStream output = (file != null) ? new FileOutputStream(file) : null;
+            InputStream in = getInputStream();
+            try {
+                boolean overQuota = false;
+                while (true) {
+                    int read = in.read(buffer);
+                    if (read < 0) {
+                        break;
+                    }
+                    fileSizeRead[0] += read;
+                    if (!overQuota) {
+                        if (fileSizeRead[0] > availableFileSize || fileSizeRead[0] > availableTotalSize) {
+                            overQuota = true;
+                        } else {
+                            if (callback != null) {
+                                try {
+                                    callback.write(buffer, 0, read);
+                                } catch(RuntimeException e) {
+                                    throw new CallbackException(e);
+                                }
+                            }
+                            else if (output != null) {
+                                output.write(buffer, 0, read);
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception e) {
+                throw e;
+            }
+            finally {
+                if (output != null) {
+                    output.flush();
+                    output.close();
+                }
+                in.close();
+            }
+        }
+    }
+
+
+    private static class PartFile implements MultipartFile {
+        private javax.servlet.http.Part part;
+        private PartsManualProgress partsManualProgress;
+
+        private PartFile(javax.servlet.http.Part part, PartsManualProgress partsManualProgress) {
+            this.part = part;
+            this.partsManualProgress = partsManualProgress;
+        }
+
+        public boolean isFormField() {
+            return (getFileName() == null);
+        }
+
+        /**
+         * @return content-type header
+         */
+        public String getContentType() {
+            return part.getContentType();
+        }
+
+        /**
+         * @return content-disposition header's name entry
+         */
+        public String getFieldName() {
+            return part.getName();
+        }
+
+        /**
+         * @return content-disposition header's filename entry
+         */
+        public String getFileName() {
+            String contentDispositionHeader = part.getHeader("content-disposition");
+            return FileUploadBase.getFileName(contentDispositionHeader);
+        }
+
+        public InputStream getInputStream() throws IOException {
+            return part.getInputStream();
+        }
+
+        public void discardPrefailedFile(byte[] buffer) throws IOException {
+            partsManualProgress.updateRead(part.getSize());
+            part.delete();
+        }
+
+        public void transferFile(FileEntryCallback callback, File file,
+                byte[] buffer, long[] fileSizeRead, long availableFileSize,
+                long availableTotalSize) throws Exception {
+            try {
+                long size = part.getSize();
+                fileSizeRead[0] = size;
+                if (size <= availableFileSize && size <= availableTotalSize) {
+                    if (callback != null) {
+                        InputStream in = getInputStream();
+                        try {
+                            while (true) {
+                                int read = in.read(buffer);
+                                if (read < 0) {
+                                    break;
+                                }
+                                try {
+                                    callback.write(buffer, 0, read);
+                                } catch(RuntimeException e) {
+                                    throw new CallbackException(e);
+                                }
+                                partsManualProgress.updateRead(read);
+                            }
+                        }
+                        finally {
+                            in.close();
+                        }
+                    } else if (file != null) {
+                        part.write(file.getAbsolutePath());
+                        partsManualProgress.updateRead(size);
+                    }
+                }
+            }
+            finally {
+                if (callback != null) {
+                    part.delete();
+                }
+            }
+        }
+    }
+
+
+    /**
+     * The request contentLength is the number of bytes in the whole request,
+     * which includes all the multipart protocol overhead, form field data,
+     * and file data. That means, to use contentLength to provide exact
+     * progress information would require parsing the multipart ourselves,
+     * which we're not, since the Parts are just handed to us. So, we'll use
+     * a rough approximation, where we just apply the file data sizing to the
+     * contentLength, and then when we're done we adjust it to 100%. The under-
+     * reporting shouldn't be too far off as long as protocol and form field
+     * data sizing is overshadowed by the file sizing. For very small files
+     * this would not be the case, but then we'd likely not even get to show
+     * progress then anyway.
+     */
+    private static class PartsManualProgress {
+        private ProgressListener progressListener;
+        private long read;
+        private long total;
+        private int chunkIndex;
+
+        private PartsManualProgress(ProgressListener progressListener,
+                long total) {
+            this.progressListener = progressListener;
+            this.total = total;
+        }
+
+        public void nextChunk() {
+            this.chunkIndex++;
+        }
+
+        public void updateRead(long deltaRead) {
+            read += deltaRead;
+            if (deltaRead > 0) {
+                progressListener.update(read, total, chunkIndex);
+            }
+        }
+    }
+
     
     static final String APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded";
 

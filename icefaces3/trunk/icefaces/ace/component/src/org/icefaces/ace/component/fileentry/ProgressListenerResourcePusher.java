@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 /**
  * When the upload has progress, pushes the progress resource to the browser
  */
-public class ProgressListenerResourcePusher implements ProgressListener {
+public class ProgressListenerResourcePusher implements ProgressListener, PushResourceSetup {
     private static Logger log = Logger.getLogger(FileEntry.class.getName()+".push");
     final private static long MIN_INTERVAL = 2000L;
 
@@ -70,7 +70,6 @@ public class ProgressListenerResourcePusher implements ProgressListener {
         }
         log.fine("tryPush()  percent: " + percent);
 
-        //TODO Update resource contents
         int deltaGottenPushed = updateResourceContents(percent);
         log.finer("deltaGottenPushed: " + deltaGottenPushed + "  lastDeltaGottenPushed: " + lastDeltaGottenPushed);
         int localLastDeltaGottenPushed = lastDeltaGottenPushed;
@@ -86,7 +85,7 @@ public class ProgressListenerResourcePusher implements ProgressListener {
         return true;
     }
 
-    void setPushResourcePathAndGroupName(FacesContext facesContext,
+    public void setPushResourcePathAndGroupName(FacesContext facesContext,
             String pushResourceName, String pushGroupName) {
         Resource res = ResourceRegistry.getResourceByName(facesContext, pushResourceName);
         log.fine("setPushResourcePathAndGroupName()\n" +
