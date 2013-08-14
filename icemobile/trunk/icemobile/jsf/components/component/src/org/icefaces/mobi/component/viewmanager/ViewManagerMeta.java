@@ -48,6 +48,9 @@ public class ViewManagerMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
+    
+    @Property(tlddoc = "The main header title")
+    private String title;
 
     
 }

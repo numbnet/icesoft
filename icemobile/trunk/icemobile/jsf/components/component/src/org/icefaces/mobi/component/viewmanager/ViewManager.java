@@ -24,36 +24,10 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
 public class ViewManager extends ViewManagerBase {
+	
+   public static final String STYLECLASS = "mobi-vm";
  
-    @Override
-    public void broadcast(FacesEvent event)
-            throws AbortProcessingException {
-        if (event instanceof ValueChangeEvent) {
-            ValueChangeEvent vce = (ValueChangeEvent) event;
-            MethodExpression method = getTabChangeListener();
-            if (method != null) {
-                method.invoke(getFacesContext().getELContext(), new Object[]{event});
-            }
-        } else {
-            super.broadcast(event);
-        }
-    }
 
-    @Override
-    public void queueEvent(FacesEvent event) {
-        if (event.getComponent() == this) {
-            boolean isImmediate = isImmediate();
-            if (logger.isLoggable(Level.FINEST)) {
-                logger.finest("invoked event for immediate " + isImmediate);
-            }
-            if (isImmediate) {
-                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            } else {
-                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            }
-        }
-        super.queueEvent(event);
-    }
 
 
 }

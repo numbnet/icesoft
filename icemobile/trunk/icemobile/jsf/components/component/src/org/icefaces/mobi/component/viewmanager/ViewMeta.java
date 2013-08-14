@@ -48,6 +48,12 @@ public class ViewMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
+    
+    @Property(tlddoc = "The menu icon type")
+    private String menuIcon;
+    
+    @Property(tlddoc = "The page title")
+    private String title;
 
     
 }
