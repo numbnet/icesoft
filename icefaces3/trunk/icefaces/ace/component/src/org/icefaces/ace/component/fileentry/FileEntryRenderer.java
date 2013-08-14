@@ -77,6 +77,12 @@ public class FileEntryRenderer extends Renderer {
         if (size > 0) {
             writer.writeAttribute("size", size, "size");
         }
+        if (fileEntry.isAutoUpload()) {
+            String formId = form.getClientId(facesContext);
+            String script = "var form = document.getElementById('"+formId+
+                "');form.onsubmit();form.submit();";
+            writer.writeAttribute("onchange", script, "autoUpload");
+        }
         writer.endElement("input");
         writer.endElement("div");
 

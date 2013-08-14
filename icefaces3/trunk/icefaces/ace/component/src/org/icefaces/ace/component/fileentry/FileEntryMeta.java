@@ -258,4 +258,10 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         defaultValueType = DefaultValueType.EXPRESSION,
         defaultValue = "true")
     private boolean messagePersistence;
+
+    @Property(tlddoc="When this property is true, once the user selects the " +
+        "file(s) to upload, the upload will immediately commence, without " +
+        "need to click an upload button.",
+        defaultValueType = DefaultValueType.EXPRESSION, defaultValue="false")
+    private boolean autoUpload;
 }
