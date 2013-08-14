@@ -16,10 +16,10 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<web-app version="2.5"
-         xmlns="http://java.sun.com/xml/ns/javaee"
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
 
     <display-name>ICEfaces Showcase</display-name>
 
@@ -89,12 +89,6 @@
     </servlet>
 
     <servlet>
-        <servlet-name>Resource Servlet</servlet-name>
-        <servlet-class>com.icesoft.faces.webapp.CompatResourceServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-   
-    <servlet>
         <servlet-name>SourceCode Reader</servlet-name>
         <servlet-class>
             org.icefaces.samples.showcase.util.SourceCodeLoaderServlet
@@ -114,11 +108,6 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/icefaces/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>Resource Servlet</servlet-name>
-        <url-pattern>/xmlhttp/*</url-pattern>
     </servlet-mapping>
 
     <session-config>
