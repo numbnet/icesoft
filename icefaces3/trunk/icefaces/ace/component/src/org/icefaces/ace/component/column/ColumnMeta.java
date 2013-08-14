@@ -95,7 +95,7 @@ public class ColumnMeta extends UIColumnMeta {
             "significant to Column components within a column group.", defaultValue="1")
 	private int colspan;
 	
-	@Property(tlddoc="Defines a plain text header with less effort than adding a facet.")
+	@Property(tlddoc="Defines a plain text header with less effort than adding a facet. Note that even when using a header facet this property should also be set as a short-form label for the column that will be used within the ace:tableConfigPanel.")
 	private String headerText;
 	
 	@Property(tlddoc="Defines a  plain text footer with less effort than adding a facet.")
