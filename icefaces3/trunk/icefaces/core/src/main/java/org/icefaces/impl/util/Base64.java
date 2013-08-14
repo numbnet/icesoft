@@ -161,7 +161,6 @@ public class Base64 {
 	private static final int BITS_PER_ENCODED_BYTE = 6;
 	private static final int MASK_8BITS = 0xff;
 	private static final int EOF = -1;
-	private static final java.nio.charset.Charset UTF_8 = java.nio.charset.Charset.forName("UTF-8");
 
 	private static final byte[] DECODE_TABLE = {
 			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -285,7 +284,13 @@ public class Base64 {
 	}
 
 	private static byte[] getBytesUtf8(final String string) {
-		return string.getBytes(UTF_8);
+		byte[] bytes;
+		try {
+			bytes = string.getBytes("UTF-8");
+		} catch (java.io.UnsupportedEncodingException e) {
+			bytes = new byte[0];
+		}
+		return bytes;
 	}
 
 	private static class Context {
