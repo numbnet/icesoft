@@ -42,7 +42,7 @@
                              cellpadding="6" cellspacing="6">
                         <h:outputLabel for="reqColor" value="Required Color Style:"/>
                         <ace:simpleSelectOneMenu id="reqColor" value="#{simpleSelectOneMenuReqStyleBean.reqColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{simpleSelectOneMenuReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -53,7 +53,7 @@
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <ace:simpleSelectOneMenu id="optColor" value="#{simpleSelectOneMenuReqStyleBean.optColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{simpleSelectOneMenuReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -62,11 +62,15 @@
                         </ace:simpleSelectOneMenu>
                         <ace:message for="optColor"/>
                 </h:panelGrid>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="useTheme" value="#{simpleSelectOneMenuReqStyleBean.useTheme}" />
+					<h:outputLabel for="useTheme" value=" None (use theme)" />
+				</h:panelGroup>
             </ace:panel>
        </h:form>
        
        <h:form id="demoForm">    
-            <ace:panel header="simpleSelectOneMenu" styleClass="required-styling-demo">
+            <ace:panel header="simpleSelectOneMenu" styleClass="#{simpleSelectOneMenuReqStyleBean.useTheme ? '' : 'required-styling-demo'}">
 			<h:panelGrid columns="2" width="100%" styleClass="textEntryInputTable">
 				<h:panelGroup>
 				<ace:simpleSelectOneMenu id="selectProvince" value="#{simpleSelectOneMenuBean.province}" valueChangeListener="#{simpleSelectOneMenuBean.provinceChange}"

@@ -40,7 +40,7 @@
                              cellpadding="6" cellspacing="6">
                         <h:outputLabel for="reqColor" value="Required Color Style:"/>
                         <ace:simpleSelectOneMenu id="reqColor" value="#{textEntryReqStyleBean.reqColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{textEntryReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -51,7 +51,7 @@
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <ace:simpleSelectOneMenu id="optColor" value="#{textEntryReqStyleBean.optColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{textEntryReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -60,10 +60,14 @@
                         </ace:simpleSelectOneMenu>
                         <ace:message for="optColor"/>
                 </h:panelGrid>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="useTheme" value="#{textEntryReqStyleBean.useTheme}" />
+					<h:outputLabel for="useTheme" value=" None (use theme)" />
+				</h:panelGroup>
             </ace:panel>
         </h:form>
         <h:form id="textEntryForm">
-            <ace:panel id="personalInfoInputPanel" header="Personal Info" styleClass="required-styling-demo">
+            <ace:panel id="personalInfoInputPanel" header="Personal Info" styleClass="#{textEntryReqStyleBean.useTheme ? '' : 'required-styling-demo'}">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
                     <ace:textEntry id="firstNameInput" value="#{textEntryReqStyleBean.firstName}"
                                    label="First Name" labelPosition="left"

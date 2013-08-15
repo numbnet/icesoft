@@ -40,7 +40,7 @@
                              cellpadding="6" cellspacing="6">
                         <h:outputLabel for="reqColor" value="Required Color Style:"/>
                         <ace:simpleSelectOneMenu id="reqColor" value="#{textAreaEntryReqStyleBean.reqColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{textAreaEntryReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -51,7 +51,7 @@
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <ace:simpleSelectOneMenu id="optColor" value="#{textAreaEntryReqStyleBean.optColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{textAreaEntryReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -60,11 +60,15 @@
                         </ace:simpleSelectOneMenu>
                         <ace:message for="optColor"/>
                 </h:panelGrid>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="useTheme" value="#{textAreaEntryReqStyleBean.useTheme}" />
+					<h:outputLabel for="useTheme" value=" None (use theme)" />
+				</h:panelGroup>
             </ace:panel>
         </h:form>
 		
 		<h:form id="textAreaEntryForm">
-            <ace:panel id="personalInfoInputPanel" header="Personal Info" styleClass="required-styling-demo">
+            <ace:panel id="personalInfoInputPanel" header="Personal Info" styleClass="#{textAreaEntryReqStyleBean.useTheme ? '' : 'required-styling-demo'}">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
                     <ace:textAreaEntry id="comment1Input" label="Comments" labelPosition="top" required="true" requiredIndicator="(*)" indicatorPosition="right" styleClass="#{textAreaEntryReqStyleBean.reqColor}">
                         <ace:ajax render="@this comment1Msg"/>

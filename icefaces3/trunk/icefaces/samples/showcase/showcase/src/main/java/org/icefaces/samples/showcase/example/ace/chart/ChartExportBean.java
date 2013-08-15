@@ -72,4 +72,14 @@ public class ChartExportBean extends ComponentExampleImpl<ChartExportBean> imple
     public boolean isRequestOldIE() {
         return requestOldIE;
     }
+	
+	public void exportHandler(org.icefaces.ace.event.ChartImageExportEvent e) {
+		try {
+			java.io.FileOutputStream out = new java.io.FileOutputStream("asdf1.png");
+			out.write(e.getBytes());
+			out.close();
+		} catch (Exception ex) {
+		
+		}
+	}
 }

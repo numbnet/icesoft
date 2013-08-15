@@ -42,7 +42,7 @@
                              cellpadding="6" cellspacing="6">
                         <h:outputLabel for="reqColor" value="Required Color Style:"/>
                         <ace:simpleSelectOneMenu id="reqColor" value="#{autoCompleteEntryReqStyleBean.reqColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{autoCompleteEntryReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -53,7 +53,7 @@
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <ace:simpleSelectOneMenu id="optColor" value="#{autoCompleteEntryReqStyleBean.optColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{autoCompleteEntryReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -62,11 +62,15 @@
                         </ace:simpleSelectOneMenu>
                         <ace:message for="optColor"/>
                 </h:panelGrid>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="useTheme" value="#{autoCompleteEntryReqStyleBean.useTheme}" />
+					<h:outputLabel for="useTheme" value=" None (use theme)" />
+				</h:panelGroup>
             </ace:panel>
        </h:form>
        
        <h:form id="demoForm">    
-            <ace:panel header="Autocomplete Entry" styleClass="required-styling-demo">
+            <ace:panel header="Autocomplete Entry" styleClass="#{autoCompleteEntryReqStyleBean.useTheme ? '' : 'required-styling-demo'}">
                 <h:panelGrid columns="1" cellspacing="6" cellpadding="6" width="100%">
                     <ace:autoCompleteEntry id="autoComplete1"
                                          value="#{autoCompleteEntryReqStyleBean.selectedText1}"

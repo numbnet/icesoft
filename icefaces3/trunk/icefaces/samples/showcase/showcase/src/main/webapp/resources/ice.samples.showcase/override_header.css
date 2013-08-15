@@ -14,100 +14,118 @@
  * governing permissions and limitations under the License.
  */
 
-.ui-inputfield.ui-state-optional.blueRS {
+.required-styling-demo .ui-inputfield.ui-state-optional.blueRS {
     border-color: #9999cc;
 }
 
-.ui-state-optional.ui-state-error.blueRS {
+.required-styling-demo .ui-state-optional.ui-state-error.blueRS {
     border-color: #ccccff;
 }
 
-.ui-inputfield.ui-state-required.blueRS {
+.required-styling-demo .ui-inputfield.ui-state-required.blueRS {
     border-color: #0000cc;
 }
 
-.ui-state-required.ui-state-error.blueRS {
+.required-styling-demo .ui-state-required.ui-state-error.blueRS {
     border-color: #0000ff;
+	background-color: #ccccff;
+	background-image: none;
+	color: #000099;
 }
 
-.blueRS .ui-inputfield.ui-state-optional {
+.required-styling-demo .blueRS .ui-inputfield.ui-state-optional {
     border-color: #9999cc;
 }
 
-.blueRS .ui-state-optional.ui-state-error {
+.required-styling-demo .blueRS .ui-state-optional.ui-state-error {
     border-color: #ccccff;
 }
 
-.blueRS .ui-inputfield.ui-state-required {
+.required-styling-demo .blueRS .ui-inputfield.ui-state-required {
     border-color: #0000cc;
 }
 
-.blueRS .ui-state-required.ui-state-error {
+.required-styling-demo .blueRS .ui-state-required.ui-state-error {
     border-color: #0000ff;
+	background-color: #ccccff;
+	background-image: none;
+	color: #000099;
 }
 
-.ui-inputfield.ui-state-optional.redRS {
+.required-styling-demo .ui-inputfield.ui-state-optional.redRS {
     border-color: #cc9999;
 }
 
-.ui-state-optional.ui-state-error.redRS {
+.required-styling-demo .ui-state-optional.ui-state-error.redRS {
     border-color: #ffcccc;
 }
 
-.ui-inputfield.ui-state-required.redRS {
+.required-styling-demo .ui-inputfield.ui-state-required.redRS {
     border-color: #cc0000;
 }
 
-.ui-state-required.ui-state-error.redRS {
+.required-styling-demo .ui-state-required.ui-state-error.redRS {
     border-color: #ff0000;
+	background-color: #ffcccc;
+	background-image: none;
+	color: #990000;
 }
 
-.redRS .ui-inputfield.ui-state-optional {
+.required-styling-demo .redRS .ui-inputfield.ui-state-optional {
     border-color: #cc9999;
 }
 
-.redRS .ui-state-optional.ui-state-error {
+.required-styling-demo .redRS .ui-state-optional.ui-state-error {
     border-color: #ffcccc;
 }
 
-.redRS .ui-inputfield.ui-state-required {
+.required-styling-demo .redRS .ui-inputfield.ui-state-required {
     border-color: #cc0000;
 }
 
-.redRS .ui-state-required.ui-state-error {
+.required-styling-demo .redRS .ui-state-required.ui-state-error {
     border-color: #ff0000;
+	background-color: #ffcccc;
+	background-image: none;
+	color: #990000;
 }
 
-.ui-inputfield.ui-state-optional.greenRS {
+.required-styling-demo .ui-inputfield.ui-state-optional.greenRS {
     border-color: #99cc99;
 }
 
-.ui-state-optional.ui-state-error.greenRS {
+.required-styling-demo .ui-state-optional.ui-state-error.greenRS {
     border-color: #ccffcc;
 }
 
-.ui-inputfield.ui-state-required.greenRS {
+.required-styling-demo .ui-inputfield.ui-state-required.greenRS {
     border-color: #00cc00;
 }
 
-.ui-state-required.ui-state-error.greenRS {
+.required-styling-demo .ui-state-required.ui-state-error.greenRS {
     border-color: #00ff00;
+	background-color: #ccffcc;
+	background-image: none;
+	color: #009900;
 }
 
-.greenRS .ui-inputfield.ui-state-optional {
+.required-styling-demo .greenRS .ui-inputfield.ui-state-optional {
     border-color: #99cc99;
 }
 
-.greenRS .ui-state-optional.ui-state-error {
+.required-styling-demo .greenRS .ui-state-optional.ui-state-error {
     border-color: #ccffcc;
 }
 
-.greenRS .ui-inputfield.ui-state-required {
+.required-styling-demo .greenRS .ui-inputfield.ui-state-required {
     border-color: #00cc00;
 }
 
-.greenRS .ui-state-required.ui-state-error {
+.required-styling-demo .greenRS .ui-state-required.ui-state-error {
     border-color: #00ff00;
+	background-color: #ccffcc;
+	background-image: none;
+	color: #009900;
 }
 
 .icePnlTbSetHdrIconLft, .icePnlTbSetHdrIconRt {
