@@ -260,9 +260,30 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
 
     protected Class deriveEventClass(UIComponent parent, String eventName, Class superArgEventClass) {
         Class oneArgEventClass = null;
-        if (parent instanceof IceClientBehaviorHolder) {
+        if (eventName != null && parent instanceof IceClientBehaviorHolder) {
             IceClientBehaviorHolder aceParent = (IceClientBehaviorHolder) parent;
-            if (eventName != null) {
+            String oneArgEventClassName = aceParent.getListenerArgument(eventName);
+            if (oneArgEventClassName != null && !superArgEventClass.getName().
+                    equals(oneArgEventClassName)) {
+                try {
+                    Class clazz = Class.forName(oneArgEventClassName.toString());
+                    if (superArgEventClass.isAssignableFrom(clazz)) {
+                        oneArgEventClass = clazz;
+                    }
+                } catch(Exception e) {
+                    throw new RuntimeException("For component '" +
+                        parent.getClass().getName() +"', for the '" + eventName
+                        + "' ClientEvent, the listener argument class '" +
+                        oneArgEventClassName + "' can not load. Either its " +
+                        "Meta class' @ClientEvent annotation's " +
+                        "argumentClass field was specific incorrectly, or " +
+                        "the component's getListenerArgument(String event) " +
+                        "method was implemented incorrectly.", e);
+                }
+            }
+            // oneArgEventClassName being superArgEventClass indicates it may 
+            // not have been specified
+            else {
                 // Derive the event class name from the event name
                 StringBuilder className = new StringBuilder("org.icefaces.ace.event.");
                 int toUpperIndex = className.length();
