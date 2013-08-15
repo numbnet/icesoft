@@ -40,7 +40,7 @@
                              cellpadding="6" cellspacing="6">
                         <h:outputLabel for="reqColor" value="Required Color Style:"/>
                         <ace:simpleSelectOneMenu id="reqColor" value="#{maskedReqStyleBean.reqColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{maskedReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -51,7 +51,7 @@
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <ace:simpleSelectOneMenu id="optColor" value="#{maskedReqStyleBean.optColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{maskedReqStyleBean.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -60,9 +60,13 @@
                         </ace:simpleSelectOneMenu>
                         <ace:message for="optColor"/>
                 </h:panelGrid>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="useTheme" value="#{maskedReqStyleBean.useTheme}" />
+					<h:outputLabel for="useTheme" value=" None (use theme)" />
+				</h:panelGroup>
             </ace:panel>
         
-            <ace:panel id="personalInfoInputPanel" header="Personal Info" styleClass="required-styling-demo">
+            <ace:panel id="personalInfoInputPanel" header="Personal Info" styleClass="#{maskedReqStyleBean.useTheme ? '' : 'required-styling-demo'}">
                 <h:panelGrid id="inputGrid" columns="2" width="100%" cellpadding="6" cellspacing="6">
                     <h:outputLabel id="workPhoneLabel" for="workPhoneInput" value="Work Phone:"/>
                     <ace:maskedEntry id="workPhoneInput" value="#{maskedReqStyleBean.workPhone}" mask="(999) 999-9999? x99999"

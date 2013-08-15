@@ -59,7 +59,7 @@
                              cellpadding="6" cellspacing="6">
                         <h:outputLabel for="reqColor" value="Required Color Style:"/>
                         <ace:simpleSelectOneMenu id="reqColor" value="#{dateReqStyle.reqColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{dateReqStyle.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -70,7 +70,7 @@
                     
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <ace:simpleSelectOneMenu id="optColor" value="#{dateReqStyle.optColor}"
-                                         style="width: 150px;">
+                                         style="width: 150px;" disabled="#{dateReqStyle.useTheme}">
 										 <ace:ajax execute="@this" />
                             <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
@@ -79,10 +79,14 @@
                         </ace:simpleSelectOneMenu>
                         <ace:message for="optColor"/>
                 </h:panelGrid>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="useTheme" value="#{dateReqStyle.useTheme}" />
+					<h:outputLabel for="useTheme" value=" None (use theme)" />
+				</h:panelGroup>
             </ace:panel>
        </h:form>
        <h:form id="form">             
-            <ace:panel header="Date Entry" styleClass="required-styling-demo">
+            <ace:panel header="Date Entry" styleClass="#{dateReqStyle.useTheme ? '' : 'required-styling-demo'}">
                 <h:panelGrid id="calendarPanel" width="100%" columns="2">
                     <ace:dateTimeEntry id="calReq"
                                        value="#{dateReqStyle.selectedDate1}"

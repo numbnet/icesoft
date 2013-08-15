@@ -516,6 +516,9 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
 
 .required-styling-demo .ui-state-required.ui-state-error {
     border-color: #00cccc;
+	background-color: #ccffff;
+	background-image: none;
+	color: #009999;
 	border-width: 3px;
 	margin:0;
 }

@@ -76,4 +76,14 @@ public class TextAreaEntryReqStyleBean extends ComponentExampleImpl<TextAreaEntr
     public void initMetaData() {
         super.initMetaData();
     }
+	
+	private boolean useTheme = false;
+
+    public boolean getUseTheme() {
+        return useTheme;
+    }
+
+    public void setUseTheme(boolean useTheme) {
+        this.useTheme = useTheme;
+    }
 }
