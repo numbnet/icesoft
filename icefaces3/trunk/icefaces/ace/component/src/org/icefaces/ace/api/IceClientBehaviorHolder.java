@@ -21,4 +21,6 @@ public interface IceClientBehaviorHolder extends javax.faces.component.behavior.
 	public String getDefaultRender(String event);
 	
 	public String getDefaultExecute(String event);
+
+    public String getListenerArgument(String event);
 }

@@ -58,15 +58,19 @@ public class ClientBehaviorHolder extends Behavior {
 
         output.append("\n\n\tprivate static final Map<String, String> defaultRenderMap;");
         output.append("\n\tprivate static final Map<String, String> defaultExecuteMap;");
-           output.append("\n\tstatic {");
+        output.append("\n\tprivate static final Map<String, String> listenerArgumentMap;");
+        output.append("\n\tstatic {");
         output.append("\n\t\tMap<String, String> drm = new HashMap<String, String>("+(events.length+1)+");");
         output.append("\n\t\tMap<String, String> dem = new HashMap<String, String>("+(events.length+1)+");");
+        output.append("\n\t\tMap<String, String> lam = new HashMap<String, String>("+(events.length+1)+");");
         for (int i = 0; i < events.length; i++) {
             output.append("\n\t\tdrm.put(\""+ events[i].name() +"\",\"" + events[i].defaultRender() + "\");");
             output.append("\n\t\tdem.put(\""+ events[i].name() +"\",\"" + events[i].defaultExecute() + "\");");
+            output.append("\n\t\tlam.put(\""+ events[i].name() +"\",\"" + events[i].argumentClass() + "\");");
         }
         output.append("\n\t\tdefaultRenderMap = Collections.unmodifiableMap(drm);");
         output.append("\n\t\tdefaultExecuteMap = Collections.unmodifiableMap(dem);");
+        output.append("\n\t\tlistenerArgumentMap = Collections.unmodifiableMap(lam);");
         output.append("\n\t}\n");
 
 		output.append("\n\tpublic Collection<String> getEventNames() {");
@@ -84,6 +88,15 @@ public class ClientBehaviorHolder extends Behavior {
 		output.append("\n\tpublic String getDefaultExecute(String event) {");
 		output.append("\n\t\treturn defaultExecuteMap.get(event);");
 		output.append("\n\t}\n");
+
+        // The annotation has "" if it's not a custom class and is AjaxBehaviorEvent
+        output.append("\n\tpublic String getListenerArgument(String event) {");
+        output.append("\n\t\tif (!listenerArgumentMap.containsKey(event)) {");
+        output.append("\n\t\t\treturn null;");
+        output.append("\n\t\t}");
+        output.append("\n\t\tString listenerArg = listenerArgumentMap.get(event);");
+        output.append("\n\t\treturn (listenerArg == null || listenerArg.length() == 0) ? \"javax.faces.event.AjaxBehaviorEvent\" : listenerArg;");
+        output.append("\n\t}\n");
 
         if (!anno.allowFAjax()) {
             output.append("\n\tpublic void addClientBehavior(String eventName, javax.faces.component.behavior.ClientBehavior behavior) {");
