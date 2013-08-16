@@ -51,9 +51,9 @@ var restoreMonitorFocusChangesOnUpdate;
 
     var focusOn = function (id) {
         runOnce(Delay(function () {
-            if (id && isValidID(id) && id != currentFocus) {
+            if (id && isValidID(id)) {
                 var e = document.getElementById(id);
-                if (e) {
+                if (e && (e != document.activeElement)) {
                     setFocus(id);
                     if (e.focus) {
                         try {
