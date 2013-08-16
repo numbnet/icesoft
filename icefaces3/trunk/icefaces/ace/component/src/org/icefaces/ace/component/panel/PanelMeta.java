@@ -44,9 +44,6 @@ import org.icefaces.resources.ICEResourceLibrary;
         )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(name = "jquery/ui/jquery-ui.css"),
-    @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
-    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {

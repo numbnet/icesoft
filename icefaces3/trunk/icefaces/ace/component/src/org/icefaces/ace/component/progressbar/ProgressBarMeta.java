@@ -44,8 +44,6 @@ import org.icefaces.resources.ICEResourceLibrary;
                  "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ProgressBar\">ProgressBar Wiki Documentation</a>.")
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
-    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {

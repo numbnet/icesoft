@@ -46,8 +46,6 @@ import java.util.List;
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-        @ICEResourceDependency(name=ACEResourceNames.COMBINED_CSS),
-        @ICEResourceDependency(name=ACEResourceNames.JQUERY_JS),
         @ICEResourceDependency(name="util/ace-datatable.js")
 })
 @ClientBehaviorHolder(events = {

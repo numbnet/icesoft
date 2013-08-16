@@ -48,7 +48,6 @@ import java.util.List;
                  "<a href=\"http://wiki.icefaces.org/display/ICE/ComboBox\">ComboBox Wiki Documentation</a>."
 )
 @ICEResourceDependencies({
-	@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY, name = ACEResourceNames.JQUERY_JS),
 	@ICEResourceDependency(library = ACEResourceNames.ACE_LIBRARY, name = ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {

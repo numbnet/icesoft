@@ -42,11 +42,8 @@ import javax.el.MethodExpression;
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-        @ICEResourceDependency(name = "util/ace-jquery.js"),
-        @ICEResourceDependency(name = "chart/excanvas.js",
-                               browser = BrowserType.IE8_OR_LESS),
-        @ICEResourceDependency(name = "chart/ace-chart.js"),
-        @ICEResourceDependency(name = "util/combined.css")
+        @ICEResourceDependency(name = "chart/excanvas.js", browser = BrowserType.IE8_OR_LESS),
+        @ICEResourceDependency(name = "chart/ace-chart.js")
 })
 @ClientBehaviorHolder(
     defaultEvent = "click",

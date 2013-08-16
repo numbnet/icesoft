@@ -38,8 +38,6 @@ import org.icefaces.resources.ICEResourceLibrary;
              "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TableConfigPanel\">TableConfigPanel Wiki Documentation</a>.</p>")
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
-    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
     @ICEResourceDependency(name = "util/ace-datatable.js")
 })
 

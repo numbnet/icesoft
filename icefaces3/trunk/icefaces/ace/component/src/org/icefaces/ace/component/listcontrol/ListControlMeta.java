@@ -44,8 +44,6 @@ import org.icefaces.resources.ICEResourceLibrary;
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
-    @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
 public class ListControlMeta extends UIComponentBaseMeta {
