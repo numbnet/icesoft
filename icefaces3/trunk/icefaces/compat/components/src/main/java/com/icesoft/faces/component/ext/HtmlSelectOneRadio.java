@@ -559,9 +559,9 @@ public class HtmlSelectOneRadio
         String onclick = super.getOnclick();
         if (getPartialSubmit()) {
             if (onclick != null) {
-                onclick += ";setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL;
+                onclick += ";setFocus(this.id);" + DomBasicRenderer.ICESUBMITPARTIAL;
             } else {
-                onclick = ";setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL;
+                onclick = "setFocus(this.id);" + DomBasicRenderer.ICESUBMITPARTIAL;
             }
         }
         return onclick;
