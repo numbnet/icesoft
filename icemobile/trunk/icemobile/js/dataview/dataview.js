@@ -189,18 +189,11 @@ if (!window['mobi']) window['mobi'] = {};
             }
 
             function recalcScrollHeight(element, head, tbody, foot) {
-                function getHeightAdjust() {
-                    // TODO proper browser detections
-                    // Determine disparency this is resolving
-                    if (navigator.userAgent.indexOf('Chrome') >= 0) return '3';
-                    else return '11';
-                }
-
                 var bodyDivWrapper = element.parentNode,
-                    maxHeight = conf.fixedHeaderSizing.sizeFromWindow ? window.innerHeight - 1 : target.clientHeight,
-                    headHeight = head ? head.getBoundingClientRect().height : 0,
-                    footHeight = foot ? foot.getBoundingClientRect().height : 0,
-                    fullHeight = maxHeight - headHeight - footHeight - getHeightAdjust();
+                    maxHeight = conf.fixedHeaderSizing.sizeFromWindow ? window.innerHeight : target.clientHeight,
+                    headHeight = head ? dupeHeadTable.offsetHeight : 0,
+                    footHeight = foot ? dupeFootTable.offsetHeight : 0,
+                    fullHeight = maxHeight - headHeight - footHeight;
 
                 /* set height to full visible size of parent */
                 if( isNumber(fullHeight) ) {
@@ -229,8 +222,6 @@ if (!window['mobi']) window['mobi'] = {};
                 })
             }
 
-            recalcScrollHeight(table, head, tbody, foot);
-
             /* hide duplicate header */
             setTimeout(function() {
                 if (dupeHead) {
@@ -244,7 +235,8 @@ if (!window['mobi']) window['mobi'] = {};
                     table.style.borderBottom = '0px';
                     dupeFootTable.style.marginBottom = '0';
                 }
-            }, 50) /* hiding instantly broke scrolling when init'ing the first time on landscape ipad */
+                recalcScrollHeight(table, head, tbody, foot);
+            }, 0) /* hiding instantly broke scrolling when init'ing the first time on landscape ipad */
 
             attachScrollHandler(table.parentNode);
         };
