@@ -44,9 +44,6 @@ import org.icefaces.resources.ICEResourceLibrary;
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
-    @ICEResourceDependency(name = "richtextentry/ckeditor/ckeditor.mapping.js"),
-    @ICEResourceDependency(name = "richtextentry/ckeditor/ckeditor.js"),
     @ICEResourceDependency(name = "richtextentry/richtextentry.js")
 })
 @ClientBehaviorHolder(events = {

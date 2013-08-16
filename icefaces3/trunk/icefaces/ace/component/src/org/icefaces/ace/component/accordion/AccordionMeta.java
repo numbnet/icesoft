@@ -41,7 +41,6 @@ import javax.el.MethodExpression;
 
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-    @ICEResourceDependency(name=ACEResourceNames.JQUERY_JS),
 	@ICEResourceDependency(name=ACEResourceNames.COMPONENTS_JS)
 })
 @ClientBehaviorHolder(events = {

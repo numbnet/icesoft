@@ -44,11 +44,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-     @ICEResourceDependency(name="gmap/api.js"),
-     @ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
-
-     @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
-     @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
+     @ICEResourceDependency(name="gmap/api.js")
 })
 public class GMapMeta extends UIPanelMeta {
 

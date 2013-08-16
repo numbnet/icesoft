@@ -45,8 +45,6 @@ import javax.el.ValueExpression;
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-		@ICEResourceDependency(name = ACEResourceNames.COMBINED_CSS),
-        @ICEResourceDependency(name = ACEResourceNames.JQUERY_JS),
         @ICEResourceDependency(name = "util/ace-menu.js")
 })
 public class ContextMenuMeta extends UIComponentBaseMeta {
