@@ -34,16 +34,25 @@ public class ViewRenderer extends BaseLayoutRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
        View view = (View)uiComponent;
+       ViewManager vm = (ViewManager)(uiComponent.getParent());
        validate(view);
        ResponseWriter writer = facesContext.getResponseWriter();
        writer.startElement(HTML.DIV_ELEM, view);
-       writer.writeAttribute(HTML.ID_ATTR, view.getId(), null);
-       writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view", null);
+       writer.writeAttribute(HTML.ID_ATTR, view.getClientId(), null);
+       writer.writeAttribute("data-view",view.getId(), null);
        String title = view.getTitle();
-       if( title != null ){
-    	   writer.writeAttribute("data-title", title, null);
+       if( title == null ){
+           title = vm.getTitle();
        }
-       
+       if( title != null ){
+           writer.writeAttribute("data-title", title, null);
+       }
+       writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view", null);
+       writer.startElement(HTML.DIV_ELEM, null);
+       /*
+       if( view.getId().equals(vm.getSelected()) ){
+           writer.writeAttribute("data-selected", "true", null);
+       }*/
     }
 
     public boolean getRendersChildren() {
@@ -59,10 +68,11 @@ public class ViewRenderer extends BaseLayoutRenderer {
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
     }
     
     private void validate(View view){
-       if( view.getParent() instanceof ViewManager ){
+       if( !(view.getParent() instanceof ViewManager) ){
     	   throw new IllegalStateException("The view component must be a child of the viewManager component");
        }
     }

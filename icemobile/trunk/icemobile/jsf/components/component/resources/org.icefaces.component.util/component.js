@@ -1948,4 +1948,264 @@ ice.mobi.addListener(document, "touchstart", function(){});
     }
 }());
 
+//view manager
+(function(im){
+    var viewHistory =  [];
+    var transitionType = 'horizontal'; //horizontal, vertical
+    var currentWidth = 0;
+    var currentHeight = 0;
+    var proxyFormId;
+    var vendor = (function () {
+        var styles = window.getComputedStyle(document.documentElement, ''),
+          pre = (Array.prototype.slice
+            .call(styles)
+            .join('') 
+            .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+          )[1],
+          dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
+        return {
+          dom: dom,
+          lowercase: pre,
+          css: '-' + pre + '-',
+          js: pre[0].toUpperCase() + pre.substr(1)
+        };
+      })();
+    var vendorPrefix = vendor.lowercase;
+
+    function getCurrentView(){
+        var views = document.getElementsByClassName('mobi-vm-view');
+        for( var i = 0 ; i < views.length ; i++ ){
+            var selected = views[i].firstChild.getAttribute('data-selected');
+            if( selected == "true" ){
+                return views[i].getAttribute('data-view');
+            }
+        }
+    }
+    function getNodeForView(view){
+        var views = document.getElementsByClassName('mobi-vm-view');
+        for( var i = 0 ; i < views.length ; i++ ){
+            var viewId = views[i].getAttribute('data-view');
+            if( viewId ==  view ){
+                return views[i];
+            }
+        }
+    }
+    function supportsTransitions(){
+        var b = document.body || document.documentElement;
+        var s = b.style;
+        var p = 'transition';
+        if(typeof s[p] == 'string') {return true; }
+
+        var v = ['Moz', 'Webkit', 'Khtml', 'O', 'ms'];
+        p = p.charAt(0).toUpperCase() + p.substr(1);
+        for(var i=0; i<v.length; i++) {
+          if(typeof s[v[i] + p] == 'string') { return true; }
+        }
+        return false;
+    }
+    function setOrientation(orient){
+        document.body.setAttribute("data-orient", orient);
+        if (orient == 'portrait'){
+            document.body.classList.remove('landscape');
+            document.body.classList.add('portrait');
+        }
+        else if (orient == 'landscape'){
+            document.body.classList.remove('portrait');
+            document.body.classList.add('landscape');
+        }
+        else{
+            document.body.classList.remove('portrait');
+            document.body.classList.remove('landscape');
+        }
+        setTimeout(scrollTo, 100, 0, 1);
+    }
+
+    function checkOrientation(){
+        console.log('checkOrientation()');
+        if (typeof window.onorientationchange != "object"){
+            if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight)){
+                currentWidth = window.innerWidth;
+                currentHeight = window.innerHeight;
+                var orient = (currentWidth < currentHeight) ? 'portrait' : 'landscape';
+                setOrientation(orient);
+            }
+        }
+    }
+    
+    function getTransitionFunctions(reverse){
+        if( 'horizontal' == transitionType ){
+            return ['translateX(' + (reverse ? '-' : '') + window.innerWidth +    'px)',
+                    'translateX(' + (reverse ? '100%' : '-100%') + ')',
+                    'translateX(0%)'];
+        }
+        else if( 'vertical' == transitionType ){
+            return ['translateY(' + (reverse ? '-' : '') + window.innerWidth +    'px)',
+                    'translateY(' + (reverse ? '100%' : '-100%') + ')',
+                    'translateY(0%)'];
+        }
+        else if( 'flip' == transitionType ){
+            return ['rotateY(' + (reverse ? '-' : '') + '180deg)',
+                    'rotateY(' + (reverse ? '180deg' : '-180deg') + ')',
+                    'rotateY(0deg)'];
+        }
+    }
+    function setTransitionDuration(elem, val){
+        if( vendorPrefix )
+            elem.style[''+ vendorPrefix + 'TransitionDuration'] = val;
+        elem.style.transitionDuration = val;
+    }
+    function setTransform(elem, transform, duration){
+        elem.style.transitionDuration = duration;
+        if( vendorPrefix ){
+            elem.style[''+ vendorPrefix + 'TransitionDuration'] = duration;
+            elem.style[''+ vendorPrefix + 'Transform'] = transform;
+        }
+        elem.style.transform = transform;
+    }
+    function setTransitionEndListener(elem, f){
+        if( vendorPrefix )
+            elem.addEventListener(''+ vendorPrefix + 'TransitionEnd', f, false);
+        elem.addEventListener('transitionEnd', f, false);
+    }
+    function removeTransitionEndListener(elem, f){
+        if( vendorPrefix )
+            elem.removeEventListener(''+ vendorPrefix + 'TransitionEnd', f, false);
+        elem.removeEventListener('transitionEnd', f, false);
+    }
+    function updateViews(fromNode, toNode, reverse){
+        console.log('updateViews() enter');
+        if( supportsTransitions() ){
+            var transitions = getTransitionFunctions(reverse);
+            setTransform(toNode.firstChild, transitions[0], '0ms');
+            toNode.firstChild.setAttribute('data-selected', 'true');
+            setTransitionDuration(toNode.firstChild, '');
+            setTransitionEndListener(fromNode.firstChild, transitionComplete);
+            setTimeout(function(){
+                console.log('transition() for transition supported');
+                setTransform(fromNode.firstChild, transitions[1]);
+                setTransform(toNode.firstChild, transitions[2]);
+            }, 0);
+        } 
+        else{
+            toNode.style.left = "100%";
+            scrollTo(0, 1);
+            toNode.firstChild.setAttribute('data-selected', 'true');
+            var percent = 100;
+            transition();
+            var timer = setInterval(transition, 0);
+
+            function transition(){
+                console.log('transition() for transition unsupported');
+                percent -= 20;
+                if (percent <= 0){
+                    percent = 0;
+                    clearInterval(timer);
+                    transitionComplete();
+                }
+                fromNode.style.left = (reverse ? (100-percent) : (percent-100)) + "%"; 
+                toNode.style.left = (reverse ? -percent : percent) + "%"; 
+            }
+        }
+        
+        function transitionComplete(){
+            console.log('transitionComplete');
+            if( fromNode )
+                fromNode.firstChild.removeAttribute('data-selected');
+            checkTimer = setInterval(checkOrientation, 300);
+            setTimeout(refreshView, 0, toNode);
+            if( fromNode )
+                removeTransitionEndListener(fromNode.firstChild, transitionComplete);
+        }
+        console.log('updateViews() exit');
+    }
+    function refreshBackButton(toNode){
+        console.log('refreshBackButton()');
+        var headerNode = document.getElementsByClassName('mobi-vm-header')[0];
+        var backButton = headerNode.children[1];
+        var selected = getCurrentView();
+        if (backButton){
+            if( viewHistory.length == 1 ){
+                backButton.style.display = "none";
+                return;
+            }
+            else{
+                var prev = viewHistory[viewHistory.length-2];
+                if (prev ){
+                    var prevView = getNodeForView(prev);
+                    if( prevView ){
+                        backButton.style.display = "inline";
+                        var title = prevView.getAttribute('data-title');
+                        backButton.innerHTML = title ? title : "Back";
+                    }
+                }
+            }
+        }
+    }
+    function refreshView(toNode){
+        console.log('refreshView()');
+        var headerNode = document.getElementsByClassName('mobi-vm-header')[0];
+        var titleNode = headerNode.firstChild;
+        var title = toNode.getAttribute('data-title');
+        if (title){
+            titleNode.innerHTML = title;
+        }
+        refreshBackButton();
+    }
+
+    im.viewManager = {
+        showView: function(view){
+            console.log('showView(' + view + ') current');
+            var currentView = getCurrentView();
+            if( view == currentView ){
+                return;
+            }
+            var index = viewHistory.indexOf(view);
+            var reverse = index != -1 ;
+            if (reverse){
+                viewHistory.splice(index);
+            }
+            var fromNode = getNodeForView(currentView);
+            var toNode = getNodeForView(view);
+            viewHistory.push(toNode.getAttribute('data-view'));
+            if( toNode && fromNode ){
+                setTimeout(updateViews, 0, fromNode, toNode, reverse);
+            }
+            else if( toNode ){
+                toNode.firstChild.setAttribute('data-selected', 'true');
+            }
+            document.getElementById("mobi_vm_selected").value = view;
+            
+            jsf.ajax.request(proxyFormId,event,{execute:'@form', render:'@all'});
+            return false;
+        },
+        goBack: function(src){
+            var goTo = viewHistory.slice(-2,-1)[0];
+            if( goTo != undefined ){
+                im.viewManager.showView(goTo);
+            }
+            else{
+                console.error('ViewManager.goBack() invalid state history = ' = viewHistory);
+            }
+        },
+        setState: function(transition, formId, vHistory){
+            if( vHistory.length < 1 ){
+                console.error('invalid empty history added to ViewManager.setState() aborting');
+                return;
+            }
+            var view = vHistory[vHistory.length-1];
+            transitionType = transition;
+            proxyFormId = formId;
+            viewHistory = vHistory;
+            if( view != getCurrentView()){
+                var toNode = getNodeForView(view);
+                if( toNode ){
+                    toNode.firstChild.setAttribute('data-selected', 'true');
+                    document.getElementById("mobi_vm_selected").value = view;
+                }
+            }
+            refreshBackButton();
+        }
+        
+    }
+}(ice.mobi));
 

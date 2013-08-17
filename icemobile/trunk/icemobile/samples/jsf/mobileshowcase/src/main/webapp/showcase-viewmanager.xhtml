@@ -1,0 +1,65 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <title>ICEfaces Mobile Showcase</title>
+    <mobi:deviceResource theme="#{themeBean.currentTheme}"/>
+    <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
+    <c:if test="#{themeBean.simulator}">
+        <h:outputStylesheet library="css" name="showcase-simulator-skin.css" media="screen"/>
+    </c:if>
+    
+    <mobi:googleAnalytics/>
+</h:head>
+    <h:body>
+         <f:metadata>
+            <f:viewParam name="theme" value="#{themeBean.currentTheme}" /> 
+            <f:viewParam name="simulator" value="#{themeBean.simulator}"/>
+         </f:metadata>
+         <mobi:viewManager title="ICEmobile" 
+             transitionType="#{viewManagerBean.transitionType}"
+             headerStyle="#{viewManagerBean.headerStyle}"
+             selected="#{viewManagerBean.view}"
+             history="#{viewManagerBean.history}">
+             <mobi:view id="viewmanager" title="View Manager" menuIcon="th-list">
+                 <ui:include src="/WEB-INF/includes/examples/layout/viewmanager-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="camcorder" title="Camcorder" menuIcon="film">
+                 <ui:include src="/WEB-INF/includes/examples/device/camcorder-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="camera" title="Camera" menuIcon="camera">
+                 <ui:include src="/WEB-INF/includes/examples/device/camera-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="microphone" title="Microphone" menuIcon="microphone">
+                 <ui:include src="/WEB-INF/includes/examples/device/microphone-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="notification" title="Cloud Push" menuIcon="cloud-download">
+                 <ui:include src="/WEB-INF/includes/examples/device/notification-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="qrcode" title="Scan" menuIcon="qrcode">
+                 <ui:include src="/WEB-INF/includes/examples/device/qrcode-example.xhtml" />
+             </mobi:view>
+         </mobi:viewManager>
+    </h:body>
+</html>

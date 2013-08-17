@@ -17,10 +17,13 @@
 package org.icefaces.mobi.component.viewmanager;
 
 
+import java.util.Stack;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.mobi.utils.TLDConstants;
@@ -51,6 +54,19 @@ public class ViewManagerMeta extends UIComponentBaseMeta {
     
     @Property(tlddoc = "The main header title")
     private String title;
+    
+    @Property(tlddoc = "The selected view id", defaultValue = ViewManager.MENU_ID)
+    private String selected;
+    
+    @Property(tlddoc = "The inline CSS style applied to the header")
+    private String headerStyle;
+    
+    @Property(tlddoc = "The type of view transitons to apply [horizontal|vertical]", 
+    		defaultValue = "horizontal")
+    private String transitionType;
+    
+    @Property(tlddoc = "The history stack")
+    private Stack<String> history;
 
     
 }
