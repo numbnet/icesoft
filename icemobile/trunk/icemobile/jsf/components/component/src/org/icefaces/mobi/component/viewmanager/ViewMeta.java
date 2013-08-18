@@ -54,6 +54,12 @@ public class ViewMeta extends UIComponentBaseMeta {
     
     @Property(tlddoc = "The page title")
     private String title;
+    
+    @Property(tlddoc = "Include the view in the main menu", defaultValue = "true")
+    private boolean includeInMenu;
+    
+    @Property(tlddoc = "The nav bar group that this view will be rendered for")
+    private String navBarGroup;
 
     
 }

@@ -16,6 +16,7 @@
 package org.icefaces.mobi.component.viewmanager;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -49,10 +50,7 @@ public class ViewRenderer extends BaseLayoutRenderer {
        }
        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view", null);
        writer.startElement(HTML.DIV_ELEM, null);
-       /*
-       if( view.getId().equals(vm.getSelected()) ){
-           writer.writeAttribute("data-selected", "true", null);
-       }*/
+       writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view-content", null);
     }
 
     public boolean getRendersChildren() {
@@ -66,7 +64,21 @@ public class ViewRenderer extends BaseLayoutRenderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
+        View view = (View)uiComponent;
+        ViewManager vm = (ViewManager)(uiComponent.getParent());
         ResponseWriter writer = facesContext.getResponseWriter();
+        writer.endElement(HTML.DIV_ELEM);
+        
+        writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-nav-bar", null);
+       
+        List<View> views = view.getNavBarItemsToRender();
+        String width = view.getNavBarItemChildWidth();
+        String selected = vm.getSelected();
+        for( View v : views ){
+            renderNavBarItem(writer, v.getId(), width, selected.equals(v.getId()), 
+               v.getMenuIcon(), v.getTitle());
+        }
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
     }
@@ -76,4 +88,24 @@ public class ViewRenderer extends BaseLayoutRenderer {
     	   throw new IllegalStateException("The view component must be a child of the viewManager component");
        }
     }
+    
+    private void renderNavBarItem(ResponseWriter writer, String view, String width, boolean active, 
+        String icon, String title)
+        throws IOException{
+        writer.startElement(HTML.ANCHOR_ELEM, null);
+        if( active ){
+            writer.writeAttribute(HTML.CLASS_ATTR, "active", null);
+        }
+        writer.writeAttribute(HTML.STYLE_ATTR, "width: " + width, null);
+        if( !active )
+            writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view + "');", null);
+        if( icon != null ){
+            writer.startElement("i",null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "icon-" + icon, null);
+            writer.endElement("i");
+        }
+        writer.write(title);
+        writer.endElement(HTML.ANCHOR_ELEM);
+    }
+
 }

@@ -61,12 +61,14 @@ public class ViewManagerMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "The inline CSS style applied to the header")
     private String headerStyle;
     
-    @Property(tlddoc = "The type of view transitons to apply [horizontal|vertical]", 
+    @Property(tlddoc = "The type of view transitons to apply [horizontal|vertical|flip|fade]", 
     		defaultValue = "horizontal")
     private String transitionType;
     
     @Property(tlddoc = "The history stack")
     private Stack<String> history;
+    
+    
 
     
 }

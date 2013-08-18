@@ -37,11 +37,13 @@ public class ViewManager extends ViewManagerBase {
     public static final String TRANSITION_TYPE_VERTICAL = "vertical";
     public static final String TRANSITION_TYPE_HORIZONTAL = "horizontal";
     public static final String TRANSITION_TYPE_FLIP = "flip";
+    public static final String TRANSITION_TYPE_FADE = "fade";
     private static List<String> TRANSITION_TYPES = new ArrayList<String>();
     static{
         TRANSITION_TYPES.add(TRANSITION_TYPE_HORIZONTAL);
         TRANSITION_TYPES.add(TRANSITION_TYPE_VERTICAL);
         TRANSITION_TYPES.add(TRANSITION_TYPE_FLIP);
+        TRANSITION_TYPES.add(TRANSITION_TYPE_FADE);
     }
     
     public boolean isCanGoBack(){
@@ -66,9 +68,9 @@ public class ViewManager extends ViewManagerBase {
             return;
         }
         if( history.size() > 1 && getHistory().contains(selected)){
-            System.out.println("slicing history " + getHistory().subList(0, getHistory().indexOf(selected)));
+            System.out.println("slicing history " + getHistory().subList(0, getHistory().indexOf(selected)+1));
             Stack newHistory = new Stack();
-            newHistory.addAll(getHistory().subList(0, getHistory().indexOf(selected)));
+            newHistory.addAll(getHistory().subList(0, getHistory().indexOf(selected)+1));
             setHistory(newHistory);
         }
         else {
@@ -151,6 +153,8 @@ public class ViewManager extends ViewManagerBase {
     public Stack<String> getHistoryStack(){
         return (Stack<String>)getHistory();
     }
+    
+    
 
 
 }

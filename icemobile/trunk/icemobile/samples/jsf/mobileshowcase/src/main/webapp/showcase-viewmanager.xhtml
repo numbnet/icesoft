@@ -42,8 +42,17 @@
              headerStyle="#{viewManagerBean.headerStyle}"
              selected="#{viewManagerBean.view}"
              history="#{viewManagerBean.history}">
-             <mobi:view id="viewmanager" title="View Manager" menuIcon="th-list">
+             <mobi:view id="viewmanager" title="View Manager" menuIcon="th-list"
+                navBarGroup="viewmanager">
                  <ui:include src="/WEB-INF/includes/examples/layout/viewmanager-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="viewmanagerDocs" title="Docs" menuIcon="book"
+                 includeInMenu="false" navBarGroup="viewmanager">
+                View Manager Docs...
+             </mobi:view>
+             <mobi:view id="viewmanagerCode" title="Code" menuIcon="code"
+                 includeInMenu="false" navBarGroup="viewmanager">
+                View Manager Code...
              </mobi:view>
              <mobi:view id="camcorder" title="Camcorder" menuIcon="film">
                  <ui:include src="/WEB-INF/includes/examples/device/camcorder-example.xhtml" />
