@@ -1955,6 +1955,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     var currentWidth = 0;
     var currentHeight = 0;
     var proxyFormId;
+    var transitionDuration = 100;
     var vendor = (function () {
         var styles = window.getComputedStyle(document.documentElement, ''),
           pre = (Array.prototype.slice
@@ -2055,33 +2056,46 @@ ice.mobi.addListener(document, "touchstart", function(){});
     
     function getTransitionFunctions(reverse){
         if( 'horizontal' == transitionType ){
-            return ['translateX(' + (reverse ? '-' : '') + window.innerWidth +    'px)',
-                    'translateX(' + (reverse ? '100%' : '-100%') + ')',
-                    'translateX(0%)'];
+            return transitionFunction('transform'
+                    , 'translateX(' + (reverse ? '-' : '') + window.innerWidth +    'px)'
+                    , 'translateX(' + (reverse ? '100%' : '-100%') + ')'
+                    , 'translateX(0%)');
         }
         else if( 'vertical' == transitionType ){
-            return ['translateY(' + (reverse ? '-' : '') + window.innerWidth +    'px)',
-                    'translateY(' + (reverse ? '100%' : '-100%') + ')',
-                    'translateY(0%)'];
+            return transitionFunction('transform'
+                    , 'translateY(' + (reverse ? '-' : '') + window.innerWidth +    'px)'
+                    , 'translateY(' + (reverse ? '100%' : '-100%') + ')'
+                    , 'translateY(0%)');
         }
         else if( 'flip' == transitionType ){
-            return ['rotateY(' + (reverse ? '-' : '') + '180deg)',
-                    'rotateY(' + (reverse ? '180deg' : '-180deg') + ')',
-                    'rotateY(0deg)'];
+            return transitionFunction('transform'
+                    , 'rotateY(' + (reverse ? '-' : '') + '180deg)'
+                    , 'rotateY(' + (reverse ? '180deg' : '-180deg') + ')'
+                    , 'rotateY(0deg)');
         }
+        else if( 'fade' == transitionType ){
+            return transitionFunction('opacity', '0', '0', '1');
+        }
+    }
+    function transitionFunction(prop, toStart, from, toEnd){
+        return {prop:prop, toStart: toStart, from: from, toEnd: toEnd};
     }
     function setTransitionDuration(elem, val){
         if( vendorPrefix )
             elem.style[''+ vendorPrefix + 'TransitionDuration'] = val;
         elem.style.transitionDuration = val;
     }
-    function setTransform(elem, transform, duration){
-        elem.style.transitionDuration = duration;
+    function setTransform(elem, transform){
+        elem.style.transitionDuration = transitionDuration;
         if( vendorPrefix ){
-            elem.style[''+ vendorPrefix + 'TransitionDuration'] = duration;
+            elem.style[''+ vendorPrefix + 'TransitionDuration'] = transitionDuration;
             elem.style[''+ vendorPrefix + 'Transform'] = transform;
         }
         elem.style.transform = transform;
+    }
+    function setOpacity(elem, val){
+        elem.style.transitionDuration = transitionDuration;
+        elem.style.opacity = val;
     }
     function setTransitionEndListener(elem, f){
         if( vendorPrefix )
@@ -2097,14 +2111,26 @@ ice.mobi.addListener(document, "touchstart", function(){});
         console.log('updateViews() enter');
         if( supportsTransitions() ){
             var transitions = getTransitionFunctions(reverse);
-            setTransform(toNode, transitions[0], '0ms');
+            if( transitions.prop == 'transform'){
+                setTransform(toNode, transitions.toStart);
+            }
+            else if( transitions.prop == 'opacity'){
+                setOpacity(toNode, transitions.toStart);
+            }
             toNode.setAttribute('data-selected', 'true');
             setTransitionDuration(toNode, '');
-            setTransitionEndListener(fromNode, transitionComplete);
+            setTimeout(transitionComplete, transitionDuration);
+            //setTransitionEndListener(fromNode, transitionComplete);
             setTimeout(function(){
                 console.log('transition() for transition supported');
-                setTransform(fromNode, transitions[1]);
-                setTransform(toNode, transitions[2]);
+                if( transitions.prop == 'transform'){
+                    setTransform(fromNode, transitions.from);
+                    setTransform(toNode, transitions.toEnd);
+                }
+                else if( transitions.prop == 'opacity'){
+                    setOpacity(fromNode, transitions.from);
+                    setOpacity(toNode, transitions.toEnd);
+                }
             }, 0);
         } 
         else{
