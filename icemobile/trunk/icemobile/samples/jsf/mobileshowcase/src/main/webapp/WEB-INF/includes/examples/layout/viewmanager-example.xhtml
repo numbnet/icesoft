@@ -28,6 +28,20 @@
 
     <h:form>
         <mobi:fieldsetGroup>
+            <script>
+          //<![CDATA[
+            /* View style properties need to be cleared for demo when changing transitionTypes */
+            var transitionType = '#{viewManagerBean.transitionType}';
+            function clearViewStyles(){
+                var views = document.getElementsByClassName('mobi-vm-view'); 
+                for( var i = 0 ; i < views.length ; i++ ){
+                    views[i].style.webkitTransform = '';
+                    views[i].style.opacity = '';
+                }
+            }
+            clearViewStyles();
+          //]]>
+            </script>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Transition Type:" for="transitionType" styleClass="ui-input-text"/>
                 <h:selectOneMenu id="transitionType" value="#{viewManagerBean.transitionType}">
@@ -35,6 +49,7 @@
                     <f:selectItem itemLabel="Horizontal" itemValue="horizontal"/>
                     <f:selectItem itemLabel="Vertical" itemValue="vertical"/>
                     <f:selectItem itemLabel="Flip" itemValue="flip"/>
+                    <f:selectItem itemLabel="Fade" itemValue="fade"/>
                 </h:selectOneMenu>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
