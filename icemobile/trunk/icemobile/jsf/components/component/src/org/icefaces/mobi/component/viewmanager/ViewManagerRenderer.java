@@ -16,6 +16,7 @@
 package org.icefaces.mobi.component.viewmanager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
@@ -109,21 +110,24 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         writer.writeAttribute("data-title", vm.getTitle(), null);
         writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view mobi-vm-menu", null);
         writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view-content", null);
         writer.startElement(HTML.UL_ELEM, null);
         List<UIComponent> children = vm.getChildren();
         for( UIComponent child : children ){
-        	View view = (View)child;
-            writer.startElement(HTML.LI_ELEM, null);
-            writer.startElement(HTML.ANCHOR_ELEM, null);
-            writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view.getId() + "');", null);
-            if( view.getMenuIcon() != null ){
-                writer.startElement("i", null);
-                writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-menu-icon icon-" + view.getMenuIcon(), null);
-                writer.endElement("i");
+            View view = (View)child;
+            if( view.isIncludeInMenu() ){
+                writer.startElement(HTML.LI_ELEM, null);
+                writer.startElement(HTML.ANCHOR_ELEM, null);
+                writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view.getId() + "');", null);
+                if( view.getMenuIcon() != null ){
+                    writer.startElement("i", null);
+                    writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-menu-icon icon-" + view.getMenuIcon(), null);
+                    writer.endElement("i");
+                }
+                writer.write(view.getTitle());
+                writer.endElement(HTML.ANCHOR_ELEM);
+                writer.endElement(HTML.LI_ELEM);
             }
-            writer.write(view.getTitle());
-            writer.endElement(HTML.ANCHOR_ELEM);
-            writer.endElement(HTML.LI_ELEM);
         }
         writer.endElement(HTML.UL_ELEM);
         writer.endElement(HTML.DIV_ELEM);
@@ -220,6 +224,11 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         }
         return count;
     }
+    
+    
+    
+    
+    
 
 
 }

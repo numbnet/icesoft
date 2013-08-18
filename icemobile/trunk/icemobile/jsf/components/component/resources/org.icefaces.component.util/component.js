@@ -1975,7 +1975,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     function getCurrentView(){
         var views = document.getElementsByClassName('mobi-vm-view');
         for( var i = 0 ; i < views.length ; i++ ){
-            var selected = views[i].firstChild.getAttribute('data-selected');
+            var selected = views[i].getAttribute('data-selected');
             if( selected == "true" ){
                 return views[i].getAttribute('data-view');
             }
@@ -2020,7 +2020,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         setTimeout(scrollTo, 100, 0, 1);
     }
 
-    function checkOrientation(){
+    function refreshViewDimensions(){
         console.log('checkOrientation()');
         if (typeof window.onorientationchange != "object"){
             if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight)){
@@ -2030,6 +2030,27 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 setOrientation(orient);
             }
         }
+        
+        var contentHeight = currentHeight - 45; //adjust for header
+        var currentView = getNodeForView(getCurrentView());
+        if( currentView.getElementsByClassName('mobi-vm-nav-bar').length > 0 ){
+            contentHeight -= 40; //adjust for nav bar if exists
+        }
+        var contentNode = currentView.getElementsByClassName('mobi-vm-view-content')[0];
+        if( contentNode ){
+            contentNode.style.minHeight = '' + contentHeight + 'px';
+            console.log('set view content height to ' + contentHeight);
+        }
+        else
+            console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find content node for view = ' + currentView.id);
+        var menuNode = document.getElementsByClassName('mobi-vm-menu')[0];
+        if( menuNode ){
+            menuNode.style.minHeight = '' + currentHeight - 45 + 'px';
+            console.log('set menu height to ' + currentHeight - 45);
+        }
+        else
+            console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find menu node');
+
     }
     
     function getTransitionFunctions(reverse){
@@ -2076,20 +2097,20 @@ ice.mobi.addListener(document, "touchstart", function(){});
         console.log('updateViews() enter');
         if( supportsTransitions() ){
             var transitions = getTransitionFunctions(reverse);
-            setTransform(toNode.firstChild, transitions[0], '0ms');
-            toNode.firstChild.setAttribute('data-selected', 'true');
-            setTransitionDuration(toNode.firstChild, '');
-            setTransitionEndListener(fromNode.firstChild, transitionComplete);
+            setTransform(toNode, transitions[0], '0ms');
+            toNode.setAttribute('data-selected', 'true');
+            setTransitionDuration(toNode, '');
+            setTransitionEndListener(fromNode, transitionComplete);
             setTimeout(function(){
                 console.log('transition() for transition supported');
-                setTransform(fromNode.firstChild, transitions[1]);
-                setTransform(toNode.firstChild, transitions[2]);
+                setTransform(fromNode, transitions[1]);
+                setTransform(toNode, transitions[2]);
             }, 0);
         } 
         else{
             toNode.style.left = "100%";
             scrollTo(0, 1);
-            toNode.firstChild.setAttribute('data-selected', 'true');
+            toNode.setAttribute('data-selected', 'true');
             var percent = 100;
             transition();
             var timer = setInterval(transition, 0);
@@ -2110,11 +2131,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
         function transitionComplete(){
             console.log('transitionComplete');
             if( fromNode )
-                fromNode.firstChild.removeAttribute('data-selected');
-            checkTimer = setInterval(checkOrientation, 300);
+                fromNode.removeAttribute('data-selected');
+            checkTimer = setTimeout(refreshViewDimensions, 0);
             setTimeout(refreshView, 0, toNode);
             if( fromNode )
-                removeTransitionEndListener(fromNode.firstChild, transitionComplete);
+                removeTransitionEndListener(fromNode, transitionComplete);
         }
         console.log('updateViews() exit');
     }
@@ -2141,6 +2162,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
             }
         }
     }
+    function refreshBackButtonAndViewDimensions(){
+        var currentView = getNodeForView(getCurrentView());
+        refreshBackButton(currentView);
+        refreshViewDimensions();
+    }
     function refreshView(toNode){
         console.log('refreshView()');
         var headerNode = document.getElementsByClassName('mobi-vm-header')[0];
@@ -2150,6 +2176,10 @@ ice.mobi.addListener(document, "touchstart", function(){});
             titleNode.innerHTML = title;
         }
         refreshBackButton();
+        
+    }
+    function viewHasNavBar(view){
+        return view.getElementsByClassName('mobi-vm-nav-bar').length > 0;
     }
 
     im.viewManager = {
@@ -2171,7 +2201,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 setTimeout(updateViews, 0, fromNode, toNode, reverse);
             }
             else if( toNode ){
-                toNode.firstChild.setAttribute('data-selected', 'true');
+                toNode.setAttribute('data-selected', 'true');
             }
             document.getElementById("mobi_vm_selected").value = view;
             
@@ -2184,7 +2214,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 im.viewManager.showView(goTo);
             }
             else{
-                console.error('ViewManager.goBack() invalid state history = ' = viewHistory);
+                console.error('ViewManager.goBack() invalid state history = ' + viewHistory);
             }
         },
         setState: function(transition, formId, vHistory){
@@ -2199,11 +2229,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
             if( view != getCurrentView()){
                 var toNode = getNodeForView(view);
                 if( toNode ){
-                    toNode.firstChild.setAttribute('data-selected', 'true');
+                    toNode.setAttribute('data-selected', 'true');
                     document.getElementById("mobi_vm_selected").value = view;
                 }
             }
-            refreshBackButton();
+            refreshBackButtonAndViewDimensions();
         }
         
     }

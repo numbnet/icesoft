@@ -15,8 +15,33 @@
  */
 package org.icefaces.mobi.component.viewmanager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+
 
 public class View extends ViewBase {
+
+    public List<View> getNavBarItemsToRender(){
+        String navBarGroup = getNavBarGroup();
+        List<View> views = new ArrayList<View>();
+        if( navBarGroup != null ){
+            List<UIComponent> children = getParent().getChildren();
+            for( int i = 0 ; i < children.size() ; i++ ){
+                View view = (View)children.get(i);
+                if( navBarGroup.equals(view.getNavBarGroup())){
+                    views.add(view);
+                }
+            }
+        }
+        return views;
+    }
+    
+    public String getNavBarItemChildWidth(){
+        float childWidth = 100f / getNavBarItemsToRender().size();
+        return Float.toString(childWidth) + "%";
+    }
  
 
 }
