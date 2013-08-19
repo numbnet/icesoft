@@ -1,7 +1,7 @@
 @import "../mixins";
 
 .mobi-vm{
-
+    position: relative;
 }
 .mobi-vm-header{
     @include linear-gradient( rgba(0,0,0,0), rgba(0,0,0,0.65));
@@ -124,6 +124,13 @@ body.landscape .mobi-vm-header > h1 {
     display: inline-block;
     text-align: center;
 }
+.mobi-vm-menu .mobi-vm-menu-divider{
+    background-color: #AAA;
+    color: #eee;
+    text-shadow: none;
+    font-size: 14px;
+    padding: 5px 0 5px 10px;
+}
 .mobi-vm-nav-bar{
     width: 100%;
     @include transition-duration(300ms);
@@ -156,7 +163,7 @@ body.landscape .mobi-vm-header > h1 {
     text-shadow: none;
 }
 .mobi-vm-nav-bar a.active{
-    color: #9AC5FC;
+    color: #CCE0FA;
 }
 .mobi-vm-nav-bar a:hover{
     text-decoration: none;

@@ -31,11 +31,12 @@
     margin: 8px;
 }
 
-.mobi-list-item {
+.mobi-list > .mobi-list-item {
     margin: 0;
     font-size: 15px;
     font-weight: bold;
     list-style: none;
+    overflow: hidden;
 }
 
 .mobi-list-item-group {
@@ -72,6 +73,7 @@
     margin: 0;
     padding: 0;
 }
+
 
 
 

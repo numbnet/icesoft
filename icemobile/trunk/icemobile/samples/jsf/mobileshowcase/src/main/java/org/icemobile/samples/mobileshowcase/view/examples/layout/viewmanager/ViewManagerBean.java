@@ -48,13 +48,13 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
         resources = {
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title = "audio-example.xhtml",
-                        resource = "/WEB-INF/includes/examples/media/audio-example.xhtml"),
+                        title = "viewmanager-example.xhtml",
+                        resource = "/WEB-INF/includes/examples/layout/viewmanager-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title = "AudioBean.java",
+                        title = "ViewManagerBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/media/audio/AudioBean.java")
+                                "/view/examples/layout/viewmanager/ViewManagerBean.java")
         }
 )
 

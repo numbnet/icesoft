@@ -60,6 +60,9 @@ public class ViewMeta extends UIComponentBaseMeta {
     
     @Property(tlddoc = "The nav bar group that this view will be rendered for")
     private String navBarGroup;
+    
+    @Property(tlddoc = "The group divider to render before the menu item for this view")
+    private String divider;
 
     
 }

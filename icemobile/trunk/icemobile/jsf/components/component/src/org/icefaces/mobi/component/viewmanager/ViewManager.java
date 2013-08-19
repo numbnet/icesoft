@@ -38,12 +38,14 @@ public class ViewManager extends ViewManagerBase {
     public static final String TRANSITION_TYPE_HORIZONTAL = "horizontal";
     public static final String TRANSITION_TYPE_FLIP = "flip";
     public static final String TRANSITION_TYPE_FADE = "fade";
+    public static final String TRANSITION_TYPE_PAGETURN = "pageturn";
     private static List<String> TRANSITION_TYPES = new ArrayList<String>();
     static{
         TRANSITION_TYPES.add(TRANSITION_TYPE_HORIZONTAL);
         TRANSITION_TYPES.add(TRANSITION_TYPE_VERTICAL);
         TRANSITION_TYPES.add(TRANSITION_TYPE_FLIP);
         TRANSITION_TYPES.add(TRANSITION_TYPE_FADE);
+        TRANSITION_TYPES.add(TRANSITION_TYPE_PAGETURN);
     }
     
     public boolean isCanGoBack(){
