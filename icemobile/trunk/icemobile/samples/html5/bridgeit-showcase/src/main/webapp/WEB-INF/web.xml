@@ -39,7 +39,7 @@
       </init-param>
       <init-param>
           <param-name>tabletRedirect</param-name>
-          <param-value>tablet.html</param-value>
+          <param-value>mobile.html</param-value>
       </init-param>
   </filter>
   <filter-mapping>
