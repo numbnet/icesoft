@@ -4,6 +4,7 @@
     <title>DataView Overview</title>
     <script src="../../dataview/dataview.js"></script>
     <script src="../resources/testdata.js"></script>
+    <script src="../resources/examplebase.js"></script>
     <script src="../resources/dust-full-2.0.0.js"></script>
     <link rel="stylesheet" href="../resources/foundation.css" />
 </head>
@@ -22,45 +23,21 @@
     input:not([type]) {
         width:100%;
     }
+
+    .dv-detail {
+        transition: opacity 2s;
+        opacity: 0;
+        border:1px solid transparent;
+    }
+
+    .dv-opaque {
+        opacity: 1;
+    }
 </style>
 <script>
     window.onload = function() {
-        var stringTemplate = '<td>{#auto}<input value="{value}" />{/auto}</td>';
-        var booleanTemplate = '<td>{#auto}<input type="checkbox" {?.value}checked{/value} />{/auto}</td>';
-        var floatTemplate = '<td>{#auto}<input value="{value}" />{/auto}</td>';
-        var integerTemplate = '<td>{#auto}<input value="{value}" />{/auto}</td>';
-        var alertCellTemplate = '<td><button onclick="alert(JSON.stringify(this.parentNode.parentNode.data));" />JSON</td>';
-
-        window['dv'] = new mobi.DataView('tableId',
-                testData.slice(0,100),
-                {
-                    target: '#tableHolder',
-                    fixedHeaderSizing: { sizeFromWindow : true },
-                    template: {
-                        // table wide templates
-                        // bodycell: stringTemplate
-                    },
-                    columns : [
-                        {name:'index', headerText:'ID', footerText:'ID'},
-                        {name:'name', headerText:'Name', footerText:'Name',
-                            template:{ bodycell: stringTemplate}},
-                        {name:'surname' , headerText:'Surname', footerText:'Surname',
-                            template:{ bodycell: stringTemplate}},
-                        {name:'integer', headerText:'Age', footerText:'Age',
-                            template:{ bodycell: integerTemplate}},
-                        {name:'index_start_at', headerText:'Ordered Integer', footerText:'Org. Int',
-                            template:{ bodycell: integerTemplate}},
-                        {name:'float' , headerText:'Float', footerText:'Float',
-                            template:{ bodycell: floatTemplate}},
-                        {name:'email' , headerText:'EMail', footerText:'Email',
-                            template:{ bodycell: stringTemplate}},
-                        {name:'bool' , headerText:'Boolean', footerText:'Bool',
-                            template:{ bodycell: booleanTemplate }},
-                        {name:'alert', headerText:'JSON Alert', footerText:'Alert',
-                            template:{ bodycell: alertCellTemplate }}
-                    ]
-                }
-        );
+        defaultExampleArguments[2].fixedHeaderSizing = { sizeFromWindow : true };
+        window['dv'] = new mobi.DataView(defaultExampleArguments[0], defaultExampleArguments[1], defaultExampleArguments[2]);
     }
 </script>
 <div id="tableHolder">
