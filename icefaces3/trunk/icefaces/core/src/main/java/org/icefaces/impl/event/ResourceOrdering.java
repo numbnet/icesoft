@@ -118,7 +118,7 @@ public class ResourceOrdering implements SystemEventListener {
 
                         nonRootDependencies.add(sourceResourceEntry);
 
-                        NodeList dependOnElements = resourceElement.getElementsByTagName("depends-on");
+                        NodeList dependOnElements = resourceElement.getElementsByTagName("requires");
                         for (int j = 0, dependOnsLength = dependOnElements.getLength(); j < dependOnsLength; j++) {
                             Element dependsOnElement = (Element) dependOnElements.item(j);
                             NodeList hardDependencies = dependsOnElement.getElementsByTagName("resource");
@@ -131,7 +131,7 @@ public class ResourceOrdering implements SystemEventListener {
                             }
                         }
 
-                        NodeList loadAfterElements = resourceElement.getElementsByTagName("load-after");
+                        NodeList loadAfterElements = resourceElement.getElementsByTagName("depends-on");
                         for (int j = 0, loadAftersLength = loadAfterElements.getLength(); j < loadAftersLength; j++) {
                             Element loadAfterElement = (Element) loadAfterElements.item(j);
                             NodeList softDependencies = loadAfterElement.getElementsByTagName("resource");

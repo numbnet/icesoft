@@ -17,33 +17,33 @@
 
 <dependencies>
     <resource name="compat.js" library="ice.compat" target="head">
-        <depends-on>
+        <requires>
             <resource name="bridge.js" library="ice.core" target="head"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="icefaces-compat.js" library="ice.compat" target="head">
-        <depends-on>
+        <requires>
             <resource name="compat.js" library="ice.compat" target="head"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="ICEfacesCompatSetup" library="ice.compat" target="body">
-        <depends-on>
+        <requires>
             <resource name="ICEfacesSetup" library="ice.core" target="body"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="ckeditor/ckeditor.mapping.js" library="inputrichtext" target="head">
-        <depends-on>
+        <requires>
             <resource name="compat.js" library="ice.compat" target="head"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="ckeditor/ckeditor.js" library="inputrichtext" target="head">
-        <depends-on>
+        <requires>
             <resource name="ckeditor/ckeditor.mapping.js" library="inputrichtext" target="head"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="ckeditor_ext.js" library="inputrichtext" target="head">
-        <depends-on>
+        <requires>
             <resource name="ckeditor/ckeditor.js" library="inputrichtext" target="head"/>
-        </depends-on>
+        </requires>
     </resource>
 </dependencies>

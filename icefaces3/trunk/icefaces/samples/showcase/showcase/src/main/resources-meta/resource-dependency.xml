@@ -18,54 +18,54 @@
 <dependencies>
     <!-- Load the ACE component theme css before the custom app. override styles -->
     <resource name="override_styles.css" library="ice.samples.showcase">
-        <depends-on>
+        <requires>
             <resource name="util/combined.css" library="icefaces.ace"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="demo_template.css" library="ice.samples.showcase">
-        <depends-on>
+        <requires>
             <resource name="override_styles.css" library="ice.samples.showcase"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="showcase_styles.css" library="ice.samples.showcase">
-        <depends-on>
+        <requires>
             <resource name="demo_template.css" library="ice.samples.showcase"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="rime/rime.css" library="ice.compat">
-        <depends-on>
+        <requires>
             <resource name="showcase_styles.css" library="ice.samples.showcase"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="rime/rime-accessible.css" library="ice.compat">
-        <depends-on>
+        <requires>
             <resource name="showcase_styles.css" library="ice.samples.showcase"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="override_header.css" library="ice.samples.showcase">
-        <depends-on>
+        <requires>
             <resource name="rime/rime.css" library="ice.compat"/>
-        </depends-on>
+        </requires>
     </resource>
 
 
     <!-- These entries ensure that the .css files load before the .js ones in the head -->
     <resource name="jsf.js" library="javax.faces">
-        <depends-on>
+        <requires>
             <!-- REPLACE these entries with the actual CSS files used in YOUR application
                     (these are specifc to the ICEfaces Showcase sample app. )	           -->
             <resource name="showcase_styles.css" library="ice.samples.showcase"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="bridge.js">
-        <depends-on>
+        <requires>
             <resource name="jsf.js" library="javax.faces"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="util/ace-jquery.js" library="icefaces.ace">
-        <depends-on>
+        <requires>
             <resource name="jsf.js" library="javax.faces"/>
-        </depends-on>
+        </requires>
     </resource>
 </dependencies>
 
