@@ -17,30 +17,30 @@
 
 <dependencies>
     <resource name="bridge.js" library="ice.core">
-        <depends-on>
+        <requires>
             <resource name="jsf.js" library="javax.faces"/>
             <resource name="bridge-support.js" library="ice.core"/>
             <resource name="icepush.js" library="ice.push"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="JavaScriptRunnerSetup" target="body">
-        <depends-on>
+        <requires>
             <resource name="bridge.js" library="ice.core"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="JavaScriptContextSetup" target="body">
-        <depends-on>
+        <requires>
             <resource name="bridge.js" library="ice.core"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="TestScript">
-        <depends-on>
+        <requires>
             <resource name="bridge.js" library="ice.core"/>
-        </depends-on>
+        </requires>
     </resource>
     <resource name="CoreCSSOutput">
-        <depends-on>
+        <requires>
             <resource name="bridge.js" library="ice.core"/>
-        </depends-on>
+        </requires>
     </resource>
 </dependencies>
