@@ -29,7 +29,7 @@
                     var="xhtmlResource">
                 <mobi:outputListItem group="true">#{xhtmlResource.title}</mobi:outputListItem>
                 <mobi:outputListItem>
-                    <iframe style="height:300px;width:100%"
+                    <iframe style="height:300px;width:100%;overflow:scroll;-webkit-overflow-scrolling: touch;"
                         src="/mobileshowcase/sourcecodeStream.html?path=#{xhtmlResource.resource}"/>
                 </mobi:outputListItem>
             </ui:repeat>
