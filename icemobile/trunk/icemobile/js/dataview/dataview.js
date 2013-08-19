@@ -188,33 +188,6 @@ if (!window['mobi']) window['mobi'] = {};
                     }
             }
 
-            function recalcScrollHeight(element, head, tbody, foot) {
-                var bodyDivWrapper = element.parentNode,
-                    maxHeight = conf.fixedHeaderSizing.sizeFromWindow ? window.innerHeight : target.clientHeight,
-                    headHeight = head ? dupeHeadTable.offsetHeight : 0,
-                    footHeight = foot ? dupeFootTable.offsetHeight : 0,
-                    fullHeight = maxHeight - headHeight - footHeight;
-
-                /* set height to full visible size of parent */
-                if( isNumber(fullHeight) ) {
-                    bodyDivWrapper.style.height = fullHeight + 'px';
-                    bodyDivWrapper.style.overflow = 'auto';
-                }
-
-                /* set height to full visible size of parent minus
-                 height of all following elements */
-                var bottomResize = function() {
-                    fullHeight -= (tbody.scrollHeight - tbody.clientHeight);
-                    if( isNumber(fullHeight)){
-                        if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i))
-                            fullHeight += 60;
-                        bodyDivWrapper.style.height = fullHeight + 'px';
-                    }
-                };
-
-                bottomResize();
-            }
-
             function attachScrollHandler(wrapper) {
                 wrapper.addEventListener('scroll', function() {
                     dupeHeadTable.parentNode.scrollLeft = wrapper.scrollLeft;
@@ -235,7 +208,7 @@ if (!window['mobi']) window['mobi'] = {};
                     table.style.borderBottom = '0px';
                     dupeFootTable.style.marginBottom = '0';
                 }
-                recalcScrollHeight(table, head, tbody, foot);
+                recalcScrollHeight.call(self, table, dupeHeadTable, dupeFootTable, conf.fixedHeaderSizing.sizeFromWindow);
             }, 0) /* hiding instantly broke scrolling when init'ing the first time on landscape ipad */
 
             attachScrollHandler(table.parentNode);
@@ -280,6 +253,37 @@ if (!window['mobi']) window['mobi'] = {};
         return document.querySelector(this.renderConf.target);
     }
 
+    function recalcScrollHeight(table, dupeHeadTable, dupeFootTable, sizeFromWindow) {
+        if (table === undefined) table = document.getElementById(this.id);
+        if (dupeHeadTable === undefined) dupeHeadTable = getDOMTarget.call(this).firstChild;
+        if (dupeFootTable === undefined) dupeFootTable = getDOMTarget.call(this).lastChild;
+        if (sizeFromWindow === undefined) sizeFromWindow = this.renderConf.fixedHeaderSizing.sizeFromWindow;
+
+        var bodyDivWrapper = table.parentNode,
+            headHeight = dupeHeadTable.offsetHeight,
+            footHeight = dupeFootTable.offsetHeight,
+            maxHeight = sizeFromWindow ? window.innerHeight : bodyDivWrapper.parentNode.clientHeight,
+            fullHeight = maxHeight - headHeight - footHeight;
+
+        /* set height to full visible size of parent */
+        if( isNumber(fullHeight) ) {
+            bodyDivWrapper.style.height = fullHeight + 'px';
+            bodyDivWrapper.style.overflow = 'auto';
+        }
+
+        /* set height to full visible size of parent minus
+         height of all following elements */
+//        var bottomResize = function() {
+//            fullHeight -= (tbody.scrollHeight - tbody.clientHeight);
+//            if( isNumber(fullHeight)){
+//                if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i))
+//                    fullHeight += 60;
+//                bodyDivWrapper.style.height = fullHeight + 'px';
+//            }
+//        };
+//
+//        bottomResize();
+    }
 
 
 
@@ -370,7 +374,11 @@ if (!window['mobi']) window['mobi'] = {};
             '{>"{id}_head"/}' +
             '{>"{id}_body"/}' +
             '{>"{id}_foot"/}' +
-            '</table>'
+            '</table>',
+
+        detail : '{data}',
+        rowdetail : '<tr class="dv-detail"><td>{>"{id}_detail"/}</td></tr>',
+        globaldetail : '<div class="dv-detail">{>"{id}_detail"/}</div>'
     };
 
 
@@ -561,11 +569,121 @@ if (!window['mobi']) window['mobi'] = {};
 
         // Activation ---------------- //
         dvProto.activateDetail = function(target) {
+            var row, data, detailTemplate, conf = this.renderConf,
+                position = (conf.detailPosition) ? conf.detailPosition : 'row',
+                table = this;
 
+            if (target instanceof HTMLElement) {
+                row = target;
+                data = row.data;
+            } else {
+                data = target;
+                row = this.getRowElement(data);
+                if (!row) {
+                    throw Error('No row with given data to activate.');
+                }
+            }
+
+            if (row.classList.contains('dv-active')) {
+                console.log('Row to activate was already active.');
+                return;
+            }
+
+            // If using a global region deactivate any current active rows
+            if (position === 'global') this.deactivateDetail();
+
+            function writeDetail(contents) {
+                // Insert detail region at config'd position
+                if (position === 'row') {
+                    row.insertAdjacentHTML('afterend', contents);
+                    var detail = row.nextSibling;
+                    detail.firstChild.setAttribute('colspan', table.renderConf.columns.length);
+                    detail.data = data;
+                    detail.className = 'dv-detail';
+                    row.classList.add('dv-active')
+                    setTimeout(function() {
+                        detail.classList.add('dv-opaque');
+                    }, 50);
+                } else if (position === 'global') {
+                    document.querySelector(conf.target).insertAdjacentHTML('afterbegin', contents);
+                    var wrapper = row.parentNode.parentNode.parentNode,
+                        detail = document.querySelector(conf.target).querySelector('.dv-detail'),
+                        cstyle = window.getComputedStyle(detail);
+
+                    wrapper.style.height = (parseFloat(wrapper.style.height) - detail.offsetHeight - parseFloat(cstyle.marginTop) - parseFloat(cstyle.marginBottom)) + 'px';
+                    setTimeout(function() {
+                        detail.classList.add('dv-opaque');
+                    }, 50)
+                }
+            }
+
+            // Build template for detail type
+            var templates = {
+                detail      : conf.template.detail ? conf.template.detail : defaultTemplates.detail,
+                rowdetail   : conf.template.rowdetail ? conf.template.rowdetail : defaultTemplates.rowdetail,
+                globaldetail: conf.template.globaldetail ? conf.template.globaldetail : defaultTemplates.globaldetail
+            }
+
+            dust.loadSource(dust.compile(templates.detail, this.id+'_detail'));
+
+            switch (position) {
+                case 'row':
+                    detailTemplate = this.id+'_rowdetail';
+                    dust.loadSource(dust.compile(templates.rowdetail, detailTemplate));
+                    break;
+                case 'global':
+                    detailTemplate = this.id+'_globaldetail';
+                    dust.loadSource(dust.compile(templates.globaldetail, detailTemplate));
+                    break;
+                default:
+                    throw Error('Invalid detail position defined.');
+            }
+
+            // Render detail region contents
+            dust.render(detailTemplate, getDustBase().push({ id : this.id, data : data, columns : conf.columns }),
+                function(err, out) {
+                    console.log(out);
+                    if (err) throw Error(err);
+                    else writeDetail(out);
+                });
         }
 
-        dvProto.deactivateDetail = function() {
+        dvProto.deactivateDetail = function(target) {
+            var table = this,
+                position = (this.renderConf.detailPosition) ? this.renderConf.detailPosition : 'row';
 
+            if (position === 'global') {
+                target = document.querySelector(this.renderConf.target).querySelector('.dv-detail');
+                if (target) {
+                    target.classList.remove('dv-opaque');
+                    setTimeout(function() {
+                        target.parentNode.removeChild(target);
+                        if (table.renderConf.fixedHeaderSizing) recalcScrollHeight.call(table);
+                    }, 1005);
+                }
+            } else if (position === 'row') {
+                if (target != undefined) {
+                    if (!(target instanceof HTMLElement)) {
+                        target = this.getRowElement(target);
+                    }
+                    if (target.classList.contains('dv-active')) {
+                        var detail = target.nextSibling;
+                        detail.classList.remove('dv-opaque');
+                        target.classList.remove('dv-active');
+                        setTimeout(function() {
+                            target.parentNode.removeChild(detail);
+                        }, 1005);
+                    } else {
+                        console.log('Row to deactivate was not active.');
+                    }
+                } else {
+                    Array.prototype.filter.call(this.getRowElementList(), function(row) {
+                        return row.classList.contains('dv-active');
+                    }).forEach(function(row) {
+                        table.deactivateDetail(row);
+                    });
+                }
+            }
         }
 
         // Column Priority (? column cfg changes may be handled uniformly)
