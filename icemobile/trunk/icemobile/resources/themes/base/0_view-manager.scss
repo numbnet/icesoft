@@ -88,6 +88,7 @@ body.landscape .mobi-vm-header > h1 {
 }
 .mobi-vm-view-content{
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 .mobi-vm-image-cache{
     display: none;

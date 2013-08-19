@@ -2023,13 +2023,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
     function refreshViewDimensions(){
         console.log('refreshViewDimensions()');
-        if (typeof window.onorientationchange != "object"){
-            if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight)){
-                currentWidth = window.innerWidth;
-                currentHeight = window.innerHeight;
-                var orient = (currentWidth < currentHeight) ? 'portrait' : 'landscape';
-                setOrientation(orient);
-            }
+        if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight)){
+            currentWidth = window.innerWidth;
+            currentHeight = window.innerHeight;
+            var orient = (currentWidth < currentHeight) ? 'portrait' : 'landscape';
+            setOrientation(orient);
         }
         
         var contentHeight = currentHeight - 45; //adjust for header
