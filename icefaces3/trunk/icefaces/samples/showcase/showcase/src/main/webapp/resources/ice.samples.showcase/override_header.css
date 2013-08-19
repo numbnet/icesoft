@@ -29,7 +29,7 @@
 .required-styling-demo .ui-state-required.ui-state-error.blueRS {
     border-color: #0000ff;
 	background-color: #ccccff;
-	background-image: none;
+	background-image: none; /* prevent theme background */
 	color: #000099;
 }
 
@@ -48,7 +48,7 @@
 .required-styling-demo .blueRS .ui-state-required.ui-state-error {
     border-color: #0000ff;
 	background-color: #ccccff;
-	background-image: none;
+	background-image: none; /* prevent theme background */
 	color: #000099;
 }
 
@@ -67,7 +67,7 @@
 .required-styling-demo .ui-state-required.ui-state-error.redRS {
     border-color: #ff0000;
 	background-color: #ffcccc;
-	background-image: none;
+	background-image: none; /* prevent theme background */
 	color: #990000;
 }
 
@@ -86,7 +86,7 @@
 .required-styling-demo .redRS .ui-state-required.ui-state-error {
     border-color: #ff0000;
 	background-color: #ffcccc;
-	background-image: none;
+	background-image: none; /* prevent theme background */
 	color: #990000;
 }
 
@@ -105,7 +105,7 @@
 .required-styling-demo .ui-state-required.ui-state-error.greenRS {
     border-color: #00ff00;
 	background-color: #ccffcc;
-	background-image: none;
+	background-image: none; /* prevent theme background */
 	color: #009900;
 }
 
@@ -124,7 +124,7 @@
 .required-styling-demo .greenRS .ui-state-required.ui-state-error {
     border-color: #00ff00;
 	background-color: #ccffcc;
-	background-image: none;
+	background-image: none; /* prevent theme background */
 	color: #009900;
 }
 
