@@ -23,7 +23,6 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.mobi.utils.TLDConstants;
@@ -55,7 +54,7 @@ public class ViewManagerMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "The main header title")
     private String title;
     
-    @Property(tlddoc = "The selected view id", defaultValue = ViewManager.MENU_ID)
+    @Property(tlddoc = "The selected view id", defaultValue = "mobiViewManagerMenu")
     private String selected;
     
     @Property(tlddoc = "The inline CSS style applied to the header")
