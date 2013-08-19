@@ -503,28 +503,21 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
 }
 
 .required-styling-demo .ui-inputfield.ui-state-required {
-    border-color: #009999;
 	border-width: 2px;
 	margin:1px;
 }
 
 .required-styling-demo .ui-inputfield.ui-state-optional {
-    border-color: #666666;
 	border-width: 2px;
 	margin:1px;
 }
 
 .required-styling-demo .ui-state-required.ui-state-error {
-    border-color: #00cccc;
-	background-color: #ccffff;
-	background-image: none;
-	color: #009999;
 	border-width: 3px;
 	margin:0;
 }
 
 .required-styling-demo .ui-state-optional.ui-state-error {
-    border-color: #cccccc;
 	border-width: 3px;
 	margin:0;
 }

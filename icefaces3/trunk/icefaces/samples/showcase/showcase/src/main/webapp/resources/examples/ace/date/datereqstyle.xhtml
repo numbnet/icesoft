@@ -61,7 +61,6 @@
                         <ace:simpleSelectOneMenu id="reqColor" value="#{dateReqStyle.reqColor}"
                                          style="width: 150px;" disabled="#{dateReqStyle.useTheme}">
 										 <ace:ajax execute="@this" />
-                            <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
@@ -72,7 +71,6 @@
                         <ace:simpleSelectOneMenu id="optColor" value="#{dateReqStyle.optColor}"
                                          style="width: 150px;" disabled="#{dateReqStyle.useTheme}">
 										 <ace:ajax execute="@this" />
-                            <f:selectItem itemValue="default" itemLabel="Default"/>
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
@@ -81,7 +79,7 @@
                 </h:panelGrid>
 				<h:panelGroup>
 					<h:selectBooleanCheckbox id="useTheme" value="#{dateReqStyle.useTheme}" />
-					<h:outputLabel for="useTheme" value=" None (use theme)" />
+					<h:outputLabel for="useTheme" value=" No custom styling (use theme)" />
 				</h:panelGroup>
             </ace:panel>
        </h:form>
