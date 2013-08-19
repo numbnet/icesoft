@@ -2022,7 +2022,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     }
 
     function refreshViewDimensions(){
-        console.log('checkOrientation()');
+        console.log('refreshViewDimensions()');
         if (typeof window.onorientationchange != "object"){
             if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight)){
                 currentWidth = window.innerWidth;
@@ -2039,14 +2039,14 @@ ice.mobi.addListener(document, "touchstart", function(){});
         }
         var contentNode = currentView.getElementsByClassName('mobi-vm-view-content')[0];
         if( contentNode ){
-            contentNode.style.minHeight = '' + contentHeight + 'px';
+            contentNode.style.height = '' + contentHeight + 'px';
             console.log('set view content height to ' + contentHeight);
         }
         else
             console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find content node for view = ' + currentView.id);
         var menuNode = document.getElementsByClassName('mobi-vm-menu')[0];
         if( menuNode ){
-            menuNode.style.minHeight = '' + currentHeight - 45 + 'px';
+            menuNode.style.height = '' + currentHeight - 45 + 'px';
             console.log('set menu height to ' + currentHeight - 45);
         }
         else
@@ -2056,25 +2056,70 @@ ice.mobi.addListener(document, "touchstart", function(){});
     
     function getTransitionFunctions(reverse){
         if( 'horizontal' == transitionType ){
-            return transitionFunction('transform'
-                    , 'translateX(' + (reverse ? '-' : '') + window.innerWidth +    'px)'
-                    , 'translateX(' + (reverse ? '100%' : '-100%') + ')'
-                    , 'translateX(0%)');
+            return [function(from,to){
+                setTransform(to, 'translateX(' + (reverse ? '-' : '') 
+                        + window.innerWidth +    'px)');
+            },function(from,to){
+                setTransform(from, 'translateX(' + (reverse ? '100%' : '-100%') + ')');
+                setTransform(to, 'translateX(0%)');
+            }];
         }
         else if( 'vertical' == transitionType ){
-            return transitionFunction('transform'
-                    , 'translateY(' + (reverse ? '-' : '') + window.innerWidth +    'px)'
-                    , 'translateY(' + (reverse ? '100%' : '-100%') + ')'
-                    , 'translateY(0%)');
+            return [function(from,to){
+                setTransform(to, 'translateY(' + (reverse ? '-' : '') 
+                        + window.innerWidth +    'px)');
+            },function(from,to){
+                setTransform(from, 'translateY(' + (reverse ? '100%' : '-100%') + ')');
+                setTransform(to, 'translateY(0%)');
+            }];
         }
         else if( 'flip' == transitionType ){
-            return transitionFunction('transform'
-                    , 'rotateY(' + (reverse ? '-' : '') + '180deg)'
-                    , 'rotateY(' + (reverse ? '180deg' : '-180deg') + ')'
-                    , 'rotateY(0deg)');
+            return [function(from,to){
+                setTransform(to, 'rotateY(' + (reverse ? '-' : '') + '180deg)');
+            },function(from,to){
+                setTransform(from, 'rotateY(' + (reverse ? '180deg' : '-180deg') + ')');
+                setTransform(to, 'rotateY(0deg)');
+            }];
         }
         else if( 'fade' == transitionType ){
-            return transitionFunction('opacity', '0', '0', '1');
+            return [function(from,to){
+                setOpacity(to, '0');
+            },function(from,to){
+                setOpacity(from, '0');
+                setOpacity(to, '1');
+            }];
+        }
+        else if( 'pageturn' == transitionType ){
+            return [function(from,to){
+                var parent = to.parentNode;
+                parent.style.webkitPerspective = 1100;
+                parent.style.webkitPerspectiveOrigin = '50% 50%';
+                var fromMirror = document.createElement('div');
+                fromMirror.id = '_' + from.id;
+                fromMirror.style.width = '50%';
+                fromMirror.style.height = '100%';
+                fromMirror.style.position = 'absolute';
+                fromMirror.style.top = '0px';
+                fromMirror.style.right = '0px';
+                fromMirror.style.webkitTransformStyle = 'preserve-3d';
+                fromMirror.innerHTML = from.innerHTML;
+                fromMirror.style.webkitTransform = 'rotateY(180deg)';
+                to.parentNode.appendChild(fromMirror);
+                from.style.display = 'none';
+                parent.style.webkitTransitionProperty = '-webkit-transform';
+                parent.style.webkitTransitionDuration = '1000ms';
+                parent.style.webkitTransitionTimingFunction = 'ease';
+                parent.style.webkitTransformOrigin = 'left';
+                parent.style.webkitTransform = 'rotateY(-180deg)';
+            },function(from,to){
+                var fromMirror = document.getElementById('_'+from.id);
+                var parent = to.parentNode;
+                parent.removeChild(fromMirror);
+                parent.style.webkitTransform = 'none';
+                parent.style.webkitTransitionProperty = 'none';
+                parent.style.webkitPerspective = 'none';
+                parent.style.webkitPerspectiveOrigin = '';
+            }];
         }
     }
     function transitionFunction(prop, toStart, from, toEnd){
@@ -2111,26 +2156,14 @@ ice.mobi.addListener(document, "touchstart", function(){});
         console.log('updateViews() enter');
         if( supportsTransitions() ){
             var transitions = getTransitionFunctions(reverse);
-            if( transitions.prop == 'transform'){
-                setTransform(toNode, transitions.toStart);
-            }
-            else if( transitions.prop == 'opacity'){
-                setOpacity(toNode, transitions.toStart);
-            }
+            transitions[0](fromNode,toNode);
             toNode.setAttribute('data-selected', 'true');
             setTransitionDuration(toNode, '');
             setTimeout(transitionComplete, transitionDuration);
             //setTransitionEndListener(fromNode, transitionComplete);
             setTimeout(function(){
                 console.log('transition() for transition supported');
-                if( transitions.prop == 'transform'){
-                    setTransform(fromNode, transitions.from);
-                    setTransform(toNode, transitions.toEnd);
-                }
-                else if( transitions.prop == 'opacity'){
-                    setOpacity(fromNode, transitions.from);
-                    setOpacity(toNode, transitions.toEnd);
-                }
+                transitions[1](fromNode,toNode);
             }, 0);
         } 
         else{

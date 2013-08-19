@@ -42,19 +42,123 @@
              headerStyle="#{viewManagerBean.headerStyle}"
              selected="#{viewManagerBean.view}"
              history="#{viewManagerBean.history}">
+             <!-- VIEW MANAGER -->
              <mobi:view id="viewmanager" title="View Manager" menuIcon="th-list"
-                navBarGroup="viewmanager">
+                navBarGroup="viewmanager" divider="Layout and Navigation">
                  <ui:include src="/WEB-INF/includes/examples/layout/viewmanager-example.xhtml" />
              </mobi:view>
              <mobi:view id="viewmanagerDocs" title="Docs" menuIcon="book"
                  includeInMenu="false" navBarGroup="viewmanager">
-                View Manager Docs...
+                <ui:include src="/WEB-INF/includes/examples/layout/viewmanager-desc.xhtml" />
              </mobi:view>
              <mobi:view id="viewmanagerCode" title="Code" menuIcon="code"
                  includeInMenu="false" navBarGroup="viewmanager">
-                View Manager Code...
+                <ui:include src="/WEB-INF/includes/examples/example-resources2.xhtml">
+                    <ui:param name="xhtmlResources" value="#{viewManagerBean.xhtmlResources}"/>
+                    <ui:param name="javaResources" value="#{viewManagerBean.javaResources}"/>
+                </ui:include>
              </mobi:view>
-             <mobi:view id="camcorder" title="Camcorder" menuIcon="film">
+             <!-- ACCORDION -->
+             <mobi:view id="accordion" title="Accordion" menuIcon="reorder"
+                navBarGroup="accordion">
+                 <ui:include src="/WEB-INF/includes/examples/layout/accordion-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="accordionDocs" title="Docs" menuIcon="book"
+                 includeInMenu="false" navBarGroup="accordion">
+                <ui:include src="/WEB-INF/includes/examples/layout/accordion-desc.xhtml" />
+             </mobi:view>
+             <mobi:view id="accordionCode" title="Code" menuIcon="code"
+                 includeInMenu="false" navBarGroup="accordion">
+                <ui:include src="/WEB-INF/includes/examples/example-resources2.xhtml">
+                    <ui:param name="xhtmlResources" value="#{accordionBean.xhtmlResources}"/>
+                    <ui:param name="javaResources" value="#{accordionBean.javaResources}"/>
+                </ui:include>
+             </mobi:view>
+             <!-- FIELDSET -->
+             <mobi:view id="fieldset" title="Fieldset" menuIcon="minus"
+                navBarGroup="fieldset">
+                 <ui:include src="/WEB-INF/includes/examples/layout/fieldset-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="fieldsetDocs" title="Docs" menuIcon="book"
+                 includeInMenu="false" navBarGroup="fieldset">
+                <ui:include src="/WEB-INF/includes/examples/layout/accordion-desc.xhtml" />
+             </mobi:view>
+             <mobi:view id="fieldsetCode" title="Code" menuIcon="code"
+                 includeInMenu="false" navBarGroup="fieldset">
+                <ui:include src="/WEB-INF/includes/examples/example-resources2.xhtml">
+                    <ui:param name="xhtmlResources" value="#{fieldsetBean.xhtmlResources}"/>
+                    <ui:param name="javaResources" value="#{fieldsetBean.javaResources}"/>
+                </ui:include>
+             </mobi:view>
+             <!-- LIST -->
+             <mobi:view id="list" title="List" menuIcon="align-justify"
+                navBarGroup="list">
+                 <ui:include src="/WEB-INF/includes/examples/layout/list-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="listDocs" title="Docs" menuIcon="book"
+                 includeInMenu="false" navBarGroup="list">
+                <ui:include src="/WEB-INF/includes/examples/layout/list-desc.xhtml" />
+             </mobi:view>
+             <mobi:view id="listCode" title="Code" menuIcon="code"
+                 includeInMenu="false" navBarGroup="list">
+                <ui:include src="/WEB-INF/includes/examples/example-resources2.xhtml">
+                    <ui:param name="xhtmlResources" value="#{mobiListBean.xhtmlResources}"/>
+                    <ui:param name="javaResources" value="#{mobiListBean.javaResources}"/>
+                </ui:include>
+             </mobi:view>
+             <!-- TABSET -->
+             <mobi:view id="tabsetDemo" title="Tabset" menuIcon="folder-close"
+                navBarGroup="tabset">
+                 <ui:include src="/WEB-INF/includes/examples/layout/tabset-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="tabsetDocs" title="Docs" menuIcon="book"
+                 includeInMenu="false" navBarGroup="tabset">
+                <ui:include src="/WEB-INF/includes/examples/layout/tabset-desc.xhtml" />
+             </mobi:view>
+             <mobi:view id="tabsetCode" title="Code" menuIcon="code"
+                 includeInMenu="false" navBarGroup="tabset">
+                <ui:include src="/WEB-INF/includes/examples/example-resources2.xhtml">
+                    <ui:param name="xhtmlResources" value="#{tabsetBean.xhtmlResources}"/>
+                    <ui:param name="javaResources" value="#{tabsetBean.javaResources}"/>
+                </ui:include>
+             </mobi:view>
+             
+             <!-- DATAVIEW -->
+             <mobi:view id="dataview" title="Data View" menuIcon="table"
+                navBarGroup="dataview" divider="Input and Selection">
+                 <ui:include src="/WEB-INF/includes/examples/layout/dataview-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="dataviewDocs" title="Docs" menuIcon="book"
+                 includeInMenu="false" navBarGroup="dataview">
+                <ui:include src="/WEB-INF/includes/examples/layout/dataview-desc.xhtml" />
+             </mobi:view>
+             <mobi:view id="dataviewCode" title="Code" menuIcon="code"
+                 includeInMenu="false" navBarGroup="dataview">
+                <ui:include src="/WEB-INF/includes/examples/example-resources2.xhtml">
+                    <ui:param name="xhtmlResources" value="#{dataViewBean.xhtmlResources}"/>
+                    <ui:param name="javaResources" value="#{dataViewBean.javaResources}"/>
+                </ui:include>
+             </mobi:view>
+             <!-- BUTTONS -->
+             <mobi:view id="buttons" title="Buttons" menuIcon="expand"
+                navBarGroup="buttons">
+                 <ui:include src="/WEB-INF/includes/examples/input/button-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="buttonsDocs" title="Docs" menuIcon="book"
+                 includeInMenu="false" navBarGroup="buttons">
+                <ui:include src="/WEB-INF/includes/examples/input/button-desc.xhtml" />
+             </mobi:view>
+             <mobi:view id="buttonsCode" title="Code" menuIcon="code"
+                 includeInMenu="false" navBarGroup="buttons">
+                <ui:include src="/WEB-INF/includes/examples/example-resources2.xhtml">
+                    <ui:param name="xhtmlResources" value="#{buttonBean.xhtmlResources}"/>
+                    <ui:param name="javaResources" value="#{buttonBean.javaResources}"/>
+                </ui:include>
+             </mobi:view>
+             
+             
+             
+             <mobi:view id="camcorder" title="Camcorder" menuIcon="film" divider="Native">
                  <ui:include src="/WEB-INF/includes/examples/device/camcorder-example.xhtml" />
              </mobi:view>
              <mobi:view id="camera" title="Camera" menuIcon="camera">

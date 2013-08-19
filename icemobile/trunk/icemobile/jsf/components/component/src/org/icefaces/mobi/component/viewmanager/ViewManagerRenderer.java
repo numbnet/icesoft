@@ -116,6 +116,13 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         for( UIComponent child : children ){
             View view = (View)child;
             if( view.isIncludeInMenu() ){
+                String divider = view.getDivider();
+                if( divider != null ){
+                    writer.startElement(HTML.LI_ELEM, null);
+                    writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-menu-divider", null);
+                    writer.write(divider);
+                    writer.endElement(HTML.LI_ELEM);
+                }
                 writer.startElement(HTML.LI_ELEM, null);
                 writer.startElement(HTML.ANCHOR_ELEM, null);
                 writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view.getId() + "');", null);
