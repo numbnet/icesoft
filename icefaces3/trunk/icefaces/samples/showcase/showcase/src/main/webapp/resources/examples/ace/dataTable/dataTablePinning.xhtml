@@ -41,13 +41,9 @@
                            columnPinningControlsInHeader="true"
                            value="#{dataTablePinning.carsData}"
                            var="car"
-                           selectionMode="single"
                            scrollable="true"
                            scrollHeight="200"
                            scrollWidthIE7="800">
-               <ace:ajax event="pin" />
-               <ace:ajax event="unpin" />
-
                 <ace:column headerText="ID" footerText="ID" pinningOrder="#{dataTablePinning.pinOrder[0]}">
                     <h:outputText  value="#{car.id}" />
                 </ace:column>
