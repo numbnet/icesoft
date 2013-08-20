@@ -110,18 +110,8 @@ public class BridgeSetup implements SystemEventListener {
 
     private List<UIComponent> getHeadResources(FacesContext context) {
         ArrayList<UIComponent> resources = new ArrayList();
-
-//        //always add bridge support code
-//        resources.add(ResourceOutputUtil.createTransientScriptResourceComponent("bridge-support.js", ICE_CORE_LIB));
-//        //add ICEpush code only when needed
-//        if (EnvUtils.isICEpushPresent()) {
-//            resources.add(ResourceOutputUtil.createTransientScriptResourceComponent("icepush.js", ICE_PUSH_LIB));
-//        }
-//        //always add ICEfaces bridge code
-//        resources.add(ResourceOutputUtil.createTransientScriptResourceComponent("bridge.js", ICE_CORE_LIB));
-        resources.add(new TestScript());
-        resources.add(new CoreCSSOutput());
-
+        resources.add(ResourceOutputUtil.createTransientScriptResourceComponent("head-update-test.js", ICE_CORE_LIB));
+        resources.add(ResourceOutputUtil.createTransientStyleResourceComponent("core.css", ICE_CORE_LIB));
         return resources;
     }
 
@@ -289,50 +279,6 @@ public class BridgeSetup implements SystemEventListener {
 
         public PhaseId getPhaseId() {
             return PhaseId.RESTORE_VIEW;
-        }
-    }
-
-    private static class TestScript extends UIOutput {
-        private TestScript() {
-            setTransient(true);
-            getAttributes().put("name", "TestScript");
-            getAttributes().put("ice.type", "dynamic");
-        }
-
-        public void encodeBegin(FacesContext context) throws IOException {
-            ResponseWriter writer = context.getResponseWriter();
-            writer.startElement("script", this);
-            writer.writeAttribute("type", "text/javascript", null);
-            writer.write("document.documentElement.isHeadUpdateSuccessful=true;");
-            writer.endElement("script");
-        }
-    }
-
-    private static class CoreCSSOutput extends UIOutputWriter {
-        private CoreCSSOutput() {
-            setTransient(true);
-            getAttributes().put("name", "CoreCSSOutput");
-            getAttributes().put("ice.type", "dynamic");
-        }
-
-        public void encode(ResponseWriter writer, FacesContext context) throws IOException {
-            writer.startElement("style", this);
-            writer.writeAttribute("type", "text/css", null);
-            writer.writeText(".ice-blockui-overlay {", null);
-            writer.writeText("position: absolute;", null);
-            writer.writeText("background-color: white;", null);
-            writer.writeText("z-index: 28000;", null);
-            writer.writeText("opacity: 0.22;", null);
-            writer.writeText("filter: alpha(opacity = 22);", null);
-            writer.writeText("}", null);
-            writer.writeText(".ice-status-indicator-overlay {", null);
-            writer.writeText("position: absolute;", null);
-            writer.writeText("background-color: white;", null);
-            writer.writeText("z-index: 28000;", null);
-            writer.writeText("opacity: 0.22;", null);
-            writer.writeText("filter: alpha(opacity = 22);", null);
-            writer.writeText("}", null);
-            writer.endElement("style");
         }
     }
 }

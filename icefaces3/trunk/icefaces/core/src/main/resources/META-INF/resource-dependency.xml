@@ -33,12 +33,12 @@
             <resource name="bridge.js" library="ice.core"/>
         </requires>
     </resource>
-    <resource name="TestScript">
+    <resource name="head-update-test.js" library="ice.core">
         <requires>
             <resource name="bridge.js" library="ice.core"/>
         </requires>
     </resource>
-    <resource name="CoreCSSOutput">
+    <resource name="core.css" library="ice.core">
         <requires>
             <resource name="bridge.js" library="ice.core"/>
         </requires>
