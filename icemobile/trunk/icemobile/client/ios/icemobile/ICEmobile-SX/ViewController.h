@@ -29,6 +29,7 @@
     NSString *currentSessionId;
     NSString *currentEncodedThumbnail;
     NSString *splashParameters;
+    NSString *returnHash;
     NSData *deviceToken;
     NSDictionary *confirmMessages;
     NSDictionary *confirmTitles;
@@ -60,6 +61,7 @@
 @property (retain) NSString *currentSessionId;
 @property (retain) NSString *currentEncodedThumbnail;
 @property (retain) NSString *splashParameters;
+@property (retain) NSString *returnHash;
 @property (retain) NSData *deviceToken;
 @property (retain) NSDictionary *confirmMessages;
 @property (retain) NSDictionary *confirmTitles;

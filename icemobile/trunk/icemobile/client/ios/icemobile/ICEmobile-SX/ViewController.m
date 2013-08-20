@@ -33,6 +33,7 @@
 @synthesize currentSessionId;
 @synthesize currentEncodedThumbnail;
 @synthesize splashParameters;
+@synthesize returnHash;
 @synthesize uploadProgress;
 @synthesize uploadLabel;
 @synthesize appTitle;
@@ -99,6 +100,12 @@
             self.returnURL = [self.returnURL stringByAppendingString:@"&!p="];
             self.returnURL = [self.returnURL stringByAppendingString:
                     [self.currentEncodedThumbnail
+                    stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+        }
+        if (nil != self.returnHash)  {
+            self.returnURL = [self.returnURL stringByAppendingString:@"&!h="];
+            self.returnURL = [self.returnURL stringByAppendingString:
+                    [self.returnHash
                     stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
         }
         return;
@@ -212,7 +219,11 @@ NSLog(@"hideControls");
 NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     if (!self.launchedFromApp)  {
         if (responseString.length < 1500)  {
-            [self completeSmallPost:responseString forComponent:@"!r" withName:@"!r"];
+            [self completeSmallPost:responseString
+                    forComponent:@"!r" withName:@"!r"];
+        } else {
+            [self completeSmallPost:@"Response size limit exceeded."
+                    forComponent:@"!r" withName:@"!r"];
         }
         [self reloadCurrentURL];
     } else {
