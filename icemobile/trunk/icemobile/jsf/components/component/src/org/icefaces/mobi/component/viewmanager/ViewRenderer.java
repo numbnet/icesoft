@@ -50,6 +50,7 @@ public class ViewRenderer extends BaseLayoutRenderer {
        }
        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view" + (view.isSplash() ? " mobi-vm-splash" : ""), null);
        writer.startElement(HTML.DIV_ELEM, null);
+       writer.writeAttribute(HTML.ID_ATTR, view.getClientId()+"_content", null);
        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view-content", null);
     }
 
