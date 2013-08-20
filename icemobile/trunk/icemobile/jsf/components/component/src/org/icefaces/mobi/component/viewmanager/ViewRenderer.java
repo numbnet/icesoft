@@ -40,7 +40,7 @@ public class ViewRenderer extends BaseLayoutRenderer {
        ResponseWriter writer = facesContext.getResponseWriter();
        writer.startElement(HTML.DIV_ELEM, view);
        writer.writeAttribute(HTML.ID_ATTR, view.getClientId(), null);
-       writer.writeAttribute("data-view",view.getId(), null);
+       writer.writeAttribute("data-view", view.isSplash() ? "splash" : view.getId(), null);
        String title = view.getTitle();
        if( title == null ){
            title = vm.getTitle();
@@ -48,7 +48,7 @@ public class ViewRenderer extends BaseLayoutRenderer {
        if( title != null ){
            writer.writeAttribute("data-title", title, null);
        }
-       writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view", null);
+       writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view" + (view.isSplash() ? " mobi-vm-splash" : ""), null);
        writer.startElement(HTML.DIV_ELEM, null);
        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view-content", null);
     }

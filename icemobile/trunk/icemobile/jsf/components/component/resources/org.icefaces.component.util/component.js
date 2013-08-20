@@ -2044,8 +2044,8 @@ ice.mobi.addListener(document, "touchstart", function(){});
             console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find content node for view = ' + currentView.id);
         var menuNode = document.getElementsByClassName('mobi-vm-menu')[0];
         if( menuNode ){
-            menuNode.style.height = '' + currentHeight - 45 + 'px';
-            console.log('set menu height to ' + currentHeight - 45);
+            menuNode.style.height = '' + (currentHeight - 45) + 'px';
+            console.log('set menu height to ' + (currentHeight - 45));
         }
         else
             console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find menu node');
@@ -2272,6 +2272,9 @@ ice.mobi.addListener(document, "touchstart", function(){});
             else{
                 console.error('ViewManager.goBack() invalid state history = ' + viewHistory);
             }
+        },
+        goToMenu: function(){
+            im.viewManager.showView(menuId);
         },
         setState: function(transition, formId, vHistory){
             if( vHistory.length < 1 ){
