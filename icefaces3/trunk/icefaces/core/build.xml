@@ -80,9 +80,9 @@
          MyFaces. -->
     <patternset id="compile.classes">
         <include name="**/*.java"/>
-        <exclude name="org/icefaces/impl/renderkit/html_basic/MessagesRenderer.java" if="myfaces-core"/>
-        <exclude name="org/icefaces/impl/renderkit/html_basic/MessageRenderer.java"  if="myfaces-core"/>
-        <exclude name="org/icefaces/impl/event/MojarraDebugTagListener.java"         if="myfaces-core"/>
+        <exclude name="org/icefaces/impl/renderkit/html_basic/MessagesRenderer.java" if="myfaces"/>
+        <exclude name="org/icefaces/impl/renderkit/html_basic/MessageRenderer.java"  if="myfaces"/>
+        <exclude name="org/icefaces/impl/event/MojarraDebugTagListener.java"         if="myfaces"/>
     </patternset>
 
     <target name="clean">
