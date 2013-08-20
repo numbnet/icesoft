@@ -42,6 +42,12 @@
              headerStyle="#{viewManagerBean.headerStyle}"
              selected="#{viewManagerBean.view}"
              history="#{viewManagerBean.history}">
+             
+             <!-- SPLASH SCREEN -->
+             <mobi:view id="splash" splash="true" includeInMenu="false">
+                 <ui:include src="/WEB-INF/includes/content/splash.xhtml" />
+             </mobi:view>
+             
              <!-- VIEW MANAGER -->
              <mobi:view id="viewmanager" title="View Manager" menuIcon="th-list"
                 navBarGroup="viewmanager" divider="Layout and Navigation">
@@ -174,7 +180,7 @@
              </mobi:view>
              
              <!-- FLIPSWITCH -->
-             <mobi:view id="flipswitchDemo" title="Flip Switch" menuIcon="resize-horizontal"
+             <mobi:view id="flipswitchDemo" title="Flip Switch" menuIcon="off"
                 navBarGroup="flipswitch">
                  <ui:include src="/WEB-INF/includes/examples/input/flip-switch-example.xhtml" />
              </mobi:view>

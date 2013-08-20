@@ -204,4 +204,17 @@ body.landscape .mobi-vm-header > h1 {
     .mobi-vm-back:hover{
         color: #DAEFFF; 
     }
+    .mobi-vm-splash{
+        opacity: 0;
+        @include transition-duration(100ms);
+        @include transition-property('opacity');
+    }
+    div.mobi-vm-menu[data-selected="true"] ~ div.mobi-vm-splash {
+       display: inline-block;
+       width: 75%;
+       vertical-align: top;
+       z-index: 999;
+       left: 25%;
+       opacity: 1;
+    }
 }
