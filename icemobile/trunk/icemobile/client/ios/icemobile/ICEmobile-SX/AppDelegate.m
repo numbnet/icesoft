@@ -112,6 +112,7 @@
     self.viewController.currentParameters = [params objectForKey:@"p"];
     self.viewController.currentCommand = [params objectForKey:@"c"];
     self.viewController.splashParameters = [params objectForKey:@"s"];
+    self.viewController.returnHash = [params objectForKey:@"h"];
     self.viewController.currentSessionId = [params objectForKey:@"JSESSIONID"];
     LogDebug(@"found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]);
 
