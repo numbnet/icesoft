@@ -102,7 +102,7 @@ if (!window['mobi']) window['mobi'] = {};
         }
 
         function attachAutoListener(tbody) {
-            tbody.addEventListener('change', function() {
+            tbody.addEventListener('change', function(event) {
                 var autoTag = (function(parent){
                     while (parent != tbody) {
                         if (parent.classList.contains('dv-auto'))
@@ -297,14 +297,25 @@ if (!window['mobi']) window['mobi'] = {};
 
     function getDustBase() {
         return dust.makeBase({
-            auto: function(chunk, context, bodies, params) {
+            auto: function(chunk, ctx, bodies, params) {
                 if (!params) params = {};
-                var propName = params.propName ? params.propName : 'name';
+                // if no explicit property name, see if a prop name variable exists, as in a col context
+                var propName = params.propName ? params.propName : ctx.get('name');
 
                 // written as onmouseover to bind onchange to avoid Chrome error with onchange
                 // https://code.google.com/p/chromium/issues/detail?id=131574
-                chunk.write('<span class="dv-auto" data-prop="'+context.get(propName)+'">');
-                chunk = chunk.render( bodies.block, context );
+                chunk.write('<span class="dv-auto" data-prop="'+propName+'">');
+                chunk = chunk.render( bodies.block, ctx );
+                chunk.write('</span>')
+            },
+
+            filter: function(chunk, ctx, bodies, params) {
+                if (!params) params = {};
+                // if no explicit property name, see if a prop name variable exists, as in a col context
+                var propName = params.propName ? params.propName : ctx.get('name');
+
+                chunk.write('<span class="dv-filter" data-prop="'+propName+'">');
+                chunk = chunk.render( bodies.block, ctx );
                 chunk.write('</span>')
             },
 
