@@ -167,12 +167,14 @@ if (!window.console) {
                 barURL.lastIndexOf("/")) + "/";
 
         var returnURL = "" + window.location;
-        if ("" == window.location.hash) {
-            var lastHash = returnURL.lastIndexOf("#");
-            if (lastHash > 0) {
-                returnURL = returnURL.substring(0, lastHash);
-            }
-            returnURL += "#icemobilesx";
+        var lastHash = returnURL.lastIndexOf("#");
+        var theHash = returnURL.substring(lastHash);
+        var theURL = returnURL.substring(0, lastHash);
+        returnURL = theURL + "#icemobilesx";
+
+        var hashClause = "";
+        if ("" != theHash)  {
+            hashClause = "&h=" + escape(theHash);
         }
 
         if (params !== undefined && "" != params) {
@@ -182,6 +184,7 @@ if (!window.console) {
         var sessionidClause = "";
         if ("" != sessionid) {
             sessionidClause = "&JSESSIONID=" + escape(sessionid);
+            //also need PHPSESSID and ASPSESSIONID
         }
         var serializedFormClause = "";
         if (formID)  {
@@ -196,6 +199,7 @@ if (!window.console) {
                 uploadURLClause + 
                 "&r=" + escape(returnURL) +
                 sessionidClause +
+                hashClause +
                 serializedFormClause;
 
         window.location = sxURL;
@@ -372,18 +376,11 @@ if (!window.console) {
                     }
                 }
                 setTimeout( function(){
-                    console.log('entered setTimeout');
-                    var loc = window.location;
-                    //changing hash to temporary value ensures changes
-                    //to repeated values are detected
-                    history.pushState("", document.title,
-                            loc.pathname + loc.search + "#clear-icemobilesx");
-                    history.pushState("", document.title,
-                            loc.pathname + loc.search);
                     var sxEvent = {
                         name : name,
                         value : value
                     };
+                    var restoreHash = "";
                     if (deviceParams)  {
                         if (deviceParams.r)  {
                             sxEvent.response = deviceParams.r;
@@ -391,7 +388,17 @@ if (!window.console) {
                         if (deviceParams.p)  {
                             sxEvent.preview = deviceParams.p;
                         }
+                        if (deviceParams.h)  {
+                            restoreHash = deviceParams.h;
+                        }
                     }
+                    var loc = window.location;
+                    //changing hash to temporary value ensures changes
+                    //to repeated values are detected
+                    history.pushState("", document.title,
+                            loc.pathname + loc.search + "#clear-icemobilesx");
+                    history.pushState("", document.title,
+                            loc.pathname + loc.search + restoreHash);
                     if (ice.bridgeIt.deviceCommandCallback)  {
                         ice.bridgeIt.deviceCommandCallback(sxEvent);
                         ice.bridgeIt.deviceCommandCallback = null;
