@@ -2158,7 +2158,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
             toNode.setAttribute('data-selected', 'true');
             setTransitionDuration(toNode, '');
             setTimeout(transitionComplete, transitionDuration);
-            //setTransitionEndListener(fromNode, transitionComplete);
             setTimeout(function(){
                 console.log('transition() for transition supported');
                 transitions[1](fromNode,toNode);
@@ -2291,6 +2290,8 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 }
             }
             refreshBackButtonAndViewDimensions();
+            ice.mobi.addListener(window, 'resize', refreshViewDimensions);
+            ice.mobi.addListener(window, 'orientationchange', refreshViewDimensions);
         }
         
     }
