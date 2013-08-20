@@ -49,6 +49,10 @@ public class ThumbnailRenderer extends Renderer {
             logger.warning("'for' attribute cannot be null");
         }
         UIComponent comp = thumbnail.findComponent(compId);
+        if( comp == null ){
+            logger.warning("Cannot locate associated component 'for' = " + compId);
+            return;
+        }
         String mFor = comp.getId();
         if (null != comp) {
             if (comp instanceof ThumbnailProvider){
