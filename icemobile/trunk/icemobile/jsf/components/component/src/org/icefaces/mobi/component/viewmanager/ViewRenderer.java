@@ -52,6 +52,8 @@ public class ViewRenderer extends BaseLayoutRenderer {
        writer.startElement(HTML.DIV_ELEM, null);
        writer.writeAttribute(HTML.ID_ATTR, view.getClientId()+"_content", null);
        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-view-content", null);
+       writer.startElement(HTML.DIV_ELEM, null);
+       writer.writeAttribute(HTML.ID_ATTR, view.getClientId()+"_inner", null);
     }
 
     public boolean getRendersChildren() {
@@ -68,6 +70,7 @@ public class ViewRenderer extends BaseLayoutRenderer {
         View view = (View)uiComponent;
         ViewManager vm = (ViewManager)(uiComponent.getParent());
         ResponseWriter writer = facesContext.getResponseWriter();
+        writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
         
         writer.startElement(HTML.DIV_ELEM, null);
