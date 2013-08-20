@@ -20,6 +20,7 @@ import org.icefaces.samples.showcase.example.ace.accordionpanel.AccordionPanelBe
 import org.icefaces.samples.showcase.example.ace.animation.AnimationBean;
 import org.icefaces.samples.showcase.example.ace.autocompleteentry.AutoCompleteEntryBean;
 import org.icefaces.samples.showcase.example.ace.breadcrumbmenu.BreadcrumbMenuBean;
+import org.icefaces.samples.showcase.example.ace.buttonGroup.ButtonGroupBean;
 import org.icefaces.samples.showcase.example.ace.chart.ChartBean;
 import org.icefaces.samples.showcase.example.ace.checkboxButton.CheckboxButtonBean;
 import org.icefaces.samples.showcase.example.ace.combobox.ComboBoxBean;
@@ -46,6 +47,7 @@ import org.icefaces.samples.showcase.example.ace.panel.PanelBean;
 import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
 import org.icefaces.samples.showcase.example.ace.progressbar.ProgressBarBean;
 import org.icefaces.samples.showcase.example.ace.pushButton.PushButtonBean;
+import org.icefaces.samples.showcase.example.ace.radioButton.RadioButtonBean;
 import org.icefaces.samples.showcase.example.ace.resizable.ResizableBean;
 import org.icefaces.samples.showcase.example.ace.richtextentry.RichTextEntryBean;
 import org.icefaces.samples.showcase.example.ace.selectmenu.SelectMenuBean;
@@ -72,11 +74,12 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.ace.animation.title", exampleBeanName = AnimationBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.autocompleteentry.title", exampleBeanName = AutoCompleteEntryBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.breadcrumbmenu.title", exampleBeanName = BreadcrumbMenuBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.buttonGroup.title", exampleBeanName = ButtonGroupBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.chart.title", exampleBeanName = ChartBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.checkboxButton.title", exampleBeanName = CheckboxButtonBean.BEAN_NAME),
 				@MenuLink(title = "menu.ace.combobox.title", exampleBeanName = ComboBoxBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.confirmationdialog.title", exampleBeanName = ConfirmationDialogBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.contextMenu.title", exampleBeanName = ContextMenuBean.BEAN_NAME),
-                @MenuLink(title = "menu.ace.chart.title", exampleBeanName = ChartBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.dataExporter.title", exampleBeanName = DataExporterBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.dataTable.title", exampleBeanName = DataTableBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.dateentry.title", exampleBeanName = DateEntryBean.BEAN_NAME),
@@ -98,6 +101,7 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.ace.printer.title", exampleBeanName = PrinterBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.progressbar.title", exampleBeanName = ProgressBarBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.pushButton.title", exampleBeanName = PushButtonBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.radioButton.title", exampleBeanName = RadioButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.resizable.title", exampleBeanName = ResizableBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.richtextentry.title", exampleBeanName = RichTextEntryBean.BEAN_NAME),
 				@MenuLink(title = "menu.ace.selectmenu.title", exampleBeanName = SelectMenuBean.BEAN_NAME),
