@@ -27,15 +27,14 @@
     </div>
     <script type="text/javascript">
     function handleCam(event)  {
-        alert(event);
         var text = event.value;
+        if (event.preview)  {
+            document.getElementById("thumbnail").setAttribute("src", event.preview);
+        }
         if (event.response)  {
             var theResponse = JSON.parse(event.response);
             var elem = document.getElementById("images");
             elem.innerHTML = elem.innerHTML + "<div class='row'><img src='" + theResponse.path + "'></div>";
-        }
-        if (event.preview)  {
-            document.getElementById("thumbnail").setAttribute("src", event.preview);
         }
     }
     </script>
