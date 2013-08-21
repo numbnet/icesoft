@@ -15,13 +15,13 @@
   -->
 
 <project name="common-html5">
-	
+    
     <import file="common.xml"/>
         <property name="bridgeit.version.string" 
             value="${bridgeit.version.primary}.${bridgeit.version.secondary}.${bridgeit.version.tertiary}"/>
     
     
-	
+    
     <patternset id="pattern.compile.icemobile.html5">
         <include name="jstl-1.2.jar"/>
         <include name="javax.servlet-api.jar"/>
@@ -53,6 +53,12 @@
         <include name="${icemobile-spring.lib.name}.jar"/>
         <include name="${icemobile-jsp.lib.name}.jar"/>
         <include name="commons-logging.jar"/>
+        <include name="commons-dbcp-1.4.jar"/>
+        <include name="commons-pool-1.6.jar"/>
+        <include name="commons-fileupload-1.2.2.jar"/>
+        <include name="hsqldb.jar"/>
+        <include name="jackson-core-asl-1.8.1.jar"/>
+        <include name="jackson-mapper-asl-1.8.1.jar"/>
         <include name="commons-fileupload-1.2.2.jar"/>
         <include name="org.springframework.beans-3.1.1.RELEASE.jar"/>
         <include name="org.springframework.context-3.1.1.RELEASE.jar"/>
@@ -68,7 +74,7 @@
     </patternset>
 
     <target name="compile" depends="pre.compile">
-    	<available property="isJDK16" classname="java.util.ServiceLoader"/> 
+        <available property="isJDK16" classname="java.util.ServiceLoader"/> 
                 
         <javac srcdir="${java.dir}"
                destdir="${classes.dir}"
@@ -132,7 +138,7 @@
         </war>
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
         <copy file="${dist.dir}/${ant.project.name}.war" todir="${samples.dist.dir}" 
-        	verbose="true" overwrite="true"/>
+            verbose="true" overwrite="true"/>
     </target>
 
     <target name="servlet-profile"
@@ -147,6 +153,15 @@
 
         <antcall target="war.basic" />
     </target>
+
+    <target name="deploy.reload.html5" depends="deploy.html5,reload"/>
     
+    <target name="deploy.html5" depends="war.basic">
+        <copy todir="${deploy.path}/${ant.project.name}" preservelastmodified="true" verbose="true">
+            <fileset dir="${exploded.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </copy>
+    </target>
 
 </project>
