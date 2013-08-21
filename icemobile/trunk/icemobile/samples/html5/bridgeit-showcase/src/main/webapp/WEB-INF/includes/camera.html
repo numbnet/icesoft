@@ -14,7 +14,6 @@
         onclick="ice.bridgeit.camera('cameraBtn',handleCam, {postURL:(''+window.location).match(/.*\//) + 'service/camera-upload'});">Take a Photo</a>
         
     <fieldset>
-        <div class="row"></div>
         <div class="row"><img id="thumbnail"/></div>
     </fieldset>
     <fieldset id="images">
@@ -35,10 +34,14 @@
             var photos = JSON.parse(event.response);
             var elem = document.getElementById("images");
             for( var i = 0 ; i < photos.length ; i++ ){
-                var row = document.createElement('div');
-                row.setAttribute('class','row');
-                row.innerHTML = "<img src='service/" + photos[i] + "'/>";
-                elem.appendChild(row);
+                var row1 = document.createElement('div');
+                row1.setAttribute('class','row');
+                row1.innerHTML = "Image taken at " + new Date();
+                elem.appendChild(row1);
+                var row2 = document.createElement('div');
+                row2.setAttribute('class','row');
+                row2.innerHTML = "<img src='service/" + photos[i] + "'/>";
+                elem.appendChild(row2);
             }
             
         }
