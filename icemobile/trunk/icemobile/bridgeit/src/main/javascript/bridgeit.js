@@ -20,15 +20,16 @@ if (!window['ice.mobi']) {
     /** @namespace ice.mobi */
     window.ice.mobi = {};
 }
-if (!window['ice.bridgeIt']) {
+if (!window['ice.bridgeit']) {
     /** @namespace ice.bridgeIt 
      * @property {url}  splashImageURL - URL for the splash image to show when loading BridgeIt
      */
     /*
      * @property {function} deviceCommandCallback - The current stored callback for the last native device command
-     * @property {function} userAjaxRequest - User-supplied callback that will be queried and called by ice.bridgeIt.ajaxRequest()
+     * @property {function} userAjaxRequest - User-supplied callback that will be queried and called by ice.bridgeit.ajaxRequest()
      */
-    window.ice.bridgeIt = {};
+    window.ice.bridgeit = {};
+    ice.bridgeIt = ice.bridgeit; //alias ice.bridgeit and ice.bridgeIt
 }
 if (!window.console) {
     console = {};
@@ -132,6 +133,7 @@ if (!window.console) {
         return null;
     }
     function deviceCommandExec(command, id, options)  {
+        console.log("deviceCommandExec('" + command + "', '" + id + ", " + options);
         var ampchar = String.fromCharCode(38);
         var uploadURL;
         var sessionid;
@@ -171,11 +173,13 @@ if (!window.console) {
         var theHash = returnURL.substring(lastHash);
         var theURL = returnURL.substring(0, lastHash);
         returnURL = theURL + "#icemobilesx";
+        console.log('returnURL = ' + returnURL);
 
         var hashClause = "";
         if ("" != theHash)  {
             hashClause = "&h=" + escape(theHash);
         }
+        console.log('hashClause = ' + hashClause);
 
         if (params !== undefined && "" != params) {
             params = "ub=" + escape(baseURL) + ampchar + params;
@@ -201,13 +205,14 @@ if (!window.console) {
                 sessionidClause +
                 hashClause +
                 serializedFormClause;
+        console.log('sxURL=' + sxURL);
 
         window.location = sxURL;
     }
     function getSplashClause()  {
         var splashClause = "";
-        if (null != ice.bridgeIt.splashImageURL)  {
-            var splashImage = "i=" + escape(ice.bridgeIt.splashImageURL);
+        if (null != ice.bridgeit.splashImageURL)  {
+            var splashImage = "i=" + escape(ice.bridgeit.splashImageURL);
             splashClause = "&s=" + escape(splashImage);
         }
         return splashClause;
@@ -245,10 +250,11 @@ if (!window.console) {
     }
     function deviceCommand(command, id, callback, options)  {
         console.log(command + " " + id);
-        ice.bridgeIt.deviceCommandCallback = callback;
+        ice.bridgeit.deviceCommandCallback = callback;
         deviceCommandExec(command, id, options);
     }
     function setInput(target, name, value, vtype)  {
+        console.log('setInput(target=' + target + ', name=' + name + ', value=' + value + ', vtype=' + vtype);
         var hiddenID = name + "-hid";
         var existing = document.getElementById(hiddenID);
         if (existing)  {
@@ -321,6 +327,7 @@ if (!window.console) {
         el.value = parts.join();
     }
     function unpackDeviceResponse(data)  {
+        console.log('unpackDeviceResponse(' + data + ')');
         var result = {};
         var params = data.split("&");
         var len = params.length;
@@ -355,7 +362,7 @@ if (!window.console) {
         }, false);
 
         window.addEventListener("hashchange", function () {
-            console.log('entered hashchange listener');
+            console.log('entered hashchange listener hash=' + window.location.hash);
             var data = getDeviceCommand();
             var deviceParams;
             if (null != data)  {
@@ -371,15 +378,18 @@ if (!window.console) {
                     }
                 }
                 if (needRefresh)  {
+                    console.log('needs refresh');
                     if (window.ice.ajaxRefresh)  {
                         ice.ajaxRefresh();
                     }
                 }
                 setTimeout( function(){
+                    console.log('setTimeout()');
                     var sxEvent = {
                         name : name,
                         value : value
                     };
+                    console.log('sxEvent: ' + sxEvent);
                     var restoreHash = "";
                     if (deviceParams)  {
                         if (deviceParams.r)  {
@@ -399,9 +409,13 @@ if (!window.console) {
                             loc.pathname + loc.search + "#clear-icemobilesx");
                     history.pushState("", document.title,
                             loc.pathname + loc.search + restoreHash);
-                    if (ice.bridgeIt.deviceCommandCallback)  {
-                        ice.bridgeIt.deviceCommandCallback(sxEvent);
-                        ice.bridgeIt.deviceCommandCallback = null;
+                    if (ice.bridgeit.deviceCommandCallback)  {
+                        console.log('calling deviceCommandCallback ' + ice.bridgeit.deviceCommandCallback);
+                        ice.bridgeit.deviceCommandCallback(sxEvent);
+                        ice.bridgeit.deviceCommandCallback = null;
+                    }
+                    else{
+                        console.log('no deviceCommandCallback registered :(');
                     }
                 }, 1);
             }
@@ -413,7 +427,7 @@ if (!window.console) {
     /************************ PUBLIC **********************************/
     
     /**
-     * @alias ice.bridgeIt.ajaxRequest
+     * @alias ice.bridgeit.ajaxRequest
      * @desc Submit an Ajax request
      * @param {map} options TODO
      */
@@ -422,8 +436,8 @@ if (!window.console) {
             var callBack = options.oncomplete || options.onComplete;
             addListener(document, "DOMSubtreeModified", callBack);
         }
-        if( typeof ice.bridgeIt.userAjaxRequest === "function"){
-            ice.bridgeIt.userAjaxRequest(options);
+        if( typeof ice.bridgeit.userAjaxRequest === "function"){
+            ice.bridgeit.userAjaxRequest(options);
         }
         else{ //default to form submit
             var src = options.source;
@@ -440,7 +454,7 @@ if (!window.console) {
         }
     };
     /**
-     * @alias ice.bridgeIt.registerAuxUpload
+     * @alias ice.bridgeit.registerAuxUpload
      * @desc Register BridgeIt
      * @param {string} sessionId The server-side session id
      * @param {url} uploadURL The URL to upload media to
@@ -525,7 +539,7 @@ if (!window.console) {
         }
     };
     /**
-     * @alias ice.bridgeIt.scan
+     * @alias ice.bridgeit.scan
      * @desc Activate the device QR Code scanner
      * @param {id} id TODO
      * @param {function} callback The callback function that will be called once the scan is captured
@@ -535,7 +549,7 @@ if (!window.console) {
         deviceCommand("scan", id, callback, options);
     };
     /**
-     * @alias ice.bridgeIt.camera
+     * @alias ice.bridgeit.camera
      * @desc Activate the native camera 
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the photo is captured
@@ -545,7 +559,7 @@ if (!window.console) {
         deviceCommand("camera", id, callback, options);
     };
     /**
-     * @alias ice.bridgeIt.camcorder
+     * @alias ice.bridgeit.camcorder
      * @desc Activate the native video recorder
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the video is captured
@@ -555,7 +569,7 @@ if (!window.console) {
         deviceCommand("camcorder", id, callback, options);
     };
     /**
-     * @alias ice.bridgeIt.microphone
+     * @alias ice.bridgeit.microphone
      * @desc Activate the native audio recorder
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the audio is captured
@@ -565,7 +579,7 @@ if (!window.console) {
         deviceCommand("microphone", id, callback, options);
     };
     /**
-     * @alias ice.bridgeIt.fetchContact
+     * @alias ice.bridgeit.fetchContact
      * @desc Activate the native contact list
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the contact is retrieved
@@ -575,7 +589,7 @@ if (!window.console) {
         deviceCommand("fetchContacts", id, callback, options);
     };
     /**
-     * @alias ice.bridgeIt.sms
+     * @alias ice.bridgeit.sms
      * @desc Send an SMS message
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the message is sent
@@ -585,7 +599,7 @@ if (!window.console) {
         deviceCommand("sms", id, callback, options);
     };
     /**
-     * @alias ice.bridgeIt.augmentedReality
+     * @alias ice.bridgeit.augmentedReality
      * @desc Activate and immerse yourself in a new and better world
      * @param {id} id TODO
      * @param {function} callback TODO
@@ -595,7 +609,7 @@ if (!window.console) {
         deviceCommand("aug", id, callback, options);
     };
     /**
-     * @alias ice.bridgeIt.geoSpy
+     * @alias ice.bridgeit.geoSpy
      * @desc Active native location tracking
      * @param {id} id TODO
      * @param {function} callback TODO
@@ -607,5 +621,5 @@ if (!window.console) {
 
     /* TODO Document use of ice.ajaxRefresh?? */
     
-})(ice.mobi, ice.bridgeIt);
+})(ice.mobi, ice.bridgeit);
 
