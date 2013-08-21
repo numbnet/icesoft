@@ -49,7 +49,9 @@ if (!window['mobi']) window['mobi'] = {};
     }
 
 
-
+    // Private dataView state
+    var filterCri = [],
+        sortCri   = [];
 
 
     // Private dataView methods - call using privateMethod.call(dvInstance, argArray);
@@ -101,6 +103,26 @@ if (!window['mobi']) window['mobi'] = {};
                 });
         }
 
+        function attachFilterListener(thead, tbody, dv) {
+            thead.addEventListener('change', function(event) {
+                var filterTag = (function(parent){
+                        while (parent != thead) {
+                            if (parent.classList.contains('dv-filter'))
+                                break;
+                            parent = parent.parentNode;
+                        }
+                        return parent === thead ? undefined : parent;
+                    })(event.target.parentNode),
+                    propName = filterTag.getAttribute('data-prop'),
+                    value = convertValue(tbody.firstChild.data[propName], getValue(event.target));
+
+                if (filterTag && value && value != '')
+                    dv.addFilter(propName, value);
+                else
+                    dv.removeFilter(propName);
+            });
+        }
+
         function attachAutoListener(tbody) {
             tbody.addEventListener('change', function(event) {
                 var autoTag = (function(parent){
@@ -109,7 +131,7 @@ if (!window['mobi']) window['mobi'] = {};
                             break;
                         parent = parent.parentNode;
                     }
-                    return parent == tbody ? undefined : parent;
+                    return parent === tbody ? undefined : parent;
                 })(event.target.parentNode);
 
                 if (autoTag)
@@ -158,10 +180,29 @@ if (!window['mobi']) window['mobi'] = {};
                     });
 
                 /* fix body column widths */
-                for (var i = 0; i < frcWidths.length; i++) {
-                    //Array.prototype.forEach.call(tbody.childNodes, function(x) {
-                        firstRowCells[i].style.minWidth = frcWidths[i] + 'px';
-                    //});
+                // webkit has bugged colgroup : http://code.google.com/p/chromium/issues/detail?id=20865
+                if (!navigator.userAgent.indexOf('webkit') >= 0) {
+                    for (var i = 0; i < frcWidths.length; i++) {
+                        Array.prototype.forEach.call(tbody.childNodes, function(x) {
+                            x.childNodes[i].style.minWidth = frcWidths[i] + 'px';
+                        });
+                    }
+                } else {
+                    var oldColGroup = table.querySelector('colgroup[data-fixedhead]'),
+                        colGroup = document.createElement('colgroup');
+
+                    colGroup.setAttribute('data-fixedhead', '');
+
+                    for (var i = 0; i < frcWidths.length; i++) {
+                        var col = document.createElement('col');
+                        colGroup.appendChild(col);
+                        col.style.minWidth = frcWidths[i] + 'px';
+                        col.style.width = frcWidths[i] + 'px';
+                    }
+
+                    if (oldColGroup)
+                        oldColGroup.parentNode.replaceChild(colGroup, oldColGroup);
+                    else table.insertBefore(colGroup, table.firstChild);
                 }
 
                 var headCellWidths = Array.prototype.map.call(
@@ -215,34 +256,27 @@ if (!window['mobi']) window['mobi'] = {};
         };
 
         // Exec table renderer
-        var startTime = new Date().getTime();
         var dv = this;
         dust.render(id+'_table',
             base.push({ id : id, data : data, columns : conf.columns }),
             function(err, out) {
-                console.log('HtmlGenTime: ' + (new Date().getTime() - startTime));
-
                 if (out) {
                     if (conf.fixedHeaderSizing)
                         out = '<div>'+out+'</div>';
 
-                    startTime = new Date().getTime();
                     // Attach rendered output
                     var target = getDOMTarget.call(dv);
                     target.insertAdjacentHTML('afterbegin',out);
-                    console.log('HtmlInsertTime: ' + (new Date().getTime() - startTime));
-                    console.log('* Note complex styling to the table elements is most responsible for long insert times - except in Firefox, FF is fast as hell at HTML string inserts');
 
-
-                    startTime = new Date().getTime();
-                    attachAutoListener(target.querySelector('#'+id+' > tbody'));
+                    var tbody = target.querySelector('tbody');
+                    attachAutoListener(tbody);
                     attachData();
-                    console.log('AttachTime: ' + (new Date().getTime() - startTime));
 
-                    startTime = new Date().getTime();
                     if (conf.fixedHeaderSizing)
                         applyFixedHeaderSizing(target);
-                    console.log('SizingTime: ' + (new Date().getTime() - startTime));
+
+                    // Apply filter events after fixed header manipulations
+                    attachFilterListener(target.querySelector('thead'), tbody, dv);
                 }
                 else throw Error(err);
             }
@@ -270,19 +304,26 @@ if (!window['mobi']) window['mobi'] = {};
             bodyDivWrapper.style.height = fullHeight + 'px';
             bodyDivWrapper.style.overflow = 'auto';
         }
+    }
 
-        /* set height to full visible size of parent minus
-         height of all following elements */
-//        var bottomResize = function() {
-//            fullHeight -= (tbody.scrollHeight - tbody.clientHeight);
-//            if( isNumber(fullHeight)){
-//                if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i))
-//                    fullHeight += 60;
-//                bodyDivWrapper.style.height = fullHeight + 'px';
-//            }
-//        };
-//
-//        bottomResize();
+    function processFilters() {
+        var condition =
+            filterCri.map(function(cri) {
+                return function(data) {
+                    return (data[cri.prop] === cri.value);
+                }
+            }).reduce(function(prev, cur) {
+                return function(data) {
+                    return prev(data) && cur(data);
+                }
+            }, function() {return true;});
+
+        Array.prototype.forEach.call(this.getRowElementList(), function(row) {
+            if (!condition(row.data))
+                row.classList.add('dv-filtered');
+            else
+                row.classList.remove('dv-filtered');
+        });
     }
 
 
@@ -343,10 +384,21 @@ if (!window['mobi']) window['mobi'] = {};
     function getValue(elem) {
         // getValue is only for abstracting the extraction of a js object out of our component instances
 
-        // converting or validating that object should be done in autoUpdate
+        // converting or validating that object should be done in respective methods
 
         if (elem.type === 'checkbox') return elem.checked;
         else return elem.value;
+    }
+
+    function convertValue(expected, value) {
+        var out = value;
+        // Basic type conversion
+        if (typeof expected === 'boolean')
+            out = value === true || value === 'true' ? true : value === false || value === 'false' ? false : undefined;
+        else if (isNumber(expected))
+            out = parseFloat(value);
+
+        return out;
     }
 
 
@@ -409,11 +461,8 @@ if (!window['mobi']) window['mobi'] = {};
 
             })();
 
-        // Basic type conversion
-        if (typeof row.data[propName] === 'boolean')
-            val = val === true || val === 'true' ? true : val === false || val === 'false' ? false : undefined;
-        else if (isNumber(row.data[propName]))
-            val = parseFloat(val);
+        val = convertValue(row.data[propName], val);
+        // validateValue();
 
         if (val != undefined) row.data[propName] = val;
 
@@ -710,9 +759,31 @@ if (!window['mobi']) window['mobi'] = {};
         }
 
         // Filter ---------------- //
-        dvProto.filterColumn = function(name, value) {
-            // get filter type, defined for column in feature config, explicitly as arg, or default to startsWith
+        dvProto.addFilter = function(propName, value) {
+            var existing = (function() {
+                for (var idx in filterCri) {
+                    if (filterCri[idx].prop === propName)
+                        return filterCri[idx];
+                }
+                return undefined;
+            })();
 
+            if (existing) existing.value = value;
+            else filterCri.push({prop:propName, value: value});
+
+            processFilters.call(this);
+        }
+
+        dvProto.removeFilter = function(propName) {
+            filterCri = filterCri.filter(function(cri) {
+                return cri.prop != propName;
+            });
+            processFilters.call(this);
+        }
+
+        dvProto.clearFilters = function() {
+            filterCri = [];
+            processFilters.call(this);
         }
 
 
