@@ -103,6 +103,9 @@
             <fileset dir="./core" includes="build.xml" />
         </ice:subant>
         <ice:subant target="all">
+            <fileset dir="./bridgeit" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
             <fileset dir="./jsp" includes="build.xml" />
         </ice:subant>
         <ice:subant target="all">
@@ -174,13 +177,13 @@
         <delete dir="${docs.jsp.dir}"/>
         <delete dir=".sass-cache"/>
         <ice:subant target="clean">
-            <filelist dir="." files="core, jsf, jsp, filter, spring, samples, resources"/>
+            <filelist dir="." files="bridgeit, core, jsf, jsp, filter, spring, samples, resources"/>
         </ice:subant>
     </target>
 
     <target name="clean.bin">
         <ice:subant target="clean">
-            <filelist dir="." files="core, jsf, jsp, filter, spring, samples"/>
+            <filelist dir="." files="bridgeit, core, jsf, jsp, filter, spring, samples"/>
         </ice:subant>
     </target>
 
@@ -203,7 +206,7 @@
                     <exclude name="client/"/>
                     <exclude name="jsf/"/>
                     <exclude name="jsp/"/>
-                <exclude name="spring/"/>
+                    <exclude name="spring/"/>
                     <exclude name="lib/generator/"/>
                     <!-- trim component build script for binary bundle -->
                     <exclude name="build.xml" />
@@ -241,6 +244,10 @@
                 <fileset dir="./core" includes="build.xml" />
                 <propertyset refid="product.info"/>
             </ice:subant>
+            <ice:subant target="all">
+                <fileset dir="./bridgeit" includes="build.xml" />
+                <propertyset refid="product.info"/>
+            </ice:subant>
             <ice:subant target="build">
                 <fileset dir="./jsf" includes="build.xml" />
                 <propertyset refid="product.info"/>
@@ -249,9 +256,9 @@
                 <fileset dir="./jsp" includes="build.xml" />
                 <propertyset refid="product.info"/>
             </ice:subant>
-        <ice:subant target="all">
-            <fileset dir="./spring" includes="build.xml" />
-        </ice:subant>
+            <ice:subant target="all">
+                <fileset dir="./spring" includes="build.xml" />
+            </ice:subant>
             <ice:subant target="all">
                 <fileset dir="./samples" includes="build.xml" />
                 <propertyset refid="product.info"/>
