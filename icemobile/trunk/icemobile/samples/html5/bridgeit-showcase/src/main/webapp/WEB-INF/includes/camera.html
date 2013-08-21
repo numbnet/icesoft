@@ -27,15 +27,20 @@
     </div>
     <script type="text/javascript">
     function handleCam(event)  {
-        console.log('handleCam: ' + event);
         var text = event.value;
         if (event.preview)  {
             document.getElementById("thumbnail").setAttribute("src", event.preview);
         }
         if (event.response)  {
-            var theResponse = JSON.parse(event.response);
+            var photos = JSON.parse(event.response);
             var elem = document.getElementById("images");
-            elem.innerHTML = elem.innerHTML + "<div class='row'><img src='" + theResponse.path + "'></div>";
+            for( var i = 0 ; i < photos.length ; i++ ){
+                var row = document.createElement('div');
+                row.setAttribute('class','row');
+                row.innerHTML = "<img src='service/" + photos[i] + "'/>";
+                elem.appendChild(row);
+            }
+            
         }
     }
     </script>
