@@ -154,8 +154,6 @@
         <antcall target="war.basic" />
     </target>
 
-    <target name="deploy.reload.html5" depends="deploy.html5,reload"/>
-    
     <target name="deploy.html5" depends="war.basic">
         <copy todir="${deploy.path}/${ant.project.name}" preservelastmodified="true" verbose="true">
             <fileset dir="${exploded.dir}">
