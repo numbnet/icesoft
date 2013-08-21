@@ -16,8 +16,6 @@
 
 package org.icefaces.samples.showcase.example.ace.dataTable;
 
-import org.icefaces.ace.component.column.Column;
-import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
@@ -26,21 +24,15 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-import org.icefaces.samples.showcase.util.FacesUtils;
 
 import javax.annotation.PostConstruct;
-import javax.el.ELContext;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.component.UIOutput;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -83,29 +75,6 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
         carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
 
-    public String getColVal(Object rowObject, String columnId) {
-        DataTable table = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        ELContext el = context.getELContext();
-        String key = table.getVar();
-        String ret = null;
-
-        Object oldVal = requestMap.get(key);
-
-        requestMap.put(key, rowObject);
-
-        for (Column c : table.getColumns()) {
-            if (c.getId().equals(columnId)) {
-                ret = ((UIOutput)c.getChildren().get(0)).getValueExpression("value").getValue(el).toString();
-                break;
-            }
-        }
-
-        requestMap.put(key, oldVal);
-        return ret;
-    }
-
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
@@ -121,16 +90,26 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
     }
     public RowStateMap getStateMap() { return stateMap; }
     public ArrayList<Car> getMultiRow() { return (ArrayList<Car>) stateMap.getSelected(); }
-    public Map<Car, List<String>> getMultiCell() {
-        Map<Car, List<String>> selectedCells = new HashMap<Car, List<String>>();
 
+    public List<RowObjectColumnSelections> getCellSelections() {
+        ArrayList<RowObjectColumnSelections> cellSelections = new ArrayList<RowObjectColumnSelections>();
         for (Object o : stateMap.getRowsWithSelectedCells()) {
-            Car c = (Car)o;
-            selectedCells.put(c, stateMap.get(c).getSelectedColumnIds());
+            Car c = (Car) o;
+            List columnSelections = new ArrayList();
+            for (String columnId : stateMap.get(o).getSelectedColumnIds()) {
+                if ("id".equals(columnId)) columnSelections.add(c.getId());
+                else if ("name".equals(columnId)) columnSelections.add(c.getName());
+                else if ("chassis".equals(columnId)) columnSelections.add(c.getChassis());
+                else if ("weight".equals(columnId)) columnSelections.add(c.getWeight());
+                else if ("accel".equals(columnId)) columnSelections.add(c.getAcceleration());
+                else if ("mpg".equals(columnId)) columnSelections.add(c.getMpg());
+                else if ("cost".equals(columnId)) columnSelections.add(c.getCost());
+            }
+            cellSelections.add(new RowObjectColumnSelections(o, columnSelections));
         }
-
-        return selectedCells;
+        return cellSelections;
     }
+
     public String getSelectionMode() { return selectionMode; }
     public boolean getDblClick() { return dblClick; }
     public boolean getInstantUpdate() { return instantUpdate; }
@@ -144,4 +123,18 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
     public void setDblClick(boolean dblClick) { this.dblClick = dblClick; }
     public void setInstantUpdate(boolean instantUpdate) { this.instantUpdate = instantUpdate; }
     public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
+
+
+    public static class RowObjectColumnSelections {
+        private Object object;
+        private List columnSelections;
+
+        RowObjectColumnSelections(Object object, List columnSelections) {
+            this.object = object;
+            this.columnSelections = columnSelections;
+        }
+
+        public Object getObject() { return object; }
+        public List getColumnSelections() { return columnSelections; }
+    }
 }

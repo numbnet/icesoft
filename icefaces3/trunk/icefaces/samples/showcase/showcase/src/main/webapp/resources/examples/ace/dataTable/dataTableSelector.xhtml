@@ -90,7 +90,7 @@
             <f:facet name="header">
                Weight
             </f:facet>
-            <h:outputText value="#{car.weight}lbs."/>
+            <h:outputText value="#{car.weight} lb"/>
         </ace:column>
         <ace:column id="accel">
             <f:facet name="header">
@@ -127,18 +127,18 @@
 
        <h:panelGroup layout="block" style="display:inline-block; vertical-align: top; width:50%;">
            <h:outputText value="Selected Rows:"/><br/>
-           <ui:repeat value="#{dataTableSelector.multiRow}" var="selCar">
-               #{selCar.name}
+           <ui:repeat value="#{dataTableSelector.multiRow}" var="selCar" varStatus="rowRepeat">
+               #{selCar.name}#{rowRepeat.last ?  '' : ', '}
            </ui:repeat>
        </h:panelGroup>
 
        <h:panelGroup layout="block" style="display:inline-block; max-width:50%;">
            <h:outputText value="Selected Cells:"/><br/>
-           <ui:repeat value="#{dataTableSelector.multiCell.keySet().toArray()}" var="key">
-               <h:outputText value="#{key} : "/>
+           <ui:repeat value="#{dataTableSelector.cellSelections}" var="cellItem">
+               <h:outputText value="#{cellItem.object} : "/>
                <h:panelGroup style="display: inline-block">
-                   <ui:repeat value="#{dataTableSelector.multiCell[key]}" var="colName" varStatus="colRepeat">
-                       <h:outputText value="#{dataTableSelector.getColVal(key, colName)}#{not colRepeat.last ? ', ' : ''}"/>
+                   <ui:repeat value="#{cellItem.columnSelections}" var="colVal" varStatus="colRepeat">
+                       <h:outputText value="#{colVal}#{colRepeat.last ? '' : ', '}"/>
                    </ui:repeat>
                </h:panelGroup>
                <br/>
