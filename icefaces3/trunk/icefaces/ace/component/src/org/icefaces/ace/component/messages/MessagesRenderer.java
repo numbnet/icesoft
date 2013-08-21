@@ -90,8 +90,8 @@ public class MessagesRenderer extends Renderer {
                     }
                 }
             }
-            for (Integer integer : removeList) {
-                msgList.remove(integer.intValue());
+            for (int i = removeList.size()-1; i >= 0; i--) {
+                msgList.remove(removeList.get(i).intValue());
             }
             for (int i = 0; i < msgList.size(); i++) {
                 facesMessage = msgList.get(i);
