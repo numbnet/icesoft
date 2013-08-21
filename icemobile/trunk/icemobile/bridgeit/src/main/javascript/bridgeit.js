@@ -248,7 +248,11 @@ if (!window.console) {
         }
         return uploadURL;
     }
+    var checkTimeout;
     function deviceCommand(command, id, callback, options)  {
+        checkTimeout = setTimeout( function()  {
+            ice.bridgeit.launchFailed(id);
+        }, 3000);
         console.log(command + " " + id);
         ice.bridgeit.deviceCommandCallback = callback;
         deviceCommandExec(command, id, options);
@@ -350,6 +354,9 @@ if (!window.console) {
     if (window.addEventListener) {
 
         window.addEventListener("pagehide", function () {
+            //hiding the page either indicates user does not require
+            //BridgeIt or the url scheme invocation has succeeded
+            clearTimeout(checkTimeout);
             if (ice.push) {
                 ice.push.connection.pauseConnection();
             }
@@ -537,6 +544,17 @@ if (!window.console) {
         } else {
             ice.mobi.sx(element);
         }
+    };
+    /**
+     * @alias ice.bridgeit.launchFailed
+     * @desc Application provided callback to detect BridgeIt launch failure.
+     *   This should be overridden with an implementation that prompts the
+     *   user to download BridgeIt and potentially fallback with a different
+     *   browser control such as input file.
+     * @param {id} id of the invoking element
+     */
+    ib.launchFailed = function(id)  {
+        alert("BridgeIt not available for " + id);
     };
     /**
      * @alias ice.bridgeit.scan
