@@ -30,7 +30,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.util.JavaScriptRunner;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.CustomScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -69,7 +69,7 @@ import java.util.Stack;
         }
 )
 @ManagedBean(name = BreadcrumbMenuBean.BEAN_NAME)
-@CustomScoped(value = "#{window}")
+@ViewScoped
 public class BreadcrumbMenuBean extends ComponentExampleImpl<BreadcrumbMenuBean> implements Serializable {
     public static final String BEAN_NAME = "breadcrumbMenuBean";
     public static final Map<String, String> urlMap = new HashMap<String, String>() {{
