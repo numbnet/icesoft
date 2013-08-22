@@ -42,7 +42,7 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 public class DeviceResourceMeta extends UIComponentBaseMeta {
 
-    @Property(tlddoc = "Name of the CSS theme to apply.")
+    @Property(tlddoc = "Name of the CSS theme to apply [base|iphone|ipad|bberry|bb10|android_light|android_dark]")
     private String theme;
 
     @Property(defaultValue="true", tlddoc = "Flag indicating whether to use " +
