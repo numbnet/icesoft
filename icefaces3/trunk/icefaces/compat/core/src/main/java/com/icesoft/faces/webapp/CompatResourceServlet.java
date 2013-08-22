@@ -38,7 +38,7 @@ public class CompatResourceServlet extends HttpServlet {
     private static final String BASE_PATH = "com/icesoft/faces/resources";
     private ClassLoader loader;
     private final Date lastModified = new Date();
-    private final String STARTUP_TIME = Util.HTTP_DATE.format(lastModified);
+    private final String STARTUP_TIME = Util.formatHTTPDate(lastModified);
     private ServletContext servletContext;
 
     public void init(final ServletConfig servletConfig) throws ServletException {
@@ -52,7 +52,7 @@ public class CompatResourceServlet extends HttpServlet {
                 .getHeader("If-Modified-Since");
         if (null != modifedHeader) {
             try {
-                Date modifiedSince = Util.HTTP_DATE.parse(modifedHeader);
+                Date modifiedSince = Util.parseHTTPDate(modifedHeader);
                 if (modifiedSince.getTime() + 1000 > lastModified.getTime()) {
                     //respond with a not-modifed
                     httpServletResponse.setStatus(304);

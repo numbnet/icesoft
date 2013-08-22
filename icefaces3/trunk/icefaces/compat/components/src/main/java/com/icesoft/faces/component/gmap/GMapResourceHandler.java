@@ -119,7 +119,7 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
 
         public boolean userAgentNeedsUpdate(FacesContext context) {
             try {
-                Date modifiedSince = Util.HTTP_DATE.parse(context.getExternalContext().getRequestHeaderMap().get("If-Modified-Since"));
+                Date modifiedSince = Util.parseHTTPDate(context.getExternalContext().getRequestHeaderMap().get("If-Modified-Since"));
                 return lastModified.getTime() > modifiedSince.getTime() + 1000;
             } catch (Throwable e) {
                 return true;

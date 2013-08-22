@@ -153,8 +153,8 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
             headers.put("ETag", eTag());
             headers.put("Cache-Control", "public");
             headers.put("Content-Type", mimeType);
-            headers.put("Date", Util.HTTP_DATE.format(new Date()));
-            headers.put("Last-Modified", Util.HTTP_DATE.format(lastModified));
+            headers.put("Date", Util.formatHTTPDate(new Date()));
+            headers.put("Last-Modified", Util.formatHTTPDate(lastModified));
 
             return headers;
         }
@@ -177,7 +177,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
 
         public boolean userAgentNeedsUpdate(FacesContext context) {
             try {
-                Date modifiedSince = Util.HTTP_DATE.parse(context.getExternalContext().getRequestHeaderMap().get("If-Modified-Since"));
+                Date modifiedSince = Util.parseHTTPDate(context.getExternalContext().getRequestHeaderMap().get("If-Modified-Since"));
                 return lastModified.getTime() > modifiedSince.getTime() + 1000;
             } catch (Throwable e) {
                 return true;

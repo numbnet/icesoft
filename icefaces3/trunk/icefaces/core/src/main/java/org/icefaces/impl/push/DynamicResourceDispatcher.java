@@ -223,7 +223,7 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
         public void handleResourceRequest(FacesContext facesContext) throws IOException {
             ExternalContext externalContext = facesContext.getExternalContext();
             try {
-                Date modifiedSince = Util.HTTP_DATE.parse(
+                Date modifiedSince = Util.parseHTTPDate(
                         externalContext.getRequestHeaderMap()
                                 .get("If-Modified-Since"));
                 if (lastModified.getTime() > modifiedSince.getTime() + 1000) {
@@ -233,9 +233,9 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
                     externalContext.setResponseHeader(
                             "ETag", encode(resource));
                     externalContext.setResponseHeader(
-                            "Date", Util.HTTP_DATE.format(new Date()));
+                            "Date", Util.formatHTTPDate(new Date()));
                     externalContext.setResponseHeader(
-                            "Last-Modified", Util.HTTP_DATE.format(lastModified));
+                            "Last-Modified", Util.formatHTTPDate(lastModified));
                 }
             } catch (Exception e) {
                 respond(facesContext);
@@ -253,10 +253,10 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
             externalContext.setResponseHeader("Cache-Control", "public");
             externalContext.setResponseHeader("Content-Type", options.mimeType);
             externalContext.setResponseHeader("Last-Modified",
-                    Util.HTTP_DATE.format(options.lastModified));
+                    Util.formatHTTPDate(options.lastModified));
             if (options.expiresBy != null) {
                 externalContext.setResponseHeader("Expires",
-                        Util.HTTP_DATE.format(options.expiresBy));
+                        Util.formatHTTPDate(options.expiresBy));
             }
             String contentDispositionFileName = Util.encodeContentDispositionFilename(options.fileName);
             if (options.attachement && contentDispositionFileName != null) {

@@ -25,11 +25,9 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
@@ -41,8 +39,17 @@ public class Util {
             "application/pdf",
             "application/zip", "application/x-compress", "application/x-gzip ",
             "application/java-archive");
-    public static final DateFormat HTTP_DATE =
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
+    public static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
+
+    public static Date parseHTTPDate(String date) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat(HTTP_DATE_FORMAT, Locale.ENGLISH);
+        return formatter.parse(date);
+    }
+
+    public static String formatHTTPDate(Date date) {
+        DateFormat formatter = new SimpleDateFormat(HTTP_DATE_FORMAT, Locale.ENGLISH);
+        return formatter.format(date);
+    }
 
     public static void copyStream(InputStream in, OutputStream out) throws IOException {
         byte[] buf = new byte[1000];
