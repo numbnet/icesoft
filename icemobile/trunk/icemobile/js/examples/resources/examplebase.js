@@ -15,7 +15,7 @@ var defaultExampleArguments = ['tableId',
     {
         target: '#tableHolder',
         detailPosition: 'global',
-        template: {
+        templates: {
             detail : detailContentsTemplate
             // table wide templates
             // bodycell: stringTemplate

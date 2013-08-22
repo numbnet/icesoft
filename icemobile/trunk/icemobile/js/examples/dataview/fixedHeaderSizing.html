@@ -6,7 +6,6 @@
     <script src="../resources/testdata.js"></script>
     <script src="../resources/examplebase.js"></script>
     <script src="../resources/dust-full-2.0.0.js"></script>
-    <link rel="stylesheet" href="../resources/foundation.css" />
 </head>
 <body>
     <style>
@@ -17,6 +16,15 @@
             margin:0;
         }
 
+        .dv-detail {
+            /* need some border to ensure size contains child margins */
+            border: 1px solid transparent;
+        }
+
+        .dv-head th, .dv-body td, .dv-foot td {
+            box-sizing: border-box;
+        }
+
         #tableHolder {
             border:1px solid black;
             height:500px;
@@ -25,21 +33,8 @@
             top:50%;
             left:50%;
             margin-left: -250px;
+            margin-top: -250px;
             overflow:hidden;
-        }
-
-        .dv-detail {
-            transition: opacity 2s;
-            opacity: 0;
-            border:1px solid transparent;
-        }
-
-        .dv-opaque {
-            opacity: 1;
-        }
-
-        .dv-filtered {
-            display:none;
         }
     </style>
     <script>
