@@ -90,7 +90,7 @@
                                    requiredIndicator="#{textEntryIndicatorBean.requiredText}"
                                    optionalIndicator="#{textEntryIndicatorBean.optionalText}"
                                    indicatorPosition="#{textEntryIndicatorBean.position}">
-                        <ace:ajax render="@this address2Output"/>
+                        <ace:ajax render="@this address2Output address2Msg"/>
                     </ace:textEntry>
 
                     <ace:textEntry id="cityInput" value="#{textEntryIndicatorBean.city}" label="City" labelPosition="left"
@@ -122,6 +122,7 @@
                     <ace:message id="firstNameMsg" for="firstNameInput"/>
                     <ace:message id="lastNameMsg" for="lastNameInput"/>
                     <ace:message id="address1Msg" for="address1Input"/>
+					<ace:message id="address2Msg" for="address2Input"/>
                     <ace:message id="cityMsg" for="cityInput"/>
                     <ace:message id="provinceMsg" for="provinceInput"/>
                     <ace:message id="countryMsg" for="countryInput"/>
