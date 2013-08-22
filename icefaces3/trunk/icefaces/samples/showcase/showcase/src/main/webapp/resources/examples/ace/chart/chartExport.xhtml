@@ -37,7 +37,7 @@
         <h:form id="exportForm">
             <h:commandButton id="exportButton" value="Export as Image"
                              disabled="#{chartExportBean.requestOldIE}"
-                             onclick="exportChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
+                             onclick="var img = ice.ace.jq('.chartExport'); exportChart.exportToImage(img); img.css('display','block'); return false;" />
 
             <ace:chart id="chart"
                        height="300"
@@ -58,6 +58,6 @@
                        widgetVar="exportChart" />
         </h:form>
 
-        <h:graphicImage styleClass="chartExport" />
+        <h:graphicImage styleClass="chartExport" style="display: none;" />
     </ui:define>
 </ui:composition>
