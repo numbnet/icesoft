@@ -116,7 +116,7 @@
         </tld.title>
 
         <!-- Versions of JSF implementations -->
-        <mojarra.version>2.1.24</mojarra.version>
+        <mojarra.version>2.1.26-SNAPSHOT</mojarra.version>
         <!--<mojarra.version>2.2.1</mojarra.version>-->
 
         <myfaces.version>2.1.12</myfaces.version>
@@ -213,6 +213,11 @@
             <id>jvnet-nexus-releases</id>
             <name>jvnet-nexus-releases</name>
             <url>https://maven.java.net/content/repositories/releases</url>
+        </repository>
+        <repository>
+          <id>jvnet-nexus-snapshots</id>
+          <name>jvnet-nexus-snapshots</name>
+          <url>https://maven.java.net/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>releases</id>
