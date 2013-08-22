@@ -72,8 +72,8 @@ public class CoalescingResource extends Resource {
         headers.put("ETag", eTag());
         headers.put("Cache-Control", "public");
         headers.put("Content-Type", mimeType);
-        headers.put("Date", Util.HTTP_DATE.format(new Date()));
-        headers.put("Last-Modified", Util.HTTP_DATE.format(lastModified));
+        headers.put("Date", Util.formatHTTPDate(new Date()));
+        headers.put("Last-Modified", Util.formatHTTPDate(lastModified));
 
         return headers;
     }
