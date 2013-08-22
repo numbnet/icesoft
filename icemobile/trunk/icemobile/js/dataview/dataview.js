@@ -61,20 +61,21 @@ if (!window['mobi']) window['mobi'] = {};
 
     function construct(data) {
         var conf = this.renderConf;
-        if (!conf.template) conf.template = {};
+        if (!conf.templates) conf.templates = {};
+        if (!conf.animations) conf.animations = {};
 
         // Row type definitions TODO
         conf.defaultRow = data[0];
 
         var templates = {
-            bodycell    : conf.template.bodycell ? conf.template.bodycell : defaultTemplates.bodycell,
-            headcell    : conf.template.headcell ? conf.template.headcell : defaultTemplates.headcell,
-            footcell    : conf.template.footcell ? conf.template.footcell : defaultTemplates.footcell,
-            row         : conf.template.row ? conf.template.row : defaultTemplates.row,
-            body        : conf.template.body ? conf.template.body : defaultTemplates.body,
-            head        : conf.template.head ? conf.template.head : defaultTemplates.head,
-            foot        : conf.template.foot ? conf.template.foot : defaultTemplates.foot,
-            table       : conf.template.table ? conf.template.table : defaultTemplates.table
+            bodycell    : conf.templates.bodycell ? conf.templates.bodycell : defaultTemplates.bodycell,
+            headcell    : conf.templates.headcell ? conf.templates.headcell : defaultTemplates.headcell,
+            footcell    : conf.templates.footcell ? conf.templates.footcell : defaultTemplates.footcell,
+            row         : conf.templates.row ? conf.templates.row : defaultTemplates.row,
+            body        : conf.templates.body ? conf.templates.body : defaultTemplates.body,
+            head        : conf.templates.head ? conf.templates.head : defaultTemplates.head,
+            foot        : conf.templates.foot ? conf.templates.foot : defaultTemplates.foot,
+            table       : conf.templates.table ? conf.templates.table : defaultTemplates.table
         }
 
         var base = getDustBase(), id = this.id;
@@ -401,15 +402,47 @@ if (!window['mobi']) window['mobi'] = {};
         return out;
     }
 
+    function processAnimation(elem, anim) {
+        if (anim.init) anim.init(elem);
+        var elapsed = 0;
+
+        var start = new Date().getTime();
+        var stepper = setInterval(function() {
+            elapsed = new Date().getTime() - start;
+            anim.step(elem, elapsed, anim.length);
+        }, anim.stepFreq);
+
+        setTimeout(function() {
+            clearInterval(stepper);
+        }, anim.length + 1);
+    }
 
 
 
 
 
     // Private constant values
+    var fadeOutAnim = {
+        step:function(elem, elapsed, length) {
+            elem.style.opacity = 1 - elapsed / length;
+        },
+        length:1000,
+        stepFreq:50,
+        init:function(elem) {}
+    }
+    var fadeInAnim = {
+        step:function(elem, elapsed, length) {
+            elem.style.opacity = elapsed / length;
+        },
+        length:1000,
+        stepFreq:50,
+        init:function(elem) {
+            elem.style.opacity = 0;
+        }
+    }
     var defaultTemplates = {
-        head        : '<thead><tr>{#columns}{>"{id}_{.name}_headcell" /}{/columns}</tr></thead>',
-        foot        : '<tfoot><tr>{#columns}{>"{id}_{.name}_footcell" /}{/columns}</tr></tfoot>',
+        head        : '<thead class="dv-head"><tr>{#columns}{>"{id}_{.name}_headcell" /}{/columns}</tr></thead>',
+        foot        : '<tfoot class="dv-foot"><tr>{#columns}{>"{id}_{.name}_footcell" /}{/columns}</tr></tfoot>',
 
         headcell    : '<th class="{.name}">{.headerText}</th>',
 
@@ -425,7 +458,7 @@ if (!window['mobi']) window['mobi'] = {};
             '{/columns}' +
             '</tr>',
 
-        body        : '<tbody>' +
+        body        : '<tbody class="dv-body">' +
             '{#data}' +
                 '{>"{id}_row" rowData=./}' +
             '{:else}' +
@@ -631,7 +664,10 @@ if (!window['mobi']) window['mobi'] = {};
         dvProto.activateDetail = function(target) {
             var row, data, detailTemplate, conf = this.renderConf,
                 position = (conf.detailPosition) ? conf.detailPosition : 'row',
-                table = this;
+                table = this,
+                activateAnim = this.renderConf.animations.deactivate
+                        ? this.renderConf.animations.deactivate
+                        : fadeInAnim;
 
             if (target instanceof HTMLElement) {
                 row = target;
@@ -653,35 +689,32 @@ if (!window['mobi']) window['mobi'] = {};
             if (position === 'global') this.deactivateDetail();
 
             function writeDetail(contents) {
+                var detail;
                 // Insert detail region at config'd position
                 if (position === 'row') {
                     row.insertAdjacentHTML('afterend', contents);
-                    var detail = row.nextSibling;
+                    detail = row.nextSibling;
                     detail.firstChild.setAttribute('colspan', table.renderConf.columns.length);
                     detail.data = data;
                     detail.className = 'dv-detail';
                     row.classList.add('dv-active')
-                    setTimeout(function() {
-                        detail.classList.add('dv-opaque');
-                    }, 50);
                 } else if (position === 'global') {
                     document.querySelector(conf.target).insertAdjacentHTML('afterbegin', contents);
-                    var wrapper = row.parentNode.parentNode.parentNode,
-                        detail = document.querySelector(conf.target).querySelector('.dv-detail'),
-                        cstyle = window.getComputedStyle(detail);
+
+                    var wrapper = row.parentNode.parentNode.parentNode;
+                    detail = document.querySelector(conf.target).querySelector('.dv-detail');
+                    var cstyle = window.getComputedStyle(detail);
 
                     wrapper.style.height = (parseFloat(wrapper.style.height) - detail.offsetHeight - parseFloat(cstyle.marginTop) - parseFloat(cstyle.marginBottom)) + 'px';
-                    setTimeout(function() {
-                        detail.classList.add('dv-opaque');
-                    }, 50)
                 }
+                processAnimation(detail, activateAnim);
             }
 
             // Build template for detail type
             var templates = {
-                detail      : conf.template.detail ? conf.template.detail : defaultTemplates.detail,
-                rowdetail   : conf.template.rowdetail ? conf.template.rowdetail : defaultTemplates.rowdetail,
-                globaldetail: conf.template.globaldetail ? conf.template.globaldetail : defaultTemplates.globaldetail
+                detail      : conf.templates.detail ? conf.templates.detail : defaultTemplates.detail,
+                rowdetail   : conf.templates.rowdetail ? conf.templates.rowdetail : defaultTemplates.rowdetail,
+                globaldetail: conf.templates.globaldetail ? conf.templates.globaldetail : defaultTemplates.globaldetail
             }
 
             dust.loadSource(dust.compile(templates.detail, this.id+'_detail'));
@@ -702,7 +735,6 @@ if (!window['mobi']) window['mobi'] = {};
             // Render detail region contents
             dust.render(detailTemplate, getDustBase().push({ id : this.id, data : data, columns : conf.columns }),
                 function(err, out) {
-                    console.log(out);
                     if (err) throw Error(err);
                     else writeDetail(out);
                 });
@@ -710,38 +742,48 @@ if (!window['mobi']) window['mobi'] = {};
 
         dvProto.deactivateDetail = function(target) {
             var table = this,
-                position = (this.renderConf.detailPosition) ? this.renderConf.detailPosition : 'row';
+                position = (this.renderConf.detailPosition) ? this.renderConf.detailPosition : 'row',
+                deactivateAnim = this.renderConf.animations.deactivate
+                        ? this.renderConf.animations.deactivate
+                        : fadeOutAnim;
+
+            function removeGlobalDetail() {
+                target.parentNode.removeChild(target);
+                if (table.renderConf.fixedHeaderSizing) recalcScrollHeight.call(table);
+            }
+
+            function removeRowDetail() {
+                var detail = target.nextSibling;
+                detail.parentNode.removeChild(detail);
+            }
+
+            function removeEveryRowDetail() {
+                Array.prototype.filter.call(table.getRowElementList(), function(row) {
+                    return row.classList.contains('dv-active');
+                }).forEach(function(row) {
+                    table.deactivateDetail(row);
+                });
+            }
 
             if (position === 'global') {
                 target = document.querySelector(this.renderConf.target).querySelector('.dv-detail');
                 if (target) {
-                    target.classList.remove('dv-opaque');
-                    setTimeout(function() {
-                        target.parentNode.removeChild(target);
-                        if (table.renderConf.fixedHeaderSizing) recalcScrollHeight.call(table);
-                    }, 1005);
+                    processAnimation(target, deactivateAnim);
+                    setTimeout(removeGlobalDetail, deactivateAnim.length + 10);
                 }
             } else if (position === 'row') {
-                if (target != undefined) {
-                    if (!(target instanceof HTMLElement)) {
-                        target = this.getRowElement(target);
-                    }
+                if (target) {
+                    if (!(target instanceof HTMLElement)) target = this.getRowElement(target);
+
                     if (target.classList.contains('dv-active')) {
-                        var detail = target.nextSibling;
-                        detail.classList.remove('dv-opaque');
                         target.classList.remove('dv-active');
-                        setTimeout(function() {
-                            target.parentNode.removeChild(detail);
-                        }, 1005);
+                        processAnimation(target.nextSibling, deactivateAnim);
+                        setTimeout(removeRowDetail, deactivateAnim.length + 10);
                     } else {
                         console.log('Row to deactivate was not active.');
                     }
                 } else {
-                    Array.prototype.filter.call(this.getRowElementList(), function(row) {
-                        return row.classList.contains('dv-active');
-                    }).forEach(function(row) {
-                        table.deactivateDetail(row);
-                    });
+                    removeEveryRowDetail();
                 }
             }
         }

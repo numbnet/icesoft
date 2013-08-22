@@ -17,25 +17,20 @@
         margin:0;
     }
 
+    .dv-detail {
+        /* need some border to ensure size contains child margins */
+        border: 1px solid transparent;
+    }
+
+    .dv-head th, .dv-body td, .dv-foot td {
+        box-sizing: border-box;
+    }
+
     #tableId {
         width:100%;
     }
     input:not([type]) {
         width:100%;
-    }
-
-    .dv-detail {
-        transition: opacity 2s;
-        opacity: 0;
-        border:1px solid transparent;
-    }
-
-    .dv-opaque {
-        opacity: 1;
-    }
-
-    .dv-filtered {
-        display:none;
     }
 </style>
 <script>
