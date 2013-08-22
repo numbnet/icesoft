@@ -75,6 +75,7 @@ public class EnvUtils {
     public static String WARN_BEFORE_SESSION_EXPIRY_INTERVAL = "org.icefaces.warnBeforeSessionExpiryInterval";
     public static String CLIENT_SIDE_ELEMENT_UPDATE_DETERMINATION = "org.icefaces.clientSideElementUpdateDetermination";
     public static String ACE_FILE_ENTRY_REQUIRE_JAVASCRIPT = "org.icefaces.ace.fileEntry.requireJavascript";
+    public static String PUBLIC_CONTEXT_PATH = "org.icefaces.publicContextPath";
 
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -660,6 +661,11 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).uniqueResourceURLs;
     }
 
+    public static String getPublicContextPath(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).publicContextPath;
+    }
+
+
     public static void createSessionOnPageLoad(FacesContext context) {
         final ExternalContext externalContext = context.getExternalContext();
         //create session if GET request
@@ -1220,6 +1226,7 @@ class EnvConfig {
     public long warnBeforeExpiryInterval;
     public boolean clientSideElementUpdateDetermination;
     public boolean fileEntryRequireJavascript;
+    public String publicContextPath;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -1261,6 +1268,7 @@ class EnvConfig {
         warnBeforeExpiryInterval = decodeLong(initMap, EnvUtils.WARN_BEFORE_SESSION_EXPIRY_INTERVAL, -1L, info);
         clientSideElementUpdateDetermination = decodeBoolean(initMap, EnvUtils.CLIENT_SIDE_ELEMENT_UPDATE_DETERMINATION, false, info);
         fileEntryRequireJavascript = decodeBoolean(initMap, EnvUtils.ACE_FILE_ENTRY_REQUIRE_JAVASCRIPT, true, info);
+        publicContextPath = decodeString(initMap, EnvUtils.PUBLIC_CONTEXT_PATH, null, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }
