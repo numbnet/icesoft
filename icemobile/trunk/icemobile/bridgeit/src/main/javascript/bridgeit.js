@@ -16,10 +16,6 @@ if (!window['ice']) {
     window.ice = {};
 }
 
-if (!window['ice.mobi']) {
-    /** @namespace ice.mobi */
-    window.ice.mobi = {};
-}
 if (!window['ice.bridgeit']) {
     /** @namespace ice.bridgeIt 
      * @property {url}  splashImageURL - URL for the splash image to show when loading BridgeIt
@@ -40,28 +36,10 @@ if (!window.console) {
         };
     }
 }
-(function(im,ib) {
+(function(ib) {
     
     /************************ PRIVATE ******************************/
-    function addListener(obj, event, fnc){
-        if (obj.addEventListener){
-            obj.addEventListener(event, fnc, false);
-        } else if (obj.attachEvent) {
-            obj.attachEvent("on"+event, fnc);
-        } else {
-            ice.log.debug(ice.log, 'WARNING:- this browser does not support addEventListener or attachEvent');
-        }
-    }
-    function removeListener(obj, event, fnc){
-        if (obj.addEventListener){
-            obj.removeEventListener(event, fnc, false);
-        } else if (obj.attachEvent){
-            obj.detachEvent("on"+event, fnc);
-        } else {
-            ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
-        }
-    }
-    function mobiserial(formId, typed) {
+    function serializeForm(formId, typed) {
         var form = document.getElementById(formId);
         var els = form.elements;
         var len = els.length;
@@ -192,7 +170,8 @@ if (!window.console) {
         }
         var serializedFormClause = "";
         if (formID)  {
-            serializedFormClause = "&p=" + escape(mobiserial(formID, false));
+            serializedFormClause = "&p=" +
+                    escape(serializeForm(formID, false));
         }
         var uploadURLClause = "";
         if (uploadURL)  {
@@ -288,47 +267,6 @@ if (!window.console) {
             }
             parent = parent.parentNode;
         }
-    }
-    function locationWithoutViewParam() {
-        var url = window.location.href;
-        url = url.replace(/l=[m|t|d]/, '');
-        url = url.replace(/\?&/, '\?');
-        return url;
-    }
-    function storeLocation(id, coords) {
-        if (!coords) {
-            return;
-        }
-        var el = document.getElementById(id);
-        if (!el) {
-            return;
-        }
-        var elValue = (el.value) ? el.value : "";
-        var parts = elValue.split(',');
-        if (4 != parts.length) {
-            parts = new Array(4)
-        }
-        ;
-        parts[0] = coords.latitude;
-        parts[1] = coords.longitude;
-        parts[2] = coords.altitude;
-        el.value = parts.join();
-    }
-    function storeDirection(id, orient) {
-        if (orient.webkitCompassAccuracy <= 0) {
-            return;
-        }
-        var el = document.getElementById(id);
-        if (!el) {
-            return;
-        }
-        var elValue = (el.value) ? el.value : "";
-        var parts = elValue.split(',');
-        if (4 != parts.length) {
-            parts = new Array(4)
-        }
-        parts[3] = orient.webkitCompassHeading;
-        el.value = parts.join();
     }
     function unpackDeviceResponse(data)  {
         console.log('unpackDeviceResponse(' + data + ')');
@@ -434,40 +372,14 @@ if (!window.console) {
     /************************ PUBLIC **********************************/
     
     /**
-     * @alias ice.bridgeit.ajaxRequest
-     * @desc Submit an Ajax request
-     * @param {map} options TODO
-     */
-    im.ajaxRequest = function(options){
-        if (options.oncomplete || options.onComplete){//support for submitNotification
-            var callBack = options.oncomplete || options.onComplete;
-            addListener(document, "DOMSubtreeModified", callBack);
-        }
-        if( typeof ice.bridgeit.userAjaxRequest === "function"){
-            ice.bridgeit.userAjaxRequest(options);
-        }
-        else{ //default to form submit
-            var src = options.source;
-            if (!src){
-                console.log("No source element to submit");
-                return;
-            }
-            var myForm = formOf(document.getElementById(src));
-            if (myForm) {
-                myForm.submit();
-            }else{
-                console.log(" no form to submit for source element="+src);
-            }
-        }
-    };
-    /**
-     * @alias ice.bridgeit.registerAuxUpload
+     * @alias ice.bridgeit.register
      * @desc Register BridgeIt
      * @param {string} sessionId The server-side session id
      * @param {url} uploadURL The URL to upload media to
      */
-    ib.registerAuxUpload = function registerAuxUpload(sessionid, uploadURL) {
+    ib.register = function register(uploadURL, options) {
 
+        sessionid = options.JSESSIONID;
         var splashClause = getSplashClause();
 
         var sxURL = "icemobile:c=register&r=" +
@@ -489,62 +401,7 @@ if (!window.console) {
             document.body.appendChild(auxiframe);
         }
     };
-    /* aliases */
-    ice.registerAuxUpload = ib.registerAuxUpLoad; /* used by SXUtils.getICEmobileRegisterSXScript(), IceMobileSXRenderer.encodeEnd(), JSP icemobile.js */
-    im.registerAuxUpload = ib.registerAuxUpload /* used by JSF component.js */
     
-    /**
-     * @alias ice.mobi.mobilesx
-     * @desc TODO
-     * @param {element} element TODO
-     * @param {url} uploadURL The URL to upload media to
-     */
-    im.mobilesx = function mobilesx(element, uploadURL) {
-        var ampchar = String.fromCharCode(38);
-        var form = formOf(element);
-        var formID = form.getAttribute('id');
-        var formAction = form.getAttribute("action");
-        var command = element.getAttribute("data-command");
-        var id = element.getAttribute("data-id");
-        var params = element.getAttribute("data-params");
-        var sessionid = element.getAttribute("data-jsessionid");
-        var windowLocation = window.location;
-        var barURL = windowLocation.toString();
-        var baseURL = barURL.substring(0,
-                barURL.lastIndexOf("/")) + "/";
-        
-        if (!uploadURL) {
-            uploadURL = element.getAttribute("data-posturl");
-        }
-        
-        var options = {
-            postURL : uploadURL,
-            JSESSIONID : sessionid,
-            parameters : params,
-            element : element,
-            form: form
-        };
-        
-        deviceCommandExec(command, id, options);
-    };
-    /**
-     * @alias ice.mobi.invoke
-     * @desc TODO
-     * @param {element} element TODO
-     */
-    im.invoke = function(element)  {
-        var command = element.getAttribute("data-command");
-        if (ice[command])  {
-            var params = element.getAttribute("data-params");
-            var id = element.getAttribute("data-id");
-            if ((null == id) || ("" == id)) {
-                id = element.getAttribute("id");
-            }
-            ice[command](id,params);
-        } else {
-            ice.mobi.sx(element);
-        }
-    };
     /**
      * @alias ice.bridgeit.launchFailed
      * @desc Application provided callback to detect BridgeIt launch failure.
@@ -639,5 +496,5 @@ if (!window.console) {
 
     /* TODO Document use of ice.ajaxRefresh?? */
     
-})(ice.mobi, ice.bridgeit);
+})(ice.bridgeit);
 
