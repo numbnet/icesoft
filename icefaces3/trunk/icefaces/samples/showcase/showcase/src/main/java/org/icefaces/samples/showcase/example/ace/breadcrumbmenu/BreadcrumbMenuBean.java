@@ -201,6 +201,7 @@ public class BreadcrumbMenuBean extends ComponentExampleImpl<BreadcrumbMenuBean>
             tree.setKey(tree.getKeyConverter().parseSegments(nodeId.split("-")));
             stateMap.setAllSelected(false);
             stateMap.get(tree.getData()).setSelected(true);
+            tree.setKey(org.icefaces.ace.model.tree.NodeKey.ROOT_KEY);
 
             List<UIComponent> menuItems1 = menuModel1.getMenuItems();
             List<UIComponent> menuItems2 = menuModel2.getMenuItems();
