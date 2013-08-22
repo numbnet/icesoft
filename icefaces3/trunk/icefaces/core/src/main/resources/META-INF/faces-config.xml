@@ -73,6 +73,7 @@
         <phase-listener>org.icefaces.impl.event.BridgeSetup$AssignViewID</phase-listener>
     </lifecycle>
     <application>
+        <view-handler>org.icefaces.impl.application.ExternalServletContextSetup</view-handler>
         <navigation-handler>org.icefaces.impl.application.PropagatingNavigationHandler</navigation-handler>
         <navigation-handler>org.icefaces.impl.application.ReloadAfterNavigationFix</navigation-handler>
         <resource-handler>org.icefaces.impl.application.VersioningResourceHandler</resource-handler>
