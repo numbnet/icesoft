@@ -2124,6 +2124,9 @@ Autocompleter.Base.prototype = {
 			Event.observe(this.element, "keyup", function(e) { if (!self.justSubmitted) { self.onKeyPress.call(self, e);} } );
 		}
         Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this));
+		if (Prototype.Browser.IE) {
+			Event.observe(this.element, "keydown", this.onIETabKeyDown.bindAsEventListener(this));
+		}
         // ICE-3830
         if (Prototype.Browser.IE || Prototype.Browser.WebKit)
             Event.observe(this.element, "paste", this.onPaste.bindAsEventListener(this));
@@ -2175,6 +2178,12 @@ Autocompleter.Base.prototype = {
     stopIndicator: function() {
         if (this.options.indicator) Element.hide(this.options.indicator);
     },
+	
+	onIETabKeyDown: function(event) { // capture tab key press in IE
+		if (event.keyCode == Event.KEY_TAB) {
+			this.onKeyPress(event);
+		}
+	},
 
     onKeyPress: function(event) {
         if (!this.active) {
@@ -2183,6 +2192,7 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_TAB:
                 case Event.KEY_RETURN:
                     this.getUpdatedChoices(true, event, -1);
+					this.hide();
                     return;
                 case Event.KEY_DOWN:
                     this.getUpdatedChoices(false, event, -1);
@@ -2202,7 +2212,7 @@ Autocompleter.Base.prototype = {
                     Ice.Autocompleter.logger.debug("Getting updated choices on enter");
                     this.getUpdatedChoices(true, event, idx);
                     this.hide();
-                    Event.stop(event);
+                    if (event.keyCode == Event.KEY_RETURN) Event.stop(event);
                     return;
                 case Event.KEY_ESC:
                     this.hide();

@@ -184,7 +184,9 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
 				KeyEvent keyEvent = new KeyEvent(component, requestParemeterMap);
 				Object event = requestParemeterMap.containsKey("ice.event.type") ? requestParemeterMap.get("ice.event.type") : "";
 				event = event != null ? event : "";
-				if (keyEvent.getKeyCode() != KeyEvent.CARRIAGE_RETURN && !event.equals("onclick")) {
+				if (keyEvent.getKeyCode() != KeyEvent.CARRIAGE_RETURN 
+					&& keyEvent.getKeyCode() != KeyEvent.TAB
+					&& !event.equals("onclick")) {
 					populateList(facesContext, component);
 				}
                 component.setChangedComponentId(null);
