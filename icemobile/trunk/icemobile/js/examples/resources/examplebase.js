@@ -5,7 +5,7 @@ var floatTemplate = '<td>{#auto}<input value="{value}" />{/auto}</td>';
 var integerTemplate = '<td>{#auto}<input value="{value}" />{/auto}</td>';
 var alertCellTemplate = '<td><button onclick="alert(JSON.stringify(this.parentNode.parentNode.data));">JSON</button></td>';
 var activateCellTemplate = '<td><button onclick="dv.activateDetail(this.parentNode.parentNode.data)">Activate</button></td>';
-var detailContentsTemplate = '<h5>Details:</h5><p>Known Alias: <em>{data.fullname}</em><button style="display: inline-block; margin-left: 5em;" onclick="dv.deactivateDetail(this.parentNode.parentNode.parentNode.data)">Deactivate</button></p>'
+var detailContentsTemplate = '<h5>Details:</h5><p>Known Alias: <em>{data.fullname}</em><button style="display: inline-block; margin-left: 5em;" onclick="dv.deactivateDetail(this.parentNode.parentNode.parentNode.data)">Deactivate</button></p>';
 var filterHeader = '<th class="{.name}">{.headerText}<br/>{#filter}<input/>{/filter}</th>';
 var numFilterHeader = '<th class="{.name}">{.headerText}<br/>{#filter}<input type="number"/>{/filter}</th>';
 
