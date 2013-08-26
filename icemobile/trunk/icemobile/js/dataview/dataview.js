@@ -221,12 +221,14 @@ if (!window['mobi']) window['mobi'] = {};
                 /* copy head col widths from duplicate header */
                 for (var i = 0; i < headCellWidths.length; i++) {
                     dupeHeadCells[i].style.minWidth = headCellWidths[i] + 'px';
+                    dupeHeadCells[i].style.maxWidth = headCellWidths[i] + 'px';
                 }
 
                 /* copy foot col widths from duplicate footer */
                 if (footCells.length > 0)
                     for (var i = 0; i < footCellWidths.length; i++) {
                         dupeFootCells[i].style.minWidth = footCellWidths[i] + 'px';
+                        dupeFootCells[i].style.maxWidth = footCellWidths[i] + 'px';
                     }
             }
 
