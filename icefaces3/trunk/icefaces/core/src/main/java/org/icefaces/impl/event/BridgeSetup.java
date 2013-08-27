@@ -112,6 +112,9 @@ public class BridgeSetup implements SystemEventListener {
         ArrayList<UIComponent> resources = new ArrayList();
         resources.add(ResourceOutputUtil.createTransientScriptResourceComponent("head-update-test.js", ICE_CORE_LIB));
         resources.add(ResourceOutputUtil.createTransientStyleResourceComponent("core.css", ICE_CORE_LIB));
+        if (EnvUtils.isICEpushPresent()) {
+            resources.add(ResourceOutputUtil.createTransientScriptResourceComponent("icepush.js", ICE_PUSH_LIB));
+        }
         return resources;
     }
 
