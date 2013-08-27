@@ -759,17 +759,6 @@ a.ui-link-inherit {
     cursor: default !important;
     pointer-events: none;
 }
-/* Icons
------------------------------------------------------------------------------------------------------------*/
-.ui-icon,
-.ui-icon-searchfield:after {
-    background-color:                       #666 /*{global-icon-color}*/;
-    background-color:                       rgba(0,0,0,.4) /*{global-icon-disc}*/;
-    background-image: url(images/icons-18-white.png) /*{global-icon-set}*/;
-    background-repeat: no-repeat;
-    -webkit-border-radius:              9px;
-    border-radius:                      9px;
-}
 /* Alt icon color
 -----------------------------------------------------------------------------------------------------------*/
 .ui-icon-alt .ui-icon,
