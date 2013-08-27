@@ -153,11 +153,15 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         sb.append(", single: ").append(stack.getSingleView());
         sb.append(",hash: ").append(hashcode);
         ContentPane selPane = null;
-        if( selectedPaneId != null && selectedPaneId.length() > 0 ){
-            selPane = (ContentPane)stack.findComponent(selectedPaneId);
-        }
-        else{//auto-select the first contentPane
+        if( selectedPaneId == null || selectedPaneId.length() > 0 ){
+            //auto-select the first contentPane
             selectedPaneId = stack.getChildren().get(0).getId();
+        }
+        selPane = (ContentPane)stack.findComponent(selectedPaneId);
+        //if the selectedPaneId is not valid, auto-select the first contentPane
+        if( selPane == null ){
+            selPane = (ContentPane)stack.getChildren().get(0);
+            selectedPaneId = selPane.getId();
         }
         if (null != selPane){
             String selectedPaneClientId = null;
