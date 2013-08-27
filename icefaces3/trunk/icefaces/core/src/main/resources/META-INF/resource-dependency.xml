@@ -20,8 +20,10 @@
         <requires>
             <resource name="jsf.js" library="javax.faces"/>
             <resource name="bridge-support.js" library="ice.core"/>
-            <resource name="icepush.js" library="ice.push"/>
         </requires>
+        <depends-on>
+            <resource name="icepush.js" library="ice.push"/>
+        </depends-on>
     </resource>
     <resource name="JavaScriptRunnerSetup" target="body">
         <requires>
