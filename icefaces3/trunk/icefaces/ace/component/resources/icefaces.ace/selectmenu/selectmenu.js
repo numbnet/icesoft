@@ -30,8 +30,9 @@ ice.ace.SelectMenu = function(id, updateId, rowClass, highlightedRowClass, selec
 	this.element = $element.get(0);
 	this.element.id = this.id + "_input";
 	this.displayedValue = $element.find('span').get(0);
-	ice.ace.jq(this.displayedValue).css('width', $element.width() - 27);
 	this.$downArrowButton = $element.find('div').eq(0);
+	var $displayedValue = ice.ace.jq(this.displayedValue);
+	$displayedValue.css('width', $element.width() - this.$downArrowButton.outerWidth(true) - ($displayedValue.outerWidth(true) - $displayedValue.width()));
 	if (ice.ace.jq.browser.msie) {// ie7 fix
 		if (ice.ace.jq.browser.version < 8) {
 			if (navigator.userAgent.indexOf("Trident/5") < 0) {

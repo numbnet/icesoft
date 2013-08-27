@@ -107,7 +107,7 @@ public class ComboBoxRenderer extends InputRenderer {
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "text", null);
 		writer.writeAttribute("name", inputClientId, null);
-		writer.writeAttribute("style", comboBox.getStyle() + "; display: inline-block; overflow: hidden;border:0;", null);
+		writer.writeAttribute("style", comboBox.getStyle() + "; display: inline-block; overflow: hidden;", null);
 		writer.writeAttribute("class", "ui-inputfield ui-state-default ui-corner-left " + getStateStyleClasses(comboBox) + inFieldLabelStyleClass, null);
 		if (ariaEnabled) {
 			writer.writeAttribute("role", "textbox", null);
