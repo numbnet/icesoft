@@ -28,9 +28,19 @@
     function handleAudio(event)  {
         var text = event.value;
         if (event.response)  {
-            var theResponse = JSON.parse(event.response);
+            var recordings = JSON.parse(event.response);
             var elem = document.getElementById("recordings");
-            elem.innerHTML = elem.innerHTML + "<div class='row'><audio src='" + theResponse.path + "'></div>";
+            for( var i = 0 ; i < recordings.length ; i++ ){
+                var row1 = document.createElement('div');
+                row1.setAttribute('class','row');
+                row1.innerHTML = "Audio recorded on " + new Date();
+                elem.appendChild(row1);
+                var row2 = document.createElement('div');
+                row2.setAttribute('class','row');
+                row2.innerHTML = "<audio src='service/" + recordings[i] + "' controls='controls' preload='auto' type='audio/mp3'/>";
+                elem.appendChild(row2);
+            }
+            
         }
     }
     </script>

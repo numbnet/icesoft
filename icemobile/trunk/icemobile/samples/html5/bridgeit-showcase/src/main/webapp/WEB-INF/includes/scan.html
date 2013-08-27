@@ -12,11 +12,9 @@
     <a id="scanBtn" type="button" class="whiteButton bridgeItBtn"
         onclick="ice.bridgeit.scan('scanBtn',handleScan);">Scan a Code</a>
         
-    <fieldset>
-        <div class="row"></div>
-    </fieldset>
     <fieldset id="scans">
     </fieldset>
+    
     <div class="footer">
         <a href="#">
             <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
@@ -25,13 +23,27 @@
     </div>
     <script type="text/javascript">
     function handleScan(event)  {
+        alert('handleScan:' + event);
         var HTTP = "http";
         var text = event.value;
-        if (HTTP === text.substring(0, HTTP.length))  {
+        alert('text=' + text);
+        for( prop in event ){
+            alert(prop + '=' + event[prop]);
+        }
+        if (HTTP == text.substring(0, HTTP.length))  {
+            alert('url=' + text);
             text = "<a href='" + text + "'>" + text + "</a>";
         }
         var elem = document.getElementById("scans");
-        elem.innerHTML = elem.innerHTML + "<div class='row'>" + text + "</div>";
+        alert('scans elem = ' + elem);
+        var row1 = document.createElement('div');
+        row1.setAttribute('class','row');
+        row1.innerHTML = "Scanned on " + new Date();
+        elem.appendChild(row1);
+        var row2 = document.createElement('div');
+        row2.setAttribute('class','row');
+        row2.innerHTML = text;
+        elem.appendChild(row2);
     }
     </script>
 
