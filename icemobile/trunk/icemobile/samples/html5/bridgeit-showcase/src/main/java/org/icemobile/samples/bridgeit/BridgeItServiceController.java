@@ -47,6 +47,11 @@ public class BridgeItServiceController {
         return new ArrayList<String>();
     }
     
+    @ModelAttribute("recordings")
+    public List<String> createAudioList() {
+        return new ArrayList<String>();
+    }
+    
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
     public @ResponseBody List<String> cameraUpload(HttpServletRequest request,
             @ICEmobileResource("cameraBtn") Resource cameraUpload,
@@ -75,6 +80,7 @@ public class BridgeItServiceController {
             if (audioUpload.getContentType().startsWith("audio")) {
                 try {
                     recordings.add( "icemobile-store/"+ audioUpload.getUuid() );
+                    System.out.println("returning " + recordings);
                     return recordings;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -111,6 +117,7 @@ public class BridgeItServiceController {
             if (camcorderUpload.getContentType().startsWith("video")) {
                 try {
                     videos.add( "icemobile-store/"+ camcorderUpload.getUuid() );
+                    System.out.println("returning " + videos);
                     return videos;
                 } catch (Exception e) {
                     e.printStackTrace();
