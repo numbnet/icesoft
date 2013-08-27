@@ -32,9 +32,9 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 	var $element = this.root.find('input[type=text]');
 	this.element = $element.get(0);
 	this.element.id = this.id + "_input";
-	$element.css('width', $box.width() - ice.ace.ComboBox.DELTA_WIDTH);
 	this.hidden = this.root.find('input[type=hidden]').get(0);
 	var $downArrowButton = $box.find('div');
+	$element.css('width', $box.width() - $downArrowButton.outerWidth(true) - ($element.outerWidth(true) - $element.width()));
 	this.downArrowButton = $downArrowButton.eq(0);
 	this.downArrowButton.css('height', $box.height());
 	var height = this.downArrowButton.height();
@@ -78,8 +78,8 @@ ice.ace.ComboBox.setDimensionsOnly = function(id) {
 	var root = ice.ace.jq(ice.ace.escapeClientId(id));
 	var $box = root.find('.ui-combobox-value');
 	var $element = root.find('input');
-	$element.css('width', $box.width() - ice.ace.ComboBox.DELTA_WIDTH);
 	var $downArrowButton = $box.find('div');
+	$element.css('width', $box.width() - $downArrowButton.outerWidth(true) - ($element.outerWidth(true) - $element.width()));
 	var downArrowButton = $downArrowButton.eq(0);
 	downArrowButton.css('height', $box.height());
 	var height = downArrowButton.height();
