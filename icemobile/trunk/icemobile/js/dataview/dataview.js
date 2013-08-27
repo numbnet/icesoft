@@ -271,7 +271,8 @@ if (!window['mobi']) window['mobi'] = {};
                     var target = getDOMTarget.call(dv);
                     target.insertAdjacentHTML('afterbegin',out);
 
-                    var tbody = target.querySelector('tbody');
+                    var table = target.querySelector('#'+dv.id),
+                        tbody = table.querySelector('tbody');
                     attachAutoListener(tbody);
                     attachData();
 
@@ -280,6 +281,7 @@ if (!window['mobi']) window['mobi'] = {};
 
                     // Apply filter events after fixed header manipulations
                     attachFilterListener(target.querySelector('thead'), tbody, dv);
+                    raiseEvent(table, 'construct', { table : table });
                 }
                 else throw Error(err);
             }
@@ -288,6 +290,10 @@ if (!window['mobi']) window['mobi'] = {};
 
     function getDOMTarget() {
         return document.querySelector(this.renderConf.target);
+    }
+
+    function getTableElement() {
+        return document.getElementById(this.id);
     }
 
     function recalcScrollHeight(table, dupeHeadTable, dupeFootTable, sizeFromWindow) {
@@ -327,6 +333,8 @@ if (!window['mobi']) window['mobi'] = {};
             else
                 row.classList.remove('dv-filtered');
         });
+
+        raiseEvent(getTableElement.call(this), 'filter', { rows : this.getFilteredRowElementList()});
     }
 
 
@@ -419,6 +427,14 @@ if (!window['mobi']) window['mobi'] = {};
         }, anim.length + 1);
     }
 
+    function raiseEvent(src, name, args) {
+        args.bubbles = true;
+        args.cancelable = true;
+        var event = new CustomEvent(name, args);
+        src.dispatchEvent(event);
+
+    }
+
 
 
 
@@ -501,7 +517,7 @@ if (!window['mobi']) window['mobi'] = {};
 
         if (val != undefined) row.data[propName] = val;
 
-        console.log(row.data[propName]);
+        raiseEvent(row, 'update', { propName : propName, value : row.data[propName] });
     };
 
     // Exposed instanced dataView interface
@@ -544,7 +560,7 @@ if (!window['mobi']) window['mobi'] = {};
                     // Attach data
                     row.data = data;
 
-                    // TODO Add callback
+                    raiseEvent(row,  'addrow', {row : row});
                 }
             )
         };
@@ -580,11 +596,25 @@ if (!window['mobi']) window['mobi'] = {};
             return this.getTBodyElement().childNodes;
         }
 
+        dvProto.getFilteredRowElementList = function() {
+            return Array.prototype.filter.call(this.getRowElementList(), function(row) {
+                return row.classList.contains('dv-filtered') >= 0;
+            });
+        }
+
+        dvProto.getFilteredRowDataList = function() {
+            return Array.prototype.map.call(getRowElementList(), function(x) {
+                return x.data;
+            });
+        }
+
         dvProto.getRowData = function(target) {
             return this.getRowElement.call(this, target).data;
         };
 
         dvProto.getRowElement = function(target) {
+            if (target == undefined) return;
+
             if (isNumber(target)) {
                 /* Get row at index */
                 return this.getTBodyElement().childNodes[target];
@@ -609,7 +639,6 @@ if (!window['mobi']) window['mobi'] = {};
                         return row;
                     }
                 }
-
             }
         };
 
@@ -646,8 +675,9 @@ if (!window['mobi']) window['mobi'] = {};
 
         // Delete ---------------- //
         dvProto.removeRow = function(target) {
-            var elem = target instanceof HTMLElement ? target : this.getRowElement(target);
-            elem.parent.removeChild(elem);
+            var elem = target instanceof HTMLElement ? target : this.getRowElement(target),
+                old = elem.parentNode.removeChild(elem);
+            raiseEvent(document.getElementById(this.id), 'removerow', { row : old });
         }
 
         dvProto.detachData = function() {
@@ -710,6 +740,7 @@ if (!window['mobi']) window['mobi'] = {};
                     wrapper.style.height = (parseFloat(wrapper.style.height) - detail.offsetHeight - parseFloat(cstyle.marginTop) - parseFloat(cstyle.marginBottom)) + 'px';
                 }
                 processAnimation(detail, activateAnim);
+                raiseEvent(detail, 'activate', { row : row});
             }
 
             // Build template for detail type
@@ -752,11 +783,13 @@ if (!window['mobi']) window['mobi'] = {};
             function removeGlobalDetail() {
                 target.parentNode.removeChild(target);
                 if (table.renderConf.fixedHeaderSizing) recalcScrollHeight.call(table);
+                raiseEvent(target, 'deactivate', { row : table.getRowElement(target.data) });
             }
 
             function removeRowDetail() {
                 var detail = target.nextSibling;
                 detail.parentNode.removeChild(detail);
+                raiseEvent(target, 'deactivate', { row : target });
             }
 
             function removeEveryRowDetail() {
