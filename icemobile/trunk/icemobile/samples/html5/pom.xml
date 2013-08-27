@@ -28,7 +28,7 @@
     <url>http://www.icesoft.org</url>
 
     <modules>
-        <module>bridgeit-showcase</module>
+        <module>bridgeit</module>
     </modules>
     <!-- Naming the war files this way prevents the version from being appended. -->
 
