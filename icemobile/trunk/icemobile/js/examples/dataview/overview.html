@@ -34,6 +34,34 @@
     <script>
         window.onload = function() {
             defaultExampleArguments[2].detailPosition = 'row';
+            document.getElementById('tableHolder').addEventListener('construct', function() {
+                console.log('construct');
+            });
+
+            document.getElementById('tableHolder').addEventListener('activate', function() {
+                console.log('activate');
+            });
+
+            document.getElementById('tableHolder').addEventListener('deactivate', function() {
+                console.log('deactivate');
+            });
+
+            document.getElementById('tableHolder').addEventListener('addrow', function() {
+                console.log('addrow');
+            });
+
+            document.getElementById('tableHolder').addEventListener('removerow', function() {
+                console.log('removerow');
+            });
+
+            document.getElementById('tableHolder').addEventListener('filter', function() {
+                console.log('filter');
+            });
+
+            document.getElementById('tableHolder').addEventListener('update', function() {
+                console.log('update');
+            });
+
             window['dv'] = new mobi.DataView(defaultExampleArguments[0], defaultExampleArguments[1], defaultExampleArguments[2]);
         }
     </script>
