@@ -145,23 +145,29 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         writer.startElement("script", uiComponent);
         writer.writeAttribute("type", "text/javascript", null);
         String selectedPaneId = stack.getSelectedId();
-        String selectedPaneClientId = null;
-        String homeId = null;
         boolean client = false;
         int hashcode = MobiJSFUtils.generateHashCode(System.currentTimeMillis());
-        UIComponent selPane = stack.findComponent(selectedPaneId);
         StringBuilder sb = new StringBuilder("mobi.layoutMenu.initClient('").append(clientId).append("'");
         sb.append(",{stackId: '").append(clientId).append("'");
         sb.append(",selectedId: '").append(selectedPaneId).append("'");
         sb.append(", single: ").append(stack.getSingleView());
         sb.append(",hash: ").append(hashcode);
+        ContentPane selPane = null;
+        if( selectedPaneId != null && selectedPaneId.length() > 0 ){
+            selPane = (ContentPane)stack.findComponent(selectedPaneId);
+        }
+        else{//auto-select the first contentPane
+            selectedPaneId = stack.getChildren().get(0).getId();
+        }
         if (null != selPane){
+            String selectedPaneClientId = null;
             selectedPaneClientId =  selPane.getClientId(facesContext);
             sb.append(",selClientId: '").append(selectedPaneClientId).append("'");
-            client = ((ContentPane)selPane).isClient();
+            client = selPane.isClient();
         }
         if (stack.getContentMenuId() !=null){
             UIComponent menu = stack.findComponent(stack.getContentMenuId());
+            String homeId = null;
             if (null!=menu){
                homeId = menu.getClientId(facesContext);
             }
