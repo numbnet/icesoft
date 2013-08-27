@@ -8,14 +8,6 @@ body{
 }
 @media screen and (min-width: 768px) { 
     body{
-        background-size: 90%;
-        background-position: 0px -50px;
-        -webkit-transition: background-position 20s ease-in-out;
-        -moz-transition: background-position 20s ease-in-out;
-        -o-transition: background-position 20s ease-in-out;
-        transition: background-position 20s ease-in-out;
-    }
-    body.endAnim{
         background-position: 150px -110px;
         background-size: 105%;
     }
@@ -244,10 +236,5 @@ body.endAnim .jumbotron .br{
 }
 .navbar-inverse .navbar-toggle {
     border-color: rgb(238, 196, 175);
-}
-@media screen and (min-width: 768px) {
-    .navbar-brand {
-        margin-left: 30px;
-    }
 }
 
