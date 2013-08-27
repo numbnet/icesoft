@@ -101,7 +101,9 @@ function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _cus
         editorInstance.setData(document.getElementById(editor).value);
         if (saveOnSubmit) {
             var updateElement = function(e) {
-                document.getElementById(editor).value = editorInstance.getData();
+				var instance = CKEDITOR.instances[editor];
+				var textarea = document.getElementById(editor);
+				if (instance && textarea) textarea.value = instance.getData();
             };
             editorInstance.on('blur', updateElement);
         }
