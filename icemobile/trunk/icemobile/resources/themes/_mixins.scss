@@ -5,10 +5,10 @@
     transition-duration: $duration;
 }
 @mixin transition-property($prop){
-    -webkit-transition-duration: $prop;
-    -moz-transition-duration: $prop;
-    -o-transition-duration: $prop;
-    transition-duration: $prop;
+    -webkit-transition-property: -webkit-$prop;
+    -moz-transition-property: -moz-$prop;
+    -o-transition-property: -o-$prop;
+    transition-property: $prop;
 }
 @mixin transform($transform){
     -webkit-transform: $transform;
