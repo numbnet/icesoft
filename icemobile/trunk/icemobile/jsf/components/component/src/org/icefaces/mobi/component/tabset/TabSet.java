@@ -29,7 +29,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-import org.icefaces.mobi.api.ContentPaneController;
 import org.icemobile.component.IPagePanel;
 import org.icefaces.mobi.component.pagepanel.PagePanel;
 import org.icefaces.mobi.renderkit.InlineScriptEventListener;
@@ -39,7 +38,7 @@ import org.icefaces.mobi.utils.JSFUtils;
 import org.icemobile.util.ClientDescriptor;
 
 
-public class TabSet extends TabSetBase implements ContentPaneController, ITabSet {
+public class TabSet extends TabSetBase implements ITabSet {
     private static Logger logger = Logger.getLogger(TabSet.class.getName());
 
     private boolean isTop = false;

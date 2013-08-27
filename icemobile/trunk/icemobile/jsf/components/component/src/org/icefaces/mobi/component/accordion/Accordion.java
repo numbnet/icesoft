@@ -30,14 +30,13 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-import org.icefaces.mobi.api.ContentPaneController;
 import org.icefaces.mobi.renderkit.InlineScriptEventListener;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IAccordion;
 import org.icemobile.util.ClientDescriptor;
 
-public class Accordion extends AccordionBase implements ContentPaneController, IAccordion {
+public class Accordion extends AccordionBase implements IAccordion {
     
     public static final String JS_LIBRARY = "org.icefaces.component.accordion";
     

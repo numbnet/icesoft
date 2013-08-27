@@ -21,7 +21,6 @@
 
     <target name="all">
         <subant>
-            <fileset dir="." includes="jsp/*/build.xml" excludes=""/>
             <fileset dir="." includes="jsf/*/build.xml" excludes=""/>
             <fileset dir="." includes="html5/*/build.xml" excludes=""/>
         </subant>
@@ -29,7 +28,6 @@
 
     <target name="clean">
         <subant target="clean">
-            <fileset dir="." includes="jsp/*/build.xml" excludes=""/>
             <fileset dir="." includes="jsf/*/build.xml" excludes=""/>
             <fileset dir="." includes="html5/*/build.xml" excludes=""/>
         </subant>
