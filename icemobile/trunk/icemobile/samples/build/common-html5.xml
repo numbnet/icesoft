@@ -31,7 +31,6 @@
         <include name="mail.jar"/>
         <include name="${icepush.lib.name}.jar"    unless="no-icepush"/>
         <include name="${icemobile-spring.lib.name}.jar"/>
-        <include name="${icemobile-jsp.lib.name}.jar"/>
         <include name="commons-logging.jar"/>
         <include name="org.springframework.beans-3.1.1.RELEASE.jar"/>
         <include name="org.springframework.context-3.1.1.RELEASE.jar"/>
@@ -51,7 +50,6 @@
         <include name="${icemobile-filter.lib.name}.jar"/>
         <include name="${icepush.lib.name}.jar"    unless="no-icepush"/>
         <include name="${icemobile-spring.lib.name}.jar"/>
-        <include name="${icemobile-jsp.lib.name}.jar"/>
         <include name="commons-logging.jar"/>
         <include name="commons-dbcp-1.4.jar"/>
         <include name="commons-pool-1.6.jar"/>
