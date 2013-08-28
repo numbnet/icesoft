@@ -29,7 +29,6 @@ import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpSession;
 
 import org.icefaces.application.ResourceRegistry;
-import org.icefaces.mobi.renderkit.BaseResourceRenderer;
 import org.icefaces.mobi.utils.IceOutputResource;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.util.ClientDescriptor;
