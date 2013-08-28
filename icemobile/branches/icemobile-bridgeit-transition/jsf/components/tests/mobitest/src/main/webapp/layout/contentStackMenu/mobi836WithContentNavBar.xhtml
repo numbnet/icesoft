@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
+    <title>pagePanel with contentNavBar</title>
+</h:head>
+<h:body>
+<mobi:contentStack id="stack1"
+                   contentMenuId = "contentStackMenu"
+                   currentId="#{layoutBean.selectedPane}">
+  <mobi:contentPane id="panel1" client="true">
+      <mobi:pagePanel>
+        <f:facet name="header">
+          <h5>sample page 1 </h5>
+        </f:facet>
+        <f:facet name="body">
+           <h:form id="mnuForm">
+                   <mobi:contentStackMenu id="contentStackMenu"
+                                 contentStackId="stack1">
+                        <mobi:contentMenuItem label="Menu"/>
+                        <mobi:contentMenuItem label="Page 2" value="panel2"/>
+                        <mobi:contentMenuItem label="Page 3" value="panel3"/>
+                   </mobi:contentStackMenu>
+            </h:form>
+         </f:facet>
+      </mobi:pagePanel>
+  </mobi:contentPane>
+  <mobi:contentPane id="panel2" client="true">
+    <mobi:pagePanel>
+      <f:facet name="header">
+        <h5>sample page 2</h5>
+      </f:facet>
+      <f:facet name="body">
+         <h:form id="navBarfrm2">
+           <mobi:contentNavBar id="navBar2">
+               <mobi:contentMenuItem label="Menu" value="panel1"/>
+               <mobi:contentMenuItem label="panel3" value="panel3"/>
+           </mobi:contentNavBar>
+         </h:form>
+           <h3>panel2 with pagePanel in it</h3>
+              <h:outputLabel for="pan2sel">Selected Panel from menu is </h:outputLabel>
+              <h:outputText id="pan2sel" value="#{layoutBean.selectedPane}"/>
+           <a href="../../layoutComponents.html">index page</a>
+    </f:facet>
+   </mobi:pagePanel>
+  </mobi:contentPane>
+  <mobi:contentPane id="panel3" client="true">
+     <mobi:pagePanel>
+      <f:facet name="header">
+        <h5>sample page 3</h5>
+      </f:facet>
+      <f:facet name="body">
+         <h:form id="navBarfrm3">
+           <mobi:contentNavBar id="navBar3">
+               <mobi:contentMenuItem label="Menu" value="panel1"/>
+               <mobi:contentMenuItem label="panel3" value="panel3"/>
+           </mobi:contentNavBar>
+         </h:form>
+           <h3>panel3 with pagePanel in it</h3>
+                 <h:outputLabel for="pan3sel">Selected Panel from menu is </h:outputLabel>
+                 <h:outputText id="pan3sel" value="#{layoutBean.selectedPane}"/>
+           <a href="../../layoutComponents.html">index page</a>
+    </f:facet>
+   </mobi:pagePanel>
+  </mobi:contentPane>
+</mobi:contentStack>
+</h:body>
+</html>

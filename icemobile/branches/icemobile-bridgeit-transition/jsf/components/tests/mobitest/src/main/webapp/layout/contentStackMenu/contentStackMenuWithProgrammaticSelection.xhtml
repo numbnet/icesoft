@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>ICEmobile</title>
+    <mobi:deviceResource/>
+</h:head>
+<h:body>
+        <mobi:pagePanel>
+            <f:facet name="header">
+                <h:form>
+                      <mobi:commandButton value="&#9776;" actionListener="#{contentStackMenu2.goToMenu}"/>
+                </h:form>
+            </f:facet>
+            <f:facet name="body">
+                  <mobi:contentStack id="contentStack" contentMenuId="contentStackMenu"
+                        currentId="#{contentStackMenu2.selectedPane}">
+                        <mobi:contentPane id="menu" client="false" menuOrHome="true">
+                           <h:form id="mnuForm">
+                              <mobi:contentStackMenu id="contentStackMenu"
+                                                     contentStackId="contentStack">
+                                 <mobi:contentMenuItem label="Menu"/>
+                                 <mobi:contentMenuItem label="Page 1" value="page1"/>
+                                 <mobi:contentMenuItem label="Page 2" value="page2"/>
+                                 <mobi:contentMenuItem label="Page 3" value="page3"/>
+                              </mobi:contentStackMenu>
+                            </h:form>
+                        </mobi:contentPane>
+                        <mobi:contentPane id="page1" client="false">
+                            <h2>Page 1</h2>
+                            <h:outputLabel for="pan1sel">Selected Panel from menu is </h:outputLabel>
+                            <h:outputText id="pan1sel" value="#{contentStackMenu2.selectedPane}"/>
+                             <h:form>
+                              <mobi:commandButton value="page2" actionListener="#{contentStackMenu2.goToPage2}"/>
+                            </h:form>
+                                problem defined in <a href="http://jira.icesoft.org/browse/MOBI-836">MOBI-836</a>
+                        </mobi:contentPane>
+                        <mobi:contentPane id="page2" client="false">
+                            <h2>Page 2</h2>
+                            <h:outputLabel for="pan2sel">Selected Panel from menu is </h:outputLabel>
+                            <h:outputText id="pan2sel" value="#{contentStackMenu2.selectedPane}"/>
+                               <h:form>
+                              <mobi:commandButton value="page1" actionListener="#{contentStackMenu2.goToPage1}"/>
+                            </h:form>
+                        </mobi:contentPane>
+                        <mobi:contentPane id="page3" client="false">
+                            <h2>Page 3</h2>
+                            <h:outputLabel for="pan3sel">Selected Panel from menu is </h:outputLabel>
+                            <h:outputText id="pan3sel" value="#{contentStackMenu2.selectedPane}"/>
+                             <h:form>
+                              <mobi:commandButton value="page1" actionListener="#{contentStackMenu2.goToPage1}"/>
+                            </h:form>
+                        </mobi:contentPane>
+                  </mobi:contentStack>
+            </f:facet>
+            <f:facet name="footer">&#169; 2013</f:facet>
+        </mobi:pagePanel>
+</h:body>
+</html>
