@@ -1,0 +1,51 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<project name="bridgeit" default="war">
+
+    <property file="../../../build.properties"/>
+    <property file="../../build/build.properties"/>
+    <import file="../../build/common-html5.xml"/>
+
+    <target name="war">
+        <loadfile property="camera.html" srcFile="${web.dir}/WEB-INF/includes/camera.html"/>
+        <loadfile property="camcorder.html" srcFile="${web.dir}/WEB-INF/includes/camcorder.html"/>
+        <loadfile property="ar.html" srcFile="${web.dir}/WEB-INF/includes/augmented-reality.html"/>
+        <loadfile property="contacts.html" srcFile="${web.dir}/WEB-INF/includes/contact-list.html"/>
+        <loadfile property="microphone.html" srcFile="${web.dir}/WEB-INF/includes/microphone.html"/>
+        <loadfile property="scan.html" srcFile="${web.dir}/WEB-INF/includes/scan.html"/>
+        <loadfile property="geospy.html" srcFile="${web.dir}/WEB-INF/includes/geospy.html"/>
+        <loadfile property="sms.html" srcFile="${web.dir}/WEB-INF/includes/sms.html"/>
+        <loadfile property="cloudpush.html" srcFile="${web.dir}/WEB-INF/includes/cloud-push.html"/>
+        
+        <copy file="${web.dir}/WEB-INF/includes/mobile.html" todir="${web.dir}" overwrite="true">
+           <filterset>
+               <filter token="CAMERA_DEMO" value="${camera.html}"/>
+               <filter token="CAMCORDER_DEMO" value="${camcorder.html}"/>
+               <filter token="AR_DEMO" value="${ar.html}"/>
+               <filter token="CONTACTLIST_DEMO" value="${contacts.html}"/>
+               <filter token="MICROPHONE_DEMO" value="${microphone.html}"/>
+               <filter token="SCAN_DEMO" value="${scan.html}"/>
+               <filter token="CLOUDPUSH_DEMO" value="${cloudpush.html}"/>
+               <filter token="SMS_DEMO" value="${sms.html}"/>
+               <filter token="GEOSPY_DEMO" value="${geospy.html}"/>
+           </filterset>
+       </copy>
+       <antcall target="war.basic"/>
+
+    </target>
+
+</project>

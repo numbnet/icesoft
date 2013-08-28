@@ -1,0 +1,8 @@
+#splitPane_left::-webkit-scrollbar, .mobi-pagePanel-body::-webkit-scrollbar,
+#splitPane_right::-webkit-scrollbar {
+    width: 0;
+}
+body, #splitPane_right{
+    overflow-y: scroll;
+}
+html.bb10 .ui-footer-fixed{ position: relative; }
