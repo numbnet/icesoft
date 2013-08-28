@@ -14,24 +14,15 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.mobi.component.audio;
+package org.icefaces.mobi.component.media;
 
 import java.util.logging.Logger;
 
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icemobile.component.IAudio;
 import org.icemobile.util.ClientDescriptor;
 
 
-public class Audio extends AudioBase implements IAudio{
-    private static final Logger logger =
-            Logger.getLogger(Audio.class.toString());
-
-
-    public ClientDescriptor getClient() {
-         return MobiJSFUtils.getClientDescriptor();
-    }
-
+public class AudioPlayer extends AudioPlayerBase{
 
 
 }

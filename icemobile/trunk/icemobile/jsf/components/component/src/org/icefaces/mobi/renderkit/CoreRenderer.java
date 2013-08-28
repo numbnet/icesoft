@@ -18,13 +18,18 @@ package org.icefaces.mobi.renderkit;
 
 
 
+import static org.icemobile.util.Constants.SPACE;
 import static org.icemobile.util.HTML.CLASS_ATTR;
+import static org.icemobile.util.HTML.STYLE_ATTR;
 
 import org.icefaces.mobi.utils.HTML;
+import org.icemobile.component.IBaseComponent;
+import org.icemobile.renderkit.IResponseWriter;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -33,7 +38,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.*;
-import java.util.Iterator;
 import java.util.logging.Logger;
 import javax.faces.context.ResponseWriter;
 
@@ -255,4 +259,7 @@ public class CoreRenderer extends MobileBaseRenderer {
     protected boolean isScriptLoaded(FacesContext facesContext, String JS_NAME) {
         return InlineScriptEventListener.isScriptLoaded(facesContext, JS_NAME);
     }
+    
+    
+        
 }
