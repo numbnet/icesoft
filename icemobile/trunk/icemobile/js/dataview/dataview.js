@@ -1,38 +1,152 @@
-/**
- * ICEMobile DataView
+/* ICEsoft HTML5 DataView
  * User: Nils Lundquist
  * Date: 2013-08-02 * Time: 9:59 AM
  */
 
-if (!window['mobi']) window['mobi'] = {};
-
-/*
- renderConf spec
- {
- target
- - selector defining the container for the table
-
- templates
- - defines templates if there are any
-
- columns
- - defines sets of rendering instructions for a particular named property of an object
- }
-
- */
-
 (function(mStr) {
-    var m = window[mStr];
+    if (window[mStr] === undefined) window[mStr] = {};
+    var ice = window[mStr];
+
     /**
-     * A tabular interface component. TODO
+     * A JavaScript Table UI component. Supports flexible filtering, configurable row detail views, static headers,
+     * auto-sizing, custom DOM events and 2-way databinding via a dust.js helper. The layout of table regions are
+     * defined by templates that be overridden for the whole table or per-column, allowing any table styling desired
+     * to be used. The DOM event broadcasting allows for integration with custom application logic, particularly
+     * synchronizing table data changes with backend via a webservice.
      *
-     * Constructor arguments can take the form of : TODO
+     * @constructor
+     * Construct a new instance of the DataView with the given ID, data and configuration.
+     *
+     * @param {String} id Id of the new table to be rendered
+     *
+     * @param {Object[]} data array of row objects
+     *
+     * @param {Object} cfg
+     * configuration object
+     *
+     * @fires construct
+     *
      */
-    m.DataView = function(id) {
+    ice.DataView = function(id, data, cfg) {
+        /**
+         * @cfg {Object} cfg
+         * The rendering configuration of this component. Defines all facets of
+         * component including templates. Features like filtering and 2-way
+         * data binding are enabled by wrapping an input element in a column cell
+         * template with a template directive. Should define 'target' and 'columns"
+         * at a minimum.
+         *
+         * @cfg {String} cfg.target
+         * The selector defining the DOM element to insert the table in after
+         * rendering, most often an empty div.
+         *
+         * @cfg {boolean | Object} [cfg.fixedHeaderSizing=false]
+         * Determines if the table should use JS sizing calculations to fix the
+         * position of the header, footer and column widths. Passing in either
+         * 'true' or a config object enables this feature.
+         *
+         * @cfg {boolean} [cfg.fixedHeaderSizing.sizeFromWindow=false]
+         * Determine if the table JS sizing should use the window instead of
+         * the parent container to determine the available space.
+         *
+         * @cfg {"row" | "global"} [cfg.detailPosition="row"]
+         * A keyword defining the location to render the detail region when a
+         * row is activated. Accepted values are 'global' or 'row'.
+         *
+         * @cfg {Object[]} cfg.columns
+         * The Array of column definition objects.
+         *
+         * @cfg {String} cfg.columns.name
+         * The name of the row object property to be rendered in this cell. If
+         * the name is not a property of the row object the 'value' variable
+         * passed to the bodycell template will be undefined.
+         *
+         * @cfg {String} [cfg.columns.headerText]
+         * The text to be passed for rendering to the headcell template of this
+         * column.
+         *
+         * @cfg {String} [cfg.columns.footerText]
+         * The text to be passed for rendering to the footcell template of this
+         * column.
+         *
+         * @cfg {Object} [cfg.columns.template]
+         * The per-column custom templates defined for this column.
+         *
+         * @cfg {String} [cfg.columns.template.headcell]
+         * The per-column header cell template defined for this column.
+         *
+         * @cfg {String} [cfg.columns.template.bodycell]
+         * The per-column body cell template defined for this column.
+         *
+         * @cfg {String} [cfg.columns.template.footcell]
+         * The per-column footer cell template defined for this column.
+         *
+         * @cfg {Object} [cfg.templates]
+         * The object defining table wide custom templates.
+         *
+         * @cfg {Object} [cfg.templates.head]
+         * The template defining the thead tag region.
+         *
+         * @cfg {Object} [cfg.templates.foot]
+         * The template defining the tfoot tag region.
+         *
+         * @cfg {Object} [cfg.templates.body]
+         * The template defining the tbody tag region.
+         *
+         * @cfg {Object} [cfg.templates.headcell]
+         * The global header cell template defined for this table. Overridden by per-column templates.
+         *
+         * @cfg {Object} [cfg.templates.bodycell]
+         * The global header cell template defined for this table. Overridden by per-column templates.
+         *
+         * @cfg {Object} [cfg.templates.footcell]
+         * The global header cell template defined for this table. Overridden by per-column templates.
+         *
+         * @cfg {Object} [cfg.templates.table]
+         * The template defining the table tag region.
+         *
+         * @cfg {Object} [cfg.templates.rowdetail]
+         * The template defining the detail region wrapper when detailPosition "row" is used.
+         *
+         * @cfg {Object} [cfg.templates.globaldetail]
+         * The template defining the detail region wrapper when detailPosition "global" is used.
+         *
+         * @cfg {Object} [cfg.templates.detail]
+         * The template defining the detail region contents.
+         */
+        /**
+         * @event construct
+         * Triggered after the component gets rendered, sizing has finished and all events are bound.
+         */
+        /**
+         * @event addrow
+         * Triggered after a row is added via the component API.
+         */
+        /**
+         * @event removerow
+         * Triggered after a row is removed via the component API.
+         */
+        /**
+         * @event activate
+         * Triggered after a row detail region is rendered.
+         */
+        /**
+         * @event deactivate
+         * Triggered after a row detail region is removed.
+         */
+        /**
+         * @event filter
+         * Triggered after a the table has filtered its rows.
+         */
+        /**
+         * @event update
+         * Triggered after a row column property is updated using the template {auto} helper.
+         */
+
         this.id = id;
-        var data = arguments[1] ? arguments[1] : [];
-        this.renderConf = arguments[2] ? arguments[2] : {};
-        //this.featureConf = arguments[3] ? arguments[3] : {};
+        this.renderConf = cfg ? cfg : {};
+
+        if (!data) data = [];
 
         // Check for dependencies
         if (!this.id)
@@ -49,9 +163,14 @@ if (!window['mobi']) window['mobi'] = {};
     }
 
 
-    // Private dataView state
-    var filterCri = [],
-        sortCri   = [];
+
+
+
+    // Private dataView mutable state
+    var filterCri = [];
+
+
+
 
 
     // Private dataView methods - call using privateMethod.call(dvInstance, argArray);
@@ -340,6 +459,7 @@ if (!window['mobi']) window['mobi'] = {};
 
 
 
+
     // Private global methods - could be moved to other files
     function dustCheck() { return window['dust'] ? true : false; }
 
@@ -432,7 +552,6 @@ if (!window['mobi']) window['mobi'] = {};
         args.cancelable = true;
         var event = new CustomEvent(name, args);
         src.dispatchEvent(event);
-
     }
 
 
@@ -441,66 +560,66 @@ if (!window['mobi']) window['mobi'] = {};
 
     // Private constant values
     var fadeOutAnim = {
-        step:function(elem, elapsed, length) {
-            elem.style.opacity = 1 - elapsed / length;
+            step:function(elem, elapsed, length) {
+                elem.style.opacity = 1 - elapsed / length;
+            },
+            length:1000,
+            stepFreq:50,
+            init:function(elem) {}
         },
-        length:1000,
-        stepFreq:50,
-        init:function(elem) {}
-    }
-    var fadeInAnim = {
-        step:function(elem, elapsed, length) {
-            elem.style.opacity = elapsed / length;
+        fadeInAnim = {
+            step:function(elem, elapsed, length) {
+                elem.style.opacity = elapsed / length;
+            },
+            length:1000,
+            stepFreq:50,
+            init:function(elem) {
+                elem.style.opacity = 0;
+            }
         },
-        length:1000,
-        stepFreq:50,
-        init:function(elem) {
-            elem.style.opacity = 0;
-        }
-    }
-    var defaultTemplates = {
-        head        : '<thead class="dv-head"><tr>{#columns}{>"{id}_{.name}_headcell" /}{/columns}</tr></thead>',
-        foot        : '<tfoot class="dv-foot"><tr>{#columns}{>"{id}_{.name}_footcell" /}{/columns}</tr></tfoot>',
+        defaultTemplates = {
+            head        : '<thead class="dv-head"><tr>{#columns}{>"{id}_{.name}_headcell" /}{/columns}</tr></thead>',
+            foot        : '<tfoot class="dv-foot"><tr>{#columns}{>"{id}_{.name}_footcell" /}{/columns}</tr></tfoot>',
 
-        headcell    : '<th class="{.name}">{.headerText}</th>',
+            headcell    : '<th class="{.name}">{.headerText}</th>',
 
-        footcell    : '<td class="{.name}">{.footerText}</td>',
+            footcell    : '<td class="{.name}">{.footerText}</td>',
 
-        bodycell    : '<td class="{.name}">{.value}</td>',
+            bodycell    : '<td class="{.name}">{.value}</td>',
 
-        row         : '<tr>' +
-            '{#columns}' +
-            '{#addVar var="value" obj=rowData prop=.name}' +
-            '{>"{id}_{.name}_bodycell" /}' +
-            '{/addVar}' +
-            '{/columns}' +
-            '</tr>',
+            row         : '<tr>' +
+                            '{#columns}' +
+                                '{#addVar var="value" obj=rowData prop=.name}' +
+                                    '{>"{id}_{.name}_bodycell" /}' +
+                                '{/addVar}' +
+                            '{/columns}' +
+                          '</tr>',
 
-        body        : '<tbody class="dv-body">' +
-            '{#data}' +
-                '{>"{id}_row" rowData=./}' +
-            '{:else}' +
-                'No Data!' +
-            '{/data}' +
-            '</tbody>',
+            body        : '<tbody class="dv-body">' +
+                            '{#data}' +
+                                '{>"{id}_row" rowData=./}' +
+                            '{:else}' +
+                                'No Data!' +
+                            '{/data}' +
+                          '</tbody>',
 
-        table       : '<table id="{id}">' +
-            '{>"{id}_head"/}' +
-            '{>"{id}_body"/}' +
-            '{>"{id}_foot"/}' +
-            '</table>',
+            table       : '<table id="{id}">' +
+                            '{>"{id}_head"/}' +
+                            '{>"{id}_body"/}' +
+                            '{>"{id}_foot"/}' +
+                          '</table>',
 
-        detail : '{data}',
-        rowdetail : '<tr class="dv-detail"><td>{>"{id}_detail"/}</td></tr>',
-        globaldetail : '<div class="dv-detail">{>"{id}_detail"/}</div>'
-    };
+            detail : '{data}',
+            rowdetail : '<tr class="dv-detail"><td>{>"{id}_detail"/}</td></tr>',
+            globaldetail : '<div class="dv-detail">{>"{id}_detail"/}</div>'
+        };
 
 
 
 
 
-    // Exposed 'static' dataView interface
-    m.DataView.autoUpdate = function(elem, event) {
+    // 'static' dataView interface
+    ice.DataView.autoUpdate = function(elem, event) {
         var src = event.target,
             propName = elem.getAttribute('data-prop'),
             val = getValue(src),
@@ -520,23 +639,20 @@ if (!window['mobi']) window['mobi'] = {};
         raiseEvent(row, 'update', { propName : propName, value : row.data[propName] });
     };
 
+
+
+
+
     // Exposed instanced dataView interface
     (function(dvProto) {
         // Create ---------------- //
-
         /**
-         * Add a row to the data model.
-         * @param data
+         * Add a new row to the end of the rows object or before the given target object, if target is given. Renders that new row and raises the 'addrow' event following.
+         * @param {Object} data row data object
+         * @param {Object} [target] row index, data object or tr element to insert new row before
+         * @fires addrow
          */
-        dvProto.addRow = function() {
-            var data = arguments[0], target;
-
-            // if insert before target
-            if (arguments.length == 2) {
-                target = arguments[0];
-                data = arguments[1];
-            }
-
+        dvProto.addRow = function(data, target) {
             var dv = this;
             dust.render(this.id+'_row',
                 getDustBase().push({ id : this.id, rowData : data, columns : this.renderConf.columns }),
@@ -566,8 +682,8 @@ if (!window['mobi']) window['mobi'] = {};
         };
 
         /**
-         * Attach a data model, replacing any current model.
-         * @param data
+         * Attach another array of row objects, replacing any current model.
+         * @param {Object[]} data
          */
         dvProto.attachData = function(data) {
             // TODO: just rebuild tbody...?
@@ -576,42 +692,67 @@ if (!window['mobi']) window['mobi'] = {};
 
         /**
          * Attach a rendering configuration, replacing any current config.
-         * @param config
+         * @param {Object} config
          */
-        dvProto.attachRenderConfig = function(config) {
+        dvProto.attachConfig = function(config) {
             this.renderConf = config;
             reconstruct.call(this);
         };
 
-        // Read ---------------- //
-
-        // TODO: Documentation
+        /**
+         * Get the list of row objects representing the current rendering.
+         * @returns {Object[]}
+         */
         dvProto.getRowDataList = function() {
             return Array.prototype.map.call(getRowElementList(), function(x) {
                 return x.data;
             });
-        }
+        };
 
+        /**
+         * Get the NodeList of table row elements of the current rendering.
+         * @returns {NodeList}
+         */
         dvProto.getRowElementList = function() {
             return this.getTBodyElement().childNodes;
-        }
+        };
 
+        /**
+         * Get the NodeList of table row elements of the current rendering visible after filtering.
+         * @returns {NodeList}
+         */
         dvProto.getFilteredRowElementList = function() {
             return Array.prototype.filter.call(this.getRowElementList(), function(row) {
                 return row.classList.contains('dv-filtered') >= 0;
             });
-        }
+        };
 
+        /**
+         * Get the list of row objects of the current rendering visible after filtering.
+         * @returns {Object[]}
+         */
         dvProto.getFilteredRowDataList = function() {
             return Array.prototype.map.call(getRowElementList(), function(x) {
                 return x.data;
             });
-        }
+        };
 
+        /**
+         * Get the row object of the given index, matching predicate, table row,
+         * or equal row object.
+         * @param {Number | Function | HTMLElement | Object}target
+         * @returns {Object}
+         */
         dvProto.getRowData = function(target) {
             return this.getRowElement.call(this, target).data;
         };
 
+        /**
+         * Get the row element of the given index, matching predicate, row object,
+         * or equal table row element.
+         * @param {Number | Function | HTMLElement | Object}target
+         * @returns {HTMLElement}
+         */
         dvProto.getRowElement = function(target) {
             if (target == undefined) return;
 
@@ -642,6 +783,11 @@ if (!window['mobi']) window['mobi'] = {};
             }
         };
 
+        /**
+         * Return true if the current set of row objects contains the given row object.
+         * @param rowData row object
+         * @returns {boolean}
+         */
         dvProto.containsRowData = function(rowData) {
             /* Get row by equality */
             var rows = this.getTBodyElement().childNodes,
@@ -655,14 +801,24 @@ if (!window['mobi']) window['mobi'] = {};
                 }
             }
 
-            return false;        }
+            return false;        };
 
+        /**
+         * Get the table body element of this component.
+         * @returns {HTMLElement}
+         */
         dvProto.getTBodyElement = function() {
             return document.querySelector('#'+ this.id +' > tbody');
         };
 
-
         // Update ---------------- //
+        /**
+         * Allow the application to replace the properties of a target row object with those defined in a given object.
+         * Raises the update event for each altered property.
+         * @param {Number | Function | HTMLElement | Object}target
+         * @param {Object}input
+         * @fires update
+         */
         dvProto.updateRowData = function(target, input) {
             var data = this.getRowData(target);
 
@@ -670,29 +826,49 @@ if (!window['mobi']) window['mobi'] = {};
 
             for (var prop in input) {
                 data[prop] = input[prop];
+                raiseEvent(target, 'update', {propName : prop, value:input[prop]});
             }
-        }
+        };
 
         // Delete ---------------- //
+        /**
+         * Remove the row object defined by the target.
+         * @param {Number | Function | HTMLElement | Object}target
+         * @fires removerow
+         */
         dvProto.removeRow = function(target) {
             var elem = target instanceof HTMLElement ? target : this.getRowElement(target),
                 old = elem.parentNode.removeChild(elem);
             raiseEvent(document.getElementById(this.id), 'removerow', { row : old });
-        }
+        };
 
+        /**
+         * Detach the entire set of row objects, clearing the table body of elements.
+         */
         dvProto.detachData = function() {
             this.getTBodyElement().innerHTML = '';
-        }
+        };
 
+        /**
+         * Remove the entire component.
+         */
         dvProto.destroy = function() {
             // Unbind events TODO
 
             // Remove DOM elem
             var table = this.getTBodyElement().parent;
             table.parent.removeChild(table);
-        }
+        };
 
         // Activation ---------------- //
+        /**
+         * Render the details region of the given row object. This renders the
+         * details template with that row object and inserts the resulting HTML
+         * at the location defined by detailsPosition. When "row", the details
+         * region is rendered in a new row following the activated row. When "global"
+         * the details region is rendered above the table.
+         * @param {Number | Function | HTMLElement | Object}target
+         */
         dvProto.activateDetail = function(target) {
             var row, data, detailTemplate, conf = this.renderConf,
                 position = (conf.detailPosition) ? conf.detailPosition : 'row',
@@ -771,8 +947,13 @@ if (!window['mobi']) window['mobi'] = {};
                     if (err) throw Error(err);
                     else writeDetail(out);
                 });
-        }
+        };
 
+        /**
+         * Removes the detail region of the given row object, or if none is
+         * defined removes all detail regions.
+         * @param {Number | Function | HTMLElement | Object}[target]
+         */
         dvProto.deactivateDetail = function(target) {
             var table = this,
                 position = (this.renderConf.detailPosition) ? this.renderConf.detailPosition : 'row',
@@ -821,21 +1002,17 @@ if (!window['mobi']) window['mobi'] = {};
                     removeEveryRowDetail();
                 }
             }
-        }
-
-        // Column Priority (? column cfg changes may be handled uniformly)
-        dvProto.updateColumnConfig = function(name, partialConfig) {
-            // rerender column
-        }
-
-        // Sort ---------------- //
-        dvProto.sortColumn = function(name) {
-            // get direction, explicit arg or toggle direction
-            // get sort function, defined for column in feature config, explicitly as arg, or default to natural ordering
-
-        }
+        };
 
         // Filter ---------------- //
+        /**
+         * Filter the row objects of the table based on an exact match of the
+         * value of the row object for the given property, and the value given.
+         * Replaces the filter value if that property name is already filtered.
+         * @param propName row object property name
+         * @param value filter value
+         * @fires filter
+         */
         dvProto.addFilter = function(propName, value) {
             var existing = (function() {
                 for (var idx in filterCri) {
@@ -849,21 +1026,26 @@ if (!window['mobi']) window['mobi'] = {};
             else filterCri.push({prop:propName, value: value});
 
             processFilters.call(this);
-        }
+        };
 
+        /**
+         * Remove the filtering on the given row object property.
+         * @param propName row object property name
+         * @fires filter
+         */
         dvProto.removeFilter = function(propName) {
             filterCri = filterCri.filter(function(cri) {
                 return cri.prop != propName;
             });
             processFilters.call(this);
-        }
+        };
 
+        /**
+         * Remove filtering from all row object properties.
+         */
         dvProto.clearFilters = function() {
             filterCri = [];
             processFilters.call(this);
-        }
-
-
-    })(m.DataView.prototype);
-
+        };
+    })(ice.DataView.prototype);
 })('mobi');
