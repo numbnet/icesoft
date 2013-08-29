@@ -1,2 +1,3 @@
 cd /d %~dp0
-jsduck ../dataview/*.js -o out --title "ICEsoft HTML5 Components"
+START /W jsduck --config jsduck-conf.json -o out
+cp images/ice-logo.png out/resources/images/ice-logo.png
