@@ -22,8 +22,122 @@ if (!window['ice']['ace']) {
 }
 
 ice.ace.fileentry = {
+    logAll : false,  // Set to true to enable more debugging to be logged
+
+    consoleLog : function(important, msg) {
+        if (window.console && window.console.log) {
+            if (ice.ace.fileentry.logAll || important) {
+                console.log(msg);
+                //alert(msg);
+            }
+        }
+    },
+
+    onchange : function(event, id, multiple, autoUpload) {
+        var elem, form, tableElem, tr, i;
+
+        elem = ice.ace.fileentry.eventTarget(event);
+        form = ice.ace.fileentry.formOf(elem);
+
+        ice.ace.fileentry.consoleLog(false, "fileentry.onchange  id: " + id + "  multiple: " + multiple + "  autoUpload: " + autoUpload + "  elem: " + elem + "  form.id: " + form.id);
+
+        if (multiple) {
+            // Get the table
+            tableElem = document.getElementById(id+'_multSelTbl');
+
+            // Look for HTML5 files, and otherwise get the input value
+            // Create the table rows
+            ice.ace.fileentry.consoleLog(false, "fileentry.onchange  elem.name: " + elem.name + "  elem.id: " + elem.id);
+            ice.ace.fileentry.consoleLog(false, "fileentry.onchange  elem.value: " + elem.value + "  elem.files: " + elem.files);
+            if (elem.files) {
+                for (i = 0; i < elem.files.length; i++) {
+                    ice.ace.fileentry.consoleLog(false, "fileentry.onchange  " + i + "  name: " + elem.files[i].name + "  size: " + elem.files[i].size + "  type: " + elem.files[i].type);
+                    tr = document.createElement("tr");
+                    var prefix = elem.id + "_tr_";
+                    tr.id = prefix+i;
+                    tr.innerHTML = ("<td>"+elem.files[i].name+"</td><td>"+elem.files[i].size+"</td><td>"+elem.files[i].type+"</td>"
+                            +((i>0)?"":"<td rowspan='"+elem.files.length+"'><button type='button' onclick='ice.ace.fileentry.cancelFileSelection(\""+elem.id+"\","+ice.ace.fileentry.arrayOfStrings(prefix,elem.files.length)+");'>Cancel</button></td>"));
+                    tableElem.appendChild(tr);
+                }
+            } else {
+                ice.ace.fileentry.consoleLog(false, "fileentry.onchange  value: " + elem.value);
+                tr = document.createElement("tr");
+                tr.id = elem.id + "_tr";
+                tr.innerHTML = ("<td>"+elem.value+"</td><td><button type='button' onclick='ice.ace.fileentry.cancelFileSelection(\""+elem.id+"\",[\""+tr.id+"\"]);'>Cancel</button></td>");
+                tableElem.appendChild(tr);
+            }
+        }
+
+        if (autoUpload) {
+            if (form) {
+                form.onsubmit();
+                form.submit();
+            }
+        } else if (multiple) {
+            // Hide the current input and add another
+            var newElem = elem.cloneNode(true);
+            newElem.id = elem.id + "_1";
+            elem.parentNode.appendChild(newElem);
+            elem.style.cssText = "display:none;";
+        }
+    },
+
+    eventTarget : function(event) {
+        event = event || window.event;
+        return(event.target || event.srcElement);
+    },
+
+    formOf : function(element) {
+        var parent = element.parentNode;
+        while (parent) {
+            if (parent.tagName && parent.tagName.toLowerCase() == 'form') return parent;
+            parent = parent.parentNode;
+        }
+
+        return null;
+    },
+
+    initiateSubmit : function(formId) {
+        var form = document.getElementById(formId);
+        form.onsubmit();
+        form.submit();
+    },
+
+    clearMultipleSelectionTableRows : function(id) {
+        var tableElem = document.getElementById(id+'_multSelTbl');
+        if (tableElem) {
+            tableElem.innerHTML = "";
+        }
+    },
+
+    cancelFileSelection : function(inputElemId, trIds) {
+        var index, elem;
+        for (index = 0; index < trIds.length; index++) {
+            elem = document.getElementById(trIds[index]);
+            if (elem) {
+                elem.parentNode.removeChild(elem);
+            }
+        }
+        elem = document.getElementById(inputElemId);
+        if (elem) {
+            elem.parentNode.removeChild(elem);
+        }
+    },
+
+    arrayOfStrings : function(prefix, count) {
+        var index, result = "[";
+        for (index = 0; index < count; index++) {
+            result = result + "\"" + prefix + index + "\"";
+            if (index < count-1) {
+                result = result + ","
+            }
+        }
+        result = result + "]";
+        return result;
+    },
+
     iframeLoaded : function(context, id) {
-        //alert("iframeLoaded()  begin  id: " + id);
+        ice.ace.fileentry.consoleLog(false, "iframeLoaded()  begin  id: " + id);
         
         var i = document.getElementById(id);
         if ((typeof XMLDocument != "undefined") && i.contentDocument) {
@@ -53,11 +167,11 @@ ice.ace.fileentry = {
             ice.ace.fileentry.response(d, responseText, context);
         }
         
-        //alert("iframeLoaded()  end");
+        ice.ace.fileentry.consoleLog(false, "iframeLoaded()  end");
 	},
         
     response : function(responseXML, responseText, context) {
-        //alert(responseText);
+        ice.ace.fileentry.consoleLog(false, responseText);
         
         var request = {};
         request.status = 200;
@@ -90,19 +204,11 @@ ice.ace.fileentry = {
     },
     
     formOnsubmit : function(event, formElem, iframeId, progressPushId) {
-        //alert("formOnsubmit()  begin");
+        ice.ace.fileentry.consoleLog(false, "formOnsubmit()  begin");
 
         // Set every fileEntry component in the form into the indeterminate
         // state, before progress notifications arrive, if icepush is present
         ice.ace.fileentry.setFormFileEntryStates(formElem, "uploading", true);
-
-        //TODO To get context.sourceid, use on of the following techniques
-        //Firefox || Opera || IE || unsupported (No WebKit)
-        //var orignalSource = event.explicitOriginalTarget || event.relatedTarget || document.activeElement || {};
-
-        //var submitted = e.originalEvent.explicitOriginalTarget || e.originalEvent.relatedTarget || document.activeElement;
-        //Look if it was a text node (IE bug)
-        //submitted = submitted.nodeType == 1 ? submitted : submitted.parentNode;
 
         var context = {};
         context.element = formElem;
@@ -136,7 +242,7 @@ ice.ace.fileentry = {
         formElem.target = iframeId;
         var iframeElem = document.getElementById(iframeId);
         var iframeOnloadHandler = function() {
-            //alert("onload()  begin");
+            ice.ace.fileentry.consoleLog(false, "onload()  begin");
 
             // Cleanup the form before proceeding
             if (formElem.encoding) {
@@ -183,7 +289,7 @@ ice.ace.fileentry = {
                 */
             }
 
-            //alert("onload()  end");
+            ice.ace.fileentry.consoleLog(false, "onload()  end");
         };
         if (iframeElem.addEventListener) {
             iframeElem.addEventListener("load",iframeOnloadHandler,false);
@@ -201,19 +307,14 @@ ice.ace.fileentry = {
         setTimeout(progressTimeout, 2000);
         */
 
-        //alert("formOnsubmit()  end");
+        ice.ace.fileentry.consoleLog(false, "formOnsubmit()  end");
     },
         
     onProgress : function(pushIds, progressResourcePath) {
-        //alert('onProgress()  progressResourcePath: ' + progressResourcePath);
-
-        //var fileDiv2 = document.getElementById('fileform:fileEntryComp');
-        //var span2 = document.createElement('span');
-        //span2.innerHTML = "P";
-        //fileDiv2.appendChild(span2);
+        ice.ace.fileentry.consoleLog(false, 'onProgress()  progressResourcePath: ' + progressResourcePath);
 
         window.ice.push.post(progressResourcePath, function(parameter) {}, function(statusCode, contentAsText, contentAsDOM) {
-            //alert('onProgress()  GET  contentAsText: ' + contentAsText);
+            ice.ace.fileentry.consoleLog(false, 'onProgress()  GET  contentAsText: ' + contentAsText);
             if (!contentAsText) {
                 return;
             }
@@ -366,9 +467,21 @@ ice.ace.fileentry = {
     },
 
     clearFileSelection : function(clientId) {
+        ice.ace.fileentry.clearMultipleSelectionTableRows(clientId);
         var root = document.getElementById(clientId);
-        if (root && root.firstChild) {
-            root.firstChild.innerHTML = root.firstChild.innerHTML;
+        if (root) {
+            var fileEntryInputs = root.getElementsByTagName("input");
+            var fileEntryInputsLen = fileEntryInputs.length;
+            var fileEntryInputsIndex;
+            for (fileEntryInputsIndex = 0; fileEntryInputsIndex < fileEntryInputsLen; fileEntryInputsIndex++) {
+                var fileInput = fileEntryInputs[fileEntryInputsIndex];
+                if (fileInput) {
+                    fileInput.innerHTML = fileInput.innerHTML;
+                    if (fileEntryInputsIndex > 0) {
+                        fileInput.parentNode.removeChild(fileInput);
+                    }
+                }
+            }
         }
     }
 };

@@ -264,4 +264,12 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         "need to click an upload button.",
         defaultValueType = DefaultValueType.EXPRESSION, defaultValue="false")
     private boolean autoUpload;
+
+    @Property(tlddoc="Allows for multiple files to be selected, and " +
+        "uploaded all together. In modern browsers this can be done by " +
+        "selecting several files at once in the file selection dialog, and " +
+        "in all browsers the file selection dialog can be used multiple " +
+        "times in succession to add more files to be uploaded.",
+        defaultValueType = DefaultValueType.EXPRESSION, defaultValue="false")
+    private boolean multiple;
 }
