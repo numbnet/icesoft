@@ -21,6 +21,7 @@
     <property name="build.dir" location="build"/>
     <property name="dist.dir" location="dist"/>
     <property name="docs.jsf.dir" location="docs/jsf"/>
+    <property name="docs.jsp.dir" location="docs/jsp"/>
 
     <condition property="release.type.suffix" value="-${release.type}" else="">
         <not>
@@ -81,6 +82,9 @@
             <fileset dir="./core" includes="build.xml" />
         </ice:subant>
         <ice:subant target="all">
+            <fileset dir="./jsp" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
             <fileset dir="./spring" includes="build.xml" />
         </ice:subant>
         <ice:subant target="all">
@@ -102,6 +106,9 @@
             <fileset dir="./bridgeit" includes="build.xml" />
         </ice:subant>
         <ice:subant target="all">
+            <fileset dir="./jsp" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
             <fileset dir="./spring" includes="build.xml" />
         </ice:subant>
             <ice:subant target="all">
@@ -117,6 +124,12 @@
     </target>
 
    
+    <target name="build.jsp" description="Build JSP library.">
+        <ice:subant target="all">
+            <filelist dir="." files="core, jsp"/>
+        </ice:subant>
+    </target>
+
     <target name="build.jsf" description="Build JSF library.">
         <ice:subant target="all">
             <filelist dir="." files="core, jsf"/>
@@ -161,15 +174,16 @@
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
         <delete dir="${docs.jsf.dir}"/>
+        <delete dir="${docs.jsp.dir}"/>
         <delete dir=".sass-cache"/>
         <ice:subant target="clean">
-            <filelist dir="." files="bridgeit, core, jsf, filter, spring, samples, resources"/>
+            <filelist dir="." files="bridgeit, core, jsf, jsp, filter, spring, samples, resources"/>
         </ice:subant>
     </target>
 
     <target name="clean.bin">
         <ice:subant target="clean">
-            <filelist dir="." files="bridgeit, core, jsf, filter, spring, samples"/>
+            <filelist dir="." files="bridgeit, core, jsf, jsp, filter, spring, samples"/>
         </ice:subant>
     </target>
 
@@ -191,6 +205,7 @@
                     <exclude name="dist/"/>
                     <exclude name="client/"/>
                     <exclude name="jsf/"/>
+                    <exclude name="jsp/"/>
                     <exclude name="spring/"/>
                     <exclude name="lib/generator/"/>
                     <!-- trim component build script for binary bundle -->
@@ -238,6 +253,10 @@
                 <propertyset refid="product.info"/>
             </ice:subant>
             <ice:subant target="all">
+                <fileset dir="./jsp" includes="build.xml" />
+                <propertyset refid="product.info"/>
+            </ice:subant>
+            <ice:subant target="all">
                 <fileset dir="./spring" includes="build.xml" />
             </ice:subant>
             <ice:subant target="all">
@@ -259,6 +278,14 @@
                 tofile="${docs.jsf.dir}/tld/"/>
             <move file="./jsf/components/component/build/doc/javadoc" 
                 tofile="${docs.jsf.dir}/api/"/>
+                
+            <!-- Create the JSP component JavaDocs and TLD documentation  -->    
+            <subant target="tlddoc" failonerror="true" verbose="true">
+                <fileset dir="./jsp" includes="build.xml"/>
+            </subant>
+            <mkdir dir="${docs.jsp.dir}/tld/"/>
+            <move file="./jsp/build/docs/tld" 
+                tofile="${docs.jsp.dir}/tld/"/>
 
         </sequential>
     </macrodef>

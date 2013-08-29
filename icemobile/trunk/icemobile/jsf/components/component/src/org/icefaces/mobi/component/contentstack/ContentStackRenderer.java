@@ -144,7 +144,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("id", clientId+"_initScr", "id");
         writer.startElement("script", uiComponent);
         writer.writeAttribute("type", "text/javascript", null);
-        String selectedPaneId = stack.getCurrentId();
+        String selectedPaneId = stack.getSelectedId();
         boolean client = false;
         int hashcode = MobiJSFUtils.generateHashCode(System.currentTimeMillis());
         StringBuilder sb = new StringBuilder("mobi.layoutMenu.initClient('").append(clientId).append("'");

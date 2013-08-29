@@ -1,0 +1,337 @@
+/*
+ * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/*html,body{ height: 100%; }*/
+h3{ clear: both }
+header,nav,aside,section,article {
+    display:block;
+}
+div.info,div.success,div.warning,div.error {
+	border: 1px solid;
+	margin: 10px 0px;
+	padding: 15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
+
+div.info {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url('info.png');
+}
+
+div.success {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+}
+
+div.warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('warning.png');
+}
+
+div.error {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url('error.png');
+}
+
+span.success,span.error {
+	margin: 5px 5px 5px 5px;
+}
+
+span.success {
+	color: #4F8A10;
+}
+
+span.error {
+	color: #D8000C;
+}
+.bberry .phdr{ color: #FFF; font-size:15px;}
+.ui-icon {
+    width: 30px;
+    height: 25px;
+    border-top: 1px solid white;
+    border-radius: 7px;
+    display: block;
+    border: 1px solid rgba(255,255,255,0.5);
+    position: absolute;
+    left: 0.5em;
+    top: 5px;
+}
+html.bb10 .ui-icon{
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background-color: inherit;
+}
+html.bberry .ui-icon{
+    border-color: rgb(119, 119, 119);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.ui-icon-shadow {
+   -moz-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
+   -webkit-box-shadow: 0px 1px 0 rgba(255, 255, 255, .4);
+   box-shadow: 0px 1px 0 rgba(255, 255, 255, .4);
+}
+.ui-icon-home {
+   background-position: -570px 50%;
+}
+html.iphone .ui-icon,
+html.ipad .ui-icon,
+html.bb10 .ui-icon,
+html.android_light .ui-icon {
+   background-image: url(icons-white.png);
+}
+html.bberry .ui-icon {
+   background-image: url(icons-black.png);
+   border-color: rgb(119, 119, 119);
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+html.android .ui-icon:active, html.android .ui-icon:focus, html.android .ui-icon[selected] {
+    -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    -webkit-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    background-color:#66AFFF;
+    color:#FFF;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (min--moz-device-pixel-ratio: 1.5),
+       only screen and (min-resolution: 240dpi) {
+    .ui-icon {
+        -moz-background-size: 776px 18px;
+        -o-background-size: 776px 18px;
+        -webkit-background-size: 776px 18px;
+        background-size: 776px 18px;
+    }
+    html.iphone .ui-icon, html.ipad .ui-icon, html.bb10 .ui-icon {
+        background-image: url(icons-36-white.png);
+    }
+    html.bberry .ui-icon {
+        background-image: url(icons-36-black.png);
+    }
+}
+#menuLink{
+    font-size: 14px;
+    padding: 0;
+    line-height: 25px;
+    margin-left: 0.3em;
+    width: 30px;
+    left: 0.3em;
+    top: 5px;
+    position: absolute;
+    height: 25px;
+    background-repeat: no-repeat;
+}
+html.bberry #menuLink{
+    font-size: 13px;
+}
+html.ipad #menuLink{
+    background-color: #BBBFCA;
+    border-color: #A2A2A2;
+}
+#splash header{ 
+    text-align: center;
+    width: 100%;
+    text-shadow: 2px 2px 3px #EEE;
+}
+#splash p{
+    font-size: 12px;
+    margin: 0 0 1em 0;
+    line-height: 1.6em;
+}
+#splash p:last-child{
+    margin-bottom:0;
+}
+html.iphone #splash figure,
+html.bberry #splash figure,
+html.android #splash figure,
+html.bb10 #splash figure{
+    display:block;
+    text-align:center;
+}
+html.ipad #splash fieldset{ 
+    padding: 20px;
+}
+#splash header, #splash figure{
+    margin-bottom: 1em;
+}
+#splash h3,
+#splash h4,
+#splash h5{ 
+    margin-left:20px;
+    width:auto;
+}
+#splash .mobi-fieldset h3, #splash .mobi-fieldset h4, #splash .mobi-fieldset h5 {
+    border-bottom: none;
+}
+@media screen and (min-width: 445px) {  
+    #splash .intro{ position: relative; padding-left: 125px; }
+    #splash figure{ position: absolute; left: 10px }
+    #splash figure, #splash header { 
+        width: auto; display: inline-block !important;
+        vertical-align: top;
+        margin: 0;
+    } 
+    #splash header { 
+        margin-top: -9px;
+        text-align: left;
+        margin-right: 0;
+        margin-left: 32px;
+    }
+    #splash figure img{ -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(white)); }
+    #splash .first-para{ 
+        display: inline-block;
+        margin-top: 0;
+        border-top: 1px solid #AAA;
+        margin-left: 38px;
+        padding-top: 5px;
+        min-height: 100px;
+    }
+    #splash header h3, #splash header h4, #splash header h5 {
+        margin-left: 5px;
+    }
+    .examplesLink{ float: right; margin-top: 59px !important; position: absolute; right: 20px; }
+}
+
+html.ipad #splash > h3, html.iphone #splash > h3,
+html.ipad #splash > h4, html.iphone #splash > h4,
+html.ipad #splash > h5, html.iphone #splash > h5{ 
+    text-shadow: 1px 1px 1px #FFF;
+}
+.f {
+    width: 25px;
+    height: 25px;
+    background-image: url(images/icons-white.png);
+    border-top: 1px solid white;
+    border-radius: 7px;
+    display: block;
+    border-bottom: 1px solid #AAB8C9;
+    border-left: 1px solid #C3D2E4;
+    border-right: 1px solid #C3D2E4;
+    position: absolute;
+    left: 0.5em;
+    top: 5px;
+}
+.ui-icon-menu {
+    background-position: -426px 50%;
+}
+#splash{
+    box-sizing: border-box;
+    width: 100%;
+}
+.example{
+    display: block;
+    padding: 10px;    
+}
+.example img{
+    display:inline-block;
+    width:20%;
+    max-width:55px;
+}
+.example p{
+    display: inline-block;
+    width: 70%;
+    margin: 0;
+    vertical-align: top;
+    padding: 0 1%;
+    font-weight:normal;
+}
+.center{
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    padding: 10px;
+}
+/* LARGE SCREEN */
+@media screen and (min-width: 580px) {  
+    input.submit, button.submit{
+        float: right !important;
+        margin: 0 10px;
+        width: 100%;
+        max-width: 35%;
+        clear:both;
+    }
+    #splash fieldset{ 
+        padding: 20px;
+    }
+}
+/* SMALL SCREEN */
+@media screen and (max-width: 579px) {  
+    input.submit, button.submit{
+        display: block;
+        margin: 10px auto;
+        width: 100%;
+        max-width: 300px;
+    }
+    #splash figure{
+        display:block;
+        text-align:center;
+    }
+}
+html.android .back{
+    background-color: #CCC;
+    color: black;
+}
+.imageView{ 
+    margin: 0 auto;
+    width:50%;
+}
+html.android .examplesLink{
+    color: #6595F9;
+    text-decoration: none;
+    margin: 10px 0;
+    display: inline-block;
+    font-weight: bold;
+}
+html.iphone .examplesLink{
+    color: rgb(65, 115, 170);
+    text-decoration: none;
+    margin: 10px 0;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.qr{
+    display:block !important;
+    text-align:left;
+}
+.qr label, .qr div{
+    display: inline !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.buttons .mobi-fieldset-row{ text-align:center; }
+.buttons .mobi-button{ min-width:125px;max-width:300px;width:40%; }
+.results label{ 
+    display: inline-block; 
+    width: 49%;
+    max-width: 49%;
+    text-align:left !important;
+}
+.results span{ 
+    display: inline-block; 
+    text-align: right; 
+    line-height: 1.8em; 
+    vertical-align: middle;  
+    width: 49%; max-width: 49%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.span-2{ display: inline-block; width: 45%; margin: 0 1%; }

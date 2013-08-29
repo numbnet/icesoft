@@ -16,6 +16,8 @@
 package org.icefaces.mobi.component.contentstack;
 
 
+import org.icefaces.mobi.api.ContentPaneController;
+
 import javax.el.ValueExpression;
 import javax.faces.component.StateHelper;
 import javax.faces.component.UIComponent;
@@ -23,7 +25,7 @@ import javax.faces.context.FacesContext;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ContentStack extends ContentStackBase {
+public class ContentStack extends ContentStackBase implements ContentPaneController {
     public static final String CONTAINER_SINGLEVIEW_CLASS = "mobi-contentStack-container";
     public static final String PANES_SINGLEVIEW_CLASS ="mobi-contentStack-panes";
 
@@ -33,7 +35,13 @@ public class ContentStack extends ContentStackBase {
     public ContentStack() {
         super();
     }
-     
+     /**
+     * method is required by ContentPaneController interface no error checking as
+     * component is not in the tree
+     */
+     public String getSelectedId(){
+         return getCurrentId();
+     }
     public void setSingleView(Boolean singleView) {
         //set it once per session as it's only singleView if the stack has a child
         //contentPane which contains a contentStackMenu.  So won't change

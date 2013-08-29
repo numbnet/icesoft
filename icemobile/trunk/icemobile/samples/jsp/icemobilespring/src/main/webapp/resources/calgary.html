@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html>
+    <head>
+        <title>Location in Calgary</title>
+        <meta name = "viewport" content = "width = device-width">
+    </head>
+    
+    <body>
+      <form action="aug.html" onsubmit="return false;">
+        <canvas onclick="recordLocation(event)" id="mapCanvas" style="background: url(map.png); background-size: 100%;" data-latlong="50.8,51.2,-114.4,-113.8" width="574" height="542">
+        </canvas>
+        <div style="position:fixed; left: 0px; top: 0px; width:100%;">
+          <input type="text" style="float:left;" id="augra-label" value="Point" >
+          <input type="button" id="augra" style="float:right;" data-id="augra" data-command="aug" value="Reality" onclick="mobilesx(this);" >
+        </div>
+      </form>
+        <script type="text/javascript">
+
+            var ampchar = String.fromCharCode(38);
+            var iceblue = "#007CAF";
+            var iceorng = "#FB9C00";
+
+            navigator.geolocation.watchPosition(
+                function(pos) { 
+                    var lat = pos.coords.latitude;
+                    var lon = pos.coords.longitude;
+                    drawMarker(iceblue, lat, lon);
+                });
+
+            function showLocation() {
+                var canvas = document.getElementById('mapCanvas');
+                if (!canvas) {
+                    return;
+                }
+                // temporary work around for drawing location on canvas
+                var lat = '#{geoLocationBean.latitude}';
+                var lon = '#{geoLocationBean.longitude}';
+                
+                if (canvas.getContext) {
+                    drawMarker(iceorng, lat, lon);
+                }
+            }
+            
+            function drawMarker(col, lat, lon) {
+                var canvas = document.getElementById('mapCanvas');
+                if (!canvas) {
+                    return;
+                }
+                if (canvas.getContext) {
+                    var ctx = canvas.getContext('2d');
+                    var height = canvas.height;
+                    var width = canvas.width;
+                    var latlongstr = canvas.getAttribute("data-latlong").split(",");
+                    var latlong = [parseFloat(latlongstr[0]), parseFloat(latlongstr[1]), 
+                            parseFloat(latlongstr[2]), parseFloat(latlongstr[3])];
+                    var y = height - (height * (lat - latlong[0]) / (latlong[1] - latlong[0]));
+                    var x = width * (lon - latlong[2]) / (latlong[3] - latlong[2]);
+
+                    var radgrad =
+                        ctx.createRadialGradient(x-2, y-2, 0.5, x, y, 5);
+                    radgrad.addColorStop(0,"white");
+                    radgrad.addColorStop(1,col);
+                    ctx.fillStyle = radgrad;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI * 2, true);
+                    ctx.fill();
+                }
+            }
+            
+            function updateLocation(data) {
+                if (data.status == "success") {
+                    showLocation();
+                }
+            }
+            
+            function recordLocation(event) {
+                var etarg = event.target;
+                var latlongstr = etarg.getAttribute("data-latlong").split(",");
+                var latlong = [parseFloat(latlongstr[0]), parseFloat(latlongstr[1]), 
+                        parseFloat(latlongstr[2]), parseFloat(latlongstr[3])];
+                var rect = etarg.getBoundingClientRect();
+                var left = event.clientX - rect.left - etarg.clientLeft + etarg.scrollLeft;
+                var top = event.clientY - rect.top - etarg.clientTop + etarg.scrollTop;
+                var lat = (latlong[1] - latlong[0]) * ((rect.height - top) / rect.height) + latlong[0];
+                var lon = (latlong[3] - latlong[2]) * (left / rect.width) + latlong[2];
+                drawMarker(iceblue, lat, lon);
+                var sxbutton = document.getElementById("augra");
+                var augraLabel = document.getElementById("augra-label").value;
+                var currentParams = sxbutton.getAttribute("data-params");
+                var sep = ampchar;
+                if (null == currentParams) {
+                    sep = "";
+                    currentParams = "";
+                }
+                sxbutton.setAttribute("data-params", currentParams + sep + 
+                        augraLabel + "=" + lat + "," + lon);
+//              console.log("latlong", 
+//                        sxbutton.getAttribute("data-params"));
+            }
+                                    
+            function mobilesx(element) {
+                var formAction = formOf(element).getAttribute("action");
+                var command = element.getAttribute("data-command");
+                var params = element.getAttribute("data-params");
+                var id = element.getAttribute("data-id");
+
+                if (window.ice  && ice.aug)  {
+                    if ("aug" == command)  {
+                        ice.aug(id, params);
+                    }
+                    return;
+                }
+
+               var uploadURL;
+                if (0 === formAction.indexOf("/"))  {
+                    uploadURL = window.location.origin + formAction;
+                } else if ((0 === formAction.indexOf("http://")) || 
+                           (0 === formAction.indexOf("https://"))) {
+                    uploadURL = formAction;
+                } else {
+                    var baseURL = window.location.toString();
+                    uploadURL = baseURL.substring(0, baseURL.lastIndexOf("/")) +
+                    "/" + formAction;
+                }
+                
+                var returnURL = window.location;
+                if ("" == returnURL.hash)  {
+                    returnURL += "#icemobilesx";
+                }
+                
+                var sxURL = "icemobile:c=" + escape(command + 
+                        "?id=" + id + ampchar + params) +
+                        ampchar + "u=" + escape(uploadURL) + 
+                        ampchar + "r=" + escape(returnURL);
+                
+                window.location = sxURL;
+            }
+            
+            function formOf(element)  {
+                var parent = element;
+                while (null != parent)  {
+                    if ("form" == parent.nodeName.toLowerCase())  {
+                        return parent;
+                    }
+                    parent = parent.parentNode;
+                }
+            }
+
+//            showLocation();
+            </script>
+    </body>
+</html>
