@@ -31,6 +31,7 @@
     <link rel="apple-touch-icon" sizes="72x72" href="./resources/images/touch-icon-ipad.png" />
     <link rel="apple-touch-icon" sizes="114x114" href="./resources/images/touch-icon-iphone-retina.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="./resources/images/touch-icon-ipad-retina.png" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.css" />
     <mobi:googleAnalytics/>
 </h:head>
     <h:body>
@@ -57,14 +58,14 @@
                     <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
                     <ui:insert name="toolBarContent"/>
                 </f:facet>
-        
+
                 <f:facet name="body">
                     <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
                         <ui:param name="selectedPanel"
                                   value="#{mobiNavigationModel.selectedPanel}"/>
                     </ui:include>
                 </f:facet>
-        
+
                 <f:facet name="footer">
                     <h:form styleClass="theme">
                         <icecore:singleSubmit rendered="false"/>
@@ -110,7 +111,7 @@
             preloaded[3] = document.createElement('img');
             preloaded[3].setAttribute('src','./resources/images/auction/iceskate.png');
         </script>
-        
+
     </h:body>
 </f:view>
 </html>

@@ -8,17 +8,17 @@ package org.icemobile.component;
  * To change this template use File | Settings | File Templates.
  */
 public interface IDataView extends IMobiComponent {
-    public static final String DATAVIEW_CLASS = "mobi-dv ui-body-c";
+    public static final String DATAVIEW_CLASS = "mobi-dv ui-widget ui-widget-content";
     public static final String DATAVIEW_MASTER_CLASS = "mobi-dv-mst";
-    public static final String DATAVIEW_DETAIL_CLASS = "mobi-dv-det ui-body-c";
+    public static final String DATAVIEW_DETAIL_CLASS = "mobi-dv-det ui-widget ui-widget-content";
     public static final String DATAVIEW_HEAD_CLASS = "mobi-dv-head";
     public static final String DATAVIEW_FOOT_CLASS = "mobi-dv-foot";
     public static final String DATAVIEW_BODY_CLASS = "mobi-dv-body";
     public static final String DATAVIEW_SORT_INDICATOR_CLASS = "mobi-dv-si";
     public static final String DATAVIEW_BOOL_COLUMN_CLASS = "mobi-dv-bool";
     public static final String DATAVIEW_COLUMN_CLASS = "mobi-dv-c";
-    public static final String DATAVIEW_ROW_ACTIVE_CLASS = "ui-bar-e";
-    public static final String DATAVIEW_HEADER_ROW_CLASS = "ui-bar-b";
+    public static final String DATAVIEW_ROW_ACTIVE_CLASS = "ui-state-active";
+    public static final String DATAVIEW_HEADER_ROW_CLASS = "ui-widget-header";
 
 
     public String getVar();
