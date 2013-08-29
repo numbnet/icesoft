@@ -4,14 +4,14 @@
         <div class="row"><p class="normalText">Access the native device camera features with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.bridgeit.camera(id,callback, 
+                bridgeit.camera(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
     <a id="cameraBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeit.camera('cameraBtn',handleCam, {postURL:(''+window.location).match(/.*\//) + 'service/camera-upload'});">Take a Photo</a>
+        onclick="bridgeit.camera('cameraBtn',handleCam, {postURL:(''+window.location).match(/.*\//) + 'service/camera-upload'});">Take a Photo</a>
         
     <fieldset>
         <div class="row"><img id="thumbnail"/></div>

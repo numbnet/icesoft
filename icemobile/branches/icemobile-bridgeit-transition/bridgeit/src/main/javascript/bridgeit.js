@@ -15,17 +15,16 @@
 if (!window['ice']) {
     window.ice = {};
 }
-
-if (!window['ice.bridgeit']) {
-    /** @namespace ice.bridgeIt 
+if (!window['bridgeit']) {
+    window.bridgeit = {};
+    /** @namespace bridgeIt 
      * @property {url}  splashImageURL - URL for the splash image to show when loading BridgeIt
      */
     /*
      * @property {function} deviceCommandCallback - The current stored callback for the last native device command
-     * @property {function} userAjaxRequest - User-supplied callback that will be queried and called by ice.bridgeit.ajaxRequest()
+     * @property {function} userAjaxRequest - User-supplied callback that will be queried and called by bridgeit.ajaxRequest()
      */
-    window.ice.bridgeit = {};
-    ice.bridgeIt = ice.bridgeit; //alias ice.bridgeit and ice.bridgeIt
+    window.bridgeIt = window.bridgeit; //alias bridgeit and bridgeIt
 }
 if (!window.console) {
     console = {};
@@ -36,7 +35,7 @@ if (!window.console) {
         };
     }
 }
-(function(ib) {
+(function(b) {
     
     /************************ PRIVATE ******************************/
     function serializeForm(formId, typed) {
@@ -190,8 +189,8 @@ if (!window.console) {
     }
     function getSplashClause()  {
         var splashClause = "";
-        if (null != ice.bridgeit.splashImageURL)  {
-            var splashImage = "i=" + escape(ice.bridgeit.splashImageURL);
+        if (null != bridgeit.splashImageURL)  {
+            var splashImage = "i=" + escape(bridgeit.splashImageURL);
             splashClause = "&s=" + escape(splashImage);
         }
         return splashClause;
@@ -230,10 +229,10 @@ if (!window.console) {
     var checkTimeout;
     function deviceCommand(command, id, callback, options)  {
         checkTimeout = setTimeout( function()  {
-            ice.bridgeit.launchFailed(id);
+            bridgeit.launchFailed(id);
         }, 3000);
         console.log(command + " " + id);
-        ice.bridgeit.deviceCommandCallback = callback;
+        bridgeit.deviceCommandCallback = callback;
         deviceCommandExec(command, id, options);
     }
     function setInput(target, name, value, vtype)  {
@@ -269,7 +268,6 @@ if (!window.console) {
         }
     }
     function unpackDeviceResponse(data)  {
-        console.log('unpackDeviceResponse(' + data + ')');
         var result = {};
         var params = data.split("&");
         var len = params.length;
@@ -354,10 +352,9 @@ if (!window.console) {
                             loc.pathname + loc.search + "#clear-icemobilesx");
                     history.pushState("", document.title,
                             loc.pathname + loc.search + restoreHash);
-                    if (ice.bridgeit.deviceCommandCallback)  {
-                        console.log('calling deviceCommandCallback ' + ice.bridgeit.deviceCommandCallback);
-                        ice.bridgeit.deviceCommandCallback(sxEvent);
-                        ice.bridgeit.deviceCommandCallback = null;
+                    if (bridgeit.deviceCommandCallback)  {
+                        bridgeit.deviceCommandCallback(sxEvent);
+                        bridgeit.deviceCommandCallback = null;
                     }
                     else{
                         console.log('no deviceCommandCallback registered :(');
@@ -372,12 +369,12 @@ if (!window.console) {
     /************************ PUBLIC **********************************/
     
     /**
-     * @alias ice.bridgeit.register
+     * @alias bridgeit.register
      * @desc Register BridgeIt
      * @param {string} sessionId The server-side session id
      * @param {url} uploadURL The URL to upload media to
      */
-    ib.register = function register(uploadURL, options) {
+    b.register = function register(uploadURL, options) {
 
         sessionid = options.JSESSIONID;
         var splashClause = getSplashClause();
@@ -403,98 +400,98 @@ if (!window.console) {
     };
     
     /**
-     * @alias ice.bridgeit.launchFailed
+     * @alias bridgeit.launchFailed
      * @desc Application provided callback to detect BridgeIt launch failure.
      *   This should be overridden with an implementation that prompts the
      *   user to download BridgeIt and potentially fallback with a different
      *   browser control such as input file.
      * @param {id} id of the invoking element
      */
-    ib.launchFailed = function(id)  {
+    b.launchFailed = function(id)  {
         alert("BridgeIt not available for " + id);
     };
     /**
-     * @alias ice.bridgeit.scan
+     * @alias bridgeit.scan
      * @desc Activate the device QR Code scanner
      * @param {id} id TODO
      * @param {function} callback The callback function that will be called once the scan is captured
      * @param {map} options TODO
      */
-    ib.scan = function(id, callback, options)  {
+    b.scan = function(id, callback, options)  {
         deviceCommand("scan", id, callback, options);
     };
     /**
-     * @alias ice.bridgeit.camera
+     * @alias bridgeit.camera
      * @desc Activate the native camera 
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the photo is captured
      * @param {map} options TODO
      */
-    ib.camera = function(id, callback, options)  {
+    b.camera = function(id, callback, options)  {
         deviceCommand("camera", id, callback, options);
     };
     /**
-     * @alias ice.bridgeit.camcorder
+     * @alias bridgeit.camcorder
      * @desc Activate the native video recorder
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the video is captured
      * @param {map} options TODO
      */
-    ib.camcorder = function(id, callback, options)  {
+    b.camcorder = function(id, callback, options)  {
         deviceCommand("camcorder", id, callback, options);
     };
     /**
-     * @alias ice.bridgeit.microphone
+     * @alias bridgeit.microphone
      * @desc Activate the native audio recorder
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the audio is captured
      * @param {map} options TODO
      */
-    ib.microphone = function(id, callback, options)  {
+    b.microphone = function(id, callback, options)  {
         deviceCommand("microphone", id, callback, options);
     };
     /**
-     * @alias ice.bridgeit.fetchContact
+     * @alias bridgeit.fetchContact
      * @desc Activate the native contact list
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the contact is retrieved
      * @param {map} options TODO
      */
-    ib.fetchContact = function(id, callback, options)  {
+    b.fetchContact = function(id, callback, options)  {
         deviceCommand("fetchContacts", id, callback, options);
     };
     /**
-     * @alias ice.bridgeit.sms
+     * @alias bridgeit.sms
      * @desc Send an SMS message
      * @param {id} id TODO
      * @param {function} callback The function that will be called once the message is sent
      * @param {map} options TODO
      */
-    ib.sms = function(id, callback, options)  {
+    b.sms = function(id, callback, options)  {
         deviceCommand("sms", id, callback, options);
     };
     /**
-     * @alias ice.bridgeit.augmentedReality
+     * @alias bridgeit.augmentedReality
      * @desc Activate and immerse yourself in a new and better world
      * @param {id} id TODO
      * @param {function} callback TODO
      * @param {map} options TODO
      */
-    ib.augmentedReality = function(id, callback, options)  {
+    b.augmentedReality = function(id, callback, options)  {
         deviceCommand("aug", id, callback, options);
     };
     /**
-     * @alias ice.bridgeit.geoSpy
+     * @alias bridgeit.geoSpy
      * @desc Active native location tracking
      * @param {id} id TODO
      * @param {function} callback TODO
      * @param {map} options TODO
      */
-    ib.geoSpy = function(id, callback, options)  {
+    b.geoSpy = function(id, callback, options)  {
         deviceCommand("geospy", id, callback, options);
     };
 
     /* TODO Document use of ice.ajaxRefresh?? */
     
-})(ice.bridgeit);
+})(bridgeit);
 
