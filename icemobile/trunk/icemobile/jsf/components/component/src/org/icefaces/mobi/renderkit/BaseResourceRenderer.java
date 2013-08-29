@@ -88,15 +88,27 @@ public class BaseResourceRenderer extends CoreRenderer {
     public String processSrcAttribute(FacesContext facesContext, Object o,
                                       String name, String mimeType,
                                       String scope, String url) {
+//        ResourceRegistry registry = this.lookupRegistry(facesContext);
         if (o instanceof IceOutputResource) {
+            //register resource..do I have to check if it's already there?
             IceOutputResource iceResource = (IceOutputResource) o;
             if (logger.isLoggable(Level.FINE)) {
                 logger.fine("ALREADY have IceOutputResource so returning:-" + iceResource.getRequestPath());
             }
+            //set name for resource to component?Hopefully user has created proper iceoutputresource object
+            //for now just use session scope for testing
             return registerAndGetPath(facesContext, scope, iceResource);
         }
+//	 
         if (o instanceof byte[]) {
+            // have to create the resource first and cache it in ResourceRegistry
+            //create IceOutputResource
             IceOutputResource ior = new IceOutputResource(name, o, mimeType);
+//	        	if (null!= this.mimeType){
+//		              final String mimeType = attributes.containsKey("mimeType") ? String.valueOf(attributes.get("mimeType")) : "";
+//		              logger.info("\t\t mimeType="+this.mimeType);
+//		             // update the request headers in iceOutputResource class? as well as content
+//		        }
             String registeredPath = 
                     registerAndGetPath(facesContext, scope, ior);
             if (logger.isLoggable(Level.FINE)) {
@@ -104,6 +116,7 @@ public class BaseResourceRenderer extends CoreRenderer {
             }
             return registeredPath;
         } else {
+            // just do default from compat ImageRenderer as it's a static file
             return processStaticSrc(facesContext, o, url);
         }
 

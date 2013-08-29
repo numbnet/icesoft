@@ -86,7 +86,7 @@ body.landscape .mobi-vm-header > h1 {
 .mobi-vm > div[data-selected="true"] {
     display: block;
 }
-.mobi-vm-view, .mobi-vm-view-content{
+.mobi-vm-view-content{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }

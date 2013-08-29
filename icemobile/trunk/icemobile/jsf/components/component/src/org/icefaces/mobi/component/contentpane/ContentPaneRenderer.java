@@ -23,6 +23,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.icefaces.mobi.api.ContentPaneController;
 import org.icefaces.mobi.component.accordion.Accordion;
 import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icefaces.mobi.component.tabset.TabSet;
@@ -100,9 +101,9 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         Object parent = uiComponent.getParent();
         String selectedId= null;
         //might change this to just test if it implements the interface....
-        if (parent instanceof ContentStack){
-            ContentStack stack = (ContentStack)parent;
-            selectedId = stack.getCurrentId();
+        if (parent instanceof ContentPaneController){
+            ContentPaneController paneController = (ContentPaneController)parent;
+            selectedId = paneController.getSelectedId();
       //      logger.info("iAmSelected()  id: " + uiComponent.getId() + "  selectedId: " + selectedId);
             if (null == selectedId){
                 UIComponent pComp = (UIComponent)parent;

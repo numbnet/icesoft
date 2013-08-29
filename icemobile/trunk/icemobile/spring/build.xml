@@ -22,7 +22,6 @@
     <property name="root.offset" value=".."/>
     <property name="lib.dir" location="../lib"/>
 	<property name="core.dir" location="../core/src/main/java"/>
-	<property name="core.build" location="../core/build"/>
     <property name="java.dir" location="src/main/java"/>
     <property name="resources.dir" location="src/main/resources"/>
     <property file="${root.offset}/build.properties"/>
@@ -69,20 +68,9 @@
         <fileset dir="${lib.dir}/spring" includes="*.jar"/>
     </path>
     
-	
-    <path id="core.classpath">
-        <fileset dir="${lib.dir}" includes="*.jar" excludes="**/javax.faces.jar,**/jsp-api.jar,**/javax.servlet.jsp.jar,**/${icefaces-mobi-lib-name}.jar"/>
-    </path>
-
     <tstamp>
         <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
     </tstamp>
-	
-    <target name="copy.core">
-        <copy todir="${build.dir}/classes">
-            <fileset dir="${core.build}/exploded" includes="**/*.class"/>
-        </copy>
-    </target>
 
     <target name="product.info" description="update product information">
         <!-- <buildnumber/>  -->
@@ -114,7 +102,7 @@
         <mkdir dir="${dist.dir}"/>
     </target>
 	
-	<target name="compile" depends="pre.compile, product.info, copy.core"
+	<target name="compile" depends="pre.compile, product.info"
             description="compile classes">
         <compile/>
     </target>
