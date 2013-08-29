@@ -364,7 +364,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 					writer.writeAttribute("style", "visibility:hidden;display:none;", null);
 					String itemLabel;
 					try {
-						itemLabel = (String) getConvertedValue(facesContext, autoCompleteEntry, value, true);
+						itemLabel = getConvertedValueForClient(facesContext, autoCompleteEntry, value);
 					} catch (Exception e) {
 						itemLabel = value;
 					}
@@ -394,7 +394,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                     String itemLabel = item.getLabel();
                     if (itemLabel == null) {
 						try {
-							itemLabel = (String) getConvertedValue(facesContext, autoCompleteEntry, item.getValue(), true);
+							itemLabel = getConvertedValueForClient(facesContext, autoCompleteEntry, item.getValue());
 						} catch (Exception e) {
 							itemLabel = item.getValue().toString();
 						}
@@ -452,7 +452,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
 				String itemLabel;
 				try {
-					itemLabel = (String) getConvertedValue(facesContext, autoCompleteEntry, value, true);
+					itemLabel = getConvertedValueForClient(facesContext, autoCompleteEntry, value);
 				} catch (Exception e) {
 					itemLabel = value;
 				}
@@ -475,7 +475,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                     String itemLabel = item.getLabel();
                     if (itemLabel == null) {
 						try {
-							itemLabel = (String) getConvertedValue(facesContext, autoCompleteEntry, item.getValue(), true);
+							itemLabel = getConvertedValueForClient(facesContext, autoCompleteEntry, item.getValue());
 						} catch (Exception e) {
 							itemLabel = item.getValue().toString();
 						}
@@ -617,34 +617,25 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		return false;
 	}
 	
-	@Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		return getConvertedValue(context, component, submittedValue, false);
-	}
-	
-	private Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue, boolean force) throws ConverterException {
+	public String getConvertedValueForClient(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) component;
-		String value = (String) submittedValue;
 		Converter converter = autoCompleteEntry.getConverter();
 		
-		if (isHardSubmit(context, autoCompleteEntry) || force) {
-			if(converter != null) {
-				return converter.getAsObject(context, autoCompleteEntry, value);
-			}
-			else {
-				ValueExpression ve = autoCompleteEntry.getValueExpression("value");
+		if(converter != null) {
+			return converter.getAsString(context, autoCompleteEntry, value);
+		} else {
+			ValueExpression ve = autoCompleteEntry.getValueExpression("value");
 
-				if(ve != null) {
-					Class<?> valueType = ve.getType(context.getELContext());
-					Converter converterForType = context.getApplication().createConverter(valueType);
+			if(ve != null) {
+				Class<?> valueType = ve.getType(context.getELContext());
+				Converter converterForType = context.getApplication().createConverter(valueType);
 
-					if(converterForType != null) {
-						return converterForType.getAsObject(context, autoCompleteEntry, value);
-					}
+				if(converterForType != null) {
+					return converterForType.getAsString(context, autoCompleteEntry, value);
 				}
 			}
 		}
 		
-		return value;	
+		return (value != null ? value.toString() : "");
 	}
 }
