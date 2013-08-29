@@ -29,7 +29,6 @@ import org.icemobile.samples.mobileshowcase.view.examples.input.geolocation.GeoL
 import org.icemobile.samples.mobileshowcase.view.examples.input.input.InputBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.menubutton.MenuButtonBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.submitnotification.SubmitNotificationBean;
-import org.icemobile.samples.mobileshowcase.view.examples.input.gmap.GMapBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.Menu;
 
@@ -51,10 +50,6 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.Menu;
                 @MenuLink(title = "menu.input.geolocation.title",
                         exampleBeanName = GeoLocationBean.BEAN_NAME,
                         examplePanelId = "geolocation"),
-                @MenuLink(title = "menu.layout.gmap.title",
-                        exampleBeanName = GMapBean.BEAN_NAME,
-                        examplePanelId = "gmap",
-                        isRedirect=true),
                 @MenuLink(title = "menu.input.input.title",
                         exampleBeanName = InputBean.BEAN_NAME,
                         examplePanelId = "input"),
