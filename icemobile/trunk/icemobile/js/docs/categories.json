@@ -1,0 +1,18 @@
+[{
+	"name":"Components",
+	"groups": [
+		{
+			"name":"",
+		    "classes": [ "ice.*" ]
+		}
+	]
+},
+{
+	"name":"DOM Objects",
+	"groups": [
+		{
+			"name":"",
+		    "classes": [ "Array", "Function", "Date", "String", "RegExp", "Object", "Number", "Boolean"]
+		}
+	]
+}]
