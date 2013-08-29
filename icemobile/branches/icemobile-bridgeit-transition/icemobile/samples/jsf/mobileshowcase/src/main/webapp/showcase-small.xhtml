@@ -29,9 +29,6 @@
     <c:if test="#{themeBean.simulator}">
         <h:outputStylesheet library="css" name="showcase-simulator-skin.css" media="screen"/>
     </c:if>
-    <c:if test="#{mobiNavigationModel.selectedPanel eq 'gmap'}">
-        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
-    </c:if>
     
     <mobi:googleAnalytics/>
 </h:head>
@@ -106,9 +103,6 @@
                     </mobi:contentPane>
                     <mobi:contentPane id="geolocation" facelet="true" client="false" >
                         <ui:include src="/WEB-INF/includes/examples/input/geolocation.xhtml" />
-                    </mobi:contentPane>
-                    <mobi:contentPane id="gmap" facelet="true" client="false" >
-                        <ui:include src="/WEB-INF/includes/examples/input/gmap.xhtml" />
                     </mobi:contentPane>
                     <mobi:contentPane id="input" facelet="true" client="false" >
                         <ui:include src="/WEB-INF/includes/examples/input/input.xhtml" />
