@@ -17,7 +17,6 @@ var defaultExampleArguments = ['tableId',
         detailPosition: 'global',
         templates: {
             detail : detailContentsTemplate
-            // table wide templates
             // bodycell: stringTemplate
         },
         columns : [
