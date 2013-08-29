@@ -36,54 +36,59 @@
     <ui:define name="example">
         <h:form id="example-form">
             <h:panelGrid styleClass="centeredPanelGrid">
-                <h:outputText value="File Upload Manager" styleClass="headerFontStyle"/>
+                <h:outputText value="File Upload" styleClass="headerFontStyle"/>
             </h:panelGrid>
-            <ace:panel>
-                <h:panelGrid columns="3" styleClass="centeredPanelGrid">
-                    <h:panelGrid>
-                        <h:panelGrid styleClass="centeredPanelGrid">
-                                <h:outputText value="Step 1" styleClass="headerFontStyle"/>
-                        </h:panelGrid>
-                        <ace:panel style="width: 250px; height: 40px; border: 0px;">
-                                 <ace:fileEntry id="file-entry" 
-                                                    relativePath="/files/"
-                                                    maxFileCount="10" 
-                                                    maxFileCountMessage="Limited to 10 files uploaded concurrantly." 
-                                                    fileEntryListener="#{fileEntry.sampleListener}" 
-                                                    maxFileSize="6291456" 
-                                                    maxFileSizeMessage="Submitted file is too large." 
-                                                    maxTotalSize="18874368" 
-                                                    maxTotalSizeMessage="Total size of submitted files is too large." 
-                                                    required="true" 
-                                                    requiredMessage="The file is required to submit this form." 
-                                                    useOriginalFilename="true" 
-                                                    useSessionSubdir="true"/>
-                        </ace:panel>
-                    </h:panelGrid>
-                    
-                    <h:panelGrid width="100%" styleClass="centeredPanelGrid">
-                        <h:graphicImage value="#{fileEntry.arrowImage.path}" alt="#{fileEntry.arrowImage.description}"/>
-                    </h:panelGrid>
-                    
-                    <h:panelGrid width="100%">
-                        <h:panelGrid styleClass="centeredPanelGrid">
-                            <h:outputText value="Step 2" styleClass="headerFontStyle"/>
-                        </h:panelGrid>
-                        <ace:panel style="width: 100px; height: 30px; border: 0px;"> 
-                            <h:commandButton id="submit" type="submit" value="Send File"/>
-                        </ace:panel>
-                    </h:panelGrid>
-                </h:panelGrid>
+            <ace:panel>  <!-- style="width: 500px;" -->
+                <ace:fileEntry id="file-entry"
+                               relativePath="/files/"
+                               maxFileCount="10"
+                               maxFileCountMessage="Limited to 10 files uploaded concurrantly."
+                               fileEntryListener="#{fileEntry.sampleListener}"
+                               maxFileSize="6291456"
+                               maxFileSizeMessage="Submitted file is too large."
+                               maxTotalSize="18874368"
+                               maxTotalSizeMessage="Total size of submitted files is too large."
+                               required="true"
+                               requiredMessage="The file is required to submit this form."
+                               useOriginalFilename="true"
+                               useSessionSubdir="true"
+                               autoUpload="false"
+                               multiple="true"/>
                 <br/>
-                <hr/>
                 <br/>
                 <ace:dataTable id="tbl" value="#{fileEntry.fileData}" var="fileDataVal">
+                    <ace:columnGroup id="columnGroup" type="header">
+                        <ace:row>
+                            <ace:column colspan="3" headerText="Files on Server"/>
+                        </ace:row>
+
+                        <ace:row>
+                            <ace:column headerText="File name"/>
+                            <ace:column headerText="File size"/>
+                            <ace:column headerText="Content Type"/>
+                        </ace:row>
+                    </ace:columnGroup>
+
                     <ace:column>
-                        <f:facet name="header">
-                            <h:outputText value="Upload results"/>
-                        </f:facet>
-                        <h:outputText id="fileData" value="#{fileDataVal}"/>
+                        <h:outputText value="#{fileDataVal.name}"/>
                     </ace:column>
+                    <ace:column>
+                        <h:outputText value="#{fileDataVal.size}"/>
+                    </ace:column>
+                    <ace:column>
+                        <h:outputText value="#{fileDataVal.contentType}"/>
+                    </ace:column>
+
+                    <ace:panelExpansion>
+                        <h:outputText rendered="#{not fileDataVal.info == null}" value="#{fileDataVal.info}" />
+                    </ace:panelExpansion>
+
+                    <f:facet name="footer">
+                        <h:panelGrid columns="1">
+                            <h:outputText value="#{fileEntry.totalFiles}"/>
+                            <h:outputText value="#{fileEntry.totalSize}"/>
+                        </h:panelGrid>
+                    </f:facet>
                 </ace:dataTable>
                 <ace:messages id="msgs" for="example-form:file-entry"/>
             </ace:panel>

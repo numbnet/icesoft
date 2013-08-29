@@ -64,46 +64,40 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implements Serializable {
 
     public static final String BEAN_NAME = "fileEntry";
-    private List<String> fileData;
-    private ImageSet.ImageInfo arrowImage;
+    private List<UploadedFile> fileData = new ArrayList<UploadedFile>();
+    private String totalFiles;
+    private String totalSize;
 
-    public FileEntryBean()  
-    {
+    public FileEntryBean() {
         super(FileEntryBean.class);
-        arrowImage = ImageSet.getImage(ImageSet.ImageSelect.FORWARD_ARROW);
-    }                                       
+    }
 
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
     }
 
-    public void sampleListener(FileEntryEvent e)
-    {
+    public void sampleListener(FileEntryEvent e) {
         FileEntry fe = (FileEntry)e.getComponent();
         FileEntryResults results = fe.getResults();
         File parent = null;
 
-        fileData = new ArrayList<String>();
-
-    //get data About File
-    
-        for (FileEntryResults.FileInfo i : results.getFiles()) 
-        {
-            fileData.add("File Name: " + i.getFileName());
+        for (FileEntryResults.FileInfo i : results.getFiles()) {
+            fileData.add(
+                new UploadedFile(
+                    i.getFileName(),
+                    i.getSize() + " bytes",
+                    i.getContentType(),
+                    i.isSaved() ? null : ("File was not saved because: " +
+                        i.getStatus().getFacesMessage(
+                            FacesContext.getCurrentInstance(),
+                            fe, i).getSummary()) ));
 
             if (i.isSaved()) {
-                fileData.add("File Size: " + i.getSize() + " bytes");
-
                 File file = i.getFile();
                 if (file != null) {
                     parent = file.getParentFile();
                 }
-            } else {
-                fileData.add("File was not saved because: " +
-                    i.getStatus().getFacesMessage(
-                        FacesContext.getCurrentInstance(),
-                        fe, i).getSummary());
             }
         }
 
@@ -114,8 +108,8 @@ public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implement
                 fileCount++;
                 dirSize += file.length();
             }
-            fileData.add("Total Files In Upload Directory: " + fileCount);
-            fileData.add("Total Size of Files In Directory: " + dirSize + " bytes");
+            totalFiles = "Total Files in Upload Directory: " + fileCount;
+            totalSize = "Total Size of Files In Directory: " + dirSize + " bytes";
         }
     }
 
@@ -123,11 +117,31 @@ public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implement
         return fileData;
     }
 
-    public ImageInfo getArrowImage() {
-        return arrowImage;
+    public String getTotalFiles() {
+        return totalFiles;
     }
 
-    public void setArrowImage(ImageInfo arrowImage) {
-        this.arrowImage = arrowImage;
+    public String getTotalSize() {
+        return totalSize;
+    }
+
+
+    public static class UploadedFile {
+        private String name;
+        private String size;
+        private String contentType;
+        private String info;
+
+        UploadedFile(String name, String size, String contentType, String info) {
+            this.name = name;
+            this.size = size;
+            this.contentType = contentType;
+            this.info = info;
+        }
+
+        public String getName() { return name; }
+        public String getSize() { return size; }
+        public String getContentType() { return contentType; }
+        public String getInfo() { return info; }
     }
 }
