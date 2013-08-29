@@ -1,9 +1,0 @@
-{
-    "--": "../dataview",
-    "--images": "images",
-    "--builtin-classes": true,
-	"--title": "ICEsoft HTML5 Components",
-	"--categories": "categories.json",
-	"--warnings": "-image_unused",
-	"--head-html": "<link rel='shortcut icon' type='image/ico' href='' /><style type='text/css'>#header-content { background: url(resources/images/ice-logo.png) 0 0 no-repeat; padding-left:28px; line-height:28px; margin-top:6px;}</style>"
-}
