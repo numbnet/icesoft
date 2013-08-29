@@ -227,7 +227,9 @@ public class SelectMenuRenderer extends InputRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.writeText("(function() {", null);
         writer.writeText("var instance = ice.ace.SelectMenus[\"" + clientId + "\"];", null);
-        writer.writeText("instance.updateValue('" + escapeJavascriptString(value.toString()) + "');", null);
+        writer.writeText("instance.updateValue('"
+			+ escapeJavascriptString(getConvertedValueForClient(facesContext, selectMenu, value))
+			+ "');", null);
         writer.writeText("})();", null);
         writer.endElement("script");
         writer.endElement("span");
@@ -290,7 +292,7 @@ public class SelectMenuRenderer extends InputRenderer {
 				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
 				if (value != null) {
 					try {
-						value = getConvertedValue(facesContext, selectMenu, value);
+						value = getConvertedValueForClient(facesContext, selectMenu, value);
 					} catch (Exception e) {
 						value = value.toString();
 					}
@@ -327,7 +329,7 @@ public class SelectMenuRenderer extends InputRenderer {
 					Object itemValue = item.getValue();
 					if (itemValue != null) {
 						try {
-							itemValue = getConvertedValue(facesContext, selectMenu, itemValue);
+							itemValue = getConvertedValueForClient(facesContext, selectMenu, itemValue);
 						} catch (Exception e) {
 							itemValue = itemValue.toString();
 						}
@@ -423,28 +425,25 @@ public class SelectMenuRenderer extends InputRenderer {
         parent.encodeEnd(facesContext);
     }
 	
-	@Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+	public String getConvertedValueForClient(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		SelectMenu selectMenu = (SelectMenu) component;
-		String value = (String) submittedValue;
 		Converter converter = selectMenu.getConverter();
 		
-			if(converter != null) {
-				return converter.getAsObject(context, selectMenu, value);
-			}
-			else {
-				ValueExpression ve = selectMenu.getValueExpression("value");
+		if(converter != null) {
+			return converter.getAsString(context, selectMenu, value);
+		} else {
+			ValueExpression ve = selectMenu.getValueExpression("value");
 
-				if(ve != null) {
-					Class<?> valueType = ve.getType(context.getELContext());
-					Converter converterForType = context.getApplication().createConverter(valueType);
+			if(ve != null) {
+				Class<?> valueType = ve.getType(context.getELContext());
+				Converter converterForType = context.getApplication().createConverter(valueType);
 
-					if(converterForType != null) {
-						return converterForType.getAsObject(context, selectMenu, value);
-					}
+				if(converterForType != null) {
+					return converterForType.getAsString(context, selectMenu, value);
 				}
 			}
+		}
 		
-		return value;
+		return (value != null ? value.toString() : "");
 	}
 }

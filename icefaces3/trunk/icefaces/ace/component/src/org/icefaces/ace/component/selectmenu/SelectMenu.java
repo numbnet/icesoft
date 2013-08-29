@@ -192,19 +192,29 @@ public class SelectMenu extends SelectMenuBase implements NamingContainer {
             }
 		} else {
 			SelectItem item = null;
+			String convertedSubmittedValue = null;
+			if (submittedValue != null) {
+				try {
+					convertedSubmittedValue = ((SelectMenuRenderer) getRenderer(facesContext)).getConvertedValueForClient(facesContext, this, submittedValue);
+				} catch (Exception e) {
+					convertedSubmittedValue = submittedValue.toString();
+				}
+			}
 			while (matches.hasNext()) {
 				item = (SelectItem) matches.next();
 				Object value = item.getValue();
+				String convertedValue = null;
 				
 				if (value != null) {
 					try {
-						value = getRenderer(facesContext).getConvertedValue(facesContext, this, value);
+						convertedValue = ((SelectMenuRenderer) getRenderer(facesContext)).getConvertedValueForClient(facesContext, this, value);
 					} catch (Exception e) {
-						value = value.toString();
+						convertedValue = value.toString();
 					}
 				}
 				
-				if (!item.isDisabled() && value != null && value.equals(submittedValue.toString())) {
+				if (!item.isDisabled() && convertedValue != null && convertedSubmittedValue != null 
+					&& convertedValue.equals(convertedSubmittedValue.toString())) {
 					found = true;
 					break;
 				}

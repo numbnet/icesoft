@@ -156,7 +156,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 				Object itemValue = item.getValue();
 				if (itemValue != null) {
 					try {
-						itemValue = getConvertedValue(facesContext, simpleSelectOneMenu, item.getValue());
+						itemValue = getConvertedValueForClient(facesContext, simpleSelectOneMenu, item.getValue());
 					} catch (Exception e) {
 						itemValue = item.getValue().toString();
 					}
@@ -181,28 +181,25 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 
 	}
 	
-	@Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+	public String getConvertedValueForClient(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		SimpleSelectOneMenu simpleSelectOneMenu = (SimpleSelectOneMenu) component;
-		String value = (String) submittedValue;
 		Converter converter = simpleSelectOneMenu.getConverter();
 		
-			if(converter != null) {
-				return converter.getAsObject(context, simpleSelectOneMenu, value);
-			}
-			else {
-				ValueExpression ve = simpleSelectOneMenu.getValueExpression("value");
+		if(converter != null) {
+			return converter.getAsString(context, simpleSelectOneMenu, value);
+		} else {
+			ValueExpression ve = simpleSelectOneMenu.getValueExpression("value");
 
-				if(ve != null) {
-					Class<?> valueType = ve.getType(context.getELContext());
-					Converter converterForType = context.getApplication().createConverter(valueType);
+			if(ve != null) {
+				Class<?> valueType = ve.getType(context.getELContext());
+				Converter converterForType = context.getApplication().createConverter(valueType);
 
-					if(converterForType != null) {
-						return converterForType.getAsObject(context, simpleSelectOneMenu, value);
-					}
+				if(converterForType != null) {
+					return converterForType.getAsString(context, simpleSelectOneMenu, value);
 				}
 			}
+		}
 		
-		return value;	
+		return (value != null ? value.toString() : "");
 	}
 }

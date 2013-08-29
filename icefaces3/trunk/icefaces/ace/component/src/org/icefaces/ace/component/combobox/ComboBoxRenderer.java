@@ -249,7 +249,9 @@ public class ComboBoxRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		writer.writeText("(function() {", null);
 		writer.writeText("var instance = ice.ace.ComboBoxes[\"" + clientId + "\"];", null);
-		writer.writeText("instance.updateValue('" + escapeJavascriptString(value.toString()) + "');", null);
+		writer.writeText("instance.updateValue('"
+			+ escapeJavascriptString(getConvertedValueForClient(facesContext, comboBox, value))
+			+ "');", null);
 		writer.writeText("})();", null);
 		writer.endElement("script");
 		writer.endElement("span");
@@ -305,7 +307,7 @@ public class ComboBoxRenderer extends InputRenderer {
 				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
 				if (value != null) {
 					try {
-						value = getConvertedValue(facesContext, comboBox, value);
+						value = getConvertedValueForClient(facesContext, comboBox, value);
 					} catch (Exception e) {
 						value = value.toString();
 					}
@@ -338,7 +340,7 @@ public class ComboBoxRenderer extends InputRenderer {
 					Object itemValue = item.getValue();
 					if (itemValue != null) {
 						try {
-							itemValue = getConvertedValue(facesContext, comboBox, itemValue);
+							itemValue = getConvertedValueForClient(facesContext, comboBox, itemValue);
 						} catch (Exception e) {
 							itemValue = itemValue.toString();
 						}
@@ -452,8 +454,7 @@ public class ComboBoxRenderer extends InputRenderer {
 		none
 	}
 
-	@Override
-	public String getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
+	public String getConvertedValueForClient(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		ComboBox comboBox = (ComboBox) component;
 		Converter converter = comboBox.getConverter();
 		
