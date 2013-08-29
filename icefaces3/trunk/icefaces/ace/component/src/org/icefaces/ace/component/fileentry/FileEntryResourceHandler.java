@@ -430,10 +430,13 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
             }
         }
 
-        if (file != null && !status.isSuccess()) {
-            log.fine("File    Unsuccessful file being deleted");
-            file.delete();
-            file = null;
+        if (!status.isSuccess()) {
+            fileSizeRead[0] = 0L;
+            if (file != null) {
+                log.fine("File    Unsuccessful file being deleted");
+                file.delete();
+                file = null;
+            }
         }
         
         log.fine("File    Ending  status: " + status);
