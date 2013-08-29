@@ -1,10 +1,10 @@
 /**************************** JQuery Mobi Overrides ***************************/
-.mobi-dv.ui-body-c, .mobi-dv .mobi-dv-det.ui-body-c {
+.mobi-dv.ui-widget-content, .mobi-dv .mobi-dv-det.ui-widget-content {
     border-left: 0;
     border-right: 0;
     border-top: 0;
 }
-.mobi-dv-body tbody tr.ui-bar-e  {
+.mobi-dv-body tbody tr.ui-state-active  {
     font-weight: normal;
     border-left:0;
     border-right:0;
