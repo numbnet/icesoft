@@ -379,6 +379,7 @@ public class JSONBuilder {
     /**
      * Adds a String to an array or function call.
      * @param value value of the item.
+     * @param escaped whether to escape the value and surround it with double quotes.
      * @return a reference to this object.
      */
     public JSONBuilder item(String value, boolean escaped) {

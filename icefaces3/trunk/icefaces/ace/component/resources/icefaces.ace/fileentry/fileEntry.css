@@ -31,3 +31,47 @@
 .ice-file-entry .progress {
 
 }
+
+.ice-file-entry .multiple-select-table {
+    border-collapse:collapse;
+}
+.ice-file-entry .multiple-select-table tr > td {
+    border-color:inherit;
+    border-style:solid;
+    border-width:1px;
+    padding:4px 10px;
+    text-align: center;
+}
+
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+}
+.fileinput-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    transform: translate(-300px, 0) scale(4);
+    font-size: 23px;
+    direction: ltr;
+    cursor: pointer;
+}
+.fileupload-buttonbar .btn,
+.fileupload-buttonbar .toggle {
+    margin-bottom: 5px;
+}
+
+.fileupload-loading {
+    float: right;
+    width: 32px;
+    height: 32px;
+    background: url(../img/loading.gif) center no-repeat;
+    background-size: contain;
+    display: none;
+}
+.fileupload-processing .fileupload-loading {
+    display: block;
+}

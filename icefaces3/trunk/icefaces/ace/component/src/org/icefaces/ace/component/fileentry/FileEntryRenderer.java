@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.component.fileentry;
 
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
@@ -50,6 +51,8 @@ public class FileEntryRenderer extends Renderer {
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId, "clientId");
         boolean disabled = fileEntry.isDisabled();
+        boolean multiple = fileEntry.isMultiple();
+        boolean autoUpload = fileEntry.isAutoUpload();
         /* Ideally we'd add these styles, but Firefox makes the Browse button flow outside
          * of the widget bordering.
          * ui-widget ui-widget-content ui-corner-all
@@ -59,11 +62,77 @@ public class FileEntryRenderer extends Renderer {
 		writer.writeAttribute("style", fileEntry.getStyle(), "style");
 
         writer.startElement("div", uiComponent);
+        // If multiple then render the buttons for  [+]Add Files  [^]Upload  [x]Delete
+        // And render the hidden input type=file behind the AddFiles button
+        //TODO Rename all the style classes to match our own
+        //TODO Handle the noscript scenario where all the buttons should be hidden and the input type=file show
+        //TODO Localise text
+        //TODO Deal with cancel/reset button. Remove it? Rename it? Make it clear out the table rows and input elements via clearFileSelection?
+        /*
+<div class="fileupload-buttonbar">
+    <div class="fileupload-buttons">
+        <!-- The fileinput-button span is used to style the file input field as button -->
+        <span class="fileinput-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-plusthick"></span>
+            <span class="ui-button-text">
+                <span>Add files...</span>
+            </span>
+            <input type="file" name="files[]" multiple="">
+        </span>
+        <button type="submit" class="start ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"/>
+            <span class="ui-button-text">Start upload</span>
+            </button>
+        <button type="reset" class="cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-cancel"/>
+            <span class="ui-button-text">Cancel upload</span>
+        </button>
+        <button type="button" class="delete ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-trash"/>
+            <span class="ui-button-text">Delete</span>
+        </button>
+        <input type="checkbox" class="toggle">
+        <!-- The loading indicator is shown during file processing -->
+        <span class="fileupload-loading"></span>
+    </div>
+</div>
+         */
+        if (multiple) {
+            writer.writeAttribute("class", "fileupload-buttonbar", "styleClass");
+
+            writer.startElement("div", uiComponent);
+            writer.writeAttribute("class", "fileupload-buttons", "styleClass");
+
+            // Add files button
+            writer.startElement("span", uiComponent);
+            writer.writeAttribute("class", "fileinput-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary", "styleClass");
+            writer.writeAttribute("role", "button", null);
+            writer.writeAttribute("aria-disabled", disabled ? "true" : "false", "disbled");
+
+            // +
+            writer.startElement("span", uiComponent);
+            writer.writeAttribute("class", "ui-button-icon-primary ui-icon ui-icon-plusthick", "styleClass");
+            writer.endElement("span");
+
+            writer.startElement("span", uiComponent);
+            writer.writeAttribute("class", "ui-button-text", "styleClass");
+
+            // "Add files"
+            writer.startElement("span", uiComponent);
+            writer.writeText("Add files", uiComponent, null);
+            writer.endElement("span");
+
+            writer.endElement("span");  // ui-button-text
+
+            // <input type="file"> goes here
+        }
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "file", "type");
         writer.writeAttribute("id", config.getIdentifier(), "clientId");
         writer.writeAttribute("name", config.getIdentifier(), "clientId");
-        //writer.writeAttribute("multiple", "multiple", "multiple");
+        if (multiple) {
+            writer.writeAttribute("multiple", "multiple", "multiple");
+        }
         if (disabled) {
             writer.writeAttribute("disabled", "true", "disabled");
         }
@@ -77,13 +146,43 @@ public class FileEntryRenderer extends Renderer {
         if (size > 0) {
             writer.writeAttribute("size", size, "size");
         }
-        if (fileEntry.isAutoUpload()) {
-            String formId = form.getClientId(facesContext);
-            String script = "var form = document.getElementById('"+formId+
-                "');form.onsubmit();form.submit();";
-            writer.writeAttribute("onchange", script, "autoUpload");
+        if (multiple || autoUpload) {
+            String onchange = JSONBuilder.create().
+                beginFunction("ice.ace.fileentry.onchange").
+                    item("event", false).
+                    item(clientId).
+                    item(multiple).
+                    item(autoUpload).
+                endFunction().toString();
+            writer.writeAttribute("onchange", onchange, null);
         }
         writer.endElement("input");
+        if (multiple) {
+            writer.endElement("span");  // fileinput-button ...
+
+            writeMultipleButton(writer, uiComponent, disabled, "Start upload",
+                "submit", "start", "ui-icon-circle-arrow-e", clientId+"_start");
+            writeMultipleButton(writer, uiComponent, disabled, "Cancel upload, reset form",
+                "reset", "cancel", "ui-icon-cancel", clientId+"_cancel");
+            /*
+            writeMultipleButton(writer, uiComponent, disabled, "Remove file(s)",
+                "button", "delete", "ui-icon-trash", clientId+"_delete");
+
+            writer.startElement("input", uiComponent);
+            writer.writeAttribute("type", "checkbox", null);
+            writer.writeAttribute("class", "toggle", null);
+            if (disabled) {
+                writer.writeAttribute("disabled", "disabled", null);
+            }
+            writer.endElement("input");
+
+            writer.startElement("span", uiComponent);
+            writer.writeAttribute("class", "fileupload-loading", null);
+            writer.endElement("span");
+            */
+            
+            writer.endElement("div");   // fileupload-buttons
+        }
         writer.endElement("div");
 
         writer.startElement("div", uiComponent);
@@ -96,8 +195,45 @@ public class FileEntryRenderer extends Renderer {
         writer.endElement("div");
         writer.endElement("div");
 
+        if (multiple) {
+            writer.startElement("div", uiComponent);
+            writer.writeAttribute("id", clientId + "_multSel", "clientId");
+
+            writer.startElement("table", uiComponent);
+            writer.writeAttribute("class", "multiple-select-table", null);
+            writer.writeAttribute("id", clientId + "_multSelTbl", "clientId");
+            writer.endElement("table");
+
+            writer.endElement("div");
+        }
 
         writer.endElement("div");
+    }
+
+    protected void writeMultipleButton(ResponseWriter writer,
+            UIComponent uiComponent, boolean disabled, String label,
+            String buttonType, String buttonClass, String iconClass, String id)
+            throws IOException {
+        writer.startElement("button", uiComponent);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("class", buttonClass + " ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary", null);
+        writer.writeAttribute("type", buttonType, null);
+        writer.writeAttribute("role", "button", null);
+        writer.writeAttribute("aria-disabled", disabled ? "true" : "false", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("class", "ui-button-icon-primary ui-icon " + iconClass, null);
+        writer.endElement("span");
+
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("class", "ui-button-text", null);
+        writer.writeText(label, uiComponent, null);
+        writer.endElement("span");
+        
+        writer.endElement("button");
     }
     
     @Override
