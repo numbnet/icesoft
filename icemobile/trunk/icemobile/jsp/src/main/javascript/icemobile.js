@@ -265,24 +265,25 @@ ice.mobi.deviceCommandExec = function(command, id, options)  {
         returnURL += "#icemobilesx";
     }
 
-    if ("" != params) {
+    if (params && ("" != params)) {
         params = "ub=" + escape(baseURL) + ampchar + params;
     }
 
 //    var splashClause = ice.mobi.impl.getSplashClause();
 
     var sessionidClause = "";
-    if ("" != sessionid) {
+    if (sessionid && ("" != sessionid)) {
         sessionidClause = "&JSESSIONID=" + escape(sessionid);
     }
     var serializedFormClause = "";
-    if (formID)  {
+    if (formID && ("" != formID))  {
         serializedFormClause = "&p=" + escape(ice.mobiserial(formID, false));
     }
     var uploadURLClause = "";
-    if (uploadURL)  {
+    if (uploadURL && ("" != uploadURL))  {
         uploadURLClause = "&u=" + escape(uploadURL);
     }
+
     var sxURL = "icemobile:c=" + escape(command +
             "?id=" + id + ampchar + (params ? params : '')) +
             uploadURLClause + 
@@ -384,6 +385,9 @@ ice.mobi.augmentedReality = function(id, callback, options)  {
 }
 ice.mobi.geoSpy = function(id, callback, options)  {
     ice.mobi.deviceCommand("geospy", id, callback, options);
+}
+ice.mobi.register = function(id, callback, options)  {
+    ice.mobi.deviceCommand("register", id, callback, options);
 }
 
 ice.mobi.setInput = function(target, name, value, vtype)  {
@@ -2563,6 +2567,11 @@ if (window.addEventListener) {
                     }
                     if (deviceParams.p)  {
                         sxEvent.preview = deviceParams.p;
+                    }
+                    if (deviceParams.c)  {
+                        if (ice.push)  {
+                            ice.push.parkInactivePushIds(deviceParams.c);
+                        }
                     }
                 }
                 if (ice.mobi.deviceCommandCallback)  {
