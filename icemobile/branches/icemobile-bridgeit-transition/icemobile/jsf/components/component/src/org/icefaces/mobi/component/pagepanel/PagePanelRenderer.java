@@ -24,7 +24,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 
@@ -74,7 +73,10 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlHdr", HTML.ID_ATTR);
             writer.startElement(HTML.DIV_ELEM, component);
             writer.writeAttribute(HTML.CLASS_ATTR, headerFooterContentsClass, HTML.STYLE_CLASS_ATTR);
-            JSFUtils.renderLayoutChild(facesContext, headerFacet);
+
+            if (headerFacet.isRendered())
+                headerFacet.encodeAll(facesContext);
+
             writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
@@ -85,7 +87,10 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.startElement(HTML.DIV_ELEM, pagePanel);
             writer.writeAttribute(HTML.CLASS_ATTR, bodyClass, HTML.CLASS_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlBdy", HTML.ID_ATTR);
-            JSFUtils.renderLayoutChild(facesContext, bodyFacet);
+
+            if (bodyFacet.isRendered())
+                bodyFacet.encodeAll(facesContext);
+
             writer.endElement(HTML.DIV_ELEM);
         }
 
@@ -96,7 +101,10 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlFtr", HTML.ID_ATTR);
             writer.startElement(HTML.DIV_ELEM, component);
             writer.writeAttribute(HTML.CLASS_ATTR, headerFooterContentsClass, HTML.STYLE_CLASS_ATTR);
-            JSFUtils.renderLayoutChild(facesContext, footerFacet);
+
+            if (footerFacet.isRendered())
+                footerFacet.encodeAll(facesContext);
+
             writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }

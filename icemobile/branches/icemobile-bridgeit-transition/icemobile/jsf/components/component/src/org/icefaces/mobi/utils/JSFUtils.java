@@ -16,13 +16,7 @@
 
 package org.icefaces.mobi.utils;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.icemobile.util.Utils;
 
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
@@ -33,8 +27,13 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
-
-import org.icemobile.util.Utils;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JSFUtils {
 
@@ -227,19 +226,6 @@ public class JSFUtils {
         child.encodeEnd(facesContext);
     }
 
-    /**
-     * used by PagePanelRenderer to ensure no problems with push
-     * @param facesContext
-     * @param child
-     * @throws IOException
-     */
-    public static void renderLayoutChild(FacesContext facesContext, UIComponent child)
-            throws IOException {
-        if (!child.isRendered()) {
-            return;
-        }
-        child.encodeAll(facesContext);
-    }
     public static UIComponent findNamingContainer(UIComponent uiComponent) {
         UIComponent parent = uiComponent.getParent();
         while (parent != null) {
