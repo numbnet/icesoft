@@ -10,10 +10,10 @@
     </fieldset>
 
     <a id="regBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.register('_reg');">Allow Push Notifications</a>
+        onclick="bridgeit.register('_reg');">Enable Cloud Push</a>
 
     <a id="pushBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.push.notify('bridgeit',{subject:'BridgeIt Cloud Push',detail:'You have been notified.'});">Notify</a>
+        onclick="notifyLater();">Notify upon exit</a>
 
     <fieldset>
         <div class="row"></div>
@@ -55,6 +55,21 @@
         console.log("notified");
         alert("You have been notified.");
     });
+
+    var notifyReady = false;
+    function notifyLater()  {
+        notifyReady = true;
+    }
+
+    window.addEventListener("pagehide", function () {
+        ice.push.connection.pauseConnection();
+        if (notifyReady)  {
+            notifyReady = false;
+            ice.push.notify( 'bridgeit',
+                {subject:'BridgeIt Cloud Push',
+                detail:'You have been notified.'} );
+        }
+    }, false);
 
     </script>
    
