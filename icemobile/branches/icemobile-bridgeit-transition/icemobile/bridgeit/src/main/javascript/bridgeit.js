@@ -150,30 +150,28 @@ if (!window.console) {
         var theHash = returnURL.substring(lastHash);
         var theURL = returnURL.substring(0, lastHash);
         returnURL = theURL + "#icemobilesx";
-        console.log('returnURL = ' + returnURL);
 
         var hashClause = "";
-        if ("" != theHash)  {
+        if (theHash && ("" != theHash))  {
             hashClause = "&h=" + escape(theHash);
         }
-        console.log('hashClause = ' + hashClause);
 
-        if (params !== undefined && "" != params) {
+        if (params && ("" != params)) {
             params = "ub=" + escape(baseURL) + ampchar + params;
         }
 
         var sessionidClause = "";
-        if ("" != sessionid) {
+        if (sessionid && ("" != sessionid)) {
             sessionidClause = "&JSESSIONID=" + escape(sessionid);
             //also need PHPSESSID and ASPSESSIONID
         }
         var serializedFormClause = "";
-        if (formID)  {
+        if (formID && ("" != formID))  {
             serializedFormClause = "&p=" +
                     escape(serializeForm(formID, false));
         }
         var uploadURLClause = "";
-        if (uploadURL)  {
+        if (uploadURL && ("" != uploadURL))  {
             uploadURLClause = "&u=" + escape(uploadURL);
         }
         var sxURL = "icemobile:c=" + escape(command +
@@ -341,6 +339,12 @@ if (!window.console) {
                         if (deviceParams.p)  {
                             sxEvent.preview = deviceParams.p;
                         }
+                        if (deviceParams.c)  {
+                            if (ice.push)  {
+                                ice.push.parkInactivePushIds(
+                                        deviceParams.c );
+                            }
+                        }
                         if (deviceParams.h)  {
                             restoreHash = deviceParams.h;
                         }
@@ -489,6 +493,16 @@ if (!window.console) {
      */
     b.geoSpy = function(id, callback, options)  {
         deviceCommand("geospy", id, callback, options);
+    };
+    /**
+     * @alias bridgeit.register
+     * @desc Register BridgeIt integration and configure Cloud Push
+     * @param {id} id TODO
+     * @param {function} callback TODO
+     * @param {map} options TODO
+     */
+    b.register = function(id, callback, options)  {
+        deviceCommand("register", id, callback, options);
     };
 
     /* TODO Document use of ice.ajaxRefresh?? */
