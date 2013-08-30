@@ -30,6 +30,7 @@
     NSString *currentEncodedThumbnail;
     NSString *splashParameters;
     NSString *returnHash;
+    NSString *cloudPushId;
     NSData *deviceToken;
     NSDictionary *confirmMessages;
     NSDictionary *confirmTitles;
@@ -62,6 +63,7 @@
 @property (retain) NSString *currentEncodedThumbnail;
 @property (retain) NSString *splashParameters;
 @property (retain) NSString *returnHash;
+@property (retain) NSString *cloudPushId;
 @property (retain) NSData *deviceToken;
 @property (retain) NSDictionary *confirmMessages;
 @property (retain) NSDictionary *confirmTitles;

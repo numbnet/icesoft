@@ -49,6 +49,7 @@
 @synthesize openButton;
 @synthesize arButton;
 @synthesize contactsButton;
+@synthesize cloudPushId;
 @synthesize deviceToken;
 @synthesize confirmMessages;
 @synthesize confirmTitles;
@@ -81,7 +82,9 @@
                 ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
                 ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
 
+        self.cloudPushId = hexToken;
         [params setValue:hexToken forKey:@"iceCloudPushId"];
+        NSLog(@"register with cloud push deviceToken %@", hexToken);
     }
     [self decorateParams: params];
     [nativeInterface multipartPost:params toURL:self.currentURL];
@@ -106,6 +109,12 @@
             self.returnURL = [self.returnURL stringByAppendingString:@"&!h="];
             self.returnURL = [self.returnURL stringByAppendingString:
                     [self.returnHash
+                    stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+        }
+        if (nil != self.cloudPushId)  {
+            self.returnURL = [self.returnURL stringByAppendingString:@"&!c="];
+            self.returnURL = [self.returnURL stringByAppendingString:
+                    [self.cloudPushId
                     stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
         }
         return;
@@ -250,10 +259,14 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     NSArray *queryParts = [self.currentCommand
             componentsSeparatedByString:@"?"];
     NSString *commandName = [queryParts objectAtIndex:0];
+    NSString *targetURL = self.currentURL;
+    if (nil == targetURL)  {
+        targetURL = self.returnURL;
+    }
 
     NSString *title = [self.confirmTitles objectForKey:commandName];
     NSString *message = [self.confirmMessages objectForKey:commandName];
-    NSString *host = [[NSURL URLWithString:self.currentURL] host];
+    NSString *host = [[NSURL URLWithString:targetURL] host];
     message = [[message stringByAppendingString:host] 
             stringByAppendingString:@"?" ];
 
@@ -284,24 +297,26 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     }
 
     if (buttonIndex == 0) {
-        NSURL *theURL = [NSURL URLWithString:self.currentURL];
-        NSString *host = [theURL host];
-        NSString *contextPath = [[theURL pathComponents] objectAtIndex:1];
-        NSString *cookiePath = [[@"/" stringByAppendingString:contextPath]
-                stringByAppendingString:@"/"];
-        LogDebug(@"setCookie contextPath %@ ", contextPath );
+        if (nil != self.currentURL)  {
+            NSURL *theURL = [NSURL URLWithString:self.currentURL];
+            NSString *host = [theURL host];
+            NSString *contextPath = [[theURL pathComponents] objectAtIndex:1];
+            NSString *cookiePath = [[@"/" stringByAppendingString:contextPath]
+                    stringByAppendingString:@"/"];
+            LogDebug(@"setCookie contextPath %@ ", contextPath );
 
-        NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
-                @"JSESSIONID", NSHTTPCookieName,
-                currentSessionId, NSHTTPCookieValue,
-                cookiePath, NSHTTPCookiePath,
-                host, NSHTTPCookieDomain,
-                nil ];
+            NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
+                    @"JSESSIONID", NSHTTPCookieName,
+                    currentSessionId, NSHTTPCookieValue,
+                    cookiePath, NSHTTPCookiePath,
+                    host, NSHTTPCookieDomain,
+                    nil ];
 
-        NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
-        LogDebug(@"setCookie %@ ", cookie );
-        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
-        LogDebug(@"currentCookies %@ ", [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies );
+            NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
+            LogDebug(@"setCookie %@ ", cookie );
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
+            LogDebug(@"currentCookies %@ ", [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies );
+        }
 
         [nativeInterface dispatch:self.currentCommand];
     } else if (buttonIndex == 1)  {
