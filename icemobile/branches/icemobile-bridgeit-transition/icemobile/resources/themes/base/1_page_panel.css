@@ -76,3 +76,7 @@
 .mobi-pagePanel .mobi-pagePanel-body-nofooter {
     padding-bottom: 0 !important;
 }
+.mobi-pagePanel-body.ui-widget-content {
+    border-left-width: 0;
+    border-right-width: 0;
+}
