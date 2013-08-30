@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -95,4 +96,26 @@ public class NotificationsController extends ICEmobileBaseController{
         pushTimer.schedule(pushTask, model.getDelay() * 1000);
     }
 
+    //temporary method until cloud push is added to JavaScript API
+    //in PUSH-267
+    @RequestMapping(value = "/pushtocloud", method = RequestMethod.POST)
+    public @ResponseBody String pushtocloud(HttpServletRequest request,
+            @RequestParam(value = "group") final String group,
+            @RequestParam(value = "title") final String title,
+            @RequestParam(value = "message") final String message,
+            @RequestParam(value = "delay") final int delay)
+            throws IOException {
+        final PushContext pushContext = PushContext.getInstance(
+                context.getServletContext() );
+
+        TimerTask pushTask = new TimerTask()  {
+            public void run()  {
+                pushContext.push(group,
+                        new PushNotification(title, message));
+            }
+        };
+        pushTimer.schedule(pushTask, delay * 1000);
+
+        return "pushed to cloud";
+    }
 }
