@@ -1018,7 +1018,7 @@ NSLog(@"Found record %@", result);
 
     NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (theConnection) {
-        receivedData = [[NSMutableData data] retain];
+        self.receivedData = [[NSMutableData data] retain];
     } else {
         NSLog(@"unable to connect to %@", theConnection);
     }
@@ -1040,11 +1040,11 @@ NSLog(@"Found record %@", result);
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response  {
-    [receivedData setLength:0];
+    [self.receivedData setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data  {
-    [receivedData appendData:data];
+    [self.receivedData appendData:data];
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite  {
@@ -1055,9 +1055,9 @@ NSLog(@"Found record %@", result);
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection  {
-    LogDebug(@"connectionDidFinishLoading %d bytes of data",[receivedData length]);
+    NSLog(@"connectionDidFinishLoading %d bytes of data",[self.receivedData length]);
 
-    NSString *responseString = [[NSString alloc] initWithData:receivedData
+    NSString *responseString = [[NSString alloc] initWithData:self.receivedData
             encoding:NSUTF8StringEncoding];
 
     [controller setProgressLabel:@"Upload Progress"];
@@ -1067,7 +1067,7 @@ NSLog(@"Found record %@", result);
 
     // release the connection, and the data object
     [connection release];
-    [receivedData release];
+    [self.receivedData release];
     self.uploading = NO;
 }
 
