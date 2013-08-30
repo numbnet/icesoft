@@ -18,7 +18,7 @@ package org.icefaces.mobi.component.list;
 
 
 public class OutputListItem extends OutputListItemBase {
-	public static final String OUTPUTLISTITEM_CLASS = "mobi-list-item ui-widget ";
+	public static final String OUTPUTLISTITEM_CLASS = "mobi-list-item ui-widget-content ui-state-default";
     public static final String OUTPUTLISTITEMGROUP_CLASS="mobi-list-item mobi-list-item-group ui-widget-header ";
     public static final String OUTPUTLISTITEMDEFAULT_CLASS="mobi-list-item-default ";
     
