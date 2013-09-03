@@ -108,7 +108,7 @@
     margin: 10px auto;
     max-width: 400px;
 }
-#flexible img{
+#flexible img, #ar img{
     width: 100%;
     max-width: 400px;
 }
