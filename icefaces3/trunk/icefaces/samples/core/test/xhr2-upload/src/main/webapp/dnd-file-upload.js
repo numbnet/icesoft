@@ -14,17 +14,14 @@
  * governing permissions and limitations under the License.
  */
 
-window.onload = function() {
-    var progressDiv = document.getElementById('progress');
-    jsf.ajax.addOnEvent(function(event) {
-        progressDiv.appendChild(document.createElement('div')).appendChild(document.createTextNode(event.status));
-    });
 
-
+function setupDnD() {
     var dropTarget = document.getElementById("drop-target");
     var form = document.getElementById("the-form");
     var fileInput = document.getElementById('the-form:file');
+    //hide file input to avoid confusion during testing
     fileInput.style.visibility = 'hidden';
+
     dropTarget.ondragover = function () {
         dropTarget.className = 'hover'; return false;
     };
@@ -35,23 +32,42 @@ window.onload = function() {
         dropTarget.className = '';
         event.preventDefault();
         event.stopPropagation();
+        //remove file input so that we can submit in it's behalf
         form.removeChild(fileInput);
 
         var files = event.dataTransfer.files;
         if (files && files.length) {
             for (var i=0, len = files.length; i < len; i++) {
                 var f = files[i];
+                //send file in behalf of h:inputFile component
                 jsf.ajax.request(form, event, {
                     "the-form:file": f,
-                    "javax.faces.partial.render": '@all'
+                    "javax.faces.partial.render": '@all',
+                    onevent: function(c) {
+                        if (c.status == 'begin') form.appendChild(fileInput);
+                        //hide h:inputFile to avoid confusions during testing, we just use its server side to upload content to it
+                        if (c.status == 'success') fileInput.style.visibility = 'hidden';
+                    }
                 });
             }
         } else {
+            var data = event.dataTransfer.getData('text');
+            //send data in behalf of h:inputFile component
             jsf.ajax.request(form, event, {
-                "the-form:file": event.dataTransfer.getData('text'),
-                "javax.faces.partial.render": '@all'
+                "the-form:file": data,
+                "javax.faces.partial.render": '@all',
+                onevent: function(c) {
+                    if (c.status == 'begin') form.appendChild(fileInput);
+                    //hide h:inputFile to avoid confusions during testing, we just use its server side to upload content to it
+                    if (c.status == 'success') fileInput.style.visibility = 'hidden';
+                }
             });
         }
-        form.appendChild(fileInput);
     }
+}
+
+if (window.addEventListener) {
+    window.addEventListener('load', setupDnD);
+} else {
+    window.attachEvent('onload', setupDnD);
 }
