@@ -35,18 +35,23 @@ window.onload = function() {
         dropTarget.className = '';
         event.preventDefault();
         event.stopPropagation();
-        //remove file input element so that the form will not submit it
         form.removeChild(fileInput);
 
         var files = event.dataTransfer.files;
-        for (var i=0, len = files.length; i < len; i++) {
-            var f = files[i];
+        if (files && files.length) {
+            for (var i=0, len = files.length; i < len; i++) {
+                var f = files[i];
+                jsf.ajax.request(form, event, {
+                    "the-form:file": f,
+                    "javax.faces.partial.render": '@all'
+                });
+            }
+        } else {
             jsf.ajax.request(form, event, {
-                //send the content in place of the file input
-                "the-form:file": f,
+                "the-form:file": event.dataTransfer.getData('text'),
                 "javax.faces.partial.render": '@all'
             });
-            form.appendChild(fileInput);
         }
+        form.appendChild(fileInput);
     }
 }

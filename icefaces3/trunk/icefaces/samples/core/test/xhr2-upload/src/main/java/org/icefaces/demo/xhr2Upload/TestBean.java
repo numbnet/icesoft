@@ -18,16 +18,18 @@ package org.icefaces.demo.xhr2Upload;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 @ManagedBean(name = "TestBean")
-@SessionScoped
+@ViewScoped
 public class TestBean implements Serializable {
+    private ArrayList<PartInfo> uploadedFiles = new ArrayList();
     private Part file;
 
     public void upload() {
@@ -40,13 +42,35 @@ public class TestBean implements Serializable {
 
     public void setFile(Part file) {
         this.file = file;
+        uploadedFiles.add(new PartInfo(file));
     }
 
-    public String getFileName() {
-        return file == null ? "" : file.getName();
+    public ArrayList<PartInfo> getUploadedFiles() {
+        return uploadedFiles;
     }
 
-    public String getContentType() {
-        return file == null ? "" : file.getContentType();
+    public static class PartInfo implements Serializable {
+        private Part part;
+
+        public PartInfo(Part part) {
+            this.part = part;
+        }
+
+
+        public String getFileName() {
+            return part.getName();
+        }
+
+        public String getContentType() {
+            return part.getContentType();
+        }
+
+        public String getContentDisposition() {
+            return part.getHeader("content-disposition");
+        }
+
+        public String getContent() throws IOException {
+            return new Scanner(part.getInputStream()).nextLine() + " .... ";
+        }
     }
 }
