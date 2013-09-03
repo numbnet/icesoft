@@ -207,3 +207,7 @@ section > article > pre > code {
 .prettyprint code{
     font-size: 80%;
 }
+.highlightPlaceholder::-webkit-input-placeholder, .highlightPlaceholder:-moz-placeholder, 
+.highlightPlaceholder::-moz-placeholder, .highlightPlaceholder:-ms-input-placeholder{
+   color: red;
+}
