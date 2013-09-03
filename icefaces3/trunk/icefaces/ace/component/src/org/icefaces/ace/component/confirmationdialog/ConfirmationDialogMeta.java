@@ -75,6 +75,9 @@ public class ConfirmationDialogMeta extends UIPanelMeta {
 	@Property(tlddoc="Style class of the dialog container.")
 	private String styleClass;
 	
+	@Property(tlddoc="Style to apply to the container element.")
+	private String style;
+	
 	@Property(tlddoc="Effect to use when showing the dialog. Possible values are 'blind', 'clip', 'drop', 'explode, 'fade', 'fold', 'puff', 'slide', 'scale', 'bounce', 'highlight', 'pulsate', and 'shake' (Some effects are not supported in IE7, see wiki page for more information).")
 	private String showEffect;
 	

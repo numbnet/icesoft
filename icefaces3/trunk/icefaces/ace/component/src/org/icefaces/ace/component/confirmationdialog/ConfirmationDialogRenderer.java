@@ -112,6 +112,7 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
           .entry("minHeight", 0);
 		
 		String styleClass = dialog.getStyleClass();
+		String style = dialog.getStyle();
         String showEffect = dialog.getShowEffect();
         String hideEffect = dialog.getHideEffect();
         int width = dialog.getWidth();
@@ -119,6 +120,7 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
         int zIndex = dialog.getZindex();
 
         if(styleClass != null) jb.entry("dialogClass", styleClass);
+		if(style != null) jb.entry("dialogStyle", style);
 		if(width != 300) jb.entry("width", width);
 		if(height != Integer.MIN_VALUE) jb.entry("height", height);
 		if(!dialog.isDraggable()) jb.entry("draggable", false);
