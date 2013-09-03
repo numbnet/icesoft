@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-window.onload = function() {
+function setupUploadProgress() {
     var progressDiv = document.getElementById('progress');
     jsf.ajax.addOnEvent(function(event) {
         var t = progressDiv.appendChild(document.createElement('div')).appendChild(document.createTextNode(event.status));
@@ -26,3 +26,10 @@ window.onload = function() {
         }
     });
 }
+
+if (window.addEventListener) {
+    window.addEventListener('load', setupUploadProgress);
+} else {
+    window.attachEvent('onload', setupUploadProgress);
+}
+
