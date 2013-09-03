@@ -86,6 +86,11 @@ ice.ace.Dialog = function(id, cfg) {
     //Create the dialog
     this.cfg.autoOpen = false;
     this.jq.dialog(this.cfg);
+	
+	// set style attribute
+	var dialogParent = this.jq.parent();
+	var style = dialogParent.attr('style');
+	dialogParent.attr('style', style + ';' + this.cfg.dialogStyle);
 
     ice.onElementRemove(id, function() {
         _self.jq.dialog('close');

@@ -65,6 +65,11 @@ ice.ace.ConfirmDialog = function(id, cfg) {
 
     //Create dialog
     this.jq.dialog(this.cfg);
+	
+	// set style attribute
+	var dialogParent = this.jq.parent();
+	var style = dialogParent.attr('style');
+	dialogParent.attr('style', style + ';' + this.cfg.dialogStyle);
 
     //Setup button pane
     var buttons = ice.ace.jq(this.jqId + '_buttons');
