@@ -33,9 +33,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"photos","videos","recordings"})
+@SessionAttributes({"photos","videos","recordings", "arPhoto"})
 @ICEmobileResourceStore(bean="basicResourceStore")
 public class BridgeItServiceController {
+
+    //private List<RealityMessage> arMessages = new ArrayList<RealityMessage>();
     
     @ModelAttribute("photos")
     public List<String> createPhotoList() {
@@ -50,6 +52,11 @@ public class BridgeItServiceController {
     @ModelAttribute("recordings")
     public List<String> createAudioList() {
         return new ArrayList<String>();
+    }
+    
+    @ModelAttribute("arPhoto")
+    public String createARPhoto() {
+        return new String();
     }
     
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
@@ -72,6 +79,25 @@ public class BridgeItServiceController {
         return null;
     }
     
+    @RequestMapping(value = "/ar-upload", method=RequestMethod.POST, produces="application/json")
+    public @ResponseBody String arUpload(HttpServletRequest request,
+            @ICEmobileResource("arCameraBtn") Resource cameraUpload,
+            @ModelAttribute("arPhoto") String arPhoto) throws IOException {
+        System.out.println("entering /ar-upload");
+        if( cameraUpload != null ){
+            if (cameraUpload.getContentType().startsWith("image")) {
+                try {
+                    arPhoto = "service/icemobile-store/"+ cameraUpload.getUuid();
+                    System.out.println("returning " + arPhoto);
+                    return arPhoto;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
     @RequestMapping(value = "/audio-upload", method=RequestMethod.POST, produces="application/json")
     public @ResponseBody List<String> audioUpload(HttpServletRequest request, 
             @ICEmobileResource("micBtn") Resource audioUpload, 
