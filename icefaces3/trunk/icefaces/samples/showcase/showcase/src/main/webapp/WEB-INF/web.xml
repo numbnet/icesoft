@@ -99,6 +99,7 @@
         <servlet-class>
             org.icefaces.samples.showcase.util.SourceCodeLoaderServlet
         </servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>

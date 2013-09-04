@@ -71,6 +71,8 @@ public class SourceCodeLoaderConnection implements Map, Serializable{
     private long cacheSize = 0; 
     // Logger reference
     private Logger logger;
+	// true if initial request was made using SSL
+	private static boolean IS_SECURE;
 
     public SourceCodeLoaderConnection() {}         
 
@@ -102,7 +104,9 @@ public class SourceCodeLoaderConnection implements Map, Serializable{
             	URL requestUrl = new URL(httpRequest.getRequestURL().toString());
             	hostName = requestUrl.getHost();
             } catch (MalformedURLException mfException) {}
-            SOURCE_SERVLET_URL = "http://" +
+			IS_SECURE = httpRequest.isSecure();
+            String protocol = IS_SECURE ? "https://" : "http://";
+            SOURCE_SERVLET_URL = protocol +
                                  hostName +
                                  ":" +
                                  httpRequest.getLocalPort() +
@@ -175,8 +179,13 @@ public class SourceCodeLoaderConnection implements Map, Serializable{
         InputStream inputStream = null;
         InputStreamReader inputReader = null;
         try{
-            servletUrl = new URL(SOURCE_SERVLET_URL + sourceCodePath);
-            inputStream = (InputStream)servletUrl.getContent();
+			if (!IS_SECURE) {
+				servletUrl = new URL(SOURCE_SERVLET_URL + sourceCodePath);
+				inputStream = (InputStream)servletUrl.getContent();
+			} else {
+				// don't use a connection, just access methods directly
+				inputStream = SourceCodeLoaderServlet.getServlet().getSource((String)sourceCodePathObj);
+			}
             
             brokenUrl = false;
         } catch (Exception e) {
