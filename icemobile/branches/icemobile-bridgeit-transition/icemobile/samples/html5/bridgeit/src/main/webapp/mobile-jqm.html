@@ -55,7 +55,7 @@
                 <li><a href="#jqmCamcorder"><i class="icon-film"></i>Camcorder</a></li>
                 <li><a href="#jqmScan"><i class="icon-qrcode"></i>Scan</a></li>
                 <li><a href="#jqmMicrophone"><i class="icon-microphone"></i>Microphone</a></li>
-                <li><a href="#jqmContactlist"><i class="icon-group"></i>Contact List</a></li>
+                <li><a href="#jqmContactList"><i class="icon-group"></i>Contact List</a></li>
                 <li><a href="#jqmGeospy"><i class="icon-map-marker"></i>GeoSpy</a></li>
                 <li><a href="#jqmAr"><i class="icon-eye-open"></i>Augmented Reality</a></li>
                 <li><a href="#jqmSms"><i class="icon-mobile-phone"></i>SMS</a></li>
@@ -74,23 +74,23 @@
 
     <div data-role="page" id="jqmCamera">  
         <div data-role="header">
-            <h1>BridgeIt jQuery Mobile</h1>
-            <a id="bridgeItLink" class="button" href="#"><img src="./images/bridgeit-icon.png"/></a>
+            <h1>Shoot It</h1>
         </div><!-- /header -->
-        <div id="camera" title="Shoot It" class="panel" >
+        <div data-role="content">
+            <div id="camera" title="Shoot It" class="panel" >
     <h2>Camera Access</h2>
     <fieldset>
         <div class="row"><p class="normalText">Access the native device camera features with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.bridgeit.camera(id,callback, 
+                bridgeit.camera(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
     <a id="cameraBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeit.camera('cameraBtn',handleCam, {postURL:(''+window.location).match(/.*\//) + 'service/camera-upload'});">Take a Photo</a>
+        onclick="bridgeit.camera('cameraBtn',handleCam, {postURL:(''+window.location).match(/.*\//) + 'service/camera-upload'});">Take a Photo</a>
         
     <fieldset>
         <div class="row"><img id="thumbnail"/></div>
@@ -127,23 +127,28 @@
     }
     </script>
 </div>
+        </div>
     </div>
     
     <div data-role="page" id="jqmCamcorder">  
-    <div id="camcorder" title="Film It" class="panel" >
+        <div data-role="header">
+            <h1>Film It</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <div id="camcorder" title="Film It" class="panel" >
     <h2>Video Recording</h2>
     <fieldset>
         <div class="row"><p class="normalText">Access the native video recording features with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.bridgeit.camcorder(id,callback, 
+                bridgeit.camcorder(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
     <a id="camcorderBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeit.camcorder('camcorderBtn',handleVideo, {postURL:(''+window.location).match(/.*\//) + 'service/video-upload'});">Record some video</a>
+        onclick="bridgeit.camcorder('camcorderBtn',handleVideo, {postURL:(''+window.location).match(/.*\//) + 'service/video-upload'});">Record some video</a>
         
     <fieldset>
         <div class="row"><img id="thumbnail"/></div>
@@ -180,30 +185,44 @@
     </script>
 </div>
 
+        </div>
     </div>
     
     <div data-role="page" id="jqmAr">  
-    <div id="ar" title="See It" class="panel" >
+        <div data-role="header">
+            <h1>See It</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <div id="ar" title="See It" class="panel" >
     <h2>Augmented Reality</h2>
     <fieldset>
         <div class="row"><p class="normalText">Access an augmented world with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.bridgeit.augmentedReality(id,callback, 
-                &nbsp;&nbsp;{postURL:myURL});
+                bridgeit.augmentedReality(id,<br/>
+                &nbsp;&nbsp;callback, {postURL:myURL});
             </code>
         </div>
+        <div class="row"><p class="normalText">Add a photo with a message to the Augmented Reality.</p></div>
     </fieldset>
     
-    <a id="arBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeit.augmentedReality('arBtn',handleAR, {postURL:(''+window.location).match(/.*\//) + 'service/ar'});">Enter Augmented Reality</a>
+    <input type="hidden" id="arLatitude" value="0"/>
+    <input type="hidden" id="arLongitude" value="0"/>
+    
+    <a id="arCameraBtn" type="button" class="whiteButton bridgeItBtn"
+                onclick="bridgeit.camera('arCameraBtn',handleARCam, {postURL:(''+window.location).match(/.*\//) + 'service/ar-upload'});">First take a Photo</a>
+            
+    <fieldset id="arImages" class="media">
+    </fieldset>
+    
+    <a id="postARMessagesBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="postARMessage();">Then send the AR Message</a>
         
-    <fieldset>
-        <div class="row"></div>
-        <div class="row"><img id="thumbnail"/></div>
-    </fieldset>
-    <fieldset id="videos">
-    </fieldset>
+    <p id="arMessage"></p>
+    
+    <a id="arBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="launchAugmentedReality();">Last enter Augmented Reality</a>
+    
     <div class="footer">
         <a href="#">
             <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
@@ -211,29 +230,138 @@
         &copy; 2013 ICEsoft Technologies
     </div>
     <script type="text/javascript">
-    function handleAR(event)  {
-        alert(event);
+    function handleARCam(event)  {
+        var text = event.value;
+        if (event.response)  {
+            var photo = event.response;
+            var elem = document.getElementById("arImages");
+            var index = elem.children.length;
+            if( photo ){
+                var row1 = document.createElement('div');
+                row1.setAttribute('class','row');
+                row1.innerHTML = "<img src='" + photo + "'/>"
+                   + "<input type='text' placeholder='Add a title' id='arTitle' onblur='window.scrollTo(0,345)' style='border:1px solid #ddd;padding:2px'/>"
+                   + "<input type='hidden' id='arPhoto' value='" + photo + "'/>";
+                elem.appendChild(row1);
+                setTimeout(
+                        function(){
+                            window.scrollTo(0,255);
+                            var  title = document.getElementById('arTitle');
+                            title.classList.add('highlightPlaceholder');
+                            title.placeholder = 'Now describe the pic for everyone...';
+                            title.style.fontSize += 1;
+                            
+                        }, 1000);
+            }
+        }
     }
+    function setLocation(event){
+        document.getElementById('arLatitude').value = event.coords.latitude;
+        document.getElementById('arLongitude').value = event.coords.longitude;
+    }
+    function processARMessages(messages){
+        window.arMessages = '';
+        for( var i = 0 ; i < messages.length ; i++ ){
+            var msg = messages[i];
+            window.arMessages += '&' + msg.title + '=';
+            window.arMessages += msg.latitude + ',';
+            window.arMessages += msg.longitude + ',,,';
+            window.arMessages += msg.fileName ;
+        }
+    }
+    function getARMessages(){
+        var xmlhttp;
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function(event){
+            if (xmlhttp.readyState==4 ){
+                 var messages = JSON.parse(xmlhttp.responseText);
+                 processARMessages(messages);
+                 setTimeout(
+                         function(){
+                             window.scrollTo(0,500);
+                             var arMessage = document.getElementById('arMessage');
+                             arMessage.innerHTML = '' + messages.length 
+                                 + ' total messages waiting in the Augmented Reality.';
+                         }, 0);
+            }
+        }
+        xmlhttp.open("GET",(''+window.location).match(/.*\//) + 'service/ar-messages',true);
+        xmlhttp.send();
+    }
+    function postARMessage(event){
+        var xmlhttp;
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function(event){
+            if (xmlhttp.readyState==4 ){
+                 var messages = JSON.parse(xmlhttp.responseText);
+                 processARMessages(messages);
+                 setTimeout(
+                         function(){
+                             window.scrollTo(0,500);
+                             var arMessage = document.getElementById('arMessage');
+                             arMessage.innerHTML = 'The message was successfully sent. ' + 
+                                 messages.length + ' total messages waiting in the Augmented Reality.';
+                             bridgeit.augmentedReality('arBtn',null, 
+                                     {parameters: encodeURIComponent(window.arMessages)});
+                         }, 0);
+            }
+        }
+        xmlhttp.open("POST",(''+window.location).match(/.*\//) + 'service/post-ar-message',true);
+        xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        var titleElem = document.getElementById('arTitle');
+        var photoElem = document.getElementById('arPhoto');
+        var latElem = document.getElementById('arLatitude');
+        var longElem = document.getElementById('arLongitude');
+        if( titleElem && photoElem ){
+            var post = "title=" + encodeURIComponent(titleElem.value)
+            + '&photo=' + encodeURIComponent(photoElem.value)
+            + '&lat=' + encodeURIComponent(latElem.value)
+            + '&lng=' + encodeURIComponent(longElem.value);
+            xmlhttp.send(post);
+        }
+    }
+    function failedToSetLocation(event){
+        alert('could not retrieve location coordinates: ' + event);
+    }
+    function launchAugmentedReality(){
+        if( !window.arMessages ){
+            getARMessagesAndLaunch();
+        }
+        else{
+            bridgeit.augmentedReality('arBtn',null, 
+                    {parameters: encodeURIComponent(window.arMessages)});
+        }
+    }
+    var geoParams = {};
+    geoParams.maximumAge = 3600000;
+    geoParams.timeout = 60000;
+    geoParams.enableHighAccuracy = true;
+    navigator.geolocation.getCurrentPosition(setLocation, failedToSetLocation, geoParams);
     </script>
    
 </div>
 
+        </div>
     </div>
     
-    <div data-role="page" id="jqmContactList">  
-    <div id="contactlist" title="Contact It" class="panel">
+    <div data-role="page" id="jqmContactList">
+        <div data-role="header">
+            <h1>Contact It</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <div id="contactlist" title="Contact It" class="panel">
     <h2>Contact List Access</h2>
     <fieldset>
         <div class="row"><p class="normalText">Access the device contact list with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.bridgeit.fetchContact(id,callback);
+                bridgeit.fetchContact(id,callback);
             </code>
         </div>
     </fieldset>
     
     <a id="contactListBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeit.fetchContact('contactListBtn',handleContact);">Fetch a Contact</a>
+        onclick="bridgeit.fetchContact('contactListBtn',handleContact);">Fetch a Contact</a>
         
     <fieldset>
         <div class="row"></div>
@@ -250,6 +378,7 @@
     function handleContact(event)  {
         var HTTP = "http";
         var text = event.value;
+        alert(JSON.stringify(event));
         var elem = document.getElementById("contacts");
         elem.innerHTML = elem.innerHTML + "<div class='row'>" + text + "</div>";
     }
@@ -257,22 +386,27 @@
    
 </div>
 
+        </div>
     </div>
     
     <div data-role="page" id="jqmGeospy">
-    <div id="geospy" title="Locate It" class="panel">
+        <div data-role="header">
+            <h1>Locate It</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <div id="geospy" title="Locate It" class="panel">
     <h2>GeoSpy Location Tracking</h2>
     <fieldset>
         <div class="row"><p class="normalText">Continual geolocation tracking with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.bridgeit.geoSpy('_geo',handleSpy, {postURL:myURL});
+                bridgeit.geoSpy(id, callback, {postURL:myURL});
             </code>
         </div>
     </fieldset>
     
     <a id="geoSpyBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeit.geoSpy('geoSpyBtn',handleSpy, {postURL:(''+window.location).match(/.*\//) + 'service/geospy'});">Start Tracking</a>
+        onclick="bridgeit.geoSpy('geoSpyBtn',handleSpy, {postURL:(''+window.location).match(/.*\//) + 'service/geospy'});">Start Tracking</a>
         
     <fieldset>
         <div class="row"></div>
@@ -293,23 +427,28 @@
    
 </div>
 
+        </div>
     </div>
     
-    <div data-role="page" id="jqmMicrophone">  
-    <div id="microphone" title="Record It" class="panel" >
+    <div data-role="page" id="jqmMicrophone">
+        <div data-role="header">
+            <h1>Record It</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <div id="microphone" title="Record It" class="panel" >
    <h2>Audio Recording</h2>
     <fieldset>
         <div class="row"><p class="normalText">Access the native audio recording features with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.bridgeit.microphone(id,callback, 
+                bridgeit.microphone(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
     <a id="micBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeit.microphone('micBtn',handleAudio, {postURL:(''+window.location).match(/.*\//) + 'service/audio-upload'});">Record some audio</a>
+        onclick="bridgeit.microphone('micBtn',handleAudio, {postURL:(''+window.location).match(/.*\//) + 'service/audio-upload'});">Record some audio</a>
         
     <fieldset>
         <div class="row"></div>
@@ -345,22 +484,27 @@
 
 </div>
 
+        </div>
     </div>
     
     <div data-role="page" id="jqmScan">  
-    <div id="scan" title="Scan It" class="panel" >
+        <div data-role="header">
+            <h1>Scan It</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <div id="scan" title="Scan It" class="panel" >
     <h2>QR Code Scanning</h2>
     <fieldset>
         <div class="row"><p class="normalText">Scan a QR Code with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.bridgeit.scan(id,callback);
+                bridgeit.scan(id,callback);
             </code>
         </div>
     </fieldset>
     
     <a id="scanBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeit.scan('scanBtn',handleScan);">Scan a Code</a>
+        onclick="bridgeit.scan('scanBtn',handleScan);">Scan a Code</a>
         
     <fieldset id="scans">
     </fieldset>
@@ -399,23 +543,28 @@
 
 </div>
 
+        </div>
     </div>
     
-    <div data-role="page" id="jqmSms">  
-    <div id="sms" title="Text It" class="panel" >
+    <div data-role="page" id="jqmSms">
+        <div data-role="header">
+            <h1>Text It</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <div id="sms" title="Text It" class="panel" >
     <h2>SMS</h2>
     <fieldset>
         <div class="row"><p class="normalText">Send an SMS with a simple line of JavaScript...</p></div>
         <div class="row">
             <code>
-                ice.bridgeit.sms(id,callback, 
+                bridgeit.sms(id,callback, 
                 &nbsp;&nbsp;{postURL:myURL});
             </code>
         </div>
     </fieldset>
     
     <a id="smsBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="ice.bridgeit.sms('smsBtn',handleSMS, {postURL:(''+window.location).match(/.*\//) + 'service/sms'});">Take a Photo</a>
+        onclick="bridgeit.sms('smsBtn',handleSMS, {postURL:(''+window.location).match(/.*\//) + 'service/sms'});">Take a Photo</a>
         
     <fieldset>
         <div class="row"></div>
@@ -435,20 +584,31 @@
     </script>
 
 </div>
+        </div>
     </div>
     
-    <div data-role="page" id="jqmCloudpush">  
-    <div id="cloudpush" title="Notify It" class="panel">
+    <div data-role="page" id="jqmCloudpush">
+        <div data-role="header">
+            <h1>Notify It</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <div id="cloudpush" title="Notify It" class="panel">
     <h2>Device Notifications</h2>
     <fieldset>
         <div class="row"><p class="normalText">Cloud notifications with ICEpush...</p></div>
         <div class="row">
             <code>
-                ???
+                ice.push.notify(group, {subject:'subject', detail:'detail'});
             </code>
         </div>
     </fieldset>
-    
+
+    <a id="regBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="bridgeit.register('_reg');">Enable Cloud Push</a>
+
+    <a id="pushBtn" type="button" class="whiteButton bridgeItBtn"
+        onclick="notifyLater();">Notify upon exit</a>
+
     <fieldset>
         <div class="row"></div>
     </fieldset>
@@ -460,79 +620,128 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
+    <script type="text/javascript" src="http://labs.icesoft.com/push/code.icepush"></script>
     <script type="text/javascript">
+
     function handleNotification(event)  {
         alert(event);
     }
+
+    //this can be simplified now that ICEpush configuration
+    //is improved
+    ice.push.configuration.contextPath =
+            "http://labs.icesoft.com/push/";
+    ice.push.configuration.blockingConnectionURI =
+            "http://labs.icesoft.com/push/listen.icepush";
+    ice.push.configuration.createPushIdURI =
+            "http://labs.icesoft.com/push/create-push-id.icepush";
+    ice.push.configuration.notifyURI =
+            "http://labs.icesoft.com/push/notify.icepush";
+    ice.push.configuration.addGroupMemberURI =
+            "http://labs.icesoft.com/push/add-group-member.icepush";
+    ice.push.configuration.removeGroupMemberURI =
+            "http://labs.icesoft.com/push/remove-group-member.icepush";
+
+    //change to a uniquely generated pushID once initial testing is complete
+    var pagePushId = ice.push.createPushId();
+    ice.push.addGroupMember("bridgeit", pagePushId);
+    ice.push.register([pagePushId], function(pushIds) {
+        console.log("notified");
+        alert("You have been notified.");
+    });
+
+    var notifyReady = false;
+    function notifyLater()  {
+        notifyReady = true;
+    }
+
+    window.addEventListener("pagehide", function () {
+        ice.push.connection.pauseConnection();
+        if (notifyReady)  {
+            notifyReady = false;
+            ice.push.notify( 'bridgeit',
+                {subject:'BridgeIt Cloud Push',
+                detail:'You have been notified.'} );
+        }
+    }, false);
+
     </script>
    
 </div>
 
+        </div>
     </div>
     
     <div data-role="page" id="jqmAbout">  
-        <div id="about" title="About It" class="panel">
-           <h2>About BridgeIt</h2>
-           <div class="splash">
-               <div class="platforms">
-                   <i class="icon-android"></i><i class="icon-apple"></i><i class="icon-windows soon"></i>
-                   <img src="./images/blackberry-logo.png" class="bb-logo soon"/>
-               </div>
-           </div>
-           <fieldset>
-               <div class="row">
-                   <h3><i class="icon-html5"></i>Instant HTML5 Hybrids</h3>
-               </div>
-               <div class="row">
-                   <h3><i class="icon-mobile-phone"></i>BridgeIt Is Mobile</h3>
-                   <ul>
-                       <li>Access mobile device capabilities directly from your HTML5 applications.</li>
-                       <li>Support major mobile device platforms, including Android and iOS, with Blackberry 10, and Windows Phone soon to come.</li>
-                   </ul>
-               </div>
-               <div class="row">
-                   <h3><i class="icon-move"></i>BridgeIt Is Flexible</h3>
+        <div data-role="header">
+            <h1>About BridgeIt</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+         <div id="about" title="About It" class="panel">
+             <div data-role="content">
+            <h2>About BridgeIt</h2>
+            <div class="splash">
+                <div class="platforms">
+                    <i class="icon-android"></i><i class="icon-apple"></i><i class="icon-windows soon"></i>
+                    <img src="./images/blackberry-logo.png" class="bb-logo soon"/>
+                </div>
+            </div>
+            <fieldset>
+                <div class="row">
+                    <h3><i class="icon-html5"></i>Instant HTML5 Hybrids</h3>
+                </div>
+                <div class="row">
+                    <h3><i class="icon-mobile-phone"></i>BridgeIt Is Mobile</h3>
                     <ul>
-                        <li>Works with any HTML5/JavaScript-based development approach.</li>
-                        <li>Works seamlessly with any standard mobile browser.</li>
+                        <li>Access mobile device capabilities directly from your HTML5 applications.</li>
+                        <li>Support major mobile device platforms, including Android and iOS, with Blackberry 10, and Windows Phone soon to come.</li>
                     </ul>
                 </div>
                 <div class="row">
-                   <h3><i class="icon-glass"></i>BridgeIt Is Easy</h3>
-                    <ul>
-                        <li>Add hybrid capabilities to your HTML5 application in 5 minutes or less.  See how...</li>
-                        <li>No native development, packaging, or app store publication required.</li>
-                    </ul>
+                    <h3><i class="icon-move"></i>BridgeIt Is Flexible</h3>
+                     <ul>
+                         <li>Works with any HTML5/JavaScript-based development approach.</li>
+                         <li>Works seamlessly with any standard mobile browser.</li>
+                     </ul>
+                 </div>
+                 <div class="row">
+                    <h3><i class="icon-glass"></i>BridgeIt Is Easy</h3>
+                     <ul>
+                         <li>Add hybrid capabilities to your HTML5 application in 5 minutes or less.  See how...</li>
+                         <li>No native development, packaging, or app store publication required.</li>
+                     </ul>
+                 </div>
+                 <div class="row">
+                    <h3><i class="icon-thumbs-up-alt"></i>BridgeIt Is Cheap</h3>
+                     <ul>
+                        <li>Actually, it is free and open sourced under the Apache 2 licence.</li>
+                     </ul>
+                 </div>
+                 <div class="row">
+                    <h3><i class="icon-cloud-download"></i>BridgeIt Is Available</h3>
+                     <ul>
+                        <li>Download it now for your mobile device and take her for a whirl.</li>
+                        <li>BridgeIt is Open Source under the Apache 2 licence.</li>
+                     </ul>
+                 </div>
+                 <div class="row">
+                    <h3><img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+                        <span>Developed by ICEsoft Technologies Inc.</span>
+                    </h3>
+                 </div>
+              </fieldset>
+              <h3>Go beyond HTML5...</h3>
+                <div id="flexible">
+                    <img src="./images/flexible.jpg"/>
                 </div>
-                <div class="row">
-                   <h3><i class="icon-thumbs-up-alt"></i>BridgeIt Is Cheap</h3>
-                    <ul>
-                       <li>Actually, it is free and open sourced under the Apache 2 licence.</li>
-                    </ul>
+                <div class="footer">
+                    <a href="#">
+                        <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+                    </a>
+                    &copy; 2013 ICEsoft Technologies
                 </div>
-                <div class="row">
-                   <h3><i class="icon-cloud-download"></i>BridgeIt Is Available</h3>
-                    <ul>
-                       <li>Download it now for your mobile device and take her for a whirl.</li>
-                       <li>BridgeIt is Open Source under the Apache 2 licence.</li>
-                    </ul>
-                </div>
-                <div class="row">
-                   <h3><img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
-                       <span>Developed by ICEsoft Technologies Inc.</span>
-                   </h3>
-                </div>
-             </fieldset>
-             <h3>Go beyond HTML5...</h3>
-               <div id="flexible">
-                   <img src="./images/flexible.jpg"/>
-               </div>
-               <div class="footer">
-                   <a href="#">
-                       <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
-                   </a>
-                   &copy; 2013 ICEsoft Technologies
-               </div>
+            </div>
+        </div>
         </div>
     </div>
     <script src="./docs/scripts/linenumber.js"> </script>
