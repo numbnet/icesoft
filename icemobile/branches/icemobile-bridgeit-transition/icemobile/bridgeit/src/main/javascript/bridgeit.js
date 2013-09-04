@@ -291,13 +291,13 @@ if (!window.console) {
             //hiding the page either indicates user does not require
             //BridgeIt or the url scheme invocation has succeeded
             clearTimeout(checkTimeout);
-            if (ice.push) {
+            if (ice.push && ice.push.connection) {
                 ice.push.connection.pauseConnection();
             }
         }, false);
 
         window.addEventListener("pageshow", function () {
-            if (ice.push) {
+            if (ice.push && ice.push.connection) {
                 ice.push.connection.resumeConnection();
             }
         }, false);
