@@ -18,6 +18,7 @@ package org.icemobile.samples.bridgeit;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,5 +66,11 @@ public class AugmentedRealityController {
     public @ResponseBody List<RealityMessage> getARMessages(WebRequest webRequest) throws IOException {
          return arMessages;
     }
+
+    @RequestMapping(value = "/echo", method=RequestMethod.POST, produces="application/json")
+    public @ResponseBody Map postEcho(HttpServletRequest request) throws IOException {
+        return request.getParameterMap();
+    }
+
 }
 

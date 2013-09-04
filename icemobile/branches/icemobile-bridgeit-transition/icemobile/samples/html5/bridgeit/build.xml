@@ -23,7 +23,7 @@
     <target name="war">
         <loadfile property="camera.html" srcFile="${web.dir}/WEB-INF/includes/camera.html"/>
         <loadfile property="camcorder.html" srcFile="${web.dir}/WEB-INF/includes/camcorder.html"/>
-        <loadfile property="ar.html" srcFile="${web.dir}/WEB-INF/includes/augmented-reality.html"/>
+        <loadfile property="ar.html" srcFile="${web.dir}/WEB-INF/includes/arlocations.html"/>
         <loadfile property="contacts.html" srcFile="${web.dir}/WEB-INF/includes/contact-list.html"/>
         <loadfile property="microphone.html" srcFile="${web.dir}/WEB-INF/includes/microphone.html"/>
         <loadfile property="scan.html" srcFile="${web.dir}/WEB-INF/includes/scan.html"/>
