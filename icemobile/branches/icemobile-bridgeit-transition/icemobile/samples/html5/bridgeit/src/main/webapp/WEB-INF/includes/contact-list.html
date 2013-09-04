@@ -27,6 +27,7 @@
     function handleContact(event)  {
         var HTTP = "http";
         var text = event.value;
+        alert(JSON.stringify(event));
         var elem = document.getElementById("contacts");
         elem.innerHTML = elem.innerHTML + "<div class='row'>" + text + "</div>";
     }

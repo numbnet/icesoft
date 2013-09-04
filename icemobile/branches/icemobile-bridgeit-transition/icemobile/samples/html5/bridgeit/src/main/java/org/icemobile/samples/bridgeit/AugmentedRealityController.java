@@ -60,5 +60,10 @@ public class AugmentedRealityController {
         }
         return null;
     }
+    
+    @RequestMapping(value = "/ar-messages", method=RequestMethod.GET, produces="application/json")
+    public @ResponseBody List<RealityMessage> getARMessages(WebRequest webRequest) throws IOException {
+         return arMessages;
+    }
 }
 

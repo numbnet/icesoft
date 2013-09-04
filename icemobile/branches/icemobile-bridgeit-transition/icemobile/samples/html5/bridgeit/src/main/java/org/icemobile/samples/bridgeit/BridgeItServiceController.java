@@ -122,8 +122,9 @@ public class BridgeItServiceController {
     }
     
     @RequestMapping(value = "/geospy", method=RequestMethod.POST, produces="application/json")
-    public void postGeoSpy(HttpServletRequest request) throws IOException {
+    public @ResponseBody String postGeoSpy(HttpServletRequest request) throws IOException {
         System.out.println("postGeoSpy()");
+        return null;
     }
     
     @RequestMapping(value="/photo-list", method=RequestMethod.GET, produces="application/json")
