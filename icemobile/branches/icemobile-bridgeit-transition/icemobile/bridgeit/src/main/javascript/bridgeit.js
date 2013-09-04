@@ -147,8 +147,12 @@ if (!window.console) {
 
         var returnURL = "" + window.location;
         var lastHash = returnURL.lastIndexOf("#");
-        var theHash = returnURL.substring(lastHash);
-        var theURL = returnURL.substring(0, lastHash);
+        var theHash = "";
+        var theURL = returnURL;
+        if (lastHash > 0)  {
+            theHash = returnURL.substring(lastHash);
+            theURL = returnURL.substring(0, lastHash);
+        }
         returnURL = theURL + "#icemobilesx";
 
         var hashClause = "";
