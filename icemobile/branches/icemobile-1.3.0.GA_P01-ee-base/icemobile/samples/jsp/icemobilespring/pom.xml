@@ -23,7 +23,7 @@
     <parent>
         <groupId>com.icesoft.icemobile-ee.samples</groupId>
         <artifactId>jsp</artifactId>
-        <version>1.3.0.GA</version>
+        <version>1.3.0.GA_P01</version>
     </parent>
     <artifactId>icemobilespring</artifactId>
     <packaging>war</packaging>

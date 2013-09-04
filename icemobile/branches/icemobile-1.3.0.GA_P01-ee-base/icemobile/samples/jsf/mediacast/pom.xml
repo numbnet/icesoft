@@ -23,7 +23,7 @@
     <parent>
         <groupId>com.icesoft.icemobile-ee.samples</groupId>
         <artifactId>jsf</artifactId>
-        <version>1.3.0.GA</version>
+        <version>1.3.0.GA_P01</version>
     </parent>
     <properties>
         <!-- ignore test for everyday builds as current selenium scripts are JDK 1.6 dependent -->
