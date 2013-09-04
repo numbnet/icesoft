@@ -17,13 +17,6 @@ if (!window['ice']) {
 }
 if (!window['bridgeit']) {
     window.bridgeit = {};
-    /** @namespace bridgeIt 
-     * @property {url}  splashImageURL - URL for the splash image to show when loading BridgeIt
-     */
-    /*
-     * @property {function} deviceCommandCallback - The current stored callback for the last native device command
-     * @property {function} userAjaxRequest - User-supplied callback that will be queried and called by bridgeit.ajaxRequest()
-     */
     window.bridgeIt = window.bridgeit; //alias bridgeit and bridgeIt
 }
 if (!window.console) {
@@ -35,9 +28,14 @@ if (!window.console) {
         };
     }
 }
+/**
+ * The BridgeIt JavaScript API. Native Mobile integration for your web app.
+ * 
+ * @class bridgeit
+ */
 (function(b) {
     
-    /************************ PRIVATE ******************************/
+    /* *********************** PRIVATE ******************************/
     function serializeForm(formId, typed) {
         var form = document.getElementById(formId);
         var els = form.elements;
@@ -110,7 +108,7 @@ if (!window.console) {
         return null;
     }
     function deviceCommandExec(command, id, options)  {
-        console.log("deviceCommandExec('" + command + "', '" + id + ", " + options);
+        console.log("deviceCommandExec('" + command + "', '" + id + ", " + JSON.stringify(options));
         var ampchar = String.fromCharCode(38);
         var uploadURL;
         var sessionid;
@@ -374,142 +372,136 @@ if (!window.console) {
     };
 
     
-    /************************ PUBLIC **********************************/
+    /* *********************** PUBLIC **********************************/
     
     /**
-     * @alias bridgeit.register
-     * @desc Register BridgeIt
-     * @param {string} sessionId The server-side session id
-     * @param {url} uploadURL The URL to upload media to
-     */
-    b.register = function register(uploadURL, options) {
-
-        sessionid = options.JSESSIONID;
-        var splashClause = getSplashClause();
-
-        var sxURL = "icemobile:c=register&r=" +
-                            escape(window.location) + "&JSESSIONID=" + sessionid +
-                            splashClause +
-                            "&u=" + escape(uploadURL);
-
-        if (window.chrome)  {
-            window.location.href = sxURL;
-            return;
-        }
-
-        var auxiframe = document.getElementById('auxiframe');
-        if (null == auxiframe) {
-            auxiframe = document.createElement('iframe');
-            auxiframe.setAttribute("id", "auxiframe");
-            auxiframe.setAttribute("style", "width:0px; height:0px; border: 0px");
-            auxiframe.setAttribute("src", sxURL);
-            document.body.appendChild(auxiframe);
-        }
-    };
-    
-    /**
-     * @alias bridgeit.launchFailed
-     * @desc Application provided callback to detect BridgeIt launch failure.
-     *   This should be overridden with an implementation that prompts the
-     *   user to download BridgeIt and potentially fallback with a different
-     *   browser control such as input file.
-     * @param {id} id of the invoking element
+     * Application provided callback to detect BridgeIt launch failure.
+     * This should be overridden with an implementation that prompts the
+     * user to download BridgeIt and potentially fallback with a different
+     * browser control such as input file.
+     *   
+     * @alias plugin.launchFailed
+     * @param {String} id The id of the invoking element TODO
+     * @template
      */
     b.launchFailed = function(id)  {
         alert("BridgeIt not available for " + id);
     };
     /**
-     * @alias bridgeit.scan
-     * @desc Activate the device QR Code scanner
-     * @param {id} id TODO
-     * @param {function} callback The callback function that will be called once the scan is captured
-     * @param {map} options TODO
+     * Launch the device QR Code scanner. 
+     * 
+     * The callback function will be called once the scan is captured.
+     * 
+     * @alias plugin.scan
+     * @param {String} id The id of the invoking element TODO
+     * @param {Function} callback The callback function.
+     * @param {Object} options TODO
+     * @param {String} options.postURL TODO
+     * @param {String} options.JSESSIONID The Java Session id (optional)
+     * @param {Object} options.parameters Additional parameters TODO
+     * @param {HTMLElement} options.element The triggering element TODO
+     * @param {HTMLElement} options.form The form element to be serialized TODO 
+     * 
      */
     b.scan = function(id, callback, options)  {
         deviceCommand("scan", id, callback, options);
     };
     /**
-     * @alias bridgeit.camera
-     * @desc Activate the native camera 
-     * @param {id} id TODO
-     * @param {function} callback The function that will be called once the photo is captured
-     * @param {map} options TODO
+     * Launch the native camera.
+     * 
+     * The callback function will be called once the photo is captured.
+     * 
+     * @alias plugin.camera
+     * @inheritdoc #scan
+     * 
      */
     b.camera = function(id, callback, options)  {
         deviceCommand("camera", id, callback, options);
     };
     /**
-     * @alias bridgeit.camcorder
-     * @desc Activate the native video recorder
-     * @param {id} id TODO
-     * @param {function} callback The function that will be called once the video is captured
-     * @param {map} options TODO
+     * Launch the native video recorder.
+     * 
+     * The callback function will be called once the video has been captured.
+     * 
+     * @alias plugin.camcorder
+     * @inheritdoc #scan
+     * 
      */
     b.camcorder = function(id, callback, options)  {
         deviceCommand("camcorder", id, callback, options);
     };
     /**
-     * @alias bridgeit.microphone
-     * @desc Activate the native audio recorder
-     * @param {id} id TODO
-     * @param {function} callback The function that will be called once the audio is captured
-     * @param {map} options TODO
+     * Launch the native audio recorder.
+     * 
+     * The callback function will be called once the audio is captured.
+     * 
+     * @alias plugin.microphone
+     * @inheritdoc #scan
+     * 
      */
     b.microphone = function(id, callback, options)  {
         deviceCommand("microphone", id, callback, options);
     };
     /**
-     * @alias bridgeit.fetchContact
-     * @desc Activate the native contact list
-     * @param {id} id TODO
-     * @param {function} callback The function that will be called once the contact is retrieved
-     * @param {map} options TODO
+     * Launch the native contact list.
+     * 
+     * The callback function will be called once the contact is retrieved.
+     * 
+     * @alias plugin.fetchContact
+     * @inheritdoc #scan
+     * 
      */
     b.fetchContact = function(id, callback, options)  {
         deviceCommand("fetchContacts", id, callback, options);
     };
     /**
-     * @alias bridgeit.sms
-     * @desc Send an SMS message
-     * @param {id} id TODO
-     * @param {function} callback The function that will be called once the message is sent
-     * @param {map} options TODO
+     * Send an SMS message.
+     * 
+     * The callback function will be called once the message is sent.
+     * 
+     * @alias plugin.sms
+     * @inheritdoc #scan
+     * 
      */
     b.sms = function(id, callback, options)  {
         deviceCommand("sms", id, callback, options);
     };
     /**
-     * @alias bridgeit.augmentedReality
-     * @desc Activate and immerse yourself in a new and better world
-     * @param {id} id TODO
-     * @param {function} callback TODO
-     * @param {map} options TODO
+     * Activate and immerse yourself in a new and better world.
+     * 
+     * The callback function will be called once ...TODO
+     * 
+     * @alias plugin.augmentedReality
+     * @inheritdoc #scan
+     * 
      */
     b.augmentedReality = function(id, callback, options)  {
         deviceCommand("aug", id, callback, options);
     };
     /**
-     * @alias bridgeit.geoSpy
-     * @desc Active native location tracking
-     * @param {id} id TODO
-     * @param {function} callback TODO
-     * @param {map} options TODO
+     * Activate native location tracking.
+     * 
+     * The callback function will be called ..TODO
+     * 
+     * @alias plugin.geoSpy
+     * @inheritdoc #scan
+     * 
      */
     b.geoSpy = function(id, callback, options)  {
         deviceCommand("geospy", id, callback, options);
     };
     /**
-     * @alias bridgeit.register
-     * @desc Register BridgeIt integration and configure Cloud Push
-     * @param {id} id TODO
-     * @param {function} callback TODO
-     * @param {map} options TODO
+     * Register BridgeIt integration and configure Cloud Push.
+     * 
+     * The callback function will be called ..TODO
+     * 
+     * @alias plugin.register
+     * @inheritdoc #scan
+     * 
      */
     b.register = function(id, callback, options)  {
-        deviceCommand("register", id, callback, options);
+        ("register", id, callback, options);
     };
-
-    /* TODO Document use of ice.ajaxRefresh?? */
     
 })(bridgeit);
 
