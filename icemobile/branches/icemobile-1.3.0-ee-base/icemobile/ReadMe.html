@@ -1,0 +1,327 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <!--
+    ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+    ~
+    ~ Licensed under the Apache License, Version 2.0 (the "License");
+    ~ you may not use this file except in compliance with the License.
+    ~ You may obtain a copy of the License at
+    ~
+    ~ http://www.apache.org/licenses/LICENSE-2.0
+    ~
+    ~ Unless required by applicable law or agreed to in writing, software
+    ~ distributed under the License is distributed on an "AS IS" BASIS,
+    ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    ~ See the License for the specific language governing permissions an
+    ~ limitations under the License.
+    -->
+    <meta content="text/html; charset=ISO-8859-1"
+          http-equiv="content-type">
+    <title>ICEmobile 1.3 ReadMe</title>
+    <style type="text/css">
+        body, td, th, input {
+            font-family: verdana, sans-serif;
+            font-size: 80%;
+        }
+
+        code, pre {
+            font-size: 110%
+        }
+
+        body {
+            color: #333333;
+            margin-right: 40px;
+            margin-bottom: 3em;
+            margin-left: 40px;
+        }
+
+        h2 {
+            font-size: 150%;
+            font-weight: normal;
+        }
+
+        h3 {
+            font-size: 125%;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: arial, verdana, sans-serif;
+            margin: 1em 0 0.2em;
+        }
+
+        h1, h2 {
+            border-bottom: 1px solid #AAAAAA;
+            font-weight: bold;
+        }
+
+        h4 {
+            font-size: 110%
+        }
+    </style>
+</head>
+<body>
+<h2>Welcome to ICEmobile 1.3 ! <br/>
+</h2>
+<br/>
+This bundle contains software source-code and executables
+for&nbsp;ICEmobile 1.3.<br/>
+<br/>
+All documentation related to ICEmobile and the use of this bundle
+can be found in the
+<a target="_blank" href="http://wiki.icesoft.org/display/icemobile/ICEmobile">
+    ICEmobile Wiki</a>.<br/>
+<br/>
+
+<h3>Documentation Quick-links</h3>
+<ul>
+    <li><a target="_blank"
+           href="http://wiki.icefaces.org/display/icemobile/Release+Notes">Release Notes</a></li>
+    <li><a target="_blank"
+           href="http://wiki.icesoft.org/display/icemobile/ICEmobile">ICEmobile Documentation</a></li>
+    <ul>
+        <li><a target="_blank"
+               href="http://wiki.icesoft.org/display/icemobile/ICEmobile+Features">Overview</a>
+        </li>
+        <li><a target="_blank"
+               href="http://wiki.icefaces.org/display/icemobile/Tutorials">Tutorials</a></li>
+    </ul>
+</ul>
+<br/>
+
+<h3>Contents</h3>
+<h4 style="font-weight: normal;">Both Binary and Source Bundles are
+    available for download. The contents of each bundle type vary, as
+    described below.<br/>
+</h4>
+<h4><br/>
+</h4>
+<h4>Binary Bundle</h4>
+<br/>
+The binary bundle comes with the ICEfaces and ICEmobile
+libraries pre-compiled and the sample applications pre-built to run on
+"Servlet-profile" platforms, such as Tomcat.
+The binary bundle also includes all the
+source files for the sample applications, but not the ICEfaces, ICEmobile or
+client libraries themselves.&nbsp; <br/>
+<br/>
+The binary bundle contains:
+<br/>
+<ul>
+    <li><span style="font-weight: bold;">docs</span></li>
+    <ul>
+        <li>The ICEmobile API and TLD documentation.</li>
+        <ul>
+            <li>jsf - JavaDocs and TLD docs for the ICEmobile
+                JSF Components (api and tld).
+            </li>
+            <li>jsp - TLD docs for the ICEmobile
+                JSP Components.
+            </li>
+        </ul>
+    </ul>
+    <li><span style="font-weight: bold;">lib</span></li>
+    <ul>
+        <li>The ICEfaces libraries along with any possibly required 3rd-party
+            run-time libraries.
+        </li>
+        <ul>
+            <li>icefaces.jar - The core ICEfaces framework.</li>
+            <li>icefaces-mobi.jar - The ICEmobile JSF component library.</li>
+            <li>icemobile-jsp.jar - The ICEmobile JSP component library.</li>
+            <li>icepush.jar - The ICEpush library, provides push
+                functionality to the ICEfaces framework (optional).
+            </li>
+        </ul>
+    </ul>
+    <li><span style="font-weight: bold;">licenses</span></li>
+    <ul>
+        <li>Summary of legal licenses used by ICEfaces, ICEmobile and 3rd party
+            libraries.
+        </li>
+    </ul>
+    <li><span style="font-weight: bold;">maven2</span></li>
+    <ul>
+        <li>Project files to support using ICEmobile with Maven.</li>
+    </ul>
+    <li><span style="font-weight: bold;">samples</span></li>
+    <ul>
+        <li><span style="font-weight: bold;">build</span></li>
+        <ul>
+            <li>Contains common build script for building current application
+                or to use as templates for new applications.
+            </li>
+        </ul>
+        <li><span style="font-weight: bold;">dist</span></li>
+        <ul>
+            <li>Contains all the sample app .wars prebuilt for
+                "Servlet-profile" platforms, such as Tomcat.
+            </li>
+        </ul>
+        <li><span style="font-weight: bold;">icemobilespring</span></li>
+        <ul>
+            <li>Shows the various components and themes available in the
+                ICEmobile JSP components suite. 
+            </li>
+        </ul>
+        <li><span style="font-weight: bold;">mediacast</span></li>
+        <ul>
+            <li>Shows device capability integration across device types. Photos,
+                videos, and audio can be captured on a client device and shared
+                on a public media carousel.
+            </li>
+        </ul>
+        <li><span style="font-weight: bold;">mobileshowcase</span></li>
+        <ul>
+            <li>Shows the various components and themes available in the
+                ICEmobile JavaServer Faces Component Suite. Each component includes an
+                example of usage and documentation, as well as markup and backing
+                bean resources.
+            </li>
+        </ul>
+    </ul>
+</ul>
+<br/>
+<h4>Source Bundle</h4>
+<br/>
+The source bundle contains all the same libraries and applications as
+the binary bundle but also includes the complete source code for the
+ICEmobile JSF component libraries themselves ICEmobile client containers,
+and additional required ICEmobile build-time libraries. The source bundle does not
+contain any pre-built ICEfaces libraries or example .wars. <br/>
+<br/>
+Use the "ant -p" command in the "icemobile" directory to see the
+available ant build targets.<br/>
+<br/>
+The icemobile directory of the source bundle contains:
+<br/>
+<ul>
+    <li><span style="font-weight: bold;">client</span></li>
+    <ul>
+        <li>Source files and resources to build ICEmobile native containers.
+        </li>
+        <li>Building and deploying the iOS container -
+            <a target="_blank"
+               href="http://wiki.icefaces.org/display/icemobile/iOS+Quick+Start+Tutorial">iOS Quick Start</a>.
+        </li>
+        <li>Installing the Android container on a device or emulator  -
+            <a target="_blank"
+               href="http://wiki.icefaces.org/display/icemobile/Installing+Android+Container">Installing Android Container</a>.
+        </li>
+        <li>Building and deploying the Blackberry container  -
+            <a target="_blank"
+               href="http://wiki.icefaces.org/display/icemobile/Installing+Blackberry+Container">Installing Blackberry Container</a>.
+        </li>
+    </ul>
+    <li><span style="font-weight: bold;">jsf</span></li>
+    <ul>
+        <li>Source files and resources for the ICEmobile JavaServer Faces (JSF) components.</li>
+    </ul>
+    <li><span style="font-weight: bold;">jsp</span></li>
+    <ul>
+        <li>Source files and resources for the ICEmobile JavaServer Pages (JSP) components.</li>
+    </ul>
+    <li><span style="font-weight: bold;">lib</span></li>
+    <ul>
+        <li>The ICEmobile libraries are located here (after being built)
+            along with any possibly required 3rd-party
+            run-time
+            and build-time libraries.
+        </li>
+        <ul>
+            <li>icefaces.jar - The core ICEfaces framework.</li>
+            <li>icefaces-mobile.jar - The ICEfaces mobile component library.</li>
+            <li>icepush.jar - The ICEpush library, provides push
+                functionality to the ICEfaces framework (optional).
+            </li>
+        </ul>
+    </ul>
+    <li><span style="font-weight: bold;">licenses</span></li>
+    <ul>
+        <li>Summary of legal licenses used by ICEfaces, ICEmobile and 3rd party
+            libraries.
+        </li>
+    </ul>
+    <li><span style="font-weight: bold;">maven2</span></li>
+    <ul>
+        <li>Project files to support using ICEmobile with Maven.</li>
+    </ul>
+    <li><span style="font-weight: bold;">samples</span></li>
+    <ul>
+        <li><span style="font-weight: bold;">build</span></li>
+        <ul>
+            <li>Contains common build script for building current application
+                or to use as templates for new applications.
+            </li>
+        </ul>
+        <li><span style="font-weight: bold;">dist</span></li>
+        <ul>
+            <li>Contains all the sample app .wars prebuilt for
+                "Servlet-profile" platforms, such as Tomcat.
+            </li>
+        </ul>
+        <li><span style="font-weight: bold;">mediacast</span></li>
+        <ul>
+            <li>Shows device capability integration across device types. Photos,
+                videos, and audio can be captured on a client device and shared
+                on a public media carousel.
+            </li>
+        </ul>
+        <li><span style="font-weight: bold;">mobileshowcase</span></li>
+        <ul>
+            <li>Shows the various components and themes available in the
+                ICEmobile JavaServer Faces Component Suite. Each component includes an
+                example of usage and documentation, as well as markup and backing
+                bean resources.
+            </li>
+        </ul>
+        <li><span style="font-weight: bold;">icemobilespring</span></li>
+        <ul>
+            <li>Shows the various tags available in the
+                ICEmobile Spring MVC JSP integration. This is a basic demo
+                intended to introduce you to the ICEmobile JSP integration.
+            </li>
+        </ul>
+    </ul>
+</ul>
+<br/>
+<ul>
+    <ul>
+    </ul>
+</ul>
+<h3>Support</h3>
+Please direct all inquiries regarding ICEmobile to the
+<a target="_blank"
+   href="http://www.icefaces.org/JForum/forums/show/30.page">ICEmobile
+    forums</a>.<br
+        style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;"></span><span
+        style="font-family: monospace;"></span><br/>
+<br/>
+<br/>
+
+<p class="Body">
+    <small><br/>
+        &copy; Copyright 2013 ICEsoft Technologies, Inc.
+    </small>
+</p>
+</body>
+</html>
