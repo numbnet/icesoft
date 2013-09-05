@@ -23,52 +23,10 @@
     
     
     <patternset id="pattern.compile.icemobile.html5">
-        <include name="jstl-1.2.jar"/>
-        <include name="javax.servlet-api.jar"/>
-        <include name="javax.servlet-jsp.jar"/>
-        <include name="javax.annotation.jar"/>
-        <include name="el-api-2.2.1-b03.jar"/>
-        <include name="mail.jar"/>
-        <include name="${icepush.lib.name}.jar"    unless="no-icepush"/>
-        <include name="${icemobile-spring.lib.name}.jar"/>
-        <include name="commons-logging.jar"/>
-        <include name="org.springframework.beans-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.context-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.context.support-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.core-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.jdbc-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.transaction-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.web-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.web.servlet-3.1.1.RELEASE.jar"/>
     </patternset>
 
     <patternset id="pattern.distribute.icemobile.html5">
-        <include name="aopalliance-1.0.jar"/>
-        <include name="icemobile-ee-simulator.jar"/>
-        <include name="jstl-1.2.jar"/>
-        <include name="mail.jar"/>
         <include name="${icemobile-filter.lib.name}.jar"/>
-        <include name="${icepush.lib.name}.jar"    unless="no-icepush"/>
-        <include name="${icemobile-spring.lib.name}.jar"/>
-        <include name="commons-logging.jar"/>
-        <include name="commons-dbcp-1.4.jar"/>
-        <include name="commons-pool-1.6.jar"/>
-        <include name="commons-fileupload-1.2.2.jar"/>
-        <include name="hsqldb.jar"/>
-        <include name="jackson-core-asl-1.8.1.jar"/>
-        <include name="jackson-mapper-asl-1.8.1.jar"/>
-        <include name="commons-fileupload-1.2.2.jar"/>
-        <include name="org.springframework.beans-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.context-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.context.support-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.core-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.jdbc-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.transaction-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.web-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.web.servlet-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.asm-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.aop-3.1.1.RELEASE.jar"/>
-        <include name="org.springframework.expression-3.1.1.RELEASE.jar"/>
     </patternset>
 
     <target name="compile" depends="pre.compile">
