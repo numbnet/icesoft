@@ -11,7 +11,7 @@
     </fieldset>
     
     <a id="smsBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.sms('smsBtn',handleSMS, {postURL:(''+window.location).match(/.*\//) + 'service/sms'});">Take a Photo</a>
+        onclick="bridgeit.sms('smsBtn',handleSMS, {postURL: window.serviceHub + '/sms'});">Take a Photo</a>
         
     <fieldset>
         <div class="row"></div>

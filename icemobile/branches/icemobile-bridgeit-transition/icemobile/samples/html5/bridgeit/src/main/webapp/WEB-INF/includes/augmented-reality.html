@@ -111,7 +111,7 @@
                          }, 0);
             }
         }
-        xmlhttp.open("POST",(''+window.location).match(/.*\//) + 'service/post-ar-message',true);
+        xmlhttp.open("POST", window.serviceHub + '/post-ar-message',true);
         xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         var titleElem = document.getElementById('arTitle');
         var photoElem = document.getElementById('arPhoto');

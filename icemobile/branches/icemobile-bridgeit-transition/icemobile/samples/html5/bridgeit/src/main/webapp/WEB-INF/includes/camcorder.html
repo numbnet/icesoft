@@ -11,7 +11,7 @@
     </fieldset>
     
     <a id="camcorderBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.camcorder('camcorderBtn',handleVideo, {postURL:(''+window.location).match(/.*\//) + 'service/video-upload'});">Record some video</a>
+        onclick="bridgeit.camcorder('camcorderBtn',handleVideo, {postURL: window.serviceHub + '/video-upload'});">Record some video</a>
         
     <fieldset>
         <div class="row"><img id="thumbnail"/></div>
