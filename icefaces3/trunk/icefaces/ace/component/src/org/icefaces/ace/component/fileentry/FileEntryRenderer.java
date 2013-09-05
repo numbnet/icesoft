@@ -28,10 +28,14 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @MandatoryResourceComponent(tagName="fileEntry", value="org.icefaces.ace.component.fileentry.FileEntry")
 public class FileEntryRenderer extends Renderer {
     private static final Logger log = Logger.getLogger(FileEntry.class.getName());
+    private static final String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
+    private static final String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.fileEntry.";
     
     @Override
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -64,10 +68,6 @@ public class FileEntryRenderer extends Renderer {
         writer.startElement("div", uiComponent);
         // If multiple then render the buttons for  [+]Add Files  [^]Upload  [x]Delete
         // And render the hidden input type=file behind the AddFiles button
-        //TODO Rename all the style classes to match our own
-        //TODO Handle the noscript scenario where all the buttons should be hidden and the input type=file show
-        //TODO Localise text
-        //TODO Deal with cancel/reset button. Remove it? Rename it? Make it clear out the table rows and input elements via clearFileSelection?
         /*
 <div class="fileupload-buttonbar">
     <div class="fileupload-buttons">
@@ -97,29 +97,40 @@ public class FileEntryRenderer extends Renderer {
     </div>
 </div>
          */
+        Locale locale;
+        ClassLoader classLoader;
+        ResourceBundle bundle = null;
         if (multiple) {
-            writer.writeAttribute("class", "fileupload-buttonbar", "styleClass");
+            locale = facesContext.getViewRoot().getLocale();
+            classLoader = Thread.currentThread().getContextClassLoader();
+            String bundleName = facesContext.getApplication().getMessageBundle();
+            if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
+            if (bundleName == null) bundleName = ACE_MESSAGES_BUNDLE;
+            bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
+			
+            writer.writeAttribute("class", "buttonbar", "styleClass");
 
             writer.startElement("div", uiComponent);
-            writer.writeAttribute("class", "fileupload-buttons", "styleClass");
+            writer.writeAttribute("class", "buttons", "styleClass");
 
-            // Add files button
+            // Add files button (CSS classes are added dynamically in the client)
             writer.startElement("span", uiComponent);
-            writer.writeAttribute("class", "fileinput-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary", "styleClass");
             writer.writeAttribute("role", "button", null);
             writer.writeAttribute("aria-disabled", disabled ? "true" : "false", "disbled");
 
             // +
             writer.startElement("span", uiComponent);
             writer.writeAttribute("class", "ui-button-icon-primary ui-icon ui-icon-plusthick", "styleClass");
+			writer.writeAttribute("style", "display:none;", null);
             writer.endElement("span");
 
             writer.startElement("span", uiComponent);
             writer.writeAttribute("class", "ui-button-text", "styleClass");
+			writer.writeAttribute("style", "display:none;", null);
 
             // "Add files"
             writer.startElement("span", uiComponent);
-            writer.writeText("Add files", uiComponent, null);
+            writer.writeText(bundle.getString(MESSAGE_KEY_PREFIX + "ADD_FILES"), uiComponent, null);
             writer.endElement("span");
 
             writer.endElement("span");  // ui-button-text
@@ -158,12 +169,12 @@ public class FileEntryRenderer extends Renderer {
         }
         writer.endElement("input");
         if (multiple) {
-            writer.endElement("span");  // fileinput-button ...
+            writer.endElement("span");  // add-files ...
 
-            writeMultipleButton(writer, uiComponent, disabled, "Start upload",
+            writeMultipleButton(writer, uiComponent, disabled, bundle.getString(MESSAGE_KEY_PREFIX + "START_UPLOAD"),
                 "submit", "start", "ui-icon-circle-arrow-e", clientId+"_start");
-            writeMultipleButton(writer, uiComponent, disabled, "Cancel upload, reset form",
-                "reset", "cancel", "ui-icon-cancel", clientId+"_cancel");
+            writeMultipleButton(writer, uiComponent, disabled, bundle.getString(MESSAGE_KEY_PREFIX + "CANCEL_UPLOAD"),
+                "button", "cancel", "ui-icon-cancel", clientId+"_cancel");
             /*
             writeMultipleButton(writer, uiComponent, disabled, "Remove file(s)",
                 "button", "delete", "ui-icon-trash", clientId+"_delete");
@@ -181,7 +192,7 @@ public class FileEntryRenderer extends Renderer {
             writer.endElement("span");
             */
             
-            writer.endElement("div");   // fileupload-buttons
+            writer.endElement("div");   // buttons
         }
         writer.endElement("div");
 
@@ -205,6 +216,18 @@ public class FileEntryRenderer extends Renderer {
             writer.endElement("table");
 
             writer.endElement("div");
+			
+			writer.startElement("script", uiComponent);
+			writer.writeAttribute("type", "text/javascript", null);
+			writer.writeText("ice.ace.jq(function(){"
+				+ "var root = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "'));"
+				+ "var addFilesButton = root.find('.buttons').find('> span').eq(0);"
+				+ "addFilesButton.addClass('add-files ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary');"
+				+ "addFilesButton.find('span').attr('style', '');"
+				+ "root.find('.start').attr('style', '');"
+				+ "root.find('.cancel').attr('style', '');"
+				+ "});", uiComponent, null);
+			writer.endElement("script");
         }
 
         writer.endElement("div");
@@ -218,11 +241,15 @@ public class FileEntryRenderer extends Renderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", buttonClass + " ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary", null);
         writer.writeAttribute("type", buttonType, null);
+		writer.writeAttribute("style", "display:none;", null);
         writer.writeAttribute("role", "button", null);
         writer.writeAttribute("aria-disabled", disabled ? "true" : "false", null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
+		if (id.endsWith("_cancel")) {
+			writer.writeAttribute("onclick", "ice.ace.fileentry.clearFileSelection('" + id.substring(0,id.length()-7) + "');return false;", null);
+		}
 
         writer.startElement("span", uiComponent);
         writer.writeAttribute("class", "ui-button-icon-primary ui-icon " + iconClass, null);

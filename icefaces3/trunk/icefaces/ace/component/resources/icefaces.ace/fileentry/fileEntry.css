@@ -35,6 +35,7 @@
 .ice-file-entry .multiple-select-table {
     border-collapse:collapse;
 }
+
 .ice-file-entry .multiple-select-table tr > td {
     border-color:inherit;
     border-style:solid;
@@ -43,11 +44,12 @@
     text-align: center;
 }
 
-.fileinput-button {
+.ice-file-entry .add-files {
     position: relative;
     overflow: hidden;
 }
-.fileinput-button input {
+
+.ice-file-entry .add-files input {
     position: absolute;
     top: 0;
     right: 0;
@@ -59,12 +61,17 @@
     direction: ltr;
     cursor: pointer;
 }
-.fileupload-buttonbar .btn,
-.fileupload-buttonbar .toggle {
+
+.ice-file-entry .start, .ice-file-entry .cancel {
+	vertical-align: top;
+}
+/*
+.ice-file-entry .buttonbar .btn,
+.ice-file-entry .buttonbar .toggle {
     margin-bottom: 5px;
 }
 
-.fileupload-loading {
+.ice-file-entry .loading {
     float: right;
     width: 32px;
     height: 32px;
@@ -72,6 +79,8 @@
     background-size: contain;
     display: none;
 }
-.fileupload-processing .fileupload-loading {
+
+.ice-file-entry .processing .loading {
     display: block;
 }
+*/
