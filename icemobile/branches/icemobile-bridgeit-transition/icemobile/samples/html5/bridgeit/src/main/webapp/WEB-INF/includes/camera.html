@@ -11,7 +11,7 @@
     </fieldset>
     
     <a id="cameraBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.camera('cameraBtn',handleCam, {postURL:(''+window.location).match(/.*\//) + 'service/camera-upload'});">Take a Photo</a>
+        onclick="bridgeit.camera('cameraBtn',handleCam, {postURL:window.serviceHub + '/camera-upload'});">Take a Photo</a>
         
     <fieldset>
         <div class="row"><img id="thumbnail"/></div>

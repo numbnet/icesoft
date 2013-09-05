@@ -156,6 +156,12 @@
                 &copy; 2013 ICEsoft Technologies
             </div>
      </div>
+    <div id="getBridgeItPopup" style="opacity: 0;display:none;">
+        <a id="closeGetBridgePopup" onclick="closeGetBridgeItPopup();">Close</a>
+        <p>Missing BridgeIt native features..would you like to download the app now?</p>
+        <a id="appStoreLink" href="http://www.icesoft.org/projects/ICEmobile/containers.jsf"
+            type="button" class="whiteButton bridgeItBtn">Download the app now</a>
+    </div>
     <script src="./docs/scripts/linenumber.js"> </script>
     <script src="./docs/scripts/prettify/prettify.js"> </script>
     <script src="./docs/scripts/prettify/lang-css.js"> </script>
@@ -176,7 +182,35 @@
     .highlightPlaceholder::-moz-placeholder, .highlightPlaceholder:-ms-input-placeholder{
        color: red;
     }
+    #getBridgeItPopup{
+        width: 80%;
+        height: auto;
+        min-height: 300px;
+        position: absolute;
+        bottom: 0;
+        border: 20px solid #EEE;
+        border-radius: 10px;
+        padding: 20px;
+        text-align:center;
+        margin: 0 auto;
+        box-sizing: border-box;
+        display: block;
+        right: 0;
+        background-color: rgb(245, 222, 180);
+        -webkit-transition: opacity 5s ease-in-out;
+        -moz-transition: opacity 5s ease-in-out;
+        -o-transition: opacity 5s ease-in-out;
+        transition: opacity 5s ease-in-out;
+    }
+    #getBridgeItPopup p{ font-size: 20px;}
+    #closeGetBridgePopup{
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        color: white;
+    }
     </style>
+    <script type="text/javascript" src="./javascript/bridgeit-demos.js"></script>
 </body>
 </html>
 
