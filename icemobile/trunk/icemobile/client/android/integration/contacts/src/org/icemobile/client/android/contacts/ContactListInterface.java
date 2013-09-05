@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.provider.ContactsContract;
@@ -35,6 +36,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
+import android.net.Uri;
 
 /**
  *
@@ -46,26 +48,23 @@ import android.util.Log;
 	private ContentResolver mResolver; 
 	private Runnable mCompletionCallback; 
 
-	private String[] mContactArray;	
-	private String[] mIdArray;	
-
 	private final String SELECT_TYPE_ARG = "select";
 	private final String FIELDS_ARG = "fields"; 
 	private final String NAME_FIELD = "name"; 
 	private final String EMAIL_FIELD = "email"; 
 	private final String PHONE_FIELD = "phone"; 
-	private final String SORT_ORDER =  " asc"; 
-
 	private UtilInterface mInterface; 
 	private boolean mFetchContact; 
 	private boolean mFetchEmail; 
 	private boolean mFetchPhone;   
 	private int selected;
+	private int contactCode;
 
-	public ContactListInterface(UtilInterface util, Context context, ContentResolver cr) {
+	public ContactListInterface(UtilInterface util, Context context, ContentResolver cr, int contact_code) {
 	    mContext = context; 
 	    mResolver = cr; 
 	    mInterface = util;
+	    contactCode = contact_code;
 	}
 
     public void setCompletionCallback(Runnable callback)  {
@@ -83,67 +82,14 @@ import android.util.Log;
 
 	    String presetFilter = attributes.getAttribute("pattern", null);
 	    Log.d("ICEmobileContainer", "Value of preset filter: " + presetFilter); 
-	    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);        
+	    Intent i=new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
 
-	    Cursor cur = null;
-	    String[] projection = { ContactsContract.Contacts._ID,
-				    ContactsContract.Contacts.DISPLAY_NAME};
+	    ((Activity)mContext).startActivityForResult(i, contactCode);	    
+	}
 
-	    try { 
-		if (presetFilter != null) {
-		    presetFilter = "%"+ presetFilter + "%";
-		    String selection = ContactsContract.Contacts.DISPLAY_NAME + " like ?";        	
-		    cur = mResolver.query( ContactsContract.Contacts.CONTENT_URI, null, selection, 
-					   new String[] {presetFilter}, 
-					   ContactsContract.Contacts.DISPLAY_NAME + SORT_ORDER);
-
-		} else { 
-		    cur = mResolver.query( ContactsContract.Contacts.CONTENT_URI, projection, null, 
-					   null, ContactsContract.Contacts.DISPLAY_NAME + SORT_ORDER);
-		}
-
-	    } catch (Exception e) { 
-		Log.e("ICEmobileContainer", "Exception doing query: " + e); 
-		return;
-	    }
-
-	    int rowCount = cur.getCount();
-	    int rowIdx = 0; 
-
-	    if ( rowCount > 0 ) { 
-
-		mContactArray = new String[ rowCount ];
-		mIdArray = new String[ rowCount ];
-		cur.moveToFirst();
-		while (rowIdx < rowCount) { 
-
-		    // Get contact name;
-		    mIdArray[rowIdx] = cur.getString(cur.getColumnIndex(BaseColumns._ID));
-		    mContactArray[rowIdx] = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-		    cur.moveToNext();
-		    rowIdx++;
-		}          	
-		cur.close(); 
-
-		builder.setTitle("Select from Contact List "); 
-		builder.setCancelable(true);
-		builder.setNegativeButton("Cancel",  new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		    });
-
-		builder.setSingleChoiceItems(mContactArray, -1 , new SingleSelectListener() );
-		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-			    uploadContactInfo();
-			}		
-		    });
-
-		builder.create().show(); 
-			
-	    } else { 
-		builder.setMessage(R.string.no_contact_message).show(); 
-
+	public void gotContact(Uri contactUri) {
+	    if (contactUri != null) {
+		uploadContactInfo(contactUri);
 	    }
 	}
 
@@ -172,68 +118,75 @@ import android.util.Log;
 	/**
 	 * Upload the contact info to the hidden fields in the javascript layer via the UtilInterface.loadURL method. 
 	 */
-	private void uploadContactInfo() {
-	    if (selected < 0) {
-            return;
-        }
-		String encodedContactList = getEncodedContactList(); 
-		try { 
-		    Log.d("ICEcontacts", "Encoded Contact = " + encodedContactList);
-		    mInterface.loadURL("javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
-            if (null != mCompletionCallback)  {
-                mCompletionCallback.run();
-            }
-		} catch (Exception e) { 
-		    Log.e("ICEmobile", "Exception encoding contact information: " + e); 
+	private void uploadContactInfo(Uri contactUri) {
+	    String encodedContactList = getEncodedContactList(contactUri); 
+	    try { 
+		Log.d("ICEcontacts", "Encoded Contact = " + encodedContactList);
+		mInterface.loadURL("javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
+		if (null != mCompletionCallback)  {
+		    mCompletionCallback.run();
 		}
-    }
+	    } catch (Exception e) { 
+		Log.e("ICEmobile", "Exception encoding contact information: " + e); 
+	    }
+	}
     
-	public String getEncodedContactList() {
+	public String getEncodedContactList(Uri contactUri) {
 
-	    if (selected < 0) {
-            return null;
-        }
+	    String[] projection = { ContactsContract.Contacts._ID,
+				    ContactsContract.Contacts.DISPLAY_NAME};
+	    Cursor dataCur;
+	    String phone;
+	    String email;
+            Cursor cursor = mResolver.query(contactUri, projection, null, null, null);
+            cursor.moveToFirst();
+		
+	    // Get name and id;
+            int column = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+            String displayName = cursor.getString(column);
+            column = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+            String id = cursor.getString(column);
+	    cursor.close();
 
-		StringBuilder contactList = new StringBuilder(); 
-		if (mFetchContact) { 
-		    contactList.append( NAME_FIELD+"=" + mContactArray [selected] + "&");
+	    StringBuilder contactList = new StringBuilder(); 
+	    if (mFetchContact) { 
+		contactList.append( NAME_FIELD + "=" + displayName + "&");
+	    Log.e("ICEcontact", "Contact(name) = " + contactList.toString());
+	    }
+
+	    // Get phone;
+	    if (mFetchPhone) { 
+		projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER };
+		dataCur = mResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
+					  projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + id, null, null);
+		if (dataCur.moveToFirst()) {
+		    contactList.append(PHONE_FIELD + "=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
+	    Log.e("ICEcontact", "Contact(phone) = " + contactList.toString());
+		    dataCur.close();
 		}
+	    }
 
-		String[] projection;
-		Cursor dataCur;
-		String phone;
-		String email;
-		if (mFetchPhone) { 
-		    // Get phone;
-		    projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER };
-		    dataCur = mResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
-					      projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + mIdArray[selected], null, null);
-		    if (dataCur.moveToFirst()) {
-			contactList.append("phone=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
-			dataCur.close();
-		    }
+	    // Get email;
+	    if (mFetchEmail) { 
+		projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER };  //should be ContactsContract.CommonDataKinds.Email.ADDRESS but not available until API 11
+		dataCur = mResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, 
+					  projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + id, null, null);
+		if (dataCur.moveToFirst()) {
+		    contactList.append(EMAIL_FIELD + "=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
+	    Log.e("ICEcontact", "Contact(email) = " + contactList.toString());
+		    dataCur.close();
 		}
-		if (mFetchEmail) { 
-		    // Get email;
-		    projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER };  //should be ContactsContract.CommonDataKinds.Email.ADDRESS but not available until API 11
-		    dataCur = mResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, 
-					      projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + mIdArray[selected], null, null);
-		    if (dataCur.moveToFirst()) {
-			contactList.append("email=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
-			dataCur.close();
-		    }
-		}
+	    }
 
-		String encodedContactList = null;
-        try {
-            encodedContactList = URLEncoder.encode(
-                contactList.toString(), "utf-8");
-        } catch (Exception e)  {
-		    Log.e("ICEmobile", "Exception encoding contact information: " + e); 
-        }
+	    Log.e("ICEcontact", "Contact = " + contactList.toString());
+	    String encodedContactList = null;
+	    try {
+		encodedContactList = URLEncoder.encode(contactList.toString(), "utf-8");
+	    } catch (Exception e)  {
+		Log.e("ICEmobile", "Exception encoding contact information: " + e); 
+	    }
 
-        return encodedContactList;
-
+	    return encodedContactList;
 	}
 
 	class SingleSelectListener implements DialogInterface.OnClickListener {
