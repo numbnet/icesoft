@@ -18,24 +18,14 @@ package org.icemobile.component;
 
 
 public interface ITabSet extends IMobiComponent{
-    
-    public static final StringBuilder TABSET_CONTAINER_CLASS = new StringBuilder("mobi-tabset");
+    public static final StringBuilder TABSET_CONTAINER_CLASS = new StringBuilder("mobi-tabset ui-widget");
     public static final StringBuilder TABSET_CONTAINER_BOTTOM_CLASS = new StringBuilder("mobi-tabset-tabs-bottom");
     public static final StringBuilder TABSET_CONTAINER_BOTTOM_FOOTER_CLASS = new StringBuilder("mobi-tabset-tabs-bottom-footer");
     public static final StringBuilder TABSET_CONTAINER_TOP_CLASS = new StringBuilder("mobi-tabset-tabs-top");
     public static final StringBuilder TABSET_CONTAINER_TOP_HEADER_CLASS = new StringBuilder("mobi-tabset-tabs-top-header");
-    public static final StringBuilder TABSET_TABS_UNFIXED_CLASS = new StringBuilder("mobi-tabset-tabs-nonfixed ui-bar-b");
-    public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs ui-bar-b");
-    /* activeTab is now done with javascript so tabs are not rendered every request if not changed */
-  //  public static final StringBuilder TABSET_ACTIVETAB_CLASS = new StringBuilder("activeTab ");
+    public static final StringBuilder TABSET_TABS_UNFIXED_CLASS = new StringBuilder("mobi-tabset-tabs-nonfixed ui-widget-header");
+    public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs ui-widget-header");
     public static final StringBuilder TABSET_CONTENT_CLASS = new StringBuilder("mobi-tabset-content");
-    public static final String TABSET_HIDDEN_PAGECLASS = "mobi-tabpage-hidden";
-    public static final String TABSET_ACTIVE_CONTENT_CLASS= "mobi-tabpage";
-
-    public static final String JS_NAME = "tabset.js";
-    public static final String JS_MIN_NAME = "tabset-min.js";
-    public static final String LIB_JSF = "org.icefaces.component.tabset";
-    public static final String LIB_JSP = "javascript";
         
     public void setHeight(String fixedHeight);
     public String getHeight();
@@ -53,12 +43,10 @@ public interface ITabSet extends IMobiComponent{
     public boolean setIsTop(String orientation);
     public Boolean isParentFooter();
     public Boolean isParentHeader();
-  //  public void setParentHeaderFooter();
     public boolean isSingleSubmit();
     public boolean isAutoHeight();
     public String getDefaultId();
     public void setDefaultId(String defId);
     public boolean isFixedPosition();
     public void setFixedPosition(boolean fixedHeader);
-
 }
