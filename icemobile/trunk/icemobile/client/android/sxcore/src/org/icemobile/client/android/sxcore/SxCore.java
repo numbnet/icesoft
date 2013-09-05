@@ -96,6 +96,7 @@ public class SxCore extends Activity
     protected static final int RECORD_CODE = 5;
     protected static final int ARVIEW_CODE = 6;
     protected static final int ARMVIEW_CODE = 7;
+    protected static final int CONTACT_CODE = 8;
 
     public static final String SCAN_ID = "org.icemobile.id";
 
@@ -118,6 +119,7 @@ public class SxCore extends Activity
     private boolean pendingCloudPush;
     private Uri mReturnUri;
     private Uri mPOSTUri;
+    private Uri mContactUri;
     private String mParameters;
     private String mCurrentId;
     private String mCurrentjsessionid;
@@ -414,8 +416,8 @@ public class SxCore extends Activity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode,
+					Intent data) {
         //better to store return data in the intent than keep member
         //fields on this class
 
@@ -428,48 +430,53 @@ public class SxCore extends Activity
 	Log.d(LOG_TAG, "onActivityResult: request = " + requestCode + ", result = " + resultCode);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case TAKE_PHOTO_CODE:
-		    Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
-                    mCameraHandler.gotPhoto();
-                    encodedForm += encodeMedia(mCurrentId,
-                            mCurrentMediaFile);
-                    utilInterface.setUrl(mPOSTUri.toString());
-                    utilInterface.submitForm("", encodedForm, mBrowserReturn);
-		    Log.d(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
-                    break;
-                case TAKE_VIDEO_CODE:
-                    mVideoHandler.gotVideo(data);
-                    encodedForm += encodeMedia(mCurrentId,
-                            mCurrentMediaFile);
-                    utilInterface.setUrl(mPOSTUri.toString());
-                    utilInterface.submitForm("", encodedForm, mBrowserReturn);
-		    Log.d(LOG_TAG, "onActivityResult completed TAKE_VIDEO_CODE");
-                    break;
-                case SCAN_CODE:
-                    String scanResult = data.getStringExtra(Intents.Scan.RESULT);
+	    case TAKE_PHOTO_CODE:
+		Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
+		mCameraHandler.gotPhoto();
+		encodedForm += encodeMedia(mCurrentId,
+					   mCurrentMediaFile);
+		utilInterface.setUrl(mPOSTUri.toString());
+		utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		Log.d(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
+		break;
+	    case TAKE_VIDEO_CODE:
+		mVideoHandler.gotVideo(data);
+		encodedForm += encodeMedia(mCurrentId,
+					   mCurrentMediaFile);
+		utilInterface.setUrl(mPOSTUri.toString());
+		utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		Log.d(LOG_TAG, "onActivityResult completed TAKE_VIDEO_CODE");
+		break;
+	    case SCAN_CODE:
+		String scanResult = data.getStringExtra(Intents.Scan.RESULT);
 
-                    encodedForm += "hidden-" + mCurrentId + "=" +
-                            URLEncoder.encode(scanResult);
-                    utilInterface.setUrl(mPOSTUri.toString());
-                    utilInterface.submitForm("", encodedForm, mBrowserReturn);
-                    break;
-                case RECORD_CODE:
-                    mAudioRecorder.gotAudio(data);
-                    encodedForm += encodeMedia(mCurrentId,
-                            mCurrentMediaFile);
-                    utilInterface.setUrl(mPOSTUri.toString());
-                    utilInterface.submitForm("", encodedForm, mBrowserReturn);
-		    Log.d(LOG_TAG, "onActivityResult completed RECORD_CODE");
-                    break;
-                case ARVIEW_CODE:
-		    Log.d(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
-                    returnToBrowser();
-                    break;
-                case ARMVIEW_CODE:
-//		mARViewHandler.arViewComplete(data);
-		    Log.d(LOG_TAG, "completed AR Marker View");
-                    returnToBrowser();
-                    break;
+		encodedForm += "hidden-" + mCurrentId + "=" +
+		    URLEncoder.encode(scanResult);
+		utilInterface.setUrl(mPOSTUri.toString());
+		utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		break;
+	    case RECORD_CODE:
+		mAudioRecorder.gotAudio(data);
+		encodedForm += encodeMedia(mCurrentId,
+					   mCurrentMediaFile);
+		utilInterface.setUrl(mPOSTUri.toString());
+		utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		Log.d(LOG_TAG, "onActivityResult completed RECORD_CODE");
+		break;
+	    case ARVIEW_CODE:
+		Log.d(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
+		returnToBrowser();
+		break;
+	    case ARMVIEW_CODE:
+		//		mARViewHandler.arViewComplete(data);
+		Log.d(LOG_TAG, "completed AR Marker View");
+		returnToBrowser();
+		break;
+	    case CONTACT_CODE:
+		Log.d(LOG_TAG, "Got Contact");
+		mContactUri = (Uri)data.getData();
+		mContactListInterface.gotContact(mContactUri);
+		break;
             }
         } else {
 	    returnToBrowser();
@@ -529,11 +536,11 @@ public class SxCore extends Activity
     }
 
     private void includeContacts() {
-        mContactListInterface = new ContactListInterface(utilInterface, this, getContentResolver());
+        mContactListInterface = new ContactListInterface(utilInterface, this, getContentResolver(), CONTACT_CODE);
         mContactListInterface.setCompletionCallback(new Runnable() {
                 public void run()  {
                     String encodedContact = 
-                            mContactListInterface.getEncodedContactList();
+                            mContactListInterface.getEncodedContactList(mContactUri);
                     String encodedForm = "hidden-" + mCurrentId + "=" + encodedContact;
                     if (null != mParameters)  {
                         encodedForm += "&" + mParameters;
