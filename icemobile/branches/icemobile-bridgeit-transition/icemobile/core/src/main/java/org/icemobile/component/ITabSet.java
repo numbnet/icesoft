@@ -26,6 +26,11 @@ public interface ITabSet extends IMobiComponent{
     public static final StringBuilder TABSET_TABS_UNFIXED_CLASS = new StringBuilder("mobi-tabset-tabs-nonfixed ui-widget-header");
     public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs ui-widget-header");
     public static final StringBuilder TABSET_CONTENT_CLASS = new StringBuilder("mobi-tabset-content");
+
+    public static final String JS_NAME = "tabset.js";
+    public static final String JS_MIN_NAME = "tabset-min.js";
+    public static final String LIB_JSF = "org.icefaces.component.tabset";
+    public static final String LIB_JSP = "javascript";
         
     public void setHeight(String fixedHeight);
     public String getHeight();
