@@ -328,8 +328,9 @@ if (!window.console) {
                 if ("" != data)  {
                     deviceParams = unpackDeviceResponse(data);
                     if (deviceParams.name)  {
-                        setInput(deviceParams.name, deviceParams.name,
-                                deviceParams.value);
+                        name = deviceParams.name;
+                        value = deviceParams.value;
+                        setInput(name, name, value);
                         needRefresh = false;
                     }
                 }
