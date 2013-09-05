@@ -49,13 +49,13 @@ mobi.flipswitch = {
             var onClass = this.flipperEl.children[0].className;
             var offClass = this.flipperEl.children[2].className;
             if (oldClass.indexOf('-off ')>0){
-            	this.flipperEl.className='mobi-flipswitch mobi-flipswitch-on ui-btn-down-c';
-            	this.flipperEl.children[0].className = 'mobi-flipswitch-txt-on';
-            	this.flipperEl.children[2].className = 'mobi-flipswitch-txt-off ui-btn-up-c';
+            	this.flipperEl.className='mobi-flipswitch mobi-flipswitch-on ui-widget';
+            	this.flipperEl.children[0].className = 'mobi-flipswitch-txt-on ui-state-active';
+            	this.flipperEl.children[2].className = 'mobi-flipswitch-txt-off';
                 value = true;
             }else{
-             	this.flipperEl.className='mobi-flipswitch mobi-flipswitch-off ui-btn-down-c';
-             	this.flipperEl.children[0].className = 'mobi-flipswitch-txt-on ui-btn-up-c';
+             	this.flipperEl.className='mobi-flipswitch mobi-flipswitch-off ui-widget';
+             	this.flipperEl.children[0].className = 'mobi-flipswitch-txt-on';
                 this.flipperEl.children[2].className = 'mobi-flipswitch-txt-off';
                	value = false;
             }
