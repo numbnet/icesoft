@@ -891,20 +891,18 @@ if (window.addEventListener) {
 
     window.addEventListener("hashchange", function () {
         var data = ice.mobi.getDeviceCommand();
+        var deviceParams;
         if (null != data)  {
             var name;
             var value;
             var needRefresh = true;
             if ("" != data)  {
-                var parts = unescape(data).split("=");
-                if (parts)  {
-                    name = parts[0];
-                    value = parts[1];
+                deviceParams = ice.mobi.unpackDeviceResponse(data);
+                if (deviceParams.name)  {
+                    name = deviceParams.name;
+                    value = deviceParams.value;
                     ice.mobi.setInput(name, name, value);
-                    //do not refresh the page if valid local data is provided
-                    if ("!" !== name.substring(0,1))  {
-                        needRefresh = false;
-                    }
+                    needRefresh = false;
                 }
             }
             if (needRefresh)  {
@@ -1116,6 +1114,26 @@ ice.mobi.impl.getSplashClause = function()  {
         splashClause = "&s=" + escape(splashImage);
     }
     return splashClause;
+}
+
+ice.mobi.unpackDeviceResponse = function (data)  {
+    var result = {};
+    var params = data.split("&");
+    var len = params.length;
+    for (var i = 0; i < len; i++) {
+        var splitIndex = params[i].indexOf("=");
+        var paramName = unescape(params[i].substring(0, splitIndex));
+        var paramValue = unescape(params[i].substring(splitIndex + 1));
+        if ("!" === paramName.substring(0,1))  {
+            //ICEmobile parameters are set directly
+            result[paramName.substring(1)] = paramValue;
+        } else  {
+            //only one user value is supported
+            result.name = paramName;
+            result.value = paramValue;
+        }
+    }
+    return result;
 }
 
 ice.mobi.invoke = function(element)  {
