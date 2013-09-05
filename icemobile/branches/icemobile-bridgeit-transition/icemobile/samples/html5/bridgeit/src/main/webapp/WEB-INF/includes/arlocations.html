@@ -3,7 +3,7 @@
       var map = null;
       var marker = null;
       var counter = 1;
-      var locations = "";
+      var locations = {};
 
       function initialize() {
             var mapOptions = {
@@ -38,11 +38,7 @@
               icon: iconFile
             });
             
-            var sep = String.fromCharCode(38);  //ampersand
-            if ("" === locations)  {
-                sep = "";
-            }
-            locations += sep + markerName + "=" + 
+            locations[markerName] =
                 event.latLng.lat() + "," + 
                 event.latLng.lng() + ",,," + iconFile;
 

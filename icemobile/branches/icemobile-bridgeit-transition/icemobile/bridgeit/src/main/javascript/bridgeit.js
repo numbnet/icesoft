@@ -124,7 +124,11 @@ if (!window.console) {
                 sessionid = options.JSESSIONID;
             }
             if (options.parameters)  {
-                params = options.parameters;
+                if ("string" === typeof options.parameters)  {
+                    params = options.parameters;
+                } else {
+                    params = packObject(options.parameters);
+                }
             }
             if (options.element)  {
                 element = options.element;
@@ -266,6 +270,15 @@ if (!window.console) {
             }
             parent = parent.parentNode;
         }
+    }
+    function packObject(params)  {
+        var packed = "";
+        var sep = "";
+        for (var key in params)  {
+            packed += sep + escape(key) + "=" + escape(params[key]);
+            sep = "&";
+        }
+        return packed;
     }
     function unpackDeviceResponse(data)  {
         var result = {};
