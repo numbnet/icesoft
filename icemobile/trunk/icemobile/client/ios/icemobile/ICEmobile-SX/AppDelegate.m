@@ -98,7 +98,7 @@
     NSString *reqString = [url absoluteString];
     NSString *body = [reqString substringFromIndex:[@"icemobile:" length]];
     if ([body hasPrefix:@"//"])  {
-        body = [reqString substringFromIndex:[@"//" length]];
+        body = [body substringFromIndex:[@"//" length]];
     }
     NSDictionary *params = 
             [self.viewController.nativeInterface parseQuery:body];
