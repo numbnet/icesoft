@@ -25,8 +25,10 @@
           title: 'You are here',
         });
 
+        var iconBase = (Math.round(Math.random() * 9) + 1);
+
         google.maps.event.addListener(map, 'click', function(event) {
-            var iconNum = (Math.round(Math.random() * 9) + 1);
+            var iconNum = ((iconBase + (counter++)) % 9) + 1;
             var markerName = "Aug" + iconNum + (counter++);
             var iconFile = "images/icon" + iconNum + ".png";
             var marker = new google.maps.Marker({
@@ -92,7 +94,16 @@
         <div id="map-canvas" style="margin: 0 0 20px 0;height:380px;"></div>
       
         <div id="overlay" >
-            <button id="aug" onclick="bridgeit.augmentedReality('_loc',handleAug, {postURL:(''+window.location).match(/.*\//) + '/service/echo/', parameters: locations});">View Reality ... </button>
+            <style scoped>
+                .overbutton {
+                    height: 50px;
+                    line-height : 50px;
+                    background-color: white;
+                    font-weight: bold;
+                    margin: 10px;
+                }
+            </style>
+            <button id="aug" class="overbutton" onclick="bridgeit.augmentedReality('_loc',handleAug, {postURL:(''+window.location).match(/.*\//) + '/service/echo/', parameters: locations});">Reality View ... </button>
         </div>
 
      <button onclick='google.maps.event.trigger(map, "resize");'>Fix Map Hack: Resize window or click this button</button>
