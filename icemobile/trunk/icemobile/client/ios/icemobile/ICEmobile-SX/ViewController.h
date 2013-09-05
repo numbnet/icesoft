@@ -36,6 +36,7 @@
     NSDictionary *confirmTitles;
     NSArray *commandNames;
     BOOL launchedFromApp;
+    BOOL isResponding;
     UIProgressView *uploadProgress;
     UILabel *uploadLabel;
     UILabel *appTitle;
@@ -69,6 +70,7 @@
 @property (retain) NSDictionary *confirmTitles;
 @property (retain) NSArray *commandNames;
 @property (nonatomic) BOOL launchedFromApp;
+@property (nonatomic) BOOL isResponding;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
 @property (nonatomic, retain) IBOutlet UILabel *uploadLabel;
 @property (nonatomic, retain) IBOutlet UILabel *appTitle;
