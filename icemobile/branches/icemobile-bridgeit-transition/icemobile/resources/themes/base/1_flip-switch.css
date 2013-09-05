@@ -20,6 +20,7 @@
     border-radius: 1.8em;
     -webkit-background-clip: padding;
     background-clip: padding-box;
+    background-color: transparent;
 }
 
 .mobi-flipswitch *{
@@ -60,4 +61,5 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    border: none;
 }

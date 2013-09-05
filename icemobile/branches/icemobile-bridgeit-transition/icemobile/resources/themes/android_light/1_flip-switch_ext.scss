@@ -15,7 +15,6 @@
  */
  
  .mobi-flipswitch{
-    background-color: #555;
     -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
     border-radius: 0;
     border: none !important;
@@ -29,9 +28,6 @@
     text-shadow: none;
 }
 .mobi-flipswitch-on .mobi-flipswitch-txt-on {
-    background-color: #33B5E5;
-    border-top: 1px solid #6FCAEC;
-    color: #FFF;
     height: 21px;
 }
 .mobi-flipswitch-on .mobi-flipswitch-txt-off{
@@ -39,13 +35,11 @@
     margin: 0;
     background: #555;
     border: none;
-    border-top: 1px solid #555;
     height: 21px;
     min-width: 27px;
 }
 .mobi-flipswitch-off .mobi-flipswitch-txt-off {
     background-color: #DDD;
-    border-top: 1px solid #878787;
     color: #666;
 }
 .mobi-flipswitch-off .mobi-flipswitch-txt-on{
