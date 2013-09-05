@@ -23,19 +23,12 @@
     </div>
     <script type="text/javascript">
     function handleScan(event)  {
-        alert('handleScan:' + event);
         var HTTP = "http";
         var text = event.value;
-        alert('text=' + text);
-        for( prop in event ){
-            alert(prop + '=' + event[prop]);
-        }
         if (HTTP == text.substring(0, HTTP.length))  {
-            alert('url=' + text);
             text = "<a href='" + text + "'>" + text + "</a>";
         }
         var elem = document.getElementById("scans");
-        alert('scans elem = ' + elem);
         var row1 = document.createElement('div');
         row1.setAttribute('class','row');
         row1.innerHTML = "Scanned on " + new Date();
