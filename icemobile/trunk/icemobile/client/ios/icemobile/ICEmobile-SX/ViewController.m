@@ -91,6 +91,7 @@
 }
 
 - (void)completeSmallPost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
+NSLog(@"completeSmallPost %@", self.returnURL);
     if ([self.returnURL hasSuffix:@"#icemobilesx"])  {
         self.returnURL = [self.returnURL stringByAppendingString:@"_"];
         self.returnURL = [self.returnURL stringByAppendingString:
@@ -104,6 +105,8 @@
             self.returnURL = [self.returnURL stringByAppendingString:
                     [self.currentEncodedThumbnail
                     stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+            //thumbnail is consumed
+            self.currentEncodedThumbnail = nil;
         }
         if (nil != self.returnHash)  {
             self.returnURL = [self.returnURL stringByAppendingString:@"&!h="];
@@ -117,6 +120,11 @@
                     [self.cloudPushId
                     stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
         }
+        return;
+    }
+
+    if (YES == self.isResponding)  {
+        //already uploading so no need for fall through
         return;
     }
 
@@ -226,6 +234,7 @@ NSLog(@"hideControls");
 
 - (void) handleResponse:(NSString *)responseString  {
 NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
+    self.isResponding = YES;
     if (!self.launchedFromApp)  {
         if (responseString.length < 1500)  {
             [self completeSmallPost:responseString
@@ -318,6 +327,7 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
             LogDebug(@"currentCookies %@ ", [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies );
         }
 
+        self.isResponding = NO;
         [nativeInterface dispatch:self.currentCommand];
     } else if (buttonIndex == 1)  {
         [self doCancel];
