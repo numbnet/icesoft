@@ -37,9 +37,6 @@ import org.icemobile.component.ITabSet;
 
 public class TabSetRenderer extends BaseLayoutRenderer {
     private static final Logger logger = Logger.getLogger(TabSetRenderer.class.getName());
-    private static final String JS_NAME = "tabset.js";
-    private static final String JS_MIN_NAME = "tabset-min.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.tabset";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {

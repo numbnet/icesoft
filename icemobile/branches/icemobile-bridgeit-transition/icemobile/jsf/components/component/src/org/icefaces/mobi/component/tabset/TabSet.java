@@ -55,14 +55,6 @@ public class TabSet extends TabSetBase implements ITabSet {
     }
 
     /**
-     * method is required by ContentPaneController interface no error checking as
-     * component is not in the tree
-     */
- /*   public String getSelectedId() {
-        return selectedId;
-    }  */
-
-    /**
      * The main difference between this and getSelectedId() is that this will
      * automatically handle defaulting to tab 0 if nothing has been specified,
      * or if what has been specified doesn't actually exist.
