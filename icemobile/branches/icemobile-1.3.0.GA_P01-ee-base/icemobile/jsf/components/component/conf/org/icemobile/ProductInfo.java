@@ -74,8 +74,7 @@ public class ProductInfo {
         info.append(".");
         info.append(TERTIARY);
         if ( (RELEASE_TYPE.length() > 0) &&
-            (!RELEASE_TYPE.equals("x")) &&
-        	(!RELEASE_TYPE.equals("@release.type@")) ) { 
+            (!RELEASE_TYPE.equals("x")) ) { 
 	        info.append(".");
 	        info.append(RELEASE_TYPE);
         }    
