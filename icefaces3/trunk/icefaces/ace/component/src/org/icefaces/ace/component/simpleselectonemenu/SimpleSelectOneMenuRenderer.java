@@ -27,6 +27,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -51,8 +52,15 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
         Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = simpleSelectOneMenu.getClientId(facesContext);
         String value = (String) requestMap.get(clientId + "_input");
-
-		simpleSelectOneMenu.setSubmittedValue(value);
+		
+		String emptyStringsAsNull = facesContext.getExternalContext()
+			.getInitParameter("javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL");
+		if (emptyStringsAsNull != null && "true".equalsIgnoreCase(emptyStringsAsNull) && "".equals(value)) {
+			simpleSelectOneMenu.setValue(null);
+			simpleSelectOneMenu.queueEvent(new ValueChangeEvent (uiComponent, simpleSelectOneMenu.getValue(), null));
+		} else {
+			simpleSelectOneMenu.setSubmittedValue(value);
+		}
 		
 		decodeBehaviors(facesContext, simpleSelectOneMenu);
 	}
@@ -162,7 +170,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 					}
 				}
 				String selected = "";
-				if (!selectedFound && value != null && value.toString().equals(itemValue.toString())) {
+				if (!selectedFound && value != null && value.toString().equals((String) itemValue)) {
 					selected = " selected=\"selected\"";
 					selectedFound = true;
 				}
@@ -170,7 +178,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 				if (item.isDisabled()) {
 					sb.append("<option disabled=\"disabled\" value=\"" + itemValue.toString() + "\"" + selected + role + ">").append(itemLabel).append("</option>");
 				} else {
-					sb.append("<option value=\"" + itemValue.toString() + "\"" + selected + role + ">").append(itemLabel).append("</option>");
+					sb.append("<option value=\"" + (itemValue == null ? "" : itemValue) + "\"" + selected + role + ">").append(itemLabel).append("</option>");
 				}
 			}
 			writer.write(sb.toString());
