@@ -65,6 +65,7 @@ import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.webkit.WebResourceResponse;
+import android.net.Uri;
 
 import android.media.MediaPlayer;
 import android.widget.VideoView;
@@ -129,6 +130,7 @@ public class ICEmobileContainer extends Activity
     public static final int SCAN_CODE = 4;
     protected static final int RECORD_CODE = 5;
     protected static final int ARVIEW_CODE = 6;
+    protected static final int CONTACT_CODE = 7;
 
     public static final String SCAN_ID = "org.icemobile.id";
 
@@ -324,6 +326,10 @@ public class ICEmobileContainer extends Activity
                     break;
                 case ARVIEW_CODE:
 //		mARViewHandler.arViewComplete(data);
+                    break;
+                case CONTACT_CODE:
+		    Uri mContactUri = (Uri)data.getData();
+		    mContactListInterface.gotContact(mContactUri);
                     break;
             }
         }
@@ -668,7 +674,7 @@ public class ICEmobileContainer extends Activity
 
     private void includeContacts() {
 
-        mContactListInterface = new ContactListInterface(utilInterface, this, getContentResolver());
+        mContactListInterface = new ContactListInterface(utilInterface, this, getContentResolver(), CONTACT_CODE);
         mWebView.addJavascriptInterface(mContactListInterface, "ICEContacts");
     }
 

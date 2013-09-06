@@ -151,7 +151,6 @@ import android.net.Uri;
 	    StringBuilder contactList = new StringBuilder(); 
 	    if (mFetchContact) { 
 		contactList.append( NAME_FIELD + "=" + displayName + "&");
-	    Log.e("ICEcontact", "Contact(name) = " + contactList.toString());
 	    }
 
 	    // Get phone;
@@ -161,7 +160,6 @@ import android.net.Uri;
 					  projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + id, null, null);
 		if (dataCur.moveToFirst()) {
 		    contactList.append(PHONE_FIELD + "=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
-	    Log.e("ICEcontact", "Contact(phone) = " + contactList.toString());
 		    dataCur.close();
 		}
 	    }
@@ -173,12 +171,11 @@ import android.net.Uri;
 					  projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + id, null, null);
 		if (dataCur.moveToFirst()) {
 		    contactList.append(EMAIL_FIELD + "=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
-	    Log.e("ICEcontact", "Contact(email) = " + contactList.toString());
 		    dataCur.close();
 		}
 	    }
 
-	    Log.e("ICEcontact", "Contact = " + contactList.toString());
+	    Log.d("ICEcontact", "Contact = " + contactList.toString());
 	    String encodedContactList = null;
 	    try {
 		encodedContactList = URLEncoder.encode(contactList.toString(), "utf-8");
