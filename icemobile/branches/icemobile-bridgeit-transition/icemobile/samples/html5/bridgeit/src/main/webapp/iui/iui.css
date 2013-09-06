@@ -24,8 +24,11 @@ body > *:not(.toolbar) {
     height: auto;
     min-height: 415px;
     -webkit-transition-duration: 300ms;
+    transition-duration: 300ms;
     -webkit-transition-property: -webkit-transform;
+    transition-property: -webkit-transform;
     -webkit-transform: translateX(0%);
+    transform: translateX(0%);
 }
 
 body.landscape > *:not(.toolbar) {
@@ -50,9 +53,9 @@ li > a[selected="progress"] {
 /************************************************************************************************/
 
 body > .toolbar {
-    box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    box-sizing: border-box;
     border-bottom: 1px solid #2d3642;
     border-top: 1px solid #6d84a2;
     padding: 0 10px 10px 10px;
@@ -191,9 +194,9 @@ body > ul > li > a {
 }
 
 a[target="_replace"] {
-    box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    box-sizing: border-box;
     padding-top: 25px;
     padding-bottom: 25px;
     font-size: 18px;
@@ -215,9 +218,9 @@ body > .dialog {
 }
 
 .dialog > fieldset {
-    box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    box-sizing: border-box;
     width: 100%;
     margin: 0;
     border: none;
@@ -245,9 +248,9 @@ body > .dialog {
 }
 
 input:not([type|=submit]):not([type|=radio]):not([type|=checkbox]) {
-    box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    box-sizing: border-box;
     width: 100%;
     margin: 8px 0 0 0;
     padding: 6px 6px 6px 5em;
@@ -258,9 +261,9 @@ input:not([type|=submit]):not([type|=radio]):not([type|=checkbox]) {
 /************************************************************************************************/
 
 body > .panel {
-    box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    box-sizing: border-box;
     padding: 10px;
 }
 
@@ -272,6 +275,7 @@ body > .panel {
     background: #FFFFFF;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
+    border-radius: 10px;
     border: 1px solid #999999;
     font-size: 16px;
 }
@@ -283,6 +287,7 @@ body > .panel {
     border-bottom: 1px solid #999999;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 .panel > ul li:last-child,
@@ -291,9 +296,9 @@ fieldset > .row:last-child {
 }
 
 .row > input:not([type|=radio]):not([type|=checkbox]) {
-    box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    box-sizing: border-box;
     margin: 0;
     border: none;
     padding: 12px 10px 0 110px;
@@ -345,6 +350,7 @@ fieldset > .row:last-child {
     border: 1px solid #888888;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
+    border-radius: 6px;
     font-size: 19px;
     font-weight: bold;
     line-height: 30px;
@@ -391,6 +397,7 @@ fieldset > .row:last-child {
     border: 1px solid #888888;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
+    border-radius: 6px;
 }
 
 .toggle[toggled="true"] > .thumb {
