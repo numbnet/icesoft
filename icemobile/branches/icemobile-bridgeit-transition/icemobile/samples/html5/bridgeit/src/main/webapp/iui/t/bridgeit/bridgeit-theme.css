@@ -21,17 +21,20 @@ body > .toolbar {
 .button {
     -webkit-border-image: url(toolButton.png) 0 5 0 5;
     -moz-border-image: url(toolButton.png) 0 5 0 5;
+    border-image: url(toolButton.png) 0 5.0 5;
 }
 
 .blueButton {
     -webkit-border-image: url(blueButton.png) 0 5 0 5;
     -moz-border-image: url(blueButton.png) 0 5 0 5;
+     border-image: url(blueButton.png) 0 5 0 5;
 }
 
 #backButton {
     background: url(listArrowRight.png) no-repeat;
     -webkit-border-image: none;
     -moz-border-image:none;
+    border-image:none;
     background-position: 0 50%;
     padding-left: 16px;
     font-style: italic;
@@ -41,17 +44,22 @@ body > .toolbar {
 .whiteButton {
     -webkit-border-image: url(whiteButton.png) 0 12 0 12;
     -moz-border-image: url(whiteButton.png) 0 12 0 12;
+    border-image: url(whiteButton.png) 0 12 0 12 fill;
     text-shadow: rgba(255, 255, 255, 0.7) 0 1px 0;
+    border-width: 2px 12px;
+    border-style: solid;
 }
 
 .redButton {
     -webkit-border-image: url(redButton.png) 0 12 0 12;
     -moz-border-image: url(redButton.png) 0 12 0 12;
+    border-image: url(redButton.png) 0 12 0 12;
 }
 
 .grayButton {
     -webkit-border-image: url(grayButton.png) 0 12 0 12;
     -moz-border-image: url(grayButton.png) 0 12 0 12;
+    border-image: url(grayButton.png) 0 12 0 12;
     color: #FFFFFF;
 }
 
@@ -191,6 +199,7 @@ body > .toolbar{
 #bridgeItLink{
     -webkit-border-image: none;
     -moz-border-image: none;
+    border-image: none;
     right: -5px;
     top: 12px;
 }
@@ -238,7 +247,9 @@ body > .toolbar{
     margin: 0;
     font-size: 13px;
 }
-.bridgeItBtn{ margin-bottom: 20px; }
+.bridgeItBtn{ 
+    margin-bottom: 20px; 
+}
 .panel code{
     padding: 8px 12px;
     margin: 0;
