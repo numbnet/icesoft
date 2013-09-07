@@ -85,30 +85,6 @@ public class CalendarPatternBean extends ComponentExampleImpl<CalendarPatternBea
         super.initMetaData();
     }
 
-                /**
-	 * Method called when a reload is required
-	 * This happens if the converter is modified by the radio buttons in the page
-	 */
-	public void reloadChanges(ValueChangeEvent event)
-                {
-	    reloadRequired = true;
-	}
-	
-	/**
-	 * Method to apply our selected changed to the calendar
-	 * In some cases a page reload is required, so we'll use the NavigationController
-	 *  to achieve that
-	 * This is because the f:converter cannot be dynamically updated and requires a full refresh
-	 */
-	public void applyChanges(ActionEvent event) 
-                {
-	    if (reloadRequired) {
-	        NavigationController.refreshPage();
-	    }
-	    reloadRequired = false;
-	}
-        
-        
                 private void setDefaultValues() {
                     
                     this.date = CalendarBean.getDefaultDate();

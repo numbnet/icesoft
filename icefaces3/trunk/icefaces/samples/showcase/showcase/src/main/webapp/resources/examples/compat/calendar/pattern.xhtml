@@ -50,6 +50,7 @@
                                           valueChangeListener="#{calendarPattern.reloadChanges}"
                                           rendered="#{calendarPattern.typePattern}"
                                           required="true">
+                            <f:ajax />
                             <f:selectItems value="#{calendarPattern.patternOptions}"/>
                         </h:selectOneMenu>
 
@@ -58,6 +59,7 @@
                                           valueChangeListener="#{calendarPattern.reloadChanges}"
                                           rendered="#{calendarPattern.typeDateStyle}"
                                           required="true">
+                            <f:ajax />
                             <f:selectItems value="#{calendarPattern.styleOptions}"/>
                         </h:selectOneMenu>
                 </h:panelGroup>
@@ -79,8 +81,7 @@
             </h:panelGrid>
             
             <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
-                <h:commandButton value="Apply Changes"
-                             actionListener="#{calendarPattern.applyChanges}"/>
+                <h:commandButton value="Apply Changes"/>
                 
                 <ice:selectInputDate value="#{calendarPattern.date}" renderAsPopup="false"
                                  rendered="#{calendarPattern.typePattern}">
