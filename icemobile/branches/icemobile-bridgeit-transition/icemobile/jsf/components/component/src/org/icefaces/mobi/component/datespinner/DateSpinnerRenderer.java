@@ -238,7 +238,15 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId + "_title", "id");
         writer.writeAttribute("class", DateSpinner.TITLE_CLASS, null);
-        writer.write(value);
+
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("class", "icon-time", null);
+        writer.endElement("span");
+
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("class", "mobi-date-title", null);
+        writer.endElement("span");
+
         writer.endElement("div");
         writer.startElement("div", uiComponent);                            //entire selection container
         writer.writeAttribute("class", DateSpinner.SELECT_CONT_CLASS, null);
