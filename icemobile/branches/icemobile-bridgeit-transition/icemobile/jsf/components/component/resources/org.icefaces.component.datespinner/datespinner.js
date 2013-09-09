@@ -157,8 +157,7 @@ mobi.datespinner = {
     },
 
     writeTitle:function (clientId, date) {
-        var titleEl = document.getElementById(clientId + '_title');
-        titleEl.innerHTML = date.toDateString();
+        document.getElementById(clientId + '_title').childNodes[1].innerHTML = date.toDateString();
     },
 
     daysInMonth:function (iMnth, iYr) {
@@ -275,7 +274,7 @@ mobi.datespinner = {
 
         // add visible style classes
         document.getElementById(idPanel).className = "mobi-date-bg";
-        document.getElementById(idPopPanel).className = "mobi-date-container";
+        document.getElementById(idPopPanel).className = "mobi-date-container ui-widget ui-widget-content";
         // set as visible.
         this.opened[clientId] = true;
         // calculate center for first view
@@ -294,7 +293,7 @@ mobi.datespinner = {
         }
         // hide the dialog
         document.getElementById(idPanel).className = "mobi-date-bg-inv";
-        document.getElementById(clientId + "_popup").className = "mobi-date-container-inv";
+        document.getElementById(clientId + "_popup").className = "mobi-date-container-inv ui-widget ui-widget-content";
         this.opened[clientId] = false;
         this.centerCalculation[clientId] = undefined;
     },

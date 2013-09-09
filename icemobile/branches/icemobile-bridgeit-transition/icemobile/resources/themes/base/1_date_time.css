@@ -16,6 +16,17 @@
  
  @import "../mixins";
 
+
+.mobi-date-container .icon-time {
+    margin-right: 10px;
+    font-size: 150%;
+    vertical-align: middle;
+}
+
+.mobi-date-container .mobi-date-title {
+    vertical-align: middle;
+}
+
 .mobi-date-wrapper, .mobi-time-wrapper {
     display: inline-block;
 }
@@ -64,34 +75,22 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #ccc;
     border-radius: 3px;
     @include box-shadow(3px 3px 5px black);
     border: 1px solid white;
     color: #000000;
 }
 .mobi-date-title-container, .mobi-time-title-container {
-    vertical-align: middle;
-    padding: 10px 0 10px 40px;
-    background-image: url('clock_header.png');
-    background-repeat: no-repeat;
-    background-size: 34px 34px;
-    background-color: #444;
-    color: white;
-    text-align: center;
+    padding: 5px 0 5px 10px;
     border-bottom: 1px solid white;
-    color: #FFF;
-    text-shadow: none;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    background-position: 3px;
 }
 
 .mobi-date-select-container, .mobi-time-select-container  {
     padding: 10px;
     text-align: center;
     background-color: #fff;
-    color: white;
 }
 
 .mobi-date-submit-container, .mobi-time-submit-container {
@@ -101,22 +100,6 @@
 
 .mobi-date-select-value-cont, .mobi-time-select-value-cont {
     border: 1px solid #999999;
-}
-
-.mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr {
-    border-radius: 3px 3px 0 0;
-    background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f7f7f7), color-stop(1, #bdbebd));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f7f7f7', EndColorStr = '#bdbebd');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd')";
-}
-
-.mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
-    border-radius: 0 0 3px 3px;
-    background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #f7f7f7));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#bdbebd', EndColorStr = '#f7f7f7');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7')";
 }
 
 .mobi-date-submit-container .mobi-button,
