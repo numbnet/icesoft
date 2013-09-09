@@ -90,7 +90,9 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         // Button Element
         writer.startElement(HTML.BUTTON_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
+        String buttonId = clientId + "_button";
+        writer.writeAttribute(HTML.ID_ATTR, buttonId, null);
+        writer.writeAttribute(HTML.NAME_ATTR, buttonId, null);
 
         encodeButtonTabIndex(writer, checkbox, ariaEnabled);
         encodeButtonStyle(writer, checkbox);

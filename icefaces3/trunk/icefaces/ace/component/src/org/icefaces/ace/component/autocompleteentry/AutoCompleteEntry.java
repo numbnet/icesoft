@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.autocompleteentry;
 
 import org.icefaces.ace.event.TextChangeEvent;
+import org.icefaces.component.Focusable;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.model.SelectItem;
@@ -30,7 +31,7 @@ import javax.faces.event.FacesEvent;
 import javax.el.MethodExpression;
 import java.util.*;
 
-public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingContainer {
+public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingContainer, Focusable {
 
     private transient int index = -1;
 	
@@ -162,5 +163,9 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
                 method.invoke(getFacesContext().getELContext(), new Object[]{event});
             }
         }
+    }
+
+    public String getFocusedElementId() {
+        return getClientId(FacesContext.getCurrentInstance()) + "_input";
     }
 }

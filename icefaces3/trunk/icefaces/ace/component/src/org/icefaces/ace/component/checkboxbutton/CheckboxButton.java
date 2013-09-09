@@ -17,11 +17,16 @@
 package org.icefaces.ace.component.checkboxbutton;
 
 import org.icefaces.ace.util.Utils;
+import org.icefaces.component.Focusable;
 import org.icefaces.impl.util.Util;
 
+import javax.faces.context.FacesContext;
 
 
-public class CheckboxButton extends CheckboxButtonBase {
+public class CheckboxButton extends CheckboxButtonBase implements Focusable {
 
+    public String getFocusedElementId() {
+        return getClientId(FacesContext.getCurrentInstance()) + "_button";
+    }
 }
 

@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.maskedentry;
 
 import org.icefaces.ace.event.KeyPressEvent;
+import org.icefaces.component.Focusable;
 
 import javax.faces.context.FacesContext;
 import javax.faces.component.UINamingContainer;
@@ -25,7 +26,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import java.util.Map;
 
-public class MaskedEntry extends MaskedEntryBase {
+public class MaskedEntry extends MaskedEntryBase implements Focusable {
 
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
 
@@ -50,4 +51,8 @@ public class MaskedEntry extends MaskedEntryBase {
         }
         super.queueEvent(event);
 	}
+
+    public String getFocusedElementId() {
+        return getClientId(FacesContext.getCurrentInstance()) + "_field";
+    }
 }
