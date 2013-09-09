@@ -276,6 +276,18 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     NSString *title = [self.confirmTitles objectForKey:commandName];
     NSString *message = [self.confirmMessages objectForKey:commandName];
     NSString *host = [[NSURL URLWithString:targetURL] host];
+    if (nil == host)  {
+        UIAlertView *alert = [[UIAlertView alloc] 
+                initWithTitle:@"Invalid URL"
+                message:[@"Upload URL not valid: "
+                        stringByAppendingString:targetURL]
+                delegate:nil cancelButtonTitle:@"OK"
+                otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+        LogError(@"Upload URL not valid: %@", targetURL);
+        return;
+    }
     message = [[message stringByAppendingString:host] 
             stringByAppendingString:@"?" ];
 
