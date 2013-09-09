@@ -12,9 +12,6 @@
     <a id="contactListBtn" type="button" class="whiteButton bridgeItBtn"
         onclick="bridgeit.fetchContact('contactListBtn',handleContact);">Fetch a Contact</a>
         
-    <fieldset>
-        <div class="row"></div>
-    </fieldset>
     <fieldset id="contacts">
     </fieldset>
     <div class="footer">
@@ -25,11 +22,15 @@
     </div>
     <script type="text/javascript">
     function handleContact(event)  {
-        var HTTP = "http";
-        var text = event.value;
-        alert(JSON.stringify(event));
+        var text = unescape(event.value);
+
+        var record = bridgeit.url2Object(text);
+        var output = "";
+        for (var key in record)  {
+            output += "<div class='row'><p class='normalText'><strong>" + key + ": </strong>" + record[key] + "</p></div>";
+        }
         var elem = document.getElementById("contacts");
-        elem.innerHTML = elem.innerHTML + "<div class='row'>" + text + "</div>";
+        elem.innerHTML = elem.innerHTML + "<div class='row'>" + output + "</div>";
     }
     </script>
    
