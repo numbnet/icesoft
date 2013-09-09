@@ -90,6 +90,7 @@ public class RadioButtonRenderer extends CoreRenderer {
         // Button Element
         writer.startElement(HTML.BUTTON_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
 
         encodeButtonTabIndex(writer, radioButton, ariaEnabled);

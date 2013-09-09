@@ -17,8 +17,15 @@
 package org.icefaces.ace.component.textareaentry;
 
 import org.icefaces.ace.component.textareaentry.TextAreaEntryBase;
+import org.icefaces.component.Focusable;
 
-public class TextAreaEntry extends TextAreaEntryBase {
+import javax.faces.context.FacesContext;
+
+public class TextAreaEntry extends TextAreaEntryBase implements Focusable {
     public final static String THEME_INPUT_CLASS = "ui-inputfield ui-textareaentry ui-widget ui-state-default ui-corner-all";
     public final static String PLAIN_INPUT_CLASS = "ui-textareaentry";
+
+    public String getFocusedElementId() {
+        return getClientId(FacesContext.getCurrentInstance()) + "_input";
+    }
 }
