@@ -1,4 +1,4 @@
-window.serviceHub = window.location.host + '/bridgeit-services/service';
+window.serviceHub = 'http://' + window.location.host + '/bridgeit-services/service';
 
 /* App Store Redirect handling */
 window.androidAppStoreLink = 'https://play.google.com/store/apps/details?id=org.icemobile.client.android.icemobilesx';
