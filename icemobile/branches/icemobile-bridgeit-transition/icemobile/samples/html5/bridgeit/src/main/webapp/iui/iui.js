@@ -172,7 +172,10 @@ window.iui =
 			nodeId = view;
 			node = $(nodeId);
 		}
-		if (!node) log("gotoView: node is null");
+		if (!node) {
+			log("gotoView: node is null");
+			return false;
+		}
 		if (!iui.busy)
 		{
 			iui.busy = true;
