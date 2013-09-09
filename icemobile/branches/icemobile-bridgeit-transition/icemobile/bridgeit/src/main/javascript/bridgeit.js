@@ -516,6 +516,23 @@ if (!window.console) {
     b.register = function(id, callback, options)  {
         ("register", id, callback, options);
     };
-    
+
+
+    /**
+     * Utility method to unpack url-encoded parameters into an object.
+     * 
+     * 
+     * @inheritdoc #url2Object
+     * 
+     */
+    b.url2Object = function(encoded)  {
+        var parts = encoded.split("&");
+        var record = {};
+        for (var i = 0; i < parts.length; i++) {
+            var pair = parts[i].split("=");
+            record[unescape(pair[0])] = unescape(pair[1]);
+        }
+        return record;
+    }
 })(bridgeit);
 
