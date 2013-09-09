@@ -18,7 +18,7 @@
 
     <property file="../../../build.properties"/>
     <property file="../../build/build.properties"/>
-    <import file="../../build/common-html5.xml"/>
+    <import file="../../build/common-service.xml"/>
 
     <target name="war">
        <antcall target="war.basic"/>
