@@ -486,7 +486,8 @@ NSLog(@"scanResult %@", text);
 //    if (nil != self.addressPopover)  {
 //        [self.addressPopover dismissPopoverAnimated:YES];
 //    } else {
-        [controller dismissModalViewControllerAnimated:YES];
+        [self.controller dismissModalViewControllerAnimated:YES];
+        [self.controller doCancel];
 //    }
 }
 
@@ -522,10 +523,10 @@ NSLog(@"scanResult %@", text);
 
 NSLog(@"Found record %@", result);
 
-    [self dismissAddress];
     NSString *addressName = self.activeDOMElementId;
-    [controller completePost:result forComponent:addressName
+    [controller completeSmallPost:result forComponent:addressName
             withName:addressName];
+    [self dismissAddress];
 
     return NO;
 }

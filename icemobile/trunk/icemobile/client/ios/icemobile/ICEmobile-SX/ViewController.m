@@ -98,8 +98,12 @@ NSLog(@"completeSmallPost %@", self.returnURL);
             [componentID stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
         self.returnURL = [self.returnURL stringByAppendingString:
             [@"=" stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+        NSString *escValue = [value stringByReplacingOccurrencesOfString:
+                @"&" withString:@"%26"];
+        escValue = [escValue stringByReplacingOccurrencesOfString:
+                @"@" withString:@"%40"];
         self.returnURL = [self.returnURL stringByAppendingString:
-                [value stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+                [escValue stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
         if (nil != self.currentEncodedThumbnail)  {
             self.returnURL = [self.returnURL stringByAppendingString:@"&!p="];
             self.returnURL = [self.returnURL stringByAppendingString:
@@ -153,7 +157,7 @@ NSLog(@"completeSmallPost %@", self.returnURL);
         safariURL = self.returnURL;
     }
 
-    LogInfo(@"ICEmobile-SX will open %@", safariURL);
+    NSLog(@"ICEmobile-SX will open %@", safariURL);
     [[UIApplication sharedApplication]
             openURL:[NSURL URLWithString:safariURL]];
 }
