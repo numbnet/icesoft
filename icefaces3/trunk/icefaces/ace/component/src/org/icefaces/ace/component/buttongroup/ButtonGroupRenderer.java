@@ -79,9 +79,7 @@ public class ButtonGroupRenderer extends CoreRenderer {
             Iterator<UIComponent> kids = component.getChildren().iterator();
             while (kids.hasNext()) {
                 UIComponent kid = kids.next();
-                if (kid instanceof CheckboxButton || kid instanceof RadioButton) {
-                    kid.encodeAll(context);
-                }
+                kid.encodeAll(context);
             }
         }
     }

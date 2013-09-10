@@ -19,7 +19,7 @@ package org.icefaces.ace.component.radiobutton;
 
 import org.icefaces.ace.component.buttongroup.ButtonGroup;
 import org.icefaces.ace.component.radiobutton.RadioButton;
-import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.renderkit.InputRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 @MandatoryResourceComponent(tagName="radioButton", value="org.icefaces.ace.component.radiobutton.RadioButton")
-public class RadioButtonRenderer extends CoreRenderer {
+public class RadioButtonRenderer extends InputRenderer {
     private enum EventType {
         HOVER, FOCUS
     }
@@ -64,6 +64,7 @@ public class RadioButtonRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         RadioButton radioButton = (RadioButton) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
+		Map<String, Object> labelAttributes = getLabelAttributes(uiComponent);
         String firstWrapperClass = "yui-button yui-radiobutton-button ui-button ui-widget ui-state-default";
         String secondWrapperClass = "first-child";
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
@@ -73,8 +74,9 @@ public class RadioButtonRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
         ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
-        encodeScript(facesContext, writer, radioButton, clientId, EventType.HOVER);
         encodeRootStyle(writer, radioButton);
+		
+		writeLabelAndIndicatorBefore(labelAttributes);
 
         // First Wrapper
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
@@ -95,24 +97,18 @@ public class RadioButtonRenderer extends CoreRenderer {
 
         encodeButtonTabIndex(writer, radioButton, ariaEnabled);
         encodeButtonStyle(writer, radioButton);
-        encodeScript(facesContext, writer, radioButton, clientId, EventType.FOCUS);
 
         renderPassThruAttributes(facesContext, radioButton, HTML.BUTTON_ATTRS, new String[]{"style"});
 
-        if (radioButton.getLabel() != null) {
-            writer.startElement(HTML.SPAN_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, "ui-label", null);
-            writer.write(radioButton.getLabel());
-            writer.endElement(HTML.SPAN_ELEM);
-        } else {
-            writer.startElement(HTML.SPAN_ELEM, null);
-            encodeIconStyle(writer, radioButton);
-            writer.endElement(HTML.SPAN_ELEM);
-        }
+		writer.startElement(HTML.SPAN_ELEM, null);
+		encodeIconStyle(writer, radioButton);
+		writer.endElement(HTML.SPAN_ELEM);
 
         writer.endElement(HTML.BUTTON_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
+		
+		writeLabelAndIndicatorAfter(labelAttributes);
     }
 
     private void encodeAriaAttributes(ResponseWriter writer, RadioButton radioButton) throws IOException {
@@ -144,24 +140,34 @@ public class RadioButtonRenderer extends CoreRenderer {
         writer.writeAttribute("name",clientId+"_hidden", null);
         writer.writeAttribute("value",val, null);
         writer.endElement("input");
+		
+		encodeScript(facesContext, writer, radioButton, clientId);
 
         writer.endElement(HTML.DIV_ELEM);
     }
 
     private void encodeScript(FacesContext facesContext, ResponseWriter writer,
-                              RadioButton radioButton, String clientId, EventType type) throws IOException {
-        UIComponent groupComp = radioButton.getParent();
-        String groupId;
-        if (!(groupComp instanceof ButtonGroup)) {
-            groupId = (groupId = radioButton.getGroup()) == null ? "" : groupId.trim();
-            groupComp = groupId.length() > 0 ? radioButton.findComponent(groupId) : null;
-        }
-        groupId = groupComp instanceof ButtonGroup ? groupComp.getClientId(facesContext) : "";
+                              RadioButton radioButton, String clientId) throws IOException {
+        UIComponent groupComp;
+        String groupId = radioButton.getGroup();
+		if (groupId != null) {
+			groupId = groupId.trim();
+			groupComp = radioButton.findComponent(groupId);
+			groupId = groupComp instanceof ButtonGroup ? groupComp.getClientId(facesContext) : "";
+		}
+		if (groupId == null || "".equals(groupId)) {
+			groupComp = findNearestButtonGroup(radioButton);
+			if (groupComp != null) {
+				groupId = groupComp.getClientId(facesContext);
+			} else {
+				groupId = "";
+			}
+		}
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         JSONBuilder jb = JSONBuilder.create();
         List<UIParameter> uiParamChildren = Utils.captureParameters(radioButton);
 
-        jb.beginFunction("ice.ace.lazy")
+        jb.beginFunction("ice.ace.create")
           .item("radiobutton")
           .beginArray()
           .item(clientId)
@@ -183,14 +189,19 @@ public class RadioButtonRenderer extends CoreRenderer {
 
         jb.endMap().endArray().endFunction();
 
-        String eventType = "";
-        if (EventType.HOVER.equals(type))
-            eventType = HTML.ONMOUSEOVER_ATTR;
-        else if (EventType.FOCUS.equals(type))
-            eventType = HTML.ONFOCUS_ATTR;
-
-        writer.writeAttribute(eventType, jb.toString(), null);
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.writeText("ice.ace.jq(function(){" + jb.toString() + "});", null);
+		writer.endElement("script");
     }
+	
+	private ButtonGroup findNearestButtonGroup(UIComponent component) {
+		if (component == null) return null;
+		UIComponent parent = component.getParent();
+		if (parent == null) return null;
+		if (parent instanceof ButtonGroup) return (ButtonGroup) parent;
+		return findNearestButtonGroup(parent);
+	}
 
     /**
      * support similar return values as jsf component

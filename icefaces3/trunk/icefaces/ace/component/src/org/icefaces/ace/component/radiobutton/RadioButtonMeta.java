@@ -38,7 +38,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 		componentFamily= "org.icefaces.ace.RadioButton",
 		tlddoc="The Radio Button is a component that allows entry of a button which "+
 		       "supports browsers that see radio as true or false, "+
-		       "yes or no, on or off. The Themeroller check icon will be displayed by default when the radio is checked. Override the .ui-icon-check class to display a different image." +
+		       "yes or no, on or off. Once a radio button is selected, it can only be deselected by selecting a different radio button within the same button group. The Themeroller check icon will be displayed by default when the radio is checked. Override the .ui-icon-check class to display a different image." +
                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/RadioButton\">RadioButton Wiki Documentation</a>."
         )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
@@ -55,13 +55,11 @@ import org.icefaces.resources.ICEResourceLibrary;
 }, defaultEvent="activate")
 public class RadioButtonMeta extends UISelectBooleanMeta {
 
-    @Property(tlddoc="Label to be displayed on the button.")
+    @Property(tlddoc="Label to be displayed for the button.")
     private String label;
-
-/*    @Property(defaultValue="left",
-    		tlddoc="Default is left for rime theme. Other possibility is \"on\" " +
-    				"for sam skin.")
-    private String labelPosition; */
+	
+    @Property(tlddoc = "Position of label relative to the radio button. Supported values are \"left/right/top/bottom/none\". Default is \"none\".")
+    private String labelPosition;
 
     @Property(tlddoc="The inline style of the component, rendered on the root div of the component.")
 	private String style;
