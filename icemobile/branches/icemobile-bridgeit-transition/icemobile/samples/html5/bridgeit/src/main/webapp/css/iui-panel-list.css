@@ -43,4 +43,11 @@
 .panel > ul > li a img { 
     vertical-align:middle; 
     margin-left:-4px; }
-
+span.ellipsis{
+    max-width: 100%; 
+    overflow: hidden;
+    padding: 5px;
+    text-overflow:ellipsis; 
+    white-space:nowrap;
+ }
+}
