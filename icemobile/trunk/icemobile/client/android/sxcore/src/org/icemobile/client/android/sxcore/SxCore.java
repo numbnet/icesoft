@@ -178,7 +178,6 @@ public class SxCore extends Activity
 
         mBrowserReturn = new Runnable()  {
             public void run()  {
-		Log.d(LOG_TAG, "Into Browser Return runnable, hash is " + mHashCode);
 		StringBuilder returnUri = new StringBuilder(mReturnUri.toString());
 		returnUri.append("_!r=");
 		try {
@@ -186,14 +185,11 @@ public class SxCore extends Activity
 		    result = result.substring(result.indexOf("\"")+1,result.lastIndexOf("\""));
 		    returnUri.append(URLEncoder.encode(result, "UTF-8"));
 		    if (mHashCode != null) {
-			Log.d(LOG_TAG, "hash is " + mHashCode);
 			returnUri.append("&!h=");
-			//			returnUri.append(URLEncoder.encode(mHashCode, "UTF-8"));
 			returnUri.append(mHashCode);
 		    }
 		    if (mPreview != null) {
 			returnUri.append("&!p=");
-			//			returnUri.append(URLEncoder.encode(mPreview, "UTF-8"));
 			returnUri.append(mPreview);
 		    }
 		    
@@ -283,7 +279,6 @@ public class SxCore extends Activity
 	    mPOSTUri = Uri.parse((String) commandParts.get("u"));
 	    mParameters = (String) commandParts.get("p");
 	    mHashCode = (String) commandParts.get("h");
-	    Log.d(LOG_TAG,"hash code = " + mHashCode);
 	    if (null != commandName)  {
 		displaySplashScreen((String)commandParts.get("s"));
 		dispatch(commandName, commandParts, commandParams);
@@ -474,7 +469,10 @@ public class SxCore extends Activity
 		Log.d(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
 		break;
 	    case TAKE_VIDEO_CODE:
-		mVideoHandler.gotVideo(data);
+		mPreview = mVideoHandler.gotVideo(data);
+		if (mPreview != null) {
+		    mPreview = "data:image/jpg;base64," + mPreview;
+		}
 		encodedForm += encodeMedia(mCurrentId,
 					   mCurrentMediaFile);
 		utilInterface.setUrl(mPOSTUri.toString());
