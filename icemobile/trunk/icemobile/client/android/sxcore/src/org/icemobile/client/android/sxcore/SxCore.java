@@ -182,7 +182,6 @@ public class SxCore extends Activity
 		returnUri.append("_!r=");
 		try {
 		    String result = utilInterface.getResult();
-		    result = result.substring(result.indexOf("\"")+1,result.lastIndexOf("\""));
 		    returnUri.append(URLEncoder.encode(result, "UTF-8"));
 		    if (mHashCode != null) {
 			returnUri.append("&!h=");
