@@ -198,7 +198,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId + "_title", "id");
         writer.writeAttribute("class", TimeSpinner.TITLE_CLASS, null);
-        writer.write(value);
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("class", "icon-time", null);
+        writer.endElement("span");
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("class", "mobi-time-title", null);
+        writer.endElement("span");
         writer.endElement("div");
         writer.startElement("div", uiComponent);                            //entire selection container
         writer.writeAttribute("class", TimeSpinner.SELECT_CONT_CLASS, null);
@@ -207,12 +212,14 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_hrUpBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.timespinner.hrUp('" + clientId + "');", null);
-        writer.endElement("input");
+        writePlusIcon(writer);
+        writer.endElement("button");
+
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //hour value
         writer.writeAttribute("class", TimeSpinner.SEL_VALUE_CLASS, null);
@@ -221,12 +228,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("div");                                         //end of hour value
         writer.startElement("div", uiComponent);                          //button decrement
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_hrDnBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.timespinner.hrDn('" + clientId + "');", null);
-        writer.endElement("input");
+        writeMinusIcon(writer);
+        writer.endElement("button");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of timeEntry select container
         //minute
@@ -234,12 +241,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mUpBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.timespinner.mUp('" + clientId + "');", null);
-        writer.endElement("input");
+        writePlusIcon(writer);
+        writer.endElement("button");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //minute value
         writer.writeAttribute("class", TimeSpinner.SEL_VALUE_CLASS, null);
@@ -248,12 +255,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("div");                                         //end of minute value
         writer.startElement("div", uiComponent);                          //button decrement
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mDnBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.timespinner.mDn('" + clientId + "');", null);
-        writer.endElement("input");
+        writeMinusIcon(writer);
+        writer.endElement("button");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of minute  select container
         //ampm
@@ -261,12 +268,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_ampmUpBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.timespinner.ampmToggle('" + clientId + "');", null);
-        writer.endElement("input");
+        writePlusIcon(writer);
+        writer.endElement("button");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //year value
         writer.writeAttribute("class", TimeSpinner.SEL_VALUE_CLASS, null);
@@ -279,12 +286,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("div");                                         //end of year value
         writer.startElement("div", uiComponent);                          //button decrement
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_ampmBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.timespinner.ampmToggle('" + clientId + "');", null);
-        writer.endElement("input");
+        writeMinusIcon(writer);
+        writer.endElement("button");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of ampm select container
 
@@ -466,6 +473,18 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
 
     private boolean shouldUseNative(TimeSpinner component) {
        return component.isUseNative() && MobiJSFUtils.getClientDescriptor().isHasNativeDatePicker();
+    }
+
+    private void writePlusIcon(ResponseWriter writer) throws IOException {
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "icon-plus", null);
+        writer.endElement("span");
+    }
+
+    private void writeMinusIcon(ResponseWriter writer) throws IOException {
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "icon-minus", null);
+        writer.endElement("span");
     }
 
 }
