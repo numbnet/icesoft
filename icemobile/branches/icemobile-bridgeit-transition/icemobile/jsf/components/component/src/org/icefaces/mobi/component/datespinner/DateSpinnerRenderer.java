@@ -378,12 +378,14 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", DateSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
         writer.writeAttribute("class", DateSpinner.BUTTON_INC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", DateSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_dUpBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.datespinner.dUp('" + clientId + "');", null);
-        writer.endElement("input");
+        writePlusIcon(writer);
+        writer.endElement("button");
+
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //day value
         writer.writeAttribute("class", DateSpinner.SEL_VALUE_CLASS, null);
@@ -392,12 +394,14 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("div");                                         //end of day value
         writer.startElement("div", uiComponent);                          //button decrement
         writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_dDnBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.datespinner.dDn('" + clientId + "');", null);
-        writer.endElement("input");
+        writeMinusIcon(writer);
+        writer.endElement("button");
+
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of dateEntry select container
     }
@@ -411,12 +415,14 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", DateSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
         writer.writeAttribute("class", DateSpinner.BUTTON_INC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", DateSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mUpBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.datespinner.mUp('" + clientId + "');", null);
-        writer.endElement("input");
+        writePlusIcon(writer);
+        writer.endElement("button");
+
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //month value
         writer.writeAttribute("class", DateSpinner.SEL_VALUE_CLASS, null);
@@ -425,12 +431,14 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("div");                                         //end of month value
         writer.startElement("div", uiComponent);                          //button decrement
         writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mDnBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.datespinner.mDn('" + clientId + "');", null);
-        writer.endElement("input");
+        writeMinusIcon(writer);
+        writer.endElement("button");
+
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of month select container
     }
@@ -448,12 +456,14 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", DateSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
         writer.writeAttribute("class", DateSpinner.BUTTON_INC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", DateSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_yUpBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.datespinner.yUp('" + clientId + "'," + yMin + "," + yMax + ");", null);
-        writer.endElement("input");
+        writePlusIcon(writer);
+        writer.endElement("button");
+
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //year value
         writer.writeAttribute("class", DateSpinner.SEL_VALUE_CLASS, null);
@@ -462,12 +472,14 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("div");                                         //end of year value
         writer.startElement("div", uiComponent);                          //button decrement
         writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CONT_CLASS, null);
-        writer.startElement("input", uiComponent);
+
+        writer.startElement("button", uiComponent);
         writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_yDnBtn", null);
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute(eventStr, "mobi.datespinner.yDn('" + clientId + "'," + yMin + "," + yMax + ");", null);
-        writer.endElement("input");
+        writeMinusIcon(writer);
+        writer.endElement("button");
+
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of year select container
     }
@@ -536,6 +548,19 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
     private boolean shouldUseNative(DateSpinner component) {
         return component.isUseNative() && MobiJSFUtils.getClientDescriptor().isHasNativeDatePicker();
     }
+
+    private void writePlusIcon(ResponseWriter writer) throws IOException {
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "icon-plus", null);
+        writer.endElement("span");
+    }
+
+    private void writeMinusIcon(ResponseWriter writer) throws IOException {
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "icon-minus", null);
+        writer.endElement("span");
+    }
+
 
     /**
      * Decides the default pattern for the component.  There are two ways to

@@ -139,7 +139,7 @@ mobi.timespinner = {
         }
         var time = hr + ':' + min + ' ' + ampm;
         var titleEl = document.getElementById(clientId + '_title');
-        titleEl.innerHTML = time;
+        titleEl.childNodes[1].innerHTML = time;
     },
 
     getIntValue:function (id) {
@@ -183,7 +183,7 @@ mobi.timespinner = {
         var idPopPanel = clientId + "_popup";
 
         document.getElementById(idPanel).className = "mobi-time-bg";
-        document.getElementById(idPopPanel).className = "mobi-time-container";
+        document.getElementById(idPopPanel).className = "mobi-time-container ui-widget ui-widget-content";
 
         // add scroll listener
         this.centerCalculation[clientId] = function () {
@@ -210,7 +210,7 @@ mobi.timespinner = {
         }
         // hide the panels
         document.getElementById(idPanel).className = "mobi-time";
-        document.getElementById(clientId + "_popup").className = "mobi-time-container-inv";
+        document.getElementById(clientId + "_popup").className = "mobi-time-container-inv ui-widget ui-widget-content";
         this.opened[clientId] = false;
         this.centerCalculation[clientId] = undefined;
     },

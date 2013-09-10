@@ -17,13 +17,17 @@
  @import "../mixins";
 
 
-.mobi-date-container .icon-time {
+.mobi-date-container .icon-time, .mobi-time-container .icon-time {
     margin-right: 10px;
     font-size: 150%;
     vertical-align: middle;
 }
 
-.mobi-date-container .mobi-date-title {
+.mobi-date-container button, .mobi-time-container button {
+    background-color: transparent;
+}
+
+.mobi-date-container .mobi-date-title, .mobi-time-container .mobi-time-title {
     vertical-align: middle;
 }
 
@@ -140,19 +144,11 @@
 }
 
 .mobi-date-btn-incr, .mobi-time-btn-incr {
-    background-image: url('increment.png');
-    background-repeat: no-repeat;
-    background-color: transparent;
-    background-position: center;
     @include box-shadow(0 3px 3px #888);
     border-radius: 3px 3px 0 0;
 }
 
 .mobi-date-btn-decr, .mobi-time-btn-decr  {
-    background-image: url('decrement.png');
-    background-repeat: no-repeat;
-    background-color: transparent;
-    background-position: center;
     @include box-shadow(0 -3px 3px #888);
     border-radius: 0 0 3px 3px;
 }
