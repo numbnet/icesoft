@@ -189,7 +189,7 @@ public class SxCore extends Activity
 			Log.d(LOG_TAG, "hash is " + mHashCode);
 			returnUri.append("&!h=");
 			//			returnUri.append(URLEncoder.encode(mHashCode, "UTF-8"));
-			returnUri.append(mHashCode.substring(mHashCode.indexOf("_")+1));
+			returnUri.append(mHashCode);
 		    }
 		    if (mPreview != null) {
 			returnUri.append("&!p=");
