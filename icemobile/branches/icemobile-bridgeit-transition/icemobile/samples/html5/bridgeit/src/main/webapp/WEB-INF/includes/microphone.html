@@ -37,7 +37,7 @@
                 elem.appendChild(row1);
                 var row2 = document.createElement('div');
                 row2.setAttribute('class','row');
-                row2.innerHTML = "<audio src='service/" + recordings[i] + "' controls='controls' preload='auto' type='audio/mp3'/>";
+                row2.innerHTML = "<audio src='" + window.serviceHub + "/" + recordings[i] + "' controls='controls' preload='auto' type='audio/mp3'/>";
                 elem.appendChild(row2);
             }
             
