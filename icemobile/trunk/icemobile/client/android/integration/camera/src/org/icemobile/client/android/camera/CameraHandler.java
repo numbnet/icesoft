@@ -107,7 +107,7 @@ public class CameraHandler {
         return photoFile.getAbsolutePath();
     }
 
-    public void gotPhoto() {
+    public String gotPhoto() {
 	try {
 	    int orientation = getExifOrientation(photoFile.getAbsolutePath());
 	    Bitmap captureBmp = Media.getBitmap(container.getContentResolver(), Uri.fromFile(photoFile) );
@@ -146,12 +146,14 @@ public class CameraHandler {
 							thumbHeight);
 		util.loadURL("javascript:ice.setThumbnail('" + thumbId +
 			     "', 'data:image/jpg;base64," + b64Image + "');");
+		return b64Image;
 	    }
 	} catch (FileNotFoundException e) {
 	    e.printStackTrace();
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+	return null;
     }
 
     public static int getExifOrientation(String filepath) {

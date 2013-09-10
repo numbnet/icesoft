@@ -23,7 +23,7 @@ import java.net.URLEncoder;
 import java.net.URLDecoder;
 import java.net.URL;
 import java.io.IOException;
-
+import java.io.UnsupportedEncodingException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.widget.ImageView;
@@ -121,6 +121,8 @@ public class SxCore extends Activity
     private Uri mPOSTUri;
     private Uri mContactUri;
     private String mParameters;
+    private String mHashCode;
+    private String mPreview;
     private String mCurrentId;
     private String mCurrentjsessionid;
     private String mCurrentMediaFile;
@@ -135,12 +137,15 @@ public class SxCore extends Activity
     public void returnToBrowser()  {
         if (null == mReturnUri)  {
             mReturnUri = Uri.parse(HOME_URL);
-        }
+        } else {
+	}
+
         Intent browserIntent = new 
                 Intent(Intent.ACTION_VIEW, 
                 mReturnUri);
         browserIntent.putExtra(
                 Browser.EXTRA_APPLICATION_ID, "_icemobilesx");
+	Log.d(LOG_TAG, "Returning to browser with: " + mReturnUri);
         startActivity(browserIntent);
     }
 
@@ -173,6 +178,29 @@ public class SxCore extends Activity
 
         mBrowserReturn = new Runnable()  {
             public void run()  {
+		Log.d(LOG_TAG, "Into Browser Return runnable, hash is " + mHashCode);
+		StringBuilder returnUri = new StringBuilder(mReturnUri.toString());
+		returnUri.append("_!r=");
+		try {
+		    String result = utilInterface.getResult();
+		    result = result.substring(result.indexOf("\"")+1,result.lastIndexOf("\""));
+		    returnUri.append(URLEncoder.encode(result, "UTF-8"));
+		    if (mHashCode != null) {
+			Log.d(LOG_TAG, "hash is " + mHashCode);
+			returnUri.append("&!h=");
+			//			returnUri.append(URLEncoder.encode(mHashCode, "UTF-8"));
+			returnUri.append(mHashCode.substring(mHashCode.indexOf("_")+1));
+		    }
+		    if (mPreview != null) {
+			returnUri.append("&!p=");
+			//			returnUri.append(URLEncoder.encode(mPreview, "UTF-8"));
+			returnUri.append(mPreview);
+		    }
+		    
+		    mReturnUri = Uri.parse(returnUri.toString());
+		} catch (UnsupportedEncodingException e) {
+		    Log.e(LOG_TAG, "Could not encode return URL: " + e.toString());
+		}
                 returnToBrowser();
             }
         };
@@ -254,6 +282,8 @@ public class SxCore extends Activity
 	    mReturnUri = Uri.parse((String) commandParts.get("r"));
 	    mPOSTUri = Uri.parse((String) commandParts.get("u"));
 	    mParameters = (String) commandParts.get("p");
+	    mHashCode = (String) commandParts.get("h");
+	    Log.d(LOG_TAG,"hash code = " + mHashCode);
 	    if (null != commandName)  {
 		displaySplashScreen((String)commandParts.get("s"));
 		dispatch(commandName, commandParts, commandParams);
@@ -429,10 +459,14 @@ public class SxCore extends Activity
 
 	Log.d(LOG_TAG, "onActivityResult: request = " + requestCode + ", result = " + resultCode);
         if (resultCode == RESULT_OK) {
+	    mPreview = null;
             switch (requestCode) {
 	    case TAKE_PHOTO_CODE:
 		Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
-		mCameraHandler.gotPhoto();
+		mPreview = mCameraHandler.gotPhoto();
+		if (mPreview != null) {
+		    mPreview = "data:image/jpg;base64," + mPreview;
+		}
 		encodedForm += encodeMedia(mCurrentId,
 					   mCurrentMediaFile);
 		utilInterface.setUrl(mPOSTUri.toString());
