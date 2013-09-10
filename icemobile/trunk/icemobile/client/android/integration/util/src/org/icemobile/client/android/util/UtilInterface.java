@@ -106,18 +106,15 @@ public class UtilInterface implements JavascriptInterface,
 
     public void submitForm(String actionUrl, String serializedForm,
 			   Runnable callback) {
-	Log.d("SxUtil", "submitForm " + url);
 	boolean gotValue = true;
 	String[] result;
 	long contentSize = 0;
 	CountingMultiPartEntity content = new CountingMultiPartEntity(this);
 	try {
-	    Log.d("SxUtil", "serialized form = " + serializedForm);
 	    if (actionUrl != null && actionUrl.length() > 0) {
 		URL relativeAction = new URL(new URL(url), actionUrl);
 		url = relativeAction.toString();
 	    }
-	    Log.d("SxUtil", "relative URL = " + url);
 	    BasicNameValuePair[] params = getNameValuePairs(serializedForm, "&", "=");
 	    for (int i=0; i<params.length; i++) {
 		String packedName = params[i].getName();
@@ -151,7 +148,6 @@ public class UtilInterface implements JavascriptInterface,
 		    content.addPart(URLDecoder.decode(paramName,"UTF-8"), sb);
 		}
 	    }
-	    Log.d("SxUtil", "Ready to post to " + url);
 	    if (!url.startsWith("http://") && !url.startsWith("http://")) {
 		url = "http://" + url;
 	    }
@@ -166,7 +162,6 @@ public class UtilInterface implements JavascriptInterface,
 	    }
 	    content.measureProgress(contentSize/(PROGRESS_INTERVAL+1));
 	    postRequest.setEntity(content);
-	    Log.d("SxUtil", "Queuing request " + postRequest.toString());
 	    queueRequest(postRequest, callback);
 	} catch (Throwable e) {
 	    Log.e("ICEutil", "Failed to submit form ", e);
@@ -175,7 +170,6 @@ public class UtilInterface implements JavascriptInterface,
 
     private void queueRequest(HttpPost postRequest, Runnable callback) {
 	postQueue.add(new HttpPostTask(postRequest, callback));
-	Log.d("SxUtil", "Request q=" + postQueue.size());
 	if (postQueue.size() == 1) {
 	    Thread thread = new Thread(this);
 	    thread.start();
@@ -191,13 +185,11 @@ public class UtilInterface implements JavascriptInterface,
 		sendProgress(0);
 		HttpPostTask postTask = postQueue.remove();
 		postRequest = postTask.httpPost;
-		Log.d("SxUtil", "Posting data.");
 		HttpResponse res = httpClient.execute(postRequest);
 		sendProgress(100);
 		StringWriter writer = new StringWriter();
 		IOUtils.copy(res.getEntity().getContent(), writer);
 		setResult(writer.toString());
-		Log.d("SxUtil", "Got Result = " +  writer.toString());
 		if (null != postTask.callback) {
 		    postTask.callback.run();
 		}

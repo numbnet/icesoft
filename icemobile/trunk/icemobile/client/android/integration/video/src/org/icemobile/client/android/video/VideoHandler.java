@@ -105,46 +105,48 @@ public class VideoHandler {
         return videoFile.getAbsolutePath();
     }
 
-    public void gotVideo(Intent data) {
+    public String gotVideo(Intent data) {
 
-    // mobi-770. As of the BB10 10.1 update, the Camera Activity no longer
-    // returns an URI for fetching the video, but the raw file name directly.
-    // This could all be avoided if the devices supported setting the EXTRA_OUTPUT parameter,
-    // but the early 2.3.3 phones do not.
+	// mobi-770. As of the BB10 10.1 update, the Camera Activity no longer
+	// returns an URI for fetching the video, but the raw file name directly.
+	// This could all be avoided if the devices supported setting the EXTRA_OUTPUT parameter,
+	// but the early 2.3.3 phones do not.
 	Uri uri = data.getData();
-    String recordedVideoFilePath;
+	String recordedVideoFilePath;
 	String[] projection = { MediaStore.Video.Media.DATA, MediaStore.Video.Media.SIZE  }; 
 	Cursor cursor = container.managedQuery(uri, projection, null, null, null);
-    if (cursor == null) {
-        recordedVideoFilePath = uri.toString();
-        if (videoFile.exists()) {
-            videoFile.delete();
-        }
-    } else {
-        int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-        cursor.moveToFirst();
+	if (cursor == null) {
+	    recordedVideoFilePath = uri.toString();
+	    if (videoFile.exists()) {
+		videoFile.delete();
+	    }
+	} else {
+	    int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+	    cursor.moveToFirst();
 	    recordedVideoFilePath = cursor.getString(column_index_data);
-    }
+	}
 	File file = new File(recordedVideoFilePath);
 	file.renameTo(videoFile);
-//	int rows = container.getContentResolver().delete(uri,null,null);
+	//	int rows = container.getContentResolver().delete(uri,null,null);
 	
 	if (thumbId != null && thumbId.length() > 0 && 
 	    thumbWidth > 0 && thumbHeight > 0) {
-        Bitmap bm;
-        String thumb;
+	    Bitmap bm;
+	    String thumb;
 	    bm = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(), MediaStore.Video.Thumbnails.MINI_KIND);
 	    if (bm != null) {
-            thumb = util.produceThumbnail(bm, thumbWidth, thumbHeight);
-        } else {
-            bm = BitmapFactory.decodeResource(container.getResources(), R.drawable.check);
-            thumb = util.produceThumbnail(bm, bm.getWidth(), bm.getHeight());
-        }
-        if (bm != null) {
-            bm.recycle();
-        }
+		thumb = util.produceThumbnail(bm, thumbWidth, thumbHeight);
+	    } else {
+		bm = BitmapFactory.decodeResource(container.getResources(), R.drawable.check);
+		thumb = util.produceThumbnail(bm, bm.getWidth(), bm.getHeight());
+	    }
+	    if (bm != null) {
+		bm.recycle();
+	    }
 	    util.loadURL("javascript:ice.setThumbnail('" + thumbId +
 			 "', 'data:image/jpg;base64," + thumb + "');");
+	    return thumb;
 	}
+	return null;
     }
 }
