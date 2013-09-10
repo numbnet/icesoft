@@ -124,6 +124,7 @@ public class SxCore extends Activity
     private String mHashCode;
     private String mPreview;
     private String mCurrentId;
+    private String mReturnValue;
     private String mCurrentjsessionid;
     private String mCurrentMediaFile;
     private Runnable mBrowserReturn;
@@ -177,12 +178,26 @@ public class SxCore extends Activity
 	pendingCloudPush = false;
 
         mBrowserReturn = new Runnable()  {
-            public void run()  {
-		StringBuilder returnUri = new StringBuilder(mReturnUri.toString());
-		returnUri.append("_!r=");
-		try {
-		    String result = utilInterface.getResult();
-		    returnUri.append(URLEncoder.encode(result, "UTF-8"));
+		public void run()  {
+		    StringBuilder returnUri = new StringBuilder(mReturnUri.toString());
+		    returnUri.append("_");
+		    if (mReturnValue != null) {
+			returnUri.append(mReturnValue);
+		    }
+		
+		    if (mPOSTUri != null) {
+			returnUri.append("&!r=");
+			String result = utilInterface.getResult();
+			if (result.length() > 1500) {
+			    result = new String("Server response limit exceeded");
+			}
+			try {
+			    returnUri.append(URLEncoder.encode(result, "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+			    Log.e(LOG_TAG, "Could not encode server response: " + e.toString());
+			}
+		    }
+		    
 		    if (mHashCode != null) {
 			returnUri.append("&!h=");
 			returnUri.append(mHashCode);
@@ -193,11 +208,8 @@ public class SxCore extends Activity
 		    }
 		    
 		    mReturnUri = Uri.parse(returnUri.toString());
-		} catch (UnsupportedEncodingException e) {
-		    Log.e(LOG_TAG, "Could not encode return URL: " + e.toString());
+		    returnToBrowser();
 		}
-                returnToBrowser();
-            }
         };
 
 	this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -454,6 +466,7 @@ public class SxCore extends Activity
 	Log.d(LOG_TAG, "onActivityResult: request = " + requestCode + ", result = " + resultCode);
         if (resultCode == RESULT_OK) {
 	    mPreview = null;
+	    mReturnValue = null;
             switch (requestCode) {
 	    case TAKE_PHOTO_CODE:
 		Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
@@ -461,10 +474,14 @@ public class SxCore extends Activity
 		if (mPreview != null) {
 		    mPreview = "data:image/jpg;base64," + mPreview;
 		}
-		encodedForm += encodeMedia(mCurrentId,
-					   mCurrentMediaFile);
-		utilInterface.setUrl(mPOSTUri.toString());
-		utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		if (mPOSTUri != null) {
+		    encodedForm += encodeMedia(mCurrentId,
+					       mCurrentMediaFile);
+		    utilInterface.setUrl(mPOSTUri.toString());
+		    utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		} else {
+		    mBrowserReturn.run();
+		}
 		Log.d(LOG_TAG, "onActivityResult completed TAKE_PHOTO_CODE");
 		break;
 	    case TAKE_VIDEO_CODE:
@@ -472,26 +489,42 @@ public class SxCore extends Activity
 		if (mPreview != null) {
 		    mPreview = "data:image/jpg;base64," + mPreview;
 		}
-		encodedForm += encodeMedia(mCurrentId,
-					   mCurrentMediaFile);
-		utilInterface.setUrl(mPOSTUri.toString());
-		utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		if (mPOSTUri != null) {
+		    encodedForm += encodeMedia(mCurrentId,
+					       mCurrentMediaFile);
+		    utilInterface.setUrl(mPOSTUri.toString());
+		    utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		} else {
+		    mBrowserReturn.run();
+		}
 		Log.d(LOG_TAG, "onActivityResult completed TAKE_VIDEO_CODE");
 		break;
 	    case SCAN_CODE:
 		String scanResult = data.getStringExtra(Intents.Scan.RESULT);
-
-		encodedForm += "hidden-" + mCurrentId + "=" +
-		    URLEncoder.encode(scanResult);
-		utilInterface.setUrl(mPOSTUri.toString());
-		utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		try {
+		    mReturnValue = mCurrentId + "=" + URLEncoder.encode(scanResult, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+		    Log.e(LOG_TAG, "Could not encode scanned value: " + e.toString());
+		}
+		if (mPOSTUri != null) {
+		    encodedForm += "hidden-" + mCurrentId + "=" +
+			URLEncoder.encode(scanResult);
+		    utilInterface.setUrl(mPOSTUri.toString());
+		    utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		} else {
+		    mBrowserReturn.run();
+		}
 		break;
 	    case RECORD_CODE:
 		mAudioRecorder.gotAudio(data);
-		encodedForm += encodeMedia(mCurrentId,
-					   mCurrentMediaFile);
-		utilInterface.setUrl(mPOSTUri.toString());
-		utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		if (mPOSTUri != null) {
+		    encodedForm += encodeMedia(mCurrentId,
+					       mCurrentMediaFile);
+		    utilInterface.setUrl(mPOSTUri.toString());
+		    utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		} else {
+		    mBrowserReturn.run();
+		}
 		Log.d(LOG_TAG, "onActivityResult completed RECORD_CODE");
 		break;
 	    case ARVIEW_CODE:
