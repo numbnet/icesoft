@@ -521,9 +521,8 @@ if (!window.console) {
     /**
      * Utility method to unpack url-encoded parameters into an object.
      * 
-     * 
-     * @inheritdoc #url2Object
-     * 
+     * @alias plugin.url2Object
+     * @param {String} encoded The encoded URL string to unpack
      */
     b.url2Object = function(encoded)  {
         var parts = encoded.split("&");
