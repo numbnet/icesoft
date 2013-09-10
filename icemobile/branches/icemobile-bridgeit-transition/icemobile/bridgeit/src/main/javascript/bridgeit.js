@@ -232,9 +232,11 @@ if (!window.console) {
     }
     var checkTimeout;
     function deviceCommand(command, id, callback, options)  {
-        checkTimeout = setTimeout( function()  {
-            bridgeit.launchFailed(id);
-        }, 3000);
+        if (navigator.userAgent.toLowerCase().indexOf('chrome') < 0)  {
+            checkTimeout = setTimeout( function()  {
+                bridgeit.launchFailed(id);
+            }, 3000);
+        }
         console.log(command + " " + id);
         bridgeit.deviceCommandCallback = callback;
         deviceCommandExec(command, id, options);
