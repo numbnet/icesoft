@@ -36,13 +36,16 @@
     <ui:define name="example">
         <h:form id= "form" style="text-align: center">
             <ace:panel>
-                <ace:radioButton id="radio" value="#{radioButton.selected}">
-                    <ace:ajax execute="@this" event="activate" render="valueDescription"/>
-                </ace:radioButton>
-                <br/>
-
-                The radio is:
-                <h:outputText id="valueDescription" value="#{radioButton.boxValueDescription}" style="font-weight: bold;"/>
+				<ace:buttonGroup header="ace:radioButton Overview" mutuallyExclusive="true">
+					<h:panelGrid columns="2" width="100%" columnClasses="col50,col50">
+						<ace:radioButton value="#{radioButton.selected1}" label="#{radioButton.boxValueDescription1}" labelPosition="top">
+							<ace:ajax execute="@this" event="activate" render="@all"/>
+						</ace:radioButton>
+						<ace:radioButton value="#{radioButton.selected2}" label="#{radioButton.boxValueDescription2}" labelPosition="top">
+							<ace:ajax execute="@this" event="activate" render="@all"/>
+						</ace:radioButton>
+					</h:panelGrid>
+				</ace:buttonGroup>
             </ace:panel>
         </h:form>
     </ui:define>

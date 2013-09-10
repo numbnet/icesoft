@@ -61,7 +61,8 @@ import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 public class RadioButtonBean extends ComponentExampleImpl<RadioButtonBean> implements Serializable {
 
     public static final String BEAN_NAME = "radioButton";
-    private boolean selected = true;
+    private boolean selected1 = true;
+	private boolean selected2 = false;
 
     public RadioButtonBean() {
         super(RadioButtonBean.class);
@@ -72,18 +73,33 @@ public class RadioButtonBean extends ComponentExampleImpl<RadioButtonBean> imple
         super.initMetaData();
     }
 
-    public boolean isSelected() {
-        return selected;
+    public boolean isSelected1() {
+        return selected1;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    public void setSelected1(boolean selected) {
+        this.selected1 = selected;
+    }
+	
+    public boolean isSelected2() {
+        return selected2;
+    }
+
+    public void setSelected2(boolean selected) {
+        this.selected2 = selected;
     }
     
-    public String getBoxValueDescription() {
-        if(selected)
-            return "selected";
+    public String getBoxValueDescription1() {
+        if(selected1)
+            return "Selected";
         else
-            return "unselected";
+            return "Not Selected";
+    }
+	
+    public String getBoxValueDescription2() {
+        if(selected2)
+            return "Selected";
+        else
+            return "Not Selected";
     }
 }
