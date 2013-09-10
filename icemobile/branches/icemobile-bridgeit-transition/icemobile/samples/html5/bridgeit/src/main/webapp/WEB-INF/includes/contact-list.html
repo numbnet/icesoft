@@ -32,7 +32,6 @@
         for (var key in record)  {
             recordHTML += "<div class='row'><span class='ellipsis'><strong>" + key + ": </strong>" + record[key] + "</span></div>";  
         }
-        alert('recordHTML='+recordHTML);
         fieldset.innerHTML = recordHTML;
         elem.insertBefore(fieldset, elem.firstChild);
     }
