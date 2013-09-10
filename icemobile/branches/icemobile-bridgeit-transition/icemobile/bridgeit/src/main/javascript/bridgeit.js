@@ -299,6 +299,71 @@ if (!window.console) {
         }
         return result;
     }
+    function checkExecDeviceResponse()  {
+        var data = getDeviceCommand();
+        var deviceParams;
+        if (null != data)  {
+            var name;
+            var value;
+            var needRefresh = true;
+            if ("" != data)  {
+                deviceParams = unpackDeviceResponse(data);
+                if (deviceParams.name)  {
+                    name = deviceParams.name;
+                    value = deviceParams.value;
+                    setInput(name, name, value);
+                    needRefresh = false;
+                }
+            }
+            if (needRefresh)  {
+                console.log('needs refresh');
+                if (window.ice.ajaxRefresh)  {
+                    ice.ajaxRefresh();
+                }
+            }
+            setTimeout( function(){
+                console.log('setTimeout()');
+                var sxEvent = {
+                    name : name,
+                    value : value
+                };
+                console.log('sxEvent: ' + sxEvent);
+                var restoreHash = "";
+                if (deviceParams)  {
+                    if (deviceParams.r)  {
+                        sxEvent.response = deviceParams.r;
+                    }
+                    if (deviceParams.p)  {
+                        sxEvent.preview = deviceParams.p;
+                    }
+                    if (deviceParams.c)  {
+                        if (ice.push)  {
+                            ice.push.parkInactivePushIds(
+                                    deviceParams.c );
+                        }
+                    }
+                    if (deviceParams.h)  {
+                        restoreHash = deviceParams.h;
+                    }
+                }
+                var loc = window.location;
+                //changing hash to temporary value ensures changes
+                //to repeated values are detected
+                history.pushState("", document.title,
+                        loc.pathname + loc.search + "#clear-icemobilesx");
+                history.pushState("", document.title,
+                        loc.pathname + loc.search + restoreHash);
+                if (bridgeit.deviceCommandCallback)  {
+                    bridgeit.deviceCommandCallback(sxEvent);
+                    bridgeit.deviceCommandCallback = null;
+                }
+                else{
+                    console.log('no deviceCommandCallback registered :(');
+                }
+            }, 1);
+        }
+    }
+
     /* Page event handling */
     if (window.addEventListener) {
 
@@ -319,68 +384,7 @@ if (!window.console) {
 
         window.addEventListener("hashchange", function () {
             console.log('entered hashchange listener hash=' + window.location.hash);
-            var data = getDeviceCommand();
-            var deviceParams;
-            if (null != data)  {
-                var name;
-                var value;
-                var needRefresh = true;
-                if ("" != data)  {
-                    deviceParams = unpackDeviceResponse(data);
-                    if (deviceParams.name)  {
-                        name = deviceParams.name;
-                        value = deviceParams.value;
-                        setInput(name, name, value);
-                        needRefresh = false;
-                    }
-                }
-                if (needRefresh)  {
-                    console.log('needs refresh');
-                    if (window.ice.ajaxRefresh)  {
-                        ice.ajaxRefresh();
-                    }
-                }
-                setTimeout( function(){
-                    console.log('setTimeout()');
-                    var sxEvent = {
-                        name : name,
-                        value : value
-                    };
-                    console.log('sxEvent: ' + sxEvent);
-                    var restoreHash = "";
-                    if (deviceParams)  {
-                        if (deviceParams.r)  {
-                            sxEvent.response = deviceParams.r;
-                        }
-                        if (deviceParams.p)  {
-                            sxEvent.preview = deviceParams.p;
-                        }
-                        if (deviceParams.c)  {
-                            if (ice.push)  {
-                                ice.push.parkInactivePushIds(
-                                        deviceParams.c );
-                            }
-                        }
-                        if (deviceParams.h)  {
-                            restoreHash = deviceParams.h;
-                        }
-                    }
-                    var loc = window.location;
-                    //changing hash to temporary value ensures changes
-                    //to repeated values are detected
-                    history.pushState("", document.title,
-                            loc.pathname + loc.search + "#clear-icemobilesx");
-                    history.pushState("", document.title,
-                            loc.pathname + loc.search + restoreHash);
-                    if (bridgeit.deviceCommandCallback)  {
-                        bridgeit.deviceCommandCallback(sxEvent);
-                        bridgeit.deviceCommandCallback = null;
-                    }
-                    else{
-                        console.log('no deviceCommandCallback registered :(');
-                    }
-                }, 1);
-            }
+            checkExecDeviceResponse();
         }, false);
 
     };
@@ -533,5 +537,8 @@ if (!window.console) {
         }
         return record;
     }
+
+    //chrome on android functions as full page load
+    checkExecDeviceResponse();
 })(bridgeit);
 
