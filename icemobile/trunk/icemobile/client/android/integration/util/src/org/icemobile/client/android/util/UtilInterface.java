@@ -105,47 +105,55 @@ public class UtilInterface implements JavascriptInterface,
     }
 
     public void submitForm(String actionUrl, String serializedForm,
-            Runnable callback) {
-	//Log.e("ICEutil", "submitForm " + actionUrl);
+			   Runnable callback) {
+	Log.d("SxUtil", "submitForm " + url);
 	boolean gotValue = true;
 	String[] result;
 	long contentSize = 0;
 	CountingMultiPartEntity content = new CountingMultiPartEntity(this);
 	try {
-	    URL relativeAction = new URL(new URL(url), actionUrl);
-	    url = relativeAction.toString();
+	    Log.d("SxUtil", "serialized form = " + serializedForm);
+	    if (actionUrl != null && actionUrl.length() > 0) {
+		URL relativeAction = new URL(new URL(url), actionUrl);
+		url = relativeAction.toString();
+	    }
+	    Log.d("SxUtil", "relative URL = " + url);
 	    BasicNameValuePair[] params = getNameValuePairs(serializedForm, "&", "=");
 	    for (int i=0; i<params.length; i++) {
-            String packedName = params[i].getName();
-            int nameSplit = packedName.indexOf("-");
-            //if type is missing, "hidden" will be assumed
-            String paramType = "hidden";
-            String paramName = packedName;
-            if (nameSplit > 0)  {
-                paramType = packedName.substring(0, nameSplit);
-                paramName = packedName.substring(nameSplit + 1);
-            }
-            if ("file".equals(paramType)) {
-                String fname = "undefined";
-                try {
-                    fname = params[i].getValue().replaceAll("%2F","/");
+		String packedName = params[i].getName();
+		int nameSplit = packedName.indexOf("-");
+		//if type is missing, "hidden" will be assumed
+		String paramType = "hidden";
+		String paramName = packedName;
+		if (nameSplit > 0)  {
+		    paramType = packedName.substring(0, nameSplit);
+		    paramName = packedName.substring(nameSplit + 1);
+		}
+		if ("file".equals(paramType)) {
+		    String fname = "undefined";
+		    try {
+			fname = params[i].getValue().replaceAll("%2F","/");
 
-                    InputStream is = new BufferedInputStream(new FileInputStream(fname));
-                    byte[] data = IOUtils.toByteArray(is);
-                    InputStreamBody isb = new InputStreamBody(
-                            new ByteArrayInputStream(data), 
-                            getMimeType(fname), params[i].getValue());
-                    contentSize += data.length;
-                    content.addPart(URLDecoder.decode(paramName,"UTF_8"), isb);
-                    is.close();
-                } catch (Exception e)  {
-                    Log.e("ICEutil", "Error Opening file " + fname, e);
-                }
-            } else {
-                StringBody sb = new StringBody(URLDecoder.decode(params[i].getValue(),"UTF-8"));
-                contentSize += sb.getContentLength() + MSG_PADDING;
-                content.addPart(URLDecoder.decode(paramName,"UTF-8"), sb);
-            }
+			InputStream is = new BufferedInputStream(new FileInputStream(fname));
+			byte[] data = IOUtils.toByteArray(is);
+			InputStreamBody isb = new InputStreamBody(
+								  new ByteArrayInputStream(data), 
+								  getMimeType(fname), params[i].getValue());
+			contentSize += data.length;
+			content.addPart(URLDecoder.decode(paramName,"UTF_8"), isb);
+			is.close();
+		    } catch (Exception e)  {
+			Log.e("ICEutil", "Error Opening file " + fname, e);
+		    }
+		} else {
+		    StringBody sb = new StringBody(URLDecoder.decode(params[i].getValue(),"UTF-8"));
+		    contentSize += sb.getContentLength() + MSG_PADDING;
+		    content.addPart(URLDecoder.decode(paramName,"UTF-8"), sb);
+		}
+	    }
+	    Log.d("SxUtil", "Ready to post to " + url);
+	    if (!url.startsWith("http://") && !url.startsWith("http://")) {
+		url = "http://" + url;
 	    }
             HttpPost postRequest = new HttpPost(url);
 	    CookieSyncManager.createInstance(container);
@@ -158,6 +166,7 @@ public class UtilInterface implements JavascriptInterface,
 	    }
 	    content.measureProgress(contentSize/(PROGRESS_INTERVAL+1));
 	    postRequest.setEntity(content);
+	    Log.d("SxUtil", "Queuing request " + postRequest.toString());
 	    queueRequest(postRequest, callback);
 	} catch (Throwable e) {
 	    Log.e("ICEutil", "Failed to submit form ", e);
@@ -166,7 +175,7 @@ public class UtilInterface implements JavascriptInterface,
 
     private void queueRequest(HttpPost postRequest, Runnable callback) {
 	postQueue.add(new HttpPostTask(postRequest, callback));
-	//Log.e("ICEutil", "Request q=" + postQueue.size());
+	Log.d("SxUtil", "Request q=" + postQueue.size());
 	if (postQueue.size() == 1) {
 	    Thread thread = new Thread(this);
 	    thread.start();
@@ -182,14 +191,16 @@ public class UtilInterface implements JavascriptInterface,
 		sendProgress(0);
 		HttpPostTask postTask = postQueue.remove();
 		postRequest = postTask.httpPost;
+		Log.d("SxUtil", "Posting data.");
 		HttpResponse res = httpClient.execute(postRequest);
 		sendProgress(100);
 		StringWriter writer = new StringWriter();
 		IOUtils.copy(res.getEntity().getContent(), writer);
 		setResult(writer.toString());
-        if (null != postTask.callback) {
-            postTask.callback.run();
-        }
+		Log.d("SxUtil", "Got Result = " +  writer.toString());
+		if (null != postTask.callback) {
+		    postTask.callback.run();
+		}
 		handler.sendEmptyMessage(RESPONSE_MSG);
 	    }
 	} catch (Throwable e) {
