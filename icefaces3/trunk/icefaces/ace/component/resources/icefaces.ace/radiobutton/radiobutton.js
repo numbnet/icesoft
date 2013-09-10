@@ -46,7 +46,7 @@ ice.ace.radiobutton = function(clientId, options) {
 
     if (!options.disabled)
         ice.ace.jq(this.jqId).on("click", function () {
-            self.toggleCheckbox();
+            self.toggleCheckbox(true);
             if (self.isChecked()) {
                 ice.ace.radiobutton.toggleOthers(self.options, self.id)
             }
@@ -61,6 +61,10 @@ ice.ace.radiobutton = function(clientId, options) {
         this.addStateCSSClasses('hover');
     else if (event.type == "mouseover")
         this.addStateCSSClasses('hover');
+		
+	if (this.isChecked()) {
+		ice.ace.radiobutton.toggleOthers(this.options, this.id)
+	}
 
     var unload = function() {
         // Unload WidgetVar
@@ -116,8 +120,9 @@ ice.ace.radiobutton.prototype.onAriaKeypress = function (e) {
     }
 }
 
-ice.ace.radiobutton.prototype.toggleCheckbox = function (e) {
+ice.ace.radiobutton.prototype.toggleCheckbox = function (activeButton) {
     var newValue = !this.isChecked();
+	if (activeButton) newValue = true;
 
     this.setChecked(newValue);
     if (newValue == true) this.addStateCSSClasses('checked');
@@ -135,7 +140,7 @@ ice.ace.radiobutton.prototype.toggleCheckbox = function (e) {
     }
 };
 
-ice.ace.radiobutton.groups = {};
+if (!ice.ace.radiobutton.groups) ice.ace.radiobutton.groups = {};
 
 ice.ace.radiobutton.toggleOthers = function (options, clientId) {
     var groups = ice.ace.radiobutton.groups,
