@@ -88,7 +88,6 @@ ice.ace.radiobutton.prototype.addStateCSSClasses = function(state) {
         this.button.addClass('ui-state-hover');
     }
     else if (state == 'checked') {
-        this.button.addClass('ui-state-active');
         this.icon.removeClass('ui-icon-radio-off')
                  .addClass('ui-icon-radio-on');
     }
@@ -99,7 +98,6 @@ ice.ace.radiobutton.prototype.removeStateCSSClasses = function(state) {
         this.button.removeClass('ui-state-hover');
     }
     else if (state == 'checked') {
-        this.button.removeClass('ui-state-active');
         this.icon.removeClass('ui-icon-radio-on')
                  .addClass('ui-icon-radio-off');
     }

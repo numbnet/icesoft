@@ -29,5 +29,10 @@
     *font-size: small;
 }
 
+.ice-radiobutton .yui-button button {
+	border:0;
+	background-color:transparent;
+}
+
 .ui-icon-radio-on { background-position: -96px -144px; }
 .ui-icon-radio-off { background-position: -112px -144px; }

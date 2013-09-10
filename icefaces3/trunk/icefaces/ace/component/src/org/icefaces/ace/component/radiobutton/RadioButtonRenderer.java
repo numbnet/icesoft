@@ -65,8 +65,7 @@ public class RadioButtonRenderer extends InputRenderer {
         RadioButton radioButton = (RadioButton) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
 		Map<String, Object> labelAttributes = getLabelAttributes(uiComponent);
-        String firstWrapperClass = "yui-button yui-radiobutton-button ui-button ui-widget ui-state-default";
-        String secondWrapperClass = "first-child";
+        String firstWrapperClass = "yui-button yui-radiobutton-button";
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
 
         // Root Container
@@ -84,7 +83,6 @@ public class RadioButtonRenderer extends InputRenderer {
 
         // Second Wrapper
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.CLASS_ATTR, secondWrapperClass, null);
 
         if (ariaEnabled)
             encodeAriaAttributes(writer, radioButton);
@@ -94,6 +92,7 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
+		writer.writeAttribute(HTML.CLASS_ATTR, "ui-corner-all", null);
 
         encodeButtonTabIndex(writer, radioButton, ariaEnabled);
         encodeButtonStyle(writer, radioButton);
@@ -230,13 +229,8 @@ public class RadioButtonRenderer extends InputRenderer {
 
     private void encodeButtonStyle(ResponseWriter writer, RadioButton radioButton) throws IOException {
         String buttonClasses = "";
-        String selectedClass = "ui-state-active";
         String disabledClass = "ui-state-disabled";
         Boolean val = (Boolean)radioButton.getValue();
-
-        if (val != null && val) {
-            buttonClasses += selectedClass + " ";
-        }
 
         if (radioButton.isDisabled()) {
             buttonClasses += disabledClass + " ";
