@@ -12,8 +12,9 @@
     <a id="contactListBtn" type="button" class="whiteButton bridgeItBtn"
         onclick="bridgeit.fetchContact('contactListBtn',handleContact);">Fetch a Contact</a>
         
-    <fieldset id="contacts">
-    </fieldset>
+    <div id="contacts" class="panel">
+    
+    </div>
     <div class="footer">
         <a href="#">
             <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
@@ -25,12 +26,15 @@
         var text = unescape(event.value);
 
         var record = bridgeit.url2Object(text);
-        var output = "";
-        for (var key in record)  {
-            output += "<div class='row'><p class='normalText'><strong>" + key + ": </strong>" + record[key] + "</p></div>";
-        }
         var elem = document.getElementById("contacts");
-        elem.innerHTML = elem.innerHTML + "<div class='row'>" + output + "</div>";
+        var fieldset = document.createElement('fieldset');
+        var recordHTML = '';
+        for (var key in record)  {
+            recordHTML += "<div class='row'><span class='ellipsis'><strong>" + key + ": </strong>" + record[key] + "</span></div>";  
+        }
+        alert('recordHTML='+recordHTML);
+        fieldset.innerHTML = recordHTML;
+        elem.insertBefore(fieldset, elem.firstChild);
     }
     </script>
    
