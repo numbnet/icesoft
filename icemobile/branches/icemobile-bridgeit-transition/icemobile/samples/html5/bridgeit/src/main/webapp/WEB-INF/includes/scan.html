@@ -26,12 +26,12 @@
         var HTTP = "http";
         var text = event.value;
         if (HTTP == text.substring(0, HTTP.length))  {
-            text = "<a href='" + text + "'>" + text + "</a>";
+            text = "<span class='ellipsis'><a href='" + text + "'>" + text + "</a></span>";
         }
         var elem = document.getElementById("scans");
         var row1 = document.createElement('div');
         row1.setAttribute('class','row');
-        row1.innerHTML = "Scanned on " + new Date();
+        row1.innerHTML = "<span class='ellipsis'>Scanned on " + new Date() + "</span>";
         elem.appendChild(row1);
         var row2 = document.createElement('div');
         row2.setAttribute('class','row');

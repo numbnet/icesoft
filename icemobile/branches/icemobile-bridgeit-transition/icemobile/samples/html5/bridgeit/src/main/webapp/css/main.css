@@ -211,3 +211,12 @@ section > article > pre > code {
 .highlightPlaceholder::-moz-placeholder, .highlightPlaceholder:-ms-input-placeholder{
    color: red;
 }
+
+span.ellipsis{
+    max-width: 100%; 
+    overflow: hidden;
+    padding: 5px;
+    text-overflow:ellipsis; 
+    white-space:nowrap
+ }
+}
