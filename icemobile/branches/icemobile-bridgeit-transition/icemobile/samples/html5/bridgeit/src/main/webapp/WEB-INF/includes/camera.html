@@ -13,8 +13,11 @@
     <a id="cameraBtn" type="button" class="whiteButton bridgeItBtn"
         onclick="bridgeit.camera('cameraBtn',handleCam, {postURL:window.serviceHub + '/camera-upload'});">Take a Photo</a>
         
-    <fieldset>
-        <div class="row"><img id="thumbnail"/></div>
+    <fieldset id="currentPhoto">
+        <div class="row">
+            <img id="thumbnail"/>
+            <span class="ellipsis" id="currentPhotoDesc" ></span>
+        </div>
     </fieldset>
     <fieldset id="images">
     </fieldset>
@@ -29,21 +32,36 @@
         var text = event.value;
         if (event.preview)  {
             document.getElementById("thumbnail").setAttribute("src", event.preview);
+            document.getElementById("currentPhotoDesc").innerHTML = "Last photo taken at " + new Date();
         }
         if (event.response)  {
             var photos = JSON.parse(event.response);
-            var elem = document.getElementById("images");
             for( var i = 0 ; i < photos.length ; i++ ){
-                var row1 = document.createElement('div');
-                row1.setAttribute('class','row');
-                row1.innerHTML = "Image taken at " + new Date();
-                elem.appendChild(row1);
-                var row2 = document.createElement('div');
-                row2.setAttribute('class','row');
-                row2.innerHTML = "<img src='" + window.serviceHub + "/" + photos[i] + "'/>";
-                elem.appendChild(row2);
+                alert('photo: ' + photos[i]);
+                var photoDiv = document.getElementById('photoDiv'+i);
+                
+                if( !photoDiv ){
+                    var row = document.createElement('div');
+                    row.id = 'photoDiv'+i;
+                    row.setAttribute('class','row');
+                    var elem = document.getElementById("images");
+                    elem.insertBefore(row,elem.firstChild);
+                    row.innerHTML = "<a id='photoLink" + i + "' onclick=\"loadPhoto(" + i + ",'" + photos[i] + "');\">Load Photo " + i + "</a>";
+                }
+                
             }
             
+        }
+    }
+    function loadPhoto(id, url){
+        var photoLink = document.getElementById('photoLink'+id);
+        if( photoLink ){
+            var parent = photoLink.parentNode;
+            parent.removeChild(photoLink);
+            var img = document.createElement('img');
+            img.id = 'photo' + id;
+            img.setAttribute('src',  window.serviceHub + "/" + url);
+            parent.appendChild(img);
         }
     }
     
