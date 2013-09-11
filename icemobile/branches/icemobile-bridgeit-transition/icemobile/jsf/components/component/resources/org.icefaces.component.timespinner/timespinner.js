@@ -160,7 +160,7 @@ mobi.timespinner = {
         }
         var inputEl = document.getElementById(clientId + '_input');
         var titleEl = document.getElementById(clientId + '_title');
-        inputEl.value = titleEl.innerHTML;
+        inputEl.value = titleEl.childNodes[1].innerHTML;
         if (hasBehaviors) {
             if (behaviors.change) {
                 behaviors.change();
