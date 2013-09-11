@@ -232,7 +232,7 @@ if (!window.console) {
     }
     var checkTimeout;
     function deviceCommand(command, id, callback, options)  {
-        if (navigator.userAgent.toLowerCase().indexOf('chrome') < 0)  {
+        if (navigator.userAgent.toLowerCase().indexOf('android') < 0)  {
             checkTimeout = setTimeout( function()  {
                 bridgeit.launchFailed(id);
             }, 3000);
@@ -540,7 +540,7 @@ if (!window.console) {
         return record;
     }
 
-    //chrome on android functions as full page load
+    //android functions as full page load
     checkExecDeviceResponse();
 })(bridgeit);
 
