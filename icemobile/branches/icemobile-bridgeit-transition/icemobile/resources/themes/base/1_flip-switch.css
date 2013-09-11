@@ -16,6 +16,7 @@
 
 .mobi-flipswitch {
     display: inline-block;
+    cursor: pointer;
 }
 
 .mobi-flipswitch *{
