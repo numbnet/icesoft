@@ -26,6 +26,7 @@
 
 @implementation ViewController
 @synthesize nativeInterface;
+@synthesize isResponding;
 @synthesize currentURL;
 @synthesize returnURL;
 @synthesize currentParameters;
@@ -295,6 +296,11 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     message = [[message stringByAppendingString:host] 
             stringByAppendingString:@"?" ];
 
+    if (nil != self.nativeInterface.customAlertText)  {
+        message = self.nativeInterface.customAlertText;
+        self.nativeInterface.customAlertText = nil;
+    }
+
     if (nil == title)  {
         LogError(@"Command not valid %@", self.currentCommand);
         return;
@@ -416,6 +422,7 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
         [self flipButton:theButton];
         if (!theButton.selected)  {
             params = @"&strategy=stop";
+            self.nativeInterface.customAlertText = @"Stop geolocation updates?";
         }
     }
 
@@ -530,6 +537,15 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 
 }
 
+- (void)updateGeoSpyButton  {
+    if (self.nativeInterface.monitoringLocation)  {
+        NSLog(@"geospy ACTIVE");
+        self.geospyButton.selected = YES;
+        [IceUtil pushFancyButton:self.geospyButton];
+    } 
+}
+
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -540,15 +556,14 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self updateGeoSpyButton];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (self.nativeInterface.monitoringLocation)  {
-        self.geospyButton.selected = YES;
-        [IceUtil pushFancyButton:self.geospyButton];
-    }
+    [self updateGeoSpyButton];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -577,6 +592,10 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 
 - (void)applicationWillResignActive {
     [self.nativeInterface applicationWillResignActive];
+}
+
+- (void)applicationWillEnterForeground {
+    [self updateGeoSpyButton];
 }
 
 - (void) applicationDidEnterBackground  {

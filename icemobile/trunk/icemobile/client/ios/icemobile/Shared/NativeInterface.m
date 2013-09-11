@@ -36,6 +36,7 @@
 @synthesize maxwidth;
 @synthesize maxheight;
 @synthesize soundFilePath;
+@synthesize customAlertText;
 @synthesize nextFileIndex;
 @synthesize recording;
 @synthesize uploading;

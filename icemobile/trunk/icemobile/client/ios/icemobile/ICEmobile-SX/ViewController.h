@@ -89,6 +89,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *splashImage;
 
 - (void) applicationWillResignActive;
+- (void) applicationWillEnterForeground;
 - (void) applicationDidEnterBackground;
 - (void) dispatchCurrentCommand;
 - (void) reloadCurrentURL;
