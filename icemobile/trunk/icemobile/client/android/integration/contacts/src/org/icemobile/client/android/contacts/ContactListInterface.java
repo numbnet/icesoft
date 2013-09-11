@@ -46,7 +46,6 @@ import android.net.Uri;
 
 	private Context mContext; 
 	private ContentResolver mResolver; 
-	private Runnable mCompletionCallback; 
 
 	private final String SELECT_TYPE_ARG = "select";
 	private final String FIELDS_ARG = "fields"; 
@@ -66,10 +65,6 @@ import android.net.Uri;
 	    mInterface = util;
 	    contactCode = contact_code;
 	}
-
-    public void setCompletionCallback(Runnable callback)  {
-        mCompletionCallback = callback;
-    }
 
 	public void fetchContact(String id, String attr) {
 
@@ -123,9 +118,6 @@ import android.net.Uri;
 	    try { 
 		Log.d("ICEcontacts", "Encoded Contact = " + encodedContactList);
 		mInterface.loadURL("javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
-		if (null != mCompletionCallback)  {
-		    mCompletionCallback.run();
-		}
 	    } catch (Exception e) { 
 		Log.e("ICEmobile", "Exception encoding contact information: " + e); 
 	    }
