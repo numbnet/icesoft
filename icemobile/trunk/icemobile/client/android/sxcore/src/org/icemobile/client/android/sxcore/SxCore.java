@@ -527,6 +527,21 @@ public class SxCore extends Activity
 		}
 		Log.d(LOG_TAG, "onActivityResult completed RECORD_CODE");
 		break;
+	    case CONTACT_CODE:
+		mContactUri = (Uri)data.getData();
+		mContactListInterface.gotContact(mContactUri);
+		String encodedContact = mContactListInterface.getEncodedContactList(mContactUri);
+		mReturnValue = mCurrentId + "=" + encodedContact;
+		if (mPOSTUri != null) {
+		    encodedForm += "hidden-" + mCurrentId + "=" + encodedContact;
+		    if (null != mParameters)  {
+			encodedForm += "&" + mParameters;
+		    }
+		    utilInterface.setUrl(mPOSTUri.toString());
+		    utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		}
+		Log.d(LOG_TAG, "onActivityResult completed fetchContacts:" + encodedContact);
+		break;
 	    case ARVIEW_CODE:
 		Log.d(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
 		returnToBrowser();
@@ -535,11 +550,6 @@ public class SxCore extends Activity
 		//		mARViewHandler.arViewComplete(data);
 		Log.d(LOG_TAG, "completed AR Marker View");
 		returnToBrowser();
-		break;
-	    case CONTACT_CODE:
-		Log.d(LOG_TAG, "Got Contact");
-		mContactUri = (Uri)data.getData();
-		mContactListInterface.gotContact(mContactUri);
 		break;
             }
         } else {
@@ -601,20 +611,6 @@ public class SxCore extends Activity
 
     private void includeContacts() {
         mContactListInterface = new ContactListInterface(utilInterface, this, getContentResolver(), CONTACT_CODE);
-        mContactListInterface.setCompletionCallback(new Runnable() {
-                public void run()  {
-                    String encodedContact = 
-                            mContactListInterface.getEncodedContactList(mContactUri);
-                    String encodedForm = "hidden-" + mCurrentId + "=" + encodedContact;
-                    if (null != mParameters)  {
-                        encodedForm += "&" + mParameters;
-                    }
-                    utilInterface.setUrl(mPOSTUri.toString());
-                    utilInterface.submitForm("", encodedForm);
-		    Log.d(LOG_TAG, "completionCallback completed fetchContacts:" + encodedContact);
-                    returnToBrowser();
-                }
-            });
     }
 
     private void includeARView() {
