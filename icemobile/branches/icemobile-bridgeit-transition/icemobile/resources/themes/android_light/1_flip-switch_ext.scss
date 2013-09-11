@@ -14,39 +14,39 @@
  * governing permissions and limitations under the License.
  */
  
- .mobi-flipswitch{
-    -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
-    border-radius: 0;
-    border: none !important;
- }
-  .mobi-flipswitch span{
-    min-width: 27px;
-  }
- .mobi-flipswitch-txt-on, .mobi-flipswitch-txt-off {
-    font-weight: bold;
-    color: #3B3E3E;
-    text-shadow: none;
-}
-.mobi-flipswitch-on .mobi-flipswitch-txt-on {
-    height: 21px;
-}
-.mobi-flipswitch-on .mobi-flipswitch-txt-off{
-    border-radius: 0;
-    margin: 0;
-    background: #555;
-    border: none;
-    height: 21px;
-    min-width: 27px;
-}
-.mobi-flipswitch-off .mobi-flipswitch-txt-off {
-    background-color: #DDD;
-    color: #666;
-}
-.mobi-flipswitch-off .mobi-flipswitch-txt-on{
-    border-radius: 0;
-    margin: 0;
-    background: #555;
-    border-top: 1px solid #555;
-    border-bottom: 1px solid #555;
-    min-width: 25px;
-}
+// .mobi-flipswitch{
+//    -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
+//    border-radius: 0;
+//    border: none !important;
+// }
+//  .mobi-flipswitch span{
+//    min-width: 27px;
+//  }
+// .mobi-flipswitch-txt-on, .mobi-flipswitch-txt-off {
+//    font-weight: bold;
+//    color: #3B3E3E;
+//    text-shadow: none;
+//}
+//.mobi-flipswitch-on .mobi-flipswitch-txt-on {
+//    height: 21px;
+//}
+//.mobi-flipswitch-on .mobi-flipswitch-txt-off{
+//    border-radius: 0;
+//    margin: 0;
+//    background: #555;
+//    border: none;
+//    height: 21px;
+//    min-width: 27px;
+//}
+//.mobi-flipswitch-off .mobi-flipswitch-txt-off {
+//    background-color: #DDD;
+//    color: #666;
+//}
+//.mobi-flipswitch-off .mobi-flipswitch-txt-on{
+//    border-radius: 0;
+//    margin: 0;
+//    background: #555;
+//    border-top: 1px solid #555;
+//    border-bottom: 1px solid #555;
+//    min-width: 25px;
+//}

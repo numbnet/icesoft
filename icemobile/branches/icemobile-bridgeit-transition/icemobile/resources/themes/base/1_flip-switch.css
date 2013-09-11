@@ -16,11 +16,6 @@
 
 .mobi-flipswitch {
     display: inline-block;
-    text-decoration: none;
-    border-radius: 1.8em;
-    -webkit-background-clip: padding;
-    background-clip: padding-box;
-    background-color: transparent;
 }
 
 .mobi-flipswitch *{
@@ -37,11 +32,18 @@
         transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
 }
 /* active state */
-.mobi-flipswitch-on .mobi-flipswitch-txt-on, .mobi-flipswitch-off .mobi-flipswitch-txt-off {
-    color: inherit;
+.mobi-flipswitch-on .mobi-flipswitch-txt-on,
+.mobi-flipswitch-on .mobi-flipswitch-txt-off,
+.mobi-flipswitch-off .mobi-flipswitch-txt-off,
+.mobi-flipswitch-off .mobi-flipswitch-txt-on {
     min-width:35px;
     text-shadow: none;
 }
+
+.mobi-flipswitch-off .mobi-flipswitch-txt-off {
+    background-color: rgba(0,0,0,.1);
+}
+
 /* inactive state */
 .mobi-flipswitch-off .mobi-flipswitch-txt-on, .mobi-flipswitch-on .mobi-flipswitch-txt-off {
     color: transparent;
