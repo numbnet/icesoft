@@ -200,11 +200,19 @@ public class SxCore extends Activity
 		    
 		    if (mHashCode != null) {
 			returnUri.append("&!h=");
-			returnUri.append(mHashCode);
+			try {
+			    returnUri.append(URLEncoder.encode(mHashCode, "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+			    Log.e(LOG_TAG, "Could not encode return hash: " + e.toString());
+			}
 		    }
 		    if (mPreview != null) {
 			returnUri.append("&!p=");
-			returnUri.append(mPreview);
+			try {
+			    returnUri.append(URLEncoder.encode(mPreview, "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+			    Log.e(LOG_TAG, "Could not encode preview: " + e.toString());
+			}
 		    }
 		    
 		    mReturnUri = Uri.parse(returnUri.toString());
