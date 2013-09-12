@@ -361,17 +361,17 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     padding-left: 25px;
 }
 
-.progressRedTxt {
+.iceOutProgFill.progressRedTxt {
     color: white;
     font-weight: bold;
 }
 
-.progressRedBg {
+.iceOutProgFill.progressRedBg {
     background-color: #880000;
     border: 2px inset black;
 }
 
-.progressRedFill {
+.iceOutProgFill.progressRedFill {
     background-color: red;
     background-image: none;
 }
@@ -395,22 +395,20 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     height: 40px;
 }
 
-.progressPurpleTxt {
+.iceOutProgFill.progressPurpleTxt {
     font-size: 14px;
     font-family: monospace;
     color: white;
 }
 
-.progressPurpleBg {
+.iceOutProgFill.progressPurpleBg {
     background-color: #673C83;
     border: 2px outset #864BB9;
-    height: 25px;
 }
 
-.progressPurpleFill {
+.iceOutProgFill.progressPurpleFill {
     background: url("#{resource['css/images/purple-progress-slice.jpg']}") repeat-x scroll left top transparent;
     background-color: #864BB9;
-    height: 25px;
 }
 
 .dragContainer {
