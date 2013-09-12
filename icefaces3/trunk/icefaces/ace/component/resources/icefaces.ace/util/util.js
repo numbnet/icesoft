@@ -248,14 +248,15 @@ ice.ace.util.getStyleSheet = function (sheetId) {
 ice.ace.util.addStyleSheet = function (sheetId, parentSelector) {
     var s = document.createElement('style');
     s.type = 'text/css';
-    document.querySelectorAll(parentSelector || "head")[0].appendChild(s);
+    s.appendChild(document.createTextNode(""));
+    document.querySelector(parentSelector || "head").appendChild(s);
 
     if (ice.ace.jq.browser.safari || ice.ace.jq.browser.chrome) // must title after insertion to prevent chrome bug
         setTimeout(function() { s.title = sheetId; }, 1000);
     else
         s.title = sheetId;
 
-    return document.styleSheets[document.styleSheets.length - 1];
+    return s.sheet;
 };
 
 ice.ace.util.getOpacity = function(elem) {
