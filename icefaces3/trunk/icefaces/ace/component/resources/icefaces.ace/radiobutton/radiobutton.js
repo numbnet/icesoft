@@ -131,8 +131,12 @@ ice.ace.radiobutton.prototype.toggleCheckbox = function (activeButton) {
     }
 
     if (this.options.behaviors && this.options.behaviors.activate) {
-        ice.ace.ab(ice.ace.extendAjaxArgs(
+        if (newValue == true) ice.ace.ab(ice.ace.extendAjaxArgs(
             this.options.behaviors.activate,
+            {params: this.options.uiParams}
+        ));
+		else ice.ace.ab(ice.ace.extendAjaxArgs(
+            this.options.behaviors.deactivate,
             {params: this.options.uiParams}
         ));
     }

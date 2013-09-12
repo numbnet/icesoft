@@ -157,7 +157,7 @@ public class RadioButtonRenderer extends InputRenderer {
 		if (groupId == null || "".equals(groupId)) {
 			groupComp = findNearestButtonGroup(radioButton);
 			if (groupComp != null) {
-				groupId = groupComp.getClientId(facesContext);
+				groupId = ((ButtonGroup) groupComp).isMutuallyExclusive() ? groupComp.getClientId(facesContext) : "";
 			} else {
 				groupId = "";
 			}
