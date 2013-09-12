@@ -84,6 +84,7 @@ public class DialogRenderer extends CoreRenderer {
           .entry("minHeight", dialog.getMinHeight());
 
         String styleClass = dialog.getStyleClass();
+		String style = dialog.getStyle();
         String showEffect = dialog.getShowEffect();
         String hideEffect = dialog.getHideEffect();
         String headerText = dialog.getHeader();
@@ -100,6 +101,7 @@ public class DialogRenderer extends CoreRenderer {
 		boolean hasHeaderFacet = dialog.getFacet("header") != null;
 
         if (styleClass != null) jb.entry("dialogClass", styleClass);
+		if (style != null) jb.entry("dialogStyle", style);
         if (width > 0) jb.entry("width", width);
         if (height > 0) jb.entry("height", height);
         if (!dialog.isDraggable()) jb.entry("draggable", false);
