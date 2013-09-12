@@ -61,9 +61,17 @@ public class OutputListItemRenderer extends Renderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
+        OutputListItem item = (OutputListItem) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
+        if (!item.isGroup()) writeArrowIcon(writer);
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.LI_ELEM);
+    }
+
+    private void writeArrowIcon(ResponseWriter writer) throws IOException {
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "icon-angle-right", null);
+        writer.endElement(HTML.SPAN_ELEM);
     }
 
 }
