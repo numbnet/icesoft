@@ -17,7 +17,7 @@
     border-radius: 0;
 }
 .mobi-list-item-group {
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 .mobi-list-inset > .mobi-list-item:first-child {

@@ -14,27 +14,27 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-list-item a:active, .mobi-list-item a[selected] {
-    -webkit-tap-highlight-color: #082658;
-}
-.mobi-list-item {
-    border-bottom: 1px solid #C7C7C7;
-    font-size: 0.9em;
-    list-style: none;
-}
-.mobi-list-item-group {
-    text-shadow: none;
-}
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
-    padding: 10px 25px;
-    background-image: url("next.png");
-    background-repeat: no-repeat;
-    background-position: 100% 50%;
-    background-size: 20px;
-    color: #5E5E5E;
-    text-shadow: 1px 1px 1px #E2E2E2;
-}
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a:hover,
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a:active{ 
-    color: #33B5E5;     
-}
+//.mobi-list-item a:active, .mobi-list-item a[selected] {
+//    -webkit-tap-highlight-color: #082658;
+//}
+//.mobi-list-item {
+//    border-bottom: 1px solid #C7C7C7;
+//    font-size: 0.9em;
+//    list-style: none;
+//}
+//.mobi-list-item-group {
+//    text-shadow: none;
+//}
+//.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
+//    padding: 10px 25px;
+//    background-image: url("next.png");
+//    background-repeat: no-repeat;
+//    background-position: 100% 50%;
+//    background-size: 20px;
+//    color: #5E5E5E;
+//    text-shadow: 1px 1px 1px #E2E2E2;
+//}
+//.mobi-list > .mobi-list-item > .mobi-list-item-default > a:hover,
+//.mobi-list > .mobi-list-item > .mobi-list-item-default > a:active{
+//    color: #33B5E5;
+//}
