@@ -49,8 +49,12 @@ import org.icefaces.resources.ICEResourceLibrary;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate",
-            javadoc="Fired when the button is clicked or pressed by any other means (default event).",
-            tlddoc="Fired when the button is clicked or pressed by any other means (default event).",
+            javadoc="Fired when the button is clicked or pressed by any other means and changes to selected state (default event).",
+            tlddoc="Fired when the button is clicked or pressed by any other means and changes to selected state (default event).",
+            defaultRender="@all", defaultExecute="@this"),
+	@ClientEvent(name="deactivate",
+            javadoc="Fired when the button is clicked or pressed by any other means and changes to not selected state.",
+            tlddoc="Fired when the button is clicked or pressed by any other means and changes to not selected state.",
             defaultRender="@all", defaultExecute="@this")
 }, defaultEvent="activate")
 public class RadioButtonMeta extends UISelectBooleanMeta {
