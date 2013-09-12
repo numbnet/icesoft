@@ -24,7 +24,9 @@ if (!window.console) {
     if (ice.logInContainer) {
         console.log = ice.logInContainer;
     } else {
-        log = function() {
+        console.log = function() {
+        };
+        console.error = function() {
         };
     }
 }
@@ -115,6 +117,7 @@ if (!window.console) {
         var params;
         var element;
         var formID;
+        var callback;
 
         if (options)  {
             if (options.postURL)  {
@@ -128,6 +131,18 @@ if (!window.console) {
                     params = options.parameters;
                 } else {
                     params = packObject(options.parameters);
+                }
+            }
+            if (options.deviceCommandCallback)  {
+                callback = options.deviceCommandCallback;
+                if ("string" != typeof(callback))  {
+                    if (bridgeit.allowAnonymousCallbacks)  {
+                        callback = "!anon";
+                    } else  {
+                        console.error(
+                            "BridgeIt callbacks must be named in window scope");
+                        callback = null;
+                    }
                 }
             }
             if (options.element)  {
@@ -156,10 +171,20 @@ if (!window.console) {
             theURL = returnURL.substring(0, lastHash);
         }
         returnURL = theURL + "#icemobilesx";
+ 
+        var hashSubClause = "";
+        if (!!theHash)  {
+            hashSubClause = "&h=" + escape(theHash);
+        }
+
+        var callbackClause = "";
+        if (!!callback)  {
+            callbackClause = "&c=" + escape(callback);
+        }
 
         var hashClause = "";
-        if (theHash && ("" != theHash))  {
-            hashClause = "&h=" + escape(theHash);
+        if (!!hashSubClause || !!callbackClause)  {
+            hashClause = "&h=" + escape(hashSubClause) + escape(callbackClause);
         }
 
         if (params && ("" != params)) {
@@ -237,8 +262,12 @@ if (!window.console) {
                 bridgeit.launchFailed(id);
             }, 3000);
         }
+        if (!options)  {
+            options = {};
+        }
         console.log(command + " " + id);
         bridgeit.deviceCommandCallback = callback;
+        options.deviceCommandCallback = callback;
         deviceCommandExec(command, id, options);
     }
     function setInput(target, name, value, vtype)  {
@@ -301,6 +330,30 @@ if (!window.console) {
         }
         return result;
     }
+    function url2Object(encoded)  {
+        var parts = encoded.split("&");
+        var record = {};
+        for (var i = 0; i < parts.length; i++) {
+            if (!!parts[i])  {
+                var pair = parts[i].split("=");
+                record[unescape(pair[0])] = unescape(pair[1]);
+            }
+        }
+        return record;
+    }
+    function addOnLoadListener(func)  {
+        var oldonload = window.onload;
+        window.onload = function() {
+            try {
+                if (oldonload)  {
+                    oldonload();
+                }
+            } catch (e)  {
+                console.error(e);
+            }
+            func();
+        }
+    }
     function checkExecDeviceResponse()  {
         var data = getDeviceCommand();
         var deviceParams;
@@ -329,6 +382,7 @@ if (!window.console) {
                     name : name,
                     value : value
                 };
+                var callback = bridgeit.deviceCommandCallback;
                 console.log('sxEvent: ' + sxEvent);
                 var restoreHash = "";
                 if (deviceParams)  {
@@ -345,7 +399,15 @@ if (!window.console) {
                         }
                     }
                     if (deviceParams.h)  {
-                        restoreHash = deviceParams.h;
+                        var echoed = url2Object(unescape(deviceParams.h));
+                        if (echoed.h)  {
+                            restoreHash = echoed.h;
+                        }
+                        if (echoed.c)  {
+                            if (window[echoed.c])  {
+                                callback = window[echoed.c];
+                            }
+                        }
                     }
                 }
                 var loc = window.location;
@@ -355,14 +417,18 @@ if (!window.console) {
                         loc.pathname + loc.search + "#clear-icemobilesx");
                 history.pushState("", document.title,
                         loc.pathname + loc.search + restoreHash);
-                if (bridgeit.deviceCommandCallback)  {
-                    bridgeit.deviceCommandCallback(sxEvent);
+                if (callback)  {
+                    try {
+                        callback(sxEvent);
+                    } catch (e)  {
+                        console.error("Device function callback failed " + e);
+                        console.error(e.stack);
+                    }
                     bridgeit.deviceCommandCallback = null;
-                }
-                else{
+                } else{
                     console.log('no deviceCommandCallback registered :(');
                 }
-            }, 1);
+            }, 1000);
         }
     }
 
@@ -531,16 +597,18 @@ if (!window.console) {
      * @param {String} encoded The encoded URL string to unpack
      */
     b.url2Object = function(encoded)  {
-        var parts = encoded.split("&");
-        var record = {};
-        for (var i = 0; i < parts.length; i++) {
-            var pair = parts[i].split("=");
-            record[unescape(pair[0])] = unescape(pair[1]);
-        }
-        return record;
+        return url2Object(encoded);
     }
 
+    /**
+     * Set allowAnonymousCallbacks to true to take advantage of persistent
+     * callback functions currently supported on iOS.
+     * 
+     */
+    b.allowAnonymousCallbacks = false;
+ 
     //android functions as full page load
+//    addOnLoadListener(checkExecDeviceResponse);
     checkExecDeviceResponse();
 })(bridgeit);
 
