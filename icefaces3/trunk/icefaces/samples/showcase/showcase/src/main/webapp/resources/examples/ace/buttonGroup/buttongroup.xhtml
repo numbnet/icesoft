@@ -38,16 +38,16 @@
             <ace:panel>
 				<ace:buttonGroup header="Using ace:radioButton" mutuallyExclusive="true">
 					<ace:radioButton value="#{buttonGroup.r1}">
-						<ace:ajax execute="@this" event="activate" render="@form"/>
+						<ace:ajax execute="@form" event="activate" render="@form"/>
 					</ace:radioButton>
 					<ace:radioButton value="#{buttonGroup.r2}">
-						<ace:ajax execute="@this" event="activate" render="@form"/>
+						<ace:ajax execute="@form" event="activate" render="@form"/>
 					</ace:radioButton>
 					<ace:radioButton value="#{buttonGroup.r3}">
-						<ace:ajax execute="@this" event="activate" render="@form"/>
+						<ace:ajax execute="@form" event="activate" render="@form"/>
 					</ace:radioButton>
 					<ace:radioButton value="#{buttonGroup.r4}">
-						<ace:ajax execute="@this" event="activate" render="@form"/>
+						<ace:ajax execute="@form" event="activate" render="@form"/>
 					</ace:radioButton>
 				</ace:buttonGroup>
                 The selected radio is:
