@@ -46,10 +46,8 @@ ice.ace.radiobutton = function(clientId, options) {
 
     if (!options.disabled)
         ice.ace.jq(this.jqId).on("click", function () {
-            self.toggleCheckbox(true);
-            if (self.isChecked()) {
-                ice.ace.radiobutton.toggleOthers(self.options, self.id)
-            }
+			ice.ace.radiobutton.toggleOthers(self.options, self.id);
+			self.toggleCheckbox(true);
         });
 
     if (options.ariaEnabled)
@@ -63,7 +61,10 @@ ice.ace.radiobutton = function(clientId, options) {
         this.addStateCSSClasses('hover');
 		
 	if (this.isChecked()) {
+		this.addStateCSSClasses('checked');
 		ice.ace.radiobutton.toggleOthers(this.options, this.id)
+	} else {
+		this.removeStateCSSClasses('checked');
 	}
 
     var unload = function() {
@@ -88,6 +89,7 @@ ice.ace.radiobutton.prototype.addStateCSSClasses = function(state) {
         this.button.addClass('ui-state-hover');
     }
     else if (state == 'checked') {
+		this.button.removeClass('ice-ace-radiobutton-unselected').addClass('ice-ace-radiobutton-selected');
         this.icon.removeClass('ui-icon-radio-off')
                  .addClass('ui-icon-radio-on');
     }
@@ -98,6 +100,7 @@ ice.ace.radiobutton.prototype.removeStateCSSClasses = function(state) {
         this.button.removeClass('ui-state-hover');
     }
     else if (state == 'checked') {
+		this.button.removeClass('ice-ace-radiobutton-selected').addClass('ice-ace-radiobutton-unselected');
         this.icon.removeClass('ui-icon-radio-on')
                  .addClass('ui-icon-radio-off');
     }
@@ -130,16 +133,23 @@ ice.ace.radiobutton.prototype.toggleCheckbox = function (activeButton) {
         ice.ace.jq(this.innerSpanSelector).attr("aria-checked", newValue);
     }
 
-    if (this.options.behaviors && this.options.behaviors.activate) {
-        if (newValue == true) ice.ace.ab(ice.ace.extendAjaxArgs(
-            this.options.behaviors.activate,
-            {params: this.options.uiParams}
-        ));
-		else ice.ace.ab(ice.ace.extendAjaxArgs(
-            this.options.behaviors.deactivate,
-            {params: this.options.uiParams}
-        ));
-    }
+	if (this.options.behaviors) {
+		if (newValue == true) {
+			if (this.options.behaviors.activate) {
+				ice.ace.ab(ice.ace.extendAjaxArgs(
+					this.options.behaviors.activate,
+					{params: this.options.uiParams}
+				));
+			}
+		} else {
+			if (this.options.behaviors.deactivate) {
+				ice.ace.ab(ice.ace.extendAjaxArgs(
+					this.options.behaviors.deactivate,
+					{params: this.options.uiParams}
+				));
+			}
+		}
+	}
 };
 
 if (!ice.ace.radiobutton.groups) ice.ace.radiobutton.groups = {};
