@@ -21,6 +21,7 @@ import org.icefaces.mobi.utils.HTML;
 import org.icemobile.util.CSSUtils;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
@@ -51,10 +52,12 @@ public class OutputListItemRenderer extends Renderer {
                 styleClass += " " + userDefinedClass;
             }
         }
-        writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("class", styleClass, null);
+
         if (item.getStyle() !=null){
              writer.writeAttribute(HTML.STYLE_ATTR, item.getStyle(), HTML.STYLE_ATTR);
         }
+
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMDEFAULT_CLASS, null);
     }
@@ -63,7 +66,8 @@ public class OutputListItemRenderer extends Renderer {
             throws IOException {
         OutputListItem item = (OutputListItem) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
-        if (!item.isGroup()) writeArrowIcon(writer);
+        if (!item.isGroup() && (item.getChildren().size() == 1 && item.getChildren().get(0) instanceof HtmlCommandLink))
+            writeArrowIcon(writer);
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.LI_ELEM);
     }
