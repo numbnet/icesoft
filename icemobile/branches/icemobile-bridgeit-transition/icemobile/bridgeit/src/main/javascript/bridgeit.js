@@ -354,10 +354,25 @@ if (!window.console) {
             func();
         }
     }
+    var isDataPending = false;
+    var isLoaded = false;
+    var pendingData = null;
+    function loadComplete()  {
+        isLoaded = true;
+    }
     function checkExecDeviceResponse()  {
         var data = getDeviceCommand();
+        if (null == data)  {
+            data = pendingData;
+        }
         var deviceParams;
         if (null != data)  {
+            pendingData = data;
+            isDataPending = true;
+            if (!isLoaded)  {
+                console.log("checkExecDeviceResponse waiting for onload");
+                return;
+            }
             var name;
             var value;
             var needRefresh = true;
@@ -377,7 +392,10 @@ if (!window.console) {
                 }
             }
             setTimeout( function(){
-                console.log('setTimeout()');
+                if (!isDataPending)  {
+                    console.log("checkExecDeviceResponse is done, exiting");
+                    return;
+                }
                 var sxEvent = {
                     name : name,
                     value : value
@@ -417,6 +435,8 @@ if (!window.console) {
                         loc.pathname + loc.search + "#clear-icemobilesx");
                 history.pushState("", document.title,
                         loc.pathname + loc.search + restoreHash);
+                isDataPending = false;
+                pendingData = null;
                 if (callback)  {
                     try {
                         callback(sxEvent);
@@ -428,7 +448,7 @@ if (!window.console) {
                 } else{
                     console.log('no deviceCommandCallback registered :(');
                 }
-            }, 1000);
+            }, 1);
         }
     }
 
@@ -608,7 +628,8 @@ if (!window.console) {
     b.allowAnonymousCallbacks = false;
  
     //android functions as full page load
-//    addOnLoadListener(checkExecDeviceResponse);
+    addOnLoadListener(loadComplete);
+    addOnLoadListener(checkExecDeviceResponse);
     checkExecDeviceResponse();
 })(bridgeit);
 
