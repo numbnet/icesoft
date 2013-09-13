@@ -92,7 +92,7 @@
         var tabContent = document.getElementById(contentId);
         var classHid = "mobi-tabpage-hidden";
         var classVis = "mobi-tabpage";
-        var clsActiveTab = "activeTab ui-btn-active";
+        var clsActiveTab = "activeTab ui-state-active";
         var tabCtrl = clientId + "tab_";
         var tabIndex = cfgIn.tIndex;
         var autoWidth = cfgIn.autoWidth;
