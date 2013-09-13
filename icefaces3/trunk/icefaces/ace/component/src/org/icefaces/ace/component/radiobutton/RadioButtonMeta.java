@@ -51,7 +51,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 	@ClientEvent(name="activate",
             javadoc="Fired when the button is clicked or pressed by any other means and changes to selected state (default event).",
             tlddoc="Fired when the button is clicked or pressed by any other means and changes to selected state (default event).",
-            defaultRender="@all", defaultExecute="@this"),
+            defaultRender="@all", defaultExecute="@all"), // defaultExecute is @all for updating other radio buttons
 	@ClientEvent(name="deactivate",
             javadoc="Fired when the button is clicked or pressed by any other means and changes to not selected state.",
             tlddoc="Fired when the button is clicked or pressed by any other means and changes to not selected state.",

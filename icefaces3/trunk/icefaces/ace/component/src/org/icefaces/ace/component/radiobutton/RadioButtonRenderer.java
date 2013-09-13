@@ -65,7 +65,7 @@ public class RadioButtonRenderer extends InputRenderer {
         RadioButton radioButton = (RadioButton) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
 		Map<String, Object> labelAttributes = getLabelAttributes(uiComponent);
-        String firstWrapperClass = "yui-button yui-radiobutton-button";
+        String firstWrapperClass = "ice-ace-radiobutton-main";
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
 
         // Root Container
@@ -258,7 +258,7 @@ public class RadioButtonRenderer extends InputRenderer {
 
     private void encodeRootStyle(ResponseWriter writer, RadioButton radioButton) throws IOException {
         String styleClass = radioButton.getStyleClass();
-        String styleClassVal = "ice-radiobutton";
+        String styleClassVal = "ice-ace-radiobutton";
         String style = radioButton.getStyle();
 
         if (styleClass != null && styleClass.trim().length() > 0)

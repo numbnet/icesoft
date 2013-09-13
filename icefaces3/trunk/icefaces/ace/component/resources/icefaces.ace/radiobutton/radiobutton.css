@@ -15,21 +15,19 @@
  */
 
 
-.ice-radiobutton { display:inline; }
+.ice-ace-radiobutton { display:inline; }
 
-.ice-radiobutton .ui-label {
+.ice-ace-radiobutton .ui-label {
     padding: .2em;
 }
 
-.ice-radiobutton .yui-button > span > button {
-    border:none;
-
+.ice-ace-radiobutton > span > span > button {
     /* IE7 hacks */
     *padding: 0px 6px 0px;
     *font-size: small;
 }
 
-.ice-radiobutton .yui-button button {
+.ice-ace-radiobutton .ice-ace-radiobutton-main button {
 	border:0;
 	background-color:transparent;
 }
