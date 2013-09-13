@@ -28,11 +28,11 @@ public interface IButton extends IMobiComponent{
     public static final String BUTTON_DEFAULT = "button";
     // button styles.
     public static final String DISABLED_STYLE_CLASS = " mobi-button-dis";
-    public static final String IMPORTANT_STYLE_CLASS = " mobi-button-important";
-    public static final String UNIMPORTANT_STYLE_CLASS = " mobi-button-unimportant";
+    public static final String IMPORTANT_STYLE_CLASS = " mobi-button-important  ui-state-highlight";
+    public static final String UNIMPORTANT_STYLE_CLASS = " mobi-button-unimportant ui-priority-secondary";
     public static final String BACK_STYLE_CLASS = " mobi-button-back";
-    public static final String ATTENTION_STYLE_CLASS = " mobi-button-attention";
-    public static final String SELECTED_STYLE_CLASS = " mobi-button-selected ui-btn-active";
+    public static final String ATTENTION_STYLE_CLASS = " mobi-button-attention ui-state-error";
+    public static final String SELECTED_STYLE_CLASS = " mobi-button-selected ui-state-active";
 
     /**
     * <p>so far can use this to distinguish between JSF and JSP</p>

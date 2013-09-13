@@ -60,11 +60,13 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
                 style = null;
             }
         }
+        boolean isBackButton = IButton.BUTTON_TYPE_BACK.equals(buttonType);
+        String buttonElement = isBackButton ? BUTTON_ELEM : INPUT_ELEM;
         // assign button type
         if( buttonType != null && !"".equals(buttonType)){
             if (button.BUTTON_TYPE_UNIMPORTANT.equals(buttonType)) {
                 baseClass.append(button.UNIMPORTANT_STYLE_CLASS);
-            } else if (button.BUTTON_TYPE_BACK.equals(buttonType)) {
+            } else if (isBackButton) {
                 baseClass.append(button.BACK_STYLE_CLASS);
             } else if (button.BUTTON_TYPE_ATTENTION.equals(buttonType)) {
                 baseClass.append(button.ATTENTION_STYLE_CLASS);
@@ -86,7 +88,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             type = IButton.BUTTON_DEFAULT;
         }
 
-        if (button.BUTTON_TYPE_BACK.equals(buttonType) && client.isIOS()){
+        if (isBackButton && client.isIOS()){
             writer.startElement(DIV_ELEM, button);
             writer.writeAttribute(ID_ATTR, clientId+"_ctr");
             writer.writeAttribute(CLASS_ATTR, baseClass.toString());
@@ -97,17 +99,10 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             writer.startElement(SPAN_ELEM, button);
             writer.endElement(SPAN_ELEM);
         }
-        writer.startElement(INPUT_ELEM, component);
+        writer.startElement(buttonElement, component);
         writer.writeAttribute(ID_ATTR, clientId);
-        writer.writeAttribute(VALUE_ATTR, button.getValue());
-        //style and class written to ctr div when back button
-        if (!IButton.BUTTON_TYPE_BACK.equals(buttonType) || !client.isIOS()){
-            writer.writeAttribute(CLASS_ATTR, baseClass.toString());
-            // should be auto base though
-            if (style != null ) {
-                writer.writeAttribute(STYLE_ATTR, style);
-            }
-        }
+        if (!isBackButton) writer.writeAttribute(VALUE_ATTR, button.getValue());
+
         /*
         check on type?
          */
@@ -118,9 +113,28 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         }
         writer.writeAttribute(NAME_ATTR, name);
 
+        //style and class written to ctr div when back button
+        if (!isBackButton || !client.isIOS()){
+            writer.writeAttribute(CLASS_ATTR, baseClass.toString());
+            // should be auto base though
+            if (style != null ) {
+                writer.writeAttribute(STYLE_ATTR, style);
+            }
+        }
+
+        if (isBackButton) {
+            writer.startElement(SPAN_ELEM, null);
+            writer.writeAttribute(CLASS_ATTR, "icon-angle-left");
+            writer.endElement(SPAN_ELEM);
+            writer.startElement(SPAN_ELEM, null);
+            writer.write(button.getValue().toString());
+            writer.endElement(SPAN_ELEM);
+        }
+
+
         if (button.isDisabled()) {
             writer.writeAttribute(DISABLED_ATTR, "disabled");
-            writer.endElement(INPUT_ELEM);
+            writer.endElement(buttonElement);
             //end ctr div for back button
             if (IButton.BUTTON_TYPE_BACK.equals(button.getButtonType()) && client.isIOS()){
                 writer.endElement(DIV_ELEM);
@@ -166,7 +180,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         }/* else {
             logger.info(" NO ON CLICK HANDLER ");
         } */
-        writer.endElement(INPUT_ELEM);
+        writer.endElement(buttonElement);
         /*
         last thing to do is to check if back button and then end the ctr div with b elem.
          */

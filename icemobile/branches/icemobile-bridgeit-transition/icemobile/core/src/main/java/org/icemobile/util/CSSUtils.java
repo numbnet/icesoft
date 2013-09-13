@@ -26,10 +26,10 @@ public class CSSUtils {
     public static final String HIDDEN = "ui-screen-hidden";
     
     /* Mobi Style Classes */
-    public static final String STYLECLASS_BUTTON = "mobi-button ui-btn-up-c";
+    public static final String STYLECLASS_BUTTON = "mobi-button ui-state-default ui-widget";
     public static final String STYLECLASS_BUTTON_DISABLED = " mobi-button-dis";
-    public static final String STYLECLASS_BUTTON_ATTENTION = "mobi-button-attention";
-    public static final String STYLECLASS_BUTTON_IMPORTANT = "mobi-button-important";
+    public static final String STYLECLASS_BUTTON_ATTENTION = "mobi-button-attention ui-state-highlight";
+    public static final String STYLECLASS_BUTTON_IMPORTANT = "mobi-button-important ui-state-error";
     public static final String STYLECLASS_BUTTON_BACK = "mobi-button-back";
     
     /* jQuery Mobile Classes */

@@ -46,6 +46,15 @@
     overflow:hidden;
     text-overflow:ellipsis;
 }
+.mobi-button.mobi-button-back > span:first-child {
+    font-size:150%;
+    vertical-align: middle;
+}
+.mobi-button.mobi-button-back > span:last-child {
+    width:90%;
+    display:inline-block;
+    vertical-align: middle;
+}
 a.mobi-button:hover{ text-decoration:none;}
 .mobi-pagePanel-header .mobi-button{
     position: absolute;
