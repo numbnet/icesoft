@@ -16,3 +16,4 @@ ICE-8868: Add ARIA role and attributes to Accordion.
 ICE-8869: prevent getting stuck forever with draggable when clicking on a scrollbar in Webkit and IE9 browsers
 ICE-9392: REGRESSION:  ace:dateTimeEntry - Clicking Today button closes popup.
 ICE-9147: added support for header facet in ace:dialog
+ICE-9579: commented out code to programatically set datepicker width

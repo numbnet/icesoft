@@ -8409,10 +8409,11 @@
             inst.dpDiv.find('.' + this._dayOverClass + ' a').mouseover();
             var numMonths = this._getNumberOfMonths(inst);
             var cols = numMonths[1];
-            var width = 17;
+			// ICE-9579
+            /*var width = 17;
             inst.dpDiv.removeClass('ui-datepicker-multi-2 ui-datepicker-multi-3 ui-datepicker-multi-4').width('');
             if (cols > 1)
-                inst.dpDiv.addClass('ui-datepicker-multi-' + cols).css('width', (width * cols) + 'em');
+                inst.dpDiv.addClass('ui-datepicker-multi-' + cols).css('width', (width * cols) + 'em');*/
             inst.dpDiv[(numMonths[0] != 1 || numMonths[1] != 1 ? 'add' : 'remove') +
                     'Class']('ui-datepicker-multi');
             inst.dpDiv[(this._get(inst, 'isRTL') ? 'add' : 'remove') +
