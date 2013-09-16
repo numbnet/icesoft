@@ -116,7 +116,8 @@ NSLog(@"completeSmallPost %@", self.returnURL);
         if (nil != self.returnHash)  {
             self.returnURL = [self.returnURL stringByAppendingString:@"&!h="];
             self.returnURL = [self.returnURL stringByAppendingString:
-                    [self.returnHash
+                    [[self.returnHash
+                    stringByReplacingOccurrencesOfString:@"&" withString:@"%26"]
                     stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
         }
         if (nil != self.cloudPushId)  {
