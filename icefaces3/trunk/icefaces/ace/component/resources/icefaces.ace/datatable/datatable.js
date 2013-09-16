@@ -1089,19 +1089,27 @@ ice.ace.DataTable.prototype.setupResizableColumns = function () {
     }
 }
 
+ice.ace.DataTable.prototype.sizingHasWaited = false;
 ice.ace.DataTable.prototype.resizeScrolling = function () {
     var startTime = new Date().getTime(),
-        scrollableTable = this.element;
+        scrollableTable = this.element,
+        _self = this;
 
     // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
     if (!(this.cfg.nohidden) && ((ie7 && scrollableTable.width() == 0) || (!ie7 && scrollableTable.is(':hidden'))) && !this.cfg.disableHiddenSizing) {
-        var _self = this;
-
         setTimeout(function () {
+            _self.sizingHasWaited = true;
             _self.resizeScrolling()
         }, 100);
-    } else {
+    }
+    else if (!_self.sizingHasWaited) {
+        setTimeout(function () {
+            _self.sizingHasWaited = true;
+            _self.resizeScrolling()
+        }, 100);
+    }
+    else {
         var resizableTableParents = scrollableTable.parents('.ui-datatable-scrollable');
 
         // If our parents are resizeable tables, allow them to resize before I resize myself
