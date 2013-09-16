@@ -55,15 +55,15 @@ public class FocusManager extends UIComponentBase {
         writer.writeAttribute("id", getClientId(context), null);
 
         Map attributes = context.getAttributes();
-        UIInput source = null;
+        UIComponent source = null;
         UIInput invalidUIInput = (UIInput) attributes.get(DetectInvalidChild.class.getName());
         if (invalidUIInput == null) {
             //set focus on the specified component
             String focusFor = getFor();
             if (focusFor != null && !"".equals(focusFor)) {
                 UIComponent c = findComponent(this, focusFor);
-                if (c instanceof UIInput) {
-                    source = (UIInput) c;
+                if (c instanceof UIInput || c instanceof Focusable) {
+                    source = c;
                 } else {
                     log.warning("The \"for\" attribute points to a component that is not an instance of UIInput");
                 }
@@ -75,8 +75,8 @@ public class FocusManager extends UIComponentBase {
                 queue.add(this);
                 while (!queue.isEmpty()) {
                     UIComponent c = queue.removeFirst();
-                    if (c instanceof UIInput) {
-                        source = (UIInput) c;
+                    if (c instanceof UIInput || c instanceof Focusable) {
+                        source = c;
                         break;
                     }
                     queue.addAll(c.getChildren());

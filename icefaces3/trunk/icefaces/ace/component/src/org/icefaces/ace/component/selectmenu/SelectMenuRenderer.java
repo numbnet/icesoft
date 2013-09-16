@@ -106,12 +106,13 @@ public class SelectMenuRenderer extends InputRenderer {
 		writeLabelAndIndicatorBefore(labelAttributes);
 		
 		// value field
-		writer.startElement("span", null);
+		writer.startElement("a", null);
 		boolean disabled = selectMenu.isDisabled();
 		String disabledClass = "";
 		if (disabled) disabledClass = " ui-state-disabled ";
 		writer.writeAttribute("class", "ui-widget-content ui-corner-all ui-selectmenu-value " + disabledClass, null);
         writer.writeAttribute("style", "display: inline-block; width: " + width + "px;", null);
+        writer.writeAttribute("id", clientId + "_drop", null);
 		String tabindex = selectMenu.getTabindex();
 		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
 		else writer.writeAttribute("tabindex", "0", null);
@@ -142,7 +143,7 @@ public class SelectMenuRenderer extends InputRenderer {
 		writer.endElement("div");
 		writer.endElement("div");
 		
-		writer.endElement("span");
+		writer.endElement("a");
 		
 		writeLabelAndIndicatorAfter(labelAttributes);
 
