@@ -606,7 +606,7 @@ if (!window.console) {
      * 
      */
     b.register = function(id, callback, options)  {
-        ("register", id, callback, options);
+        deviceCommand("register", id, callback, options);
     };
 
 
