@@ -107,6 +107,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         if(!popup) {
             writer.startElement("div", null);
             writer.writeAttribute("id", clientId + "_inline", null);
+			writer.writeAttribute("class", "ice-ace-datetimeentry", null);
             writer.endElement("div");
         }
 
