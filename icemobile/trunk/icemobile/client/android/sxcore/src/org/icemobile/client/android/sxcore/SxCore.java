@@ -39,6 +39,7 @@ import android.net.Uri;
 import android.provider.Browser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.content.res.Configuration;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.c2dm.C2dmRegistrationHandler;
@@ -56,6 +57,7 @@ import org.icemobile.client.android.camera.CameraHandler;
 import org.icemobile.client.android.contacts.ContactListInterface;
 import org.icemobile.client.android.video.VideoInterface;
 import org.icemobile.client.android.video.VideoHandler;
+import org.icemobile.client.android.location.LocationService;
 
 import org.icemobile.client.android.util.UtilInterface;
 import org.icemobile.client.android.util.SubmitProgressListener;
@@ -86,6 +88,7 @@ public class SxCore extends Activity
     protected static final boolean INCLUDE_QRCODE = true;
     protected static final boolean INCLUDE_ARVIEW = true;
     protected static final boolean INCLUDE_GCM = true;
+    protected static final boolean INCLUDE_LOCATION = true;
     protected static final String GCM_SENDER = "1020381675267";
 
     /* Intent Return Codes */
@@ -303,7 +306,7 @@ public class SxCore extends Activity
 		dispatch(commandName, commandParts, commandParams);
 	    }
 	} else {
-	    returnToBrowser();
+	    mBrowserReturn.run();
 	}
     }
 
@@ -338,9 +341,11 @@ public class SxCore extends Activity
 	    // Get cached splash screen if there is one;
 	    String splashUri = splashScreenMap.get(mReturnUri.toString());
 	    if (splashUri != null) {
+		Log.d(LOG_TAG, "Getting cached splash screen");
 		splash = splashScreens.get(splashUri);
 	    } else {
 		// Default splashScreen;
+		Log.d(LOG_TAG, "Getting default splash screen");
 		splash = BitmapFactory.decodeResource(self.getResources(), R.drawable.background);
 	    }
 	}
@@ -356,6 +361,8 @@ public class SxCore extends Activity
 	Log.d(LOG_TAG, "dispatch " + command);
         mCurrentjsessionid  = (String) env.get("JSESSIONID");
         String postUriString = mPOSTUri.toString();
+	mPreview = null;
+	mReturnValue = null;
 
         if (null != mCurrentjsessionid)  {
             utilInterface.setCookie(postUriString,
@@ -394,7 +401,7 @@ public class SxCore extends Activity
                     startActivityForResult(arIntent, ARMVIEW_CODE);
                 } catch (Exception e)  {
 		    Log.e(LOG_TAG, "Augmented Reality marker view not available ", e);
-                    returnToBrowser();
+                    mBrowserReturn.run();
                 }
             } else {
                 mARViewInterface
@@ -406,6 +413,27 @@ public class SxCore extends Activity
             mCaptureInterface
                 .scan(mCurrentId, packParams(params));
 	    Log.d(LOG_TAG, "dispatched qr scan " + packParams(params));
+        } else if ("geospy".equals(command))  {
+	    Intent locate = new Intent(this,LocationService.class);
+	    locate.putExtra("s",mPOSTUri.toString());
+	    String strategy = (String) params.get("strategy");
+	    if (strategy == null || strategy.equals("significant")) {
+		locate.putExtra("c","continuous");
+		locate.putExtra("a","low");
+		locate.putExtra("t","60000");
+		locate.putExtra("d","100");
+	    } else if (strategy.equals("continuous")) {
+		locate.putExtra("c","continuous");
+		locate.putExtra("a","high");
+		locate.putExtra("t","15000");
+		locate.putExtra("d","25");
+	    } else {
+		locate.putExtra("c","stop");
+	    }
+	    startService(locate);
+	    Log.d(LOG_TAG, "dispatched geospy " + packParams(params));
+	    mPOSTUri = null;
+	    mBrowserReturn.run();
         } else if ("register".equals(command))  {
 	    Log.d(LOG_TAG, "dispatched register ");
 	    if (INCLUDE_GCM) {
@@ -473,8 +501,6 @@ public class SxCore extends Activity
 
 	Log.d(LOG_TAG, "onActivityResult: request = " + requestCode + ", result = " + resultCode);
         if (resultCode == RESULT_OK) {
-	    mPreview = null;
-	    mReturnValue = null;
             switch (requestCode) {
 	    case TAKE_PHOTO_CODE:
 		Log.d(LOG_TAG, "onActivityResult will POST to " + mPOSTUri);
@@ -552,16 +578,17 @@ public class SxCore extends Activity
 		break;
 	    case ARVIEW_CODE:
 		Log.d(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
-		returnToBrowser();
+		mBrowserReturn.run();
 		break;
 	    case ARMVIEW_CODE:
 		//		mARViewHandler.arViewComplete(data);
 		Log.d(LOG_TAG, "completed AR Marker View");
-		returnToBrowser();
+		mBrowserReturn.run();
 		break;
             }
         } else {
-	    returnToBrowser();
+	    mPOSTUri = null;
+	    mBrowserReturn.run();
 	}
     }
 
@@ -652,5 +679,4 @@ public class SxCore extends Activity
         }
         mC2dmHandler.start(GCM_SENDER);
     }
-
 }
