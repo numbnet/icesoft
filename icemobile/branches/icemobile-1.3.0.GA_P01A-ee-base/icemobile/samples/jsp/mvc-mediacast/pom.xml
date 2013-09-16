@@ -24,7 +24,7 @@
      <parent>
         <groupId>com.icesoft.icemobile-ee.samples</groupId>
         <artifactId>jsp</artifactId>
-        <version>1.3.0.GA_P01</version>
+        <version>1.3.0.GA_P01A</version>
     </parent>
     <artifactId>mvc-mediacast</artifactId>
     <packaging>war</packaging>
