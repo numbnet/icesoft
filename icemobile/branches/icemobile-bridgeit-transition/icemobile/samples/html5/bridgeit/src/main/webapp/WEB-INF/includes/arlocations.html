@@ -1,4 +1,4 @@
-<div id="ar" title="See It" class="panel" >
+<div id="ar" title="See It" class="panel" onfocus="setTimeout(function(){google.maps.event.trigger(map, 'resize')},1000);" >
     <script type="text/javascript">
       var map = null;
       var marker = null;
@@ -30,7 +30,8 @@
         google.maps.event.addListener(map, 'click', function(event) {
             var iconNum = ((iconBase + (counter++)) % 9) + 1;
             var markerName = "Aug" + iconNum + (counter++);
-            var iconFile = "images/icon" + iconNum + ".png";
+            var iconFile = "icons/icon" +
+                    iconNum + ".png";
             var marker = new google.maps.Marker({
               position: event.latLng,
               map: map,
@@ -75,13 +76,15 @@
     <script type="text/javascript">
 
     function handleAug(event)  {
+
         var text = event.value;
         if (event.response)  {
             var len = "Aug".length;
             var responseLoc = "" + JSON.parse(event.response)["_loc"][0];
             var iconNum = responseLoc.substring(len, len + 1);
             document.getElementById("selected")
-                    .setAttribute("src", "images/icon" + iconNum + ".png");
+                    .setAttribute("src",
+                    "icons/icon" + iconNum + ".png");
         }
     }
 
@@ -99,7 +102,7 @@
                     margin: 10px;
                 }
             </style>
-            <button id="aug" class="overbutton" onclick="bridgeit.augmentedReality('_loc',handleAug, {postURL:(''+window.location).match(/.*\//) + '/service/echo/', parameters: locations});">Reality View ... </button>
+            <button id="aug" class="overbutton" onclick="bridgeit.augmentedReality('_loc','handleAug', {postURL:(window.serviceHub + '/echo/'), parameters: locations});">Reality View ... </button>
         </div>
 
      <button onclick='google.maps.event.trigger(map, "resize");'>Fix Map Hack: Resize window or click this button</button>
