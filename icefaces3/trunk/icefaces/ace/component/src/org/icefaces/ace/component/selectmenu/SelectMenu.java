@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.component.selectmenu;
 
+import org.icefaces.component.Focusable;
+
 import javax.faces.component.NamingContainer;
 import javax.faces.model.SelectItem;
 import javax.faces.component.UINamingContainer;
@@ -34,7 +36,7 @@ import javax.faces.application.FacesMessage;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class SelectMenu extends SelectMenuBase implements NamingContainer {
+public class SelectMenu extends SelectMenuBase implements NamingContainer, Focusable {
 
     private transient int index = -1;
 	
@@ -301,5 +303,9 @@ public class SelectMenu extends SelectMenuBase implements NamingContainer {
             loader = fallbackClass.getClassLoader();
         }
         return loader;
+    }
+
+    public String getFocusedElementId() {
+        return getClientId() + "_input";
     }
 }

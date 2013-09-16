@@ -18,6 +18,7 @@ package org.icefaces.ace.component.fileentry;
 
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
+import org.icefaces.component.Focusable;
 import org.icefaces.impl.event.BridgeSetup;
 import org.icefaces.util.JavaScriptRunner;
 
@@ -37,7 +38,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FileEntry extends FileEntryBase {
+public class FileEntry extends FileEntryBase implements Focusable {
     private static Logger log = Logger.getLogger(FileEntry.class.getName());
     private static final String RESULTS_KEY = "org.icefaces.ace.component.fileEntry.results";
     private static final String EVENT_KEY = "org.icefaces.ace.component.fileEntry.events";
@@ -407,5 +408,11 @@ public class FileEntry extends FileEntryBase {
         Map<String,FacesEvent> clientId2FacesEvent = (Map<String,FacesEvent>)
             facesContext.getAttributes().remove(EVENT_KEY);
         return clientId2FacesEvent;
+    }
+
+    public String getFocusedElementId() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String viewID = BridgeSetup.getViewID(context.getExternalContext());
+        return getClientId() + "::" + viewID;
     }
 }

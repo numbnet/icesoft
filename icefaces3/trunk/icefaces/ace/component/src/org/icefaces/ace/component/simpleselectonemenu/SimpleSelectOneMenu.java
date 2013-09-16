@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.component.simpleselectonemenu;
 
+import org.icefaces.component.Focusable;
+
 import javax.faces.model.SelectItem;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
@@ -24,7 +26,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.FacesEvent;
 import java.util.*;
 
-public class SimpleSelectOneMenu extends SimpleSelectOneMenuBase {
+public class SimpleSelectOneMenu extends SimpleSelectOneMenuBase implements Focusable {
 	
     public Iterator getItemListIterator() {
 		List list = getItemList();
@@ -99,5 +101,9 @@ public class SimpleSelectOneMenu extends SimpleSelectOneMenuBase {
             }
         }
         return selectItems;
+    }
+
+    public String getFocusedElementId() {
+        return getClientId() + "_input";
     }
 }
