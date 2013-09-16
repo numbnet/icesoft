@@ -17,8 +17,9 @@
 package org.icemobile.component;
 
 public interface IAccordion extends IMobiComponent{
-    
-    public static final String ACCORDION_CLASS = "mobi-accordion";
+
+    // ui-widget-header added here for borders due to implementation of li expansion
+    public static final String ACCORDION_CLASS = "mobi-accordion ui-widget ui-widget-header";
     public static final String ACCORDION_RIGHT_POINTING_TRIANGLE = "&#9654;";
     public static final String ACCORDION_RIGHT_POINTING_POINTER= "&#9658;";
     public static final String ACCORDION_LEFT_POINTING_TRIANGLE = "&#9664;";
