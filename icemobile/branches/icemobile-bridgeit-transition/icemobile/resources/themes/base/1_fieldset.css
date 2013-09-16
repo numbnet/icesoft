@@ -33,3 +33,7 @@
 .mobi-fieldset .mobi-fieldset-row:last-child {
     border-bottom: none;
 }
+.mobi-fieldset > *:first-child,
+.mobi-fieldset > *:last-child {
+    vertical-align: middle;
+}

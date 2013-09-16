@@ -55,7 +55,7 @@ public class AccordionPaneCoreRenderer extends BaseCoreRenderer {
         boolean client = pane.isClient();
         boolean autoheight = accordion.isAutoHeight();
         String myId = pane.getId();
-        String handleClass = "handle " + CSSUtils.STYLECLASS_BAR_B;
+        String handleClass = "handle ui-widget-header";
         String pointerClass = "pointer";
         writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId+"_sect");

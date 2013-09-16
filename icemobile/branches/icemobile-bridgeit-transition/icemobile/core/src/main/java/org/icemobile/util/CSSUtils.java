@@ -48,7 +48,7 @@ public class CSSUtils {
     public static final String STYLECLASS_COLLAPSIBLECONTENT = "ui-collapsible-content";
     /* Bar */
     public static final String STYLECLASS_BAR_A = "ui-bar-a"; //default for headers, footers
-    public static final String STYLECLASS_BAR_B = "ui-bar-b"; //default for list group headers
+    public static final String STYLECLASS_BAR_B = "ui-bar-b ui-widget-header"; //default for list group headers
     
     /* globals */
     public static final String STYLECLASS_ACTIVE = "ui-btn-active";
