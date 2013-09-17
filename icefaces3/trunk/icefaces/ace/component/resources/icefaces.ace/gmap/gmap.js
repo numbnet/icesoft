@@ -47,7 +47,7 @@ function GMapWrapper(eleId, realGMap) {
     var options = "";
     this.services = new Object();
 	this.events = new Object();
-    this.layer = null;
+    this.layer = {};
     this.getElementId = ice.ace.gMap.getElementId;
     this.getRealGMap = ice.ace.gMap.getRealGMap;
 }
@@ -78,7 +78,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, sentOptions, url) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
-        var layer;
+        var layer = gmapWrapper.layer;
         if (sentOptions == "Skip")
             var options = "";
         else
@@ -87,8 +87,8 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             case "bicycling":
             case "bicyclinglayer":
             case "bicycle":
-                layer = new google.maps.BicyclingLayer();
-                layer.setMap(gmapWrapper.getRealGMap());
+                layer[layerId] = new google.maps.BicyclingLayer();
+                layer[layerId].setMap(gmapWrapper.getRealGMap());
                 break;
             case "fusion":
             case "fusiontable":
@@ -96,41 +96,37 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 //This is still in it's experimental stage, and I can't get access to the API to make my own fusion table yet. (Google Trusted Testers Only)
                 //So I cannot verify if it works. Double check when Fusion Tables is properly released.
                 var markerOps = "({" + options + "})";
-                layer = new google.maps.FusionTablesLayer(eval(options));
-                layer.setMap(gmapWrapper.getRealGMap());
+                layer[layerId] = new google.maps.FusionTablesLayer(eval(options));
+                layer[layerId].setMap(gmapWrapper.getRealGMap());
                 break;
             case "kml":
             case "kmllayer":
                 var markerOps = "({" + options + "})";
-                layer = new google.maps.KmlLayer(url, eval(options));
-                layer.setMap(gmapWrapper.getRealGMap());
+                layer[layerId] = new google.maps.KmlLayer(url, eval(options));
+                layer[layerId].setMap(gmapWrapper.getRealGMap());
                 break;
             case "traffic":
             case "trafficlayer":
-                layer = new google.maps.TrafficLayer();
-                layer.setMap(gmapWrapper.getRealGMap());
+                layer[layerId] = new google.maps.TrafficLayer();
+                layer[layerId].setMap(gmapWrapper.getRealGMap());
                 break;
             case "transit":
             case "transitlayer":
-                layer = new google.maps.TransitLayer();
-                layer.setMap(gmapWrapper.getRealGMap());
+                layer[layerId] = new google.maps.TransitLayer();
+                layer[layerId].setMap(gmapWrapper.getRealGMap());
                 break;
             default:
                 console.log("ERROR: Not a valid layer type");
                 return;
         }//switch
-        gmapWrapper.layer = layer;
-        //console.log(ice.ace.gMap.getGMapWrapper(ele).layer);
-
     }
 
     ice.ace.gMap.removeMapLayer = function (ele, layerId) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
-        var layer = gmapWrapper.layer;
-        if (layer != null) {
+        var layer = gmapWrapper.layer[layerId];
+        if (layer) {
             layer.setMap(null);
         }
-        gmapWrapper.layer = null;
     }
 
     ice.ace.gMap.locateAddress = function (clientId, address) {
