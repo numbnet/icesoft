@@ -259,7 +259,7 @@ ice.ace.AjaxRequest = function(cfg) {
         if(form.length == 0)
             form = ice.ace.jq('form').eq(0);
 
-        sourceElement = form;
+        sourceElement = form.length ? form[0] : null;
     }
 
     // Defaults for execute and render
