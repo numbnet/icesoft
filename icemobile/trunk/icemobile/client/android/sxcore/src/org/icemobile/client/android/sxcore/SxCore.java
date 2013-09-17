@@ -36,6 +36,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.net.Uri;
+import android.webkit.CookieSyncManager;
 import android.provider.Browser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -179,6 +180,9 @@ public class SxCore extends Activity
         super.onCreate(savedInstanceState);
         self = this;
 	pendingCloudPush = false;
+
+        //initialize common cookie manager for application
+        CookieSyncManager.createInstance(this);
 
         mBrowserReturn = new Runnable()  {
 		public void run()  {
@@ -577,8 +581,23 @@ public class SxCore extends Activity
 		Log.d(LOG_TAG, "onActivityResult completed fetchContacts:" + encodedContact);
 		break;
 	    case ARVIEW_CODE:
-		Log.d(LOG_TAG, "onActivityResult completed ARVIEW_CODE");
-		mBrowserReturn.run();
+		Log.d(LOG_TAG, "onActivityResult completed ARVIEW_CODE " + data.getStringExtra("selected"));
+
+		String arResult = data.getStringExtra("selected");
+		try {
+		    mReturnValue = mCurrentId + "=" + URLEncoder.encode(arResult, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+		    Log.e(LOG_TAG, "Could not encode scanned value: " + e.toString());
+		}
+		if (mPOSTUri != null) {
+		    encodedForm += "hidden-" + mCurrentId + "=" +
+			URLEncoder.encode(arResult);
+		    utilInterface.setUrl(mPOSTUri.toString());
+		    utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		} else {
+		    mBrowserReturn.run();
+		}
+
 		break;
 	    case ARMVIEW_CODE:
 		//		mARViewHandler.arViewComplete(data);
