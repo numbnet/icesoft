@@ -38,6 +38,8 @@ import javax.faces.component.UINamingContainer;
 import javax.el.ValueExpression;
 import javax.el.MethodExpression;
 import javax.faces.event.AbortProcessingException;
+
+import org.icefaces.component.Focusable;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import java.util.Collection;
@@ -54,7 +56,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-public class SliderEntry extends SliderEntryBase {
+public class SliderEntry extends SliderEntryBase implements Focusable {
 
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
 
@@ -104,4 +106,8 @@ public class SliderEntry extends SliderEntryBase {
 	protected FacesContext getFacesContext() {
 		return FacesContext.getCurrentInstance();
 	}
+
+    public String getFocusedElementId() {
+        return getClientId() + "_handle";
+    }
 }
