@@ -13,4 +13,6 @@
 /* ICE-9579 */
 #ui-datepicker-div /* popup */, .ice-ace-datetimeentry /* inline */ {
 display:inline-block;
+zoom: 1;
+*display: inline;
 }
