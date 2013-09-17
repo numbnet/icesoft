@@ -7,7 +7,7 @@
 
 (function() {
 
-var slideSpeed = 20;			// Slide percentage per interval
+var slideSpeed = 33;			// Slide percentage per interval
 var slideInterval = 0;			// Intervals are as fast as possible for mobile, should be slower for desktop
 var ajaxTimeoutVal = 30000;
 
