@@ -1,4 +1,4 @@
-<div id="geospy" title="Locate It" class="panel">
+<div id="geospy" title="Locate It" class="panel" onfocus="setTimeout(initSpyMap,100);">
     <h2>GeoSpy Location Tracking</h2>
     <fieldset>
         <div class="row"><p class="normalText">Continual geolocation tracking with a simple line of JavaScript...</p></div>
@@ -13,11 +13,11 @@
     <a id="geoSpyBtn" type="button" class="whiteButton bridgeItBtn"
         onclick="bridgeit.geoSpy('geoSpyBtn',handleSpy, {postURL: window.serviceHub + '/geospy'});">Start Tracking</a>
         
-    <fieldset>
-        <div class="row"></div>
-    </fieldset>
-    <fieldset id="contacts">
-    </fieldset>
+    <div id="spyMapCanvas" style="height:200px"></div>
+
+    <div id="spyMapOverlay" >
+    </div>
+    
     <div class="footer">
         <a href="#">
             <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
@@ -26,8 +26,39 @@
     </div>
     <script type="text/javascript">
     function handleSpy(event)  {
-        alert(event);
+        alert('handleSpy: ' + JSON.stringify(event));
+        processMarkers(event.value);
+    }
+    var map;
+    function initSpyMap() {
+        alert('initSpyMap');
+        var mapOptions = {
+            maxZoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document
+                .getElementById('spyMapCanvas'), mapOptions);
+
+        var overlay = document.getElementById('spyMapOverlay');
+        map.controls[google.maps.ControlPosition.RIGHT_TOP]
+                .push(overlay);
+    }
+
+    function processMarkers(data)  {
+        var markerData = data.markers;
+        var len = markerData.length;
+        var markers = new Array();
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < len; i++) {
+            var location = new google.maps.LatLng(
+                    markerData[i][0], markerData[i][1]);
+            bounds.extend(location);
+            new google.maps.Marker({
+                position: location,
+                map: map
+            });
+        }
+        map.fitBounds(bounds);
     }
     </script>
-   
 </div>
