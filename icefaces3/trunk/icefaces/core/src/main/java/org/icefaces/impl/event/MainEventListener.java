@@ -43,7 +43,7 @@ public class MainEventListener implements SystemEventListener  {
         Application app = facesContext.getApplication();
 
         AjaxDisabledList disabledList = new AjaxDisabledList();
-        app.subscribeToEvent(PostAddToViewEvent.class, disabledList);
+        app.subscribeToEvent(PreRenderComponentEvent.class, disabledList);
 
         if(EnvUtils.isMyFaces()){
             CommandLinkModifier clMod = new CommandLinkModifier();

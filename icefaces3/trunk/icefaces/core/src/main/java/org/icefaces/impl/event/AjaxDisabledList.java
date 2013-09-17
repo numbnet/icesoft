@@ -24,10 +24,7 @@ import javax.faces.component.UIForm;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
+import javax.faces.event.*;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.behavior.ClientBehavior;
@@ -50,7 +47,7 @@ public class AjaxDisabledList implements SystemEventListener {
             return;
         }
         UIComponentBase component = (UIComponentBase) 
-                ((PostAddToViewEvent) event).getComponent();
+                ((PreRenderComponentEvent) event).getComponent();
 
         boolean isDisabled = isAjaxDisabled(component);
         if (isDisabled)  {
