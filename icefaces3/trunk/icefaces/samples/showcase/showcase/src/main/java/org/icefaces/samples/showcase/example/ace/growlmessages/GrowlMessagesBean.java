@@ -23,10 +23,13 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 
 @ComponentExample(
         title = "example.ace.growlmessages.title",
@@ -59,26 +62,15 @@ import java.util.HashMap;
 public class GrowlMessagesBean extends ComponentExampleImpl<GrowlMessagesBean> implements Serializable {
     public static final String BEAN_NAME = "growlMessagesBean";
 
-    private String firstName;
-    private String lastName;
-    private String city;
-    private String province;
-    private String country;
-    
     private String autoHide = "true";
     private boolean closeAll = true;
     private int maxVisibleMessages = 0;
     private String position = "top-right";
-
-    private static HashMap<String, Integer> severityMap = new HashMap<String, Integer>() {{
-            put("First Name", 0);
-            put("Last Name", 1);
-            put("City", 2);
-            put("Country", 3);
-        }
-        private static final long serialVersionUID = 6584997908723158778L;
-    };
-    private static String[] severityNames = {"Info", "Warn", "Error", "Fatal"};
+	
+	private boolean info;
+	private boolean warn;
+	private boolean error;
+	private boolean fatal;
 
     public GrowlMessagesBean() {
         super(GrowlMessagesBean.class);
@@ -87,63 +79,6 @@ public class GrowlMessagesBean extends ComponentExampleImpl<GrowlMessagesBean> i
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void blurListener(AjaxBehaviorEvent event) {
-        TextEntry textEntry = (TextEntry) event.getComponent();
-        String value = textEntry.getValue().toString().trim();
-        String label = textEntry.getLabel();
-        if (value.equals("") || value.equalsIgnoreCase(label)) {
-            int index = severityMap.get(label);
-            String message;
-            if (value.equals("")) {
-                message = "Sample " + severityNames[index] + ": " + label + " missing.";
-            } else {
-                message = "Sample " + severityNames[index] + ": Value cannot be \"" + value + "\"";
-            }
-            FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(index), message, message);
-            FacesContext.getCurrentInstance().addMessage(textEntry.getClientId(), facesMessage);
-        }
     }
 
     public String getAutoHide() {
@@ -177,4 +112,70 @@ public class GrowlMessagesBean extends ComponentExampleImpl<GrowlMessagesBean> i
     public void setPosition(String position) {
         this.position = position;
     }
+	
+	public boolean getInfo() {
+		return info;
+	}
+	
+	public void setInfo(boolean info) {
+		this.info = info;
+	}
+	
+	public boolean getWarn() {
+		return warn;
+	}
+	
+	public void setWarn(boolean warn) {
+		this.warn = warn;
+	}
+	
+	public boolean getError() {
+		return error;
+	}
+	
+	public void setError(boolean error) {
+		this.error = error;
+	}
+	
+	public boolean getFatal() {
+		return fatal;
+	}
+	
+	public void setFatal(boolean fatal) {
+		this.fatal = fatal;
+	}
+	
+	public void listener(ActionEvent event) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		
+		// remove existing messages
+		Iterator<FacesMessage> i = facesContext.getMessages();
+		while (i.hasNext()) {
+			i.next();
+			i.remove();
+		}
+		
+		// add messages
+		UIComponent component = event.getComponent();
+		if (info) {
+			String message = "Info Sample";
+			FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(0), message, message);
+			facesContext.addMessage(component.getClientId(), facesMessage);
+		}
+		if (warn) {
+			String message = "Warn Sample";
+			FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(1), message, message);
+			facesContext.addMessage(component.getClientId(), facesMessage);
+		}
+		if (error) {
+			String message = "Error Sample";
+			FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(2), message, message);
+			facesContext.addMessage(component.getClientId(), facesMessage);
+		}
+		if (fatal) {
+			String message = "Fatal Sample";
+			FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(3), message, message);
+			facesContext.addMessage(component.getClientId(), facesMessage);
+		}
+	}
 }

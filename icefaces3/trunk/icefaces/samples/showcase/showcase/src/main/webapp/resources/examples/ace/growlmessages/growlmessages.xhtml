@@ -50,7 +50,7 @@
                     </ace:simpleSelectOneMenu>
 
                     <h:outputText value="closeAll"/>
-                    <ace:checkboxButton label="closeAll" value="#{growlMessagesBean.closeAll}">
+                    <ace:checkboxButton value="#{growlMessagesBean.closeAll}">
                         <ace:ajax render="allMsgs"/>
                     </ace:checkboxButton>
 
@@ -73,25 +73,30 @@
                     </ace:simpleSelectOneMenu>
                 </h:panelGrid>
             </ace:panel>
-
-            <ace:panel id="personalInfoInputPanel" header="Personal Info (tab through empty fields to generate sample Faces messages)">
+        </h:form>
+        <h:form id="messageDemoForm2">
+            <ace:panel id="personalInfoInputPanel" header="Choose the types of messages to show">
                 <h:panelGrid id="inputGrid" columns="2" width="100%" styleClass="textEntryInputTable">
-                    <ace:textEntry id="firstNameInput" value="#{growlMessagesBean.firstName}" label="First Name" labelPosition="left">
-                        <ace:ajax render="allMsgs" listener="#{growlMessagesBean.blurListener}"/>
-                    </ace:textEntry>
-
-                    <ace:textEntry id="lastNameInput" value="#{growlMessagesBean.lastName}" label="Last Name" labelPosition="left">
-                        <ace:ajax render="allMsgs" listener="#{growlMessagesBean.blurListener}"/>
-                    </ace:textEntry>
-
-                    <ace:textEntry id="cityInput" value="#{growlMessagesBean.city}" label="City" labelPosition="left">
-                        <ace:ajax render="allMsgs" listener="#{growlMessagesBean.blurListener}"/>
-                    </ace:textEntry>
-
-                    <ace:textEntry id="countryInput" value="#{growlMessagesBean.country}" label="Country" labelPosition="left">
-                        <ace:ajax render="allMsgs" listener="#{growlMessagesBean.blurListener}"/>
-                    </ace:textEntry>
+					
+					<h:panelGroup>
+						<ace:checkboxButton value="#{growlMessagesBean.info}" />
+						<h:outputText value=" Info" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<ace:checkboxButton value="#{growlMessagesBean.warn}" />
+						<h:outputText value=" Warn" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<ace:checkboxButton value="#{growlMessagesBean.error}" />
+						<h:outputText value=" Error" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<ace:checkboxButton value="#{growlMessagesBean.fatal}" />
+						<h:outputText value=" Fatal" />
+					</h:panelGroup>
+					
                 </h:panelGrid>
+				<ace:pushButton value="Show Messages" actionListener="#{growlMessagesBean.listener}" />
             </ace:panel>
 
             <ace:growlMessages id="allMsgs" autoHide="#{growlMessagesBean.autoHide}" closeAll="#{growlMessagesBean.closeAll}" maxVisibleMessages="#{growlMessagesBean.maxVisibleMessages}" position="#{growlMessagesBean.position}"/>
