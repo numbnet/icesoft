@@ -196,7 +196,8 @@ public class ARView extends View {
                         }
                     }
                     
-                    
+                    canvas.drawText(label, v[0] + xCenter, v[1] + yCenter, mTextPaint);
+
                     float touchDistance = vecLength(new float[]{
                             touchPoint[0] - (v[0] + xCenter),
                             touchPoint[1] - (v[1] + yCenter) });
@@ -210,10 +211,7 @@ public class ARView extends View {
                 canvas.restore();
             }
         }
-        canvas.save();
-        canvas.rotate(270, x, y);
-        canvas.drawText("Touch", x, y, mTextPaint);
-        canvas.restore();
+
     }
 
     private float[] scale(float[] vec, float factor)  {
