@@ -19,6 +19,7 @@ package org.icemobile.client.android.arview;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Size;
@@ -236,6 +237,14 @@ public class ARViewActivity extends Activity implements SensorEventListener,
                 arView.postInvalidate();
             }
         }
+
+        if (null != arView.getSelected())  {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("selected" , arView.getSelected());
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        }
+
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

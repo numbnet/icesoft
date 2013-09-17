@@ -40,6 +40,7 @@ public class ARView extends View {
     float compass = 0;
     Location currentLocation;
     String urlBase = null;
+    String selected = null;
 
     public ARView(Context context) {
         super(context);
@@ -79,6 +80,10 @@ public class ARView extends View {
     void setTouchPosition(float x, float y)  {
         this.x = x;
         this.y = y;
+    }
+
+    public String getSelected()  {
+        return selected;
     }
 
     //increase by factor 2, shift by 200,200
@@ -142,6 +147,7 @@ public class ARView extends View {
         int yCenter = canvas.getHeight() / 2;
 
         HashMap<String,Bitmap> iconBitmaps = getIcons();
+        selected = null;
 
         for (String label : places.keySet())  {
             String coordstr = places.get(label);
@@ -164,16 +170,20 @@ public class ARView extends View {
                             coordstr);
                 }
 
-                float[] coord = new float[4];
-                coord[0] = 4000 * (labelLoc[0] 
+                float[] virt = new float[4];
+                virt[0] = 4000 * (labelLoc[0]
                         - (float)currentLocation.getLatitude()); 
-                coord[1] = 4000 * (labelLoc[1] 
+                virt[1] = 4000 * (labelLoc[1]
                         - (float)currentLocation.getLongitude());
-                coord[2] = 0f;
-                coord[3] = 0f;
+                virt[2] = 0f;
+                virt[3] = 0f;
+
+                float[] coord = scale(normalize(virt), 500);
 
                 float[] v = new float[]{0, 0, 0, 1};
                 Matrix.multiplyMV(v, 0, deviceTransform, 0, coord, 0);
+
+                float[] touchPoint = new float[]{1000 - y, x - 240};
 
                 canvas.save();
                 canvas.rotate(270, xCenter, yCenter);
@@ -185,7 +195,14 @@ public class ARView extends View {
                                     mTextPaint);
                         }
                     }
-                    canvas.drawText(label, v[0] + xCenter, v[1] + yCenter, mTextPaint);
+                    
+                    
+                    float touchDistance = vecLength(new float[]{
+                            touchPoint[0] - (v[0] + xCenter),
+                            touchPoint[1] - (v[1] + yCenter) });
+                    if (touchDistance < 100.0f)  {
+                        selected = label;
+                    }
                 } else {
 //                    canvas.drawText(label, v[0] + xCenter, v[1] + yCenter, mTextPaintRed);
                 }
@@ -199,4 +216,31 @@ public class ARView extends View {
         canvas.restore();
     }
 
+    private float[] scale(float[] vec, float factor)  {
+        float[] result = new float[vec.length];
+        for (int i = 0; i < vec.length; i++)  {
+            result[i] = vec[i] * factor;
+        }
+        return result;
+    }
+
+    private float vecLength(float[] vec)  {
+        float displacement = 0;
+        float length = 1.0f;
+        for (int i = 0; i < vec.length; i++)  {
+            displacement += vec[i] * vec[i];
+        }
+        length = (float) Math.sqrt(displacement);
+        return length;
+    }
+
+    private float[] normalize(float[] vec)  {
+        float[] result = new float[vec.length];
+        float length = vecLength(vec);
+        if (0.0 == length)  {
+            length = 1.0f;
+        }
+        result = scale(vec, 1.0f / length);
+        return result;
+    }
 }
