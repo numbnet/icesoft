@@ -56,18 +56,24 @@
     vertical-align: middle;
 }
 a.mobi-button:hover{ text-decoration:none;}
+
+.ui-title {
+    display: inline-block;
+}
+
 .mobi-pagePanel-header .mobi-button{
-    position: absolute;
-    top: 4px;
-    left: 4px;
     margin: 0;
-    max-width: 20%;
+    padding:0 .5em;
+    font-size:80%;
+    position: absolute;
+    left: 5px;
+    top: 5px;
 }
 div.mobi-button-back {
     position: relative;
     min-height: 14px;
 }
-.mobi-pagePanel-header div.mobi-button-back {
+.mobi-pagePanel-header div.mobi-butzton-back {
     min-height: 14px;
     min-width: 14px;
 }
