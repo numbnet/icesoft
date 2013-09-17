@@ -88,17 +88,17 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             type = IButton.BUTTON_DEFAULT;
         }
 
-        if (isBackButton && client.isIOS()){
-            writer.startElement(DIV_ELEM, button);
-            writer.writeAttribute(ID_ATTR, clientId+"_ctr");
-            writer.writeAttribute(CLASS_ATTR, baseClass.toString());
-            // should be auto base though
-            if (style != null ) {
-                writer.writeAttribute(STYLE_ATTR, style);
-            }
-            writer.startElement(SPAN_ELEM, button);
-            writer.endElement(SPAN_ELEM);
-        }
+//        if (isBackButton && client.isIOS()){
+//            writer.startElement(DIV_ELEM, button);
+//            writer.writeAttribute(ID_ATTR, clientId+"_ctr");
+//            writer.writeAttribute(CLASS_ATTR, baseClass.toString());
+//            // should be auto base though
+//            if (style != null ) {
+//                writer.writeAttribute(STYLE_ATTR, style);
+//            }
+//            writer.startElement(SPAN_ELEM, button);
+//            writer.endElement(SPAN_ELEM);
+//        }
         writer.startElement(buttonElement, component);
         writer.writeAttribute(ID_ATTR, clientId);
         if (!isBackButton) writer.writeAttribute(VALUE_ATTR, button.getValue());
@@ -114,13 +114,13 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         writer.writeAttribute(NAME_ATTR, name);
 
         //style and class written to ctr div when back button
-        if (!isBackButton || !client.isIOS()){
+        // if (!isBackButton || !client.isIOS()){
             writer.writeAttribute(CLASS_ATTR, baseClass.toString());
             // should be auto base though
             if (style != null ) {
                 writer.writeAttribute(STYLE_ATTR, style);
             }
-        }
+        //}
 
         if (isBackButton) {
             writer.startElement(SPAN_ELEM, null);
@@ -184,17 +184,17 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         /*
         last thing to do is to check if back button and then end the ctr div with b elem.
          */
-        if (IButton.BUTTON_TYPE_BACK.equals(button.getButtonType()) && client.isIOS()){
-            writer.startElement("b", button);
-            writer.writeAttribute(CLASS_ATTR, "mobi-button-placeholder");
-            Object oVal2 = button.getValue();
-            if (null != oVal2) {
-                String value = oVal2.toString();
-                writer.writeText(value);
-            }
-            writer.endElement("b");
-            writer.endElement(DIV_ELEM);
-        }
+//        if (IButton.BUTTON_TYPE_BACK.equals(button.getButtonType()) && client.isIOS()){
+//            writer.startElement("b", button);
+//            writer.writeAttribute(CLASS_ATTR, "mobi-button-placeholder");
+//            Object oVal2 = button.getValue();
+//            if (null != oVal2) {
+//                String value = oVal2.toString();
+//                writer.writeText(value);
+//            }
+//            writer.endElement("b");
+//            writer.endElement(DIV_ELEM);
+//        }
 
     }
 
