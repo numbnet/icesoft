@@ -183,10 +183,13 @@ public class ARView extends View {
                 float[] v = new float[]{0, 0, 0, 1};
                 Matrix.multiplyMV(v, 0, deviceTransform, 0, coord, 0);
 
-                float[] touchPoint = new float[]{1000 - y, x - 240};
+                //roation -90 around a,b relocates origin to (a+b,-a+b)
+                float[] touchPoint = new float[]{
+                        xCenter + yCenter - y, x - xCenter + yCenter };
 
                 canvas.save();
                 canvas.rotate(270, xCenter, yCenter);
+
                 if ( v[2] > 0)  {
                     if (null != iconBitmaps)  {
                         Bitmap myIcon = iconBitmaps.get(label);
