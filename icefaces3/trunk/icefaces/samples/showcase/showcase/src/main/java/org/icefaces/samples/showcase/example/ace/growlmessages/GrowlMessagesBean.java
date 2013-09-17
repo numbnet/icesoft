@@ -177,5 +177,10 @@ public class GrowlMessagesBean extends ComponentExampleImpl<GrowlMessagesBean> i
 			FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(3), message, message);
 			facesContext.addMessage(component.getClientId(), facesMessage);
 		}
+		if (!info && !warn && !error && !fatal) {
+			String message = "No checkboxes checked";
+			FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(0), message, message);
+			facesContext.addMessage(component.getClientId(), facesMessage);		
+		}
 	}
 }
