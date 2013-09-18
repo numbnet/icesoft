@@ -11,13 +11,15 @@
     </fieldset>
     
     <a id="camcorderBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.camcorder('camcorderBtn',handleVideo, {postURL: window.serviceHub + '/video-upload'});">Record some video</a>
+        onclick="bridgeit.camcorder('camcorderBtn','handleVideo', {postURL: window.serviceHub + '/video-upload'});">Record some video</a>
         
-    <fieldset>
+    <fieldset id="thumbnailField" style="display:none">
         <div class="row"><img id="thumbnail"/></div>
     </fieldset>
+    
     <fieldset id="videos">
     </fieldset>
+    
     <div class="footer">
         <a href="#">
             <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
@@ -28,6 +30,7 @@
     function handleVideo(event)  {
         var text = event.value;
         if (event.preview)  {
+            document.getElementById("thumbnailField").style.display = "block";
             document.getElementById("thumbnail").setAttribute("src", event.preview);
         }
         if (event.response)  {
