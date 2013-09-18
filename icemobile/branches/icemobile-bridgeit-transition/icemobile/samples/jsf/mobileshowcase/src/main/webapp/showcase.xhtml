@@ -42,18 +42,20 @@
             <mobi:pagePanel>
                 <f:facet name="header">
                     <h:form id="toolbar2" prependId="false" >
-                        <mobi:commandButton buttonType="back"
-                                       action="#{mobiNavigationModel.goBack}"
-                                       rendered="#{mobiNavigationModel.canGoBack}"
-                                       value="Back"/>
+                    <mobi:commandButton buttonType="back"
+                                        rendered="#{mobiNavigationModel.canGoBack}"
+                                        action="#{mobiNavigationModel.goBack}"
+                                        value="Back" />
+                    <h:panelGroup class="ui-icon container" rendered="#{mobiNavigationModel.selectedPanel eq 'menu'}">
                         <h:commandLink title="&amp;#9776;"
                                        styleClass="ui-icon ui-icon-home"
-                                       action="#{mobiNavigationModel.goToHome}"
-                                       rendered="#{mobiNavigationModel.selectedPanel eq 'menu'}"/>
+                                       action="#{mobiNavigationModel.goToHome}" />
+                    </h:panelGroup>
+                    <h:panelGroup class="ui-icon container" rendered="#{mobiNavigationModel.selectedPanel eq 'splash'}">
                         <h:commandLink title="&amp;#9776;"
                                        styleClass="ui-icon ui-icon-menu"
-                                       action="#{mobiNavigationModel.goToMenu}"
-                                       rendered="#{mobiNavigationModel.selectedPanel eq 'splash'}"/>
+                                       action="#{mobiNavigationModel.goToMenu}" />
+                    </h:panelGroup>
                     </h:form>
                     <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
                     <ui:insert name="toolBarContent"/>
