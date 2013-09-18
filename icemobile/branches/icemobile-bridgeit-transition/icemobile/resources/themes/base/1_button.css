@@ -88,3 +88,6 @@ div.mobi-button-back > input{
     top: 0;
  
 }
+.mobi-pagePanel-header .ui-icon.icon-list {
+    background: none;
+}
