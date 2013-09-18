@@ -88,6 +88,11 @@ public class MainEventListener implements SystemEventListener  {
         if (source.getClass().getName().startsWith("com.icesoft"))  {
             return false;
         }
+        //body is already a special case
+        if (source.getClass().getName().equals(
+                "javax.faces.component.html.HtmlBody"))  {
+            return false;
+        }
         boolean classCheck = (  (
             (source instanceof UIOutput) || 
             (source instanceof HtmlDataTable) || 
