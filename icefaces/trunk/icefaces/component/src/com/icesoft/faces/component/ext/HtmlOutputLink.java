@@ -60,7 +60,7 @@ public class HtmlOutputLink extends javax.faces.component.html.HtmlOutputLink {
     private Boolean visible = null;
     private String styleClass = null;
     private CurrentStyle currentStyle;
-
+    private Boolean percentEncode = null;
 
     private Effect onclickeffect;
     private Effect ondblclickeffect;
@@ -445,13 +445,33 @@ public class HtmlOutputLink extends javax.faces.component.html.HtmlOutputLink {
         this.currentStyle = currentStyle;
     }
 
+    /**
+     * <p>Set the value of the <code>percentEncode</code> property.</p>
+     */
+    public void setPercentEncode(boolean percentEncode) {
+        this.percentEncode = Boolean.valueOf(percentEncode);
+
+    }
+
+    /**
+     * <p>Return the value of the <code>visible</code> property.</p>
+     */
+    public boolean isPercentEncode() {
+        if (percentEncode != null) {
+            return percentEncode.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("percentEncode");
+        Boolean boolVal =
+                vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : false;
+    }
 
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[22];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = effect;
@@ -470,6 +490,7 @@ public class HtmlOutputLink extends javax.faces.component.html.HtmlOutputLink {
         values[18] = currentStyle;
         values[19] = visible;
         values[20] = styleClass;
+		values[21] = percentEncode;
         return ((Object) (values));
     }
 
@@ -497,5 +518,6 @@ public class HtmlOutputLink extends javax.faces.component.html.HtmlOutputLink {
         currentStyle = (CurrentStyle) values[18];
         visible = (Boolean) values[19];
         styleClass = (String) values[20];
+		percentEncode = (Boolean) values[21];
     }
 }

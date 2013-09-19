@@ -107,6 +107,8 @@ public class OutputLinkRenderer extends DomBasicRenderer {
 
         linkVal = appendParameters(facesContext, uiComponent, linkVal);
 
+        linkVal = escapeIllegalCharacters(uiComponent, linkVal);
+
         if (!checkDisabled(uiComponent)) {
             writer.writeURIAttribute("href",
                     facesContext
@@ -209,5 +211,7 @@ public class OutputLinkRenderer extends DomBasicRenderer {
 
     }
 
-
+	protected String escapeIllegalCharacters(UIComponent uiComponent, String link) {
+		return link;
+	}
 }
