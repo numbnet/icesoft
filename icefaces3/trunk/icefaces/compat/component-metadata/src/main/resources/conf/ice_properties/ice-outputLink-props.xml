@@ -38,4 +38,17 @@
         </editor-class>
     </property-extension>
 </property>
-        
+
+<property>
+    <description>
+        <![CDATA[
+		If set to true, the value of the component will be escaped using percent-encoding.
+		]]>		
+    </description>
+    <property-name>percentEncode</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+		<default-value>false</default-value>
+    </property-extension>
+</property>

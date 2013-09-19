@@ -20,6 +20,8 @@ import com.icesoft.faces.component.ext.HtmlOutputLink;
 
 import javax.faces.component.UIComponent;
 
+import java.net.URI;
+
 public class OutputLinkRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.OutputLinkRenderer {
 
@@ -28,4 +30,18 @@ public class OutputLinkRenderer
         HtmlOutputLink link = (HtmlOutputLink) uiComponent;
         return link.isDisabled();
     }
+	
+	protected String escapeIllegalCharacters(UIComponent uiComponent, String link) {
+		HtmlOutputLink outputLink = (HtmlOutputLink) uiComponent;
+		if (!outputLink.isPercentEncode()) return link;
+		String result;
+		try {
+			URI uri = new URI(null, link, null);
+			result = uri.toASCIIString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = link;
+		}
+		return result;
+	}
 }
