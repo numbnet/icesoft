@@ -60,6 +60,7 @@ public class JavaScriptContextSetup implements SystemEventListener {
 
         UIViewRoot root = facesContext.getViewRoot();
         jsContextOutput.setTransient(true);
+        jsContextOutput.setId("javascript_context_setup");
         root.addComponentResource(facesContext, jsContextOutput, "body");
     }
 }
