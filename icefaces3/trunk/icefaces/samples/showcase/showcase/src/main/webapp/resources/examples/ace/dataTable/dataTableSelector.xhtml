@@ -118,12 +118,8 @@
         </ace:column>
     </ace:dataTable>
 
-    <h:panelGroup id="status">
-       <f:facet name="header">
-           <h:panelGroup layout="block" styleClass="th-align-left">
-               <h:outputText value="Selection Status"/>
-           </h:panelGroup>
-       </f:facet>
+	<h:commandButton id="refresh" value="Refresh Status" rendered="#{!dataTableSelector.instantUpdate}"/>
+	<br />
 
        <h:panelGroup layout="block" style="display:inline-block; vertical-align: top; width:50%;">
            <h:outputText value="Selected Rows:"/><br/>
@@ -145,10 +141,6 @@
            </ui:repeat>
        </h:panelGroup>
 
-       <f:facet name="footer">
-           <h:commandButton id="refresh" value="Refresh Status" rendered="#{!dataTableSelector.instantUpdate}"/>
-       </f:facet>
-           </h:panelGroup>
         </h:form>
     </ui:define>
 </ui:composition>
