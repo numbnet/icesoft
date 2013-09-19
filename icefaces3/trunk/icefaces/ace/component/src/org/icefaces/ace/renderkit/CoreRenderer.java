@@ -28,8 +28,10 @@
 package org.icefaces.ace.renderkit;
 
 import org.icefaces.ace.util.Constants;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ViewHandler;
@@ -346,5 +348,123 @@ public class CoreRenderer extends Renderer {
                }
            }
         }
+    }
+
+	/* ------------------------------- */
+	/* --- imported from icemobile --- */
+	/* ------------------------------- */
+	
+    /**
+      * Non-obstrusive way to apply client behaviors.  Brought over from implementation of ace components for ace ajax.
+      * will be replaced in 1.4 Beta to reflect support for both mobi:transition and mobi:ajax behaviors
+      * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
+      */
+    protected StringBuilder encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, String eventDef) throws IOException {
+       StringBuilder sb = new StringBuilder(255);
+         //ClientBehaviors
+       Map<String,List<ClientBehavior>> eventBehaviors = component.getClientBehaviors();
+       if(!eventBehaviors.isEmpty()) {
+           String clientId = ((UIComponent) component).getClientId(context);
+           List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+
+           sb.append(",behaviors:{");
+
+           for(Iterator<String> eventIterator = eventBehaviors.keySet().iterator(); eventIterator.hasNext();) {
+               String event = eventIterator.next();
+               if (null==event){
+                   event = eventDef;
+               }
+               String domEvent = getDomEvent(event);
+               sb.append(domEvent + ":");
+               sb.append("function() {");
+               ClientBehaviorContext cbContext = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
+               for(Iterator<ClientBehavior> behaviorIter = eventBehaviors.get(event).iterator(); behaviorIter.hasNext();) {
+                   ClientBehavior behavior = behaviorIter.next();
+                   String script = behavior.getScript(cbContext);
+                   if(script != null) {
+                       sb.append(script);
+                   }
+               }
+               sb.append("}");
+               if(eventIterator.hasNext()) {
+                   sb.append(",");
+               }
+           }
+           sb.append("}");
+       }
+       return sb;
+    }
+	
+    protected void writeJavascriptFile(FacesContext facesContext,
+            UIComponent component, String JS_NAME, String JS_MIN_NAME,
+            String JS_LIBRARY, String JS2_NAME, String JS2_MIN_NAME, String JS2_LIB) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = component.getClientId(facesContext);
+        writer.startElement(HTML.SPAN_ELEM, component);
+        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-hidden", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_libJS", HTML.ID_ATTR);
+        if (!isScriptLoaded(facesContext, JS_NAME)) {
+            String jsFname = JS_NAME;
+            if (facesContext.isProjectStage(ProjectStage.Production)){
+                jsFname = JS_MIN_NAME;
+            }
+            //set jsFname to min if development stage
+            Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
+            String src = jsFile.getRequestPath();
+            writer.startElement("script", component);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.writeAttribute("src", src, null);
+            writer.endElement("script");
+            setScriptLoaded(facesContext, JS_NAME);
+        }
+        if (!isScriptLoaded(facesContext, JS2_NAME)) {
+            String jsFname = JS2_NAME;
+            if (facesContext.isProjectStage(ProjectStage.Production)){
+                jsFname = JS2_MIN_NAME;
+            }
+            //set jsFname to min if development stage
+            Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS2_LIB);
+            String src = jsFile.getRequestPath();
+            writer.startElement("script", component);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.writeAttribute("src", src, null);
+            writer.endElement("script");
+            setScriptLoaded(facesContext, JS2_NAME);
+        }
+        writer.endElement(HTML.SPAN_ELEM);
+    }
+
+    protected void writeJavascriptFile(FacesContext facesContext, 
+            UIComponent component, String JS_NAME, String JS_MIN_NAME, 
+            String JS_LIBRARY) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = component.getClientId(facesContext);
+        writer.startElement(HTML.SPAN_ELEM, component);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_libJS", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-hidden", null);
+        if (!isScriptLoaded(facesContext, JS_NAME)) {
+            String jsFname = JS_NAME;
+            if (facesContext.isProjectStage(ProjectStage.Production)){
+                jsFname = JS_MIN_NAME;
+            }
+            //set jsFname to min if development stage
+            Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
+            String src = jsFile.getRequestPath();
+            writer.startElement("script", component);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.writeAttribute("src", src, null);
+            writer.endElement("script");
+            setScriptLoaded(facesContext, JS_NAME);
+        } 
+        writer.endElement(HTML.SPAN_ELEM);
+    }
+
+    protected void setScriptLoaded(FacesContext facesContext, 
+            String JS_NAME) {
+        InlineScriptEventListener.setScriptLoaded(facesContext, JS_NAME);
+    }
+
+    protected boolean isScriptLoaded(FacesContext facesContext, String JS_NAME) {
+        return InlineScriptEventListener.isScriptLoaded(facesContext, JS_NAME);
     }
 }
