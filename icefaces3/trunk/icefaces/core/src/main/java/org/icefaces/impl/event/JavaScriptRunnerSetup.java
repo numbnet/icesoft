@@ -57,6 +57,7 @@ public class JavaScriptRunnerSetup implements SystemEventListener {
 
         UIViewRoot root = facesContext.getViewRoot();
         jsOutput.setTransient(true);
+        jsOutput.setId("javascript_runner");
         root.addComponentResource(facesContext, jsOutput, "body");
     }
 }
