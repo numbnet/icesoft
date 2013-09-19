@@ -129,6 +129,7 @@ public class SxCore extends Activity
     private String mPreview;
     private String mCurrentId;
     private String mReturnValue;
+    private String mCloudNotificationId;
     private String mCurrentjsessionid;
     private String mCurrentMediaFile;
     private Runnable mBrowserReturn;
@@ -211,6 +212,14 @@ public class SxCore extends Activity
 			    returnUri.append(URLEncoder.encode(mHashCode, "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
 			    Log.e(LOG_TAG, "Could not encode return hash: " + e.toString());
+			}
+		    }
+		    if (mCloudNotificationId != null) {
+			returnUri.append("&!c=");
+			try {
+			    returnUri.append(URLEncoder.encode(mCloudNotificationId, "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+			    Log.e(LOG_TAG, "Could not encode cloud credentials: " + e.toString());
 			}
 		    }
 		    if (mPreview != null) {
@@ -441,19 +450,19 @@ public class SxCore extends Activity
         } else if ("register".equals(command))  {
 	    Log.d(LOG_TAG, "dispatched register ");
 	    if (INCLUDE_GCM) {
-		//if GCM registration does not occur in 3 seconds,
-		//proceed with registration anyway
+		//if GCM registration does not occur in 3 seconds, then return anyways
 		mHandler.postDelayed(new Runnable() {
 			public void run()  {
 			    if (doRegister)  {
-				registerSX();
+				mBrowserReturn.run();
 			    }
 			}
 		    }, 3000);
 		doRegister = true;
 	    } else {
 		// No GCM so proceed with registration;
-		registerSX();
+		// Registration no longer manditory
+		// registerSX();
 	    }
         }
     }
@@ -462,16 +471,19 @@ public class SxCore extends Activity
 	String postUriString = mPOSTUri.toString();
 	doRegister = false;
 	String encodedForm = "";
-	String cloudNotificationId = getCloudNotificationId();
-	if (null != cloudNotificationId)  {
+	mCloudNotificationId = getCloudNotificationId();
+	if (null != mCloudNotificationId)  {
 	    encodedForm = "hidden-iceCloudPushId=" +
-		URLEncoder.encode(cloudNotificationId);
+		URLEncoder.encode(mCloudNotificationId);
 	}
-	Log.d(LOG_TAG, "POSTing to " + postUriString);
-	Log.d(LOG_TAG, "POST to register will send " + encodedForm);
-	utilInterface.setUrl(postUriString);
-	utilInterface.submitForm("", encodedForm, mBrowserReturn);
-	Log.d(LOG_TAG, "POST to register URL with jsessionid " + mCurrentjsessionid);
+	if (mPOSTUri != null) {
+	    Log.d(LOG_TAG, "POST to register will send " + encodedForm);
+	    utilInterface.setUrl(postUriString);
+	    utilInterface.submitForm("", encodedForm, mBrowserReturn);
+	    Log.d(LOG_TAG, "POST to register URL with jsessionid " + mCurrentjsessionid);
+	} else {
+	    mBrowserReturn.run();
+	}
     }
 
     public String packParams(Map params)  {
