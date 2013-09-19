@@ -43,4 +43,26 @@ public class Constants {
     public final static String LIBRARY = "icefaces.ace";
 
     public final static String CUSTOM_EVENT = "CUSTOM_EVENT";
+	
+	/* ------------------------------- */
+	/* --- imported from icemobile --- */
+	/* ------------------------------- */
+	
+    public final static String IOS_SMART_APP_BANNER_KEY = "org.icemobile.iosSmartAppBanner";
+    public final static String TEMP_DIR = "javax.servlet.context.tmpdir";
+    public final static String ICEMOBILE_COOKIE_FORMAT = "org.icemobile.cookieformat";
+    public final static String USER_AGENT_COOKIE = "com.icesoft.user-agent";
+    public final static String CLOUD_PUSH_KEY = "iceCloudPushId";
+    public final static String HEADER_ACCEPT = "Accept";
+    public final static String HYPERBROWSER = "HyperBrowser";
+    public final static String PROJECT_STAGE_PARAM = "org.icemobile.projectstage";
+    
+    //rendering standard items
+    public final static String SUFFIX_WRAPPER = "_wrp";
+    public final static String SUFFIX_HIDDEN = "_hidden";
+    public final static String SPACE = " ";
+
+    // rendering mouse vs touch events
+    public static final String TOUCH_START_EVENT = "ontouchstart";
+    public static final String CLICK_EVENT = "onclick";
 }
