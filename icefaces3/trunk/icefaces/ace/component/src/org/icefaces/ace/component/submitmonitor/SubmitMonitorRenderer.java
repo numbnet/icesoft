@@ -21,12 +21,14 @@ import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
+@MandatoryResourceComponent(tagName="submitMonitor", value="org.icefaces.ace.component.submitmonitor.SubmitMonitor")
 public class SubmitMonitorRenderer extends CoreRenderer {
     @Override
     public void	encodeBegin(FacesContext context, UIComponent component) throws IOException {
