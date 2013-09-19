@@ -11,7 +11,7 @@
     </fieldset>
     
     <a id="geoSpyBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.geoSpy('geoSpyBtn',handleSpy, {postURL: window.serviceHub + '/geospy'});">Start Tracking</a>
+        onclick="bridgeit.geoSpy('geoSpyBtn','handleSpy', {postURL: window.serviceHub + '/geospy'});">Start Tracking</a>
         
     <div id="spyMapCanvas" style="height:200px"></div>
 
@@ -25,23 +25,27 @@
         &copy; 2013 ICEsoft Technologies
     </div>
     <script type="text/javascript">
+    window.geoSpying = false;
+    
     function handleSpy(event)  {
-        alert('handleSpy: ' + JSON.stringify(event));
         processMarkers(event.value);
     }
     var map;
     function initSpyMap() {
-        alert('initSpyMap');
-        var mapOptions = {
-            maxZoom: 16,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        map = new google.maps.Map(document
-                .getElementById('spyMapCanvas'), mapOptions);
+        if( !window.geoSpying ){
+            window.geoSpying = true;
+            var mapOptions = {
+                maxZoom: 16,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document
+                    .getElementById('spyMapCanvas'), mapOptions);
 
-        var overlay = document.getElementById('spyMapOverlay');
-        map.controls[google.maps.ControlPosition.RIGHT_TOP]
-                .push(overlay);
+            var overlay = document.getElementById('spyMapOverlay');
+            map.controls[google.maps.ControlPosition.RIGHT_TOP]
+                    .push(overlay);
+            
+        }
     }
 
     function processMarkers(data)  {
