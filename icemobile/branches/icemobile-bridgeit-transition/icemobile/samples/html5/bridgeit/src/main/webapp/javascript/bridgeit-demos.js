@@ -40,6 +40,7 @@ function ajaxGet(url,cb){
         }
     }
     if( !request ){
+        console.log("Unable to invoke XMLHttpRequest for " + url);
         return false;
     }
     request.onreadystatechange = function(){
@@ -47,7 +48,8 @@ function ajaxGet(url,cb){
             if (request.status === 200) {
                 cb(request.responseText);
             } else {
-                alert('There was a problem with the request.');
+                console.log("XMLHttpRequest for " + url +
+                        " with status " + request.status);
             }
           }
     }
