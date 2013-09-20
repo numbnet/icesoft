@@ -17,6 +17,7 @@
 package org.icemobile.client.android.sxcore;
 
 import java.util.Map;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.net.URLEncoder;
@@ -41,6 +42,8 @@ import android.provider.Browser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.content.res.Configuration;
+import android.content.pm.ResolveInfo;
+import android.content.pm.PackageManager;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.c2dm.C2dmRegistrationHandler;
@@ -149,8 +152,21 @@ public class SxCore extends Activity
         Intent browserIntent = new 
                 Intent(Intent.ACTION_VIEW, 
                 mReturnUri);
+	/*	ResolveInfo r;
+	List<ResolveInfo> infos = getPackageManager().queryIntentActivities(browserIntent, 0);
+	for (int i=0; i< infos.size(); i++) {
+	    r = (ResolveInfo)infos.get(i);
+	    Log.d(LOG_TAG,"intent Package: "+r.activityInfo.packageName);
+	    }*/
+	final ResolveInfo res = getPackageManager().resolveActivity(browserIntent,PackageManager.MATCH_DEFAULT_ONLY);
+	if (res.activityInfo != null) {
+	    Log.d(LOG_TAG,"defaultPackage: "+res.activityInfo.packageName);
+	    String browserPackageName = res.activityInfo.packageName;
         browserIntent.putExtra(
-                Browser.EXTRA_APPLICATION_ID, "_icemobilesx");
+                Browser.EXTRA_APPLICATION_ID, browserPackageName);
+	//	browserIntent.setPackage(browserPackageName);
+	}
+
 	Log.d(LOG_TAG, "Returning to browser with: " + mReturnUri);
         startActivity(browserIntent);
     }
@@ -465,6 +481,9 @@ public class SxCore extends Activity
 		// registerSX();
 	    }
         }
+	// Unknown command
+	mPOSTUri = null;
+	mBrowserReturn.run();
     }
 
     private void registerSX() {
