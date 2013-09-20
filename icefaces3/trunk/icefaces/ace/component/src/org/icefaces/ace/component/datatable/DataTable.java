@@ -1467,7 +1467,9 @@ public class DataTable extends DataTableBase implements Serializable {
                     }
                 } else if (column instanceof ColumnGroup) {
                     UIComponent columnGroup = column;
+                    context.invokeVisitCallback(column, callback);
                     for (UIComponent row : columnGroup.getChildren()) {
+                        context.invokeVisitCallback(row, callback); // visit the row directly
                         for (UIComponent c : row.getChildren()) {
                             if (c instanceof Column) {
                                 VisitResult result = context.invokeVisitCallback(c, callback); // visit the column directly
@@ -1484,6 +1486,8 @@ public class DataTable extends DataTableBase implements Serializable {
                             }
                         }
                     }
+                } else {
+                    column.visitTree(context, callback);
                 }
             }
         }
