@@ -15,7 +15,7 @@
         
     <fieldset id="currentPhoto">
         <div class="row">
-            <img id="thumbnail"/>
+            <img id="photoThumbnail"/>
             <span class="ellipsis" id="currentPhotoDesc" ></span>
         </div>
     </fieldset>
@@ -31,7 +31,7 @@
     function handleCam(event)  {
         var text = event.value;
         if (event.preview)  {
-            document.getElementById("thumbnail").setAttribute("src", event.preview);
+            document.getElementById("photoThumbnail").setAttribute("src", event.preview);
             document.getElementById("currentPhotoDesc").innerHTML = "Last photo taken at " + new Date();
         }
         if (event.response)  {
