@@ -23,3 +23,34 @@ function closeGetBridgeItPopup(){
     popup.style.opacity = 0;
     popup.style.display = 'none';
 }
+function ajaxGet(url,cb){
+    var request;
+    if( window.XMLHttpRequest){
+        request = new XMLHttpRequest();
+    }
+    else if( window.ActiveXObject ){
+        try{
+            request = new ActiveXObject("Msxml2.XMLHTTP");
+        }
+        catch(e){
+            try{
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch(e){}
+        }
+    }
+    if( !request ){
+        return false;
+    }
+    request.onreadystatechange = function(){
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                cb(request.responseText);
+            } else {
+                alert('There was a problem with the request.');
+            }
+          }
+    }
+    request.open('GET', url);
+    request.send();
+}
