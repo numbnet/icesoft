@@ -155,7 +155,7 @@ Ice.PanelCollapsible = {
     }
 }
 
-Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames) {
+Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames, preserveHorizontalScrolling) {
     var ctrlKyFld = document.getElementsByName(hdnFld+'ctrKy');
     var sftKyFld = document.getElementsByName(hdnFld+'sftKy');  
     if (ctrlKyFld.length > 0) {
@@ -209,6 +209,30 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                 }
             }
         }
+		if (preserveHorizontalScrolling) {
+			var panelGroup = Ice.tableRowClicked.findPanelGroupContainer(row);
+			if (panelGroup) {
+				var scrollContainer = document.getElementsByName(hdnFld+'scrCont');  
+				if (scrollContainer.length > 0) {
+					scrollContainer = scrollContainer[0];
+				} else {
+					scrollContainer = null;
+				}
+				if (scrollContainer) {
+					var scrollPosition = document.getElementsByName(hdnFld+'scrPos');  
+					if (scrollPosition.length > 0) {
+						scrollPosition = scrollPosition[0];
+					} else {
+						scrollPosition = null;
+					}
+					if (scrollPosition) {
+						scrollContainer.value = panelGroup.id;
+						scrollPosition.value = panelGroup.scrollLeft;
+						setFocus('');
+					}
+				}
+			}
+		}
         var evt = Event.extend(event);
         var row = evt.element();
         if (row.tagName.toLowerCase() != "tr") {
@@ -232,6 +256,18 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         console.log("Error in rowSelector[" + e + "]");
     }
 }
+
+Ice.tableRowClicked.findPanelGroupContainer = function(node) {
+	if (node) {
+		if (node.className.indexOf('icePnlGrp') > -1) {
+			return node;
+		} else {
+			return Ice.tableRowClicked.findPanelGroupContainer(node.parentNode);
+		}
+	} else {
+		return null;
+	}
+};
 
 Ice.clickEvents = {};
 
