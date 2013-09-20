@@ -31,4 +31,6 @@
 - (void) setProgress:(NSInteger)percent;
 - (void) setProgressLabel:(NSString*)labelText;
 
+@property (retain) NSString *currentURL;
+
 @end

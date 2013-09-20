@@ -38,6 +38,7 @@
     NSString *userAgent;
     NSString *activeDOMElementId;
     NSString *geospyName;
+    NSString *geospyURL;
     NSString *maxwidth;
     NSString *maxheight;
     NSString *soundFilePath;
@@ -65,6 +66,7 @@
 @property (retain) NSString *userAgent;
 @property (retain) NSString *activeDOMElementId;
 @property (retain) NSString *geospyName;
+@property (retain) NSString *geospyURL;
 @property (retain) NSString *maxwidth;
 @property (retain) NSString *maxheight;
 @property (retain) NSString *soundFilePath;
