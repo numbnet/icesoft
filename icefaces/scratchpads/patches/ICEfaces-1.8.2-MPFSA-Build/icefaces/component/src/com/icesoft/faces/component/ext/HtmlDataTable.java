@@ -48,6 +48,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.icesoft.faces.component.ext.renderkit.TableRenderer;
+import com.icesoft.faces.context.effects.JavascriptContext;
+
 /**
  * This is an extension of javax.faces.component.html.HtmlDataTable, which
  * provides some additional behavior to this component such as: <ul> <li>changes
@@ -527,6 +530,17 @@ public class HtmlDataTable
             }
         }
         //--
+		RowSelector rowSelector = TableRenderer.getRowSelector(this);
+		if (rowSelector != null && rowSelector.isPreserveHorizontalScrolling()) {
+			String selectedRowsParameter = getClientId(context) + "sel_rows";
+			Object scrollContainer = requestParameterMap.get(selectedRowsParameter+"scrCont");
+			Object scrollPosition = requestParameterMap.get(selectedRowsParameter+"scrPos");
+			if (scrollContainer != null && !"".equals(scrollContainer) 
+				&& scrollPosition != null && !"".equals(scrollPosition)) {
+				JavascriptContext.addJavascriptCall(context, 
+					"document.getElementById('"+scrollContainer+"').scrollLeft = "+scrollPosition+";");
+			}
+		}
     }    
 
     private String resizableTblColumnsWidth[] = new String[0];

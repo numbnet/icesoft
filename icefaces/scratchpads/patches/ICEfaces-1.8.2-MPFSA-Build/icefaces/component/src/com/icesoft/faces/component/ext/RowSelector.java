@@ -77,6 +77,7 @@ public class RowSelector extends UIPanel {
     private Integer dblClickDelay;
     private Boolean preStyleOnSelection;
     private String renderedOnUserRole = null;
+	private Boolean preserveHorizontalScrolling;
     
     transient private List selectedRowsList = new ArrayList();
     
@@ -549,7 +550,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[19];
+        Object[] state = new Object[20];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -569,6 +570,7 @@ public class RowSelector extends UIPanel {
         state[16] = dblClickDelay;
         state[17] = preStyleOnSelection;
         state[18] = renderedOnUserRole;
+		state[19] = preserveHorizontalScrolling;
         return state;
     }
 
@@ -597,6 +599,7 @@ public class RowSelector extends UIPanel {
         dblClickDelay = (Integer) state[16];
         preStyleOnSelection = (Boolean) state[17];
         renderedOnUserRole = (String) state[18]; 
+		preserveHorizontalScrolling = (Boolean) state[19];
     }
     
     private String styleClass;
@@ -691,4 +694,18 @@ public class RowSelector extends UIPanel {
         }
         return super.isRendered();
     } 
+	
+    public boolean isPreserveHorizontalScrolling() {
+        if (preserveHorizontalScrolling != null) {
+            return preserveHorizontalScrolling.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("preserveHorizontalScrolling");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : false;
+    }
+
+    public void setPreserveHorizontalScrolling(boolean preserveHorizontalScrolling) {
+        this.preserveHorizontalScrolling = new Boolean(preserveHorizontalScrolling);
+    }
 }
