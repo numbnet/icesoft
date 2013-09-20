@@ -10,8 +10,8 @@
         </div>
     </fieldset>
     
-    <a id="geoSpyBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.geoSpy('geoSpyBtn','handleSpy', {postURL: window.serviceHub + '/geospy'});">Start Tracking</a>
+    <a id="track" type="button" class="whiteButton bridgeItBtn"
+        onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/geospy'});">Start Tracking</a>
         
     <div id="spyMapCanvas" style="height:200px"></div>
 
@@ -27,8 +27,7 @@
     <script type="text/javascript">
     window.geoSpying = false;
     
-    function handleSpy(event)  {
-        processMarkers(event.value);
+    function handleSpy()  {
     }
     var map;
     function initSpyMap() {
@@ -47,22 +46,30 @@
             
         }
     }
-
+    function updateMarkers()  {
+        ajaxGet(window.serviceHub + '/geospymarkers'), processMarkers);
+    }
     function processMarkers(data)  {
-        var markerData = data.markers;
-        var len = markerData.length;
-        var markers = new Array();
-        var bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < len; i++) {
-            var location = new google.maps.LatLng(
-                    markerData[i][0], markerData[i][1]);
-            bounds.extend(location);
-            new google.maps.Marker({
-                position: location,
-                map: map
-            });
+        if( data ){
+            var markerData = data.markers;
+            var len = markerData.length;
+            var markers = new Array();
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < len; i++) {
+                var location = new google.maps.LatLng(
+                        markerData[i][0], markerData[i][1]);
+                bounds.extend(location);
+                new google.maps.Marker({
+                    position: location,
+                    map: map
+                });
+            }
+            map.fitBounds(bounds);
+            
         }
-        map.fitBounds(bounds);
+        else{
+            console.log('no data for geospy...')
+        }
     }
     </script>
 </div>

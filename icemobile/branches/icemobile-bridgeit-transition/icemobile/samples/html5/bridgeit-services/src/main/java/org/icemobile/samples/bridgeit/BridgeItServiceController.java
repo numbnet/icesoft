@@ -31,13 +31,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.ui.Model;
+
 
 @Controller
-@SessionAttributes({"photos","videos","recordings", "arPhoto"})
+@SessionAttributes({"photos","videos","recordings", "arPhoto", "geoSpy"})
 @ICEmobileResourceStore(bean="basicResourceStore")
 public class BridgeItServiceController {
 
     //private List<RealityMessage> arMessages = new ArrayList<RealityMessage>();
+    private ArrayList markers = new ArrayList();
+    {
+        //sample data for verification on startup
+        markers.add(new String[]{
+                "+51.07","-114.09","+1000"});
+    }
+
     
     @ModelAttribute("photos")
     public List<String> createPhotoList() {
@@ -57,6 +66,11 @@ public class BridgeItServiceController {
     @ModelAttribute("arPhoto")
     public String createARPhoto() {
         return new String();
+    }
+    
+    @ModelAttribute("geoSpy")
+    public List<String> createGeoSpyTrack() {
+        return new ArrayList<String>();
     }
     
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
@@ -122,9 +136,12 @@ public class BridgeItServiceController {
     }
     
     @RequestMapping(value = "/geospy", method=RequestMethod.POST, produces="application/json")
-    public @ResponseBody String postGeoSpy(HttpServletRequest request) throws IOException {
-        System.out.println("postGeoSpy()");
-        return null;
+    public @ResponseBody List<String> postGeoSpy(HttpServletRequest request,
+        String tracker,
+        @ModelAttribute("geoSpy") List<String> track) throws IOException {
+        System.out.println(tracker);
+        
+        return track;
     }
     
     @RequestMapping(value="/photo-list", method=RequestMethod.GET, produces="application/json")
@@ -162,4 +179,19 @@ public class BridgeItServiceController {
 
         return videos;
     }
+    
+    @RequestMapping(value = "/geospymarkers", method = RequestMethod.GET)
+    public @ResponseBody GeoMarkers geospyMarkers(
+            HttpServletRequest request,
+            Model model)  {
+
+        GeoMarkers geoMarkers = new GeoMarkers();
+        geoMarkers.markers = this.markers;
+        return geoMarkers;
+    }
+    
+    class GeoMarkers {
+        public ArrayList markers;
+    }
+
 }
