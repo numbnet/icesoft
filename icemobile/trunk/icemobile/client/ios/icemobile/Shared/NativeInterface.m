@@ -33,6 +33,7 @@
 @synthesize userAgent;
 @synthesize activeDOMElementId;
 @synthesize geospyName;
+@synthesize geospyURL;
 @synthesize maxwidth;
 @synthesize maxheight;
 @synthesize soundFilePath;
@@ -760,9 +761,38 @@ NSLog(@"Found record %@", result);
             withName:augName];
 }
 
+- (id) geoJSONfromLocation:(CLLocation*)location  {
+    
+    NSDictionary *geoJSONProperties =
+    [[NSDictionary alloc] initWithObjectsAndKeys:
+        @"this", @"that",
+        nil];
+    
+    NSArray *coords = [[NSArray alloc] initWithObjects:
+           [NSNumber numberWithDouble: location.coordinate.longitude ],
+           [NSNumber numberWithDouble: location.coordinate.latitude ],
+           [NSNumber numberWithDouble: location.altitude ],
+            nil];
+
+    NSDictionary *geoJSONPoint =
+    [[NSDictionary alloc] initWithObjectsAndKeys:
+        @"Point", @"type",
+        coords, @"coordinates",
+        nil];
+    
+    NSDictionary *geoJSONFeature =
+    [[NSDictionary alloc] initWithObjectsAndKeys:
+        @"Feature", @"type",
+        geoJSONPoint, @"geometry",
+        geoJSONProperties, @"properties",
+        nil];
+
+    return geoJSONFeature;
+}
 
 - (BOOL)geospy:(NSString*) geoId withStrategy:(NSString*) strategy  {
     self.geospyName = geoId;
+    self.geospyURL = self.controller.currentURL;
     if (nil == self.locationManager)  {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
@@ -785,10 +815,11 @@ NSLog(@"Found record %@", result);
 
     if (self.monitoringLocation)  {
         CLLocation* location = self.locationManager.location;
-        NSString *geoResult = [NSString stringWithFormat:@"%+.6f,%+.6f,%+.6f",
-            location.coordinate.latitude,
-            location.coordinate.longitude,
-            location.altitude];
+//        NSString *geoResult = [NSString stringWithFormat:@"%+.6f,%+.6f,%+.6f",
+//            location.coordinate.latitude,
+//            location.coordinate.longitude,
+//            location.altitude];
+        NSString *geoResult = [self geoJSONfromLocation:location];
         NSLog(@"initial location  %@", geoResult);
     }
 
@@ -808,19 +839,16 @@ NSLog(@"Found record %@", result);
 - (void)locationManager:(CLLocationManager *)manager
         didUpdateLocations:(NSArray *)locations {
    CLLocation* location = [locations lastObject];
-   NSString *geoResult = [NSString stringWithFormat:@"%+.6f,%+.6f,%+.6f",
-        location.coordinate.latitude,
-        location.coordinate.longitude,
-        location.altitude];
-
+    NSObject *geoResult = [self geoJSONfromLocation:location];
     NSLog(@"geospy location changed %@\n", geoResult);
+
     if (self.uploading)  {
         NSLog(@"geospy already uploading\n");
         return;
     }
     self.uploading = YES;
-    [self.controller completePost:geoResult forComponent:self.geospyName
-            withName:self.geospyName];
+
+    [self jsonPost:geoResult toURL:self.geospyURL];
 
 }
 
@@ -973,6 +1001,29 @@ NSLog(@"Found record %@", result);
     free(outbuf);
 
     return ret;
+}
+
+- (void)jsonPost:(id)json toURL: (NSString *)url  {
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+    [request setURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"POST"];
+    if (nil != self.userAgent)  {
+        [request addValue:self.userAgent forHTTPHeaderField: @"User-Agent"];
+    }
+    [request addValue:@"application/json" forHTTPHeaderField: @"Content-Type"];
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization
+            dataWithJSONObject:json
+            options:NSJSONWritingPrettyPrinted
+            error:&error];
+    [request setHTTPBody:jsonData];
+
+    NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    if (theConnection) {
+        self.receivedData = [[NSMutableData data] retain];
+    } else {
+        NSLog(@"unable to connect to %@", theConnection);
+    }
 }
 
 - (void)multipartPost: (NSDictionary *)parts toURL: (NSString *)url  {
