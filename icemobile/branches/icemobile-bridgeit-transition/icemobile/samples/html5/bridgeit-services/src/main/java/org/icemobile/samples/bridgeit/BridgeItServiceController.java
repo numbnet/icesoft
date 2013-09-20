@@ -16,8 +16,13 @@
 package org.icemobile.samples.bridgeit;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.net.URL;
+import java.net.URLConnection;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,28 +30,27 @@ import org.icemobile.application.Resource;
 import org.icemobile.spring.annotation.ICEmobileResource;
 import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.ui.Model;
+import org.springframework.web.context.WebApplicationContext;
 
 
 @Controller
-@SessionAttributes({"photos","videos","recordings", "arPhoto", "geoSpy"})
+@SessionAttributes({"photos","videos","recordings", "arPhoto", "geoMarkers"})
 @ICEmobileResourceStore(bean="basicResourceStore")
 public class BridgeItServiceController {
 
-    //private List<RealityMessage> arMessages = new ArrayList<RealityMessage>();
-    private ArrayList markers = new ArrayList();
-    {
-        //sample data for verification on startup
-        markers.add(new String[]{
-                "+51.07","-114.09","+1000"});
-    }
+    @Autowired
+    private WebApplicationContext context;
 
+    //private List<RealityMessage> arMessages = new ArrayList<RealityMessage>();
     
     @ModelAttribute("photos")
     public List<String> createPhotoList() {
@@ -68,9 +72,14 @@ public class BridgeItServiceController {
         return new String();
     }
     
-    @ModelAttribute("geoSpy")
-    public List<String> createGeoSpyTrack() {
-        return new ArrayList<String>();
+    @ModelAttribute("geoMarkers")
+    public List<Double[]> createGeoSpyTrack() {
+        ArrayList<Double[]> markers = new ArrayList();
+
+        markers.add(new Double[]{
+                +51.07,-114.09,+1000.1});
+
+        return markers;
     }
     
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
@@ -134,16 +143,7 @@ public class BridgeItServiceController {
     public void postAugmentedReality(HttpServletRequest request) throws IOException {
         System.out.println("postAugmentedReality()");
     }
-    
-    @RequestMapping(value = "/geospy", method=RequestMethod.POST, produces="application/json")
-    public @ResponseBody List<String> postGeoSpy(HttpServletRequest request,
-        String tracker,
-        @ModelAttribute("geoSpy") List<String> track) throws IOException {
-        System.out.println(tracker);
         
-        return track;
-    }
-    
     @RequestMapping(value="/photo-list", method=RequestMethod.GET, produces="application/json")
     public @ResponseBody List<String> getPhotoList(
             @RequestParam(value="since") long since,
@@ -180,18 +180,64 @@ public class BridgeItServiceController {
         return videos;
     }
     
+    @RequestMapping(value = "/geospy", method=RequestMethod.POST,
+            consumes="application/json")
+    public @ResponseBody String postGeoSpy(HttpServletRequest request,
+        @RequestBody Map geoFeature,
+        @ModelAttribute("geoMarkers") List<Double[]> markers) throws IOException {
+        System.out.println("postGeoSpy in your session");
+        Map geometry = (Map) geoFeature.get("geometry");
+        List<Double> coordinates = (List<Double>) geometry.get("coordinates");
+        System.out.println("longitude " + coordinates.get(0));
+        System.out.println("latitude " + coordinates.get(1));
+        System.out.println("altitude " + coordinates.get(2));
+        System.out.println("properties " + geoFeature.get("properties"));
+
+        markers.add(new Double[]{
+            coordinates.get(0),
+            coordinates.get(1),
+            coordinates.get(2)
+        });
+
+        //should be encapsulated in an ICEpush service API
+        String pushServiceURL = "http://labs.icesoft.com/push";
+        String pushServiceConfig = context.getServletContext()
+                .getInitParameter("ice.push.configuration.contextPath");
+        if (null != pushServiceConfig)  {
+            pushServiceURL = pushServiceConfig;
+        }
+        URLConnection pushServiceConnection =
+                new URL(pushServiceURL + "/notify.icepush")
+                .openConnection();
+        pushServiceConnection.setDoOutput(true);
+        OutputStream commandStream = pushServiceConnection.getOutputStream();
+        commandStream.write(
+                "ice.push.browser=deadbeef&group=geospy".getBytes());
+        commandStream.flush();
+        commandStream.close();
+
+        //wait for but discard server response
+        InputStream result = pushServiceConnection.getInputStream();
+        byte[] buf = new byte[100];
+        while (result.read(buf) > -1) {
+        }
+        result.close();
+
+        return "Thanks!";
+    }
+
     @RequestMapping(value = "/geospymarkers", method = RequestMethod.GET)
     public @ResponseBody GeoMarkers geospyMarkers(
             HttpServletRequest request,
-            Model model)  {
+            @ModelAttribute("geoMarkers") List<Double[]> markers)  {
 
         GeoMarkers geoMarkers = new GeoMarkers();
-        geoMarkers.markers = this.markers;
+        geoMarkers.markers = markers;
         return geoMarkers;
     }
     
     class GeoMarkers {
-        public ArrayList markers;
+        public List<Double[]> markers;
     }
 
 }

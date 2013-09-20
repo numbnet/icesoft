@@ -27,27 +27,11 @@
         </a>
         &copy; 2013 ICEsoft Technologies
     </div>
-    <script type="text/javascript" src="http://labs.icesoft.com/push/code.icepush"></script>
     <script type="text/javascript">
 
     function handleNotification(event)  {
         alert(event);
     }
-
-    //this can be simplified now that ICEpush configuration
-    //is improved
-    ice.push.configuration.contextPath =
-            "http://labs.icesoft.com/push/";
-    ice.push.configuration.blockingConnectionURI =
-            "http://labs.icesoft.com/push/listen.icepush";
-    ice.push.configuration.createPushIdURI =
-            "http://labs.icesoft.com/push/create-push-id.icepush";
-    ice.push.configuration.notifyURI =
-            "http://labs.icesoft.com/push/notify.icepush";
-    ice.push.configuration.addGroupMemberURI =
-            "http://labs.icesoft.com/push/add-group-member.icepush";
-    ice.push.configuration.removeGroupMemberURI =
-            "http://labs.icesoft.com/push/remove-group-member.icepush";
 
     //change to a uniquely generated pushID once initial testing is complete
     var pagePushId = ice.push.createPushId();

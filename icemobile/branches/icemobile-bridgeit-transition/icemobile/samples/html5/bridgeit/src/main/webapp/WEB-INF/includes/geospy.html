@@ -1,4 +1,4 @@
-<div id="geospy" title="Locate It" class="panel" onfocus="setTimeout(initSpyMap,100);">
+<div id="geospy" title="Locate It" class="panel" onfocus="geoSpyVisible();">
     <h2>GeoSpy Location Tracking</h2>
     <fieldset>
         <div class="row"><p class="normalText">Continual geolocation tracking with a simple line of JavaScript...</p></div>
@@ -14,9 +14,6 @@
         onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/geospy'});">Start Tracking</a>
         
     <div id="spyMapCanvas" style="height:200px"></div>
-
-    <div id="spyMapOverlay" >
-    </div>
     
     <div class="footer">
         <a href="#">
@@ -27,33 +24,46 @@
     <script type="text/javascript">
     window.geoSpying = false;
     
+    var geospyPushId = ice.push.createPushId();
+    ice.push.addGroupMember("geospy", geospyPushId);
+    ice.push.register([geospyPushId], function(pushIds) {
+        console.log("geospy Push received");
+        updateMarkers();
+    });
+
     function handleSpy()  {
     }
-    var map;
+    function geoSpyVisible()  {
+        initSpyMap();
+        setTimeout( function(){
+            google.maps.event.trigger(geoSpyMap, 'resize')
+            updateMarkers();
+        },1000);
+    }
+    var geoSpyMap;
     function initSpyMap() {
         if( !window.geoSpying ){
             window.geoSpying = true;
             var mapOptions = {
+                center: new google.maps.LatLng(-34.397, 150.644),
                 maxZoom: 16,
+                zoom: 8,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            map = new google.maps.Map(document
+            geoSpyMap = new google.maps.Map(document
                     .getElementById('spyMapCanvas'), mapOptions);
-
-            var overlay = document.getElementById('spyMapOverlay');
-            map.controls[google.maps.ControlPosition.RIGHT_TOP]
-                    .push(overlay);
             
         }
     }
+
     function updateMarkers()  {
-        ajaxGet(window.serviceHub + '/geospymarkers'), processMarkers);
+        ajaxGet(window.serviceHub + '/geospymarkers', processMarkers);
     }
+
     function processMarkers(data)  {
-        if( data ){
-            var markerData = data.markers;
+        if (data){
+            var markerData = JSON.parse(data).markers;
             var len = markerData.length;
-            var markers = new Array();
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < len; i++) {
                 var location = new google.maps.LatLng(
@@ -61,10 +71,10 @@
                 bounds.extend(location);
                 new google.maps.Marker({
                     position: location,
-                    map: map
+                    map: geoSpyMap
                 });
             }
-            map.fitBounds(bounds);
+            geoSpyMap.fitBounds(bounds);
             
         }
         else{
