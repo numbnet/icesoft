@@ -71,13 +71,19 @@ public class BridgeItServiceController {
     public String createARPhoto() {
         return new String();
     }
-    
+
+    ArrayList<Double[]> markers = new ArrayList();
+    {
+        markers.add(new Double[]{
+                -114.09,+51.07,+1000.1});
+    }
+
     @ModelAttribute("geoMarkers")
     public List<Double[]> createGeoSpyTrack() {
-        ArrayList<Double[]> markers = new ArrayList();
-
-        markers.add(new Double[]{
-                +51.07,-114.09,+1000.1});
+//        ArrayList<Double[]> markers = new ArrayList();
+//
+//        markers.add(new Double[]{
+//                +51.07,-114.09,+1000.1});
 
         return markers;
     }
