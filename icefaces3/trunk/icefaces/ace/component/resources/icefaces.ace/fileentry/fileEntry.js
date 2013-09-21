@@ -77,6 +77,7 @@ ice.ace.fileentry = {
             // Hide the current input and add another
             var newElem = elem.cloneNode(true);
             newElem.id = elem.id + "_1";
+			newElem.value = '';
             elem.parentNode.appendChild(newElem);
             elem.style.cssText = "display:none;";
         }
@@ -477,9 +478,12 @@ ice.ace.fileentry = {
                 var fileInput = fileEntryInputs[fileEntryInputsIndex];
                 if (fileInput) {
                     fileInput.innerHTML = fileInput.innerHTML;
+					fileInput.value = '';
                     if (fileEntryInputsIndex > 0) {
                         fileInput.parentNode.removeChild(fileInput);
-                    }
+                    } else {
+						fileInput.style.cssText = '';
+					}
                 }
             }
         }
