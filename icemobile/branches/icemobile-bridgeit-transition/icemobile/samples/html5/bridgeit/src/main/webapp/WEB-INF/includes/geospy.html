@@ -36,7 +36,7 @@
     function geoSpyVisible()  {
         initSpyMap();
         setTimeout( function(){
-            google.maps.event.trigger(geoSpyMap, 'resize')
+            google.maps.event.trigger(geoSpyMap, 'resize');
             updateMarkers();
         },1000);
     }
@@ -66,8 +66,10 @@
             var len = markerData.length;
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < len; i++) {
+                //google maps follows english usage LatLang
+                //rather than standard x,y coordinate longitude,latitude
                 var location = new google.maps.LatLng(
-                        markerData[i][0], markerData[i][1]);
+                        markerData[i][1], markerData[i][0]);
                 bounds.extend(location);
                 new google.maps.Marker({
                     position: location,
