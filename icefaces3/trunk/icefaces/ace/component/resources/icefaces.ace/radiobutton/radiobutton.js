@@ -36,8 +36,7 @@ ice.ace.radiobutton = function(clientId, options) {
     // References
     this.button = ice.ace.jq(this.buttonSelector);
     this.icon = ice.ace.jq(this.iconSelector);
-    var self = this,
-        event = ice.ace.util.getEvent();
+    var self = this;
 
     // Event Binding
     ice.ace.jq(this.jqId)
@@ -52,13 +51,6 @@ ice.ace.radiobutton = function(clientId, options) {
 
     if (options.ariaEnabled)
         ice.ace.jq(this.jqId).on("keypress", function() { self.onAriaKeypress(); });
-
-    // lazy init occuring via kb focus, set focus style since
-    // our focus event won't be set up yet
-    if (document.activeElement == this.button[0])
-        this.addStateCSSClasses('hover');
-    else if (event.type == "mouseover")
-        this.addStateCSSClasses('hover');
 		
 	if (this.isChecked()) {
 		this.addStateCSSClasses('checked');
