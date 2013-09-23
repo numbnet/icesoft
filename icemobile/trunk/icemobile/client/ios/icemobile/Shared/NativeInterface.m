@@ -34,6 +34,7 @@
 @synthesize activeDOMElementId;
 @synthesize geospyName;
 @synthesize geospyURL;
+@synthesize geospyProperties;
 @synthesize maxwidth;
 @synthesize maxheight;
 @synthesize soundFilePath;
@@ -42,6 +43,7 @@
 @synthesize recording;
 @synthesize uploading;
 @synthesize monitoringLocation;
+@synthesize showConnectionFailure;
 @synthesize receivedData;
 @synthesize qrScanner;
 @synthesize currentPicker;
@@ -121,7 +123,9 @@ static char base64EncodingTable[64] = {
                     body:[params objectForKey:@"body"]];
     } else if ([@"geospy" isEqualToString:commandName])  {
         [self geospy:[params objectForKey:@"id"]
-                withStrategy:[params objectForKey:@"strategy"]];
+                withStrategy:[params objectForKey:@"strategy"]
+                withDuration:[params objectForKey:@"duration"]
+                withParams:params];
     }
 
     return YES;
@@ -763,10 +767,7 @@ NSLog(@"Found record %@", result);
 
 - (id) geoJSONfromLocation:(CLLocation*)location  {
     
-    NSDictionary *geoJSONProperties =
-    [[NSDictionary alloc] initWithObjectsAndKeys:
-        @"this", @"that",
-        nil];
+    NSDictionary *geoJSONProperties = self.geospyProperties;
     
     NSArray *coords = [[NSArray alloc] initWithObjects:
            [NSNumber numberWithDouble: location.coordinate.longitude ],
@@ -790,12 +791,23 @@ NSLog(@"Found record %@", result);
     return geoJSONFeature;
 }
 
-- (BOOL)geospy:(NSString*) geoId withStrategy:(NSString*) strategy  {
+- (BOOL)geospy:(NSString*) geoId withStrategy:(NSString*) strategy 
+        withDuration:(NSString*) duration  withParams:(NSDictionary*) params {
     self.geospyName = geoId;
     self.geospyURL = self.controller.currentURL;
     if (nil == self.locationManager)  {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
+    }
+NSLog(@"geoSpy requested duration  %@", duration);
+    self.geospyProperties = [[NSMutableDictionary alloc] init];
+    for (NSString *name in params)  {
+        if ([name hasPrefix:@"_"])  {
+NSLog(@"geoSpy will pass property  %@ = %@", name, [params objectForKey:name]);
+            [self.geospyProperties 
+                    setValue:[params objectForKey:name] 
+                    forKey:[name substringFromIndex:1]];
+        }
     }
 
     if ([@"continuous" isEqualToString:strategy]) {
@@ -822,6 +834,10 @@ NSLog(@"Found record %@", result);
         NSString *geoResult = [self geoJSONfromLocation:location];
         NSLog(@"initial location  %@", geoResult);
     }
+
+    //geospy runs in the background so is now complete even prior to upload
+    [self.controller completeSmallPost:@"GeoSpy" 
+            forComponent:@"!r" withName:@"!r"];
 
     //don't immediately return to the browser if the user has not confirmed
     //geolocation permission
@@ -850,6 +866,12 @@ NSLog(@"Found record %@", result);
 
     [self jsonPost:geoResult toURL:self.geospyURL];
 
+}
+
+- (void)locationManager:(CLLocationManager *)manager 
+        didChangeAuthorizationStatus:(CLAuthorizationStatus)status  {
+
+    [self.controller returnToBrowser];
 }
 
 - (void)startMotionManager {
@@ -1082,14 +1104,25 @@ NSLog(@"Found record %@", result);
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error  {
     self.uploading = NO;
     NSLog(@"didFailWithError %@", error);
+    if (!self.showConnectionFailure)  {
+        return;
+    }
     UIAlertView *alert = [[UIAlertView alloc] 
-            initWithTitle:@"Connection Failure" 
-            message:error.localizedDescription
-            delegate:nil cancelButtonTitle:@"OK" 
+            initWithTitle:@"Connection Failure "
+            message:[error.localizedDescription 
+                    stringByAppendingString:
+                            [connection.currentRequest.URL absoluteString]]
+            delegate:self cancelButtonTitle:@"OK" 
             otherButtonTitles:nil];
-
+    //suppress additional failure alerts until acknowledged
+    self.showConnectionFailure = NO;
     [alert show];
     [alert release];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    //connection failure has been acknowledged
+    self.showConnectionFailure = YES;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response  {
@@ -1102,6 +1135,9 @@ NSLog(@"Found record %@", result);
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite  {
     LogDebug(@"didSendBodyData %d bytes of %d",totalBytesWritten, totalBytesExpectedToWrite);
+    if ([self isBackgroundUpload:connection])  {
+        return;
+    }
     NSInteger percentProgress = (totalBytesWritten * 100) / totalBytesExpectedToWrite;
     [controller setProgressLabel:@"Upload Progress"];
     [controller setProgress:percentProgress];
@@ -1110,18 +1146,29 @@ NSLog(@"Found record %@", result);
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection  {
     NSLog(@"connectionDidFinishLoading %d bytes of data",[self.receivedData length]);
 
-    NSString *responseString = [[NSString alloc] initWithData:self.receivedData
-            encoding:NSUTF8StringEncoding];
+    if (![self isBackgroundUpload:connection])  {
+        //non-background URLs are handled by the controller
+        NSString *responseString = [[NSString alloc] 
+                initWithData:self.receivedData encoding:NSUTF8StringEncoding];
 
-    [controller setProgressLabel:@"Upload Progress"];
-    [controller setProgress:100];
-    [controller handleResponse:responseString];
-    [responseString release];
+        [controller setProgressLabel:@"Upload Progress"];
+        [controller setProgress:100];
+        [controller handleResponse:responseString];
+        [responseString release];
+    }
 
     // release the connection, and the data object
     [connection release];
     [self.receivedData release];
     self.uploading = NO;
+}
+
+- (BOOL)isBackgroundUpload:(NSURLConnection *)connection {
+    if ([self.geospyURL 
+        isEqualToString:[connection.originalRequest.URL absoluteString]])  {
+        return YES;
+    }
+    return NO;
 }
 
 - (void)applicationWillResignActive {

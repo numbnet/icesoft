@@ -31,7 +31,7 @@
         UINavigationControllerDelegate,
         ABPeoplePickerNavigationControllerDelegate,
         MFMessageComposeViewControllerDelegate,
-        CLLocationManagerDelegate> {
+        CLLocationManagerDelegate, UIAlertViewDelegate> {
 
 	UIViewController<NativeInterfaceViewController> *controller;
     UIDocumentInteractionController *documentController;
@@ -39,6 +39,7 @@
     NSString *activeDOMElementId;
     NSString *geospyName;
     NSString *geospyURL;
+    NSDictionary *geospyProperties;
     NSString *maxwidth;
     NSString *maxheight;
     NSString *soundFilePath;
@@ -46,6 +47,7 @@
     BOOL recording;
     BOOL uploading;
     BOOL monitoringLocation;
+    BOOL showConnectionFailure;
     NSString *customAlertText;
     NSMutableData *receivedData;
     QRScanner *qrScanner;
@@ -67,6 +69,7 @@
 @property (retain) NSString *activeDOMElementId;
 @property (retain) NSString *geospyName;
 @property (retain) NSString *geospyURL;
+@property (retain) NSDictionary *geospyProperties;
 @property (retain) NSString *maxwidth;
 @property (retain) NSString *maxheight;
 @property (retain) NSString *soundFilePath;
@@ -74,6 +77,7 @@
 @property (nonatomic, assign) BOOL recording;
 @property (atomic, assign) BOOL uploading;
 @property (atomic, assign) BOOL monitoringLocation;
+@property (atomic, assign) BOOL showConnectionFailure;
 @property (retain) NSString *customAlertText;
 @property (retain) NSMutableData *receivedData;
 @property (retain) QRScanner *qrScanner;
