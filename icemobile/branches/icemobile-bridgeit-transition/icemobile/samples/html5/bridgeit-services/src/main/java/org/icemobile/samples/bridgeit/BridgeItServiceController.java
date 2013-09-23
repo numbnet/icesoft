@@ -75,7 +75,7 @@ public class BridgeItServiceController {
     ArrayList<Double[]> markers = new ArrayList();
     {
         markers.add(new Double[]{
-                -114.09,+51.07,+1000.1});
+                -114.09,+51.07,+1000.1,16737792.0});  //0xFF6600 orange
     }
 
     @ModelAttribute("geoMarkers")
@@ -199,10 +199,24 @@ public class BridgeItServiceController {
         System.out.println("altitude " + coordinates.get(2));
         System.out.println("properties " + geoFeature.get("properties"));
 
+        String jguid = "undefined";
+        try {
+            jguid = String.valueOf(
+                    ((Map)geoFeature.get("properties")).get("jguid") );
+        } catch (Throwable t)  {
+            System.out.println(
+                "unable to extract jguid from " + geoFeature.get("properties"));
+            t.printStackTrace();
+        }
+        System.out.println("jguid " + jguid);
+
+        Double colorHash = new Double(jguid.hashCode() & 0xFFFFFF);
+
         markers.add(new Double[]{
             coordinates.get(0),
             coordinates.get(1),
-            coordinates.get(2)
+            coordinates.get(2),
+            colorHash
         });
 
         //should be encapsulated in an ICEpush service API
