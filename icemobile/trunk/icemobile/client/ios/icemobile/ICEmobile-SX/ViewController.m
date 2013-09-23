@@ -238,6 +238,12 @@ NSLog(@"hideControls");
     uploadLabel.text = labelText;
 }
 
+- (void) returnToBrowser  {
+    if (!self.launchedFromApp)  {
+        [self reloadCurrentURL];
+    }
+}
+
 - (void) handleResponse:(NSString *)responseString  {
 NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     self.isResponding = YES;

@@ -27,6 +27,7 @@
 - (NSString *) getFormData:(NSString *)formID;
 - (void) play:(NSString *)audioID;
 - (void) setThumbnail: (UIImage*)image at: (NSString *)thumbID;
+- (void) returnToBrowser;
 - (void) handleResponse:(NSString *)responseString;
 - (void) setProgress:(NSInteger)percent;
 - (void) setProgressLabel:(NSString*)labelText;
