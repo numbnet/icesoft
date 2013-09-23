@@ -25,6 +25,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.icemobile.application.Resource;
 import org.icemobile.spring.annotation.ICEmobileResource;
@@ -189,7 +190,7 @@ public class BridgeItServiceController {
     @RequestMapping(value = "/geospy", method=RequestMethod.POST,
             consumes="application/json")
     public @ResponseBody String postGeoSpy(HttpServletRequest request,
-        @RequestBody Map geoFeature,
+        @RequestBody Map geoFeature, HttpSession session,
         @ModelAttribute("geoMarkers") List<Double[]> markers) throws IOException {
         System.out.println("postGeoSpy in your session");
         Map geometry = (Map) geoFeature.get("geometry");
@@ -248,14 +249,14 @@ public class BridgeItServiceController {
 
     @RequestMapping(value = "/geospymarkers", method = RequestMethod.GET)
     public @ResponseBody GeoMarkers geospyMarkers(
-            HttpServletRequest request,
+            HttpServletRequest request, HttpSession session, 
             @ModelAttribute("geoMarkers") List<Double[]> markers)  {
 
         GeoMarkers geoMarkers = new GeoMarkers();
         geoMarkers.markers = markers;
         return geoMarkers;
     }
-    
+
     class GeoMarkers {
         public List<Double[]> markers;
     }
