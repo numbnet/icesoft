@@ -120,7 +120,7 @@
 
 	<h:commandButton id="refresh" value="Refresh Status" rendered="#{!dataTableSelector.instantUpdate}"/>
 	<br />
-
+	<h:panelGroup id="status">
        <h:panelGroup layout="block" style="display:inline-block; vertical-align: top; width:50%;">
            <h:outputText value="Selected Rows:"/><br/>
            <ui:repeat value="#{dataTableSelector.multiRow}" var="selCar" varStatus="rowRepeat">
@@ -140,7 +140,7 @@
                <br/>
            </ui:repeat>
        </h:panelGroup>
-
+	</h:panelGroup>
         </h:form>
     </ui:define>
 </ui:composition>
