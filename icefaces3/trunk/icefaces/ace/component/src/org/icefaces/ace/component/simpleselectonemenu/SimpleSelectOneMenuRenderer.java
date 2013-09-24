@@ -148,6 +148,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		Object submittedValue = simpleSelectOneMenu.getSubmittedValue();
 		Object value = submittedValue != null ? submittedValue : simpleSelectOneMenu.getValue();
+		String convertedValue = value != null ? getConvertedValueForClient(facesContext, simpleSelectOneMenu, value) : null;
 		String clientId = simpleSelectOneMenu.getClientId(facesContext);
 		boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         simpleSelectOneMenu.populateItemList();
@@ -170,7 +171,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 					}
 				}
 				String selected = "";
-				if (!selectedFound && value != null && value.toString().equals((String) itemValue)) {
+				if (!selectedFound && value != null && convertedValue.equals((String) itemValue)) {
 					selected = " selected=\"selected\"";
 					selectedFound = true;
 				}
