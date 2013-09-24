@@ -466,42 +466,51 @@ public class SxCore extends Activity
         } else if ("register".equals(command))  {
 	    Log.d(LOG_TAG, "dispatched register ");
 	    if (INCLUDE_GCM) {
-		//if GCM registration does not occur in 3 seconds, then return anyways
-		mHandler.postDelayed(new Runnable() {
-			public void run()  {
-			    if (doRegister)  {
-				mBrowserReturn.run();
-			    }
-			}
-		    }, 3000);
 		doRegister = true;
+		if (mCloudNotificationId == null) {
+		    //if GCM registration does not occur in 3 seconds, then return anyways
+		    Log.d(LOG_TAG, "Waiting for cloud credentials");
+		    mHandler.postDelayed(new Runnable() {
+			    public void run()  {
+				if (doRegister)  {
+				    mBrowserReturn.run();
+				}
+			    }
+			}, 3000);
+		} else {
+		    Log.d(LOG_TAG, "Have cloud credentials");
+		    registerSX();
+		}
 	    } else {
 		// No GCM so proceed with registration;
 		// Registration no longer manditory
 		// registerSX();
 	    }
-        }
-	// Unknown command
-	mPOSTUri = null;
-	mBrowserReturn.run();
+        } else {
+	    // Unknown command
+	    mPOSTUri = null;
+	    mBrowserReturn.run();
+	}
     }
 
     private void registerSX() {
 	String postUriString = mPOSTUri.toString();
-	doRegister = false;
-	String encodedForm = "";
 	mCloudNotificationId = getCloudNotificationId();
-	if (null != mCloudNotificationId)  {
-	    encodedForm = "hidden-iceCloudPushId=" +
-		URLEncoder.encode(mCloudNotificationId);
-	}
-	if (mPOSTUri != null) {
-	    Log.d(LOG_TAG, "POST to register will send " + encodedForm);
-	    utilInterface.setUrl(postUriString);
-	    utilInterface.submitForm("", encodedForm, mBrowserReturn);
-	    Log.d(LOG_TAG, "POST to register URL with jsessionid " + mCurrentjsessionid);
-	} else {
-	    mBrowserReturn.run();
+	if (doRegister) {
+	    String encodedForm = "";
+	    doRegister = false;
+	    if (mPOSTUri != null) {
+		if (null != mCloudNotificationId)  {
+		    encodedForm = "hidden-iceCloudPushId=" +
+			URLEncoder.encode(mCloudNotificationId);
+		}
+		Log.d(LOG_TAG, "POST to register will send " + encodedForm);
+		utilInterface.setUrl(postUriString);
+		utilInterface.submitForm("", encodedForm, mBrowserReturn);
+		Log.d(LOG_TAG, "POST to register URL with jsessionid " + mCurrentjsessionid);
+	    } else {
+		mBrowserReturn.run();
+	    }
 	}
     }
 
