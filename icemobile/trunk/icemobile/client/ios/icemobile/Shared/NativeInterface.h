@@ -40,6 +40,7 @@
     NSString *geospyName;
     NSString *geospyURL;
     NSDictionary *geospyProperties;
+    NSDate *geospyStop;
     NSString *maxwidth;
     NSString *maxheight;
     NSString *soundFilePath;
@@ -70,6 +71,7 @@
 @property (retain) NSString *geospyName;
 @property (retain) NSString *geospyURL;
 @property (retain) NSDictionary *geospyProperties;
+@property (retain) NSDate *geospyStop;
 @property (retain) NSString *maxwidth;
 @property (retain) NSString *maxheight;
 @property (retain) NSString *soundFilePath;
