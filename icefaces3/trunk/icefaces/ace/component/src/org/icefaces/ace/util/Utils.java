@@ -505,4 +505,37 @@ public class Utils {
     public static DateFormat getHttpDateFormat(){
         return new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
     }
+	
+	/**
+     * used by DateSpinner and timeSpinner to detect which type of events to use
+     * mobile devices get touch events Note that Blackberry and android pad are
+     * still using generic events
+     * 
+     * @param context
+     * @return true if mobile device
+     */
+	@Deprecated
+    public static boolean isTouchEventEnabled(FacesContext context) {
+        ClientDescriptor client = getClientDescriptor();
+        // commenting out Blackberry at this time as support of touch events is
+        // problematic
+        // if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry()
+        if (client.isAndroidOS() && client.isTabletBrowser())
+            return false;
+        if (client.isIOS() || client.isAndroidOS() ) { //assuming android phone
+            return true;
+        }
+        return false;
+    }
+	
+    public static HttpServletRequest getRequest(FacesContext facesContext){
+        return (HttpServletRequest)facesContext.getExternalContext().getRequest();
+    }
+        
+    public static ClientDescriptor getClientDescriptor(){
+        HttpServletRequest request = getRequest(FacesContext
+                .getCurrentInstance());
+        ClientDescriptor client = ClientDescriptor.getInstance(request);
+        return client;
+    }
 }

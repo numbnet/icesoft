@@ -467,4 +467,53 @@ public class CoreRenderer extends Renderer {
     protected boolean isScriptLoaded(FacesContext facesContext, String JS_NAME) {
         return InlineScriptEventListener.isScriptLoaded(facesContext, JS_NAME);
     }
+	
+    /**
+     * this method created for mobi:inputText
+     * @param context
+     * @param component
+     * @param inEvent
+     * @return
+     */
+    protected String buildAjaxRequest(FacesContext context, ClientBehaviorHolder component, String inEvent) {
+        Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
+        if (behaviorEvents.isEmpty()){
+            return null;
+        }
+
+        String clientId = ((UIComponent) component).getClientId(context);
+
+        StringBuilder req = new StringBuilder();
+
+        List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+
+        for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
+            String event = eventIterator.next();
+       //     logger.info("eventIterator returning="+event);
+            String domEvent = event;
+            if (null != inEvent) {
+                domEvent = inEvent;
+   //             logger.info("passed in event="+event);
+            }
+            domEvent = getDomEvent(event);
+      //      logger.info("getDomEvent returns event="+domEvent);
+            if (behaviorEvents.get(event)==null){
+                //logger.warning(" NO behavior for event="+event+" component="+((UIComponent) component).getClientId());
+                return null;
+            }  //don't do anything with domEvent yet as have to use the one the behavior is registered with.
+       //     logger.info("before interation event="+event);
+            for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
+                ClientBehavior behavior = behaviorIter.next();
+                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
+                String script = behavior.getScript(cbc);    //could be null if disabled
+                if(script != null) {
+                    req.append(script);
+                }
+            }
+            if(eventIterator.hasNext()) {
+                req.append(",");
+            }
+        }
+        return req.toString();
+    }
 }
