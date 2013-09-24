@@ -35,6 +35,7 @@
 @synthesize geospyName;
 @synthesize geospyURL;
 @synthesize geospyProperties;
+@synthesize geospyStop;
 @synthesize maxwidth;
 @synthesize maxheight;
 @synthesize soundFilePath;
@@ -799,11 +800,21 @@ NSLog(@"Found record %@", result);
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
     }
-NSLog(@"geoSpy requested duration  %@", duration);
+    NSLog(@"geoSpy requested duration %@ hours", duration);
+    if (nil != duration)  {
+        NSTimeInterval seconds = ([duration doubleValue] * (60 * 60));
+        self.geospyStop = [[NSDate date] initWithTimeIntervalSinceNow:seconds];
+
+    } else {
+        self.geospyStop = [[NSDate date] 
+                initWithTimeIntervalSinceNow: (8 * 60 * 60)];  //one shift
+    }
+    NSLog(@"geoSpy will stop  %@ vs now %@", self.geospyStop, [NSDate date]);
     self.geospyProperties = [[NSMutableDictionary alloc] init];
     for (NSString *name in params)  {
         if ([name hasPrefix:@"_"])  {
-NSLog(@"geoSpy will pass property  %@ = %@", name, [params objectForKey:name]);
+            NSLog(@"geoSpy will pass property  %@ = %@", 
+                    name, [params objectForKey:name]);
             [self.geospyProperties 
                     setValue:[params objectForKey:name] 
                     forKey:[name substringFromIndex:1]];
@@ -858,6 +869,13 @@ NSLog(@"geoSpy will pass property  %@ = %@", name, [params objectForKey:name]);
     NSObject *geoResult = [self geoJSONfromLocation:location];
     NSLog(@"geospy location changed %@\n", geoResult);
 
+    if ([[NSDate date] compare: geospyStop] == NSOrderedDescending)  {
+        NSLog(@"geospy time elapsed, stopping");
+        [self.locationManager stopUpdatingLocation];
+        [self.locationManager stopMonitoringSignificantLocationChanges];
+        self.monitoringLocation = NO;
+        return;
+    }
     if (self.uploading)  {
         NSLog(@"geospy already uploading\n");
         return;
