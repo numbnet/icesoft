@@ -19,6 +19,7 @@
 #import "AudioController.h"
 #import "ARViewController.h"
 #import "PlaceLabel.h"
+#import "AVScanViewController.h"
 #import "MobileCoreServices/MobileCoreServices.h"
 #import "MediaPlayer/MediaPlayer.h"
 #import "Logging.h"
@@ -439,10 +440,23 @@ NSLog(@"open %@ -- %@", openId, url);
     return imagePath;
 }
 
-
 - (BOOL)scan: (NSString*)scanId  {
     self.activeDOMElementId = scanId;
-    LogTrace(@"NativeInterface scan ");
+    NSLog(@"NativeInterface iOS 7 scan ");
+    AVScanViewController *avScan = [[AVScanViewController alloc] init];
+    avScan.nativeInterface = self;
+
+    [controller presentModalViewController:avScan animated:YES];
+
+//    [scanController release];
+
+    return YES;
+}
+
+
+- (BOOL)scanZxing: (NSString*)scanId  {
+    self.activeDOMElementId = scanId;
+    LogTrace(@"NativeInterface ZXing scan ");
     UIViewController *scanController = [qrScanner scanController];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
         if (nil == self.scanPopover)  {
