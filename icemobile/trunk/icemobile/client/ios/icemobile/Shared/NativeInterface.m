@@ -478,6 +478,9 @@ NSLog(@"open %@ -- %@", openId, url);
 
 - (void)scanResult: (NSString*)text  {
 NSLog(@"scanResult %@", text);
+    if (nil == text)  {
+        return;
+    }
     NSString *scanName = self.activeDOMElementId;
     [controller completeSmallPost:text forComponent:scanName
             withName:scanName];

@@ -39,6 +39,10 @@
     return self;
 }
 
+- (IBAction)doCancel:(id)sender {
+    [self completeScan:nil];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -74,7 +78,7 @@
 
 	AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
 	[previewLayer setFrame:self.previewView.bounds];
-	[previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+//	[previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
 //	if ([[previewLayer connection] isVideoOrientationSupported]) {
 //		[[previewLayer connection] setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
 //	}
@@ -102,6 +106,10 @@
 //NSLog(@"captureSessionNotification %@", notification);
 //}
 //
+
+- (BOOL)shouldAutorotate  {
+    return NO;
+}
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
