@@ -1,0 +1,86 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+   <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
+</h:head>
+
+<h:body>
+ 
+    <h3>html5 input types should bring up proper device keyboard</h3>
+
+    <h:form id="inputForm" >
+
+      <p>
+       <h5>mobi input type is number no converter</h5>
+         <h:outputText value="A. number"/>
+         <mobi:inputText id="numberId" value="#{input.numberInput}" type="number" placeholder="9999"
+                       singleSubmit="true"  min="0" max="100" step="5" title="number field"/>
+                         
+       </p>
+       <p>
+       <h5>mobi input type is number with converter</h5>
+         <h:outputText value="B. number"/>
+         <mobi:inputText id="numberIdConv" value="#{input.numberInput2}" type="number" placeholder="9999"
+                       singleSubmit="true"  min="0" max="100" step="5" title="number field">
+                       <f:convertNumber type="number"/>
+         </mobi:inputText>
+                         
+       </p>
+
+       <p>
+          <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
+          <h:outputText value="#{input.eventString}"/>
+          
+       </p>
+       <mobi:commandButton id="defaultOne" value="defaultSStrue" singleSubmit="true" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton  id="defaultTwo" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton id="importantOne" buttonType="important" value="importantSStrue" singleSubmit="true"
+                 actionListener="#{input.importantEvent}"/>
+       <mobi:commandButton id="importantTwo" buttonType="important" value="importantSSFalse"
+                 actionListener="#{input.importantEvent}"/>
+    </h:form>
+    <h3>RESULTS</h3>
+
+    <h5>mumber F</h5>
+    <h:outputText value="#{input.numberInput}"/>
+    <h5>number F2</h5>
+    <h:outputText value="#{input.numberInput2}"/>
+
+	<li><a href="../inputComponents.html">index page</a>
+	</li>
+     <script type="text/javascript">
+        if (window.addEventListener)  {
+             window.addEventListener( "load",
+             function() {
+                 function noop() {};
+                 ice.setFocus = noop;
+                 ice.sf = noop;
+                 ice.applyFocus = noop;
+                 ice.af = noop;
+             } , false );
+      }
+
+    </script>
+</h:body>
+</html>
