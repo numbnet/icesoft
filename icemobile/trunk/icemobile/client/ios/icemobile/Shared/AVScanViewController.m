@@ -46,6 +46,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     // Do any additional setup after loading the view from its nib.
     
     self.isScanned = NO;
