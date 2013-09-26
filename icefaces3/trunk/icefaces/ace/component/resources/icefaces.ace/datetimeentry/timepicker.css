@@ -16,3 +16,7 @@ display:inline-block;
 zoom: 1;
 *display: inline;
 }
+
+.ui-datepicker-multi .ui-datepicker-group table {
+margin:0 6px;
+}
