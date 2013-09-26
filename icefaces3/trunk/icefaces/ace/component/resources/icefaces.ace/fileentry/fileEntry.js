@@ -61,10 +61,34 @@ ice.ace.fileentry = {
                 }
             } else {
                 ice.ace.fileentry.consoleLog(false, "fileentry.onchange  value: " + elem.value);
+				// alternative approach to support IE7 and IE8
+				tbody = document.createElement("tbody");
                 tr = document.createElement("tr");
-                tr.id = elem.id + "_tr";
-                tr.innerHTML = ("<td>"+elem.value+"</td><td><button type='button' onclick='ice.ace.fileentry.cancelFileSelection(\""+elem.id+"\",[\""+tr.id+"\"]);'>Cancel</button></td>");
-                tableElem.appendChild(tr);
+				var trId = elem.id + "_tr";
+                tr.setAttribute("id", trId);
+				td1 = document.createElement("td");
+				text1 = document.createTextNode(elem.value);
+				td1.appendChild(text1);
+				td2 = document.createElement("td");
+				button = document.createElement("button");
+				button.setAttribute("type", "button");
+				var onclick = function() {
+					ice.ace.fileentry.cancelFileSelection(elem.id,[trId]);
+				};
+				if (button.addEventListener) { 
+					button.addEventListener('click', onclick, false); 
+				} else if (button.attachEvent) { 
+					button.attachEvent('onclick', onclick); 
+				} else {
+					button.onclick = "ice.ace.fileentry.cancelFileSelection('"+elem.id+"',['"+trId+"']);";
+				}
+				text2 = document.createTextNode("Cancel");
+				button.appendChild(text2);
+				td2.appendChild(button);
+				tr.appendChild(td1);
+				tr.appendChild(td2);
+				tbody.appendChild(tr);
+                tableElem.appendChild(tbody);
             }
         }
 
@@ -107,21 +131,23 @@ ice.ace.fileentry = {
     clearMultipleSelectionTableRows : function(id) {
         var tableElem = document.getElementById(id+'_multSelTbl');
         if (tableElem) {
-            tableElem.innerHTML = "";
+			while (tableElem.hasChildNodes()) {
+				tableElem.removeChild(tableElem.lastChild);
+			}
         }
     },
 
     cancelFileSelection : function(inputElemId, trIds) {
         var index, elem;
+        elem = document.getElementById(inputElemId);
+        if (elem) {
+            elem.parentNode.removeChild(elem);
+        }
         for (index = 0; index < trIds.length; index++) {
             elem = document.getElementById(trIds[index]);
             if (elem) {
                 elem.parentNode.removeChild(elem);
             }
-        }
-        elem = document.getElementById(inputElemId);
-        if (elem) {
-            elem.parentNode.removeChild(elem);
         }
     },
 
@@ -477,11 +503,10 @@ ice.ace.fileentry = {
             for (fileEntryInputsIndex = 0; fileEntryInputsIndex < fileEntryInputsLen; fileEntryInputsIndex++) {
                 var fileInput = fileEntryInputs[fileEntryInputsIndex];
                 if (fileInput) {
-                    fileInput.innerHTML = fileInput.innerHTML;
-					fileInput.value = '';
                     if (fileEntryInputsIndex > 0) {
                         fileInput.parentNode.removeChild(fileInput);
                     } else {
+						fileInput.value = '';
 						fileInput.style.cssText = '';
 					}
                 }
