@@ -183,16 +183,16 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         if(state == null){
             return;
         }
-
-        notifyPreDestroyForAll(state.windowScopedMaps.values());
-        notifyPreDestroyForAll(state.disposedWindowScopedMaps);
+        FacesContext context = FacesContext.getCurrentInstance();
+        notifyPreDestroyForAll(state.windowScopedMaps.values(), context);
+        notifyPreDestroyForAll(state.disposedWindowScopedMaps, context);
     }
 
-    private static void notifyPreDestroyForAll(Collection<ScopeMap> scopeMaps) {
+    private static void notifyPreDestroyForAll(Collection<ScopeMap> scopeMaps, FacesContext context) {
         for (final ScopeMap scopeMap : scopeMaps) {
             if (!scopeMap.isPreDestroyInvoked()) {
                 try {
-                    notifyPreDestroy(scopeMap.values());
+                    notifyPreDestroy(scopeMap.values(), context);
                 } finally {
                     scopeMap.preDestroyInvoked();
                 }
@@ -200,11 +200,11 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         }
     }
 
-    private static void notifyPreDestroy(Collection beans) {
+    private static void notifyPreDestroy(Collection beans, FacesContext context) {
         try {
             for (final Object bean : beans) {
                 try {
-                    callAnnotatedMethod(bean, PreDestroy.class);
+                    callAnnotatedMethod(bean, PreDestroy.class, context);
                 } catch (Exception exception) {
                     log.log(Level.FINE,
                             "An exception occurred while trying to invoke @PreDestroy on a window scoped bean: " +
@@ -233,7 +233,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
             long windowScopeExpiration = EnvUtils.getWindowScopeExpiration(context);
             //copy session beans before they're cleared on FacesContext.release()
             final Map session = new HashMap(context.getExternalContext().getSessionMap());
-            timer.schedule(new AllWindowsClosedNotifier(state, session), windowScopeExpiration * 2);
+            timer.schedule(new AllWindowsClosedNotifier(state, session, context), windowScopeExpiration * 2);
         }
 
         disposeViewScopeBeans(context);
@@ -255,7 +255,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
             Object object = viewMap.get(key);
             if (object.getClass().isAnnotationPresent(WindowDisposed.class)) {
                 keys.remove();
-                callAnnotatedMethod(object, PreDestroy.class);
+                callAnnotatedMethod(object, PreDestroy.class, facesContext);
                 if (log.isLoggable(Level.FINE)) {
                     log.log(Level.FINE, "Closing window disposed ViewScoped bean " + key);
                 }
@@ -264,7 +264,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         facesContext.setExceptionHandler(oldHandler);
     }
 
-    private static void callAnnotatedMethod(Object object, Class annotation) {
+    private static void callAnnotatedMethod(Object object, Class annotation, FacesContext context) {
         Class theClass = object.getClass();
         try {
             while (null != theClass) {
@@ -272,10 +272,26 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                 for (Method method : methods) {
                     if (method.isAnnotationPresent(annotation)) {
                         method.setAccessible(true);
-                        method.invoke(object);
+                        if (context != null) {
+                            List<Class<?>> methodParams = Arrays.asList(method.getParameterTypes());
+                            int index = methodParams.indexOf(FacesContext.class);
+                            if( index == -1 ){
+                                method.invoke(object);
+                            }
+                            else{
+                                method.invoke(object, context);
+                            }
+                            if( index > 0 ){
+                                log.log(Level.WARNING, "Failed to invoke" + annotation + " on " + theClass
+                                        + ". If expecting a FacesContext parameter, it must be the first and only parameter");
+                            }
+                        } else {
+                            method.invoke(object, context);
+                        }
                         return;
                     }
                 }
+
                 theClass = theClass.getSuperclass();
             }
         } catch (Exception e) {
@@ -610,10 +626,12 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
     private static class AllWindowsClosedNotifier extends TimerTask {
         private final State state;
         private final Map session;
+        private final FacesContext context;
 
-        public AllWindowsClosedNotifier(State state, Map session) {
+        public AllWindowsClosedNotifier(State state, Map session, FacesContext context) {
             this.state = state;
             this.session = session;
+            this.context = context;
         }
 
         public void run() {
@@ -629,12 +647,12 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                     }
                 }
                 //notify @PreDestroy on window scoped beans
-                notifyPreDestroyForAll(expiredMaps);
+                notifyPreDestroyForAll(expiredMaps, context);
                 //notify @AllWindowsClosed on session scoped beans
                 Iterator objects = session.values().iterator();
                 while (objects.hasNext()) {
                     Object object = objects.next();
-                    callAnnotatedMethod(object, AllWindowsClosed.class);
+                    callAnnotatedMethod(object, AllWindowsClosed.class, context);
                 }
             }
         }
