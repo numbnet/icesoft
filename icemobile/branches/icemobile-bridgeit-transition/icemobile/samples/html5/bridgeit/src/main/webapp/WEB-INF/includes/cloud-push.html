@@ -14,7 +14,7 @@
         onclick="bridgeit.register('_reg');">Enable Cloud Push</a>
 
     <a id="pushBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="notifyLater();">Notify upon exit</a>
+        onclick="delayedPush();">Push in 10 seconds ...</a>
 
     <fieldset>
         <div class="row"></div>
@@ -34,27 +34,26 @@
     }
 
     //change to a uniquely generated pushID once initial testing is complete
-    var pagePushId = ice.push.createPushId();
-    ice.push.addGroupMember("bridgeit", pagePushId);
-    ice.push.register([pagePushId], function(pushIds) {
+    var cloudPushId = ice.push.createPushId();
+    ice.push.addGroupMember("bridgeit", cloudPushId);
+    ice.push.register([cloudPushId], function(pushIds) {
         console.log("notified");
         alert("You have been notified.");
     });
 
-    var notifyReady = false;
-    function notifyLater()  {
-        notifyReady = true;
-    }
+    window.addEventListener("pageShow", function () {
+        ice.push.connection.resumeConnection();
+    }, false);
 
     window.addEventListener("pagehide", function () {
         ice.push.connection.pauseConnection();
-        if (notifyReady)  {
-            notifyReady = false;
-            ice.push.notify( 'bridgeit',
-                {subject:'BridgeIt Cloud Push',
-                detail:'You have been notified.'} );
-        }
     }, false);
+
+    function delayedPush()  {
+        ice.push.notify( 'bridgeit',
+            {subject:'BridgeIt Cloud Push',
+            detail:'You have been notified.'}, {delay:10000} );
+    }
 
     </script>
    
