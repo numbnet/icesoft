@@ -580,7 +580,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     Node optionBodyNode = selectElement.getFirstChild();
 
                     if (optionBodyNode != null) {
-                        String optionBody = optionBodyNode.getNodeValue();
+                        String optionBody =  Matcher.quoteReplacement(optionBodyNode.getNodeValue());
 
                         //Should be constant, but may vary with JSF implementation
                         String SELECTED = "selected=\"true\"";
