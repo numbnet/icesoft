@@ -445,13 +445,13 @@ public class SxCore extends Activity
         } else if ("geospy".equals(command))  {
 	    Intent locate = new Intent(this,LocationService.class);
 	    locate.putExtra("s",mPOSTUri.toString());
-	    String strategy = (String) params.get("strategy");
-	    if (strategy == null || strategy.equals("significant")) {
+	    String param = (String) params.get("strategy");
+	    if (param == null || param.equals("significant")) {
 		locate.putExtra("c","continuous");
 		locate.putExtra("a","low");
 		locate.putExtra("t","60000");
 		locate.putExtra("d","100");
-	    } else if (strategy.equals("continuous")) {
+	    } else if (param.equals("continuous")) {
 		locate.putExtra("c","continuous");
 		locate.putExtra("a","high");
 		locate.putExtra("t","15000");
@@ -459,6 +459,15 @@ public class SxCore extends Activity
 	    } else {
 		locate.putExtra("c","stop");
 	    }
+	    param = (String) params.get("duration");
+	    if (param != null) {
+		locate.putExtra("duration", Float.valueOf(param).floatValue());
+	    }
+	    param = (String) params.get("_jguid");
+	    if (param != null) {
+		locate.putExtra("jguid", param);
+	    }
+
 	    startService(locate);
 	    Log.d(LOG_TAG, "dispatched geospy " + packParams(params));
 	    mPOSTUri = null;

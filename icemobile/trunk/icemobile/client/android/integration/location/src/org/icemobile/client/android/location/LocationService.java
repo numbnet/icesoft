@@ -15,19 +15,19 @@ import android.content.ServiceConnection;
 import android.content.ComponentName;
 import android.util.Log;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.StringEntity;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import android.location.LocationManager;
-//import android.location.LocationProvider;
 import android.location.LocationListener;
 import android.location.Location;
 import android.location.Criteria;
@@ -45,6 +45,10 @@ public class LocationService extends Service implements Runnable {
     private String accuracy;
     private String deltaTime;
     private String deltaDistance;
+    private String jguid;
+    private float duration;
+    private int counter;
+    private DurationHandler mHandler;
     private LocationListener locationListener;
     private String currentProvider;
     private Location locationToSend;
@@ -64,6 +68,8 @@ public class LocationService extends Service implements Runnable {
 
 		public void onProviderDisabled(String provider) {}
 	    };
+	counter=0;
+	mHandler = new DurationHandler();
     }
 
     @Override
@@ -85,6 +91,8 @@ public class LocationService extends Service implements Runnable {
 	accuracy = intent.getExtras().getString("a");
 	deltaTime = intent.getExtras().getString("t");
 	deltaDistance = intent.getExtras().getString("d");
+	duration = intent.getFloatExtra("duration", 0.0f);
+	jguid = intent.getExtras().getString("jguid");
 
 	// Get appropriate location provider;
 	Criteria criteria = new Criteria();
@@ -118,6 +126,12 @@ public class LocationService extends Service implements Runnable {
 	    long dTime = Long.valueOf(deltaTime).longValue();
 	    float dDistance = Float.valueOf(deltaDistance).floatValue();
 	    locationManager.requestLocationUpdates(currentProvider, dTime, dDistance, locationListener);
+	    if (duration > 0) {
+		counter++;
+		duration*=3600000;
+		mHandler.sendEmptyMessageDelayed(counter, (long)duration);
+		Log.d(LT,"Setting timer for duration = " + duration);
+	    }
 	} else if (command.equals("stop")) {
 	    // Already stopped;
 	} else {
@@ -193,6 +207,9 @@ public class LocationService extends Service implements Runnable {
 	if (loc.hasSpeed()) {
 	    properties.put("speed", loc.getSpeed());
 	}
+	if (jguid != null) {
+	    properties.put("jguid", jguid);
+	}
 
 	JSONObject returnVal = new JSONObject();
 	returnVal.put("type", "Feature");
@@ -204,4 +221,16 @@ public class LocationService extends Service implements Runnable {
 	}
 	return null;
     }
+
+    private class DurationHandler extends Handler {
+	public void handleMessage(Message msg) {
+	    Log.d(LT,"Duration expired for " + counter);
+	    if (msg.what == counter) {
+		if (locationListener != null) {
+		    locationManager.removeUpdates(locationListener);
+		    Log.d(LT,"Stopping location spying.");
+		}
+	    }
+	}
+    }		
 }
