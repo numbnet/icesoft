@@ -42,6 +42,7 @@
         },1000);
     }
     var geoSpyMap;
+    var geoSpyMapMarkers = [];
     function initSpyMap() {
         if( !window.geoSpying ){
             window.geoSpying = true;
@@ -58,32 +59,58 @@
     }
 
     function updateMarkers()  {
-        ajaxGet(window.serviceHub + '/geospymarkers', processMarkers);
+        ajaxGet(window.serviceHub + '/geospymarkers/' + jguid, processMarkers);
     }
 
     function processMarkers(data)  {
         if (data){
-            var markerData = JSON.parse(data).markers;
+            var markerData = JSON.parse(data);
             var len = markerData.length;
             var bounds = new google.maps.LatLngBounds();
+            var markersPlaced = false;
             for (var i = 0; i < len; i++) {
                 //google maps follows english usage LatLang
                 //rather than standard x,y coordinate longitude,latitude
                 console.log("Map marker " + markerData[i]);
+                var coordinates = markerData[i].geometry.coordinates;
                 var location = new google.maps.LatLng(
-                        markerData[i][1], markerData[i][0]);
+                        coordinates[1], coordinates[0]);
+                var markerColor = "#" + 
+                        markerData[i].properties.jguid.substring(0,6);
+
+                //check if provided marker is too close to existing marker
+                var existLen = geoSpyMapMarkers.length;
+                var minDistance = 100;
+                for (var j = 0; j < existLen; j++)  {
+                    var distance = google.maps.geometry.spherical
+                            .computeDistanceBetween (location, 
+                            geoSpyMapMarkers[j].position);
+                    if (distance < minDistance)  {
+                        minDistance = distance;
+                    }
+                }
+                if (minDistance < 50)  {
+console.log("too close " + location)
+                    break;
+                }
+console.log("new location, extending bounds " + location)
+
+                markersPlaced = true;
                 bounds.extend(location);
-                new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     position: location,
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        strokeColor: "#" + markerData[i][3].toString(16),
+                        strokeColor: markerColor,
                         scale: 3
                     },
                     map: geoSpyMap
                 });
+                geoSpyMapMarkers.push(marker);
             }
-            geoSpyMap.fitBounds(bounds);
+            if (markersPlaced)  {
+                geoSpyMap.fitBounds(bounds);
+            }
             
         }
         else{

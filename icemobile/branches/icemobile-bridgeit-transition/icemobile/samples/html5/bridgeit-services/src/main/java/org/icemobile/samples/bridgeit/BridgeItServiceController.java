@@ -44,7 +44,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 
 @Controller
-@SessionAttributes({"photos","videos","recordings", "arPhoto", "geoMarkers"})
+@SessionAttributes({"photos","videos","recordings", "arPhoto"})
 @ICEmobileResourceStore(bean="basicResourceStore")
 public class BridgeItServiceController {
 
@@ -71,22 +71,6 @@ public class BridgeItServiceController {
     @ModelAttribute("arPhoto")
     public String createARPhoto() {
         return new String();
-    }
-
-    ArrayList<Double[]> markers = new ArrayList();
-    {
-        markers.add(new Double[]{
-                -114.09,+51.07,+1000.1,16737792.0});  //0xFF6600 orange
-    }
-
-    @ModelAttribute("geoMarkers")
-    public List<Double[]> createGeoSpyTrack() {
-//        ArrayList<Double[]> markers = new ArrayList();
-//
-//        markers.add(new Double[]{
-//                +51.07,-114.09,+1000.1});
-
-        return markers;
     }
     
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
@@ -185,80 +169,6 @@ public class BridgeItServiceController {
             @ModelAttribute("videos") List<String> videos){
 
         return videos;
-    }
-    
-    @RequestMapping(value = "/geospy", method=RequestMethod.POST,
-            consumes="application/json")
-    public @ResponseBody String postGeoSpy(HttpServletRequest request,
-        @RequestBody Map geoFeature, HttpSession session,
-        @ModelAttribute("geoMarkers") List<Double[]> markers) throws IOException {
-        System.out.println("postGeoSpy in your session");
-        Map geometry = (Map) geoFeature.get("geometry");
-        List<Double> coordinates = (List<Double>) geometry.get("coordinates");
-        System.out.println("longitude " + coordinates.get(0));
-        System.out.println("latitude " + coordinates.get(1));
-        System.out.println("altitude " + coordinates.get(2));
-        System.out.println("properties " + geoFeature.get("properties"));
-
-        String jguid = "undefined";
-        try {
-            jguid = String.valueOf(
-                    ((Map)geoFeature.get("properties")).get("jguid") );
-        } catch (Throwable t)  {
-            System.out.println(
-                "unable to extract jguid from " + geoFeature.get("properties"));
-            t.printStackTrace();
-        }
-        System.out.println("jguid " + jguid);
-
-        Double colorHash = new Double(jguid.hashCode() & 0xFFFFFF);
-
-        markers.add(new Double[]{
-            coordinates.get(0),
-            coordinates.get(1),
-            coordinates.get(2),
-            colorHash
-        });
-
-        //should be encapsulated in an ICEpush service API
-        String pushServiceURL = "http://labs.icesoft.com/push";
-        String pushServiceConfig = context.getServletContext()
-                .getInitParameter("ice.push.configuration.contextPath");
-        if (null != pushServiceConfig)  {
-            pushServiceURL = pushServiceConfig;
-        }
-        URLConnection pushServiceConnection =
-                new URL(pushServiceURL + "/notify.icepush")
-                .openConnection();
-        pushServiceConnection.setDoOutput(true);
-        OutputStream commandStream = pushServiceConnection.getOutputStream();
-        commandStream.write(
-                "ice.push.browser=deadbeef&group=geospy".getBytes());
-        commandStream.flush();
-        commandStream.close();
-
-        //wait for but discard server response
-        InputStream result = pushServiceConnection.getInputStream();
-        byte[] buf = new byte[100];
-        while (result.read(buf) > -1) {
-        }
-        result.close();
-
-        return "Thanks!";
-    }
-
-    @RequestMapping(value = "/geospymarkers", method = RequestMethod.GET)
-    public @ResponseBody GeoMarkers geospyMarkers(
-            HttpServletRequest request, HttpSession session, 
-            @ModelAttribute("geoMarkers") List<Double[]> markers)  {
-
-        GeoMarkers geoMarkers = new GeoMarkers();
-        geoMarkers.markers = markers;
-        return geoMarkers;
-    }
-
-    class GeoMarkers {
-        public List<Double[]> markers;
     }
 
 }
