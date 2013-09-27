@@ -14,7 +14,7 @@
     <!--a id="track" type="button" class="whiteButton bridgeItBtn"
         onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/echoput/geospy'+jguid, parameters: {strategy:'significant',duration:1,_jguid:jguid}});">Start Tracking</a-->
     <a id="track" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/echoput/geospy', parameters: {strategy:'continuous',duration:0.02,_jguid:jguid}});">Start Tracking</a>
+        onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/echoput/geospy', parameters: {strategy:'significant',duration:1,_jguid:jguid}});">Start Tracking</a>
 
         
     <div id="spyMapCanvas" style="height:200px"></div>
@@ -70,12 +70,10 @@
         if (data){
             var markerData = JSON.parse(data);
             var len = markerData.length;
-            var bounds = new google.maps.LatLngBounds();
             var markersPlaced = false;
             for (var i = 0; i < len; i++) {
                 //google maps follows english usage LatLang
                 //rather than standard x,y coordinate longitude,latitude
-                console.log("Map marker " + markerData[i]);
                 var coordinates = markerData[i].geometry.coordinates;
                 var location = new google.maps.LatLng(
                         coordinates[1], coordinates[0]);
@@ -94,13 +92,10 @@
                     }
                 }
                 if (minDistance < 5)  {
-console.log("too close " + location)
                     continue;
                 }
-console.log("new location, extending bounds " + location)
 
                 markersPlaced = true;
-                bounds.extend(location);
                 var marker = new google.maps.Marker({
                     position: location,
                     icon: {
@@ -113,6 +108,11 @@ console.log("new location, extending bounds " + location)
                 geoSpyMapMarkers.push(marker);
             }
             if (markersPlaced)  {
+                var bounds = new google.maps.LatLngBounds();
+                var existLen = geoSpyMapMarkers.length;
+                for (var j = 0; j < existLen; j++)  {
+                    bounds.extend(geoSpyMapMarkers[j].position);
+                }
                 geoSpyMap.fitBounds(bounds);
             }
             
