@@ -10,8 +10,11 @@
         </div>
     </fieldset>
     
+    <!--expected final, privacy-preserving variant below-->
+    <!--a id="track" type="button" class="whiteButton bridgeItBtn"
+        onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/echoput/geospy'+jguid, parameters: {strategy:'significant',duration:1,_jguid:jguid}});">Start Tracking</a-->
     <a id="track" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/geospy', parameters: {strategy:'significant',duration:1,_jguid:jguid}});">Start Tracking</a>
+        onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/echoput/geospy', parameters: {strategy:'continuous',duration:0.02,_jguid:jguid}});">Start Tracking</a>
 
         
     <div id="spyMapCanvas" style="height:200px"></div>
@@ -48,7 +51,7 @@
             window.geoSpying = true;
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397, 150.644),
-                maxZoom: 16,
+                maxZoom: 20,
                 zoom: 8,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
@@ -59,7 +62,8 @@
     }
 
     function updateMarkers()  {
-        ajaxGet(window.serviceHub + '/geospymarkers/' + jguid, processMarkers);
+//        ajaxGet(window.serviceHub + '/echofetch/geospy-' + jguid, processMarkers);
+        ajaxGet(window.serviceHub + '/echofetch/geospy', processMarkers);
     }
 
     function processMarkers(data)  {
@@ -89,9 +93,9 @@
                         minDistance = distance;
                     }
                 }
-                if (minDistance < 50)  {
+                if (minDistance < 5)  {
 console.log("too close " + location)
-                    break;
+                    continue;
                 }
 console.log("new location, extending bounds " + location)
 
