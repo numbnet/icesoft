@@ -61,13 +61,22 @@
             var nodes = root.getElementsByTagName('ul');
             var ul = nodes[0];
             var children = ul.getElementsByTagName('li');
-            var liLngth = children.length;
             var containerWidth = root.clientWidth;        
-            var width = Math.floor(containerWidth/liLngth);
-            var percentageWidth = Math.floor(100/liLngth);
-            for (var i = 0; i < liLngth; i++){
-                children[i].style.width = width+"px";
-                children[i].style.maxWidth = percentageWidth+"%";
+            var width = Math.floor(containerWidth/children.length);
+            var remainingPixels = containerWidth - (children.length*width);
+            var percentageWidth = Math.floor(100/children.length);
+            var remainingPercentage = 100 - (children.length*percentageWidth);
+            
+            for (var i = 0; i < children.length; i++){
+                if( i < (children.length -1 )){
+                    children[i].style.width = width+"px";
+                    children[i].style.maxWidth = percentageWidth+"%";
+                }
+                else{
+                    children[i].style.width = (width+remainingPixels)+"px";
+                    children[i].style.maxWidth = (percentageWidth+remainingPercentage)+"%";
+                }
+                
             }
         }
     }
