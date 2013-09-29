@@ -82,8 +82,8 @@ public class ContentPaneMeta extends UIPanelMeta{
                      "This attribute helps assist in sliding panes effects for transition definition. ")
     private boolean menuOrHome;
 
- /*   @Property(defaultValue="false",
-               tlddoc=" not implemented yet, but will eventually allow developers to tag a pane unselectable")
-    private boolean disabled;  */
+    @Property(tlddoc = "The Font Awesome icon to render (Tabs)")
+    private String icon;
+
 
 }

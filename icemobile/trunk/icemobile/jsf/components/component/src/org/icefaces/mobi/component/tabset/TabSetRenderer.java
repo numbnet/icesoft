@@ -172,6 +172,12 @@ public class TabSetRenderer extends BaseLayoutRenderer {
                     }
                     writer.writeAttribute(HTML.STYLE_ATTR, width, HTML.STYLE_ATTR);
                 }
+                String icon = cp.getIcon();
+                if( icon != null ){
+                    writer.startElement("i", null);
+                    writer.writeAttribute(HTML.CLASS_ATTR, "icon-" + icon, null);
+                    writer.endElement("i");
+                }
                 String title = cp.getTitle();
                 writer.write(title);
                 writer.endElement(HTML.LI_ELEM);
