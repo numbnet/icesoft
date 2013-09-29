@@ -73,9 +73,6 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
          else {
              container.setNavBar(false);
          }
-         if (container.hasNavBar()){
-             writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-         }
             /* write out root tag.  For current incarnation html5 semantic markup is ignored */
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
