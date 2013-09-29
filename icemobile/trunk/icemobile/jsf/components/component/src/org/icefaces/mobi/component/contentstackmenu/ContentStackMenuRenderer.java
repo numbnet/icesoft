@@ -35,8 +35,6 @@ import org.icefaces.mobi.utils.Utils;
 public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
 
     private static final Logger logger = Logger.getLogger(ContentStackMenuRenderer.class.getName());
-    private static final String JS_NAME = "layoutmenu.js";
-    private static final String JS_MIN_NAME = "layoutmenu-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.layoutmenu";
     // may also need the js files for accordion if accordion attribute is true
     private static final String JS_ACC_NAME= "accordion.js";
@@ -85,12 +83,6 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
 		}
          // root element
          String userDefinedClass = menu.getStyleClass();
-         if (accordion){
-             writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY,
-                     JS_ACC_NAME, JS_ACC_MIN_NAME, JS_ACC_LIB);
-         } else {
-             writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-         }
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
          writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
