@@ -66,5 +66,13 @@ public class ContentMenuItemMeta extends UICommandMeta {
 
      @Property(tlddoc = TLDConstants.STYLE)
      private String style;
+     
+     @Property(tlddoc = "Font Awesome icon")
+     private String icon;
+     
+     @Property(tlddoc = "Icon placement, left or right", defaultValue = "left")
+     private String iconPlacement;
+
+
 
 }

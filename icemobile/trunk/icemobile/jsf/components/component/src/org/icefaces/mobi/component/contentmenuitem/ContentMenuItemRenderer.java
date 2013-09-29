@@ -141,7 +141,15 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
                     if ( !item.isDisabled()){
                           writer.writeAttribute("onclick", sb.toString(), null);
                     }
+                    String icon = item.getIcon();
+                    String iconPlacement = item.getIconPlacement();
+                    if( icon != null && "left".equals(iconPlacement) ){
+                        writeIcon(writer, icon, iconPlacement);
+                    }
                     String label = item.getLabel();
+                    if( icon != null && "right".equals(iconPlacement) ){
+                        writeIcon(writer, icon, iconPlacement);
+                    }
                     if (isLabelEmpty(label)){
                         label= valId;  //make it the value if label is null
                     }
@@ -152,6 +160,14 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
             }
         }
     }
+ 
+    private void writeIcon(ResponseWriter writer, String icon, String placement)
+        throws IOException{
+        writer.startElement("i", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "icon-" + icon, null);
+        writer.endElement("i");
+    }
+
 
     /**
      * option to render an item with value of null as either a heading or accordion handle
@@ -161,142 +177,154 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
      * @throws IOException
      */
     private void renderItemAsList(UIComponent parent, FacesContext facesContext, UIComponent uiComponent)
-                    throws IOException{
-         ContentStackMenu parentMenu = (ContentStackMenu)parent;
-         ContentMenuItem lmi = (ContentMenuItem)uiComponent;
-         ResponseWriter writer = facesContext.getResponseWriter();
-         String clientId = lmi.getClientId(facesContext);
-         String contentStackId = parentMenu.getContentStackId();
-         String stackClientId = null;
-         StringBuilder baseClass = new StringBuilder(ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS);
-         StringBuilder disabledClass = new StringBuilder(ContentMenuItem.DISABLED_STYLE_CLASS);
-         StringBuilder groupClass = new StringBuilder(ContentMenuItem.OUTPUTLISTITEMGROUP_CLASS);
-         StringBuilder itemClass = new StringBuilder(ContentMenuItem.OUTPUTLISTITEM_CLASS);
-         String userDefClass = lmi.getStyleClass();
-         if (null != userDefClass){
-             baseClass.append(" ").append(userDefClass);
-             groupClass.append(" ").append(userDefClass);
-             disabledClass.append(" ").append(userDefClass);
-             itemClass.append(" ").append(userDefClass);
-         }
-         if (lmi.isDisabled()){
-
-         }
-         boolean client = false;
-         boolean accordion = parentMenu.isAccordion();
-         String selId = null;
-         if (null!=lmi.getValue()){
-             selId= (String)lmi.getValue();
-         }
-         UIViewRoot root = facesContext.getViewRoot();
-         String selClientId = null;
-         if (null == ((ContentStackMenu) parent).getStackClientId()){
-             //look from root first for id
-             UIComponent stack = root.findComponent(contentStackId);
-             if (stack !=null){
-                 stackClientId = stack.getClientId(facesContext);
-             }else {
-             //assume menu and stack in same form as siblings
-                 UIComponent form = JSFUtils.findParentForm(uiComponent);
-                 stackClientId = this.findCompIntree(facesContext, form, contentStackId);
-             }
-             if (null != stackClientId){
-                 ((ContentStackMenu) parent).setStackClientId(stackClientId);
-             }
-             else{
-                 logger.warning("ERROR unable to find stack id="+contentStackId);
-                 // SOME FACESMESSAGE  ??
-             }
-         }
-         stackClientId = ((ContentStackMenu) parent).getStackClientId();
-         UIComponent stack = null;
-         if (stackClientId !=null){
-             stack = root.findComponent(stackClientId);
-         }else {
-             logger.warning(" Error:- Could not find contentStack for contentStackMenu id="+contentStackId);
-         }
-         //find the clientId of the selected Pane
-         if (null != stack && selId !=null){
-             selClientId = findCompIntree(facesContext, stack,  selId);
-             if (selClientId!=null ){
-                 UIComponent pane = root.findComponent(selClientId);
-                 ContentPane cp = (ContentPane)pane;
-                 client = cp.isClient();
-             }
-             else {
-                 logger.warning("Unable to find contentPane with id="+selId);
-             }
-         }
-    //     String icon = lmi.getIcon();
-         String label = lmi.getLabel();
-         String url = lmi.getUrl();
-         if (isLabelEmpty(label)){
-             if (selId!=null){
-                 label=selId;
-             }
-             else if (url!=null){
-                 label=lmi.getUrl();
-             }
-             else {
-                 label="MenuItem";
-             }
-         }
-         if (null==selId & url==null) {   // must be a heading or accordion label
-             if (accordion){
-                 this.writeTitleAsAccordionHandle(facesContext, uiComponent, parentMenu, label);
-             }  else {
-                 writeItemListStart(uiComponent, writer, clientId);
-                 writer.writeAttribute("class", groupClass, "class");
-                 if (lmi.getStyle() !=null){
-                     writer.writeAttribute(HTML.STYLE_ATTR, lmi.getStyle(), HTML.STYLE_ATTR);
-                 }
-                 writer.startElement(HTML.DIV_ELEM, uiComponent);
-                 writer.writeAttribute("class", baseClass, "class");
-                 writer.write(label);
-                 writer.endElement(HTML.DIV_ELEM);
-                 writer.endElement(HTML.LI_ELEM);
-             }
-         }else {  //otherwise has url or value
-             writeItemListStart(uiComponent, writer, clientId);
-             writer.writeAttribute("class", itemClass, "class");
-             if (lmi.getStyle() !=null){
-                     writer.writeAttribute(HTML.STYLE_ATTR, lmi.getStyle(), HTML.STYLE_ATTR);
-             }
-             if (lmi.isDisabled()){
+            throws IOException{
+        ContentStackMenu parentMenu = (ContentStackMenu)parent;
+        String contentStackId = parentMenu.getContentStackId();
+        ContentMenuItem menuItem = (ContentMenuItem)uiComponent;
+        boolean client = false;
+        boolean accordion = parentMenu.isAccordion();
+        String selId = null;
+        if (null!=menuItem.getValue()){
+            selId= (String)menuItem.getValue();
+        }
+        UIViewRoot root = facesContext.getViewRoot();
+        String selClientId = null;
+        String stackClientId = null;
+ 
+        if (null == ((ContentStackMenu) parent).getStackClientId()){
+            //look from root first for id
+            UIComponent stack = root.findComponent(contentStackId);
+            if (stack !=null){
+                stackClientId = stack.getClientId(facesContext);
+            }else {
+                //assume menu and stack in same form as siblings
+                UIComponent form = JSFUtils.findParentForm(uiComponent);
+                stackClientId = this.findCompIntree(facesContext, form, contentStackId);
+            }
+            if (null != stackClientId){
+                ((ContentStackMenu) parent).setStackClientId(stackClientId);
+            }
+            else{
+                logger.warning("ERROR unable to find stack id="+contentStackId);
+                // SOME FACESMESSAGE  ??
+            }
+        }
+        stackClientId = ((ContentStackMenu) parent).getStackClientId();
+        UIComponent stack = null;
+        if (stackClientId !=null){
+            stack = root.findComponent(stackClientId);
+        }else {
+            logger.warning(" Error:- Could not find contentStack for contentStackMenu id="+contentStackId);
+        }
+        //find the clientId of the selected Pane
+        if (null != stack && selId !=null){
+            selClientId = findCompIntree(facesContext, stack,  selId);
+            if (selClientId!=null ){
+                UIComponent pane = root.findComponent(selClientId);
+                ContentPane cp = (ContentPane)pane;
+                client = cp.isClient();
+            }
+            else {
+                logger.warning("Unable to find contentPane with id="+selId);
+            }
+        }
+        String label = menuItem.getLabel();
+        String url = menuItem.getUrl();
+        if (isLabelEmpty(label)){
+            if (selId!=null){
+                label=selId;
+            }
+            else if (url!=null){
+                label=menuItem.getUrl();
+            }
+            else {
+                label="MenuItem";
+            }
+        }
+ 
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = menuItem.getClientId(facesContext);
+        StringBuilder baseClass = new StringBuilder(ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS);
+        StringBuilder disabledClass = new StringBuilder(ContentMenuItem.DISABLED_STYLE_CLASS);
+        StringBuilder groupClass = new StringBuilder(ContentMenuItem.OUTPUTLISTITEMGROUP_CLASS);
+        StringBuilder itemClass = new StringBuilder(ContentMenuItem.OUTPUTLISTITEM_CLASS);
+        String userDefClass = menuItem.getStyleClass();
+        if (null != userDefClass){
+            baseClass.append(" ").append(userDefClass);
+            groupClass.append(" ").append(userDefClass);
+            disabledClass.append(" ").append(userDefClass);
+            itemClass.append(" ").append(userDefClass);
+        }
+ 
+        String icon = menuItem.getIcon();
+        String iconPlacement = menuItem.getIconPlacement();
+ 
+        if (null==selId & url==null) {   // must be a heading or accordion label
+            if (accordion){
+                this.writeTitleAsAccordionHandle(facesContext, uiComponent, parentMenu, label);
+            } else {
+                writeItemListStart(uiComponent, writer, clientId);
+                writer.writeAttribute("class", groupClass, "class");
+                if (menuItem.getStyle() !=null){
+                    writer.writeAttribute(HTML.STYLE_ATTR, menuItem.getStyle(), HTML.STYLE_ATTR);
+                }
+                writer.startElement(HTML.DIV_ELEM, uiComponent);
+                writer.writeAttribute("class", baseClass, "class");
+                if( icon != null && "left".equals(iconPlacement) ){
+                    writeIcon(writer, icon, iconPlacement);
+                }
+                writer.write(label);
+                if( icon != null && "right".equals(iconPlacement) ){
+                    writeIcon(writer, icon, iconPlacement);
+                }
+                writer.endElement(HTML.DIV_ELEM);
+                writer.endElement(HTML.LI_ELEM);
+            }
+        }
+        else {  //otherwise has url or value
+            writeItemListStart(uiComponent, writer, clientId);
+            writer.writeAttribute("class", itemClass, "class");
+            if (menuItem.getStyle() !=null){
+                writer.writeAttribute(HTML.STYLE_ATTR, menuItem.getStyle(), HTML.STYLE_ATTR);
+            }
+            if (menuItem.isDisabled()){
                 writer.writeAttribute("disabled", "true", null);
                 baseClass.append(" ").append(disabledClass);
-             }
-             writer.startElement(HTML.DIV_ELEM, uiComponent);
-             writer.writeAttribute("class", baseClass, "class");
-             writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
-             writer.writeAttribute(HTML.CLASS_ATTR, "ui-link-inherit", null);
-             //verify location of panel and get proper id of the contentPane for onclick
-             // if url or target then put that in the onclick  otherwise use the value lmi.getValue()
-             if (!lmi.isDisabled() && lmi.getUrl() != null){
-                 writer.writeAttribute("href", getResourceURL(facesContext,lmi.getUrl()), null);
-             }
-             else {
-                 StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(stackClientId).append("', event");
-                 sb.append(",{ selectedId: '").append(lmi.getValue()).append("'");
-                 sb.append(",singleSubmit: ").append(lmi.isSingleSubmit());
-                 if (selClientId!=null){
-                      sb.append(",selClientId: '").append(selClientId).append("'");
-                 }
-                 sb.append(",client: ").append(client);
-                 sb.append(", item: '").append(uiComponent.getClientId(facesContext)).append("'");
-                 sb.append("});");
-                 if (stack !=null && stackClientId != null && !lmi.isDisabled()){
+            }
+            writer.startElement(HTML.DIV_ELEM, uiComponent);
+            writer.writeAttribute("class", baseClass, "class");
+            writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-link-inherit", null);
+            //verify location of panel and get proper id of the contentPane for onclick
+            // if url or target then put that in the onclick  otherwise use the value lmi.getValue()
+            if (!menuItem.isDisabled() && menuItem.getUrl() != null){
+                writer.writeAttribute("href", getResourceURL(facesContext,menuItem.getUrl()), null);
+            }
+            else {
+                StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(stackClientId).append("', event");
+                sb.append(",{ selectedId: '").append(menuItem.getValue()).append("'");
+                sb.append(",singleSubmit: ").append(menuItem.isSingleSubmit());
+                if (selClientId!=null){
+                    sb.append(",selClientId: '").append(selClientId).append("'");
+                }
+                sb.append(",client: ").append(client);
+                sb.append(", item: '").append(uiComponent.getClientId(facesContext)).append("'");
+                sb.append("});");
+                if (stack !=null && stackClientId != null && !menuItem.isDisabled()){
                     writer.writeAttribute("onclick", sb.toString(), null);
-                 }
-             }
-        /*     if (icon !=null){
-                //TODO implementation of icon needs to be defined  --base64?
-             } */
-             writer.write(label);
-             writer.endElement(HTML.ANCHOR_ELEM);
-             writer.endElement(HTML.DIV_ELEM);
-             writer.endElement(HTML.LI_ELEM);
-         }
+                }
+            }
+            if( icon != null && "left".equals(iconPlacement) ){
+                writeIcon(writer, icon, iconPlacement);
+            }
+            writer.write(label);
+            if( icon != null && "right".equals(iconPlacement) ){
+                writeIcon(writer, icon, iconPlacement);
+            }
+            writer.endElement(HTML.ANCHOR_ELEM);
+            writer.endElement(HTML.DIV_ELEM);
+            writer.endElement(HTML.LI_ELEM);
+        }
     }
 
     private void writeItemListStart(UIComponent uiComponent, ResponseWriter writer, String clientId) throws IOException {
