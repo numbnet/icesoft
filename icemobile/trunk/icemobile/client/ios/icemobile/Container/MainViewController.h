@@ -15,13 +15,12 @@
 */
 
 #import <UIKit/UIKit.h>
-#import "ZXingWidgetController.h"
 #import "NativeInterfaceViewController.h"
 @class NativeInterface;
 @class Preferences;
 
 @interface MainViewController : UIViewController<NativeInterfaceViewController,UIWebViewDelegate,
-    ZXingDelegate,UINavigationControllerDelegate,UIActionSheetDelegate> {
+    UINavigationControllerDelegate,UIActionSheetDelegate> {
 
     UIWebView *webView;
     UIProgressView *uploadProgress;
@@ -62,7 +61,6 @@
 - (void)willResignActive;
 - (void)setDeviceToken:(NSData *)deviceToken;
 - (IBAction)doPreferences;
-- (void)scanQR;
 - (void)dismissScan;
 - (void)doCancel;
 - (void)reloadCurrentPage;

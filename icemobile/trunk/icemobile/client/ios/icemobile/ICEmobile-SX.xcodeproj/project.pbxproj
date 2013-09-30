@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C00021317FA2F97001DC767 /* AVScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C00021117FA2F97001DC767 /* AVScanViewController.m */; };
+		9C00021417FA2F97001DC767 /* AVScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C00021217FA2F97001DC767 /* AVScanViewController.xib */; };
 		9C058590162F63CC003D1890 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C05858F162F63CC003D1890 /* AddressBookUI.framework */; };
 		9C058592162F679F003D1890 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C058591162F679F003D1890 /* AddressBook.framework */; };
 		9C1B7A0616FBC5550015C815 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C1B7A0516FBC5550015C815 /* MessageUI.framework */; };
 		9C1F8D1F15670CC6004E59EB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C1F8D1E15670CC6004E59EB /* MapKit.framework */; };
 		9C31CD401796FF0800A92773 /* open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C31CD3E1796FF0800A92773 /* open@2x.png */; };
 		9C31CD411796FF0800A92773 /* open.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C31CD3F1796FF0800A92773 /* open.png */; };
-		9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C403FCB14845E4200FBA6BC /* QRScanner.mm */; };
 		9C42F738158277E00011FECC /* E.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F730158277E00011FECC /* E.png */; };
 		9C42F739158277E00011FECC /* E@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F731158277E00011FECC /* E@2x.png */; };
 		9C42F73A158277E00011FECC /* N.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F732158277E00011FECC /* N.png */; };
@@ -56,7 +57,6 @@
 		9C7A1065156BF9AD0013D23D /* MapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A1063156BF9AD0013D23D /* MapController.xib */; };
 		9C7A1E89156C24E70013D23D /* ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A1E87156C24E70013D23D /* ar.png */; };
 		9C7A1E8A156C24E70013D23D /* ar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A1E88156C24E70013D23D /* ar@2x.png */; };
-		9C9314771485500C00B21FA1 /* libZXingWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C403FC914845A2300FBA6BC /* libZXingWidget.a */; };
 		9C9314791485505200B21FA1 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C9314781485505200B21FA1 /* libiconv.dylib */; };
 		9C93147B1485506A00B21FA1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C93147A1485506A00B21FA1 /* AudioToolbox.framework */; };
 		9C93147D1485507900B21FA1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C93147C1485507900B21FA1 /* AVFoundation.framework */; };
@@ -83,26 +83,16 @@
 		9CFDBD41164D865100D1F041 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CFDBD40164D865100D1F041 /* license.txt */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		9C403FC814845A2300FBA6BC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = ZXingWidget;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		9C00021017FA2F97001DC767 /* AVScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AVScanViewController.h; path = Shared/AVScanViewController.h; sourceTree = "<group>"; };
+		9C00021117FA2F97001DC767 /* AVScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AVScanViewController.m; path = Shared/AVScanViewController.m; sourceTree = "<group>"; };
+		9C00021217FA2F97001DC767 /* AVScanViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AVScanViewController.xib; path = Shared/AVScanViewController.xib; sourceTree = "<group>"; };
 		9C05858F162F63CC003D1890 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		9C058591162F679F003D1890 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		9C1B7A0516FBC5550015C815 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9C1F8D1E15670CC6004E59EB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9C31CD3E1796FF0800A92773 /* open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open@2x.png"; sourceTree = "<group>"; };
 		9C31CD3F1796FF0800A92773 /* open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = open.png; sourceTree = "<group>"; };
-		9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
-		9C403FCA14845E4200FBA6BC /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRScanner.h; path = Shared/QRScanner.h; sourceTree = "<group>"; };
-		9C403FCB14845E4200FBA6BC /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QRScanner.mm; path = Shared/QRScanner.mm; sourceTree = "<group>"; };
 		9C42F730158277E00011FECC /* E.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = E.png; path = Shared/E.png; sourceTree = "<group>"; };
 		9C42F731158277E00011FECC /* E@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "E@2x.png"; path = "Shared/E@2x.png"; sourceTree = "<group>"; };
 		9C42F732158277E00011FECC /* N.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = N.png; path = Shared/N.png; sourceTree = "<group>"; };
@@ -207,7 +197,6 @@
 				9CA51B6414730D110065F681 /* UIKit.framework in Frameworks */,
 				9CA51B6614730D110065F681 /* Foundation.framework in Frameworks */,
 				9CA51B6814730D110065F681 /* CoreGraphics.framework in Frameworks */,
-				9C9314771485500C00B21FA1 /* libZXingWidget.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +206,9 @@
 		9C1BEADD155473E400795020 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9C00021017FA2F97001DC767 /* AVScanViewController.h */,
+				9C00021117FA2F97001DC767 /* AVScanViewController.m */,
+				9C00021217FA2F97001DC767 /* AVScanViewController.xib */,
 				9CFDBD40164D865100D1F041 /* license.txt */,
 				9C8FBB3C1628BE250073C720 /* Logging.h */,
 				9C42F730158277E00011FECC /* E.png */,
@@ -234,8 +226,6 @@
 				9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */,
 				9C77C78C147310B80079FDF5 /* NativeInterface.h */,
 				9C77C78D147310B80079FDF5 /* NativeInterface.m */,
-				9C403FCA14845E4200FBA6BC /* QRScanner.h */,
-				9C403FCB14845E4200FBA6BC /* QRScanner.mm */,
 				9C4F8C3614859D3600A2B288 /* AudioController.h */,
 				9C4F8C3714859D3600A2B288 /* AudioController.m */,
 				9C4F8C3814859D3600A2B288 /* AudioController.xib */,
@@ -252,26 +242,9 @@
 			name = Shared;
 			sourceTree = "<group>";
 		};
-		9C403FBF148459D800FBA6BC /* Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */,
-			);
-			name = Dependencies;
-			sourceTree = "<group>";
-		};
-		9C403FC214845A2200FBA6BC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C403FC914845A2300FBA6BC /* libZXingWidget.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		9CA51B5414730D110065F681 = {
 			isa = PBXGroup;
 			children = (
-				9C403FBF148459D800FBA6BC /* Dependencies */,
 				9CA51B6914730D110065F681 /* ICEmobile-SX */,
 				9C1BEADD155473E400795020 /* Shared */,
 				9CA51B6214730D110065F681 /* Frameworks */,
@@ -404,28 +377,12 @@
 			mainGroup = 9CA51B5414730D110065F681;
 			productRefGroup = 9CA51B6014730D110065F681 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 9C403FC214845A2200FBA6BC /* Products */;
-					ProjectRef = 9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				9CA51B5E14730D110065F681 /* ICEmobile-SX */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		9C403FC914845A2300FBA6BC /* libZXingWidget.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libZXingWidget.a;
-			remoteRef = 9C403FC814845A2300FBA6BC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9CA51B5D14730D110065F681 /* Resources */ = {
@@ -444,6 +401,7 @@
 				9C5CD04514BCBCA70070662F /* camera.png in Resources */,
 				9C5CD04614BCBCA70070662F /* camera@2x.png in Resources */,
 				9C5CD04714BCBCA70070662F /* microphone.png in Resources */,
+				9C00021417FA2F97001DC767 /* AVScanViewController.xib in Resources */,
 				9C5CD04814BCBCA70070662F /* microphone@2x.png in Resources */,
 				9C5CD04914BCBCA70070662F /* qr.png in Resources */,
 				9C5CD04A14BCBCA70070662F /* qr@2x.png in Resources */,
@@ -491,10 +449,10 @@
 				9CA51B7414730D120065F681 /* AppDelegate.m in Sources */,
 				9CA51B7714730D120065F681 /* ViewController.m in Sources */,
 				9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */,
-				9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */,
 				9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */,
 				9C51732F155DA6E600090828 /* ARViewController.m in Sources */,
 				9C517337155DA99C00090828 /* PlaceLabel.m in Sources */,
+				9C00021317FA2F97001DC767 /* AVScanViewController.m in Sources */,
 				9C51733A155DACE300090828 /* ARView.m in Sources */,
 				9C7A1064156BF9AD0013D23D /* MapController.m in Sources */,
 				9CBF5ACD1638AB1E0015E267 /* IceUtil.m in Sources */,
@@ -587,7 +545,7 @@
 					"../zxing/ZXingWidget/Classes/**",
 				);
 				INFOPLIST_FILE = "ICEmobile-SX/ICEmobile-SX-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -605,7 +563,7 @@
 					"../zxing/ZXingWidget/Classes/**",
 				);
 				INFOPLIST_FILE = "ICEmobile-SX/ICEmobile-SX-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

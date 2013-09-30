@@ -23,7 +23,6 @@
 #import "NativeInterfaceViewController.h"
 
 @class MainViewController;
-@class QRScanner;
 @class ARViewController;
 
 @interface NativeInterface : NSObject<
@@ -51,7 +50,6 @@
     BOOL showConnectionFailure;
     NSString *customAlertText;
     NSMutableData *receivedData;
-    QRScanner *qrScanner;
     UIImagePickerController *currentPicker;
     AVAudioRecorder *soundRecorder;
     UIPopoverController *camPopover;
@@ -82,7 +80,6 @@
 @property (atomic, assign) BOOL showConnectionFailure;
 @property (retain) NSString *customAlertText;
 @property (retain) NSMutableData *receivedData;
-@property (retain) QRScanner *qrScanner;
 @property (nonatomic, retain) UIImagePickerController *currentPicker;
 @property (retain) AVAudioRecorder *soundRecorder;
 @property (nonatomic, retain) UIPopoverController *camPopover;
