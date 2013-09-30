@@ -1317,9 +1317,11 @@ ice.mobi.geolocation = {
 };
 
 ice.mobi.getStyleSheet = function (sheetId) {
-    return Array.prototype.filter.call(document.styleSheets, function(s) {
-        return s.title == sheetId;
-    })[0];
+    for( var i = 0 ; i < document.styleSheets.length ; i++ ){
+        if( document.styleSheets[i].title === sheetId ){
+            return document.styleSheets[i];
+        }
+    }
 };
 
 ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
@@ -1391,11 +1393,15 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         }
 
         function getIndexInput(details) {
-            var r = Array.prototype.filter.call(details.children, function(n) {
-                return n.nodeName.toLowerCase() == "input" && n.getAttribute('name') == clientId+'_active';
-            });
-            return r[0];
+            for( var l = 0 ; l < details.children.length ; l++ ){
+                var n = details.children[l];
+                if(  n.nodeName.toLowerCase() === 'input' 
+                    &&  n.getAttribute('name') === clientId+'_active' ){
+                    return n;
+                }
+            }
         }
+
 
         function initTableAlignment() {
             var dupeHead = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead'),
@@ -1412,9 +1418,12 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
             if (!sheet) sheet = im.addStyleSheet(clientId + '_colvis', selectorId);;
 
-            var firstRowBodyCells = Array.prototype.filter.call(firstrow.children, function(val){
-                return val.nodeName.toLowerCase() == "td"; /* remove hidden input */
-            });
+            var firstRowBodyCells = [];
+            for(var i = 0 ; i < firstrow.children.length ; i++ ){
+                if( firstrow.children[i].nodeName.toLowerCase() === 'td' ){
+                    firstRowBodyCells.push(firstrow.children[i]);
+                }
+            }
 
             if( window.getComputedStyle ){
                 var frbcWidths = Array.prototype.map.call(
@@ -1431,19 +1440,19 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                     }
                 }
 
-                var dupeHeadCellWidths = Array.prototype.map.call(
-                    dupeHeadCells,
-                    function(n) {
-                        var compd = document.defaultView.getComputedStyle(n, null);
-                        return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
-                    });
+                var dupeHeadCellWidths = [];
+                for( var i = 0 ; i < dupeHeadCells.length; i++ ){
+                    var n = dupeHeadCells[i];
+                    var compd = document.defaultView.getComputedStyle(n, null);
+                    dupeHeadCellWidths.push( n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight)) );
+                }
     
-                var dupeFootCellWidths = Array.prototype.map.call(
-                    dupeFootCells,
-                    function(n) {
-                        var compd = document.defaultView.getComputedStyle(n, null);
-                        return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
-                    });
+                var dupeFootCellWidths = [];
+                for( var i = 0 ; i < dupeFootCells.length ; i++ ){
+                    var n = dupeFootCells[i];
+                    var compd = document.defaultView.getComputedStyle(n, null);
+                    dupeFootCellWidths.push( n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight)) );
+                }
     
                 /* copy head col widths from duplicate header */
                 for (var i = 0; i < dupeHeadCellWidths.length; i++) {
@@ -1475,17 +1484,26 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
             if (!colVisSheet) colVisSheet = im.addStyleSheet(clientId + '_colvis', selectorId);
 
-            var prioritizedCells = config.colvispri.map(function(pri, i) {
+            var prioritizedCells = [];
+            var map = config.colvispri.map(function(pri, i) {
                var index = config.colvispri.indexOf(i);
                return index > -1 ? firstRowCells[index] : undefined;
-            }).filter(function(cell) { return cell != undefined});
-
+            });
+            for( var i = 0 ; i < map.length ; i++ ){
+                if( map[i] != undefined ){
+                    prioritizedCells.push(map[i]);
+                }
+            }
+            
             for (var i = 0; i < prioritizedCells.length; i++) {
-                var columnClassname = Array.prototype.filter.call(
-                        prioritizedCells[i].classList,
-                        function(name) {if (name.indexOf('mobi-dv-c') != -1) return true;}
-                    )[0];
-
+                var columnClassname = null;
+                for( var j = 0 ; j < prioritizedCells[i].classList.length ; j++ ){
+                    if( prioritizedCells[i].classList[j].indexOf('mobi-dv-c') != -1 ){
+                        columnClassname = prioritizedCells[i].classList[j];
+                        break;
+                    }
+                }
+                
                 minDevWidth += prioritizedCells[i].clientWidth;
 
                 // add column conditional visibility rule
@@ -1813,12 +1831,14 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
             /* remove indicator from other cols */
             var sortedIndexes = sortCriteria.map(function(c) {return c.index});
-            Array.prototype.filter.call(getNode('headcells'), function (c) {return sortedIndexes.indexOf(getIndex(c)) == -1;})
-                .every(function(c) {
+            var headcells = getNode('headcells');
+            for( var k = 0 ; k < headcells.length ; k++ ){
+                if( sortedIndexes.indexOf(getIndex(c)) === -1 ){
                     var indi = c.querySelector(indicatorSelector);
                     indi.className = blankInicatorClass;
-                    return true;
-                });
+                }
+            }
+
 
             var bodyRows = getNode('bodyrows');
             /* return bodyRows NodeList as Array for sorting */
