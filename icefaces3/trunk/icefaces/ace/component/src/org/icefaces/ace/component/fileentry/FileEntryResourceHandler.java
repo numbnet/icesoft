@@ -17,7 +17,6 @@
 package org.icefaces.ace.component.fileentry;
 
 import org.icefaces.apache.commons.fileupload.*;
-import org.icefaces.apache.commons.fileupload.disk.*;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.context.DOMPartialViewContext;
 import org.icefaces.impl.util.CoreUtils;
@@ -44,6 +43,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.lang.reflect.*;
 
 public class FileEntryResourceHandler extends ResourceHandlerWrapper {
     private static Logger log = Logger.getLogger(FileEntry.class.getName()+".multipart");
@@ -114,23 +114,30 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
             Map<String, List<String>> parameterListMap =
                     new HashMap<String, List<String>>();
             byte[] buffer = new byte[16*1024];
+			
+			Class partClass;
+			try {
+				partClass = Class.forName("javax.servlet.http.Part");
+			} catch (ClassNotFoundException e) {
+				partClass = null;
+			}
 
             try {
-				ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
-				List<FileItem> fileItems = servletFileUpload.parseRequest(request);
-                log.finer("FileEntryResourceHandler  Parts size: " + fileItems.size());
-                PartsManualProgress partsManualProgress = new PartsManualProgress(
-                    (ProgressListener) progressListenerResourcePusher,
-                    requestContentLength);
-                for (FileItem fileItem : fileItems) {
-                    handleMultipartPortion(facesContext,
-                        resolvedCharacterEncoding, clientId2Results,
-                        clientId2Callbacks, parameterListMap,
-                        partsManualProgress,
-                        (PushResourceSetup) progressListenerResourcePusher,
-                        buffer, new PartFile(fileItem, partsManualProgress));
+				if (partClass != null) {
+					Collection<javax.servlet.http.Part> parts = request.getParts();
+					log.finer("FileEntryResourceHandler  Parts size: " + parts.size());
+					PartsManualProgress partsManualProgress = new PartsManualProgress(
+						(ProgressListener) progressListenerResourcePusher,
+						requestContentLength);
+					for (javax.servlet.http.Part part : parts) {
+						handleMultipartPortion(facesContext,
+							resolvedCharacterEncoding, clientId2Results,
+							clientId2Callbacks, parameterListMap,
+							partsManualProgress,
+							(PushResourceSetup) progressListenerResourcePusher,
+							buffer, new PartFile(part, partsManualProgress));
+					}
                 }
-                
 
                 final ServletFileUpload uploader = new ServletFileUpload();
                 if (resolvedCharacterEncoding != null) {
@@ -695,10 +702,10 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
 
 
     private static class PartFile implements MultipartFile {
-        private FileItem part;
+        private javax.servlet.http.Part part;
         private PartsManualProgress partsManualProgress;
 
-        private PartFile(FileItem part, PartsManualProgress partsManualProgress) {
+        private PartFile(javax.servlet.http.Part part, PartsManualProgress partsManualProgress) {
             this.part = part;
             this.partsManualProgress = partsManualProgress;
         }
@@ -718,14 +725,15 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
          * @return content-disposition header's name entry
          */
         public String getFieldName() {
-            return part.getFieldName();
+            return part.getName();
         }
 
         /**
          * @return content-disposition header's filename entry
          */
         public String getFileName() {
-            return part.getName();
+            String contentDispositionHeader = part.getHeader("content-disposition");
+            return FileUploadBase.getFileName(contentDispositionHeader);
         }
 
         public InputStream getInputStream() throws IOException {
@@ -764,7 +772,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                             in.close();
                         }
                     } else if (file != null) {
-                        part.write(file);
+                        part.write(file.getAbsolutePath());
                         partsManualProgress.updateRead(size);
                     }
                 }
