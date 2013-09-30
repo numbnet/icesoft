@@ -65,6 +65,8 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
         rendererJavascriptPartialSubmit.put(HTML.ONBLUR_ATTR,
                 "setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL);
         rendererJavascriptPartialSubmit.put(HTML.ONMOUSEDOWN_ATTR, "this.focus();");
+        rendererJavascriptPartialSubmit.put(HTML.ONKEYPRESS_ATTR,
+                "ice.cancelEnterKeyEvent(event, this)");
     }
 
     protected void renderHtmlAttributes(FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
