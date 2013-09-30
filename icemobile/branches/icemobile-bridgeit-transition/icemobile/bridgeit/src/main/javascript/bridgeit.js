@@ -412,6 +412,7 @@ if (!window.console) {
                     }
                     if (deviceParams.c)  {
                         if (ice.push)  {
+                            setCloudPushId(deviceParams.c);
                             ice.push.parkInactivePushIds(
                                     deviceParams.c );
                         }
@@ -451,7 +452,29 @@ if (!window.console) {
             }, 1);
         }
     }
+    var CLOUD_PUSH_KEY = "ice.notifyBack";
+    function setCloudPushId(id)  {
+        //rely on local storage since cloud push is on modern platforms
+        if (localStorage)  {
+            localStorage.setItem(CLOUD_PUSH_KEY, id);
+        }
+    }
+    function getCloudPushId()  {
+        if (localStorage)  {
+            return localStorage.getItem(CLOUD_PUSH_KEY);
+        }
+        return null;
+    }
 
+    function setupCloudPush()  {
+        var cloudPushId = getCloudPushId();
+        if (!!cloudPushId)  {
+            if (ice.push)  {
+                console.log("Cloud Push registered: " + cloudPushId);
+                ice.push.parkInactivePushIds(cloudPushId);
+            }
+        }
+    }
     /* Page event handling */
     if (window.addEventListener) {
 
@@ -473,6 +496,10 @@ if (!window.console) {
         window.addEventListener("hashchange", function () {
             console.log('entered hashchange listener hash=' + window.location.hash);
             checkExecDeviceResponse();
+        }, false);
+
+        window.addEventListener("load", function () {
+            setupCloudPush();
         }, false);
 
     };
