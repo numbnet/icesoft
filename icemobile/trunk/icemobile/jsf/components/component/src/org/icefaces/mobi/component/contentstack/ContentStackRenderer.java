@@ -164,8 +164,9 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
             sb.append(",selClientId: '").append(selectedPaneClientId).append("'");
             client = selPane.isClient();
         }
-        if (stack.getContentMenuId() !=null){
-            UIComponent menu = stack.findComponent(stack.getContentMenuId());
+        String contentMenuId = stack.getContentMenuId();
+        if (contentMenuId !=null && contentMenuId.length() > 0){
+            UIComponent menu = stack.findComponent(contentMenuId);
             String homeId = null;
             if (null!=menu){
                homeId = menu.getClientId(facesContext);
