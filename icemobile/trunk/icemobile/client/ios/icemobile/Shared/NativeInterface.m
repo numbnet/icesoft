@@ -15,7 +15,6 @@
 */
 
 #import "NativeInterface.h"
-#import "QRScanner.h"
 #import "AudioController.h"
 #import "ARViewController.h"
 #import "PlaceLabel.h"
@@ -47,7 +46,6 @@
 @synthesize monitoringLocation;
 @synthesize showConnectionFailure;
 @synthesize receivedData;
-@synthesize qrScanner;
 @synthesize currentPicker;
 @synthesize camPopover;
 @synthesize scanPopover;
@@ -70,8 +68,6 @@ static char base64EncodingTable[64] = {
 - (id)init  {
     self = [super init];
     if (self) {
-        self.qrScanner = [[QRScanner alloc] init];
-        self.qrScanner.nativeInterface = self;
         NSString *tempDir = NSTemporaryDirectory ();
         self.soundFilePath = [tempDir stringByAppendingString: @"sound.mp4"];
         self.popoverSource = CGRectMake(200.0, 200.0, 40.0, 40.0);
@@ -81,7 +77,6 @@ static char base64EncodingTable[64] = {
 }
 
 - (void) dealloc  {
-    [self.qrScanner dealloc];
     [super dealloc];
 }
 
@@ -453,28 +448,6 @@ NSLog(@"open %@ -- %@", openId, url);
     return YES;
 }
 
-
-- (BOOL)scanZxing: (NSString*)scanId  {
-    self.activeDOMElementId = scanId;
-    LogTrace(@"NativeInterface ZXing scan ");
-    UIViewController *scanController = [qrScanner scanController];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
-        if (nil == self.scanPopover)  {
-            scanPopover = [[UIPopoverController alloc] 
-                    initWithContentViewController:scanController];
-            self.scanPopover.popoverContentSize = CGSizeMake(320, 480);
-        }
-        [self.scanPopover presentPopoverFromRect:popoverSource
-                                 inView:self.controller.view
-               permittedArrowDirections:UIPopoverArrowDirectionAny 
-                               animated:YES];
-    } else {
-        [controller presentModalViewController:scanController animated:YES];
-    }
-    [scanController release];
-
-    return YES;
-}
 
 - (void)scanResult: (NSString*)text  {
 NSLog(@"scanResult %@", text);

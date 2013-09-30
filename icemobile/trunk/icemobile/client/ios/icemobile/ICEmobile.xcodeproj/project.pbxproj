@@ -15,6 +15,8 @@
 		2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E32C111B888700E27156 /* AppDelegate_iPad.m */; };
 		2860E32F111B888700E27156 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E32D111B888700E27156 /* MainWindow_iPad.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		9C00020D17FA2EA9001DC767 /* AVScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C00020B17FA2EA9001DC767 /* AVScanViewController.m */; };
+		9C00020E17FA2EA9001DC767 /* AVScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C00020C17FA2EA9001DC767 /* AVScanViewController.xib */; };
 		9C05859F162F6E59003D1890 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C05859D162F6E59003D1890 /* AddressBook.framework */; };
 		9C0585A0162F6E59003D1890 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C05859E162F6E59003D1890 /* AddressBookUI.framework */; };
 		9C113907132ACD2E00FB7919 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C113906132ACD2E00FB7919 /* icon.png */; };
@@ -35,7 +37,6 @@
 		9C3140D613203841005F0E8F /* native-interface.js in Sources */ = {isa = PBXBuildFile; fileRef = 9C3140D513203841005F0E8F /* native-interface.js */; };
 		9C3140F513205108005F0E8F /* native-interface.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C3140D513203841005F0E8F /* native-interface.js */; };
 		9C34261F131865700084532D /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C34261E131865700084532D /* MainViewController.mm */; };
-		9C3B27911427AE1700409376 /* libZXingWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27901427A1E700409376 /* libZXingWidget.a */; };
 		9C3B27931427AEA000409376 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27921427AEA000409376 /* libiconv.dylib */; };
 		9C3B27951427AEB500409376 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27941427AEB500409376 /* AudioToolbox.framework */; };
 		9C3B27971427AFAF00409376 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27961427AFAF00409376 /* CoreVideo.framework */; };
@@ -60,18 +61,7 @@
 		9CCD002015742B270012893A /* MapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CCD001E15742B270012893A /* MapController.xib */; };
 		9CE11565133BDDE80051D367 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE11564133BDDE80051D367 /* AVFoundation.framework */; };
 		9CE7A43613B92240008C4D9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE7A43513B92240008C4D9C /* MediaPlayer.framework */; };
-		9CF130DD157FC6F500F8F0A4 /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9CF130DC157FC6F500F8F0A4 /* QRScanner.mm */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		9C3B278F1427A1E700409376 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9C3B27881427A1E600409376 /* ZXingWidget.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = ZXingWidget;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -87,6 +77,9 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Container/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ICEmobile_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICEmobile_Prefix.pch; path = Container/ICEmobile_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ICEmobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ICEmobile-Info.plist"; path = "Container/ICEmobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		9C00020A17FA2EA9001DC767 /* AVScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AVScanViewController.h; path = Shared/AVScanViewController.h; sourceTree = "<group>"; };
+		9C00020B17FA2EA9001DC767 /* AVScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AVScanViewController.m; path = Shared/AVScanViewController.m; sourceTree = "<group>"; };
+		9C00020C17FA2EA9001DC767 /* AVScanViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AVScanViewController.xib; path = Shared/AVScanViewController.xib; sourceTree = "<group>"; };
 		9C05859D162F6E59003D1890 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		9C05859E162F6E59003D1890 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		9C113906132ACD2E00FB7919 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Container/icon.png; sourceTree = "<group>"; };
@@ -112,7 +105,6 @@
 		9C3140D513203841005F0E8F /* native-interface.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "native-interface.js"; path = "Container/native-interface.js"; sourceTree = "<group>"; };
 		9C34261D131865700084532D /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Container/MainViewController.h; sourceTree = "<group>"; };
 		9C34261E131865700084532D /* MainViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MainViewController.mm; path = Container/MainViewController.mm; sourceTree = "<group>"; };
-		9C3B27881427A1E600409376 /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
 		9C3B27921427AEA000409376 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		9C3B27941427AEB500409376 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9C3B27961427AFAF00409376 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -141,8 +133,6 @@
 		9CCD001E15742B270012893A /* MapController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapController.xib; path = Shared/MapController.xib; sourceTree = "<group>"; };
 		9CE11564133BDDE80051D367 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9CE7A43513B92240008C4D9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		9CF130DB157FC6F500F8F0A4 /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRScanner.h; path = Shared/QRScanner.h; sourceTree = "<group>"; };
-		9CF130DC157FC6F500F8F0A4 /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QRScanner.mm; path = Shared/QRScanner.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,7 +151,6 @@
 				9C3B27971427AFAF00409376 /* CoreVideo.framework in Frameworks */,
 				9C3B27951427AEB500409376 /* AudioToolbox.framework in Frameworks */,
 				9C3B27931427AEA000409376 /* libiconv.dylib in Frameworks */,
-				9C3B27911427AE1700409376 /* libZXingWidget.a in Frameworks */,
 				9CE7A43613B92240008C4D9C /* MediaPlayer.framework in Frameworks */,
 				9C2A9F6513B8E78F0068D894 /* MobileCoreServices.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -224,7 +213,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				9C3B27871427A1B500409376 /* Dependencies */,
 				2860E32A111B888700E27156 /* iPad */,
 				2860E324111B887F00E27156 /* iPhone */,
 				28EEBF621118D79A00187D67 /* Container */,
@@ -272,6 +260,9 @@
 		9C1923F415547F9500A6BE22 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9C00020A17FA2EA9001DC767 /* AVScanViewController.h */,
+				9C00020B17FA2EA9001DC767 /* AVScanViewController.m */,
+				9C00020C17FA2EA9001DC767 /* AVScanViewController.xib */,
 				9C8FBB3F1628BFC70073C720 /* bar.png */,
 				9C42F71615826FE80011FECC /* E.png */,
 				9C42F71715826FE80011FECC /* E@2x.png */,
@@ -283,8 +274,6 @@
 				9C42F71D15826FE80011FECC /* W@2x.png */,
 				9C46E92F15825B3000EFA276 /* NativeInterface.h */,
 				9C46E93015825B3000EFA276 /* NativeInterface.m */,
-				9CF130DB157FC6F500F8F0A4 /* QRScanner.h */,
-				9CF130DC157FC6F500F8F0A4 /* QRScanner.mm */,
 				9CCD001C15742B270012893A /* MapController.h */,
 				9CCD001D15742B270012893A /* MapController.m */,
 				9CCD001E15742B270012893A /* MapController.xib */,
@@ -304,22 +293,6 @@
 				9CBF5ABF1638589F0015E267 /* IceUtil.m */,
 			);
 			name = Shared;
-			sourceTree = "<group>";
-		};
-		9C3B27871427A1B500409376 /* Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				9C3B27881427A1E600409376 /* ZXingWidget.xcodeproj */,
-			);
-			name = Dependencies;
-			sourceTree = "<group>";
-		};
-		9C3B27891427A1E600409376 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C3B27901427A1E700409376 /* libZXingWidget.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -362,28 +335,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 9C3B27891427A1E600409376 /* Products */;
-					ProjectRef = 9C3B27881427A1E600409376 /* ZXingWidget.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* ICEmobile */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		9C3B27901427A1E700409376 /* libZXingWidget.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libZXingWidget.a;
-			remoteRef = 9C3B278F1427A1E700409376 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -402,6 +359,7 @@
 				9C1923F915547FBA00A6BE22 /* AudioController.xib in Resources */,
 				9C285F3D155DD31400BAC772 /* ARViewController_iPad.xib in Resources */,
 				9C285F3E155DD31400BAC772 /* ARViewController_iPhone.xib in Resources */,
+				9C00020E17FA2EA9001DC767 /* AVScanViewController.xib in Resources */,
 				9CCD002015742B270012893A /* MapController.xib in Resources */,
 				9C42F71E15826FE80011FECC /* E.png in Resources */,
 				9C42F71F15826FE80011FECC /* E@2x.png in Resources */,
@@ -422,6 +380,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C00020D17FA2EA9001DC767 /* AVScanViewController.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				2860E328111B887F00E27156 /* AppDelegate_iPhone.m in Sources */,
 				2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */,
@@ -433,7 +392,6 @@
 				9C285F3F155DD31400BAC772 /* ARViewController.m in Sources */,
 				9C285F40155DD31400BAC772 /* PlaceLabel.m in Sources */,
 				9CCD001F15742B270012893A /* MapController.m in Sources */,
-				9CF130DD157FC6F500F8F0A4 /* QRScanner.mm in Sources */,
 				9C46E93115825B3000EFA276 /* NativeInterface.m in Sources */,
 				9CBF5AC01638589F0015E267 /* IceUtil.m in Sources */,
 			);
@@ -458,7 +416,7 @@
 					"../zxing/ZXingWidget/Classes/**",
 				);
 				INFOPLIST_FILE = "Container/ICEmobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = ICEmobile;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -479,7 +437,7 @@
 					"../zxing/ZXingWidget/Classes/**",
 				);
 				INFOPLIST_FILE = "Container/ICEmobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = ICEmobile;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";

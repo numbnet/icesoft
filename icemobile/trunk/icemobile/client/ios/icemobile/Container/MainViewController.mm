@@ -18,7 +18,6 @@
 #import "NativeInterface.h"
 #import "Preferences.h"
 #import <QRCodeReader.h>
-#import <ZXingWidgetController.h>
 /* Will require AddressBook and AddressBookUI frameworks
 #import <UniversalResultParser.h>
 #import <ParsedResult.h>
@@ -244,6 +243,13 @@ NSLog(@"Warning: consider renaming to completeParameter given ICEmobile Containe
     [self.webView stringByEvaluatingJavaScriptFromString: script];
 }
 
+- (void) completeSmallPost:(NSString *)value 
+        forComponent:(NSString *)componentID 
+        withName:(NSString *)componentName  {
+    [self completePost:value forComponent:componentID withName:componentName];
+}
+
+
 - (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
     NSString *scriptTemplate;
     NSString *script;
@@ -392,47 +398,6 @@ NSLog(@"handleResponse for ICEmobile Container");
     }
 }
 
-- (void)scanQR {
-    NSLog(@"scanQR ");
-    ZXingWidgetController *widController = [[ZXingWidgetController alloc] initWithDelegate:self showCancel:YES OneDMode:NO];
-    QRCodeReader* qrcodeReader = [[QRCodeReader alloc] init];
-    NSSet *readers = [[NSSet alloc ] initWithObjects:qrcodeReader,nil];
-    [qrcodeReader release];
-    widController.readers = readers;
-    [readers release];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
-        if (nil == self.scanPopover)  {
-            scanPopover = [[UIPopoverController alloc] 
-                    initWithContentViewController:widController];
-            self.scanPopover.popoverContentSize = CGSizeMake(320, 480);
-        }
-        //[picker release];
-        [self.scanPopover presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
-                                 inView:self.view
-               permittedArrowDirections:UIPopoverArrowDirectionAny 
-                               animated:YES];
-    } else {
-        [self presentModalViewController:widController animated:YES];
-    }
-    [widController release];
-}
-
-- (void)zxingController:(ZXingWidgetController*)controller didScanResult:(NSString *)resultString {
-    NSLog(@"didScanResult %@", resultString);
-    [self dismissScan];
-    NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
-    NSString *scanId = self.nativeInterface.activeDOMElementId;
-    NSString *scanName = [scanId stringByAppendingString:@"-text"];
-    NSString *script = [NSString stringWithFormat:scriptTemplate, scanId, scanName, resultString];
-    [self.webView stringByEvaluatingJavaScriptFromString: script];
-
-//    ParsedResult *parsedResult = [[UniversalResultParser parsedResultForString:resultString] retain];
-//    NSLog(@"parsedResult %@", parsedResult);
-}
-
-- (void)zxingControllerDidCancel:(ZXingWidgetController*)controller {
-    [self dismissScan];
-}
 
 - (void)dismissScan {
     if (nil != self.scanPopover)  {
@@ -505,6 +470,10 @@ NSLog(@"handleResponse for ICEmobile Container");
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
     [properties release];
 
+}
+
+- (void) returnToBrowser  {
+    //noop since container never leaves browser
 }
 
 - (void)reloadCurrentPage {
