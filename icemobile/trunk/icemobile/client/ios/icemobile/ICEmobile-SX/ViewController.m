@@ -463,12 +463,6 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:
-                [UIImage imageNamed:@"stripes.png"]] ];
-        [self.appTitle setBackgroundColor:[UIColor colorWithPatternImage:
-                [UIImage imageNamed:@"bar.png"]] ];
-    }
 
     [IceUtil makeFancyButton:self.cameraButton];
     self.cameraButton.tag = 0;
