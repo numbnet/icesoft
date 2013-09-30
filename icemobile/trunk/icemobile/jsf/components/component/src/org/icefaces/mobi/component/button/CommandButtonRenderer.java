@@ -106,7 +106,8 @@ public class  CommandButtonRenderer extends CoreRenderer {
          * that but users will have to made aware that the button group cannot be used with
          * this feature.
          */
-        if(button.getOpenContentPane() != null ){
+        String openContentPane = button.getOpenContentPane();
+        if(openContentPane != null && openContentPane.length() > 0){
             UIComponent stack = findParentContentStack(uiComponent);
             if( stack == null ){ //if not in stack try to find the first one in the tree
                 stack = findContentStack(facesContext.getViewRoot());
@@ -209,21 +210,24 @@ public class  CommandButtonRenderer extends CoreRenderer {
     private UIComponent findClientId(FacesContext facesContext, UIComponent button, String id){
         //the button has to have a form, so look for it and then the panelConfirmation and
         //submitNotification components are in same form.
-        UIComponent uiForm = JSFUtils.findParentForm(button);
-        UIComponent component;
-        if (null != uiForm){
-            component = uiForm.findComponent(id);
-            if (null!= component){
-               return component;
-            }
-            else { //try UIViewRoot
-                UIViewRoot root = facesContext.getViewRoot();
-                component = root.findComponent(id);
-                if (null!=component){
-                    return component;
+        if( id != null ){
+            UIComponent uiForm = JSFUtils.findParentForm(button);
+            UIComponent component;
+            if (null != uiForm){
+                component = uiForm.findComponent(id);
+                if (null!= component){
+                   return component;
+                }
+                else { //try UIViewRoot
+                    UIViewRoot root = facesContext.getViewRoot();
+                    component = root.findComponent(id);
+                    if (null!=component){
+                        return component;
+                    }
                 }
             }
         }
+        
         logger.warning("Cannot find component linked to commandButton with id="+id);
         return null;
     }

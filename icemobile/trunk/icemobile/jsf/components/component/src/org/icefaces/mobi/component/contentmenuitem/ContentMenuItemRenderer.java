@@ -58,12 +58,12 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
                     if (parent instanceof ContentStackMenu) {
                         ContentStackMenu menu = (ContentStackMenu)parent;
                         String stackClientId = menu.getStackClientId();
-                        UIComponent compStack= facesContext.getViewRoot().findComponent(stackClientId);
-                        stack = (ContentStack)compStack;
+                        if( stackClientId != null && stackClientId.length() > 0 ){
+                            stack= (ContentStack)facesContext.getViewRoot().findComponent(stackClientId);
+                        }
+                        
                     } else if (parent instanceof ContentNavBar){
-                        ContentNavBar navBar = (ContentNavBar)parent;
-                        UIComponent compStack = findParentContentStack(uiComponent);
-                        stack = (ContentStack)compStack;
+                        stack = (ContentStack)findParentContentStack(uiComponent);
                     }
                     if (null != stack){
                         String newVal = String.valueOf(item.getValue());
@@ -117,7 +117,10 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
                 if (item.getValue() !=null){
                     stackClientId = stack.getClientId(facesContext);
                     String valId = String.valueOf(item.getValue());
-                    UIComponent pane = stack.findComponent(valId);
+                    UIComponent pane = null;
+                    if( valId != null && valId.length() > 0){
+                        pane = stack.findComponent(valId);
+                    }
                     writer.startElement(HTML.DIV_ELEM, uiComponent);
                     writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
                     writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
@@ -219,7 +222,7 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
         //find the clientId of the selected Pane
         if (null != stack && selId !=null){
             selClientId = findCompIntree(facesContext, stack,  selId);
-            if (selClientId!=null ){
+            if (selClientId!=null && selClientId.length() > 0 ){
                 UIComponent pane = root.findComponent(selClientId);
                 ContentPane cp = (ContentPane)pane;
                 client = cp.isClient();
@@ -382,16 +385,17 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
     }
 
     public String findCompIntree(FacesContext context, UIComponent compRoot, String id){
-         UIComponent searchComp = compRoot.findComponent(id);
-         if (null!=searchComp){
-             return searchComp.getClientId();
-         }
-        final String searchId =null;
-        compRoot.visitTree(
-                 VisitContext.createVisitContext(context, Arrays.asList(new String[] {id}), null),
-                         new GetClientId(searchId));
-          return searchId;
-
+        String searchId =null;
+        if( id != null && id.length() > 0 ){
+            UIComponent searchComp = compRoot.findComponent(id);
+            if (null!=searchComp){
+                return searchComp.getClientId();
+            }
+            compRoot.visitTree(
+                    VisitContext.createVisitContext(context, Arrays.asList(new String[] {id}), null),
+                            new GetClientId(searchId));
+        }
+        return searchId;
      }
 
      private static class GetClientId implements VisitCallback {

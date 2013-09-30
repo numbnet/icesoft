@@ -66,22 +66,23 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
     }
 
     public static String findSubmitNotificationId(UIComponent uiComponent, String subNotId) {
-        SubmitNotification panelNotification = (SubmitNotification) uiComponent.findComponent(subNotId);
-        if (panelNotification ==null){
-            //try again incase it's within a datatable or some other naming container and start with form.
-            UIComponent uiForm = JSFUtils.findParentForm(uiComponent);
-            if (uiForm !=null){
-                panelNotification = (SubmitNotification)(uiForm.findComponent(subNotId));
+        String val = null;
+        if( subNotId != null && subNotId.length() > 0 ){
+            SubmitNotification panelNotification = (SubmitNotification) uiComponent.findComponent(subNotId);
+            if (panelNotification ==null){
+                //try again incase it's within a datatable or some other naming container and start with form.
+                UIComponent uiForm = JSFUtils.findParentForm(uiComponent);
+                if (uiForm !=null){
+                    panelNotification = (SubmitNotification)(uiForm.findComponent(subNotId));
+                }
             }
+            if (panelNotification != null) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                val = panelNotification.getClientId(facesContext);
+            } 
+            
         }
-        if (panelNotification != null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            String panelNotificationId = panelNotification.getClientId(facesContext);
-            String sb = new String(panelNotificationId);
-            return sb;
-        } else {
-            return null;
-        }
+        return val;
     }
 
 
