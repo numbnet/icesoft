@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.fileentry;
 
 import org.icefaces.apache.commons.fileupload.*;
+import org.icefaces.apache.commons.fileupload.disk.*;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.context.DOMPartialViewContext;
 import org.icefaces.impl.util.CoreUtils;
@@ -115,18 +116,19 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
             byte[] buffer = new byte[16*1024];
 
             try {
-                Collection<javax.servlet.http.Part> parts = request.getParts();
-                log.finer("FileEntryResourceHandler  Parts size: " + parts.size());
+				ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
+				List<FileItem> fileItems = servletFileUpload.parseRequest(request);
+                log.finer("FileEntryResourceHandler  Parts size: " + fileItems.size());
                 PartsManualProgress partsManualProgress = new PartsManualProgress(
                     (ProgressListener) progressListenerResourcePusher,
                     requestContentLength);
-                for (javax.servlet.http.Part part : parts) {
+                for (FileItem fileItem : fileItems) {
                     handleMultipartPortion(facesContext,
                         resolvedCharacterEncoding, clientId2Results,
                         clientId2Callbacks, parameterListMap,
                         partsManualProgress,
                         (PushResourceSetup) progressListenerResourcePusher,
-                        buffer, new PartFile(part, partsManualProgress));
+                        buffer, new PartFile(fileItem, partsManualProgress));
                 }
                 
 
@@ -693,10 +695,10 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
 
 
     private static class PartFile implements MultipartFile {
-        private javax.servlet.http.Part part;
+        private FileItem part;
         private PartsManualProgress partsManualProgress;
 
-        private PartFile(javax.servlet.http.Part part, PartsManualProgress partsManualProgress) {
+        private PartFile(FileItem part, PartsManualProgress partsManualProgress) {
             this.part = part;
             this.partsManualProgress = partsManualProgress;
         }
@@ -716,15 +718,14 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
          * @return content-disposition header's name entry
          */
         public String getFieldName() {
-            return part.getName();
+            return part.getFieldName();
         }
 
         /**
          * @return content-disposition header's filename entry
          */
         public String getFileName() {
-            String contentDispositionHeader = part.getHeader("content-disposition");
-            return FileUploadBase.getFileName(contentDispositionHeader);
+            return part.getName();
         }
 
         public InputStream getInputStream() throws IOException {
@@ -763,7 +764,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                             in.close();
                         }
                     } else if (file != null) {
-                        part.write(file.getAbsolutePath());
+                        part.write(file);
                         partsManualProgress.updateRead(size);
                     }
                 }
