@@ -288,6 +288,8 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     NSString *title = [self.confirmTitles objectForKey:commandName];
     NSString *message = [self.confirmMessages objectForKey:commandName];
     NSString *host = [[NSURL URLWithString:targetURL] host];
+    NSLog(@" trust status for host %@ %hhd", host, 
+        [[NSUserDefaults standardUserDefaults] boolForKey:host]);
     if (nil == host)  {
         UIAlertView *alert = [[UIAlertView alloc] 
                 initWithTitle:@"Invalid URL"
