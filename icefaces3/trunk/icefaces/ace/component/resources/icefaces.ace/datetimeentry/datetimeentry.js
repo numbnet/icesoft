@@ -117,12 +117,13 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
                 var inputID = input[input.input ? "input" : "$input"][0].id;
                 dateSelectBehavior.oncomplete = function() {
                     var inputElement= document.getElementById(inputID);
-                    ice.ace.jq(inputElement).unbind('focus', ice.ace.jq.datepicker._showDatepicker);
-                    inputElement.focus();
-                    setTimeout(function() {
-                        ice.ace.jq(inputElement).bind('focus', ice.ace.jq.datepicker._showDatepicker);
-                    }, 50);
-
+                    if (inputElement.nodeName.toLowerCase() == 'input') {
+                        ice.ace.jq(inputElement).unbind('focus', ice.ace.jq.datepicker._showDatepicker);
+                        inputElement.focus();
+                        setTimeout(function() {
+                            ice.ace.jq(inputElement).bind('focus', ice.ace.jq.datepicker._showDatepicker);
+                        }, 350);
+                    }
                 };
                 ice.ace.ab.call(_self, dateSelectBehavior);
             }
