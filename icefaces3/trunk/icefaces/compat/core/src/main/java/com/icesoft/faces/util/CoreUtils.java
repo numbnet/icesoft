@@ -41,6 +41,9 @@ public class CoreUtils {
     private static final Log log = LogFactory.getLog(CoreUtils.class);
     
     public static String resolveResourceURL(FacesContext facesContext, String path) {
+        if( path == null || path.length() == 0 ){
+            return "";
+        }
         ExternalContext ec = facesContext.getExternalContext();
         String ctxtPath = ec.getRequestContextPath();
 
