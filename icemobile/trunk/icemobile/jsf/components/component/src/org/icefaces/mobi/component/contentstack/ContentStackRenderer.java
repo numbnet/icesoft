@@ -148,7 +148,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         sb.append(", single: ").append(stack.getSingleView());
         sb.append(",hash: ").append(hashcode);
         ContentPane selPane = null;
-        if( selectedPaneId == null || selectedPaneId.length() > 0 ){
+        if( selectedPaneId == null || selectedPaneId.length() == 0 ){
             //auto-select the first contentPane
             selectedPaneId = stack.getChildren().get(0).getId();
         }
