@@ -17,10 +17,12 @@
 package org.icefaces.ace.component.textentry;
 
 import org.icefaces.ace.renderkit.InputRenderer;
+import org.icefaces.ace.util.ClientDescriptor;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
+import org.icefaces.ace.util.PassThruAttributeWriter;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
@@ -30,6 +32,8 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 @MandatoryResourceComponent(tagName="textEntry", value="org.icefaces.ace.component.textentry.TextEntry")
 public class TextEntryRenderer extends InputRenderer {
@@ -61,6 +65,14 @@ public class TextEntryRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = textEntry.getClientId(context);
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
+		
+		String type = textEntry.validateType(textEntry.getType());
+		/*String componentType = "input";
+        if (type.equals("textarea")) {
+            componentType = "textarea";
+        }*/
+        boolean isNumberType = type.equals("number");
+        boolean isDateType = type.equals("date");
 
         writer.startElement("span", component);
         writer.writeAttribute("id", clientId, "clientId");
@@ -78,11 +90,27 @@ public class TextEntryRenderer extends InputRenderer {
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
-        writer.writeAttribute("type", "text", null);
         if (ariaEnabled) {
             writer.writeAttribute("role", "textbox", null);
         }
 
+        PassThruAttributeWriter.renderNonBooleanAttributes(writer, textEntry, textEntry.getCommonInputAttributeNames());
+        PassThruAttributeWriter.renderBooleanAttributes(writer, textEntry, textEntry.getBooleanAttNames());
+        if (isNumberType) {
+            PassThruAttributeWriter.renderNonBooleanAttributes(writer, textEntry, textEntry.getNumberAttributeNames());
+        } else {
+            ClientDescriptor client = Utils.getClientDescriptor();
+            String typeVal = (String)textEntry.getAttributes().get("type");
+            if( isDateType && client.isAndroidOS() && client.isICEmobileContainer() ){ //Android container borks date types
+                typeVal = "text";
+            }
+            type = typeVal;
+            PassThruAttributeWriter.renderNonBooleanAttributes(writer, textEntry, textEntry.getInputtextAttributeNames());
+        }
+        writer.writeAttribute("type", type, null);
+        if (!isDateType) writer.writeAttribute("autocorrect", textEntry.getAutocorrect(), null);
+        else writer.writeAttribute("autocorrect", "on", null);
+        writer.writeAttribute("autocapitalize", textEntry.getAutocapitalize(), null);
         String embeddedLabel = null;
         String nameToRender = clientId + "_input";
         String valueToRender = ComponentUtils.getStringValueToRender(context, textEntry);
@@ -92,6 +120,11 @@ public class TextEntryRenderer extends InputRenderer {
         boolean hasIndicator = (Boolean) labelAttributes.get("hasIndicator");
         String indicatorPosition = (String) labelAttributes.get("indicatorPosition");
         String indicator = (String) labelAttributes.get("indicator");
+        if (valueToRender == null && isDateType){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                Date aDate = new Date();
+                valueToRender =  sdf.format(aDate);
+        }
         if ((valueToRender == null || valueToRender.trim().length() <= 0) && hasLabel && labelPosition.equals("inField")) {
             nameToRender = clientId + "_label";
             valueToRender = embeddedLabel = label;

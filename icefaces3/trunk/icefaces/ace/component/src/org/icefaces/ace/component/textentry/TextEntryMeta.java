@@ -23,6 +23,8 @@ import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName = "textEntry",
@@ -42,9 +44,15 @@ import org.icefaces.resources.ICEResourceLibrary;
 @ICEResourceDependencies({
      @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
 })
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 @ClientBehaviorHolder(events = {
         @ClientEvent(name = "blur", javadoc = "Fired when the text input field loses focus (default event).",
-                tlddoc = "Fired when the text input field loses focus (default event).", defaultRender = "@all", defaultExecute = "@this")
+                tlddoc = "Fired when the text input field loses focus (default event).", defaultRender = "@all", defaultExecute = "@this"),
+	@ClientEvent(name="change", javadoc="Fired when the component detects value is changed.",
+            tlddoc="Fired when the component detects value is changed.",
+            defaultRender="@this", defaultExecute="@all")
 }, defaultEvent = "blur")
 public class TextEntryMeta extends HtmlInputTextMeta {
 
@@ -67,4 +75,51 @@ public class TextEntryMeta extends HtmlInputTextMeta {
 
     @Property(tlddoc = "When true the component will automatically tab to the next component once the maxLength number of characters have been entered.")
     private boolean autoTab;
+	
+	// ----------------------------------------
+	// ----- imported from mobi:inputText -----
+	// ----------------------------------------
+
+    @Property(defaultValue = "text", tlddoc = "The type attribute for the input element. " +
+    		"Currently supports text, textarea, phone, url, email, number, date, time, datetime.  Depending " +
+    		"on device capability, a type-specific keyboard may be displayed. ")
+    private String type;
+
+    @Property(tlddoc = "The HTML5 placeholder attribute represents a short hint" +
+    		" (a word or short phrase) intended to aid the user with data entry " +
+    		"when the input element has no value.")
+    private String placeholder;
+
+    @Property(tlddoc = "The pattern attribute specifies a regular expression against which " +
+    		"the control's value, or, when the multiple attribute applies and is set, " +
+    		"the control's values, are to be checked. ")
+    private String pattern;
+
+    @Property(defaultValue = "off",
+            tlddoc = "Capitalize the first character of the field.")
+    private String autocapitalize;
+
+    @Property(defaultValue = "off",
+            tlddoc = "Correct spelling errors in the field.")
+    private String autocorrect;
+
+    @Property(defaultValue = "3", tlddoc = "Magnifying glass for webkit used to show last three searches on a search field.")
+    private int results;
+    
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="Minimum value, only applicable to type number.")
+    private int min;
+
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="Maximum value, only applicable to type number.")
+    private int max;
+    
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="The step to increase/decrease the value of the number input. " +
+            "Applicable only to type \"number\". ")
+    private int step;
+
+    @Property(defaultValue = "false", tlddoc = "When singleSubmit is \"true\", triggering an action on " +
+    		"this component will submit and execute only this component only (equivalent to" +
+    		" <f:ajax execute='@this' render='@all'> ). When singleSubmit is \"false\", triggering an " +
+    		"action on this component will submit and execute the full form that this component " +
+    		"is contained within.")
+    private boolean singleSubmit;
 }
