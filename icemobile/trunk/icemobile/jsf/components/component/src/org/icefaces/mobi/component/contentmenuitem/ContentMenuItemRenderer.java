@@ -234,15 +234,7 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
         String label = menuItem.getLabel();
         String url = menuItem.getUrl();
         if (isLabelEmpty(label)){
-            if (selId!=null){
-                label=selId;
-            }
-            else if (url!=null){
-                label=menuItem.getUrl();
-            }
-            else {
-                label="MenuItem";
-            }
+            label="";
         }
  
         ResponseWriter writer = facesContext.getResponseWriter();
