@@ -130,7 +130,7 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
         writer.endElement(HTML.UL_ELEM);
         if (menu.isAccordion()){
             writer.endElement(HTML.DIV_ELEM);
-            writer.endElement(HTML.SECTION_ELEM);
+            writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
         this.encodeHidden(facesContext, component);
