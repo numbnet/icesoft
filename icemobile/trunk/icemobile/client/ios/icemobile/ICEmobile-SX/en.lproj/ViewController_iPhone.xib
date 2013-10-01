@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
@@ -17,6 +17,7 @@
                 <outlet property="microphoneButton" destination="52" id="56"/>
                 <outlet property="openButton" destination="64" id="65"/>
                 <outlet property="qrButton" destination="53" id="54"/>
+                <outlet property="settingsButton" destination="6UQ-3A-WXT" id="coI-0F-0Xa"/>
                 <outlet property="smsButton" destination="38" id="39"/>
                 <outlet property="splashImage" destination="67" id="68"/>
                 <outlet property="uploadLabel" destination="10" id="14"/>
@@ -239,6 +240,16 @@
                     <rect key="frame" x="40" y="231" width="240" height="190"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6UQ-3A-WXT">
+                    <rect key="frame" x="243" y="430" width="57" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <state key="normal" title="Settings">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="showSettings" destination="-1" eventType="touchUpInside" id="GVD-ht-pfd"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

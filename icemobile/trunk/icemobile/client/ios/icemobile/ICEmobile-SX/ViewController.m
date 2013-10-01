@@ -22,6 +22,7 @@
 #import "ViewController.h"
 #import "NativeInterface.h"
 #import "IceUtil.h"
+#import "SettingsViewController.h"
 #import "Logging.h"
 
 @implementation ViewController
@@ -60,6 +61,7 @@
 
 
 - (void) dealloc  {
+    [_settingsButton release];
     [self.confirmTitles dealloc];
     [self.confirmMessages dealloc];
     [self.commandNames dealloc];
@@ -288,8 +290,6 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     NSString *title = [self.confirmTitles objectForKey:commandName];
     NSString *message = [self.confirmMessages objectForKey:commandName];
     NSString *host = [[NSURL URLWithString:targetURL] host];
-    NSLog(@" trust status for host %@ %hhd", host, 
-        [[NSUserDefaults standardUserDefaults] boolForKey:host]);
     if (nil == host)  {
         UIAlertView *alert = [[UIAlertView alloc] 
                 initWithTitle:@"Invalid URL"
@@ -302,6 +302,12 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
         LogError(@"Upload URL not valid: %@", targetURL);
         return;
     }
+
+    if ([self.settingsView canTrustHost:host])  {
+        [self completeDispatch];
+        return;
+    }
+
     message = [[message stringByAppendingString:host] 
             stringByAppendingString:@"?" ];
 
@@ -319,9 +325,35 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
             initWithTitle:title 
             message:message 
             delegate:self cancelButtonTitle:@"OK" 
-            otherButtonTitles:@"Cancel",nil];
+            otherButtonTitles:@"Trust", @"Cancel",nil];
     [alert show];
     [alert release];
+}
+
+- (void) completeDispatch  {
+    if (nil != self.currentURL)  {
+        NSURL *theURL = [NSURL URLWithString:self.currentURL];
+        NSString *host = [theURL host];
+        NSString *contextPath = [[theURL pathComponents] objectAtIndex:1];
+        NSString *cookiePath = [[@"/" stringByAppendingString:contextPath]
+                stringByAppendingString:@"/"];
+        LogDebug(@"setCookie contextPath %@ ", contextPath );
+
+        NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
+                @"JSESSIONID", NSHTTPCookieName,
+                currentSessionId, NSHTTPCookieValue,
+                cookiePath, NSHTTPCookiePath,
+                host, NSHTTPCookieDomain,
+                nil ];
+
+        NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
+        LogDebug(@"setCookie %@ ", cookie );
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
+        LogDebug(@"currentCookies %@ ", [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies );
+    }
+
+    self.isResponding = NO;
+    [nativeInterface dispatch:self.currentCommand];
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -337,30 +369,16 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     }
 
     if (buttonIndex == 0) {
+        [self completeDispatch];
+    } else if (buttonIndex == 1)  {
         if (nil != self.currentURL)  {
             NSURL *theURL = [NSURL URLWithString:self.currentURL];
             NSString *host = [theURL host];
-            NSString *contextPath = [[theURL pathComponents] objectAtIndex:1];
-            NSString *cookiePath = [[@"/" stringByAppendingString:contextPath]
-                    stringByAppendingString:@"/"];
-            LogDebug(@"setCookie contextPath %@ ", contextPath );
-
-            NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
-                    @"JSESSIONID", NSHTTPCookieName,
-                    currentSessionId, NSHTTPCookieValue,
-                    cookiePath, NSHTTPCookiePath,
-                    host, NSHTTPCookieDomain,
-                    nil ];
-
-            NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
-            LogDebug(@"setCookie %@ ", cookie );
-            [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
-            LogDebug(@"currentCookies %@ ", [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies );
+            [self.settingsView setHost:host trustSetting:YES];
+            [self.settingsView saveSettings];
         }
-
-        self.isResponding = NO;
-        [nativeInterface dispatch:self.currentCommand];
-    } else if (buttonIndex == 1)  {
+        [self completeDispatch];
+    } else if (buttonIndex == 2)  {
         [self doCancel];
     }
     LogDebug(@"Alert dismissed via button %d", buttonIndex);
@@ -382,6 +400,12 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
             otherButtonTitles:nil];
     [alert show];
     [alert release];
+}
+
+- (IBAction) showSettings  {
+    NSLog(@"showSettings ");
+    [self.settingsView loadSettings];
+    [self presentModalViewController:self.settingsView animated:YES];
 }
 
 - (IBAction) doMediacast  {
@@ -537,6 +561,9 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
         [alert show];
         [alert release];
     }
+
+    self.settingsView = [[SettingsViewController alloc] init];
+    [self.settingsView loadSettings];
 
 }
 
