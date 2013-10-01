@@ -4602,20 +4602,26 @@ function wijmoASPNetParseOptions(o) {
 			});
 		},
 		_hideSubmenu: function (sublist) {
+			var self = this,
+				o = self.options,
+				animations = $.wijmo.wijmenu.animations,
+				animationOptions, list, hideAnimation;
+
+			if (sublist.is('div.ui-effects-wrapper')) { // ICE-9608
+				sublist = sublist.children(":first");
+			}
 			// ICE-8145 only hide if we know it's open {
 			var menuId = ice.ace.submenuRegistryGetMenuId(this.rootMenu.get(0));
 			if (!ice.ace.submenuRegistryCheck(menuId, sublist.get(0))) return; // exit if submenu is not open
 			// ICE-8145 }
 			if (sublist.parents(".ui-menu-multicolumn").size() > 0) return; // ICE-7827
 
-			var self = this,
-				o = self.options,
-				animations = $.wijmo.wijmenu.animations,
-				animationOptions, list, hideAnimation;
-
 			if (sublist.prev().is(".wijmo-wijmenu-link")) {
 				sublist.prev().data("subMenuOpened", false);
 				sublist.prev().removeClass("ui-state-active");
+			} else if (sublist.parent().is('div.ui-effects-wrapper') && sublist.parent().prev().is(".wijmo-wijmenu-link")) { // ICE-9608
+				sublist.parent().prev().data("subMenuOpened", false);
+				sublist.parent().prev().removeClass("ui-state-active");			
 			}
 
 			if ($.fn.wijhide) {
