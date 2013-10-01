@@ -335,10 +335,10 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
         if (menu.isOpenAccordionHandle()){
             writer.endElement(HTML.UL_ELEM);
             writer.endElement(HTML.DIV_ELEM);
-            writer.endElement(HTML.SECTION_ELEM);
+            writer.endElement(HTML.DIV_ELEM);
             menu.setOpenAccordionHandle(false);
         }
-        StringBuilder handleClass = new StringBuilder("handle");
+        StringBuilder handleClass = new StringBuilder("handle ui-bar-b");
         StringBuilder listClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_LIST_CLASS);
         StringBuilder baseClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_CLASS);
         StringBuilder pointerClass = new StringBuilder("pointer");
@@ -352,7 +352,7 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
               listClass.append(" ").append(userDefinedClass);
               baseClass.append(" ").append(userDefinedClass);
         }
-        writer.startElement(HTML.SECTION_ELEM, childComp);
+        writer.startElement(HTML.DIV_ELEM, childComp);
         String chId = childComp.getClientId();
         writer.writeAttribute(HTML.ID_ATTR, chId+"_sect", HTML.ID_ATTR);
         writer.writeAttribute("class", closeClass, "class");
