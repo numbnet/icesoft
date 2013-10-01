@@ -128,6 +128,7 @@ NSLog(@"splash image URL %@", splashImageURL);
         [self.viewController.splashImage setImage:image];
     }
 
+    [self.viewController dismissModalViewControllerAnimated:NO];
     [self.viewController dispatchCurrentCommand];
 
     return YES;

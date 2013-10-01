@@ -17,7 +17,7 @@
 #import <UIKit/UIKit.h>
 #import "NativeInterfaceViewController.h"
 
-@class NativeInterface;
+@class NativeInterface, SettingsViewController;
 
 @interface ViewController : UIViewController<NativeInterfaceViewController, UIAlertViewDelegate> {
 
@@ -86,7 +86,9 @@
 @property (nonatomic, retain) IBOutlet UIButton *microphoneButton;
 @property (nonatomic, retain) IBOutlet UIButton *qrButton;
 @property (nonatomic, retain) IBOutlet UIButton *openButton;
+@property (retain, nonatomic) IBOutlet UIButton *settingsButton;
 @property (nonatomic, retain) IBOutlet UIImageView *splashImage;
+@property (nonatomic, retain) SettingsViewController *settingsView;
 
 - (void) applicationWillResignActive;
 - (void) applicationWillEnterForeground;
@@ -103,5 +105,6 @@
 - (IBAction) returnPressed;
 - (IBAction) actionPressed:(id)sender;
 - (IBAction) showLicense;
+- (IBAction) showSettings;
 
 @end

@@ -62,6 +62,10 @@
 		9C93147D1485507900B21FA1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C93147C1485507900B21FA1 /* AVFoundation.framework */; };
 		9C93147F148556B100B21FA1 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C93147E148556B100B21FA1 /* CoreVideo.framework */; };
 		9C931481148556EC00B21FA1 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C931480148556EC00B21FA1 /* CoreMedia.framework */; };
+		9C9D3F8A17FB8BBD00FD3DBD /* NamedSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9D3F8517FB8BBD00FD3DBD /* NamedSwitch.m */; };
+		9C9D3F8B17FB8BBD00FD3DBD /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9D3F8717FB8BBD00FD3DBD /* SettingsViewController.m */; };
+		9C9D3F8C17FB8BBD00FD3DBD /* SettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C9D3F8817FB8BBD00FD3DBD /* SettingsViewController~ipad.xib */; };
+		9C9D3F8D17FB8BBD00FD3DBD /* SettingsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C9D3F8917FB8BBD00FD3DBD /* SettingsViewController~iphone.xib */; };
 		9CA2E88B1731BFF1001D1CFC /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CA2E88A1731BFF1001D1CFC /* Default@2x.png */; };
 		9CA51B6414730D110065F681 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA51B6314730D110065F681 /* UIKit.framework */; };
 		9CA51B6614730D110065F681 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA51B6514730D110065F681 /* Foundation.framework */; };
@@ -148,6 +152,12 @@
 		9C93147C1485507900B21FA1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9C93147E148556B100B21FA1 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		9C931480148556EC00B21FA1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		9C9D3F8417FB8BBD00FD3DBD /* NamedSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamedSwitch.h; sourceTree = "<group>"; };
+		9C9D3F8517FB8BBD00FD3DBD /* NamedSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NamedSwitch.m; sourceTree = "<group>"; };
+		9C9D3F8617FB8BBD00FD3DBD /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		9C9D3F8717FB8BBD00FD3DBD /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		9C9D3F8817FB8BBD00FD3DBD /* SettingsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SettingsViewController~ipad.xib"; sourceTree = "<group>"; };
+		9C9D3F8917FB8BBD00FD3DBD /* SettingsViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SettingsViewController~iphone.xib"; sourceTree = "<group>"; };
 		9CA2E88A1731BFF1001D1CFC /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		9CA51B5F14730D110065F681 /* ICEmobile-SX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ICEmobile-SX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CA51B6314730D110065F681 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -287,6 +297,12 @@
 		9CA51B6914730D110065F681 /* ICEmobile-SX */ = {
 			isa = PBXGroup;
 			children = (
+				9C9D3F8417FB8BBD00FD3DBD /* NamedSwitch.h */,
+				9C9D3F8517FB8BBD00FD3DBD /* NamedSwitch.m */,
+				9C9D3F8617FB8BBD00FD3DBD /* SettingsViewController.h */,
+				9C9D3F8717FB8BBD00FD3DBD /* SettingsViewController.m */,
+				9C9D3F8817FB8BBD00FD3DBD /* SettingsViewController~ipad.xib */,
+				9C9D3F8917FB8BBD00FD3DBD /* SettingsViewController~iphone.xib */,
 				9C31CD3E1796FF0800A92773 /* open@2x.png */,
 				9C31CD3F1796FF0800A92773 /* open.png */,
 				9C654E9E174D8F1C00758CA6 /* Default-Portrait@2x~ipad.png */,
@@ -398,6 +414,7 @@
 				9C4F8C3A14859D3600A2B288 /* AudioController.xib in Resources */,
 				9C5CD04314BCBCA70070662F /* camcorder.png in Resources */,
 				9C5CD04414BCBCA70070662F /* camcorder@2x.png in Resources */,
+				9C9D3F8D17FB8BBD00FD3DBD /* SettingsViewController~iphone.xib in Resources */,
 				9C5CD04514BCBCA70070662F /* camera.png in Resources */,
 				9C5CD04614BCBCA70070662F /* camera@2x.png in Resources */,
 				9C5CD04714BCBCA70070662F /* microphone.png in Resources */,
@@ -412,6 +429,7 @@
 				9C7A1E8A156C24E70013D23D /* ar@2x.png in Resources */,
 				9C42F738158277E00011FECC /* E.png in Resources */,
 				9C42F739158277E00011FECC /* E@2x.png in Resources */,
+				9C9D3F8C17FB8BBD00FD3DBD /* SettingsViewController~ipad.xib in Resources */,
 				9C42F73A158277E00011FECC /* N.png in Resources */,
 				9C42F73B158277E00011FECC /* N@2x.png in Resources */,
 				9C42F73C158277E00011FECC /* S.png in Resources */,
@@ -452,10 +470,12 @@
 				9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */,
 				9C51732F155DA6E600090828 /* ARViewController.m in Sources */,
 				9C517337155DA99C00090828 /* PlaceLabel.m in Sources */,
+				9C9D3F8A17FB8BBD00FD3DBD /* NamedSwitch.m in Sources */,
 				9C00021317FA2F97001DC767 /* AVScanViewController.m in Sources */,
 				9C51733A155DACE300090828 /* ARView.m in Sources */,
 				9C7A1064156BF9AD0013D23D /* MapController.m in Sources */,
 				9CBF5ACD1638AB1E0015E267 /* IceUtil.m in Sources */,
+				9C9D3F8B17FB8BBD00FD3DBD /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
