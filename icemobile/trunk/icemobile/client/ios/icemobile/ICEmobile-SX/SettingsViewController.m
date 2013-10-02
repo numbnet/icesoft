@@ -53,6 +53,7 @@
 {
     // Return the number of rows in the section.
     if (0 == section)  {
+        NSLog(@"rows in section 0 %d", [self.settings count]);
         return [self.settings count];
     } 
     
@@ -116,6 +117,8 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:settingsFile])  {
         self.settings = [self.settings initWithContentsOfFile:settingsFile];
     }
+    [self.tableView reloadData];
+    NSLog(@"Settings loaded %@", self.settings);
 }
 
 - (void) saveSettings {
