@@ -32,13 +32,6 @@ public class TabSetCoreRenderer extends BaseCoreRenderer {
             throws IOException {
         ITabSet tabset = (ITabSet)component;
         String clientId = tabset.getClientId();
-        /* JSF comp writes script into 1st span */
-        if (!isJSP)  {
-            super.writeExternalScript(component, writer,
-                    tabset.getJavascriptFileRequestPath(),
-                    !tabset.isScriptLoaded());
-            tabset.setScriptLoaded();
-        }
         writer.startElement(DIV_ELEM, tabset);
         writer.writeAttribute(ID_ATTR, clientId);
         // apply default style class

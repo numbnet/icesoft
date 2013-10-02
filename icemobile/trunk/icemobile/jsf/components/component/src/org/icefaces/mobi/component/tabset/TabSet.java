@@ -202,25 +202,5 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
         return this.index;
     }
 
-    public String getJavascriptFileRequestPath() {
-        String jsFname = JS_NAME;
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Production)){
-            jsFname = JS_MIN_NAME;
-        }
-        //set jsFname to min if development stage
-        Resource jsFile = facesContext.getApplication().getResourceHandler()
-                .createResource(jsFname, LIB_JSF);
-        return jsFile.getRequestPath();
-    }
-
-    public boolean isScriptLoaded() {
-        return InlineScriptEventListener.isScriptLoaded(FacesContext.getCurrentInstance(), ITabSet.JS_NAME);
-    }
-
-    public void setScriptLoaded() {
-        InlineScriptEventListener.setScriptLoaded(FacesContext.getCurrentInstance(), ITabSet.JS_NAME);
-    }
-
 
 }

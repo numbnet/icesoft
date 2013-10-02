@@ -16,19 +16,15 @@
 package org.icefaces.mobi.component.menubutton;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
-import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icemobile.component.IMenuButton;
 import org.icemobile.renderkit.IResponseWriter;
 import org.icemobile.renderkit.MenuButtonCoreRenderer;
@@ -36,14 +32,10 @@ import org.icemobile.renderkit.MenuButtonCoreRenderer;
 
 public class MenuButtonRenderer extends BaseLayoutRenderer {
     private static final Logger logger = Logger.getLogger(MenuButtonRenderer.class.getName());
-    private static final String JS_NAME = "menubutton.js";
-    private static final String JS_MIN_NAME = "menubutton-min.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.button";
 
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         MenuButton menu = (MenuButton) uiComponent;
      	UIComponent form = JSFUtils.findParentForm(uiComponent);
@@ -51,7 +43,6 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
 	        throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
 		}
          // root element
-        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         IMenuButton imenu = (IMenuButton)uiComponent;
         IResponseWriter writer2 = new ResponseWriterWrapper(facesContext.getResponseWriter());
         MenuButtonCoreRenderer renderer = new MenuButtonCoreRenderer();

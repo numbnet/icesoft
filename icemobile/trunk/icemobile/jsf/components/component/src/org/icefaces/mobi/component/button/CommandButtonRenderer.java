@@ -118,12 +118,15 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 noPanelConf.append(",{ selectedId: '").append(button.getOpenContentPane()).append("'");
                 noPanelConf.append(",singleSubmit: ").append(button.isSingleSubmit());
                 noPanelConf.append(", item: '").append(uiComponent.getClientId(facesContext)).append("'");
-                UIComponent pane = stack.findComponent(button.getOpenContentPane());
+                UIComponent pane = JSFUtils.findComponent(openContentPane, null);
                 if (pane!=null){
                     String paneId = pane.getClientId(facesContext);
                     noPanelConf.append(",selClientId: '").append(paneId).append("'");
                     ContentPane cp = (ContentPane)pane;
                     noPanelConf.append(",client: ").append(cp.isClient());
+                }
+                else{
+                    logger.warning("Could not locate contentPane for CommandButton.openContentPane attribute: " + openContentPane);
                 }
                 noPanelConf.append("});");
                 button.setJsCall(noPanelConf);

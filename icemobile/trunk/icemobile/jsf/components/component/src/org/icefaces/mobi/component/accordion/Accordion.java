@@ -101,13 +101,6 @@ public class Accordion extends AccordionBase implements ContentPaneController, I
         return jsFile.getRequestPath();
     }
 
-    public boolean isScriptLoaded() {
-        return InlineScriptEventListener.isScriptLoaded(FacesContext.getCurrentInstance(), IAccordion.JS_NAME);
-    }
-
-    public void setScriptLoaded() {
-        InlineScriptEventListener.setScriptLoaded(FacesContext.getCurrentInstance(), IAccordion.JS_NAME);
-    }
 
     public String getOpenedPaneClientId() {
         UIComponent openPane = null;  //all children must be panels
