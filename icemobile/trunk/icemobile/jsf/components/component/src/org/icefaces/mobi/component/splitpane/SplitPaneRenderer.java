@@ -32,9 +32,6 @@ import org.icefaces.mobi.utils.JSFUtils;
 
 public class SplitPaneRenderer extends BaseLayoutRenderer {
     private static final Logger logger = Logger.getLogger(SplitPaneRenderer.class.getName());
-    private static final String JS_NAME = "splitpane.js";
-    private static final String JS_MIN_NAME = "splitpane-min.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.splitpane";
 
     @Override
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
@@ -50,9 +47,6 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
         SplitPaneCoreRenderer renderer = new SplitPaneCoreRenderer();
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         renderer.encodeBegin(pane, writer);
-        if ((leftFacet!=null) && (rightFacet !=null)){
-           writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-        }
         renderer.encodePane(pane, writer, "left");
         JSFUtils.renderChild(facesContext, leftFacet);
         renderer.encodePaneEnd(writer);

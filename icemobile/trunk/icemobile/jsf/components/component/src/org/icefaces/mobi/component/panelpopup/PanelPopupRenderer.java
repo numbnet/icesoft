@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
@@ -34,9 +33,6 @@ import org.icemobile.util.CSSUtils;
 
 public class PanelPopupRenderer extends BaseLayoutRenderer {
     private static final Logger logger = Logger.getLogger(PanelPopupRenderer.class.getName());
-    private static final String JS_NAME = "panelpopup.js";
-    private static final String JS_MIN_NAME = "panelpopup-min.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.panelpopup";
 
     @Override
     public void decode(FacesContext facesContext, UIComponent component) {
@@ -59,22 +55,14 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
 
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        PanelPopup popup = (PanelPopup) component;
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = component.getClientId(facesContext);
-        writeJavascriptFile(facesContext, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-        encodeMarkup(facesContext, component);
-    }
-
-    protected void encodeMarkup(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        PanelPopup panelPopup = (PanelPopup) uiComponent;
+        PanelPopup panelPopup = (PanelPopup) component;
         IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         PanelPopupCoreRenderer renderer = new PanelPopupCoreRenderer();
         renderer.encodeBegin(panelPopup, writer);
         UIComponent labelFacet = panelPopup.getFacet("label");
         String headerText = panelPopup.getHeaderText();
         if (labelFacet != null || headerText != null) {
-            writer.startElement(HTML.DIV_ELEM, uiComponent);
+            writer.startElement(HTML.DIV_ELEM, component);
             writer.writeAttribute(HTML.ID_ATTR, panelPopup.getClientId() + "_title");
             writer.writeAttribute("class", PanelPopup.TITLE_CLASS + " " + CSSUtils.STYLECLASS_BAR_B);
             if (labelFacet != null) {
@@ -91,7 +79,6 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         }
         renderer.encodeEnd(panelPopup, writer);
     }
-
 
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {

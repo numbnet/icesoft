@@ -36,21 +36,12 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
                              boolean selected)
             throws IOException{
         String clientId = pane.getClientId();
-        String contentClass = IContentPane.CONTENT_BASE_CLASS;
         writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId+"_wrp");
-        String contentDeadClass = IContentPane.CONTENT_HIDDEN_CLASS.toString();
-        String classToWrite = contentDeadClass;
-        if (selected){
-            classToWrite =  contentClass;
-        }
-    //    logger.info(" id="+clientId+" has selected="+selected+" class="+classToWrite);
-        writer.writeAttribute(CLASS_ATTR, classToWrite) ;
-        /* write out root tag.  For current incarnation html5 semantic markup is ignored */
+        writer.writeAttribute(CLASS_ATTR, selected ? IContentPane.CONTENT_BASE_CLASS : IContentPane.CONTENT_HIDDEN_CLASS);
+
         writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId);
-  //      writer.writeAttribute("keyId", pane.getId());
-//        writer.writeAttribute("client", pane.isClient());
         if (pane.getStyleClass()!=null){
             writer.writeAttribute(CLASS_ATTR, pane.getStyleClass());
         }

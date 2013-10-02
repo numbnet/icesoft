@@ -946,18 +946,14 @@ ice.mobi.button = {
             return; // no change on which button can be selected
         }
         var curClass = me.className;
-  //      console.log("curClass="+curClass);
         if (ice.mobi.hasClass(me, ice.mobi.BUTTON_UNPRESSED )){
             var newCls = me.className.replace('up','down');
             me.className = newCls;
-        } else {
-            //what to do?  we always will render it this way...
-        }
+        } 
         //check if it's part of a commandButtonGroup
         if (cfg.groupId){
             var groupElem = document.getElementById(cfg.groupId+"_hidden");
             if (groupElem){
-            //    console.log("for groupId "+cfg.groupId+" value is "+clientId);
                 groupElem.value = clientId; //update group to this button selected
             }
         }
@@ -976,8 +972,6 @@ ice.mobi.button = {
             /* does not yet support mobi ajax for panelConf or submitNotification need to modify first */
             /* need to rework AjaxBehaviorRenderer before I can combine the options and cfg */
              behaviors.click();
-            /* once I rework mobi ajax support will be able to support all the callbacks in next call */
-            //ice.mobi.ab(ice.mobi.extendAjaxArguments(behaviors, options));
         }else{
             if (singleSubmit){
                 options.execute="@this";
@@ -991,7 +985,6 @@ ice.mobi.button = {
             }
             options.render = "@all";
             if (cfg.pcId) {
-              //  console.log("throw control to panelConfirmation id="+cfg.pcId);
                 ice.mobi.panelConf.init(cfg.pcId, clientId, cfg, options);
                 return;
              }
@@ -999,7 +992,6 @@ ice.mobi.button = {
                  ice.mobi.submitnotify.open(cfg.snId, clientId, cfg, options);
                  return;
              }
-            //if here, then no panelConfirmation as this action is responsible for submit
              else {
                  mobi.AjaxRequest(options);
             }
@@ -1074,9 +1066,6 @@ ice.mobi.sx = function (element, uploadURL) {
             uploadURL = baseURL + formAction;
         }
     }
-//    } else {
-//        uploadURL += '/';
-//    }
 
     var returnURL = "" + window.location;
     if ("" == window.location.hash) {
@@ -1091,8 +1080,6 @@ ice.mobi.sx = function (element, uploadURL) {
         params = ubConfig + params;
     }
 
-//    var splashClause = ice.mobi.impl.getSplashClause();
-
     var sessionidClause = "";
     if ("" != sessionid) {
         sessionidClause = "&JSESSIONID=" + escape(sessionid);
@@ -1101,7 +1088,6 @@ ice.mobi.sx = function (element, uploadURL) {
             "?id=" + id + ampchar + params) +
             "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
             sessionidClause +
-//            splashClause +
             "&p=" + escape(ice.mobi.serialize(form, false));
 
     window.location = sxURL;
@@ -2418,8 +2404,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
                    prevPane.className =  hideClass;
                }
                if (!client || selClId ==null){
-  /*                 var hiddenId = myStackId + '_hidden';
-                   updateHidden(myStackId, selectedPaneId);*/
                    if (singleSubmit){
                       try{
                        ice.se(event,item);
@@ -2465,4 +2449,1026 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
   })();
 
+//tabset
+(function() {
+    //functions that do not encapsulate any state, they just work with the provided parameters
+    //and globally accessible variables
+    //---------------------------------------
+    function updateHidden(clientId, value) {
+        var hidden = document.getElementById(clientId + "_hidden");
+        if (hidden) {
+            hidden.value = value;
+        }
+    }
 
+    /* taken from accordion with slight modifications */
+    function calcMaxChildHeight(containerEl) {
+        var mxht = 0;
+        if( containerEl ){
+          //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
+            var children = containerEl.getElementsByTagName('div');
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].scrollHeight > mxht) {
+                    mxht = children[i].scrollHeight;
+                }
+            }
+        }
+        return mxht;
+    }
+
+    function hasClass(ele, cls) {
+        return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+    }
+
+    function addClass(ele, cls) {
+        if (hasClass(ele, cls)) {
+            ele.className = cls;
+        }
+    }
+
+    function removeClass(ele, cls) {
+        if (hasClass(ele, cls)) {
+            // var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');  don't need if we don't allow to skin?
+            ele.className = " ";
+        }
+    }
+
+    function setWidthStyle(root){
+        if( root ){
+            var nodes = root.getElementsByTagName('ul');
+            var ul = nodes[0];
+            var children = ul.getElementsByTagName('li');
+            var containerWidth = root.clientWidth;        
+            var width = Math.floor(containerWidth/children.length);
+            var remainingPixels = containerWidth - (children.length*width);
+            var percentageWidth = Math.floor(100/children.length);
+            var remainingPercentage = 100 - (children.length*percentageWidth);
+            
+            for (var i = 0; i < children.length; i++){
+                if( i < (children.length -1 )){
+                    children[i].style.width = width+"px";
+                    children[i].style.maxWidth = percentageWidth+"%";
+                }
+                else{
+                    children[i].style.width = (width+remainingPixels)+"px";
+                    children[i].style.maxWidth = (percentageWidth+remainingPercentage)+"%";
+                }
+                
+            }
+        }
+    }
+
+    function setTabActive(id, cls) {
+        var curTab = document.getElementById(id);
+        if (curTab) {
+            curTab.setAttribute("class", cls);
+        }  else {
+            console.log("PROBLEM SETTING ATIVE TAB FOR id="+id);
+        }
+    }
+
+    //declare functions who creates object with methods that have access to the local variables of the function
+    //so in effect the returned object can operate on the local state declared in the function ...
+    //think about them as object fields in Java, also gone is the chore of copying the constructor parameters into fields
+    //-------------------------------------
+    function TabSet(clientId, cfgIn) {
+        // setup tabContainer
+        var tabContainer = document.getElementById(clientId);
+        var contentId = clientId+"_tabContent";
+        var tabContent = document.getElementById(contentId);
+        var classHid = "mobi-tabpage-hidden";
+        var classVis = "mobi-tabpage";
+        var clsActiveTab = "activeTab ui-btn-active";
+        var tabCtrl = clientId + "tab_";
+        var tabIndex = cfgIn.tIndex;
+        var autoWidth = cfgIn.autoWidth;
+        if (autoWidth){
+            setTimeout( function(){
+                setWidthStyle(tabContainer);
+            }, 10);
+            var setWidthStyleListener = function(){ 
+                if( !tabContainer ){
+                    ice.mobi.removeListener(window,"resize", this);
+                    return;
+                };
+                setWidthStyle(tabContainer); 
+            }
+            ice.mobi.addListener(window, 'resize', setWidthStyleListener);
+        }
+        var lastServerIndex = tabIndex;
+        var height = cfgIn.height || -1;
+        var disabled = cfgIn.disabled;
+        var autoheight = cfgIn.autoheight || false;
+        var cntr = 0;
+        if (height !== -1) {
+            tabContent.style.maxHeight = height;
+            tabContent.style.height = height;
+        } else if (autoheight == true){
+            var ht = calcMaxChildHeight(tabContent);
+            if (ht > 0) {
+                tabContent.style.height = ht + "px";
+            }
+        }
+        setTabActive(tabCtrl + tabIndex, clsActiveTab);
+        updateHidden(clientId, tabIndex);
+        var contents = tabContent.childNodes;
+        var length = contents.length;
+        var newPage = contents[tabIndex];
+        newPage.className = classVis;
+        for (i = 0; i < length; i++) {
+            if (i != tabIndex) {
+               contents[i].className = classHid;
+            }
+        }
+
+        return {
+            showContent: function(clientId, el, cfgIn) {
+                if ( disabled == true) {
+                    return;
+                }
+                if (!contentId){
+                    contentId = clientId+"_tabContent";
+                }
+         //       tabContent = document.getElementById(contentId);
+                contents = this.getContents(clientId);
+                var parent = el.parentNode;
+                if (!parent) {
+                    parent = el.parentElement;
+                }
+                var old = tabIndex;
+                var oldPage = contents[old];
+                oldPage.className = classHid;
+                var currCtrl = tabCtrl + old;
+                var oldCtrl = document.getElementById(currCtrl);
+                removeClass(oldCtrl, clsActiveTab);
+                var isClient = cfgIn.client || false;
+                tabIndex = cfgIn.tIndex;
+             //   console.log("SHOWCONTENT tabIndex="+tabIndex+" old="+old);
+                if (lastServerIndex==tabIndex){
+                    cntr= cntr + 1;
+                } else {
+                    cntr = 0;
+                    lastServerIndex = tabIndex;
+                }
+                var submitted = tabIndex +","+cntr;
+                  //  console.log(" submitted="+submitted);
+                updateHidden(clientId, submitted);
+                contents[old].setAttribute("class", classHid);
+                if (!isClient) {
+                    ice.se(null, clientId);
+                } else {
+                    contents[tabIndex].setAttribute("class", classVis);
+                }
+                el.setAttribute("class", clsActiveTab);
+             //   console.log("end of SHOW CONTENTS:-") ;
+            },
+            updateProperties: function (clientId, cfgUpd) {
+                var newHt = cfgUpd.height || -1;
+                if (newHt !== -1 && newHt !== height ){
+                    tabContainer.style.maxHeight = newHt;
+                    tabContainer.style.height = newHt;
+                }
+                var autoWidth = cfgUpd.autoWidth;
+                if (autoWidth){
+                    setTimeout( function(){
+                        setWidthStyle(document.getElementById(clientId));
+                    }, 1);
+                    var setWidthStyleListener = function(){ 
+                        if( !document.getElementById(clientId) ){
+                            ice.mobi.removeListener(window,"resize", this);
+                            return;
+                        };
+                        setWidthStyle(document.getElementById(clientId)); 
+                    }
+                    ice.mobi.addListener(window, 'resize', setWidthStyleListener);
+                }
+                var oldIdx = tabIndex;
+                tabIndex = cfgUpd.tIndex;
+            //    console.log ('UPDATEPROPS>>>> old ='+oldIdx+" UPDATED TabINDEX="+tabIndex);
+                var oldCtrl = document.getElementById(tabCtrl + oldIdx);
+                if (oldCtrl) {
+                    removeClass(oldCtrl, clsActiveTab);
+                }
+                //check to see if pages have been added or removed
+                if (!contentId){
+                    contentId = clientId+"_tabContent";
+                }
+           //     tabContent = document.getElementById(contentId);
+                contents = this.getContents(clientId);
+                var newCtrl = tabCtrl+tabIndex;
+                setTabActive(newCtrl, clsActiveTab);
+                if (oldIdx != tabIndex){
+                    contents[oldIdx].setAttribute("class", classHid);
+                    contents[tabIndex].setAttribute("class", classVis);
+                }
+              //  console.log("end of UPDATE PROPS:-") ;
+            },
+            setDisabled: function(disabledIn){
+                disabled = disabledIn;
+            },
+            getContents: function(clientId){
+                contentId = clientId+"_tabContent";
+                tabContent = document.getElementById(contentId);
+                return tabContent.childNodes;
+            }
+        }
+    }
+
+    ice.mobi.tabsetController = {
+        tabsets: {},
+        initClient: function(clientId, cfg) {
+            if (!this.tabsets[clientId]) {
+                this.tabsets[clientId] = TabSet(clientId, cfg);
+            } else {
+                this.tabsets[clientId].setDisabled(cfg.disabled);
+                this.tabsets[clientId].updateProperties(clientId, cfg);
+            }
+        },
+        showContent: function(clientId, el, cfgIn) {
+            if (this.tabsets[clientId]) {
+                this.tabsets[clientId].showContent(clientId, el, cfgIn);
+            }
+        }
+    }
+
+})();
+
+ice.mobi.splitpane = {
+        panels: {},
+        initClient: function(clientId, cfgIn) {
+            if (!this.panels[clientId]) {
+                this.panels[clientId] = ice.mobi.splitpane.Scrollable(clientId, cfgIn);
+                this.panels[clientId].resize(clientId);
+            } else {
+                this.panels[clientId].resize(clientId);
+            }
+        },
+        resizeHt: function(clientId) {
+            if (this.panels[clientId])
+                this.panels[clientId].resize(clientId);
+            else {
+                this.panels[clientId].unload(clientId);
+            }
+        },
+        Scrollable: function Scrollable(clientId, cfgIn) {
+            var wrapPanel = clientId + "_wrp";
+            var leftNode = document.getElementById(clientId + "_left");
+            var rightNode = document.getElementById(clientId + "_right");
+            var resizeCall = function() {
+                ice.mobi.splitpane.resizeHt(clientId);
+            };
+            //
+            if (cfgIn.width) {
+                var width = cfgIn.width || -1;
+                if (width > 0 && width < 99) {
+                    leftNode.style.width = width + "%";
+                    rightNode.style.width = (100 - width) + "%";
+                }
+            }
+            ice.mobi.addListener(window, 'resize', resizeCall);
+
+            return {
+                resize: function(elId) {
+                    var height = 0;
+                    var leftNode = document.getElementById(elId + "_left");
+                    var rtNode = document.getElementById(elId + "_right");
+                    var splt = document.getElementById(elId + "_splt");
+                    var body = window.document.body || null;
+                    if (body == null) return;
+                    if (leftNode && rtNode) {
+                        if (window.innerHeight) {
+                            height = window.innerHeight;
+                        } else if (body.parentElement.clientHeight) {
+                            height = body.parentElement.clientHeight;
+                        } else if (body) {
+                            if (body.clientHeight) {
+                                height = body.clientHeight;
+                            }
+                        }
+                        if (height > 0) {
+                            var leftHeight = height - leftNode.offsetTop;
+                            var rightHeight = height - rtNode.offsetTop;
+                            if( leftHeight > 0 ){
+                                leftNode.style.height = "" + leftHeight + "px";
+                            }
+                            if( rightHeight > 0 ){
+                                rtNode.style.height = "" + rightHeight + "px";
+                            }
+                        }
+                    }
+                },
+                unload: function() {
+                    ice.mobi.removeListener(window, "resize", resizeCall);
+                }
+            }
+        }
+    };
+//PANEL POPUP
+(function() {
+    //functions that do not encapsulate any state, they just work with the provided parameters
+    //and globally accessible variables
+    //---------------------------------------
+    function updateHidden(clientId, value) {
+        var hidden = document.getElementById(clientId+"_hidden");
+        if (hidden) {
+            hidden.value = value;
+        }
+    }
+    //-------------------------------------
+    function PanelPopup(clientId, cfgIn) {
+        var cId = clientId;
+        var myId = cfgIn.id || null;
+        var client = cfgIn.client;
+        var visible = cfgIn.visible || false;
+        var idPanel = clientId + "_bg";
+        var containerId = clientId + "_popup";
+        var autocenter = cfgIn.autocenter || true;
+        var centerCalculation = {};
+        var baseopenClass = "mobi-panelpopup-container ";
+        var openbgClass= "mobi-panelpopup-bg ";
+        var closebgClass = "mobi-panelpopup-bg-hide ";
+        var basecloseClass = "mobi-panelpopup-container-hide ";
+        var opencontClass;
+        var closecontClass;
+        var origClass = cfgIn.sclass || null;
+        if (origClass){
+            opencontClass=baseopenClass+ cfgIn.sclass;
+            closecontClass=basecloseClass +cfgIn.sclass;
+        } else {
+            opencontClass=  baseopenClass;
+            closecontClass= basecloseClass;
+        }
+        ice.mobi.panelPopup.visible[clientId]= visible;
+        return {
+            openPopup: function(clientId, cfg) {
+                autocenter = cfg.autocenter || true;
+                if (cfg.sclass && origClass!==cfg.sclass){  //so can update dynamically
+                    opencontClass=baseopenClass + cfg.sclass;
+                    closecontClass=basecloseClass + cfg.sclass;
+                }
+                if (cfg.disabled){
+                    return;//no opening
+                }
+                var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+                var fadedDiv = document.getElementById(idPanel);
+                if (fadedDiv){
+                   document.getElementById(idPanel).className = openbgClass;
+                }
+                var containerNode = document.getElementById(containerId);
+                containerNode.className = opencontClass;
+                if (cfg.autocenter==true) {
+                    centerCfg = {} ;
+                    if (cfg.width){
+                        centerCfg.width = cfg.width;
+                    }
+                    if (cfg.height){
+                        centerCfg.height = cfg.height;
+                    }
+                    if (cfg.style){
+                        centerCfg.style = cfg.style;
+                    }
+                    if (cfg.useForm){
+                        var frm = mobi.findForm(clientId);
+                        if (frm){
+                           centerCfg.containerElem = frm.id;
+                        }
+                    }
+                    // add scroll listener
+                    centerCalculation[clientId] = function () {
+                        ice.mobi.panelCenter(containerId, centerCfg);
+                    };
+                    ice.mobi.addListener(window, scrollEvent, centerCalculation[clientId]);
+                    ice.mobi.addListener(window, 'resize', centerCalculation[clientId]);
+
+                    // calculate center for first view
+                    ice.mobi.panelCenter(containerId, centerCfg);
+                }  else{
+                 //   console.log("NO AUTOCENTER");
+                    var styleVar = "";
+                    if (cfg.width){
+                        var wStr = width+"px";
+                        styleVar+="width: "+cfg.width+"px;";
+                    }
+                    if (cfg.height){
+                        var hStr = height+"px";
+                        styleVar +=" height: "+cfg.height+"px;";
+                    }
+                    if (cfg.style){
+                        styleVar += cfg.style;
+                    }
+                    containerNode.setAttribute("style", styleVar);
+                }
+                ice.mobi.panelPopup.visible[clientId] = true;
+                updateHidden(clientId, "true");
+           },
+           closePopup: function(clientId, cfg){
+               var containerNode = clientId+"_popup";
+               var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+               var greyed = document.getElementById(clientId+"_bg");
+               var container = document.getElementById(containerNode);
+               if (greyed){
+                   greyed.className = closebgClass;
+               }
+               if (container){
+                   document.getElementById(containerNode).className = closecontClass;
+               }
+               if (cfg.autocenter==true) {
+                     if (window.removeEventListener) {
+                         window.removeEventListener(scrollEvent, centerCalculation[clientId], false);
+                         window.removeEventListener('resize', centerCalculation[clientId], false);
+                     } else { // older ie cleanup
+                         window.detachEvent(scrollEvent, centerCalculation[clientId], false);
+                         window.detachEvent('resize', centerCalculation[clientId], false);
+                     }
+                     centerCalculation[clientId] = undefined;
+               } else {
+             //      container.setAttribute("style", "");
+               }
+               ice.mobi.panelPopup.visible[clientId] = false;
+               updateHidden(clientId, "false");
+           },
+           getId: function(){
+               return myId;
+           },
+           getClientId: function(){
+               return cId;
+           },
+           isClient: function(){
+               return client;
+           }
+        }
+    }
+    ice.mobi.panelPopup = {
+        panels: new Array(),
+        visible: {},
+        cfg: {},
+        centerCalculation:{},
+        init: function(clientId, cfgIn) {
+          //  console.log("INIT");
+            this.cfg[clientId] = cfgIn;
+            var thisOne = this.findPanel(clientId, false);
+            var i = this.panels.length;
+            if (thisOne == null){
+                this.panels[i] = PanelPopup(clientId, cfgIn);
+            } else {
+                var vis =  cfgIn.visible || false;
+                if (vis==true){
+                   thisOne.openPopup(clientId, cfgIn);
+                }else{
+                   thisOne.closePopup(clientId, cfgIn);
+                }
+            }
+        },
+        openClient: function(popupId){
+            var opC = this.findPanel(popupId, true);
+            if (!opC){
+                var index = this.panels.length;
+            }
+            if (opC){
+                var cId = opC.getClientId();
+                var cfgA = this.cfg[cId];
+                if (!cfgA.disabled){
+                    var chkNode = document.getElementById(cId);
+                    if (!chkNode){
+                        ice.log.debug(ice.log,"NO ELEMENT CAN BE FOUND FOR ID="+popupId+" clientId="+cId);
+                    } else {
+                       opC.openPopup(cId, cfgA);
+                    }
+                }
+            }
+        },
+        closeClient: function(popupId){
+            var clA = this.findPanel(popupId,true);
+            if (clA){
+                var cId =clA.getClientId();
+                var cfgA = this.cfg[cId];
+                clA.closePopup(cId, cfgA);
+            }
+        },
+        findPanel: function(popupId, isId){
+            if (this.panels.length < 1){
+                ice.log.debug(ice.log,' no popups available in view to open');
+                return;
+            }
+            var found = false;
+            for (var i=0; i < this.panels.length; i++){
+                var pane = this.panels[i];
+                if (isId){
+                    var myId = pane.getId();
+                  //  console.log ("id of pane="+myId);
+                    if (pane.getId()==popupId){
+                        found = true;
+                        return pane;
+                    }
+                }else {
+                    if (pane.getClientId()==popupId){
+                        found = true;
+                        return pane;
+                    }
+                }
+            }
+            if (!found){
+                ice.log.debug(ice.log, ' Cannot find popup with id='+popupId);
+            }
+            return null;
+        }
+    }
+
+  })();
+
+//FLIPSWITCH
+mobi.flipswitch = {
+        lastTime: 0,
+
+        init: function(clientId, cfg){
+            // Mobi-526 filter double clicks
+            if (cfg.transHack) {
+                var currentTimeMillis = new Date().getTime();
+                if ( (currentTimeMillis - mobi.flipswitch.lastTime) < 100 ) {
+                    console.log("Double click suppression required");
+                    return;
+                }
+                mobi.flipswitch.lastTime = currentTimeMillis;
+            }
+
+            this.id = clientId;
+            this.cfg = cfg;
+            this.flipperEl = cfg.elVal;
+            this.singleSubmit = cfg.singleSubmit;
+            this.event = cfg.event;
+
+            var hasBehaviors = false;
+            if (this.cfg.behaviors){
+               hasBehaviors = true;
+            }
+            if (this.flipperEl){
+                var oldClass = this.flipperEl.className;
+                var value = "off";
+                var onClass = this.flipperEl.children[0].className;
+                var offClass = this.flipperEl.children[2].className;
+                if (oldClass.indexOf('-off ')>0){
+                    this.flipperEl.className='mobi-flipswitch mobi-flipswitch-on ui-btn-down-c';
+                    this.flipperEl.children[0].className = 'mobi-flipswitch-txt-on';
+                    this.flipperEl.children[2].className = 'mobi-flipswitch-txt-off ui-btn-up-c';
+                    value = true;
+                }else{
+                    this.flipperEl.className='mobi-flipswitch mobi-flipswitch-off ui-btn-down-c';
+                    this.flipperEl.children[0].className = 'mobi-flipswitch-txt-on ui-btn-up-c';
+                    this.flipperEl.children[2].className = 'mobi-flipswitch-txt-off';
+                    value = false;
+                }
+                var hidden = this.id+"_hidden";
+                var thisEl = document.getElementById(hidden);
+                if (thisEl){
+                   thisEl.value=value.toString();
+                }
+                if (this.singleSubmit){
+                        ice.se(this.event, this.id);
+                    }
+                if (hasBehaviors){
+                    if (this.cfg.behaviors.activate){
+                        this.cfg.behaviors.activate();
+                    }
+                }
+             }
+        }
+    };
+
+//Accordion
+(function() {
+    function updateHidden(clientId, value) {
+        var hidden = document.getElementById(clientId + "_hidden");
+        if (hidden) {
+            hidden.value = value;
+        }
+    }
+    function getHiddenVal(clientId){
+        var hidden = document.getElementById(clientId+"_hidden");
+        if (hidden && hidden.value){
+            return hidden.value;
+        } else {
+            return null;
+        }
+    }
+    function getHandleHeight(aRoot){
+        var handleNode = aRoot.querySelector('.mobi-accordion .handle');
+        var handleHeight = "33"; //default css handle height is 33px
+        if (handleNode){
+           var temp = handleNode.scrollHeight || handleNode.height || handleNode.offsetHeight || handleNode.maxHeight;
+           if (temp > 0){
+               handleHeight = temp;
+           }
+        }
+        return handleHeight;
+    }
+    function calcMaxDivHeight(clientId, handleHt) {
+        var mxht = 0;
+        var elem = document.getElementById(clientId);
+        if( elem ){
+          //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
+            var children = document.getElementById(clientId).children;
+            for (var i = 0; i < children.length; i++) {
+                var anode = children[i];
+                var max = Math.max(anode.scrollHeight, anode.offsetHeight, anode.clientHeight);
+                if (max > 0 && max > mxht) {
+                    mxht = max;
+                }
+            }
+            if (mxht <= handleHt ) {
+                mxht = 0;
+                ice.log.debug(ice.log,"COULD NOT CALC A mxht");
+            }
+        }
+        return mxht;
+    }
+    function calcFixedSectionHeight(fixedHeight, handleHeight){
+        try {
+            var fHtVal =parseInt(fixedHeight);
+        }catch (Exception ){
+            ice.log.debug("problem calculating height of contentPane to set section Height");
+        }
+        if (fHtVal) {
+            return  fHtVal+handleHeight;
+        }
+        else return null;
+    }
+    function setHeight(opened, fht){
+        if (opened && fht){
+           // opened.setAttribute("style", "height:"+fht+"; maxHeight: "+fht+";");
+            opened.style.height=fht;
+            opened.style.maxHeight = fht;
+        }
+    }
+    function openPane(elem, h){
+        setHeight(elem, h);
+        elem.className="open";
+    }
+    function closePane(elem, closeHt){
+        setHeight(elem, closeHt);
+        elem.className="closed";
+    }
+    function updateMaxHeight(clientId, mH, hH){
+        var tmp = ice.mobi.accordionController.maxHt[clientId];
+        if (tmp && mH==0){
+            mH = tmp;
+        }
+        else if (tmp && mH > 0){
+            mH = Math.max(tmp, mH);
+        }
+        else {
+            mH = calcMaxDivHeight(clientId, hH);
+        }
+        return mH ;
+    }
+    function Accordion(clientId, cfgIn) {
+        var disabled = cfgIn.disabled || false;
+        var containerId = clientId+"_acc" ;
+        var paneId = cfgIn.opened || null;
+        var accordRoot = document.getElementById(containerId);
+        var paneOpId;
+        var lastServerId = paneId;
+        var origHeight, fixedHeight, maxHeight, scp;
+        scp = cfgIn.scp || false;
+        if (paneId) {
+            paneOpId = paneId + "_sect";
+        }
+        var openElem = document.getElementById(paneOpId);
+        var cntr = 0;
+        if (!openElem && accordRoot.hasChildNodes()){
+            var children = accordRoot.children;
+            openElem = children[0];
+            paneOpId = children[0].id;
+        }
+        var autoheight = cfgIn.autoHeight || false;
+        origHeight = fixedHeight =  cfgIn.fixedHeight || null;
+        var fHtVal = cfgIn.fHtVal || null;
+        if (!openElem){
+            console.log("Accordion has no children");
+            this.setDisabled(true);
+        }
+        var handleheight = getHandleHeight(accordRoot);
+        var handleht = handleheight + "px";
+        if (autoheight==false && !fixedHeight){
+            handleht = null;
+        }
+        if (autoheight){ //default
+            maxHeight = calcMaxDivHeight(containerId, handleheight);
+        }
+        if (autoheight && (maxHeight > 0)){
+            ice.mobi.accordionController.maxHt[clientId]=maxHeight;
+            fixedHeight = maxHeight+"px";
+        } else if (fixedHeight){
+            if (fHtVal){
+                var val = parseInt(fHtVal)+ parseInt(handleheight);
+                fixedHeight = val + "px";
+            }else {
+                fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
+            }
+        }
+        if (disabled!=true){
+            openPane(openElem, fixedHeight);
+        }else {
+             ice.log.debug(ice.log, "Accordion has been disabled");
+        }
+        if (autoheight && (maxHeight==0)){
+            ice.onAfterUpdate(function() {
+                ice.mobi.accordionController.updateHeight(clientId, handleheight);
+            });
+        }
+        return {
+            toggle: function(clientId, el, cached) {
+                if (!el || disabled==true){    //is getting triggered on page load
+                 //   ice.log.debug(ice.log, 'accordion id='+clientId+' unable to open handle or is disabled');
+                    return;
+                }
+                var singleSubmit  = ice.mobi.accordionController.singleSubmit[clientId];
+                if (autoheight){
+                    maxHeight = updateMaxHeight(clientId, maxHeight, handleheight);
+                }
+                var theParent = el.parentElement;
+                if (!theParent) {
+                    theParent = el.parentNode; //mozilla
+                }
+                var pString = theParent.getAttribute("id");
+                var subString = pString.replace("_sect","");
+                updateHidden(clientId, subString);
+                openElem = document.getElementById(paneOpId);
+                if (!openElem){
+                    var children = accordRoot.children;
+                    openElem = children[0];
+                    paneOpId = children[0].id;
+                }
+                if (autoheight && openElem && (maxHeight > 0)){
+                    fixedHeight = maxHeight+"px";
+                 //   console.log("\t updated fixedHeight="+fixedHeight);
+                }
+                if (paneOpId && paneOpId == theParent.id){
+                    if (openElem.className=="open"){
+                        closePane(openElem, handleht);
+                    } else {
+                        //contents may have changed so get new ones or may be single pane MOBI-611
+                        if (cached!="true"){
+                            ice.se(null, clientId);
+                        }
+                    //    console.log(" CLIENT and fixedHeight="+fixedHeight+" openElem id="+openElem.id);
+                        openPane( openElem, fixedHeight);
+                    }
+                }
+                else {//panel has changed
+                    closePane(openElem, handleht);
+                    if (cached!="false"){
+                       // console.log(" PANE CHANGED  fixedHeight="+fixedHeight);
+                        openPane(theParent,fixedHeight);
+                        paneOpId = theParent.id;
+                        openElem = theParent;
+                    }
+                    else if ( singleSubmit) { //only have singleSubmit support for now
+                        if (lastServerId == theParent.id){
+                            cntr= cntr + 1;
+                            //try to keep correct pane open despite caching
+                            var submitted = subString +","+cntr;
+                            updateHidden(clientId,submitted);
+                        }  else {
+                            cntr = 0;
+                            lastServerId = theParent.id;
+                        }
+                        ice.se(null, clientId);
+                    }
+                }
+            },
+            updateHeight: function(clientId, handleheight){
+                var node = document.getElementById(clientId);
+                if (node){
+                    maxHeight = calcMaxDivHeight(clientId,  handleheight);
+                    return maxHeight;
+                }
+            } ,
+            updateProperties: function (clientId, cfgUpd) {
+                disabled = cfgUpd.disabled || false;
+                if (disabled==true){
+                    return;
+                }
+                var changedFH, changed, changedAH;
+                changedFH = changed = changedAH = false;
+
+                if (cfgUpd.scp != scp){
+                    changed= true;
+                    scp = cfgUpd.scp;
+                }
+                if (origHeight != cfgUpd.fixedHeight) {
+                    origHeight=cfgUpd.fixedHeight || null;
+                    fixedHeight = origHeight;
+                    changed = changedFH = true;
+                }
+                if (autoheight != cfgUpd.autoHeight){
+                    autoheight = cfgUpd.autoHeight;
+                    changed = changedAH=true;
+                }
+                if (changedAH || changedFH && autoheight){
+                    ice.mobi.accordionController.maxHt[clientId]=null;
+                    maxHeight=0;
+                }
+                if (autoheight) {
+                    //calc new maxHeight
+                    var tmp1 = calcMaxDivHeight(clientId, handleheight);
+                    var storedHt = ice.mobi.accordionController.maxHt[clientId];
+                    maxHeight = Math.max(tmp1, maxHeight);
+                    if (maxHeight == 0 && !storedHt){
+                      //  console.log(" \t !!!set ONAFTER UPDATE value so have to listen for update");
+                           ice.onAfterUpdate(function() {
+                               ice.mobi.accordionController.updateHeight(clientId, handleheight);
+                            }) ;
+                    }
+                    else {
+                        maxHeight = Math.max(storedHt, maxHeight);
+                    }
+                    if (maxHeight && maxHeight > 0){
+                        ice.mobi.accordionController.maxHt[clientId]=maxHeight;
+                        fixedHeight = maxHeight+"px";
+                    }
+                } else if (fixedHeight && changed){
+                    if (cfgUpd.fHtVal){
+                        var val = parseInt(cfgUpd.fHtVal) + parseInt(handleheight);
+                        fixedHeight = val + "px";
+                    }else if (changedFH){
+                        var temp = calcFixedSectionHeight(fixedHeight, handleheight);
+                        if (temp !=null){
+                            fixedHeight = temp +"px";
+                        }
+                    }
+                }
+                if (autoheight==false && !fixedHeight){
+                    handleht = null;
+                } else {
+                    handleht = getHandleHeight(accordRoot) + "px";
+                }
+                //did the active pane change?
+                var pushedId = getHiddenVal(clientId)+"_sect";
+                if ((paneOpId == pushedId) || disabled==true){
+                    return;
+                }
+                //allow server to push last submitted or encoded value
+                openElem = document.getElementById(paneOpId);
+                if (openElem){
+                    closePane(openElem, handleht);
+                } else {  //may have been deleted or removed
+                     var root = document.getElementById(clientId+"_acc");
+                     openElem = root.firstChild;
+                     paneOpId = root.firstChild.id;
+                }
+                var delPushed=false;
+                if (!document.getElementById(pushedId)){
+                    pushedId = paneOpId;
+                    delPushed = true;
+                }
+                if(paneOpId != pushedId){
+                    paneOpId = pushedId || null;
+                    openElem = document.getElementById(paneOpId);
+                }
+                if (openElem.className=="closed" || changed){ //only modify opened pane if height changes
+                    openPane(openElem, fixedHeight) ;
+                }
+            },
+            getDisabled: function(){
+                return disabled;
+            },
+            setDisabled: function(dis){
+                disabled= dis;
+            }
+        }
+
+    }
+    ice.mobi.accordionController = {
+        panels: {},
+        autoheight: {},
+        maxHt: {},
+        singleSubmit: {},
+        lastTime: 0,
+        initClient: function(clientId, cfg) {
+            if (!this.panels[clientId]) {
+                this.autoheight[clientId]= cfg.autoHeight;
+                this.singleSubmit[clientId] = cfg.singleSubmit;
+                this.panels[clientId] = Accordion(clientId, cfg);
+                ice.onElementUpdate(clientId, function(){
+                    ice.mobi.accordionController.unload(clientId);
+                });
+            } else {
+                //getting phantom calls to this
+                if (!cfg.hash){
+                    return;
+                }
+                this.panels[clientId].updateProperties(clientId, cfg);
+            }
+        },
+        toggleClient: function(clientId, el, cachetyp, transHack) {
+            if (transHack ) {
+                var currentTimeMillis = new Date().getTime();
+                if ( (currentTimeMillis - this.lastTime) < 100 ) {
+                   ice.log.debug(ice.log,"__Accordion Double click suppression required");
+                   return;
+                }
+                this.lastTime = currentTimeMillis;
+            }
+            if (this.panels[clientId] && !this.panels[clientId].getDisabled()){
+                   this.panels[clientId].toggle(clientId, el, cachetyp);
+            } else if (!this.panels[clientId].getDisabled()) {
+               this.initClient(clientId, {});
+                   this.panels[clientId].toggle(clientId, el, cachetyp);
+            }
+        },
+        toggleMenu: function(clientId, el){
+            if (this.panels[clientId]) {  //have yet to implement disabled for menu
+                this.panels[clientId].toggle(clientId, el, true);
+            } else{
+                this.initClient(clientId, {autoheight:false});
+            }
+        } ,
+        updateHeight: function(clientId, handleHt){
+            if (this.panels[clientId]){
+                var tmp = this.panels[clientId].updateHeight(clientId, handleHt);
+                if (!this.maxHt[clientId] && tmp > 0){
+                    this.maxHt[clientId] = tmp;
+                }else {
+                    this.maxHt[clientId] = Math.max(tmp, this.maxHt[clientId]);
+                }
+            }
+        },
+        unload: function(clientId){
+            var anode = document.getElementById(clientId);
+            if (!anode){
+             //   console.log("REMOVE ACCORDION WITH  id="+clientId);
+                this.panels[clientId] = null;
+                this.autoheight[clientId]=null;
+                this.panels[clientId]=null;
+                this.maxHt[clientId]=null;
+            }
+        }
+    }
+})();
+
+ice.mobi.menubutton = {
+        select: function(clientId){
+            var myselect = document.getElementById(clientId+'_sel');
+            var myOptions = myselect.options;
+            var index = myselect.selectedIndex;
+            if (index==0){
+                return;  //assume index of 0 is select title so no submit happens
+            }
+            var behaviors = myOptions[index].getAttribute('cfg');
+            var singleSubmit = myOptions[index].getAttribute("singleSubmit") || null;
+            var myForm = ice.formOf(document.getElementById(clientId));
+            var params = myOptions[index].getAttribute("params") || null;
+            var optId = myOptions[index].id || null;
+            if (!optId){
+                console.log(" Problem selecting items in menuButton. See docs. index = ") ;
+                return;
+            }
+            var disabled = myOptions[index].getAttribute("disabled") || false;
+            if (disabled==true){
+                console.log(" option id="+optId+" is disabled no submit");
+                return;
+            }
+            var options = {
+                source: optId,
+                jspForm: myForm
+            };
+            var cfg = {
+                source: optId
+            }
+            var snId = myOptions[index].getAttribute("snId") || null ;
+            var pcId = myOptions[index].getAttribute("pcId") || null;
+            if (singleSubmit){
+                options.execute="@this";
+            } else {
+                options.execute="@all";
+            }
+            if (behaviors){
+                cfg.behaviors = behaviors;
+            }
+            if (pcId){
+                if (snId){
+                    options.snId = snId;
+                }
+                options.pcId = pcId;
+                ice.mobi.panelConf.init(pcId, optId, cfg, options) ;
+                this.reset(myselect, index);
+                return;
+            }
+            if (snId){
+                var resetCall = function(xhr, status, args) {ice.mobi.menubutton.reset(myselect, index);};
+                options.onsuccess = resetCall;
+                ice.mobi.submitnotify.open(snId, optId, cfg, options);
+           //     this.reset(myselect, index);
+                return;
+            }
+            mobi.AjaxRequest(options);
+            this.reset(myselect, index);
+        },
+        reset: function reset(myselect, index) {
+            console.log("RESET");
+            myselect.options[index].selected = false;
+            myselect.options[0].selected=true;
+           //     myselect.options.index = 0;
+
+        }
+    };

@@ -32,11 +32,6 @@ public interface ITabSet extends IMobiComponent{
     public static final String TABSET_HIDDEN_PAGECLASS = "mobi-tabpage-hidden";
     public static final String TABSET_ACTIVE_CONTENT_CLASS= "mobi-tabpage";
 
-    public static final String JS_NAME = "tabset.js";
-    public static final String JS_MIN_NAME = "tabset-min.js";
-    public static final String LIB_JSF = "org.icefaces.component.tabset";
-    public static final String LIB_JSP = "javascript";
-        
     public void setHeight(String fixedHeight);
     public String getHeight();
     public int getIndex();
@@ -44,9 +39,6 @@ public interface ITabSet extends IMobiComponent{
     public void setAutoWidth(boolean width);
     public void setSelectedId(String currentId);
     public String getSelectedId();
-    public String getJavascriptFileRequestPath();
-    public boolean isScriptLoaded();
-    public void setScriptLoaded();
     public String getHashVal();
     public String getOrientation();
     public boolean getIsTop();

@@ -35,11 +35,6 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         
         IAccordion accordion = (IAccordion)component;
         String clientId = accordion.getClientId();
-        /* JSF comp writes script into 1st span */
-        if (!accordion.isScriptLoaded() && !isJSP)  {
-            super.writeExternalScript(component, writer, accordion.getJavascriptFileRequestPath());            
-            accordion.setScriptLoaded();
-        } 
         
         /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(DIV_ELEM, accordion);
