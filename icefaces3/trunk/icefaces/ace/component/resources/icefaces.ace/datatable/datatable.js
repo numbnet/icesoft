@@ -1107,7 +1107,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         setTimeout(function () {
             _self.sizingHasWaited = true;
             _self.resizeScrolling()
-        }, 100);
+        }, 0);
     }
     else {
         var resizableTableParents = scrollableTable.parents('.ui-datatable-scrollable');
