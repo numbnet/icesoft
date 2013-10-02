@@ -11,6 +11,7 @@
 @interface SettingsViewController : UIViewController  
     <UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (retain) NSDictionary *settings;
 
 - (void) loadSettings;
