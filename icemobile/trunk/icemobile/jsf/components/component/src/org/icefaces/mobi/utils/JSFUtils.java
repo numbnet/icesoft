@@ -29,6 +29,7 @@ import javax.faces.application.ProjectStage;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -39,6 +40,55 @@ import org.icemobile.util.Utils;
 public class JSFUtils {
 
     private static Logger logger = Logger.getLogger(JSFUtils.class.getName());
+    
+    /**
+     * Find a UIComponent. If the contextComponent is provided, the search will be performed in the 
+     * containing NamingContainer. If the target component is not found, the search will then be performed
+     * again from the root. If the contextComponent is not provided, the search will be performed from the root.
+     * @param id The id of the component to find
+     * @param contextComponent The context of the search, if null, the search will run from the UIViewRoot
+     * @return The target component
+     */
+    public static UIComponent findComponent(String id, UIComponent contextComponent){
+        if( id == null || id.length() == 0 ){
+            logger.warning("invalid argument, id is empty");
+            return null;
+        }
+        UIComponent namingContainer = null;
+        if( contextComponent == null ){
+            namingContainer = FacesContext.getCurrentInstance().getViewRoot();
+        }
+        else{
+            namingContainer = findNamingContainer(contextComponent);
+        }
+        UIComponent target = namingContainer.findComponent(id);
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if( target == null && id.indexOf(UINamingContainer.getSeparatorChar(fc)) == -1){
+            return findComponentById(id, namingContainer);
+        }
+        return target;
+    }
+    
+    private static UIComponent findComponentById(String id, UIComponent parent){
+        String compId = parent.getId();
+        if( compId == null ){
+            return null;
+        }
+        if (parent.getId().equals(id)) {
+            return parent;
+        }
+        UIComponent component = null;
+        UIComponent child = null;
+        Iterator<UIComponent> children = parent.getFacetsAndChildren();
+        while (children.hasNext() && (component == null)) {
+            child = (UIComponent) children.next();
+            component = findComponentById(id, child);
+            if (component != null) {
+                break;
+            }
+        }
+        return component;
+    }
 
     public static UIComponent findChildComponent(UIComponent parent, String id) {
         if (id.equals(parent.getId())) {
@@ -46,7 +96,7 @@ public class JSFUtils {
         }
         UIComponent child = null;
         UIComponent retComp = null;
-        Iterator children = parent.getFacetsAndChildren();
+        Iterator<UIComponent> children = parent.getFacetsAndChildren();
         while (children.hasNext() && (retComp == null)) {
             child = (UIComponent) children.next();
             if (id.equals(child.getId())) {
@@ -241,14 +291,21 @@ public class JSFUtils {
         child.encodeAll(facesContext);
     }
     public static UIComponent findNamingContainer(UIComponent uiComponent) {
-        UIComponent parent = uiComponent.getParent();
-        while (parent != null) {
-            if (parent instanceof NamingContainer) {
-                break;
-            }
-            parent = parent.getParent();
+        UIComponent namingContainer = null;
+        if( uiComponent instanceof UINamingContainer ){
+            namingContainer = uiComponent;
         }
-        return parent;
+        else{
+            UIComponent parent = uiComponent.getParent();
+            while (parent != null) {
+                if (parent instanceof NamingContainer) {
+                    break;
+                }
+                parent = parent.getParent();
+            }
+            namingContainer = parent;
+        }
+        return namingContainer;
     }
 
     public static UIComponent findParentForm(UIComponent component) {
