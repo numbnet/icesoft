@@ -2360,7 +2360,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
             var cpanes = panes.children;
             var length = cpanes.length;
             for (i=0; i< length-1; i++){
-           //     var dir = cpanes[i].getAttribute("dir");
                 var iStr = i+'';
                 cpanes[i].setAttribute('order', iStr);
                 //after remove the singleView and let it slide for a test
@@ -2374,10 +2373,13 @@ ice.mobi.addListener(document, "touchstart", function(){});
         var myStackId = clientId;
         var selectedPaneId = cfgIn.selectedId || null;
         var selClientId = cfgIn.selClientId || null;
+        var wrpId;
         if (selClientId==null) {
-            selClientId = panes[0].childNodes[0].id;
+            selClientId = wrpId = panes.childNodes[0].id;
         }
-        var wrpId = selClientId+ "_wrp";
+        else{
+            wrpId = selClientId+ "_wrp";
+        }
         var currPane =  document.getElementById(wrpId);
         if (currPane){
             currPane.className=visClass;
