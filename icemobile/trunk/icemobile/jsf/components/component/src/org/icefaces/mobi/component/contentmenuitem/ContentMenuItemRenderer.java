@@ -19,12 +19,10 @@ package org.icefaces.mobi.component.contentmenuitem;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
@@ -32,7 +30,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
-import org.icefaces.mobi.component.accordion.Accordion;
 import org.icefaces.mobi.component.contentnavbar.ContentNavBar;
 import org.icefaces.mobi.component.contentpane.ContentPane;
 import org.icefaces.mobi.component.contentstack.ContentStack;
@@ -46,7 +43,7 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
     private static final Logger logger = Logger.getLogger(ContentMenuItemRenderer.class.getName());
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+        Map<String,String> requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         ContentMenuItem item = (ContentMenuItem) uiComponent;
         String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
         String clientId = item.getClientId();
@@ -129,7 +126,6 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
                     sb.append("', event");
                     sb.append(",{ selectedId: '").append(item.getValue()).append("'");
                     sb.append(",singleSubmit: ").append(item.isSingleSubmit());
-                    sb.append(", parent: '").append(navBar.getClientId(facesContext)).append("'");
                     sb.append(", item: '").append(item.getClientId(facesContext)).append("'");
                     if (pane!=null){
                         String paneId = pane.getClientId(facesContext);
