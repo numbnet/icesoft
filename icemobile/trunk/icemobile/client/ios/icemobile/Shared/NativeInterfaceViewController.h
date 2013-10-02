@@ -33,5 +33,6 @@
 - (void) setProgressLabel:(NSString*)labelText;
 
 @property (retain) NSString *currentURL;
+@property (atomic) BOOL isResponding;
 
 @end

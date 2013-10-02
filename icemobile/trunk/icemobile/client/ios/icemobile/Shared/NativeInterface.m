@@ -837,8 +837,11 @@ NSLog(@"Found record %@", result);
     }
 
     //geospy runs in the background so is now complete even prior to upload
+    BOOL respondingStatus = self.controller.isResponding;
+    self.controller.isResponding = YES;
     [self.controller completeSmallPost:@"GeoSpy" 
             forComponent:@"!r" withName:@"!r"];
+    self.controller.isResponding = respondingStatus;
 
     //don't immediately return to the browser if the user has not confirmed
     //geolocation permission
