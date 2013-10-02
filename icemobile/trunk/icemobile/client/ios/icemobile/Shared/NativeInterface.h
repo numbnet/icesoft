@@ -79,7 +79,7 @@
 @property (atomic, assign) BOOL monitoringLocation;
 @property (atomic, assign) BOOL showConnectionFailure;
 @property (retain) NSString *customAlertText;
-@property (retain) NSMutableData *receivedData;
+@property (atomic, retain) NSMutableData *receivedData;
 @property (nonatomic, retain) UIImagePickerController *currentPicker;
 @property (retain) AVAudioRecorder *soundRecorder;
 @property (nonatomic, retain) UIPopoverController *camPopover;
