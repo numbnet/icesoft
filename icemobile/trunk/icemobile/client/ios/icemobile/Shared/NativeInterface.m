@@ -878,8 +878,12 @@ NSLog(@"Found record %@", result);
 
 - (void)locationManager:(CLLocationManager *)manager 
         didChangeAuthorizationStatus:(CLAuthorizationStatus)status  {
+        NSLog(@"CLLocationManager authorization status changed %u\n", status);
+    if (kCLAuthorizationStatusNotDetermined !=
+            [CLLocationManager authorizationStatus])  {
+        [self.controller returnToBrowser];
+    }
 
-    [self.controller returnToBrowser];
 }
 
 - (void)startMotionManager {
