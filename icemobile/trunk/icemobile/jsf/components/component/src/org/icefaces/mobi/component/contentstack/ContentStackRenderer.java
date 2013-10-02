@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -37,7 +38,6 @@ import org.icefaces.mobi.utils.MobiJSFUtils;
 public class ContentStackRenderer extends BaseLayoutRenderer {
 
     private static final Logger logger = Logger.getLogger(ContentStackRenderer.class.getName());
-    private static final String JS_LIBRARY = "org.icefaces.component.layoutmenu";
 
     @Override
     public void decode(FacesContext facesContext, UIComponent component) {
@@ -107,14 +107,12 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
     }
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException{
-        //all children must be of type contentPane which takes care of rendering it's children...or not
         for (UIComponent child : uiComponent.getChildren()) {
              if (!(child instanceof ContentPane) && logger.isLoggable(Level.FINER)){
                  logger.finer("all children must be of type ContentPane");
                  return;
              }
         }
-        //if don't find the one asked for just show the first one. or just leave all hidden?? TODO
         super.renderChildren(facesContext, uiComponent);
     }
 
@@ -130,7 +128,6 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
     }
 
     private void encodeScript(FacesContext facesContext, UIComponent uiComponent) throws IOException{
-            //need to initialize the component on the page and can also
         ResponseWriter writer = facesContext.getResponseWriter();
         ContentStack stack = (ContentStack) uiComponent;
         String clientId = stack.getClientId(facesContext);
@@ -139,30 +136,35 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("id", clientId+"_initScr", "id");
         writer.startElement("script", uiComponent);
         writer.writeAttribute("type", "text/javascript", null);
-        String selectedPaneId = stack.getSelectedId();
+        String currentPaneId = stack.getSelectedId();
         boolean client = false;
         int hashcode = MobiJSFUtils.generateHashCode(System.currentTimeMillis());
         StringBuilder sb = new StringBuilder("mobi.layoutMenu.initClient('").append(clientId).append("'");
         sb.append(",{stackId: '").append(clientId).append("'");
-        sb.append(",selectedId: '").append(selectedPaneId).append("'");
+        sb.append(",selectedId: '").append(currentPaneId).append("'");
         sb.append(", single: ").append(stack.getSingleView());
         sb.append(",hash: ").append(hashcode);
-        ContentPane selPane = null;
-        if( selectedPaneId == null || selectedPaneId.length() == 0 ){
+       
+        if( currentPaneId == null || currentPaneId.length() == 0 ){
             //auto-select the first contentPane
-            selectedPaneId = stack.getChildren().get(0).getId();
+            currentPaneId = stack.getChildren().get(0).getId();
         }
-        selPane = (ContentPane)stack.findComponent(selectedPaneId);
+        ContentPane currentPane = (ContentPane)stack.findComponent(currentPaneId);
         //if the selectedPaneId is not valid, auto-select the first contentPane
-        if( selPane == null ){
-            selPane = (ContentPane)stack.getChildren().get(0);
-            selectedPaneId = selPane.getId();
+        if( currentPaneId != null && currentPane == null ){
+            String warning = "Invalid value for ContentStack.currentId: " + currentPaneId; 
+            logger.warning(warning);
+            FacesMessage msg = new FacesMessage(warning);
+            facesContext.addMessage(stack.getClientId(), msg);
         }
-        if (null != selPane){
-            String selectedPaneClientId = null;
-            selectedPaneClientId =  selPane.getClientId(facesContext);
-            sb.append(",selClientId: '").append(selectedPaneClientId).append("'");
-            client = selPane.isClient();
+        if( currentPane == null ){
+            currentPane = (ContentPane)stack.getChildren().get(0);
+            currentPaneId = currentPane.getId();
+            stack.setCurrentId(currentPaneId);
+        }
+        else{
+            sb.append(",selClientId: '").append(currentPane.getClientId(facesContext)).append("'");
+            client = currentPane.isClient();
         }
         String contentMenuId = stack.getContentMenuId();
         if (contentMenuId !=null && contentMenuId.length() > 0){
@@ -185,7 +187,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         }
         UIComponent child = null;
         UIComponent retComp = null;
-        Iterator children = comp.getFacetsAndChildren();
+        Iterator<UIComponent> children = comp.getFacetsAndChildren();
         while (children.hasNext() && (retComp==null)){
             child = (UIComponent)children.next();
             if (child instanceof ContentNavBar){

@@ -17,102 +17,34 @@
 package org.icefaces.mobi.component.contentstackmenu;
 
 
-import javax.faces.component.StateHelper;
-import javax.faces.component.UIComponent;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.faces.component.StateHelper;
+
+import org.icefaces.mobi.component.contentstack.ContentStack;
+import org.icefaces.mobi.utils.JSFUtils;
 
 public class ContentStackMenu extends ContentStackMenuBase {
     public static final String LAYOUTMENU_CLASS = "mobi-layoutmenu ";
     public static final String LAYOUTMENU_LIST_CLASS = "mobi-list ";
 
-    private String stackClientId;
     private boolean openAccordionHandle;
-
-    public void setStackClientId(String sCID){
-        //assume that this menu will only ever relate to one stack so only set if the current value is null
-        //and then state save
-		StateHelper sh = getStateHelper();
-		String clientId = getClientId();
-		String valuesKey = "stackClientId" + "_rowValues";
-		Map clientValues = (Map) sh.get(valuesKey);
-		if (clientValues == null) {
-			clientValues = new HashMap();
-		}
-		if (sCID== null) {
-			clientValues.remove(clientId);
-		} else {
-			clientValues.put(clientId, sCID);
-		}
-			//Always re-add the delta values to the map. JSF merges the values into the main map
-			//and values are not state saved unless they're in the delta map.
-		sh.put(valuesKey, clientValues);
-    }
-
-    public String getStackClientId(){
-        String retVal = null;
-        StateHelper sh = getStateHelper();
-		String valuesKey = "stackClientId"+"_rowValues";
-	    Map clientValues = (Map) sh.get(valuesKey);
-	    boolean mapNoValue = false;
-		if (clientValues != null) {
-			String clientId = getClientId();
-			if (clientValues.containsKey( clientId ) ) {
-				retVal = (String) clientValues.get(clientId);
-			} else {
-				mapNoValue=true;
-			}
-		}
-		if (mapNoValue || clientValues == null ) {
-			String defaultKey = "stackClientId" + "_defaultValues";
-			Map defaultValues = (Map) sh.get(defaultKey);
-			if (defaultValues != null) {
-				if (defaultValues.containsKey("defValue" )) {
-					retVal = (String) defaultValues.get("defValue");
-				}
-			}
-		}
-		return retVal;
-    }
-/*    public boolean isOpenAccordionHandle() {
- 	    java.lang.Boolean retVal = false;
-        StateHelper sh = getStateHelper();
-        String valuesKey = "openAccordionHandle"+"_rowValues";
-		Map clientValues = (Map) sh.get(valuesKey);
-		boolean mapNoValue = false;
-		if (clientValues != null) {
-			String clientId = getClientId();
-			if (clientValues.containsKey( clientId ) ) {
-				retVal = (java.lang.Boolean) clientValues.get(clientId);
-			} else {
-				mapNoValue=true;
-			}
-		}
-		if (mapNoValue || clientValues == null ) {
-			String defaultKey = valuesKey + "_defaultValues";
-			Map defaultValues = (Map) sh.get(defaultKey);
-			if (defaultValues != null) {
-				if (defaultValues.containsKey("defValue" )) {
-					retVal = (java.lang.Boolean) defaultValues.get("defValue");
-				}
-			}
-		}
-	    return retVal;
-    }
-
-    public void setOpenAccordionHandle(boolean openAccordionHandle) {
-        StateHelper sh = getStateHelper();
-        String clientId = getClientId();
-        String valuesKey = "openAccordionHandle"+ "_rowValues";
-        Map clientValues = (Map) sh.get(valuesKey);
-        if (clientValues == null) {
-            clientValues = new HashMap();
+    
+    private ContentStack contentStack;
+    
+    public ContentStack getContentStack(){
+        if( contentStack == null ){
+            String contentStackId = getContentStackId();
+            if( contentStackId != null ){
+                contentStack = (ContentStack)JSFUtils.findComponent(contentStackId, this);
+                if( contentStack == null ){
+                    contentStack = (ContentStack)JSFUtils.findComponent(contentStackId, null);
+                }
+            }
         }
-        clientValues.put(clientId, openAccordionHandle);
-        sh.put(valuesKey, clientValues);
+        return contentStack;
     }
-       */
-
 
     public boolean isOpenAccordionHandle() {
         return openAccordionHandle;

@@ -25,7 +25,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.api.ContentPaneController;
 import org.icefaces.mobi.component.accordion.Accordion;
-import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icefaces.mobi.component.tabset.TabSet;
 import org.icemobile.component.ITabPane;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
@@ -44,7 +43,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
     private static final Logger logger = Logger.getLogger(ContentPaneRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
-        Object parent = uiComponent.getParent();
+        UIComponent parent = uiComponent.getParent();
         IContentPane pane = (IContentPane) uiComponent;
         IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         boolean amSelected = iAmSelected(facesContext, uiComponent);
@@ -55,8 +54,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         } else if (parent instanceof TabSet){
             encodeTabSetPage(facesContext, uiComponent);
         } else {  //plain old contentStack parent
-            ContentStack stack = (ContentStack)parent;
-     //       stack.addPaneInfo(pane.getId(), pane.getClientId());
             ContentPaneCoreRenderer renderer = new ContentPaneCoreRenderer();
             renderer.encodeBegin(pane, writer, amSelected);
         }
@@ -68,16 +65,10 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException{
         ContentPane pane = (ContentPane)uiComponent;
-        //if I am clientSide, I will always be present and always render
-     //   logger.info(" pane with ID="+pane.getClientId());
         if (pane.isClient()){
-       //     logger.info(" \t\t client!");
             JSFUtils.renderChildren(facesContext, uiComponent);
         }
-        //am I the selected pane?  Can I count on the taghandler to already have
-        //things constructed?? assume so for now.
         else if (iAmSelected(facesContext, uiComponent)){
-         //   logger.info("\t\t SELECTED!");
             JSFUtils.renderChildren(facesContext, uiComponent);
         }
 
@@ -98,13 +89,12 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
 
 
     private boolean iAmSelected(FacesContext facesContext, UIComponent uiComponent){
-        Object parent = uiComponent.getParent();
+        UIComponent parent = uiComponent.getParent();
         String selectedId= null;
-        //might change this to just test if it implements the interface....
         if (parent instanceof ContentPaneController){
             ContentPaneController paneController = (ContentPaneController)parent;
             selectedId = paneController.getSelectedId();
-      //      logger.info("iAmSelected()  id: " + uiComponent.getId() + "  selectedId: " + selectedId);
+            
             if (null == selectedId){
                 UIComponent pComp = (UIComponent)parent;
                 logger.warning("Parent controller of contentPane must have value for selectedId="+pComp.getClientId());
@@ -128,13 +118,10 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrapper", HTML.ID_ATTR);
         String pageClass = ITabPane.TABSET_HIDDEN_PAGECLASS.toString();
-        boolean selected = iAmSelected(facesContext, uiComponent);
-    //    logger.info(" pane with id="+clientId+" selected="+selected);
         if (iAmSelected(facesContext, uiComponent)){
             pageClass = ITabPane.TABSET_ACTIVE_CONTENT_CLASS;
         }
         writer.writeAttribute(HTML.CLASS_ATTR, pageClass, "class");
-         /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         if (pane.getStyle()!=null){

@@ -285,27 +285,6 @@ public class TabSetTag extends BaseBodyTag implements ITabSet{
     }
 
     /**
-     * not used for jsp at this time
-     * @return
-     */
-    public String getJavascriptFileRequestPath() {
-        return null;
-    }
-
-    /**
-     * not used at this time for jsp
-     * @return
-     */
-    public boolean isScriptLoaded() {
-        return true;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-
-    public void setScriptLoaded() {
-        //currently not used for jsp
-    }
-
-    /**
      * not required for JSP
      * @return
      */
