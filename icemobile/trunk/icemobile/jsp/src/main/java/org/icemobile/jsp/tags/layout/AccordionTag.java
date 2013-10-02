@@ -109,14 +109,6 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
         return sb.toString();
     }
 
-    public boolean isScriptLoaded() {
-        return false;
-    }
-
-    public void setScriptLoaded() {
-      //not used in JSP
-    }
-
     public String getOpenedPaneClientId() {
         return selectedId;
     }

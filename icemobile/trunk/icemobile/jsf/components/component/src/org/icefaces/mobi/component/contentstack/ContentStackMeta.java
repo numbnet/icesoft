@@ -16,15 +16,7 @@
 package org.icefaces.mobi.component.contentstack;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
-import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
-import org.icefaces.ace.meta.annotation.ClientEvent;
-import org.icefaces.ace.meta.annotation.Required;
-import org.icefaces.ace.meta.annotation.Facet;
-import org.icefaces.ace.meta.annotation.Facets;
-
-import javax.faces.component.UIComponent;
 
 
 @Component(

@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -30,16 +31,10 @@ import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
-import org.icefaces.mobi.utils.Utils;
 
 public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
 
     private static final Logger logger = Logger.getLogger(ContentStackMenuRenderer.class.getName());
-    private static final String JS_LIBRARY = "org.icefaces.component.layoutmenu";
-    // may also need the js files for accordion if accordion attribute is true
-    private static final String JS_ACC_NAME= "accordion.js";
-    private static final String JS_ACC_MIN_NAME = "accordion-min.js";
-    private static final String JS_ACC_LIB = "org.icefaces.component.accordion";
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -51,31 +46,37 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
         UIViewRoot root = facesContext.getViewRoot();
         UIComponent stackComp = JSFUtils.findChildComponent(root, cStackId) ;
         if (stackComp !=null && stackComp instanceof ContentStack){
-            String stackId = stackComp.getClientId(facesContext);
             ContentStack stack = (ContentStack)stackComp;
             String indexStr = params.get(clientId + "_hidden");
-            String newStr = params.get(stackId);
-        /*    if (newStr !=null){
-                logger.info("submitted "+newStr+" from request");
-            }  */
             String oldIndex = stack.getCurrentId();
             if( null != indexStr) {
                 //find the activeIndex and set it
                 if (!oldIndex.equals(indexStr)){
                     stack.setCurrentId(indexStr);
-                    /* do we want to queue an event for panel change in stack? */
-                   // component.queueEvent(new ValueChangeEvent(component, oldIndex, indexStr)) ;
                 }
             }
         }
     }
+    
+    private void validateContentStack(ContentStackMenu menu){
+        if( menu.getContentStack() == null ){
+            FacesMessage msg = new FacesMessage("Could not find the associated ContentStack");
+            FacesContext.getCurrentInstance().addMessage(menu.getClientId(), msg);
+            logger.warning("Could not find the associated ContentStack for contentStackMenu: " + menu.getClientId());
+            menu.setRendered(false);
+            return;
+        }
+    }
 
-     @Override
-     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    @Override
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
+        ContentStackMenu menu = (ContentStackMenu) uiComponent;
+        validateContentStack(menu);
+         
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
-        ContentStackMenu menu = (ContentStackMenu) uiComponent;
+        
       	UIComponent form = JSFUtils.findParentForm(uiComponent);
         boolean accordion = menu.isAccordion();
    		if(form == null) {

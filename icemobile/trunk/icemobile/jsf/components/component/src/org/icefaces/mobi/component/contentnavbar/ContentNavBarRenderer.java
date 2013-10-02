@@ -41,7 +41,6 @@ public class ContentNavBarRenderer extends BaseLayoutRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         ContentNavBar navbar = (ContentNavBar) uiComponent;
-        ContentPane cp = (ContentPane)parent;
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         StringBuilder styleClass = new StringBuilder(ContentNavBar.CONTENTNAVBAR_BASE_CLASS);

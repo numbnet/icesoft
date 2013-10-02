@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
@@ -57,11 +58,7 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
                     ContentStack stack = null;
                     if (parent instanceof ContentStackMenu) {
                         ContentStackMenu menu = (ContentStackMenu)parent;
-                        String stackClientId = menu.getStackClientId();
-                        if( stackClientId != null && stackClientId.length() > 0 ){
-                            stack= (ContentStack)facesContext.getViewRoot().findComponent(stackClientId);
-                        }
-                        
+                        stack = menu.getContentStack();                        
                     } else if (parent instanceof ContentNavBar){
                         stack = (ContentStack)findParentContentStack(uiComponent);
                     }
@@ -84,10 +81,10 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
              return;
          }
          if (parent instanceof ContentStackMenu){
-             renderItemAsList(parent, facesContext, uiComponent);
+             renderItemAsList((ContentStackMenu)parent, facesContext, uiComponent);
          }
          if (parent instanceof ContentNavBar){
-             renderItemAsButton(parent, facesContext, uiComponent);
+             renderItemAsButton((ContentNavBar)parent, facesContext, uiComponent);
          }
     }
 
@@ -179,63 +176,36 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
      * @param uiComponent
      * @throws IOException
      */
-    private void renderItemAsList(UIComponent parent, FacesContext facesContext, UIComponent uiComponent)
+    private void renderItemAsList(ContentStackMenu contentStackMenu, FacesContext facesContext, UIComponent uiComponent)
             throws IOException{
-        ContentStackMenu parentMenu = (ContentStackMenu)parent;
-        String contentStackId = parentMenu.getContentStackId();
+        ContentStack contentStack = contentStackMenu.getContentStack();
         ContentMenuItem menuItem = (ContentMenuItem)uiComponent;
         boolean client = false;
-        boolean accordion = parentMenu.isAccordion();
-        String selId = null;
-        if (null!=menuItem.getValue()){
-            selId= (String)menuItem.getValue();
-        }
-        UIViewRoot root = facesContext.getViewRoot();
-        String selClientId = null;
-        String stackClientId = null;
- 
-        if (null == ((ContentStackMenu) parent).getStackClientId()){
-            //look from root first for id
-            UIComponent stack = root.findComponent(contentStackId);
-            if (stack !=null){
-                stackClientId = stack.getClientId(facesContext);
-            }else {
-                //assume menu and stack in same form as siblings
-                UIComponent form = JSFUtils.findParentForm(uiComponent);
-                stackClientId = this.findCompIntree(facesContext, form, contentStackId);
-            }
-            if (null != stackClientId){
-                ((ContentStackMenu) parent).setStackClientId(stackClientId);
-            }
-            else{
-                logger.warning("ERROR unable to find stack id="+contentStackId);
-                // SOME FACESMESSAGE  ??
-            }
-        }
-        stackClientId = ((ContentStackMenu) parent).getStackClientId();
-        UIComponent stack = null;
-        if (stackClientId !=null){
-            stack = root.findComponent(stackClientId);
-        }else {
-            logger.warning(" Error:- Could not find contentStack for contentStackMenu id="+contentStackId);
+        boolean accordion = contentStackMenu.isAccordion();
+        String contentPaneId = (String)menuItem.getValue();
+        String contentPaneClientId = null;
+        if( contentStack == null ){
+            FacesMessage msg = new FacesMessage("Could not find the associated ContentStack");
+            FacesContext.getCurrentInstance().addMessage(contentStackMenu.getClientId(), msg);
+            logger.warning("Could not find the associated ContentStack for contentStackMenu: " + contentStack);
+            return;
         }
         //find the clientId of the selected Pane
-        if (null != stack && selId !=null){
-            selClientId = findCompIntree(facesContext, stack,  selId);
-            if (selClientId!=null && selClientId.length() > 0 ){
-                UIComponent pane = root.findComponent(selClientId);
-                ContentPane cp = (ContentPane)pane;
-                client = cp.isClient();
+        if ( contentPaneId != null){
+            ContentPane contentPane = (ContentPane)JSFUtils.findComponent(contentPaneId, null);
+            if( contentPane != null ){
+                contentPaneClientId = contentPane.getClientId();
+                client = contentPane.isClient();
             }
             else {
-                logger.warning("Unable to find contentPane with id="+selId);
+                logger.warning("Unable to find contentPane with id="+contentPaneId);
             }
         }
         String label = menuItem.getLabel();
-        String url = menuItem.getUrl();
         if (isLabelEmpty(label)){
             label="";
         }
+        String url = menuItem.getUrl();
  
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = menuItem.getClientId(facesContext);
@@ -254,9 +224,9 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
         String icon = menuItem.getIcon();
         String iconPlacement = menuItem.getIconPlacement();
  
-        if (null==selId & url==null) {   // must be a heading or accordion label
+        if (null==contentPaneId & url==null) {   // must be a heading or accordion label
             if (accordion){
-                this.writeTitleAsAccordionHandle(facesContext, uiComponent, parentMenu, label);
+                this.writeTitleAsAccordionHandle(facesContext, uiComponent, contentStackMenu, label);
             } else {
                 writeItemListStart(uiComponent, writer, clientId);
                 writer.writeAttribute("class", groupClass, "class");
@@ -292,20 +262,20 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.CLASS_ATTR, "ui-link-inherit", null);
             //verify location of panel and get proper id of the contentPane for onclick
             // if url or target then put that in the onclick  otherwise use the value lmi.getValue()
-            if (!menuItem.isDisabled() && menuItem.getUrl() != null){
-                writer.writeAttribute("href", getResourceURL(facesContext,menuItem.getUrl()), null);
+            if (!menuItem.isDisabled() && url != null){
+                writer.writeAttribute("href", getResourceURL(facesContext, url), null);
             }
             else {
-                StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(stackClientId).append("', event");
+                StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(contentStack.getClientId()).append("', event");
                 sb.append(",{ selectedId: '").append(menuItem.getValue()).append("'");
                 sb.append(",singleSubmit: ").append(menuItem.isSingleSubmit());
-                if (selClientId!=null){
-                    sb.append(",selClientId: '").append(selClientId).append("'");
+                if (contentPaneClientId!=null){
+                    sb.append(",selClientId: '").append(contentPaneClientId).append("'");
                 }
                 sb.append(",client: ").append(client);
                 sb.append(", item: '").append(uiComponent.getClientId(facesContext)).append("'");
                 sb.append("});");
-                if (stack !=null && stackClientId != null && !menuItem.isDisabled()){
+                if (contentStack != null && !menuItem.isDisabled()){
                     writer.writeAttribute("onclick", sb.toString(), null);
                 }
             }
@@ -343,7 +313,6 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
         StringBuilder baseClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_CLASS);
         StringBuilder pointerClass = new StringBuilder("pointer");
         String closeClass= "closed";
-        StringBuilder cfg = new StringBuilder("{autoheight:true");
         String menuId = menu.getClientId();
         String userDefinedClass = menu.getStyleClass();
         if (userDefinedClass != null && userDefinedClass.length() > 0){

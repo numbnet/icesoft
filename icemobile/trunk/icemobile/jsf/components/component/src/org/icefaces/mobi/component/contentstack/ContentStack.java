@@ -16,25 +16,18 @@
 package org.icefaces.mobi.component.contentstack;
 
 
-import org.icefaces.mobi.api.ContentPaneController;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.component.StateHelper;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import java.util.HashMap;
-import java.util.Map;
+
+import org.icefaces.mobi.api.ContentPaneController;
 
 public class ContentStack extends ContentStackBase implements ContentPaneController {
     public static final String CONTAINER_SINGLEVIEW_CLASS = "mobi-contentStack-container";
     public static final String PANES_SINGLEVIEW_CLASS ="mobi-contentStack-panes";
 
-    private Boolean singleView;
-    private Boolean navBar;
-
-    public ContentStack() {
-        super();
-    }
      /**
      * method is required by ContentPaneController interface no error checking as
      * component is not in the tree
@@ -130,6 +123,20 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
             }
         }
         return retVal;
+    }
+    
+    public String getCurrentId(){
+        
+        ValueExpression ve = getValueExpression( PropertyKeys.currentId.toString() );
+        if (ve != null) {
+                System.out.println("ContentStack " + getId() + " getCurrentId=" + (java.lang.String) ve.getValue( getFacesContext().getELContext() ));
+        }
+        return super.getCurrentId();
+    }
+    
+    public void setCurrentId(String id){
+        System.out.println("ContentStack " + getId() + " setCurrentId=" + id);
+        super.setCurrentId(id);
     }
 }
 
