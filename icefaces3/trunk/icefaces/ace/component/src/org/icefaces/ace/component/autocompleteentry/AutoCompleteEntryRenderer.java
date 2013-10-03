@@ -148,6 +148,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.writeAttribute("name", inputClientId, null);
         if (ariaEnabled)
             writer.writeAttribute("role", "textbox", null);
+		String placeholder = autoCompleteEntry.getPlaceholder();
+		if (placeholder != null) writer.writeAttribute("placeholder", placeholder, null);
 
 		mousedownScript = mousedownScript == null ? "" : mousedownScript;
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
@@ -211,6 +213,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         boolean focus = isEventSource && !isBlurEvent;
         String direction = autoCompleteEntry.getDirection();
         direction = direction != null ? ("up".equalsIgnoreCase(direction) || "down".equalsIgnoreCase(direction) ? direction : "auto" ) : "auto";
+		String placeholder = autoCompleteEntry.getPlaceholder();
 
         // script
         writer.startElement("script", null);
@@ -265,7 +268,11 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			.entry("hideLength", autoCompleteEntry.getHideEffectLength())
 			.endMap();
 
+			if (placeholder != null) jb.item(placeholder);
+			else jb.item("");
+			
 			jb.endArray();
+			
             jb.endFunction();
 
             writer.writeText(jb.toString(), null);

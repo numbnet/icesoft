@@ -139,6 +139,8 @@ public class ComboBoxRenderer extends InputRenderer {
 		if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
 		String title = comboBox.getTitle();
 		if (title != null) writer.writeAttribute("title", title, null);
+		String placeholder = comboBox.getPlaceholder();
+		if (placeholder != null) writer.writeAttribute("placeholder", placeholder, null);
 		writer.endElement("input");
 		
 		// hidden input
@@ -180,6 +182,7 @@ public class ComboBoxRenderer extends InputRenderer {
 		String divId = clientId + AUTOCOMPLETE_DIV;
 		Object sourceId = paramMap.get("ice.event.captured");
 		boolean isEventSource = sourceId != null && sourceId.toString().equals(inputClientId);
+		String placeholder = comboBox.getPlaceholder();
 
 		// script
 		writer.startElement("script", null);
@@ -227,8 +230,12 @@ public class ComboBoxRenderer extends InputRenderer {
 			.entry("hide", comboBox.getHideEffect())
 			.entry("hideLength", comboBox.getHideEffectLength())
 			.endMap();
+			
+			if (placeholder != null) jb.item(placeholder);
+			else jb.item("");
 
 			jb.endArray();
+			
 			jb.endFunction();
 
 			writer.writeText(jb.toString(), null);

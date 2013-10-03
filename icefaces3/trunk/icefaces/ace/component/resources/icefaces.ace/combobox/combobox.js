@@ -16,7 +16,7 @@
 
 if (!ice.ace.ComboBoxes) ice.ace.ComboBoxes = {};
 
-ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, showListOnInput, behaviors, cfg, clientSideModeCfg, effects) {
+ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selectedRowClass, height, showListOnInput, behaviors, cfg, clientSideModeCfg, effects, placeholder) {
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.ComboBoxes[this.id] && ice.ace.ComboBoxes[this.id].initialized) isInitialized = true;
@@ -52,11 +52,19 @@ ice.ace.ComboBox = function(id, updateId, rowClass, highlightedRowClass, selecte
 	this.update = $update.get(0);
 	this.cfg = cfg;
 	this.effects = effects;
+	if (placeholder && !('placeholder' in document.createElement('input'))) { // if 'placeholder' isn't supported, use label inField
+		this.cfg.inFieldLabel = placeholder;
+	}
 	$element.data("labelIsInField", this.cfg.labelIsInField);
 	
 	if (isInitialized) {
 		this.initialize(this.element, this.update, options, rowClass, highlightedRowClass, selectedRowClass, behaviors);
 	} else {
+        if (ice.ace.jq.trim($element.val()) == "" && this.cfg.inFieldLabel) {
+            $element.val(this.cfg.inFieldLabel);
+            $element.addClass(this.cfg.inFieldLabelStyleClass);
+            $element.data("labelIsInField", true);
+        }
 		var self = this;
 		var triggerInit = function() {
 			$element.off('focus');
