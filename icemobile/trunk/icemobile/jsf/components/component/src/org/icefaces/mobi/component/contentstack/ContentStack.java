@@ -19,11 +19,11 @@ package org.icefaces.mobi.component.contentstack;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.el.ValueExpression;
 import javax.faces.component.StateHelper;
 
 import org.icefaces.mobi.api.ContentPaneController;
 
+@SuppressWarnings("unchecked")
 public class ContentStack extends ContentStackBase implements ContentPaneController {
     public static final String CONTAINER_SINGLEVIEW_CLASS = "mobi-contentStack-container";
     public static final String PANES_SINGLEVIEW_CLASS ="mobi-contentStack-panes";
@@ -42,9 +42,9 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
         StateHelper sh = getStateHelper();
         String clientId = getClientId();
         String valuesKey = "singleView" + "_rowValues";
-        Map clientValues = (Map) sh.get(valuesKey);
+        Map<String,Object> clientValues = (Map<String,Object>) sh.get(valuesKey);
         if (clientValues == null) {
-            clientValues = new HashMap();
+            clientValues = new HashMap<String,Object>();
         }
         if (singleView==null){
             clientValues.remove(clientId);
@@ -62,7 +62,7 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
         java.lang.Boolean retVal = null;
         StateHelper sh = getStateHelper();
         String valuesKey = "singleView" + "_rowValues";
-        Map clientValues = (Map) sh.get(valuesKey);
+        Map<String,Object> clientValues = (Map<String,Object>) sh.get(valuesKey);
         Boolean mapNoValue = false;
         if (clientValues != null) {
             String clientId = getClientId();
@@ -74,7 +74,7 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
         }
         if (mapNoValue || clientValues == null ) {
             String defaultKey = "singleView" + "_defaultValues";
-            Map defaultValues = (Map) sh.get(defaultKey);
+            Map<String,Object> defaultValues = (Map<String,Object>) sh.get(defaultKey);
             if (defaultValues != null) {
                if (defaultValues.containsKey("defValue" )) {
                   retVal = (java.lang.Boolean) defaultValues.get("defValue");
@@ -87,9 +87,9 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
         StateHelper sh = getStateHelper();
         String clientId = getClientId();
         String valuesKey = "navBar" + "_rowValues";
-        Map clientValues = (Map) sh.get(valuesKey);
+        Map<String,Object> clientValues = (Map<String,Object>) sh.get(valuesKey);
         if (clientValues == null) {
-            clientValues = new HashMap();
+            clientValues = new HashMap<String,Object>();
         }
         if (navBar==null){
             clientValues.remove(clientId);
@@ -103,7 +103,7 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
        java.lang.Boolean retVal = null;
         StateHelper sh = getStateHelper();
         String valuesKey = "navBar" + "_rowValues";
-        Map clientValues = (Map) sh.get(valuesKey);
+        Map<String,Object> clientValues = (Map<String,Object>) sh.get(valuesKey);
         Boolean mapNoValue = false;
         if (clientValues != null) {
             String clientId = getClientId();
@@ -115,7 +115,7 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
         }
         if (mapNoValue || clientValues == null ) {
             String defaultKey = "navBar" + "_defaultValues";
-            Map defaultValues = (Map) sh.get(defaultKey);
+            Map<String,Object> defaultValues = (Map<String,Object>) sh.get(defaultKey);
             if (defaultValues != null) {
                if (defaultValues.containsKey("defValue" )) {
                   retVal = (java.lang.Boolean) defaultValues.get("defValue");
@@ -123,20 +123,6 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
             }
         }
         return retVal;
-    }
-    
-    public String getCurrentId(){
-        
-        ValueExpression ve = getValueExpression( PropertyKeys.currentId.toString() );
-        if (ve != null) {
-                System.out.println("ContentStack " + getId() + " getCurrentId=" + (java.lang.String) ve.getValue( getFacesContext().getELContext() ));
-        }
-        return super.getCurrentId();
-    }
-    
-    public void setCurrentId(String id){
-        System.out.println("ContentStack " + getId() + " setCurrentId=" + id);
-        super.setCurrentId(id);
     }
 }
 
