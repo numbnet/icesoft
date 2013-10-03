@@ -88,7 +88,6 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
     private void renderItemAsButton(UIComponent parent, FacesContext facesContext, UIComponent uiComponent)
         throws IOException {
         ContentMenuItem item = (ContentMenuItem)uiComponent;
-        ContentNavBar navBar = (ContentNavBar)uiComponent.getParent();
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId=item.getClientId(facesContext);
         String stackClientId = null;
