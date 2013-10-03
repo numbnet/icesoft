@@ -750,7 +750,6 @@ ice.mobi.serialize = function(form, typed) {
             }
         }
     }
-    // concatenate the array
     return qString.join("");
 }
 
@@ -801,8 +800,6 @@ function html5submitFunction(element, event, options) {
             }
         }
     } else {
-//        options.execute = element.name + " " + element.id;
-        //ICEfaces default render @all
         options.execute = "@all";
     }
 
@@ -817,7 +814,6 @@ function html5submitFunction(element, event, options) {
             }
         }
     } else {
-        //ICEfaces default execute @all
         options.execute = "@all";
     }
 
@@ -1002,9 +998,7 @@ ice.mobi.button = {
         if( elem ){
             var oldClass = elem.className;
             elem.className=oldClass.replace('down','up');
-          //  console.log('id='+clientId+' unSelect call back -> class='+document.getElementById(clientId).className);
         }
-        
     }
 };
 
@@ -2326,9 +2320,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
 //content stack
 (function() {
-    //functions that do not encapsulate any state, they just work with the provided parameters
-    //and globally accessible variables
-    //---------------------------------------
     function updateHidden(clientId, value) {
         var hidden = document.getElementById(clientId+"_hidden");
         if (hidden) {
@@ -2339,10 +2330,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
     }
 
-
-    //-------------------------------------
     function LayoutMenu(clientId, cfgIn) {
-    //    var mymenu = clientId;
         var singleVisClass = "mobi-contentpane-single ui-body-c";
         var singleHidClass = "mobi-contentpane-single-hidden";
         var nonSingleVisClass = "mobi-contentpane ui-body-c";
@@ -2421,9 +2409,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
                prevId  = wrpId;
            },
            updateProperties: function (clientId, cfgUpd) {
-             /*   if (cfgUpd.selectedId == selectedPaneId){
-                    return;
-                }*/
                 if (cfgUpd.selClientId){
                     this.showContent(null, cfgUpd);
                 }
@@ -2453,9 +2438,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
 //tabset
 (function() {
-    //functions that do not encapsulate any state, they just work with the provided parameters
-    //and globally accessible variables
-    //---------------------------------------
     function updateHidden(clientId, value) {
         var hidden = document.getElementById(clientId + "_hidden");
         if (hidden) {
@@ -2490,7 +2472,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
     function removeClass(ele, cls) {
         if (hasClass(ele, cls)) {
-            // var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');  don't need if we don't allow to skin?
             ele.className = " ";
         }
     }
@@ -2529,12 +2510,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         }
     }
 
-    //declare functions who creates object with methods that have access to the local variables of the function
-    //so in effect the returned object can operate on the local state declared in the function ...
-    //think about them as object fields in Java, also gone is the chore of copying the constructor parameters into fields
-    //-------------------------------------
     function TabSet(clientId, cfgIn) {
-        // setup tabContainer
         var tabContainer = document.getElementById(clientId);
         var contentId = clientId+"_tabContent";
         var tabContent = document.getElementById(contentId);
@@ -2591,7 +2567,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 if (!contentId){
                     contentId = clientId+"_tabContent";
                 }
-         //       tabContent = document.getElementById(contentId);
                 contents = this.getContents(clientId);
                 var parent = el.parentNode;
                 if (!parent) {
@@ -2605,7 +2580,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 removeClass(oldCtrl, clsActiveTab);
                 var isClient = cfgIn.client || false;
                 tabIndex = cfgIn.tIndex;
-             //   console.log("SHOWCONTENT tabIndex="+tabIndex+" old="+old);
                 if (lastServerIndex==tabIndex){
                     cntr= cntr + 1;
                 } else {
@@ -2613,7 +2587,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     lastServerIndex = tabIndex;
                 }
                 var submitted = tabIndex +","+cntr;
-                  //  console.log(" submitted="+submitted);
                 updateHidden(clientId, submitted);
                 contents[old].setAttribute("class", classHid);
                 if (!isClient) {
@@ -2622,7 +2595,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     contents[tabIndex].setAttribute("class", classVis);
                 }
                 el.setAttribute("class", clsActiveTab);
-             //   console.log("end of SHOW CONTENTS:-") ;
             },
             updateProperties: function (clientId, cfgUpd) {
                 var newHt = cfgUpd.height || -1;
@@ -2646,16 +2618,13 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 }
                 var oldIdx = tabIndex;
                 tabIndex = cfgUpd.tIndex;
-            //    console.log ('UPDATEPROPS>>>> old ='+oldIdx+" UPDATED TabINDEX="+tabIndex);
                 var oldCtrl = document.getElementById(tabCtrl + oldIdx);
                 if (oldCtrl) {
                     removeClass(oldCtrl, clsActiveTab);
                 }
-                //check to see if pages have been added or removed
                 if (!contentId){
                     contentId = clientId+"_tabContent";
                 }
-           //     tabContent = document.getElementById(contentId);
                 contents = this.getContents(clientId);
                 var newCtrl = tabCtrl+tabIndex;
                 setTabActive(newCtrl, clsActiveTab);
@@ -2663,7 +2632,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     contents[oldIdx].setAttribute("class", classHid);
                     contents[tabIndex].setAttribute("class", classVis);
                 }
-              //  console.log("end of UPDATE PROPS:-") ;
             },
             setDisabled: function(disabledIn){
                 disabled = disabledIn;
@@ -2719,7 +2687,6 @@ ice.mobi.splitpane = {
             var resizeCall = function() {
                 ice.mobi.splitpane.resizeHt(clientId);
             };
-            //
             if (cfgIn.width) {
                 var width = cfgIn.width || -1;
                 if (width > 0 && width < 99) {
@@ -2767,16 +2734,12 @@ ice.mobi.splitpane = {
     };
 //PANEL POPUP
 (function() {
-    //functions that do not encapsulate any state, they just work with the provided parameters
-    //and globally accessible variables
-    //---------------------------------------
     function updateHidden(clientId, value) {
         var hidden = document.getElementById(clientId+"_hidden");
         if (hidden) {
             hidden.value = value;
         }
     }
-    //-------------------------------------
     function PanelPopup(clientId, cfgIn) {
         var cId = clientId;
         var myId = cfgIn.id || null;
@@ -2845,7 +2808,6 @@ ice.mobi.splitpane = {
                     // calculate center for first view
                     ice.mobi.panelCenter(containerId, centerCfg);
                 }  else{
-                 //   console.log("NO AUTOCENTER");
                     var styleVar = "";
                     if (cfg.width){
                         var wStr = width+"px";
@@ -2883,8 +2845,6 @@ ice.mobi.splitpane = {
                          window.detachEvent('resize', centerCalculation[clientId], false);
                      }
                      centerCalculation[clientId] = undefined;
-               } else {
-             //      container.setAttribute("style", "");
                }
                ice.mobi.panelPopup.visible[clientId] = false;
                updateHidden(clientId, "false");
@@ -2906,7 +2866,6 @@ ice.mobi.splitpane = {
         cfg: {},
         centerCalculation:{},
         init: function(clientId, cfgIn) {
-          //  console.log("INIT");
             this.cfg[clientId] = cfgIn;
             var thisOne = this.findPanel(clientId, false);
             var i = this.panels.length;
@@ -2957,7 +2916,6 @@ ice.mobi.splitpane = {
                 var pane = this.panels[i];
                 if (isId){
                     var myId = pane.getId();
-                  //  console.log ("id of pane="+myId);
                     if (pane.getId()==popupId){
                         found = true;
                         return pane;
@@ -3096,7 +3054,6 @@ mobi.flipswitch = {
     }
     function setHeight(opened, fht){
         if (opened && fht){
-           // opened.setAttribute("style", "height:"+fht+"; maxHeight: "+fht+";");
             opened.style.height=fht;
             opened.style.maxHeight = fht;
         }
@@ -3171,7 +3128,6 @@ mobi.flipswitch = {
         return {
             toggle: function(clientId, el, cached) {
                 if (!el || disabled==true){    //is getting triggered on page load
-                 //   ice.log.debug(ice.log, 'accordion id='+clientId+' unable to open handle or is disabled');
                     return;
                 }
                 var singleSubmit  = ice.mobi.accordionController.singleSubmit[clientId];
@@ -3193,7 +3149,6 @@ mobi.flipswitch = {
                 }
                 if (autoheight && openElem && (maxHeight > 0)){
                     fixedHeight = maxHeight+"px";
-                 //   console.log("\t updated fixedHeight="+fixedHeight);
                 }
                 if (paneOpId && paneOpId == theParent.id){
                     if (openElem.className=="open"){
@@ -3203,14 +3158,12 @@ mobi.flipswitch = {
                         if (cached!="true"){
                             ice.se(null, clientId);
                         }
-                    //    console.log(" CLIENT and fixedHeight="+fixedHeight+" openElem id="+openElem.id);
                         openPane( openElem, fixedHeight);
                     }
                 }
                 else {//panel has changed
                     closePane(openElem, handleht);
                     if (cached!="false"){
-                       // console.log(" PANE CHANGED  fixedHeight="+fixedHeight);
                         openPane(theParent,fixedHeight);
                         paneOpId = theParent.id;
                         openElem = theParent;
@@ -3267,7 +3220,6 @@ mobi.flipswitch = {
                     var storedHt = ice.mobi.accordionController.maxHt[clientId];
                     maxHeight = Math.max(tmp1, maxHeight);
                     if (maxHeight == 0 && !storedHt){
-                      //  console.log(" \t !!!set ONAFTER UPDATE value so have to listen for update");
                            ice.onAfterUpdate(function() {
                                ice.mobi.accordionController.updateHeight(clientId, handleheight);
                             }) ;
@@ -3346,8 +3298,7 @@ mobi.flipswitch = {
                     ice.mobi.accordionController.unload(clientId);
                 });
             } else {
-                //getting phantom calls to this
-                if (!cfg.hash){
+                 if (!cfg.hash){
                     return;
                 }
                 this.panels[clientId].updateProperties(clientId, cfg);
@@ -3389,7 +3340,6 @@ mobi.flipswitch = {
         unload: function(clientId){
             var anode = document.getElementById(clientId);
             if (!anode){
-             //   console.log("REMOVE ACCORDION WITH  id="+clientId);
                 this.panels[clientId] = null;
                 this.autoheight[clientId]=null;
                 this.panels[clientId]=null;
@@ -3451,7 +3401,6 @@ ice.mobi.menubutton = {
                 var resetCall = function(xhr, status, args) {ice.mobi.menubutton.reset(myselect, index);};
                 options.onsuccess = resetCall;
                 ice.mobi.submitnotify.open(snId, optId, cfg, options);
-           //     this.reset(myselect, index);
                 return;
             }
             mobi.AjaxRequest(options);
@@ -3461,7 +3410,6 @@ ice.mobi.menubutton = {
             console.log("RESET");
             myselect.options[index].selected = false;
             myselect.options[0].selected=true;
-           //     myselect.options.index = 0;
 
         }
     };
