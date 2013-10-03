@@ -99,6 +99,7 @@ public class DialogRenderer extends CoreRenderer {
         String onShow = dialog.getOnShow();
         String onHide = dialog.getOnHide();
 		boolean hasHeaderFacet = dialog.getFacet("header") != null;
+		String handle = dialog.getDragHandle();
 
         if (styleClass != null) jb.entry("dialogClass", styleClass);
 		if (style != null) jb.entry("dialogStyle", style);
@@ -117,6 +118,7 @@ public class DialogRenderer extends CoreRenderer {
         if (onShow != null) jb.entry("onShow", "function(event, ui) {" + onShow + "}", true);
         if (onHide != null) jb.entry("onHide", "function(event, ui) {" + onHide + "}", true);
 		if (hasHeaderFacet) jb.entry("headerFacet", true);
+		if (handle != null) jb.entry("handle", handle);
 
         //Position
         if (position != null) {

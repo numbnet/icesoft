@@ -371,8 +371,11 @@ public class ListRenderer extends CoreRenderer {
             if (dropGroup != null)
                 cfgBuilder.entry("connectWith", ".dg-"+dropGroup);
 
-            if (component.isDragging())
+            if (component.isDragging()) {
                 cfgBuilder.entry("dragging", true);
+				String handle = component.getDragHandle();
+				if (handle != null) cfgBuilder.entry("handle", handle);
+			}
 
             if (component.isControlsEnabled())
                 cfgBuilder.entry("controls", true);

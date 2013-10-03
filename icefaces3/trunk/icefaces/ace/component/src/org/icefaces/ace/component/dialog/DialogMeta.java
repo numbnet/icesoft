@@ -122,4 +122,7 @@ public class DialogMeta extends UIPanelMeta {
 	
 	@Property(tlddoc="The side of the target component to position the dialog against. The format is \"<horizontal value> <vertical value>\". Possible horizontal values are \"left\", \"right\" and \"center\". Possible vertical values are \"top\", \"center\", and \"bottom\". Example: \"left top\" or \"center center\".", defaultValue="center")
 	private String relativePosition;
+	
+	@Property(tlddoc = "Specifies the jQuery selector(s) of the elements inside the dialog container that will be used as the drag handle(s). If this attribute isn't specified, any point of the dialog container can initiate the dragging action. The selectors are relative to the dialog's root element. When using multiple selectors, separate them by commas.")
+	String dragHandle;
 }
