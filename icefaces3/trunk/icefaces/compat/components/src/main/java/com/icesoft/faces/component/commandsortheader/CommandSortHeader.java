@@ -20,6 +20,9 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.ext.taglib.Util;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -32,6 +35,10 @@ import javax.faces.event.FacesEvent;
  * This component is an extension of com.icesoft.faces.component.ext.HtmlCommandLink,
  * works in conjunction with dataTable.
  */
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class CommandSortHeader
         extends HtmlCommandLink {
     /* (non-Javadoc)

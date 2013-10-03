@@ -16,16 +16,21 @@
 
 package com.icesoft.faces.component.ext;
 
+import com.icesoft.faces.component.ext.taglib.Util;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+import org.w3c.dom.Element;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-import org.w3c.dom.Element;
-
-import com.icesoft.faces.component.CSS_DEFAULT;
-import com.icesoft.faces.component.ext.taglib.Util;
-
 // We do not need this class, but Sun Studio Creator requires it.
 
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class UIColumn extends javax.faces.component.UIColumn {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.Column";
 

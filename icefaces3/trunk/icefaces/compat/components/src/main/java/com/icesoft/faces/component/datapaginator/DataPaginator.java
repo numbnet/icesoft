@@ -22,6 +22,9 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.util.CoreComponentUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
@@ -31,18 +34,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import java.sql.ResultSet;
+import javax.faces.event.*;
 import java.io.Serializable;
+import java.sql.ResultSet;
 
 
 /**
  * 
  */
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class DataPaginator extends HtmlPanelGroup implements ActionSource, Serializable {
     private final Log log = LogFactory.getLog(DataPaginator.class);
 

@@ -34,7 +34,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.utils.MessageUtils;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class LoadBundle extends UIOutput implements Serializable {
     private static final long serialVersionUID = 1L;
     public static final String COMPONENT_TYPE = "com.icesoft.faces.LoadBundle";

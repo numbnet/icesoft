@@ -24,6 +24,9 @@ import com.icesoft.faces.component.dragdrop.DndEvent;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -35,6 +38,10 @@ import javax.faces.event.PhaseId;
 /**
  * Panel Positioned Componenet class
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class PanelPositioned extends UISeries {
 
     public static final String COMPONENT_TYPE =

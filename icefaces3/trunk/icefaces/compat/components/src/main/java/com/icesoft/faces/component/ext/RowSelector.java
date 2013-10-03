@@ -16,26 +16,27 @@
 
 package com.icesoft.faces.component.ext;
 
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.renderkit.TableRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.context.effects.JavascriptContext;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
+import javax.faces.FacesException;
+import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
-import javax.faces.el.ValueBinding;
-import javax.faces.el.MethodNotFoundException;
 import javax.faces.el.EvaluationException;
+import javax.faces.el.MethodBinding;
+import javax.faces.el.MethodNotFoundException;
+import javax.faces.el.ValueBinding;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-import javax.faces.FacesException;
-import javax.faces.application.NavigationHandler;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,10 @@ import java.util.Map;
  * Created by IntelliJ IDEA. User: rmayhew Date: Aug 28, 2006 Time: 12:45:26 PM
  * To change this template use File | Settings | File Templates.
  */
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class RowSelector extends UIPanel {
     private Boolean value;
     private Boolean toggleOnClick;

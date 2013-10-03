@@ -26,6 +26,9 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.util.CoreComponentUtils;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.component.ActionSource;
 import javax.faces.context.FacesContext;
@@ -48,6 +51,10 @@ import javax.faces.event.ValueChangeEvent;
  * <li>allows to set the action and actionListener for this component</li> <ul>
  */
 
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class HtmlInputText
         extends javax.faces.component.html.HtmlInputText
         implements IceExtended, ActionSource {

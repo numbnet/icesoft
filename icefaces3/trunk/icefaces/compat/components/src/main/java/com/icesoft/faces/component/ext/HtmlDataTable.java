@@ -23,6 +23,9 @@ import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.EffectQueue;
 import com.icesoft.faces.context.effects.Highlight;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
@@ -46,6 +49,10 @@ import java.util.Map;
  * the component's rendered state based on the authentication</li> <li>maintain
  * the sorting order, for a column within the dataTable</li> <ul>
  */
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class HtmlDataTable
         extends UISeries {
 

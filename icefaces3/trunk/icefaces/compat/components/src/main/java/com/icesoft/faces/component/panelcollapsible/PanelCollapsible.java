@@ -30,7 +30,14 @@ import javax.faces.event.FacesEvent;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class PanelCollapsible extends UICommand {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.PanelCollapsible";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.PanelCollapsibleRenderer";

@@ -24,7 +24,14 @@ import javax.faces.el.ValueBinding;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.CSS_DEFAULT;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class PanelConfirmation extends UIComponentBase {
 
     public static final String COMPONENT_TYPE = "com.icesoft.faces.PanelConfirmation";

@@ -16,6 +16,10 @@
 
 package com.icesoft.faces.component.menubar;
 
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
 import javax.faces.el.ValueBinding;
 import javax.faces.el.MethodBinding;
 import javax.faces.event.ActionListener;
@@ -37,6 +41,10 @@ import java.util.List;
  * @author gmccleary
  * @version 1.1
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class MenuItems extends MenuItemBase {
 
     private String value;

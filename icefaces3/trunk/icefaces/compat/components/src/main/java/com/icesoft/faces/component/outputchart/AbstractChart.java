@@ -19,6 +19,9 @@ package com.icesoft.faces.component.outputchart;
 import com.icesoft.faces.context.ResourceRegistryLocator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 import org.krysalis.jcharts.Chart;
 import org.krysalis.jcharts.encoders.JPEGEncoder;
 import org.krysalis.jcharts.imageMap.ImageMap;
@@ -37,6 +40,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public abstract class AbstractChart implements Serializable {
     private final Log log = LogFactory.getLog(AbstractChart.class);
     //jcharts.Chart is not Serializable so we may need additional work

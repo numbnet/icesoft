@@ -21,6 +21,9 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -32,6 +35,10 @@ import javax.faces.el.ValueBinding;
  * enabled and rendered state based on the authentication</li> <li>adds effects
  * to the component</li> <ul>
  */
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class HtmlOutputLink extends javax.faces.component.html.HtmlOutputLink {
     public static final String COMPONENT_TYPE =
             "com.icesoft.faces.HtmlOutputLink";

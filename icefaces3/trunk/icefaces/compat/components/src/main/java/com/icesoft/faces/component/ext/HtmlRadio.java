@@ -16,10 +16,18 @@
 
 package com.icesoft.faces.component.ext;
 
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
 import javax.faces.component.UIComponentBase;
 import javax.faces.el.ValueBinding;
 import javax.faces.context.FacesContext;
 
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class HtmlRadio extends UIComponentBase {
     private String _for = null;
     private Integer _index = null;

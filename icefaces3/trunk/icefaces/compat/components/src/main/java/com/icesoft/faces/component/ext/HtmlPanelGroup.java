@@ -26,6 +26,9 @@ import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import org.icefaces.impl.component.SeriesStateHolder;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -43,6 +46,10 @@ import javax.faces.event.PhaseId;
  * <li>adds effects to the component</li> <ul>
  */
 
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup
         implements SeriesStateHolder {
     public static final String COMPONENT_TYPE =

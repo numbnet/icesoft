@@ -21,6 +21,9 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.CoreUtils;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -34,6 +37,10 @@ import javax.faces.el.ValueBinding;
  * <p/>
  * The component extends the javax.faces.component.html.HtmlPanelGroup.
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class PanelTab
         extends HtmlPanelGroup {
     /**

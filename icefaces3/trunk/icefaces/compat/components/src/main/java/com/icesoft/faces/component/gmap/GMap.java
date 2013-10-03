@@ -19,9 +19,10 @@ package com.icesoft.faces.component.gmap;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.JavascriptContext;
-
+import org.icefaces.resources.BrowserType;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
+
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -29,7 +30,9 @@ import java.io.IOException;
 import java.util.Map;
 
 @ICEResourceDependencies({
-    @ICEResourceDependency(name = "gmap/gmap.js")
+    @ICEResourceDependency(name = "gmap/gmap.js"),
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+    @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
 })
 public class GMap extends UIPanel {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.GMap";

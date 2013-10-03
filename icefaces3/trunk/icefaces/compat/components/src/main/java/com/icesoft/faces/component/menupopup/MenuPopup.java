@@ -21,6 +21,9 @@ import com.icesoft.faces.component.ContextActionEvent;
 import com.icesoft.faces.component.DisplayEvent;
 import com.icesoft.faces.component.menubar.MenuBar;
 import com.icesoft.faces.component.ext.taglib.Util;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.component.UIComponent;
 import javax.faces.event.AbortProcessingException;
@@ -51,6 +54,10 @@ import javax.faces.el.ValueBinding;;
  *
  * @author Mark Collette
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class MenuPopup extends MenuBar {
 	private Boolean blockMenuOnInput;
 	

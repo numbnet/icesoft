@@ -25,7 +25,14 @@ import javax.faces.context.FacesContext;
 
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class Repeat extends UISeries{
     public static final String COMPONENT_TYPE = "com.icesoft.faces.Repeat";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.Repeat";

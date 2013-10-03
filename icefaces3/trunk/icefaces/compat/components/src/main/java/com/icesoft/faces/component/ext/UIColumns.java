@@ -17,18 +17,22 @@
 package com.icesoft.faces.component.ext;
 
 import com.icesoft.faces.component.panelseries.UISeries;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
-import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.PhaseId;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
 
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class UIColumns extends UISeries {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.Columns";
     public static final String COMPONENT_FAMILY = "javax.faces.Columns";

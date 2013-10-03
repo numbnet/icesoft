@@ -20,6 +20,9 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.taglib.Util;
 import org.icefaces.impl.component.UISeriesBase.RowEvent;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.component.ActionSource;
 import javax.faces.context.FacesContext;
@@ -31,7 +34,10 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
 
-
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class HtmlForm
         extends javax.faces.component.html.HtmlForm
         implements IceExtended, ActionSource {
