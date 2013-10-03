@@ -88,6 +88,9 @@ public class TextAreaEntryRenderer extends InputRenderer {
           .entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"))
           .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
         jb.entry("maxlength", textAreaEntry.getMaxlength());
+		String placeholder = textAreaEntry.getPlaceholder();
+		if (placeholder != null) jb.entry("placeholder", placeholder);
+		else jb.entry("placeholder", "");
 
         encodeClientBehaviors(context, textAreaEntry, jb);
 
@@ -152,7 +155,9 @@ public class TextAreaEntryRenderer extends InputRenderer {
             writeAriaAttributes(ariaAttributes, labelAttributes);
         }
 
-        if (textAreaEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+		String placeholder = textAreaEntry.getPlaceholder();
+		if (placeholder != null) writer.writeAttribute("placeholder", placeholder, null);
+		if (textAreaEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if (textAreaEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
         String style = textAreaEntry.getStyle();
         if (style != null) writer.writeAttribute("style", style, "style");

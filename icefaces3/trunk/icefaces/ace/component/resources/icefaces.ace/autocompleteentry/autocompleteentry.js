@@ -18,7 +18,7 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.Autocompleters) ice.ace.Autocompleters = {};
 
-ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, behaviors, cfg, clientSideModeCfg, effects) {
+ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, behaviors, cfg, clientSideModeCfg, effects, placeholder) {
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.Autocompleters[this.id] && ice.ace.Autocompleters[this.id].initialized) isInitialized = true;
@@ -38,11 +38,19 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
 	this.element.id = this.id + "_input";
 	this.update = ice.ace.jq(ice.ace.escapeClientId(updateId)).get(0);
 	this.effects = effects;
+	if (placeholder && !('placeholder' in document.createElement('input'))) { // if 'placeholder' isn't supported, use label inField
+		this.cfg.inFieldLabel = placeholder;
+	}
 	$element.data("labelIsInField", this.cfg.labelIsInField);
 	
 	if (isInitialized) {
 		this.initialize(this.element, this.update, options, rowClass, selectedRowClass, behaviors);
 	} else {
+        if (ice.ace.jq.trim($element.val()) == "" && this.cfg.inFieldLabel) {
+            $element.val(this.cfg.inFieldLabel);
+            $element.addClass(this.cfg.inFieldLabelStyleClass);
+            $element.data("labelIsInField", true);
+        }
 		var self = this;
 		$element.on('focus', function() {
 			$element.off('focus');

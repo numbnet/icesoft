@@ -23,8 +23,16 @@ ice.ace.TextAreaEntry = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(inputId);
     this.jq = jQ(this.jqId);
+	if (cfg.placeholder && !('placeholder' in document.createElement('input'))) { // if 'placeholder' isn't supported, use label inField
+		this.cfg.inFieldLabel = this.cfg.placeholder;
+	}
 
     if (cfg.inFieldLabel) {
+        if (ice.ace.jq.trim(this.jq.val()) == "") {
+            this.jq.val(this.cfg.inFieldLabel);
+            this.jq.addClass(this.cfg.inFieldLabelStyleClass);
+			this.jq.attr({name: labelName});
+        }
         this.jq.focus(
             function() {
                 var input = jQ(this);
