@@ -42,7 +42,14 @@ import com.icesoft.faces.context.ResourceRegistry;
 import com.icesoft.faces.context.ResourceRegistryLocator;
 
 import com.icesoft.faces.component.tree.Tree;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class OutputResource extends UIComponentBase {
 
 	public static final String COMPONENT_FAMILY = "com.icesoft.faces.OutputResource";

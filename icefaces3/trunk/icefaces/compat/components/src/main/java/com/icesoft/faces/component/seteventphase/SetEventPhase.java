@@ -16,6 +16,10 @@
 
 package com.icesoft.faces.component.seteventphase;
 
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -29,6 +33,10 @@ import java.util.HashMap;
  * @author mcollette
  * @since 1.8
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class SetEventPhase extends UIComponentBase {
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.SetEventPhase";
     private static Map phaseName2PhaseId = new HashMap();

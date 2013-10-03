@@ -19,6 +19,9 @@ package com.icesoft.faces.component.portlet;
 import com.icesoft.jasper.Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -33,6 +36,10 @@ import java.util.Map;
  * that is designed to be deployed as a portlet.  Currently, it's main purpose is to provide
  * the proper namespace to the portlet's component heirarchy by
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class Portlet extends UINamingContainer {
 
     private static Log log = LogFactory.getLog(Portlet.class);

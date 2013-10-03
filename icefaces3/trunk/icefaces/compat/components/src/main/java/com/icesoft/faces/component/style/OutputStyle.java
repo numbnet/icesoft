@@ -16,6 +16,10 @@
 
 package com.icesoft.faces.component.style;
 
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
 import javax.faces.component.UIComponentBase;
 import javax.faces.el.ValueBinding;
 import javax.faces.context.FacesContext;
@@ -26,6 +30,10 @@ import javax.faces.context.FacesContext;
  * when rendered in Sun Studio Creator design time. This allows style classes to
  * be overridden for specific browsers.
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class OutputStyle extends UIComponentBase {
 
     public static final String COMPONENT_TYPE =

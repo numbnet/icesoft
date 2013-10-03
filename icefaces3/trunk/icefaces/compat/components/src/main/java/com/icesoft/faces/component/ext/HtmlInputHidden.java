@@ -17,10 +17,19 @@
 package com.icesoft.faces.component.ext;
 
 
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
 /**
  * This is an extension of javax.faces.component.html.HtmlInputHidden, which
  * provides design-time support for SunStudioCreator 2
  */
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
+
 public class HtmlInputHidden
         extends javax.faces.component.html.HtmlInputHidden {
 

@@ -17,6 +17,10 @@
 package com.icesoft.faces.component.panellayout;
 
 import com.icesoft.faces.component.ext.taglib.Util;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -26,6 +30,10 @@ import javax.faces.el.ValueBinding;
  * AbsoluteLayout allow placement of components in absolute positions.
  * A flow layout arranges components in relative alignment.
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class PanelLayout extends javax.faces.component.UIComponentBase {
 
     public final static String FLOWLAYOUT = "flow";

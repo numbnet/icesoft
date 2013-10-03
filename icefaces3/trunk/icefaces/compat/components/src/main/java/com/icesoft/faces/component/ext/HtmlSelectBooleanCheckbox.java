@@ -24,6 +24,9 @@ import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.util.CoreComponentUtils;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -36,6 +39,10 @@ import javax.faces.el.ValueBinding;
  * submit mechanism</li> <li>changes the component's enabled and rendered state
  * based on the authentication</li> <li>adds effects to the component</li> <ul>
  */
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class HtmlSelectBooleanCheckbox
         extends javax.faces.component.html.HtmlSelectBooleanCheckbox
         implements IceExtended {

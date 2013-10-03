@@ -25,6 +25,9 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 
 import org.icefaces.impl.component.SeriesStateHolder;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -53,6 +56,10 @@ import java.util.*;
  * By default this component is rendered by the "com.icesoft.faces.SelectInputText"
  * renderer type.
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class SelectInputText extends HtmlInputText implements NamingContainer,
         SeriesStateHolder {
     public static final String COMPONENT_TYPE =

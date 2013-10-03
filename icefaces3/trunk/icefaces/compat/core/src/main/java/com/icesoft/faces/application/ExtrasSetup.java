@@ -73,8 +73,18 @@ public class ExtrasSetup implements SystemEventListener {
         if (EnvUtils.isICEfacesView(context)) {
             UIViewRoot root = context.getViewRoot();
 
-            root.addComponentResource(context, ResourceOutputUtil.createTransientScriptResourceComponent("compat.js", ICE_COMPAT_LIB), "head");
-            root.addComponentResource(context, ResourceOutputUtil.createTransientScriptResourceComponent("icefaces-compat.js", ICE_COMPAT_LIB), "head");
+            boolean loadCompatSetup = false;
+            List<UIComponent> headResources = root.getComponentResources(context, "head");
+            for (UIComponent r: headResources) {
+                Map attributes = r.getAttributes();
+                if ("ice.compat".equals(attributes.get("library")) && "icefaces-compat.js".equals(attributes.get("name"))) {
+                    loadCompatSetup = true;
+                    break;
+                }
+            }
+            if (!loadCompatSetup) {
+                return;
+            }
 
             UIOutput output = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {

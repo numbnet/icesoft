@@ -24,6 +24,9 @@ import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.CoreComponentUtils;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -36,6 +39,10 @@ import javax.faces.el.ValueBinding;
  * based on the authentication</li> <li>adds effects to the component</li>
  * <li>allows to set the action and actionListener for this component</li> <ul>
  */
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class HtmlInputSecret extends HtmlInputText {
     public static final String COMPONENT_TYPE =
             "com.icesoft.faces.HtmlInputSecret";

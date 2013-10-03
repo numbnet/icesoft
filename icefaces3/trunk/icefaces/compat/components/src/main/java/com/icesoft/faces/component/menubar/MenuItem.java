@@ -30,6 +30,9 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 
 import com.icesoft.util.pooling.CSSNamePool;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 /**
  * MenuItem is a JSF component class that represent an ICEfaces menuItem.
@@ -45,6 +48,10 @@ import com.icesoft.util.pooling.CSSNamePool;
  *
  * @version 1.1
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class MenuItem extends MenuItemBase {
 
     private String icon;

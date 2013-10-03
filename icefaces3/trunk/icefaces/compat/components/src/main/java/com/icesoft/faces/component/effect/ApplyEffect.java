@@ -17,11 +17,18 @@
 package com.icesoft.faces.component.effect;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.faces.component.UIComponentBase;
 
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class ApplyEffect extends UIComponentBase {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.ApplyEffect";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.ApplyEffectRenderer";

@@ -16,41 +16,39 @@
 
 package com.icesoft.faces.component.dataexporter;
 
+import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.commandsortheader.CommandSortHeader;
+import com.icesoft.faces.component.ext.RowSelector;
+import com.icesoft.faces.component.ext.UIColumn;
+import com.icesoft.faces.component.ext.UIColumns;
+import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.component.outputresource.OutputResource;
+import com.icesoft.faces.context.FileResource;
+import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.util.CoreComponentUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
+
+import javax.faces.component.*;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.el.ValueBinding;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UICommand;
-import javax.faces.component.UIData;
-import javax.faces.component.UISelectBoolean;
-import javax.faces.component.UISelectMany;
-import javax.faces.component.UISelectOne;
-import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-
-import com.icesoft.faces.component.ext.UIColumns;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.icesoft.faces.component.CSS_DEFAULT;
-import com.icesoft.faces.component.ext.RowSelector;
-import com.icesoft.faces.component.ext.UIColumn;
-import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.component.outputresource.OutputResource;
-import com.icesoft.faces.component.commandsortheader.CommandSortHeader;
-import com.icesoft.faces.context.FileResource;
-import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.util.CoreUtils;
-import com.icesoft.util.CoreComponentUtils;
-import com.icesoft.faces.context.Resource;
-
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class DataExporter extends OutputResource {
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.DataExporter";
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.DataExporter";

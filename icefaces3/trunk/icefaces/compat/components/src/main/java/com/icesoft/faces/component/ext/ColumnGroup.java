@@ -22,7 +22,14 @@ import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
+@ICEResourceDependencies({
+	@ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={}),
+	@ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class ColumnGroup extends UIPanel{
     public static final String COMPONENT_TYPE = "com.icesoft.faces.ColumnGroup";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.Column";

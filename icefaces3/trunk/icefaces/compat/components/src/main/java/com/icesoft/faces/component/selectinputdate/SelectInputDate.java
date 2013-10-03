@@ -23,6 +23,9 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.util.CoreComponentUtils;
 
 import org.icefaces.impl.component.SeriesStateHolder;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -49,6 +52,10 @@ import java.text.SimpleDateFormat;
  * @author Greg McCleary
  * @version 1.1
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class SelectInputDate
         extends HtmlInputText
         implements SeriesStateHolder {

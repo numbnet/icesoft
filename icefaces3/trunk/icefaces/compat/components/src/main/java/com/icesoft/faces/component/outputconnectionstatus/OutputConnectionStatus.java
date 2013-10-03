@@ -18,6 +18,9 @@ package com.icesoft.faces.component.outputconnectionstatus;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
@@ -33,6 +36,10 @@ import javax.faces.el.ValueBinding;
  * "com.icesoft.faces.OutputConnectionStatusRenderer" renderer type.
  */
 
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class OutputConnectionStatus extends HtmlPanelGroup {
     public static final String COMPONENT_TYPE =
             "com.icesoft.faces.OutputConnectionStatus";

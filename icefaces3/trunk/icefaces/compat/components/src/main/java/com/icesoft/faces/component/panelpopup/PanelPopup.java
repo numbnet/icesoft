@@ -23,6 +23,9 @@ import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -40,6 +43,10 @@ import java.util.Map;
  * @author Greg McCleary
  * @version beta 1.0
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class PanelPopup extends HtmlPanelGroup {
     /**
      * The component type.

@@ -18,6 +18,9 @@ package com.icesoft.faces.component.panelseries;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import org.icefaces.resources.BrowserType;
+import org.icefaces.resources.ICEResourceDependencies;
+import org.icefaces.resources.ICEResourceDependency;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -39,6 +42,10 @@ import javax.faces.el.ValueBinding;
  *
  * @version beta 1.0
  */
+@ICEResourceDependencies({
+        @ICEResourceDependency(name="icefaces-compat.js", library="ice.compat",target="head", browser= BrowserType.ALL, browserOverride={}),
+        @ICEResourceDependency(name="compat.js", library="ice.compat",target="head", browser=BrowserType.ALL, browserOverride={})
+})
 public class PanelSeries extends UISeries {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.PanelSeries";
     public static final String RENDERER_TYPE = "com.icesoft.faces.PanelSeriesRenderer";
