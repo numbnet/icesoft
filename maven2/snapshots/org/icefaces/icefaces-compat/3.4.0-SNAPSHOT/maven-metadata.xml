@@ -61,8 +61,8 @@
       </snapshotVersion>
       <snapshotVersion>
         <extension>jar.asc.asc</extension>
-        <value>3.4.0-20130917.210249-7</value>
-        <updated>20130917210249</updated>
+        <value>3.4.0-20131003.230111-8</value>
+        <updated>20131003230111</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>sources</classifier>
