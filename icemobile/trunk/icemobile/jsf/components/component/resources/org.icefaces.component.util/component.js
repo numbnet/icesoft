@@ -3136,18 +3136,9 @@ mobi.flipswitch = {
         }
         var openElem = document.getElementById(paneOpId);
         var cntr = 0;
-        if (!openElem && accordRoot.hasChildNodes()){
-            var children = accordRoot.children;
-            openElem = children[0];
-            paneOpId = children[0].id;
-        }
         var autoheight = cfgIn.autoHeight || false;
         origHeight = fixedHeight =  cfgIn.fixedHeight || null;
         var fHtVal = cfgIn.fHtVal || null;
-        if (!openElem){
-            console.log("Accordion has no children");
-            this.setDisabled(true);
-        }
         var handleheight = getHandleHeight(accordRoot);
         var handleht = handleheight + "px";
         if (autoheight==false && !fixedHeight){
@@ -3167,7 +3158,7 @@ mobi.flipswitch = {
                 fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
             }
         }
-        if (disabled!=true){
+        if (disabled!=true && openElem){
             openPane(openElem, fixedHeight);
         }else {
              ice.log.debug(ice.log, "Accordion has been disabled");
