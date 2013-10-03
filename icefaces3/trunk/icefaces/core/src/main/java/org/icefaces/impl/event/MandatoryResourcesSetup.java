@@ -30,6 +30,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.render.RenderKit;
+import javax.faces.render.RenderKitWrapper;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,8 +78,22 @@ public class MandatoryResourcesSetup implements SystemEventListener {
         }
     }
 
+    private RenderKit findDOMRenderKit(FacesContext facesContext)  {
+        RenderKit rk = facesContext.getRenderKit();
+
+        //loop relies on DOMRenderKit being RenderKitWrapper
+        while (rk instanceof RenderKitWrapper)  {
+            if (rk instanceof DOMRenderKit)  {
+                return rk;
+            }
+            rk = ((RenderKitWrapper) rk).getWrapped();
+        }
+        return rk;
+    }
+
+
     private void addMandatoryResources(FacesContext context) {
-        RenderKit rk = context.getRenderKit();
+        RenderKit rk = findDOMRenderKit(context);
         if (rk instanceof DOMRenderKit) {
             DOMRenderKit drk = (DOMRenderKit) rk;
             Set<ResourceInfo> addedResourceDependencies = new HashSet<ResourceInfo>();
