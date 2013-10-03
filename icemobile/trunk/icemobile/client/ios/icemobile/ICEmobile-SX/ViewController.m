@@ -620,6 +620,14 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     [urlField resignFirstResponder];
 }
 
+- (void)applicationDidBecomeActive {
+    NSString* storedField = [[NSUserDefaults standardUserDefaults] 
+            stringForKey:@"urlField"];
+    if (nil != storedField)  {
+        self.urlField.text = storedField;
+    }
+}
+
 - (void)applicationWillResignActive {
     [self.nativeInterface applicationWillResignActive];
 }
@@ -629,6 +637,9 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 }
 
 - (void) applicationDidEnterBackground  {
+    [[NSUserDefaults standardUserDefaults]
+            setValue:self.urlField.text forKey:@"urlField"];
+    
     [self showControls];
     [self hideProgress];
 }

@@ -90,6 +90,7 @@
 @property (nonatomic, retain) SettingsViewController *settingsView;
 
 - (void) applicationWillResignActive;
+- (void) applicationDidBecomeActive;
 - (void) applicationWillEnterForeground;
 - (void) applicationDidEnterBackground;
 - (void) dispatchCurrentCommand;

@@ -52,7 +52,7 @@
                     <rect key="frame" x="119" y="152" width="531" height="300"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://mediacast.icemobile.org/mediacast/upload/" borderStyle="roundedRect" placeholder="Upload URL" minimumFontSize="17" id="28">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Upload URL" minimumFontSize="17" id="28">
                             <rect key="frame" x="73" y="49" width="384" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
