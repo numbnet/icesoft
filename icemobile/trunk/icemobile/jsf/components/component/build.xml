@@ -582,18 +582,11 @@
 		</filelist>
 		<fileset dir="${resources}">
 			<!--     <include name="org.icefaces.component.button/button.js"/>  MOBI-200-->
-			<include name="org.icefaces.component.button/menubutton.js" />
 			<include name="org.icefaces.component.carousel/carousel.js" />
 			<include name="org.icefaces.component.datespinner/datespinner.js" />
-			<include name="org.icefaces.component.flipswitch/flipswitch.js" />
 			<include name="org.icefaces.component.panelconfirmation/panelconfirmation.js" />
-			<include name="org.icefaces.component.panelpopup/panelpopup.js" />
 			<include name="org.icefaces.component.submitnotification/submitnotification.js" />
 			<include name="org.icefaces.component.timespinner/timespinner.js" />
-			<include name="org.icefaces.component.tabset/tabset.js" />
-			<include name="org.icefaces.component.accordion/accordion.js" />
-			<include name="org.icefaces.component.layoutmenu/layoutmenut.js" />
-			<include name="org.icefaces.component.splitpane/splitpane.js" />
 		</fileset>
 	</concat>
 </target>
