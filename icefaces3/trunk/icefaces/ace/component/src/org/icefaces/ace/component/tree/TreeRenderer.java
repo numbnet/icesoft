@@ -135,6 +135,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean multipleSelection = renderContext.isMultipleSelection();
         boolean indexIds = converter instanceof NodeModelLazyListKeyConverter ||
                 converter instanceof NodeModelListSequenceKeyConverter;
+		String handle = tree.getDragHandle();
 
         confJson.initialiseVar(widgetVar).beginFunction("ice.ace.create").item("Tree")
                 .beginArray()
@@ -156,6 +157,10 @@ public class TreeRenderer extends CoreRenderer {
             confJson.entry("selection", true);
             if (multipleSelection) confJson.entry("multiSelect", true);
         }
+		
+		if (handle != null) {
+			confJson.entry("handle", handle);
+		}
 
         encodeClientBehaviors(facesContext, tree, confJson);
         confJson.endMap().endArray().endFunction();

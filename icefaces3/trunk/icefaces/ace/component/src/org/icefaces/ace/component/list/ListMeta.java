@@ -200,4 +200,7 @@ public class ListMeta extends UIDataMeta {
             defaultValue = "false",
             defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean compact;
+	
+	@Property(tlddoc = "Specifies the jQuery selector(s) of the elements inside the item container that will be used as the drag handle(s). If this attribute isn't specified, any point of the item container can initiate the dragging action. The selectors are relative to the item's root element. When using multiple selectors, separate them by commas.")
+	String dragHandle;
 }

@@ -118,6 +118,7 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
         int width = dialog.getWidth();
         int height = dialog.getHeight();
         int zIndex = dialog.getZindex();
+		String handle = dialog.getDragHandle();
 
         if(styleClass != null) jb.entry("dialogClass", styleClass);
 		if(style != null) jb.entry("dialogStyle", style);
@@ -130,6 +131,7 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		if(hideEffect != null) jb.entry("hide", hideEffect);
 		if(!dialog.isCloseOnEscape()) jb.entry("closeOnEscape", false);
 		if(!dialog.isClosable()) jb.entry("closable", false);
+		if (handle != null) jb.entry("handle", handle);
 
 		//Position
 		String position = dialog.getPosition();

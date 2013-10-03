@@ -118,6 +118,8 @@ ice.ace.Tree.prototype.setupReordering = function () {
             }
         }
     }
+	
+	if (this.cfg.handle) this.sortConfig.handle = this.cfg.handle;
 
     this.element.find(this.sortableTarget).andSelf().sortable(this.sortConfig);
 };
