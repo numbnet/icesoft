@@ -2361,7 +2361,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             var length = cpanes.length;
             for (i=0; i< length-1; i++){
                 var iStr = i+'';
-                cpanes[i].setAttribute('order', iStr);
+                cpanes[i].setAttribute('data-order', iStr);
                 //after remove the singleView and let it slide for a test
                 if ( i==0 && singleView) { //assume first panel is always menu or home
                     cpanes[i].className = singleLeftHidClass;
@@ -2398,8 +2398,8 @@ ice.mobi.addListener(document, "touchstart", function(){});
                var wrpId = selClId +"_wrp";
                currPane = document.getElementById(wrpId);
                var prevPane = document.getElementById(prevId);
-               var oldOrd = prevPane.getAttribute("order");
-               var newOrd = currPane.getAttribute("order");
+               var oldOrd = prevPane.getAttribute("data-order");
+               var newOrd = currPane.getAttribute("data-order");
                if (singleView && oldOrd<newOrd){
                    prevPane.className= singleLeftHidClass ;
                } else {
