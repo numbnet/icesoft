@@ -152,10 +152,9 @@ static char base64EncodingTable[64] = {
         UIView *overlayView = [[UIView alloc] initWithFrame:overlayFrame];
         UIButton *albumButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [albumButton setTitle:@"Album" forState:UIControlStateNormal];
-        albumButton.alpha = 0.5;
-        [albumButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [albumButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         albumButton.frame = CGRectMake(picker.view.frame.size.width - 70,
-            10,60,30);
+            0,60,30);
         [albumButton addTarget:self action:@selector(doAlbumButton:)
                 forControlEvents:UIControlEventTouchDown];
         [overlayView addSubview:albumButton];
