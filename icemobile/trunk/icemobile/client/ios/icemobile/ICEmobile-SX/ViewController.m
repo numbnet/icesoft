@@ -58,6 +58,7 @@
 @synthesize commandNames;
 @synthesize launchedFromApp;
 @synthesize splashImage;
+@synthesize licensePage;
 
 
 - (void) dealloc  {
@@ -358,6 +359,11 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([@"ICEmobile-SX License" isEqualToString: alertView.title])  {
+        if (buttonIndex == 1) {
+            self.licensePage++;
+            [self showLicense];
+            return;
+        }
         return;
     }
 
@@ -385,6 +391,33 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 
 }
 
+- (NSString*) pageFromString:(NSString*)text atPage:(NSInteger)pageNum {
+    NSInteger MAX_PAGE = 400;
+    NSMutableString* page = [NSMutableString stringWithCapacity:1000];
+    NSScanner *scanner = [NSScanner scannerWithString:text];
+    NSInteger currentLine = 0;
+    while (![scanner isAtEnd]) {
+        NSString *line = nil;
+        [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] 
+            intoString:&line];
+        if (line) {
+            currentLine++;
+            NSInteger currentPage = currentLine / MAX_PAGE;
+            if (currentPage == pageNum) {
+                [page appendString:line];
+                [page appendString:@"\n"];
+            }
+            if (currentPage > pageNum)  {
+                break;
+            }
+        }
+    }
+    if (0 == [page length])  {
+        return nil;
+    }
+    return page;
+}
+
 - (IBAction) showLicense  {
     LogDebug(@"ViewController showLicense");
     NSError *error = nil;
@@ -392,12 +425,18 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
             pathForResource:@"license" ofType:@"txt"];
     NSString *licenseText = [[NSString alloc] initWithContentsOfFile:localPath
             encoding:NSASCIIStringEncoding error:&error];
+    NSString* displayText = [self pageFromString:licenseText 
+            atPage:self.licensePage];
+    if (nil == displayText)  {
+        self.licensePage = 0;
+        return;
+    }
 
     UIAlertView *alert = [[UIAlertView alloc] 
             initWithTitle:@"ICEmobile-SX License" 
-            message:licenseText 
+            message:displayText 
             delegate:self cancelButtonTitle:@"OK" 
-            otherButtonTitles:nil];
+            otherButtonTitles:@"More", nil];
     [alert show];
     [alert release];
 }
