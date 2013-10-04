@@ -69,6 +69,7 @@
 @property (retain) NSDictionary *confirmMessages;
 @property (retain) NSDictionary *confirmTitles;
 @property (retain) NSArray *commandNames;
+@property (nonatomic) NSInteger licensePage;
 @property (nonatomic) BOOL launchedFromApp;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
 @property (nonatomic, retain) IBOutlet UILabel *uploadLabel;
