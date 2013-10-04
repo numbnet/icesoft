@@ -138,9 +138,9 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 } else {
                     monitor = (Monitor) SessionMonitors.get(id);
                 }
-                //it is possible to have multiple web-app contexts associated with the same session ID
-                monitor.addInSessionContext(context);
             }
+            //it is possible to have multiple web-app contexts associated with the same session ID
+            monitor.addInSessionContext(context);
 
             synchronized (sessionBoundServers) {
                 if (!sessionBoundServers.containsKey(id)) {
