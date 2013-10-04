@@ -78,7 +78,7 @@ public class AccordionPaneCoreRenderer extends BaseCoreRenderer {
         args.append(accordionId).append("', this, '").append(client).append("'");
         ClientDescriptor cd = accordion.getClient();
         if (Utils.isTransformerHack(cd)) {
-            args.append(", 'true'");
+            args.append(", true");
         }
         args.append(");");
         writer.writeAttribute("onclick", args.toString() );
