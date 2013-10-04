@@ -3155,7 +3155,7 @@ mobi.flipswitch = {
                         closePane(openElem, handleht);
                     } else {
                         //contents may have changed so get new ones or may be single pane MOBI-611
-                        if (cached!="true"){
+                        if (cached !== true){
                             ice.se(null, clientId);
                         }
                         openPane( openElem, fixedHeight);
@@ -3163,7 +3163,7 @@ mobi.flipswitch = {
                 }
                 else {//panel has changed
                     closePane(openElem, handleht);
-                    if (cached!="false"){
+                    if (cached !== false){
                         openPane(theParent,fixedHeight);
                         paneOpId = theParent.id;
                         openElem = theParent;
