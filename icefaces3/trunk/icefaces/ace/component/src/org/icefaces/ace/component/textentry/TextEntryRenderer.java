@@ -67,10 +67,6 @@ public class TextEntryRenderer extends InputRenderer {
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 		
 		String type = textEntry.validateType(textEntry.getType());
-		/*String componentType = "input";
-        if (type.equals("textarea")) {
-            componentType = "textarea";
-        }*/
         boolean isNumberType = type.equals("number");
         boolean isDateType = type.equals("date");
 
@@ -84,7 +80,6 @@ public class TextEntryRenderer extends InputRenderer {
         Map<String, Object> labelAttributes = getLabelAttributes(component);
 
         writer.startElement("span", textEntry);
-//        writer.writeAttribute("id", clientId + "_markup", null);
 
         writeLabelAndIndicatorBefore(labelAttributes);
 
