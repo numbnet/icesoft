@@ -81,7 +81,7 @@ public class TextEntryMeta extends HtmlInputTextMeta {
 	// ----------------------------------------
 
     @Property(defaultValue = "text", tlddoc = "The type attribute for the input element. " +
-    		"Currently supports text, textarea, phone, url, email, number, date, time, datetime.  Depending " +
+    		"Currently supports text, phone, url, email, number, date, time, datetime.  Depending " +
     		"on device capability, a type-specific keyboard may be displayed. ")
     private String type;
 
@@ -115,11 +115,4 @@ public class TextEntryMeta extends HtmlInputTextMeta {
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="The step to increase/decrease the value of the number input. " +
             "Applicable only to type \"number\". ")
     private int step;
-
-    @Property(defaultValue = "false", tlddoc = "When singleSubmit is \"true\", triggering an action on " +
-    		"this component will submit and execute only this component only (equivalent to" +
-    		" <f:ajax execute='@this' render='@all'> ). When singleSubmit is \"false\", triggering an " +
-    		"action on this component will submit and execute the full form that this component " +
-    		"is contained within.")
-    private boolean singleSubmit;
 }
