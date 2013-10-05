@@ -17,52 +17,35 @@
            <span class="icon-bar"></span>
          </button>
         <div class="container">
-            <a href="index.html" class="navbar-brand">BridgeIt</a>
+            <a href="index.html" class="navbar-brand" title="BridgeIt"></a>
             <div class="nav-collapse collapse bs-navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="getting-started.html">Getting started</a>
+                        <a href="getting-started.html">BridgeIt</a>
                     </li>
                     <li>
-                        <a href="download.html">Download</a>
+                        <a href="download.html">Community</a>
                     </li>
                     <li>
-                        <a href="documentation.html">Documentation</a>
+                        <a href="documentation.html">Help</a>
                     </li>
                     <li>
                         <a href="about.html">About</a>
                     </li>
-                    <li class="dropdown device-link">
+                    <!--  li class="dropdown device-link">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Open in your Device <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li id="qrDeviceLink"></li>
                         </ul>
-                    </li>
+                    </li-->
                 </ul>
-            </div>
-            <div class="platforms">
-                <i class="icon-android"></i>
-                <i class="icon-apple"></i>
-                <i class="icon-windows coming-soon"></i>
-                <img src="./images/blackberry-logo.png" class="bb-logo coming-soon"/>
             </div>
         </div>
     </div>
     <div id="intro" class="container">
         <div class="jumbotron">
             <h1>Meet BridgeIt...
-                <span class="br">
-                    <a data-target="#carousel" data-slide-to="0"><i class="icon-camera"></i></a>
-                    <a data-target="#carousel" data-slide-to="1"><i class="icon-film"></i></a>
-                    <a data-target="#carousel" data-slide-to="2"><i class="icon-qrcode"></i></a>
-                    <a data-target="#carousel" data-slide-to="3"><i class="icon-microphone"></i></a>
-                    <a data-target="#carousel" data-slide-to="4"><i class="icon-group"></i></a>
-                    <a data-target="#carousel" data-slide-to="5"><i class="icon-map-marker"></i></a>
-                    <a data-target="#carousel" data-slide-to="6"><i class="icon-eye-open"></i></a>
-                    <a data-target="#carousel" data-slide-to="7"><i class="icon-mobile-phone"></i></a>
-                    <a data-target="#carousel" data-slide-to="8"><i class="icon-cloud-download"></i></a>
-                </span>
-            </h1>
+             </h1>
             <p>The easiest way to add native features to your web application. <br/>
             A simple JavaScript API to access native features.<br/>
             Got app envy? Go beyond HTML5...</p>
@@ -156,9 +139,6 @@
     <script src="javascript/jquery.qrcode-0.6.0.min.js"></script>
     <script>
     $('.carousel').carousel({interval:5000,pause:"hover"});
-    setTimeout(function(){
-        document.body.classList.add('endAnim');
-    },100);
     </script>
     <script src="javascript/load-qr-link.js"></script>
   </body>
