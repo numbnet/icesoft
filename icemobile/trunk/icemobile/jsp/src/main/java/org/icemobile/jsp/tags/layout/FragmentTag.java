@@ -35,7 +35,6 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
 
     private SplitPaneCoreRenderer renderer;
     private String name;
-    private boolean firstChild;
     private TagWriter writer;
     private SplitPaneTag myParent;
 
@@ -58,13 +57,11 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
            if (name.equals(LOC_LEFT)){
             id = parentId+"_left";
             this.style = parent.getLeftStyle();
-            firstChild = true;
         }
         else if (name.equals(LOC_RIGHT)){
             id = parentId+"_right";
             this.style = parent.getRightStyle();
-            firstChild = false;
-        } //error checking??
+        }
         writer = new TagWriter(pageContext);
         this.styleClass = parent.getPaneClass();
         }
@@ -88,12 +85,8 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
      * @throws javax.servlet.jsp.JspTagException
      */
     public int doEndTag() throws JspTagException {
-      //  LOG.info("doEndTag Fragment");
        try {
            renderer.encodePaneEnd( writer);
-           if (firstChild){
-               renderer.encodeColumnDivider(myParent, writer);
-           }
        } catch (IOException ioe){
            throw new JspTagException(" Error with endTag of FragmentTag");
        }
