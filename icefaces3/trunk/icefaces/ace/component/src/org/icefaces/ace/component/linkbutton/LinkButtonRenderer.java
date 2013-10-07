@@ -111,6 +111,8 @@ public class LinkButtonRenderer extends CoreRenderer {
         if (!disabled) encodeScript(facesContext, writer, HTML.ONMOUSEOVER_ATTR,
                                     linkButton, uiParams, clientId, doAction);
         writer.endElement(HTML.DIV_ELEM);
+		
+		Utils.registerLazyComponent(facesContext, clientId, getScript(facesContext, writer, linkButton, uiParams, clientId, doAction));
     }
 
     private void encodeHref(LinkButton linkButton, ResponseWriter writer, List<UIParameter> uiParams) throws IOException {
@@ -164,8 +166,8 @@ public class LinkButtonRenderer extends CoreRenderer {
         }
     }
 
-    private void encodeScript(FacesContext facesContext, ResponseWriter writer,
-                              String eventAttr, LinkButton linkButton,
+    private String getScript(FacesContext facesContext, ResponseWriter writer,
+                              LinkButton linkButton,
                               List<UIParameter> uiParams, String clientId,
                               boolean doAction) throws IOException {
         JSONBuilder json = JSONBuilder.create()
@@ -186,7 +188,15 @@ public class LinkButtonRenderer extends CoreRenderer {
         }
 
         json.endMap().endArray().endFunction();
+		
+		return json.toString();
+	}
+		
+    private void encodeScript(FacesContext facesContext, ResponseWriter writer,
+                              String eventAttr, LinkButton linkButton,
+                              List<UIParameter> uiParams, String clientId,
+                              boolean doAction) throws IOException {
 
-        writer.writeAttribute(eventAttr, json.toString(), null);
+        writer.writeAttribute(eventAttr, getScript(facesContext, writer, linkButton, uiParams, clientId, doAction), null);
     }
 }

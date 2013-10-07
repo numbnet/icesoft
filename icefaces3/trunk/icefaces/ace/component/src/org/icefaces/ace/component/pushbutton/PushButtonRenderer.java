@@ -109,6 +109,8 @@ public class PushButtonRenderer extends CoreRenderer {
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
 
         writeButtonValue(writer, pushButton);
+		
+		Utils.registerLazyComponent(facesContext, clientId, getScript(facesContext, writer, pushButton, clientId));
     }
 	
 	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -169,8 +171,8 @@ public class PushButtonRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, rootStyle, null);
     }
 
-    private void encodeScript(FacesContext facesContext, ResponseWriter writer,
-                              PushButton pushButton, String clientId, String event) throws IOException {
+    private String getScript(FacesContext facesContext, ResponseWriter writer,
+                              PushButton pushButton, String clientId) throws IOException {
         List<UIParameter> uiParams = Utils.captureParameters(pushButton);
         JSONBuilder json = JSONBuilder.create()
                                       .beginFunction("ice.ace.lazy")
@@ -192,8 +194,14 @@ public class PushButtonRenderer extends CoreRenderer {
         }
 
         json.endMap().endArray().endFunction();
+		
+		return json.toString();
+	}
 
-        writer.writeAttribute(event, json.toString(), null);
+    private void encodeScript(FacesContext facesContext, ResponseWriter writer,
+                              PushButton pushButton, String clientId, String event) throws IOException {
+		
+        writer.writeAttribute(event, getScript(facesContext, writer, pushButton, clientId), null);
     }
 
     private boolean hasListener(PushButton pushButton) {
