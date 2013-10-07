@@ -35,7 +35,6 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
 
     @Override
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
-        String clientId = uiComponent.getClientId(facesContext);
         SplitPane pane = (SplitPane)uiComponent;
         UIComponent leftFacet = pane.getFacet(SplitPane.LEFT_FACET);
         UIComponent rightFacet = pane.getFacet(SplitPane.RIGHT_FACET);
@@ -50,7 +49,6 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
         renderer.encodePane(pane, writer, "left");
         JSFUtils.renderChild(facesContext, leftFacet);
         renderer.encodePaneEnd(writer);
-        renderer.encodeColumnDivider(pane, writer) ;
         renderer.encodePane(pane, writer, "right");
         JSFUtils.renderChild(facesContext, rightFacet);
         renderer.encodePaneEnd(writer);
