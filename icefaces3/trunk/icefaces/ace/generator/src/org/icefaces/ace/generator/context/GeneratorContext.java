@@ -17,6 +17,7 @@
 package org.icefaces.ace.generator.context;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -34,6 +35,7 @@ import org.icefaces.ace.meta.annotation.JSP;
 import org.icefaces.ace.meta.annotation.TagHandler;
 
 public class GeneratorContext{
+    private static final Logger logger = Logger.getLogger(GeneratorContext.class.getName());
 	private static GeneratorContext generatorContext = null;
     public static final Map<String,String> WrapperTypes= new HashMap<String, String>();
     public static final Map<String,String> InvWrapperTypes= new HashMap<String, String>();
@@ -46,10 +48,10 @@ public class GeneratorContext{
     public static String shortName = "";    
     public static String namespace = "";
     private List<Behavior> behaviors = new ArrayList<Behavior>();
-     public static final Map<String,String> SpecialReturnSignatures = new HashMap<String,String>();
-     public static final Map<String,String> PrimitiveDefaults = new HashMap<String,String>();
+    public static final Map<String,String> SpecialReturnSignatures = new HashMap<String,String>();
+    public static final Map<String,String> PrimitiveDefaults = new HashMap<String,String>();
 
-     public static String getDisplayName() {
+    public static String getDisplayName() {
         String ret = System.getProperty("generator.tld.doc.display.name");
         if (ret == null) {
             ret = "";
@@ -66,7 +68,6 @@ public class GeneratorContext{
         Matcher searchMatcher = evalPattern.matcher( ret  );
         if (searchMatcher.find() )  {
             ret = searchMatcher.group();
-            System.out.println("Dewey build version = " + ret);
         }
         return ret;
     }
@@ -150,15 +151,16 @@ public class GeneratorContext{
 	}
     
     public void processMetaContexts(Class clazz) {
-        MetaContext ic = new InterfaceContext(clazz);
-        ic.process();
-        
-        MetaContext jc = new JSPContext(clazz);
-        jc.process();
-        
+        /*logger.info(" ++++++++CREATING COMPONENT CONTEXT ++++++++");*/
         MetaContext cc = new ComponentContext(clazz);
         cc.process();
-
+        /*logger.info(" ++++++++CREATING INTERFACE CONTEXT ++++++++");*/
+        MetaContext ic = new InterfaceContext(clazz);
+        ic.process();
+        /*logger.info(" ++++++++CREATING JSP CONTEXT ++++++++");*/
+        MetaContext jc = new JSPContext(clazz);
+        jc.process();
+        /*logger.info(" ++++++++CREATING TAGHANDLER CONTEXT ++++++++");*/
         MetaContext thc = new TagHandlerContext(clazz);
         thc.process();
     }

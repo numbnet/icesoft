@@ -21,7 +21,10 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.JSP;
 import org.icefaces.ace.meta.annotation.OnlyType;
 
+import java.util.logging.Logger;
+
 public class InterfaceContext extends MetaContext {
+    private static final Logger logger = Logger.getLogger(InterfaceContext.class.getName());
 	public InterfaceContext(Class clazz) {
 		super(clazz);
 	}
@@ -29,6 +32,11 @@ public class InterfaceContext extends MetaContext {
     @Override
     protected void setupArtifacts() {
         artifacts.put(InterfaceArtifact.class.getSimpleName(), new InterfaceArtifact(this));
+    }
+
+    @Override
+    protected boolean isPropertyValueDisinherited(Class clazz, String name) {
+        return false;
     }
 
     @Override

@@ -38,9 +38,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class ComponentArtifact extends Artifact{
-
+    private static final Logger logger = Logger.getLogger(ComponentArtifact.class.getName());
     private StringBuilder writer = new StringBuilder();
     private final static Logger Log = Logger.getLogger(ComponentArtifact.class.getName());
     private ComponentContext componentContext;
@@ -56,7 +57,7 @@ public class ComponentArtifact extends Artifact{
 
     private void startComponentClass(ComponentContext compCtx, Class clazz, Component component) {
         String generatedClassName = Utility.getGeneratedClassName(component);
-
+        /*logger.info("START COMPONENTCLASS for class ="+generatedClassName);*/
         writer.append("package ");
         writer.append(Utility.getPackageNameOfClass(generatedClassName));
         writer.append(";\n\n");
@@ -254,6 +255,7 @@ public class ComponentArtifact extends Artifact{
 
 
     private void addProperties(ComponentContext compCtx, ArrayList<PropertyValues> generatedProperties) {
+        /*logger.info(".....addProperties and Getter and setters to componentContext");*/
         addPropertyEnum(compCtx, generatedProperties);
         addGetterSetter(compCtx, generatedProperties);
     }
@@ -266,8 +268,9 @@ public class ComponentArtifact extends Artifact{
         }
         for(PropertyValues propertyValues : generatedProperties) {
             String propertyName = propertyValues.resolvePropertyName();
-            System.out.println("Processing property " + propertyName );
-
+            if (logger.isLoggable(Level.FINE)) {
+                logger.info("Processing property " + propertyName );
+            }
             if (!propertyValues.isDelegatingProperty()) {
                 String varName = propertyValues.getJavaVariableName();
                 String propKey;
@@ -276,6 +279,7 @@ public class ComponentArtifact extends Artifact{
                 } else {
                     propKey = propertyName;
                 }
+      /*          logger.info(" \t\t varName="+varName+" propKey="+propKey);*/
                 writer.append("\t\t");
                 writer.append( propKey );
                 writer.append(",\n");

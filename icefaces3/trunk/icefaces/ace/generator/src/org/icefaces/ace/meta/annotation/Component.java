@@ -135,11 +135,11 @@ public @interface Component {
    * Name of the properties, that needs to be included from the parent class.
    * @return property names.
    */
-  String[] includeProperties() default {};
+ // String[] includeProperties() default {};
 
-  //	
-  //	Name of the properties to be excluded from superclasses.
-  //	@return property names.
-  //
-  //String[] disinheritProperties() default {};
+  /** Name of the properties that are not to be inherited from the superclass
+   *
+   */
+  String[] disinheritProperties() default {};
+
 }

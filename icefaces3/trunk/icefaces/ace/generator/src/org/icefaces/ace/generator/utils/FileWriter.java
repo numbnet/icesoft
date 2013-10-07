@@ -28,6 +28,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -44,6 +46,8 @@ import org.icefaces.ace.meta.annotation.TagHandler;
 import org.w3c.dom.Document;
 
 public class FileWriter {
+       private static final Logger logger = Logger.getLogger(FileWriter.class.getName());
+
     public static void write(String base, String path, String fileName, StringBuilder contents) {
         Writer writer = null;
         try {
@@ -74,7 +78,9 @@ public class FileWriter {
 
     public static String getBuildFolder() {
         String ret = System.getProperty("generator.build.dir");
-//System.out.println("getBuildFolder  property: " + ret);
+        if (logger.isLoggable(Level.FINE)){
+            logger.info("getBuildFolder  property: " + ret);
+        }
         if (ret == null) {
             ret = getWorkingFolder() + "../../component/build/";
         }
@@ -136,6 +142,9 @@ public class FileWriter {
     public static String getPropertyValue(Class clazz, String fieldName, String methodName) {
         try {   
             Field field = clazz.getField(fieldName);
+            if (logger.isLoggable(Level.FINE)){
+                logger.info("getPropertyValue field="+String.valueOf(field.get(field)));
+            }
             return String.valueOf(field.get(field));
         } catch (Exception fe) {
             try {
@@ -171,18 +180,23 @@ public class FileWriter {
             for (int i = 0; i < files.length; i++) {
                 String path = files[i].getPath();
                 if (path.endsWith(".class")) {
-//                    System.out.println("1. separatorChar "+ files[i].separatorChar);
-//                    System.out.println("2. separatorChar "+ path);
+                    if (logger.isLoggable(Level.FINE)){
+                        logger.info("1. separatorChar "+ files[i].separatorChar);
+                        logger.info("2. separatorChar "+ path);
+                    }
                     path = path.substring(pathPrefix.length()+1, path.indexOf(".class"));
                     path = path.replace(files[i].separatorChar, '.');
-//                    System.out.println("3.separatorChar "+ path);                    
-        
-                     try {                    
+                    if (logger.isLoggable(Level.FINE)){
+                        logger.info("3.separatorChar "+ path);
+                    }
+                    try {
                         Class c = loader.loadClass(path);
                         if (c.isAnnotationPresent(Component.class) ||
                             c.isAnnotationPresent(TagHandler.class) ||
                             c.isAnnotationPresent(JSP.class)) {
-                            System.out.println("Meta class found = "+ path);
+                            if (logger.isLoggable(Level.FINE)){
+                                logger.info("Meta class found = "+ path);
+                            }
                             componentsList.add(c);
                         }
                     } catch (Exception e) {
