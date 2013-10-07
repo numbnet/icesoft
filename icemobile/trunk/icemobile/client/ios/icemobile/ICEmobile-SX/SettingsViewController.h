@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface SettingsViewController : UIViewController  
-    <UITableViewDelegate, UITableViewDataSource>
+    <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 
+@property (atomic) NSInteger logPage;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (retain) NSDictionary *settings;
 

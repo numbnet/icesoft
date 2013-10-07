@@ -102,5 +102,45 @@
     [IceUtil makeFancyButton:button withColor:[UIColor lightGrayColor]];
 }
 
++ (NSArray*) linesFromString:(NSString*) text  {
+    NSMutableArray *lines = [[NSMutableArray alloc] init];
+    NSScanner *scanner = [NSScanner scannerWithString:text];
+    while (![scanner isAtEnd]) {
+        NSString *line = nil;
+        [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] 
+            intoString:&line];
+        if (line) {
+            [lines addObject:line];
+        }
+    }
+    return lines;
+}
+
++ (NSString*) pageFromString:(NSString*)text atPage:(NSInteger)pageNum {
+    NSInteger MAX_PAGE = 400;
+    NSMutableString* page = [NSMutableString stringWithCapacity:1000];
+    NSScanner *scanner = [NSScanner scannerWithString:text];
+    NSInteger currentLine = 0;
+    while (![scanner isAtEnd]) {
+        NSString *line = nil;
+        [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] 
+            intoString:&line];
+        if (line) {
+            currentLine++;
+            NSInteger currentPage = currentLine / MAX_PAGE;
+            if (currentPage == pageNum) {
+                [page appendString:line];
+                [page appendString:@"\n"];
+            }
+            if (currentPage > pageNum)  {
+                break;
+            }
+        }
+    }
+    if (0 == [page length])  {
+        return nil;
+    }
+    return page;
+}
 
 @end

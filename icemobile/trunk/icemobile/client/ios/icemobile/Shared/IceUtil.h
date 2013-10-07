@@ -24,5 +24,7 @@
 + (void)makeFancyButton:(UIButton*)button withColor:(UIColor*)color;
 + (void)makeFancyButton:(UIButton*)button;
 + (void)pushFancyButton:(UIButton*)button;
++ (NSArray*) linesFromString:(NSString*)text;
++ (NSString*) pageFromString:(NSString*)text atPage:(NSInteger)pageNum;
 
 @end

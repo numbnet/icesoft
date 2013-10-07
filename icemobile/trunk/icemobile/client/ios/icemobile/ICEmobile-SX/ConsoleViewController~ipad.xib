@@ -38,12 +38,12 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="R8d-19-uO8" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="5yY-QV-trJ"/>
-                <constraint firstItem="5mR-Uj-hNy" firstAttribute="top" secondItem="R8d-19-uO8" secondAttribute="bottom" constant="8" symbolic="YES" id="MQB-oh-Eex"/>
-                <constraint firstItem="R8d-19-uO8" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="RnF-7o-rOr"/>
-                <constraint firstAttribute="bottom" secondItem="5mR-Uj-hNy" secondAttribute="bottom" id="aW5-wZ-ToE"/>
-                <constraint firstItem="5mR-Uj-hNy" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="kvC-TK-AqY"/>
-                <constraint firstAttribute="trailing" secondItem="5mR-Uj-hNy" secondAttribute="trailing" id="z9D-s3-HS9"/>
+                <constraint firstAttribute="trailing" secondItem="5mR-Uj-hNy" secondAttribute="trailing" id="6L7-Uq-v76"/>
+                <constraint firstItem="5mR-Uj-hNy" firstAttribute="top" secondItem="R8d-19-uO8" secondAttribute="bottom" constant="8" symbolic="YES" id="CQ2-J2-hKO"/>
+                <constraint firstItem="R8d-19-uO8" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="KFL-H5-pbV"/>
+                <constraint firstItem="R8d-19-uO8" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="Msa-Pl-WzA"/>
+                <constraint firstItem="5mR-Uj-hNy" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="bEF-zJ-XTi"/>
+                <constraint firstAttribute="bottom" secondItem="5mR-Uj-hNy" secondAttribute="bottom" id="h6D-BT-M2l"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
         </view>

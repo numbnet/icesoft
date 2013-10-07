@@ -82,6 +82,7 @@
      */
     [self.viewController applicationDidBecomeActive];
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
+    [self redirectConsoleLog];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -148,6 +149,13 @@ NSLog(@"splash image URL %@", splashImageURL);
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo  {
     LogInfo(@"didReceiveRemoteNotification %@", userInfo);
     [self.viewController reloadCurrentURL];
+}
+
+- (void) redirectConsoleLog {
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  NSString *documentsDirectory = [paths objectAtIndex:0];
+  NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"console.log"];
+  freopen([logPath cStringUsingEncoding:NSASCIIStringEncoding],"w",stderr);
 }
 
 @end

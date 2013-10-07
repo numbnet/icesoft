@@ -29,7 +29,6 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CIB-WC-PRL">
                     <rect key="frame" x="20" y="20" width="37" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <state key="normal" title="Done">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -40,12 +39,12 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="4" firstAttribute="top" secondItem="CIB-WC-PRL" secondAttribute="bottom" constant="8" symbolic="YES" id="1EW-qo-t5Z"/>
-                <constraint firstAttribute="trailing" secondItem="4" secondAttribute="trailing" id="BbG-kw-Y23"/>
-                <constraint firstItem="4" firstAttribute="leading" secondItem="OIV-XP-hn5" secondAttribute="leading" id="Eco-17-GpD"/>
-                <constraint firstAttribute="bottom" secondItem="4" secondAttribute="bottom" id="VrO-Jf-wG8"/>
-                <constraint firstItem="CIB-WC-PRL" firstAttribute="leading" secondItem="OIV-XP-hn5" secondAttribute="leading" constant="20" symbolic="YES" id="iIi-bg-VDe"/>
-                <constraint firstItem="CIB-WC-PRL" firstAttribute="top" secondItem="OIV-XP-hn5" secondAttribute="top" constant="20" id="uwh-RZ-GEN"/>
+                <constraint firstAttribute="trailing" secondItem="4" secondAttribute="trailing" id="27X-ps-o1K"/>
+                <constraint firstAttribute="bottom" secondItem="4" secondAttribute="bottom" id="Dho-cZ-sOP"/>
+                <constraint firstItem="CIB-WC-PRL" firstAttribute="top" secondItem="OIV-XP-hn5" secondAttribute="top" constant="20" id="U6h-kx-VEu"/>
+                <constraint firstItem="4" firstAttribute="leading" secondItem="OIV-XP-hn5" secondAttribute="leading" id="ZwP-02-cbZ"/>
+                <constraint firstItem="CIB-WC-PRL" firstAttribute="leading" secondItem="OIV-XP-hn5" secondAttribute="leading" constant="20" symbolic="YES" id="kyx-bq-0he"/>
+                <constraint firstItem="4" firstAttribute="top" secondItem="CIB-WC-PRL" secondAttribute="bottom" constant="8" symbolic="YES" id="vE1-ZD-A4c"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
