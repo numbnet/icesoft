@@ -202,7 +202,10 @@ public class UtilInterface implements JavascriptInterface,
 
     public String getResult() {
 	//Log.e("ICEutil", "Response q=" + responseQueue.size());
-	return responseQueue.remove();
+	if (responseQueue.size() > 0) { 
+	    return responseQueue.remove();
+	}
+	return null;
     }
     protected void setResult(String res) {
 	responseQueue.add(res);
