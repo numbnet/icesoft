@@ -6,17 +6,15 @@
 //  Copyright (c) 2013 ICEsoft Technologies, Inc. All rights reserved.
 //
 
-#import "SettingsViewController.h"
-#import "NamedSwitch.h"
 #import "ConsoleViewController.h"
 #import "IceUtil.h"
 
-@interface SettingsViewController ()
+@interface ConsoleViewController ()
 
 @end
 
-@implementation SettingsViewController
-@synthesize logPage;
+@implementation ConsoleViewController
+@synthesize labelFont;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -30,6 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.labelFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -49,19 +49,14 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
     if (0 == section)  {
-        NSLog(@"rows in section 0 %d", [self.settings count]);
-        return [self.settings count];
-    } 
-    if (1 == section)  {
-        NSLog(@"rows in section 1 %d", [self.settings count]);
-        return 1;
+        return [self.logLines count];
     } 
     
     return 0;
@@ -77,96 +72,57 @@
 
     NSInteger section = [indexPath indexAtPosition:0];
     if (0 == section)  {
-        [self populateHostsCell:cell atIndexPath:indexPath];
-    } else if (1 == section)  {
-        [self populateDiagnosticsCell:cell atIndexPath:indexPath];
-    }
+        [self populateLogCell:cell atIndexPath:indexPath];
+    } 
 
     return cell;
 }
 
-- (void)populateDiagnosticsCell:(UITableViewCell *)cell 
-    atIndexPath:(NSIndexPath *)indexPath  {
-    [[cell textLabel] setText:@"Console log"];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+- (CGFloat)tableView:(UITableView *)tableView 
+        heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
+    CGSize maximumSize = CGSizeMake(tableView.frame.size.width, 9999);
+    NSString *line = [self.logLines objectAtIndex: 
+            [indexPath indexAtPosition:1]];
+    CGSize lineSize  = [line sizeWithFont:self.labelFont 
+            constrainedToSize:maximumSize
+            lineBreakMode:NSLineBreakByWordWrapping];
+    return (lineSize.height + 50);
 }
 
-- (void)populateHostsCell:(UITableViewCell *)cell 
-        atIndexPath:(NSIndexPath *)indexPath  {
+- (void)loadLog  {
+    NSError *error = nil;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(
+            NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *logPath = [documentsDirectory 
+            stringByAppendingPathComponent:@"console.log"];
+    NSString *logText = [[NSString alloc] initWithContentsOfFile:logPath
+            encoding:NSASCIIStringEncoding error:&error];
+    self.logLines = [IceUtil linesFromString:logText]; 
+}
 
-    NSInteger index = [indexPath indexAtPosition:1];
-    if (index < [self.settings count])  {
-        NSString *key = [[self.settings allKeys] objectAtIndex:index];
-        [[cell textLabel] setText:key];
-        NamedSwitch *switchView = [[NamedSwitch alloc] initWithFrame:CGRectZero];
-        cell.accessoryView = switchView;
-        [switchView setOn:[self canTrustHost:key] animated:NO];
-        switchView.name = key;
-        [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-        [switchView release];
-    } else {
-        [[cell textLabel] setText:@"out of bounds"];
-    }
-
+- (void)populateLogCell:(UITableViewCell *)cell 
+    atIndexPath:(NSIndexPath *)indexPath  {
+    NSString *text = [self.logLines objectAtIndex:
+            [indexPath indexAtPosition:1] ];
+    [cell.textLabel setText:text];
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
 }
 
 
 - (NSString *)tableView:(UITableView *)tableView 
         titleForHeaderInSection:(NSInteger)section  {
     if (0 == section)  {
-        return @"Trusted hosts";
-    }
-    if (1 == section)  {
-        return @"Diagnostics";
+        return @"Console";
     }
     return @"untitled";
 }
 
-- (void) switchChanged:(id)sender {
-    UISwitch* switchControl = sender;
-    NSString* host = ((NamedSwitch*)sender).name;
-    [self setHost:host trustSetting:switchControl.on];
-}
-
 - (IBAction)doDone:(id)sender {
-    [self saveSettings];
     [self dismissModalViewControllerAnimated:YES];
 }
 
-- (void) loadSettings {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(
-            NSDocumentDirectory, NSUserDomainMask, YES);  
-    NSString *documentsPath = [paths objectAtIndex:0];
-
-    NSString *settingsFile = [documentsPath 
-            stringByAppendingPathComponent:@"settings.plist"];
-
-    self.settings = [[NSMutableDictionary alloc] init];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:settingsFile])  {
-        self.settings = [self.settings initWithContentsOfFile:settingsFile];
-    }
-    [self.tableView reloadData];
-    NSLog(@"Settings loaded %@", self.settings);
-}
-
-- (void) saveSettings {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(
-            NSDocumentDirectory, NSUserDomainMask, YES);  
-    NSString *documentsPath = [paths objectAtIndex:0];
-
-    NSString *settingsFile = [documentsPath 
-            stringByAppendingPathComponent:@"settings.plist"]; 
-
-    [self.settings writeToFile:settingsFile atomically:YES];
-}
-
-- (void) setHost:(NSString*)name trustSetting:(BOOL)trust  {
-    [self.settings setValue:[NSNumber numberWithBool:trust] forKey:name];
-}
-
-- (BOOL) canTrustHost:(NSString*)name  {
-    return [[self.settings objectForKey:name] boolValue];
-}
 
 /*
 // Override to support conditional editing of the table view.
@@ -207,26 +163,22 @@
 }
 */
 
+/*
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        NSInteger section = [indexPath indexAtPosition:0];
-        NSInteger row = [indexPath indexAtPosition:1];
-        if ((1 == section) && (0 == row)) {
-        } else {
-            return;
-        }
     // Navigation logic may go here, for example:
     // Create the next view controller.
-     ConsoleViewController *consoleViewController = 
-            [[ConsoleViewController alloc] 
-                    initWithNibName:@"ConsoleViewController" bundle:nil];
+    DetailViewController *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
 
     // Pass the selected object to the new view controller.
-    [consoleViewController loadLog];
-    [self presentModalViewController:consoleViewController animated:YES];
+    
+    // Push the view controller.
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
+ 
+ */
 
 @end
