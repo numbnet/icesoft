@@ -35,7 +35,11 @@ ice.ace.escapeClientId = function(id) {
 };
 
 ice.ace.instance = function(id) {
-    return document.getElementById(id).widget;
+	var element = document.getElementById(id);
+	if (element.widget) return element.widget;
+	var lazy = ice.ace.lazy.registry[id];
+	if (lazy) return lazy();
+	return null;
 }
 
 ice.ace.destroy = function(id) {
@@ -54,12 +58,15 @@ ice.ace.lazy = function(name, args) {
         elem = document.getElementById(clientId);
 
     if (elem.widget == undefined) {
+		delete ice.ace.lazy.registry[clientId];
         var component = ice.ace.create(name, args);
         return component;
     }
     else
         return elem.widget;
 }
+
+ice.ace.lazy.registry = {}; // store uninitialized lazy components
 
 ice.ace.create = function(name, args) {
     // if first arg is clientId, registerComponent func will attach js instance to DOM

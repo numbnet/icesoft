@@ -147,10 +147,12 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         writer.endElement("input");
 
         writer.endElement(HTML.DIV_ELEM);
+		
+		Utils.registerLazyComponent(facesContext, clientId, getScript(facesContext, writer, checkbox, clientId));
     }
 
-    private void encodeScript(FacesContext facesContext, ResponseWriter writer,
-                              CheckboxButton checkbox, String clientId, EventType type) throws IOException {
+    private String getScript(FacesContext facesContext, ResponseWriter writer,
+                              CheckboxButton checkbox, String clientId) throws IOException {
         UIComponent groupComp = checkbox.getParent();
         String groupId;
         if (!(groupComp instanceof ButtonGroup)) {
@@ -183,6 +185,12 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         encodeClientBehaviors(facesContext, checkbox, jb);
 
         jb.endMap().endArray().endFunction();
+		
+		return jb.toString();
+	}
+	
+    private void encodeScript(FacesContext facesContext, ResponseWriter writer,
+                              CheckboxButton checkbox, String clientId, EventType type) throws IOException {
 
         String eventType = "";
         if (EventType.HOVER.equals(type))
@@ -190,7 +198,7 @@ public class CheckboxButtonRenderer extends CoreRenderer {
         else if (EventType.FOCUS.equals(type))
             eventType = HTML.ONFOCUS_ATTR;
 
-        writer.writeAttribute(eventType, jb.toString(), null);
+        writer.writeAttribute(eventType, getScript(facesContext, writer, checkbox, clientId), null);
     }
 
     /**

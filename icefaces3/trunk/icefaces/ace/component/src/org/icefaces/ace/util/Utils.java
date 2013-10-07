@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.ace.component.animation.AnimationBehavior;
 import org.icefaces.impl.util.DOMUtils;
+import org.icefaces.util.JavaScriptRunner;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -538,4 +539,8 @@ public class Utils {
         ClientDescriptor client = ClientDescriptor.getInstance(request);
         return client;
     }
+	
+	public static void registerLazyComponent(FacesContext facesContext, String clientId, String function) {
+		JavaScriptRunner.runScript(facesContext, "ice.ace.lazy.registry['"+clientId+"'] = function(){ return "+function+"};");
+	}
 }
