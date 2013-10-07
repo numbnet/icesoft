@@ -303,7 +303,7 @@ ice.ace.InputMask = function(id, cfg) {
     if(behaviors) {
 		var element = this.jq;
 		if (behaviors.blur) {
-			element.bind('blur', function() { setFocus(''); ice.ace.ab.call(element, behaviors.blur); });
+			element.bind('blur', function() { ice.setFocus(''); ice.ace.ab.call(element, behaviors.blur); });
 		}
 		if (behaviors.change) {
 			element.bind('change', function() { ice.ace.ab.call(element, behaviors.change); });
