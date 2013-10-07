@@ -31,6 +31,11 @@ public class JSPContext extends MetaContext {
     }
 
     @Override
+    protected boolean isPropertyValueDisinherited(Class clazz, String name) {
+        return false;
+    }
+
+    @Override
     protected boolean isRelevantClass(Class clazz) {
         return clazz.isAnnotationPresent(JSP.class);
     }

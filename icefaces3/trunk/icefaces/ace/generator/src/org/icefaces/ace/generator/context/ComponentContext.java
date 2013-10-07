@@ -18,6 +18,8 @@ package org.icefaces.ace.generator.context;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 
 import org.icefaces.ace.generator.artifacts.ComponentArtifact;
@@ -25,11 +27,15 @@ import org.icefaces.ace.generator.artifacts.ComponentHandlerArtifact;
 import org.icefaces.ace.generator.artifacts.TagArtifact;
 import org.icefaces.ace.generator.behavior.Behavior;
 import org.icefaces.ace.generator.utils.PropertyValues;
+import org.icefaces.ace.generator.utils.Utility;
 import org.icefaces.ace.meta.annotation.*;
 
 public class ComponentContext extends MetaContext {
+    private static final Logger logger = Logger.getLogger(ComponentContext.class.getName());
+
     private Map<String, Field> fieldsForFacet = new HashMap<String, Field>();
     private List<Behavior> behaviors = new ArrayList<Behavior>();
+    private List<String> disinheritProperties = new ArrayList<String>();
     
     public List<Behavior> getBehaviors() {
 		return behaviors;
@@ -38,6 +44,13 @@ public class ComponentContext extends MetaContext {
 	public Map<String, Field> getFieldsForFacet() {
 		return fieldsForFacet;
 	}
+
+    public List<String> getDisinheritProperties() {
+        return disinheritProperties;
+    }
+    private void setDisinheritProperties(List props){
+        this.disinheritProperties = props;
+    }
 
 	public ComponentContext(Class clazz) {
 		super(clazz);
@@ -51,6 +64,22 @@ public class ComponentContext extends MetaContext {
 	}
 
     @Override
+    protected boolean isPropertyValueDisinherited(Class clazz, String name) {
+        if (!getDisinheritProperties().isEmpty()){
+            if (logger.isLoggable(Level.FINE)){
+                logger.info("this component has disinherited properties");
+            }
+            if (getDisinheritProperties().contains(name)){
+                if (logger.isLoggable(Level.FINE)){
+                    logger.info("property name has been disinherited");
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     protected boolean isRelevantClass(Class clazz) {
         return clazz.isAnnotationPresent(Component.class);
     }
@@ -62,6 +91,13 @@ public class ComponentContext extends MetaContext {
     
     @Override
     protected void processAnnotation(Class clazz) {
+        //first have to get disinheritedprops to check the annotations to see if disinherited
+        Component component = (Component) this.getActiveClass().getAnnotation(Component.class);
+        String[] propsArr = component.disinheritProperties();
+        if (propsArr.length>0 ){
+            /*logger.info(" number of disinherited props = "+propsArr.length);*/
+            this.setDisinheritProperties(Arrays.asList(propsArr));
+        }
         super.processAnnotation(clazz);
         processFacets(clazz);
         processBehaviors(clazz);
@@ -75,6 +111,7 @@ public class ComponentContext extends MetaContext {
             }
         }
     }
+
 
     private void processFacets(Class clazz){
         for (Class declaredClass : clazz.getDeclaredClasses()) {
@@ -91,7 +128,6 @@ public class ComponentContext extends MetaContext {
     private void processBehaviors(Class clazz) {
         for (Behavior behavior: GeneratorContext.getInstance().getBehaviors()) {
             if (behavior.hasBehavior(clazz)) {
-                System.out.println("Behavior found ");
                 //attach behavior to the component context
                 getBehaviors().add(behavior); // ComponentArtifact uses this List
                 behavior.addProperties(this); // This does nothing

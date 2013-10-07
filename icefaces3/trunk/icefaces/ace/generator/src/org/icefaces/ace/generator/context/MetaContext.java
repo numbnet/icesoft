@@ -18,6 +18,8 @@ package org.icefaces.ace.generator.context;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 
 import org.icefaces.ace.generator.artifacts.Artifact;
@@ -25,6 +27,7 @@ import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.meta.annotation.*;
 
 public abstract class MetaContext {
+    private static final Logger logger = Logger.getLogger(MetaContext.class.getName());
     protected Map<String, Artifact> artifacts = new HashMap<String, Artifact>();
     protected Class activeClass;
 	protected Map<Field, PropertyValues> propertyValuesMap = new HashMap<Field, PropertyValues>();
@@ -56,6 +59,7 @@ public abstract class MetaContext {
         ArrayList<PropertyValues> list = new ArrayList<PropertyValues>(propertyValuesMap.size()+1);
         for(PropertyValues prop : propertyValuesMap.values()) {
             if (prop.isGeneratingProperty()) {
+             /*   logger.info("adding prop to list ="+prop.name);*/
                 list.add(prop);
             }
         }
@@ -70,8 +74,11 @@ public abstract class MetaContext {
     public ArrayList<PropertyValues> getIntersectionOfOnlyTypesGeneratingPropertyValuesSorted() {
         ArrayList<PropertyValues> list = new ArrayList<PropertyValues>(propertyValuesMap.size()+1);
         for(PropertyValues prop : propertyValuesMap.values()) {
-            //System.out.println("PROPERTY " + prop.resolvePropertyName() + "  intersection: " + prop.isIntersectionOfOnlyTypes() + "  generating: " + prop.isGeneratingProperty());
+         //   logger.info("getIntersectionOfOnlyTypesGeneratingProperty name of  " + prop.resolvePropertyName() + "  intersection: " + prop.isIntersectionOfOnlyTypes() + "  generating: " + prop.isGeneratingProperty());
             if (prop.isIntersectionOfOnlyTypes() && prop.isGeneratingProperty()) {
+                if (logger.isLoggable(Level.FINE)){
+                   logger.info("check intersection case prop ="+prop.name+" added to list");
+                }
                 list.add(prop);
             }
         }
@@ -149,6 +156,12 @@ public abstract class MetaContext {
         }
     }
 
+    /**
+     * if it's used and not disinherited return true, if not return false;
+     * @param clazz
+     * @param field
+     * @return
+     */
     protected boolean processPotentiallyIrrelevantField(Class clazz, Field field) {
         if(field.isAnnotationPresent(Only.class)){
             Only only = field.getAnnotation(Only.class);
@@ -159,7 +172,15 @@ public abstract class MetaContext {
         if(field.isAnnotationPresent(Property.class)){
             // collect @Property values from top to bottom
             PropertyValues propertyValues = collectPropertyValues(field.getName(), clazz);
-            // if values end up being UNSET, then set them to default
+            /* first check to see if this is a disinherited property */
+            if (isPropertyValueDisinherited(clazz, field.getName())){
+                if (logger.isLoggable(Level.FINE)){
+                   logger.info("YAYAYAYAYAYAYA property="+ field.getName() +" is disinherited!!!!!");
+                }
+                return false;
+            }
+            /*logger.info("==="+field.getName() +" not disinherited");*/
+            /* if values end up being UNSET, then set them to default*/
             propertyValues.setDefaultValues();
             propertyValuesMap.put(field, propertyValues);
             furtherProcessProperty(clazz, propertyValues);
@@ -174,15 +195,29 @@ public abstract class MetaContext {
     abstract protected boolean isRelevantClass(Class clazz);
     abstract protected boolean isAllowedPropertyOnlyType(OnlyType onlyType);
     abstract protected void setupArtifacts();
+    abstract protected boolean isPropertyValueDisinherited(Class clazz, String name);
+
 
     protected void furtherProcessProperty(Class clazz, PropertyValues propertyValues) {
     }
 	
 	protected PropertyValues collectPropertyValues(String fieldName, Class clazz) {
-        //System.out.println(getClass().getSimpleName() + "  COLLECT  " + clazz.getSimpleName()+"."+fieldName);
+        if (logger.isLoggable(Level.FINE)){
+            logger.info(getClass().getSimpleName() + "  COLLECT  " + clazz.getSimpleName()+"."+fieldName);
+        }
 		return collectPropertyValues(fieldName, clazz, new PropertyValues(), true);
 	}
-	
+
+    /**
+     * collect the list of eligible property values. GEnerating tries to add stuff...
+     * is it in one of the superclasses?  Can we override?  allow means ability to
+     * override.
+     * @param fieldName
+     * @param clazz
+     * @param propertyValues
+     * @param isEndClass
+     * @return
+     */
 	protected PropertyValues collectPropertyValues(String fieldName,
             Class clazz, PropertyValues propertyValues, boolean isEndClass) {
         Field field = null;
@@ -205,7 +240,8 @@ public abstract class MetaContext {
 
         if (field != null && property != null) {
             boolean allowed = onlyType == null || isAllowedPropertyOnlyType(onlyType);
-            //System.out.println("  " + clazz.getSimpleName()+"."+fieldName + "  allowed: " + allowed + "\n    field: " + field + "\n    property: " + property + "\n    onlyType: " + onlyType);
+            //overriding is not allowed.  allowed does not remove the property.
+      //      logger.info("  " + clazz.getSimpleName()+"."+fieldName + "  allowed: " + allowed + "\n    field: " + field + "\n    property: " + property + "\n    onlyType: " + onlyType);
             if (allowed) {
                 propertyValues.importProperty(field, property, isEndClass, onlyType);
             }
