@@ -39,7 +39,6 @@
     BOOL isResponding;
     UIProgressView *uploadProgress;
     UILabel *uploadLabel;
-    UILabel *appTitle;
     UIView *linkView;
     UITextField *urlField;
     UISegmentedControl *actionSelector;
@@ -73,7 +72,6 @@
 @property (nonatomic) BOOL launchedFromApp;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
 @property (nonatomic, retain) IBOutlet UILabel *uploadLabel;
-@property (nonatomic, retain) IBOutlet UILabel *appTitle;
 @property (nonatomic, retain) IBOutlet UIView *linkView;
 @property (nonatomic, retain) IBOutlet UITextField *urlField;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *actionSelector;
