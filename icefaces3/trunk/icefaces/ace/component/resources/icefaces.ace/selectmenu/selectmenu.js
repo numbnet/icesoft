@@ -315,7 +315,7 @@ ice.ace.SelectMenu.prototype = {
         if (!this.active) {
             switch (event.keyCode) {
                 case ice.ace.SelectMenu.keys.KEY_TAB:
-					setFocus('');
+					ice.setFocus('');
 					return;
                 case ice.ace.SelectMenu.keys.KEY_RETURN:
                     this.getUpdatedChoices(true, event, -1);
@@ -370,7 +370,7 @@ ice.ace.SelectMenu.prototype = {
         } else {
 			switch (event.keyCode) {
                 case ice.ace.SelectMenu.keys.KEY_TAB:
-					setFocus('');
+					ice.setFocus('');
 					return;
                 case ice.ace.SelectMenu.keys.KEY_RETURN:
 					var idx = this.selectEntry();
@@ -511,7 +511,7 @@ ice.ace.SelectMenu.prototype = {
         this.hideObserver = setTimeout(function () { self.hide(); }, 250);
         this.hasFocus = false;
         this.active = false;
-		setFocus('');
+		ice.setFocus('');
 		if (this.ajaxBlur) {
 			if (this.blurObserver) clearTimeout(this.blurObserver);
 			this.ajaxBlur.params = this.ajaxBlur.params || {};

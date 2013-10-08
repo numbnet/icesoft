@@ -332,7 +332,7 @@ ice.ace.ComboBox.prototype = {
         if (!this.active) {
             switch (event.keyCode) {
                 case ice.ace.ComboBox.keys.KEY_TAB:
-					setFocus('');
+					ice.setFocus('');
 					return;
                 case ice.ace.ComboBox.keys.KEY_RETURN:
                     this.getUpdatedChoices(true, event, -1);
@@ -362,7 +362,7 @@ ice.ace.ComboBox.prototype = {
         } else {
 			switch (event.keyCode) {
                 case ice.ace.ComboBox.keys.KEY_TAB:
-					setFocus('');
+					ice.setFocus('');
 					return;
                 case ice.ace.ComboBox.keys.KEY_RETURN:
 					var idx = this.selectEntry();
@@ -477,7 +477,7 @@ ice.ace.ComboBox.prototype = {
 				}
 			}, 400);
         this.hasFocus = false;
-		setFocus('');
+		ice.setFocus('');
 		if (this.ajaxBlur) {
 			if (this.blurObserver) clearTimeout(this.blurObserver);
 			this.ajaxBlur.params = this.ajaxBlur.params || {};

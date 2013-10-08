@@ -219,12 +219,12 @@ ice.ace.CalendarInit = function(options) {
         input.one("focus", function() {
             if (behavior) {
                 input.bind('change', function() {
-                    setFocus();
+                    ice.setFocus();
                     ice.ace.ab(behavior);
                 });
             } else if (options.singleSubmit) {
                 input.bind('change', function(event) {
-                    setFocus();
+                    ice.setFocus();
                     ice.se(event, id);
                 });
             }

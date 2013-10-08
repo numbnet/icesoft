@@ -74,7 +74,7 @@ public class SelectMenuRenderer extends InputRenderer {
         String inFieldLabelStyleClass = "";
         String iceFocus = (String) paramMap.get("ice.focus");
         String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
-        String onfocusCombinedValue = "setFocus(this.id);";
+        String onfocusCombinedValue = "ice.setFocus(this.id);";
         String onblurCombinedValue = "";
         Object onfocusAppValue = uiComponent.getAttributes().get("onfocus");
         Object onblurAppValue = uiComponent.getAttributes().get("onblur");

@@ -52,7 +52,7 @@ ice.ace.TextAreaEntry = function(id, cfg) {
             });
     }
     this.jq.blur(function() {
-        setFocus();
+        ice.setFocus();
     });
     if (maxlength > 0) {
         this.jq.on("keyup change", function (e) {

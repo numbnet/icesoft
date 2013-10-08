@@ -116,7 +116,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         String iceFocus = (String) paramMap.get("ice.focus");
         String text = (String) autoCompleteEntry.getText();
         String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
-        String onfocusCombinedValue = "setFocus(this.id);";
+        String onfocusCombinedValue = "ice.setFocus(this.id);";
         String onblurCombinedValue = "";
         Object onfocusAppValue = uiComponent.getAttributes().get("onfocus");
         Object onblurAppValue = uiComponent.getAttributes().get("onblur");

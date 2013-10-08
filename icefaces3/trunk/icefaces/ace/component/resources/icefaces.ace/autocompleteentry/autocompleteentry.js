@@ -312,7 +312,7 @@ ice.ace.Autocompleter.prototype = {
         if (!this.active) {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
-					setFocus('');
+					ice.setFocus('');
 					return;
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
@@ -334,7 +334,7 @@ ice.ace.Autocompleter.prototype = {
         if (this.active) {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
-					setFocus('');
+					ice.setFocus('');
 					return;
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
@@ -516,7 +516,7 @@ ice.ace.Autocompleter.prototype = {
         this.hideObserver = setTimeout(function () { self.hide(); }, 400);
         this.hasFocus = false;
         this.active = false;
-		setFocus('');
+		ice.setFocus('');
 		if (this.ajaxBlur) {
 			if (this.blurObserver) clearTimeout(this.blurObserver);
 			this.ajaxBlur.params = this.ajaxBlur.params || {};
