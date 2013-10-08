@@ -175,9 +175,13 @@ ice.ace.tabset = {
                             targetElement.id = clientId;
                             var otherParams = {};
                             var submitBehaviourStartTime = new Date().getTime();
-                            ice.ace.ab(ice.ace.extendAjaxArgs(
+							var ajaxArgs = ice.ace.extendAjaxArgs(
                                     sJSFProps.behaviors.serverSideTabChange,
-                                    {params: otherParams, execute: "@this", render: "@this", onsuccess: doOnSuccess}));
+                                    {params: otherParams, execute: "@this", render: "@this", onsuccess: doOnSuccess});
+							// if there's a proxy, then the 'source' will be its client id
+							var proxy = document.getElementById(clientId + '_tsc');
+							if (proxy) ajaxArgs.source = proxy;
+                            ice.ace.ab(ajaxArgs);
                             //restore id
                             targetElement.id = elementId;
                             ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - submit B - " + (new Date().getTime() - submitBehaviourStartTime) + "ms");

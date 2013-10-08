@@ -324,8 +324,12 @@ public class CoreRenderer extends Renderer {
 
         viewMap.put(Constants.AUTO_UPDATE, autoUpdateIds);
     }
-
+	
     protected void decodeBehaviors(FacesContext context, UIComponent component)  {
+		decodeBehaviors(context, component, null);
+	}
+
+    protected void decodeBehaviors(FacesContext context, UIComponent component, String proxyClientId)  {
         if (!(component instanceof ClientBehaviorHolder))
             return;
 
@@ -340,7 +344,7 @@ public class CoreRenderer extends Renderer {
 
         if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
            String behaviorSource = params.get("javax.faces.source");
-           String clientId = component.getClientId();
+           String clientId = proxyClientId == null ? component.getClientId() : proxyClientId;
 
            if(behaviorSource != null && behaviorSource.equals(clientId)) {
                for (ClientBehavior behavior: behaviorsForEvent) {
