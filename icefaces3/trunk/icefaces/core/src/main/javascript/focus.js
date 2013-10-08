@@ -57,7 +57,10 @@ var restoreMonitorFocusChangesOnUpdate;
                     setFocus(id);
                     if (e.focus) {
                         try {
+                            var x = window.scrollX;
+                            var y = window.scrollY;
                             e.focus();
+                            window.scrollTo(x, y);
                         } catch (ex) {
                             //IE throws exception if element is invisible
                         } finally {
