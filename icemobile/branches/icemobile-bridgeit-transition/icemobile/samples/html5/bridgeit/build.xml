@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="bridgeit" default="deploy.reload.html5">
+<project name="bridgeit" default="war">
 
     <property file="../../../build.properties"/>
     <property file="../../build/build.properties"/>
@@ -61,14 +61,4 @@
 
     </target>
     
-    <target name="deploy.reload.html5" depends="deploy.html5,reload"/>
-
-    <target name="deploy.html5" depends="war">
-        <copy todir="${deploy.path}/${ant.project.name}" preservelastmodified="true" verbose="true">
-            <fileset dir="${exploded.dir}">
-                <include name="**/*.*"/>
-            </fileset>
-        </copy>
-    </target>
-
 </project>
