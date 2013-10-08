@@ -23,8 +23,6 @@ import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName = "textEntry",
@@ -43,9 +41,6 @@ import javax.faces.application.ResourceDependency;
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
      @ICEResourceDependency(name = ACEResourceNames.COMPONENTS_JS)
-})
-@ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name = "blur", javadoc = "Fired when the text input field loses focus (default event).",
