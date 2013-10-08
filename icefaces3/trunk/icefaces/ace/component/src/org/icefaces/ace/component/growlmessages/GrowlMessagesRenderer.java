@@ -18,6 +18,7 @@ package org.icefaces.ace.component.growlmessages;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.impl.util.DOMUtils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;
@@ -142,7 +143,7 @@ public class GrowlMessagesRenderer extends Renderer {
             jb.beginMap();
             writer.write(jb + "text:'");
             if (messages.isEscape()) {
-                writer.writeText(text, messages, null);
+                writer.write(DOMUtils.escapeAnsi(text));
             } else {
                 writer.write(text);
             }
