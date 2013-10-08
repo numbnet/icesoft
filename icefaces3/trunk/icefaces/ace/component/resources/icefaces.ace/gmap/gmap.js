@@ -255,7 +255,9 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         }
         if(layer!=null)
         {
-            layer.setMap(map);
+			for (var l in layer) {
+				layer[l].setMap(map);
+			}
             gmapWrapper.layer=layer;
         }
         return gmapWrapper;
