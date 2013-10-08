@@ -24,7 +24,6 @@ import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.Utils;
 import org.icemobile.util.CSSUtils;
-import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -59,14 +58,14 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         }
         String inputField = clientId + "_input";
         String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
-        //      String twelveHrString = convertToClock(inputValue , 12);
+        
         if (shouldUseNative(timeSpinner)) {
             inputValue = context.getExternalContext().getRequestParameterMap().get(clientId);
-            if (isValueBlank(inputValue)) return;
+            //if (isValueBlank(inputValue)) return;
             String twenty4HrString = convertToClock(inputValue, 24);
             timeSpinner.setSubmittedValue(twenty4HrString);
         } else {
-            if (isValueBlank(inputValue)) return;
+            //if (isValueBlank(inputValue)) return;
             timeSpinner.setSubmittedValue(inputValue);
         }
         decodeBehaviors(context, timeSpinner);
@@ -347,6 +346,8 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         TimeSpinner spinner = (TimeSpinner) component;
         String submittedValue = String.valueOf(value);
+        if( submittedValue == null || submittedValue.length() == 0)
+            return null;
         Object objVal;
         Converter converter = spinner.getConverter();
 
@@ -372,7 +373,6 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
 
     private Object customConversion(FacesContext context, TimeSpinner spinner,
                                     SimpleDateFormat format, String submittedValue) throws ParseException {
-        Locale locale = spinner.calculateLocale(context);
         format.setTimeZone(spinner.calculateTimeZone());
         Date nativeValue = format.parse(submittedValue);
         return nativeValue;
