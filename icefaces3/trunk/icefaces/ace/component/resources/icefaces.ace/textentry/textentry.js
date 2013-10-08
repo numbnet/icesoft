@@ -75,7 +75,7 @@ ice.ace.TextEntry = function(id, cfg) {
             });
     }
     this.jq.blur(function() {
-        setFocus();
+        ice.setFocus();
     });
     if (this.cfg.behaviors) {
         ice.ace.attachBehaviors(this.jq, this.cfg.behaviors);

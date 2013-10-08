@@ -103,7 +103,7 @@ public class PassThruAttributeWriter {
      */
     public static void renderOnFocus(ResponseWriter writer)
             throws IOException {
-        writer.writeAttribute("onfocus", "setFocus(this.id);", "onfocus");
+        writer.writeAttribute("onfocus", "ice.setFocus(this.id);", "onfocus");
     }
 
     /**
@@ -115,7 +115,7 @@ public class PassThruAttributeWriter {
      */
     public static void renderOnBlur(ResponseWriter writer)
             throws IOException {
-        writer.writeAttribute("onfocus", "setFocus('');", "onfocus");
+        writer.writeAttribute("onfocus", "ice.setFocus('');", "onfocus");
     }
 
     public static void renderBooleanAttributes(
