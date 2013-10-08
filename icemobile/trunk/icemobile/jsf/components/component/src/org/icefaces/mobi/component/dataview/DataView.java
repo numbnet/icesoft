@@ -1,9 +1,12 @@
 package org.icefaces.mobi.component.dataview;
 
-import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icemobile.component.IDataView;
-import org.icemobile.model.*;
-import org.icemobile.util.ClientDescriptor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -12,9 +15,16 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IDataView;
+import org.icemobile.model.DataViewColumnModel;
+import org.icemobile.model.DataViewColumnsModel;
+import org.icemobile.model.DataViewDataModel;
+import org.icemobile.model.DataViewLazyDataModel;
+import org.icemobile.model.DataViewListDataModel;
+import org.icemobile.model.IndexedIterator;
+import org.icemobile.util.ClientDescriptor;
 
 /**
  * Copyright 2010-2013 ICEsoft Technologies Canada Corp.
@@ -83,8 +93,6 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
                     if (details) initDetailContext(facesContext);
                     boolean done = kid.visitTree(context, callback);
 
-                    if (details) clearDetailContext(facesContext);
-
                     // If any kid visit returns true, we are done.
                     if (done)
                         return true;
@@ -99,12 +107,10 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
         // Return false to allow the visit to continue
         return false;
     }
-
     @Override
     public void processUpdates(FacesContext context) {
         initDetailContext(context);
         super.processUpdates(context);
-        clearDetailContext(context);
 
         if (!decodedActive) {
             decodeIndex(context);
@@ -113,9 +119,7 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
 
     @Override
     public void processValidators(FacesContext context) {
-        initDetailContext(context);
         super.processValidators(context);
-        clearDetailContext(context);
     }
 
     @Override
@@ -126,14 +130,11 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
 
         initDetailContext(context);
         super.processDecodes(context);
-        clearDetailContext(context);
     }
 
     @Override
     public Object processSaveState(FacesContext context) {
-        initDetailContext(context);
         Object o = super.processSaveState(context);
-        clearDetailContext(context);
         return o;
     }
 
@@ -141,7 +142,6 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
     public void processRestoreState(FacesContext context, Object state) {
         initDetailContext(context);
         super.processRestoreState(context, state);
-        clearDetailContext(context);
 
         /* if not post-restore restoreState overwrites new active index */
         if (ActivationMode.client.equals(getActivationMode()) && !decodedActive) {
@@ -160,15 +160,11 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
         decodedActive = true;
     }
 
-    public void clearDetailContext(FacesContext context) {
-        getRequestMap(context).remove(getVar());
-    }
-
     public void initDetailContext(FacesContext context) {
         Integer index = getActiveRowIndex();
-
-        if (index != null &&index >= 0)
+        if (index != null &&index >= 0){
             getRequestMap(context).put(getVar(), getDataModel().getDataByIndex(index));
+        }
     }
 
     private Map<String,Object> getRequestMap(FacesContext context) {
@@ -188,6 +184,7 @@ public class DataView extends DataViewBase implements IDataView, NamingContainer
         return null;
     }
 
+    @SuppressWarnings("rawtypes")
     protected DataViewDataModel getDataModel() {
         Object value = getValue();
 
