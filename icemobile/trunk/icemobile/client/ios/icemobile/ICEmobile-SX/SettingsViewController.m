@@ -56,11 +56,9 @@
 {
     // Return the number of rows in the section.
     if (0 == section)  {
-        NSLog(@"rows in section 0 %d", [self.settings count]);
         return [self.settings count];
     } 
     if (1 == section)  {
-        NSLog(@"rows in section 1 %d", [self.settings count]);
         return 1;
     } 
     
