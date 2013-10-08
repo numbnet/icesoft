@@ -53,7 +53,14 @@ public class TabSetRenderer extends CoreRenderer {
                         new Integer(old), index));
             }
         }
-        decodeBehaviors(facesContext, uiComponent);
+        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+		String proxyClientId = uiComponent.getClientId(facesContext) + "_tsc";
+		Object source = requestParameterMap.get("ice.event.captured");
+		if (source != null && proxyClientId.equals(source.toString())) {
+			decodeBehaviors(facesContext, uiComponent, proxyClientId);
+		} else {
+			decodeBehaviors(facesContext, uiComponent);
+		}
     }
 
     /**
