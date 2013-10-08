@@ -36,14 +36,17 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
     private static final int DEFAULT_COLUMN_WIDTH = 25;
     private String leftwidth;
     private String rightwidth;
-    private StringBuilder paneClass = new StringBuilder(SPLITPANE_SCROLLABLE_CSS); //default
+    private StringBuilder leftPaneClass = new StringBuilder(SPLITPANE_SCROLLABLE_CSS); //default
+    private StringBuilder rightPaneClass = new StringBuilder(SPLITPANE_SCROLLABLE_CSS); //default
     private StringBuilder spltClass = new StringBuilder(SPLITPANE_DIVIDER_CSS);
 
     public void encodeBegin(ISplitPane component, IResponseWriter writer)
             throws IOException {;
         if (!component.isScrollable()) {
-            this.paneClass = new StringBuilder(SPLITPANE_NONSCROLL_CSS) ;
+            leftPaneClass = rightPaneClass = new StringBuilder(SPLITPANE_NONSCROLL_CSS) ;
         }
+        leftPaneClass.append(" ").append("left");
+        rightPaneClass.append(" ").append("right");
         int leftWidth = component.getColumnDivider();
         if (leftWidth < 1 || leftWidth>99){
             leftWidth = DEFAULT_COLUMN_WIDTH;
@@ -52,11 +55,11 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
             }
         }
         int rightWidth = 100 - leftWidth;
-        this.setLeftwidth(String.valueOf(leftWidth)+ "%");
-        this.setRightwidth(String.valueOf(rightWidth) + "%");
+        leftwidth = (String.valueOf(leftWidth)+ "%");
+        rightwidth = (String.valueOf(rightWidth) + "%");
         String userClass = component.getStyleClass();
-       if (userClass!=null){
-            this.paneClass.append(" ").append(userClass) ;
+        if (userClass!=null){
+            leftPaneClass.append(" ").append(userClass) ;
             this.spltClass.append(" ").append(userClass).toString();
         }
         writer.startElement(DIV_ELEM, component);
@@ -73,10 +76,9 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
      */
     public void encodePane(IFragment component, IResponseWriter writer, String style)
         throws IOException {
-     //   logger.info("printing pane with id="+component.getClientId()+" style="+style);
         writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, component.getClientId());
-        writer.writeAttribute(CLASS_ATTR, this.getPaneClass());
+        writer.writeAttribute(CLASS_ATTR, SPLITPANE_SCROLLABLE_CSS);
         writer.writeAttribute(STYLE_ATTR, style);
     }
     public void encodePaneEnd(IResponseWriter writer)
@@ -99,17 +101,13 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
            width = this.getRightwidth();
         }
         writer.writeAttribute(STYLE_ATTR, width);
-        writer.writeAttribute(CLASS_ATTR, this.getPaneClass());
+        if( "left".equals(side)){
+            writer.writeAttribute(CLASS_ATTR, leftPaneClass);
+        }
+        else{
+            writer.writeAttribute(CLASS_ATTR, rightPaneClass);
+        }
         writer.writeAttribute(ID_ATTR, component.getClientId()+"_"+side);
-    }
-
-    public void encodeColumnDivider(ISplitPane component, IResponseWriter writer)
-        throws IOException {
-            /* column Divider for next iteration of component  if resizable is true then render */
-  /*      writer.startElement(DIV_ELEM, component);
-        writer.writeAttribute(ID_ATTR, component.getClientId()+"_splt");
-        writer.writeAttribute(CLASS_ATTR, this.getSpltClass());
-        writer.endElement(DIV_ELEM);   */
     }
 
     public void encodeEnd(ISplitPane pane, IResponseWriter writer)
@@ -120,7 +118,6 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
         writer.writeAttribute("type", "text/javascript");
         StringBuilder sb = new StringBuilder("ice.mobi.splitpane.initClient('").append(pane.getClientId()).append("'");
         sb.append(",{ scrollable: '").append(pane.isScrollable()).append("'");
-     //   sb.append(", resize: ").append(pane.isResizable());
         int width = pane.getColumnDivider();
         if (width < 1 || width > 99){
             width = DEFAULT_COLUMN_WIDTH;
@@ -141,11 +138,7 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
         }
     }
 
-    public void setLeftwidth(String leftwidth) {
-        this.leftwidth = leftwidth;
-    }
-
-    public String getRightwidth() {
+    private String getRightwidth() {
         if (this.rightwidth !=null){
             return "width:" + rightwidth+";";
         } else {
@@ -153,23 +146,4 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
         }
     }
 
-    public void setRightwidth(String rightwidth) {
-        this.rightwidth = rightwidth;
-    }
-
-    public String getPaneClass() {
-        return paneClass.toString();
-    }
-
-    public void setPaneClass(StringBuilder paneClass) {
-        this.paneClass = paneClass;
-    }
-
-    public String getSpltClass() {
-        return spltClass.toString();
-    }
-
-    public void setSpltClass(StringBuilder spltClass) {
-        this.spltClass = spltClass;
-    }
 }
