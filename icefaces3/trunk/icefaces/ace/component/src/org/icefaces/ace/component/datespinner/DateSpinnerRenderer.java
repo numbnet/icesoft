@@ -65,9 +65,11 @@ public class DateSpinnerRenderer extends InputRenderer {
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
         String hiddenValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_hidden");
-        if (!isValueBlank(inputValue)) {
+        boolean inputNull = isValueBlank(inputValue);
+        boolean hiddenNull = isValueBlank(hiddenValue);
+        if (!inputNull || (inputNull && hiddenNull)) {
             dateSpinner.setSubmittedValue(inputValue);
-        } else if (!isValueBlank(hiddenValue)) {
+        } else if (hiddenNull) {
             dateSpinner.setSubmittedValue(hiddenValue);
         }
         decodeBehaviors(context, dateSpinner);

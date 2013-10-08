@@ -55,14 +55,12 @@ public class TimeSpinnerRenderer extends InputRenderer {
         }
         String inputField = clientId + "_input";
         String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
-        //      String twelveHrString = convertToClock(inputValue , 12);
+        
         if (shouldUseNative(timeSpinner)) {
             inputValue = context.getExternalContext().getRequestParameterMap().get(clientId);
-            if (isValueBlank(inputValue)) return;
             String twenty4HrString = convertToClock(inputValue, 24);
             timeSpinner.setSubmittedValue(twenty4HrString);
         } else {
-            if (isValueBlank(inputValue)) return;
             timeSpinner.setSubmittedValue(inputValue);
         }
         decodeBehaviors(context, timeSpinner);
