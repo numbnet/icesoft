@@ -38,7 +38,6 @@
 @synthesize returnHash;
 @synthesize uploadProgress;
 @synthesize uploadLabel;
-@synthesize appTitle;
 @synthesize linkView;
 @synthesize urlField;
 @synthesize actionSelector;
