@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BridgeIt GeoSpy Demo</title>
+        <link rel="stylesheet" type="text/css" href="css/ember.css">
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <script type="application/x-javascript" src="./bridgeit-0.1.0.js"></script>
+        <script type="text/javascript" src="./javascript/bridgeit-demos.js"></script>
+    </head>
+
+    <body>
+            <div id="geospy" title="Locate It" class="panel" >
+            <h2>GeoSpy Location Tracking</h2>
+            <fieldset>
+                <div class="row"><p class="normalText">Continual geolocation tracking with a simple line of JavaScript...</p></div>
+                <div class="row">
+                    <code>
+                        bridgeit.geoSpy(id, callback,<br/>
+                        &nbsp;&nbsp;{postURL:myURL});
+                    </code>
+                </div>
+            </fieldset>
+            
+            <a id="track" type="button" class="whiteButton bridgeItBtn"
+                onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/geospy'});">Start Tracking</a>
+                
+            <div id="spyMapCanvas" style="height:200px"></div>
+        
+            <div id="spyMapOverlay" >
+            </div>
+            
+            <div class="footer">
+                <a href="#">
+                    <img src="./images/icesoft-emblem.png" class="icesoft-emblem"/>
+                </a>
+                &copy; 2013 ICEsoft Technologies
+            </div>
+            <script type="text/javascript">
+            window.geoSpying = false;
+            
+            function handleSpy(event)  {
+                processMarkers(event.value);
+            }
+            var map;
+            function initSpyMap() {
+                if( !window.geoSpying ){
+                    window.geoSpying = true;
+                    var mapOptions = {
+                        maxZoom: 16,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    map = new google.maps.Map(document
+                            .getElementById('spyMapCanvas'), mapOptions);
+        
+                    var overlay = document.getElementById('spyMapOverlay');
+                    map.controls[google.maps.ControlPosition.RIGHT_TOP]
+                            .push(overlay);
+                    
+                }
+            }
+        
+            function processMarkers(data)  {
+                if( data ){
+                    var markerData = data.markers;
+                    var len = markerData.length;
+                    var markers = new Array();
+                    var bounds = new google.maps.LatLngBounds();
+                    for (var i = 0; i < len; i++) {
+                        var location = new google.maps.LatLng(
+                                markerData[i][0], markerData[i][1]);
+                        bounds.extend(location);
+                        new google.maps.Marker({
+                            position: location,
+                            map: map
+                        });
+                    }
+                    map.fitBounds(bounds);
+                    
+                }
+                else{
+                    console.log('no data for geospy...')
+                }
+            }
+            initSpyMap();
+            </script>
+        </div>
+    </body>
+</html>
