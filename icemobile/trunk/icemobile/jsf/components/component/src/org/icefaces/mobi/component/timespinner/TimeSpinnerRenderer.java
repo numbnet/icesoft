@@ -61,11 +61,9 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         
         if (shouldUseNative(timeSpinner)) {
             inputValue = context.getExternalContext().getRequestParameterMap().get(clientId);
-            //if (isValueBlank(inputValue)) return;
             String twenty4HrString = convertToClock(inputValue, 24);
             timeSpinner.setSubmittedValue(twenty4HrString);
         } else {
-            //if (isValueBlank(inputValue)) return;
             timeSpinner.setSubmittedValue(inputValue);
         }
         decodeBehaviors(context, timeSpinner);
