@@ -23,6 +23,7 @@
 #import "NativeInterface.h"
 #import "IceUtil.h"
 #import "SettingsViewController.h"
+#import "ButtonCell.h"
 #import "Logging.h"
 
 @implementation ViewController
@@ -59,12 +60,12 @@
 @synthesize splashImage;
 @synthesize licensePage;
 
-
 - (void) dealloc  {
     [_settingsButton release];
     [self.confirmTitles dealloc];
     [self.confirmMessages dealloc];
     [self.commandNames dealloc];
+    [_buttonsView release];
     [super dealloc];
 }
 
@@ -354,6 +355,15 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 
     self.isResponding = NO;
     [nativeInterface dispatch:self.currentCommand];
+
+    if (nil != self.geospyButton)  {
+        if (self.nativeInterface.monitoringLocation)  {
+            [IceUtil pushFancyButton:self.geospyButton];
+        } else {
+            [IceUtil makeFancyButton:self.geospyButton];
+        }
+    }
+
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -463,12 +473,13 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     NSLog(@"ViewController actionPressed %@", theCommand);
 
     if ([@"geospy" isEqualToString:theCommand])  {
-        [self flipButton:theButton];
-        if (!theButton.selected)  {
+        if (self.nativeInterface.monitoringLocation)  {
             params = @"&strategy=stop";
             self.nativeInterface.customAlertText = @"Stop geolocation updates?";
-        }
+        } 
     }
+
+    [self.buttonsView reloadData];
 
     self.currentURL = urlField.text;
     [urlField resignFirstResponder];
@@ -560,6 +571,17 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
             @"geospy", 
             @"open", 
             nil];
+    self.buttonImages = [NSArray arrayWithObjects:
+            @"camera.png", 
+            @"camcorder.png", 
+            @"microphone.png", 
+            @"qr.png", 
+            @"ar.png", 
+            @"contacts.png", 
+            @"sms.png", 
+            @"geospy.png", 
+            @"open.png", 
+            nil];
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"initialized"])  {
         NSLog(@"firstLaunch detected");
         [[NSUserDefaults standardUserDefaults]
@@ -575,7 +597,9 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 
     self.settingsView = [[SettingsViewController alloc] init];
     [self.settingsView loadSettings];
-
+    [self.buttonsView setBackgroundColor:[UIColor clearColor]];
+    [self.buttonsView registerClass:[ButtonCell class] 
+            forCellWithReuseIdentifier:@"buttonCell"];
 }
 
 - (void)updateGeoSpyButton  {
@@ -654,5 +678,83 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
     [self showControls];
     [self hideProgress];
 }
+
+- (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
+    //nine buttons
+    return 9; 
+}
+
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
+    return 1; 
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView 
+        cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    ButtonCell *cell = [collectionView 
+            dequeueReusableCellWithReuseIdentifier:@"buttonCell" 
+            forIndexPath:indexPath];
+    NSInteger index = [indexPath indexAtPosition:1];
+
+    cell.button.tag = index;
+    UIImage *buttonImage = [UIImage imageNamed:[self.buttonImages 
+            objectAtIndex:index]];
+    cell.button.backgroundColor = [UIColor whiteColor];
+    if (7 == index)  {
+        if (self.nativeInterface.monitoringLocation)  {
+            cell.button.backgroundColor = 
+                    [UIColor colorWithRed:0.91 green:0.42 blue:0.3 alpha:1];
+
+        } 
+    }
+    [cell.button setImage:buttonImage forState:UIControlStateNormal];
+    [cell.button addTarget:self action:@selector(actionPressed:) forControlEvents:UIControlEventTouchUpInside];
+
+    UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
+
+    if ((0 == orientation) || (UIDeviceOrientationPortrait == orientation) || 
+            (UIDeviceOrientationPortraitUpsideDown == orientation))  {
+        cell.button.frame = CGRectMake(cell.button.frame.origin.x, cell.button.frame.origin.y, 50, 50);
+    } else {
+        cell.button.frame = CGRectMake(cell.button.frame.origin.x, cell.button.frame.origin.y, 45, 50);
+    }
+
+    return cell; 
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation  {
+    [self.buttonsView reloadData];
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section  {
+
+    UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
+
+    if ((0 == orientation) || (UIDeviceOrientationPortrait == orientation) || 
+            (UIDeviceOrientationPortraitUpsideDown == orientation))  {
+        return UIEdgeInsetsMake(0, 40, 0, 40);
+    }
+
+    return UIEdgeInsetsMake(20, 20, 0, 20);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView 
+    layout:(UICollectionViewLayout*)collectionViewLayout 
+    sizeForItemAtIndexPath:(NSIndexPath *)indexPath  {
+
+    UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
+
+    if ((0 == orientation) || (UIDeviceOrientationPortrait == orientation) || 
+            (UIDeviceOrientationPortraitUpsideDown == orientation))  {
+        return CGSizeMake(60, 60);
+    }
+
+    return CGSizeMake(45, 50);
+
+}
+/*- (UICollectionReusableView *)collectionView:
+(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    return [[UICollectionReusableView alloc] init];
+}*/
 
 @end
