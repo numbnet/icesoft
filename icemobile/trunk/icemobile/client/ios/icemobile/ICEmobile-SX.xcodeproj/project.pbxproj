@@ -80,6 +80,10 @@
 		9CB2A1321731A5200049C135 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB2A1301731A5200049C135 /* Default.png */; };
 		9CB2A1351731AA3C0049C135 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB2A1341731AA3C0049C135 /* Default-568h@2x.png */; };
 		9CBF5ACD1638AB1E0015E267 /* IceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBF5ACC1638AB1E0015E267 /* IceUtil.m */; };
+		9CE80C7018061A840002DD51 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE80C6B18061A840002DD51 /* ButtonCell.m */; };
+		9CE80C7118061A840002DD51 /* ConsoleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE80C6D18061A840002DD51 /* ConsoleViewController.m */; };
+		9CE80C7218061A840002DD51 /* ConsoleViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE80C6E18061A840002DD51 /* ConsoleViewController~ipad.xib */; };
+		9CE80C7318061A840002DD51 /* ConsoleViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE80C6F18061A840002DD51 /* ConsoleViewController~iphone.xib */; };
 		9CE8327416443D7D00F6C270 /* contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8327216443D7D00F6C270 /* contacts.png */; };
 		9CE8327516443D7D00F6C270 /* contacts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8327316443D7D00F6C270 /* contacts@2x.png */; };
 		9CF13E60175E57A100E0DF90 /* sms.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF13E5E175E57A100E0DF90 /* sms.png */; };
@@ -178,6 +182,12 @@
 		9CB2A1341731AA3C0049C135 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		9CBF5ACB1638AB1E0015E267 /* IceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IceUtil.h; path = Shared/IceUtil.h; sourceTree = "<group>"; };
 		9CBF5ACC1638AB1E0015E267 /* IceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IceUtil.m; path = Shared/IceUtil.m; sourceTree = "<group>"; };
+		9CE80C6A18061A840002DD51 /* ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonCell.h; sourceTree = "<group>"; };
+		9CE80C6B18061A840002DD51 /* ButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonCell.m; sourceTree = "<group>"; };
+		9CE80C6C18061A840002DD51 /* ConsoleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleViewController.h; sourceTree = "<group>"; };
+		9CE80C6D18061A840002DD51 /* ConsoleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleViewController.m; sourceTree = "<group>"; };
+		9CE80C6E18061A840002DD51 /* ConsoleViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ConsoleViewController~ipad.xib"; sourceTree = "<group>"; };
+		9CE80C6F18061A840002DD51 /* ConsoleViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ConsoleViewController~iphone.xib"; sourceTree = "<group>"; };
 		9CE8327216443D7D00F6C270 /* contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contacts.png; sourceTree = "<group>"; };
 		9CE8327316443D7D00F6C270 /* contacts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contacts@2x.png"; sourceTree = "<group>"; };
 		9CF13E5E175E57A100E0DF90 /* sms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms.png; sourceTree = "<group>"; };
@@ -297,6 +307,12 @@
 		9CA51B6914730D110065F681 /* ICEmobile-SX */ = {
 			isa = PBXGroup;
 			children = (
+				9CE80C6A18061A840002DD51 /* ButtonCell.h */,
+				9CE80C6B18061A840002DD51 /* ButtonCell.m */,
+				9CE80C6C18061A840002DD51 /* ConsoleViewController.h */,
+				9CE80C6D18061A840002DD51 /* ConsoleViewController.m */,
+				9CE80C6E18061A840002DD51 /* ConsoleViewController~ipad.xib */,
+				9CE80C6F18061A840002DD51 /* ConsoleViewController~iphone.xib */,
 				9C9D3F8417FB8BBD00FD3DBD /* NamedSwitch.h */,
 				9C9D3F8517FB8BBD00FD3DBD /* NamedSwitch.m */,
 				9C9D3F8617FB8BBD00FD3DBD /* SettingsViewController.h */,
@@ -417,6 +433,7 @@
 				9C9D3F8D17FB8BBD00FD3DBD /* SettingsViewController~iphone.xib in Resources */,
 				9C5CD04514BCBCA70070662F /* camera.png in Resources */,
 				9C5CD04614BCBCA70070662F /* camera@2x.png in Resources */,
+				9CE80C7318061A840002DD51 /* ConsoleViewController~iphone.xib in Resources */,
 				9C5CD04714BCBCA70070662F /* microphone.png in Resources */,
 				9C00021417FA2F97001DC767 /* AVScanViewController.xib in Resources */,
 				9C5CD04814BCBCA70070662F /* microphone@2x.png in Resources */,
@@ -447,6 +464,7 @@
 				9CA2E88B1731BFF1001D1CFC /* Default@2x.png in Resources */,
 				9C654EA0174D8F1C00758CA6 /* Default-Portrait@2x~ipad.png in Resources */,
 				9C654EA1174D8F1C00758CA6 /* Default-Portrait~ipad.png in Resources */,
+				9CE80C7218061A840002DD51 /* ConsoleViewController~ipad.xib in Resources */,
 				9C4B206E17566B20009C6477 /* geospy.png in Resources */,
 				9C4B206F17566B20009C6477 /* geospy@2x.png in Resources */,
 				9CF13E60175E57A100E0DF90 /* sms.png in Resources */,
@@ -465,6 +483,7 @@
 			files = (
 				9CA51B7014730D110065F681 /* main.m in Sources */,
 				9CA51B7414730D120065F681 /* AppDelegate.m in Sources */,
+				9CE80C7118061A840002DD51 /* ConsoleViewController.m in Sources */,
 				9CA51B7714730D120065F681 /* ViewController.m in Sources */,
 				9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */,
 				9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */,
@@ -474,6 +493,7 @@
 				9C00021317FA2F97001DC767 /* AVScanViewController.m in Sources */,
 				9C51733A155DACE300090828 /* ARView.m in Sources */,
 				9C7A1064156BF9AD0013D23D /* MapController.m in Sources */,
+				9CE80C7018061A840002DD51 /* ButtonCell.m in Sources */,
 				9CBF5ACD1638AB1E0015E267 /* IceUtil.m in Sources */,
 				9C9D3F8B17FB8BBD00FD3DBD /* SettingsViewController.m in Sources */,
 			);
