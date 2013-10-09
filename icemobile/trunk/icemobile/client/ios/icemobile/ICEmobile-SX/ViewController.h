@@ -19,7 +19,8 @@
 
 @class NativeInterface, SettingsViewController;
 
-@interface ViewController : UIViewController<NativeInterfaceViewController, UIAlertViewDelegate> {
+@interface ViewController : UIViewController<NativeInterfaceViewController, 
+    UIAlertViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout> {
 
 	NativeInterface *nativeInterface;
     NSString *currentURL;
@@ -68,6 +69,7 @@
 @property (retain) NSDictionary *confirmMessages;
 @property (retain) NSDictionary *confirmTitles;
 @property (retain) NSArray *commandNames;
+@property (retain) NSArray *buttonImages;
 @property (nonatomic) NSInteger licensePage;
 @property (nonatomic) BOOL launchedFromApp;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
@@ -87,6 +89,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *settingsButton;
 @property (nonatomic, retain) IBOutlet UIImageView *splashImage;
 @property (nonatomic, retain) SettingsViewController *settingsView;
+@property (retain, nonatomic) IBOutlet UICollectionView *buttonsView;
 
 - (void) applicationWillResignActive;
 - (void) applicationDidBecomeActive;
