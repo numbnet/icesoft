@@ -747,6 +747,10 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
             (UIDeviceOrientationPortraitUpsideDown == orientation))  {
         return CGSizeMake(60, 60);
     }
+    
+    if ([ [ UIScreen mainScreen ] bounds ].size.height < 568)  {
+        return CGSizeMake(35, 50);
+    }
 
     return CGSizeMake(45, 50);
 
