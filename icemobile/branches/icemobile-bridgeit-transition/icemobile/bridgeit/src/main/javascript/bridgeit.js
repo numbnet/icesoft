@@ -364,6 +364,8 @@ if (!window.console) {
         var data = getDeviceCommand();
         if (null == data)  {
             data = pendingData;
+            //record URL/hash changes that are not device commands
+            storeLastPage();
         }
         var deviceParams;
         if (null != data)  {
@@ -475,6 +477,13 @@ if (!window.console) {
             }
         }
     }
+
+    function storeLastPage()  {
+        var LAST_PAGE_KEY = "bridgeit.lastpage";
+        if (localStorage)  {
+            localStorage.setItem(LAST_PAGE_KEY, document.location);
+        }
+    }
     /* Page event handling */
     if (window.addEventListener) {
 
@@ -500,6 +509,7 @@ if (!window.console) {
 
         window.addEventListener("load", function () {
             setupCloudPush();
+            storeLastPage();
         }, false);
 
     };
