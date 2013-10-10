@@ -31,6 +31,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +60,7 @@ public class JSFUtils {
             namingContainer = FacesContext.getCurrentInstance().getViewRoot();
         }
         else{
-            namingContainer = findNamingContainer(contextComponent);
+            namingContainer = findNearestNamingContainerOrRoot(contextComponent);
         }
         UIComponent target = namingContainer.findComponent(id);
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -290,20 +291,11 @@ public class JSFUtils {
         }
         child.encodeAll(facesContext);
     }
-    public static UIComponent findNamingContainer(UIComponent uiComponent) {
-        UIComponent namingContainer = null;
-        if( uiComponent instanceof UINamingContainer ){
-            namingContainer = uiComponent;
-        }
-        else{
-            UIComponent parent = uiComponent.getParent();
-            while (parent != null) {
-                if (parent instanceof NamingContainer) {
-                    break;
-                }
-                parent = parent.getParent();
-            }
-            namingContainer = parent;
+    public static UIComponent findNearestNamingContainerOrRoot(UIComponent uiComponent) {
+        UIComponent namingContainer = uiComponent;
+        while( !(namingContainer instanceof NamingContainer) && namingContainer != null
+                && !(namingContainer instanceof UIViewRoot)){
+            namingContainer = namingContainer.getParent();
         }
         return namingContainer;
     }

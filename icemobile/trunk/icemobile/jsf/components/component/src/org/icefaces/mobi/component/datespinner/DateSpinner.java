@@ -18,7 +18,6 @@ package org.icefaces.mobi.component.datespinner;
 
 
 import org.icefaces.mobi.utils.Attribute;
-import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.context.FacesContext;
 import java.util.Locale;
@@ -54,8 +53,6 @@ public class DateSpinner extends DateSpinnerBase {
     private int monthInt;
     private int yearInt;
     private int dayInt;
-
-    private boolean touchEnabled;
 
     public DateSpinner() {
         super();
@@ -139,17 +136,4 @@ public class DateSpinner extends DateSpinnerBase {
         return FacesContext.getCurrentInstance();
     }
 
-    public String getDefaultEventName(FacesContext facesContext) {
-        if (Utils.isTouchEventEnabled(facesContext)) {
-            return "onblur";
-        } else return "onchange";
-    }
-
-    public boolean isTouchEnabled() {
-        return touchEnabled;
-    }
-
-    public void setTouchEnabled(boolean touchEnabled) {
-        this.touchEnabled = touchEnabled;
-    }
 }
