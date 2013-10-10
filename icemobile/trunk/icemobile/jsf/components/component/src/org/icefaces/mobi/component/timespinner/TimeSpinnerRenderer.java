@@ -22,7 +22,6 @@ import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
-import org.icefaces.mobi.utils.Utils;
 import org.icemobile.util.CSSUtils;
 
 import javax.faces.component.UIComponent;
@@ -46,7 +45,6 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
     private static final String JS_MIN_NAME = "timespinner-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.timespinner";
 
-    public static final String TOUCH_START_EVENT = "ontouchstart";
     public static final String CLICK_EVENT = "onclick";
 
     @Override
@@ -78,7 +76,6 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         boolean singleSubmit = spinner.isSingleSubmit();
         String initialValue = getStringValueToRender(context, component);
-        spinner.setTouchEnabled(Utils.isTouchEventEnabled(context));
 
         if (shouldUseNative(spinner)) {
             writer.startElement("input", component);
@@ -110,8 +107,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
                 writer.writeAttribute("readonly", component, "readonly");
             }
             if (!readonly && !disabled && hasBehaviors) {
-                String event = spinner.getDefaultEventName(context);
-                String cbhCall = this.buildAjaxRequest(context, cbh, event);
+                String cbhCall = this.buildAjaxRequest(context, cbh, "onchange");
                 writer.writeAttribute("onblur", cbhCall, null);
             } else if (!readonly && !disabled && singleSubmit) {
                 writer.writeAttribute("onblur", "ice.se(event, this);", null);
@@ -131,8 +127,6 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         TimeSpinner timeEntry = (TimeSpinner) uiComponent;
         String clientId = timeEntry.getClientId(context);
         ClientBehaviorHolder cbh = (ClientBehaviorHolder) uiComponent;
-        String eventStr = timeEntry.isTouchEnabled() ?
-                TOUCH_START_EVENT : CLICK_EVENT;
         boolean readonly = timeEntry.isReadonly();
         boolean disabled = timeEntry.isDisabled();
         boolean disabledOrReadonly = false;
@@ -208,7 +202,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_hrUpBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.timespinner.hrUp('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.hrUp('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //hour value
@@ -222,7 +216,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_hrDnBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.timespinner.hrDn('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.hrDn('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of timeEntry select container
@@ -235,7 +229,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mUpBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.timespinner.mUp('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.mUp('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //minute value
@@ -249,7 +243,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mDnBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.timespinner.mDn('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.mDn('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of minute  select container
@@ -262,7 +256,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_ampmUpBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.timespinner.ampmToggle('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.ampmToggle('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //year value
@@ -280,7 +274,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_ampmBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.timespinner.ampmToggle('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.ampmToggle('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of ampm select container
