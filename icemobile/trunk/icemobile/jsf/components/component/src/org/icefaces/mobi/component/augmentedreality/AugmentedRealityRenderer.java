@@ -15,24 +15,22 @@
  */
 package org.icefaces.mobi.component.augmentedreality;
 
-import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.Collection;
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.icefaces.impl.application.AuxUploadResourceHandler;
+import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.util.EnvUtils;
 import org.icemobile.util.CSSUtils;
 import org.icemobile.util.ClientDescriptor;
-
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Map;
-import java.net.URLEncoder;
-import java.util.Collection;
-import java.util.logging.Level;
 
 
 public class AugmentedRealityRenderer extends BaseInputRenderer  {
