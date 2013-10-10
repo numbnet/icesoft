@@ -28,11 +28,11 @@ ice.ace.TextAreaEntry = function(id, cfg) {
 	}
 
     if (cfg.inFieldLabel) {
-        if (ice.ace.jq.trim(this.jq.val()) == "") {
-            this.jq.val(this.cfg.inFieldLabel);
-            this.jq.addClass(this.cfg.inFieldLabelStyleClass);
-			this.jq.attr({name: labelName});
-        }
+		if (this.jq.hasClass(cfg.inFieldLabelStyleClass)) {
+			this.jq.attr({name: inputId});
+			this.jq.val("");
+			this.jq.removeClass(cfg.inFieldLabelStyleClass);
+		}
         this.jq.focus(
             function() {
                 var input = jQ(this);

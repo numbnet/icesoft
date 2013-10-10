@@ -154,20 +154,10 @@ public class TextEntryRenderer extends InputRenderer {
         if(style != null) writer.writeAttribute("style", style, "style");
 
         Utils.writeConcatenatedStyleClasses(writer, defaultClass, styleClass);
-
-        writer.endElement("input");
-
-        writeLabelAndIndicatorAfter(labelAttributes);
-
-        writer.endElement("span");
-
-        writer.startElement("span", textEntry);
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-
+		
         JSONBuilder jb = JSONBuilder.create();
         jb.initialiseVar(this.resolveWidgetVar(textEntry))
-          .beginFunction("ice.ace.create")
+          .beginFunction("ice.ace.lazy")
           .item("TextEntry")
           .beginArray()
           .item(clientId)
@@ -186,9 +176,12 @@ public class TextEntryRenderer extends InputRenderer {
         jb.entry("hashCode", sb.toString().hashCode());
 
         jb.endMap().endArray().endFunction();
-        writer.write(jb.toString());
+        writer.writeAttribute("onfocus", jb.toString(), null);
 
-        writer.endElement("script");
+        writer.endElement("input");
+
+        writeLabelAndIndicatorAfter(labelAttributes);
+
         writer.endElement("span");
 
         writer.endElement("span");

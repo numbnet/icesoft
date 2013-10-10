@@ -21,6 +21,14 @@ ice.ace.TextEntry = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id) + " input.ui-textentry";
     this.jq = jQ(this.jqId);
+	
+	if (cfg.embeddedLabel) { // execute this when component is lazy loaded
+		if (this.jq.attr("name") == labelName) {
+			this.jq.attr({name: inputId});
+			this.jq.val("");
+			this.jq.removeClass("ui-input-label-infield");
+		}
+	}
 
     if (cfg.autoTab) {
         this.jq.keypress(

@@ -75,34 +75,6 @@ public class TextAreaEntryRenderer extends InputRenderer {
         encodeLabelAndInput(component, labelAttributes, domUpdateMap);
         writer.endElement("span");
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-
-        JSONBuilder jb = JSONBuilder.create();
-        jb.initialiseVar(resolveWidgetVar(textAreaEntry))
-          .beginFunction("ice.ace.create")
-                .item("TextAreaEntry")
-                .beginArray()
-                .item(clientId)
-          .beginMap()
-          .entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"))
-          .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
-        jb.entry("maxlength", textAreaEntry.getMaxlength());
-		String placeholder = textAreaEntry.getPlaceholder();
-		if (placeholder != null) jb.entry("placeholder", placeholder);
-		else jb.entry("placeholder", "");
-
-        encodeClientBehaviors(context, textAreaEntry, jb);
-
-        if (!themeForms()) {
-            jb.entry("theme", false);
-        }
-
-        jb.endMap().endArray().endFunction();
-        writer.write(jb.toString());
-
-        writer.endElement("script");
-
         domUpdateMap.putAll(labelAttributes);
         writer.startElement("span", textAreaEntry);
         writer.writeAttribute("data-hashcode", domUpdateMap.hashCode(), null);
@@ -171,6 +143,29 @@ public class TextAreaEntryRenderer extends InputRenderer {
         if (value != null) {
             writer.writeText(value, "value");
         }
+		
+        JSONBuilder jb = JSONBuilder.create();
+        jb.initialiseVar(resolveWidgetVar(textAreaEntry))
+          .beginFunction("ice.ace.lazy")
+                .item("TextAreaEntry")
+                .beginArray()
+                .item(clientId)
+          .beginMap()
+          .entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"))
+          .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
+        jb.entry("maxlength", textAreaEntry.getMaxlength());
+		if (placeholder != null) jb.entry("placeholder", placeholder);
+		else jb.entry("placeholder", "");
+
+        encodeClientBehaviors(context, textAreaEntry, jb);
+
+        if (!themeForms()) {
+            jb.entry("theme", false);
+        }
+
+        jb.endMap().endArray().endFunction();
+        writer.writeAttribute("onfocus", jb.toString(), null);
+		
         writer.endElement("textarea");
     }
 
