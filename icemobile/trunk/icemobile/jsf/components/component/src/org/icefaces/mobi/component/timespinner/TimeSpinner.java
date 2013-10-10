@@ -17,13 +17,13 @@
 package org.icefaces.mobi.component.timespinner;
 
 
-import org.icefaces.mobi.utils.Attribute;
-import org.icefaces.mobi.utils.Utils;
-
-import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.logging.Logger;
+
+import javax.faces.context.FacesContext;
+
+import org.icefaces.mobi.utils.Attribute;
 
 public class TimeSpinner extends TimeSpinnerBase {
 

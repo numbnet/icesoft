@@ -24,17 +24,11 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.util.EnvUtils;
-import org.icemobile.util.ClientDescriptor;
 import org.icemobile.renderkit.DeviceCoreRenderer;
 
 

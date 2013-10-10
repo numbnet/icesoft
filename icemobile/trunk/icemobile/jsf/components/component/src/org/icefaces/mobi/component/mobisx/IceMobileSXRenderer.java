@@ -27,7 +27,6 @@ import javax.faces.render.Renderer;
 import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.mobi.utils.Utils;
 import org.icemobile.util.ClientDescriptor;
 
 
