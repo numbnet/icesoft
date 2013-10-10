@@ -54,8 +54,6 @@ public class TimeSpinner extends TimeSpinnerBase {
     private Locale appropriateLocale;
     private TimeZone appropriateTimeZone;
 
-    private boolean touchEnabled;
-
     public TimeSpinner() {
         super();
     }
@@ -134,19 +132,5 @@ public class TimeSpinner extends TimeSpinnerBase {
 
     public Attribute[] getCommonAttributeNames() {
         return commonAttributeNames;
-    }
-
-    public String getDefaultEventName(FacesContext facesContext) {
-        if (Utils.isTouchEventEnabled(facesContext)) {
-            return "onblur";
-        } else return "onchange";
-    }
-
-    public boolean isTouchEnabled() {
-        return touchEnabled;
-    }
-
-    public void setTouchEnabled(boolean touchEnabled) {
-        this.touchEnabled = touchEnabled;
     }
 }
