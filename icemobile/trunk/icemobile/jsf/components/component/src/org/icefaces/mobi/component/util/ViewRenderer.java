@@ -29,10 +29,12 @@ public class ViewRenderer extends Renderer {
 
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-        Iterator<UIComponent> iter = component.getChildren().iterator();
-        while( iter.hasNext() ){
-            UIComponent child = iter.next();
-            JSFUtils.renderChild(facesContext, child);
+        if( component.isRendered() ){
+            Iterator<UIComponent> iter = component.getChildren().iterator();
+            while( iter.hasNext() ){
+                UIComponent child = iter.next();
+                JSFUtils.renderChild(facesContext, child);
+            }
         }
         
     }

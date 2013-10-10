@@ -20,6 +20,9 @@ import java.util.List;
 
 import javax.faces.component.UIComponent;
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.ClientDescriptor;
+
 
 public class View extends ViewBase {
 
@@ -41,6 +44,18 @@ public class View extends ViewBase {
     public String getNavBarItemChildWidth(){
         float childWidth = 100f / getNavBarItemsToRender().size();
         return Float.toString(childWidth) + "%";
+    }
+
+    public void setDisabled(boolean disabled) {
+        //disabled not supported        
+    }
+
+    public boolean isDisabled() {
+        return false;
+    }
+
+    public ClientDescriptor getClient() {
+        return MobiJSFUtils.getClientDescriptor();
     }
  
 
