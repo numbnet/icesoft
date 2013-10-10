@@ -172,6 +172,7 @@ public class ExtrasSetup implements SystemEventListener {
             String formClientID = component.getClientId(context);
             writer.startElement("span", component);
             writer.writeAttribute("id", formClientID + "hdnFldsDiv", null);
+            writer.writeAttribute("style", "display:none", null);
 
             //todo: replace this with FormRenderer.addHiddenField calls in the renderers that need "icefacesCssUpdates" field           
             //css input field is required by some renderers (such as DnD)
