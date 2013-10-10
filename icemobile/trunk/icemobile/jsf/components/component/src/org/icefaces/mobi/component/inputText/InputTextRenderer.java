@@ -19,7 +19,6 @@ import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
-import org.icefaces.render.MandatoryResourceComponent;
 import org.icemobile.util.ClientDescriptor;
 
 import java.util.Date;
@@ -31,13 +30,8 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Map;
 
-
-import java.util.logging.Logger;
-/* remove mandatory resource annotation so can be used with ace components  in an app MOBI-164
-@MandatoryResourceComponent("org.icefaces.mobi.component.inputText.InputText") */
 public class InputTextRenderer extends BaseInputRenderer {
-    private static final Logger logger = Logger.getLogger(InputTextRenderer.class.getName());
-
+    
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         // The RequestParameterMap holds the values received from the browser
 
@@ -121,7 +115,6 @@ public class InputTextRenderer extends BaseInputRenderer {
         if (!isDateType) writer.writeAttribute("autocorrect", "off", null);
         else writer.writeAttribute("autocorrect", "on", null);
         writer.writeAttribute("autocapitalize", "off", null);
- //       boolean singleSubmit = inputText.isSingleSubmit();
         boolean readOnly = inputText.isReadonly();
         boolean disabled = inputText.isDisabled();
         if (disabled)
@@ -136,17 +129,16 @@ public class InputTextRenderer extends BaseInputRenderer {
             writer.write(valueToRender);
         }
         //ClientBehaviors
-        String event = inputText.getDefaultEventName(facesContext);
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
 
         if (!disabled && !readOnly && hasBehaviors){
-              String cbhCall = "ice.setFocus(null); " + this.buildAjaxRequest(facesContext, cbh, event);
-              writer.writeAttribute(event, cbhCall, null);
+              String cbhCall = "ice.setFocus(null); " + this.buildAjaxRequest(facesContext, cbh, "onchange");
+              writer.writeAttribute("onchange", cbhCall, null);
         }
         else if (inputText.isSingleSubmit()){
             String jsCall = "ice.setFocus(null); ice.se(event, '" + clientId + "');";
-            writer.writeAttribute(event, jsCall, null);
+            writer.writeAttribute("onchange", jsCall, null);
         }
         writer.endElement(componentType);
     }

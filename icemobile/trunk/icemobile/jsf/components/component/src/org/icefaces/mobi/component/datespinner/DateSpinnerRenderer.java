@@ -21,7 +21,6 @@ import static org.icemobile.util.HTML.CLASS_ATTR;
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
-import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.utils.HTML;
 import org.icemobile.util.CSSUtils;
 
@@ -50,8 +49,8 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
     private static final String JS_MIN_NAME = "datespinner-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.datespinner";
 
-    public static final String TOUCH_START_EVENT = "ontouchstart";
     public static final String CLICK_EVENT = "onclick";
+    public static final String ONCHANGE_EVENT = "onchange";
 
 
     @Override
@@ -87,7 +86,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         ClientBehaviorHolder cbh = (ClientBehaviorHolder) component;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         boolean singleSubmit = spinner.isSingleSubmit();
-        spinner.setTouchEnabled(Utils.isTouchEventEnabled(context));
         String initialValue = getStringValueToRender(context, component);
         // detect if an iOS device
         if (shouldUseNative(spinner)) {
@@ -120,8 +118,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
                 noJs = true;
             }
             if (!noJs && hasBehaviors) {
-                String event = spinner.getDefaultEventName(context);
-                String cbhCall = this.buildAjaxRequest(context, cbh, event);
+                String cbhCall = this.buildAjaxRequest(context, cbh, ONCHANGE_EVENT);
                 writer.writeAttribute("onblur", cbhCall, null);
             } else if (!noJs && singleSubmit) {
                 writer.writeAttribute("onblur", "ice.se(event, this);", null);
@@ -144,8 +141,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         ClientBehaviorHolder cbh = (ClientBehaviorHolder) uiComponent;
 
         // check for a touch enable device and setup events accordingly
-        String eventStr = dateSpinner.isTouchEnabled() ?
-                TOUCH_START_EVENT : CLICK_EVENT;
         //prep for ajax submit
         boolean singleSubmit = dateSpinner.isSingleSubmit();
         StringBuilder builder = new StringBuilder(255);
@@ -256,36 +251,36 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
 
             // yyy MM dd
             if (yStart < mStart && mStart < dStart) {
-                renderYearInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderMonthInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderDayInput(writer, uiComponent, dateSpinner, clientId, eventStr);
+                renderYearInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderMonthInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderDayInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
             } // yyyy/dd/MM
             else if (yStart < dStart && dStart < mStart) {
-                renderYearInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderDayInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderMonthInput(writer, uiComponent, dateSpinner, clientId, eventStr);
+                renderYearInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderDayInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderMonthInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
             } // dd/MM/yyyy
             else if (dStart < mStart && mStart < yStart) {
-                renderDayInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderMonthInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderYearInput(writer, uiComponent, dateSpinner, clientId, eventStr);
+                renderDayInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderMonthInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderYearInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
             } // MM/dd/yyyy
             else if (mStart < dStart && dStart < yStart) {
-                renderMonthInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderDayInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderYearInput(writer, uiComponent, dateSpinner, clientId, eventStr);
+                renderMonthInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderDayInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderYearInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
             }  // default yyyy MM dd
             else {
-                renderYearInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderMonthInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-                renderDayInput(writer, uiComponent, dateSpinner, clientId, eventStr);
+                renderYearInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderMonthInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+                renderDayInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
             }
         }
         // default yyyy MM dd
         else {
-            renderYearInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-            renderMonthInput(writer, uiComponent, dateSpinner, clientId, eventStr);
-            renderDayInput(writer, uiComponent, dateSpinner, clientId, eventStr);
+            renderYearInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+            renderMonthInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
+            renderDayInput(writer, uiComponent, dateSpinner, clientId, CLICK_EVENT);
         }
 
         writer.endElement("div");                                         //end of selection container
@@ -367,7 +362,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
                                 UIComponent uiComponent,
                                 DateSpinner dateEntry,
                                 String clientId,
-                                String eventStr) throws IOException {
+                                String CLICK_EVENT) throws IOException {
         writer.startElement("div", uiComponent);                             //date select container
         writer.writeAttribute("class", DateSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
@@ -376,7 +371,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", DateSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_dUpBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.dUp('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.dUp('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //day value
@@ -390,7 +385,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_dDnBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.dDn('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.dDn('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of dateEntry select container
@@ -400,7 +395,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
                                   UIComponent uiComponent,
                                   DateSpinner dateEntry,
                                   String clientId,
-                                  String eventStr) throws IOException {
+                                  String CLICK_EVENT) throws IOException {
         writer.startElement("div", uiComponent);                             //month select container
         writer.writeAttribute("class", DateSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
@@ -409,7 +404,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", DateSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mUpBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.mUp('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.mUp('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //month value
@@ -423,7 +418,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mDnBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.mDn('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.mDn('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of month select container
@@ -433,7 +428,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
                                  UIComponent uiComponent,
                                  DateSpinner dateEntry,
                                  String clientId,
-                                 String eventStr) throws IOException {
+                                 String CLICK_EVENT) throws IOException {
 
         int yMin = dateEntry.getYearStart();
         int yMax = dateEntry.getYearEnd();
@@ -446,7 +441,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", DateSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_yUpBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.yUp('" + clientId + "'," + yMin + "," + yMax + ");", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.yUp('" + clientId + "'," + yMin + "," + yMax + ");", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //year value
@@ -460,7 +455,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_yDnBtn", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.yDn('" + clientId + "'," + yMin + "," + yMax + ");", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.yDn('" + clientId + "'," + yMin + "," + yMax + ");", null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of year select container
