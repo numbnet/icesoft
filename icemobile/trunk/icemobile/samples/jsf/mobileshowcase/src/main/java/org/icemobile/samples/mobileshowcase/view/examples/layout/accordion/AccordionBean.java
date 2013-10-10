@@ -60,7 +60,7 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
 
     public static final String BEAN_NAME = "accordionBean";
 
-    private String selectedId = "accordionPane1";
+    private String selectedId = null;
     private String selectedId2 = "accordionPane4";
     private boolean autoHeight = true;
     private String fixedHeight = "";
