@@ -216,7 +216,7 @@ ice.ace.DataTable = function (id, cfg) {
             this.setupSortEvents();
 
         if (this.cfg.configPanel)
-            if (this.cfg.configPanel.startsWith(":"))
+            if (this.cfg.configPanel.indexOf(":") == 0)
                 this.cfg.configPanel = this.cfg.configPanel.substring(1);
 
         if (this.cfg.panelExpansion)
