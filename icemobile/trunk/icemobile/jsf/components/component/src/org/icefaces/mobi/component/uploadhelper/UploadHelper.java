@@ -16,16 +16,15 @@
 
 package org.icefaces.mobi.component.uploadhelper;
 
-import org.icefaces.impl.event.FormSubmit;
-import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.util.EnvUtils;
-import org.icemobile.util.ClientDescriptor;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+
+import org.icefaces.impl.event.FormSubmit;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.util.EnvUtils;
+import org.icemobile.util.ClientDescriptor;
 
 public class UploadHelper extends UploadHelperBase {
 

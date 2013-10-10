@@ -16,21 +16,16 @@
 
 package org.icefaces.mobi.component.video;
 
-import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.mobi.utils.PassThruAttributeWriter;
-import org.icefaces.mobi.renderkit.BaseResourceRenderer;
-import org.icefaces.mobi.utils.Utils;
-import org.icemobile.renderkit.IResponseWriter;
-import org.icemobile.util.ClientDescriptor;
-import org.icemobile.renderkit.VideoPlayerCoreRenderer;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.renderkit.BaseResourceRenderer;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
+import org.icemobile.renderkit.IResponseWriter;
+import org.icemobile.renderkit.VideoPlayerCoreRenderer;
 
 
 public class VideoPlayerRenderer extends BaseResourceRenderer {
