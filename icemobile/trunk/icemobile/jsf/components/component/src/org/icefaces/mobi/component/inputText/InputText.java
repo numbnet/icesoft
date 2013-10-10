@@ -17,7 +17,6 @@
 package org.icefaces.mobi.component.inputText;
 
 import org.icefaces.mobi.utils.Attribute;
-import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.context.FacesContext;
 
@@ -107,11 +106,5 @@ public class InputText extends InputTextBase {
 	public Attribute[] getNumberAttributeNames() {
 		return numberAttributeNames;
 	}
-    public String getDefaultEventName(FacesContext facesContext){
-         if (Utils.isTouchEventEnabled(facesContext)) {
-             return "onblur";
-         }
-        else return "onchange";
-    }
 
 }

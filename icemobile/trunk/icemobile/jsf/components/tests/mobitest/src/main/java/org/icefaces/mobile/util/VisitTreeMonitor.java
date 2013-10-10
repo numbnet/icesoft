@@ -36,7 +36,6 @@ import java.io.Serializable;
 import java.util.*;
 
 import org.icefaces.mobi.component.contentstack.ContentStack;
-import org.icefaces.mobi.utils.Utils;
 
 @ManagedBean(name="vmonitor")
 @SessionScoped
