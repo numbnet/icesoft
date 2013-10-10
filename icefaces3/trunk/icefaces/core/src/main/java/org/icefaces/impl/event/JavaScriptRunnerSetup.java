@@ -17,6 +17,7 @@
 package org.icefaces.impl.event;
 
 import org.icefaces.util.EnvUtils;
+import org.icefaces.util.FocusController;
 import org.icefaces.util.JavaScriptRunner;
 
 import javax.faces.component.UIOutput;
@@ -45,6 +46,7 @@ public class JavaScriptRunnerSetup implements SystemEventListener {
                 writer.startElement("span", this);
                 writer.writeAttribute("id", "dynamic-code", null);
                 if (!context.getPartialViewContext().isPartialRequest() && scripts.length() > 0) {
+                    FocusController.manageFocus(context);
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
                     writer.write(scripts);
