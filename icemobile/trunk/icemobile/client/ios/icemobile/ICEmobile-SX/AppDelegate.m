@@ -137,17 +137,17 @@ NSLog(@"splash image URL %@", splashImageURL);
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    LogDebug(@"didRegisterForRemoteNotificationsWithDeviceToken %@", deviceToken);
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken %@", deviceToken);
     self.viewController.deviceToken = deviceToken;
 
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error  {
-    LogDebug(@"didFailToRegisterForRemoteNotificationsWithError %@", error);
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError %@", error);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo  {
-    LogInfo(@"didReceiveRemoteNotification %@", userInfo);
+    NSLog(@"didReceiveRemoteNotification %@", userInfo);
     [self.viewController reloadCurrentURL];
 }
 
@@ -155,10 +155,10 @@ NSLog(@"splash image URL %@", splashImageURL);
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"captureconsole"])  {
         return;
     }
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString *documentsDirectory = [paths objectAtIndex:0];
-  NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"console.log"];
-  freopen([logPath cStringUsingEncoding:NSASCIIStringEncoding],"w",stderr);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"console.log"];
+    freopen([logPath cStringUsingEncoding:NSASCIIStringEncoding],"w",stderr);
 }
 
 @end
