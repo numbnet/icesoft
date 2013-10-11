@@ -514,7 +514,22 @@ if (!window.console) {
 
     };
 
-    
+
+    function httpGET(uri, query) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', uri, false);
+        xhr.send(query);
+        if (xhr.status == 200) {
+            return xhr.responseText;
+        } else {
+            throw xhr.statusText + '[' + xhr.status + ']';
+        }
+    }
+
+    function endsWith(s, pattern) {
+        return s.lastIndexOf(pattern) == s.length - pattern.length;
+    }
+
     /* *********************** PUBLIC **********************************/
     
     /**
@@ -663,7 +678,50 @@ if (!window.console) {
      * 
      */
     b.allowAnonymousCallbacks = false;
- 
+
+    /**
+     * Configure Push service and connect to it.
+     * @param uri the location of the service
+     * @param apiKey
+     */
+    b.usePushService = function(uri, apiKey) {
+        var baseURI = uri + (endsWith(uri, '/') ? '' : '/');
+        var codeURI = baseURI + 'code.icepush';
+        var code = httpGET(codeURI, 'apiKey=' + apiKey);
+        eval(code);
+
+        ice.push.configuration.contextPath = baseURI;
+        ice.push.connection.startConnection();
+    };
+
+    /**
+     * Add listner for notifications belonging to the specified group.
+     * @param group
+     * @param callback
+     */
+    b.addPushListener = function(group, callback) {
+        if (ice && ice.push && ice.push.configuration.contextPath) {
+            var pushId = ice.push.createPushId();
+            ice.push.addGroupMember(group, pushId);
+            ice.push.register([ pushId ], callback);
+        } else {
+            throw 'Push service is not setup';
+        }
+    };
+
+    /**
+     * Push notification to the group.
+     * @param groupName
+     * @param options that a notification can carry
+     */
+    b.push = function(groupName, options) {
+        if (ice && ice.push && ice.push.configuration.contextPath) {
+            ice.push.notify(groupName, options);
+        } else {
+            throw 'Push service is not setup';
+        }
+    };
+
     //android functions as full page load
     addOnLoadListener(loadComplete);
     addOnLoadListener(checkExecDeviceResponse);
