@@ -17,6 +17,7 @@
 
 @implementation SettingsViewController
 @synthesize logPage;
+@synthesize captureConsole;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -59,7 +60,7 @@
         return [self.settings count];
     } 
     if (1 == section)  {
-        return 1;
+        return 2;
     } 
     
     return 0;
@@ -85,8 +86,20 @@
 
 - (void)populateDiagnosticsCell:(UITableViewCell *)cell 
     atIndexPath:(NSIndexPath *)indexPath  {
-    [[cell textLabel] setText:@"Console log"];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    NSInteger index = [indexPath indexAtPosition:1];
+    if (0 == index)  {
+        [[cell textLabel] setText:@"Capture console"];
+        NamedSwitch *switchView = [[NamedSwitch alloc] initWithFrame:CGRectZero];
+        cell.accessoryView = switchView;
+        switchView.name = @"captureconsole";
+        [switchView setOn:self.captureConsole animated:NO];
+        [switchView addTarget:self action:@selector(settingsSwitchChanged:) 
+                forControlEvents:UIControlEventValueChanged];
+        [switchView release];
+    } else if (1 == index)  {
+        [[cell textLabel] setText:@"View console log"];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }
 }
 
 - (void)populateHostsCell:(UITableViewCell *)cell 
@@ -126,6 +139,12 @@
     [self setHost:host trustSetting:switchControl.on];
 }
 
+- (void) settingsSwitchChanged:(id)sender {
+    UISwitch* switchControl = sender;
+    NSString* param = ((NamedSwitch*)sender).name;
+    self.captureConsole = switchControl.on;
+}
+
 - (IBAction)doDone:(id)sender {
     [self saveSettings];
     [self dismissModalViewControllerAnimated:YES];
@@ -144,6 +163,8 @@
         self.settings = [self.settings initWithContentsOfFile:settingsFile];
     }
     [self.tableView reloadData];
+    self.captureConsole = [[NSUserDefaults standardUserDefaults] 
+            boolForKey:@"captureconsole"];
     NSLog(@"Settings loaded %@", self.settings);
 }
 
@@ -156,6 +177,8 @@
             stringByAppendingPathComponent:@"settings.plist"]; 
 
     [self.settings writeToFile:settingsFile atomically:YES];
+    [[NSUserDefaults standardUserDefaults]
+            setBool:self.captureConsole forKey:@"captureconsole"];
 }
 
 - (void) setHost:(NSString*)name trustSetting:(BOOL)trust  {
@@ -212,7 +235,7 @@
 {
         NSInteger section = [indexPath indexAtPosition:0];
         NSInteger row = [indexPath indexAtPosition:1];
-        if ((1 == section) && (0 == row)) {
+        if ((1 == section) && (1 == row)) {
         } else {
             return;
         }

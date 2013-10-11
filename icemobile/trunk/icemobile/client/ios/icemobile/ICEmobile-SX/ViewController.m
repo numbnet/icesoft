@@ -628,7 +628,6 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 {
     [super viewDidAppear:animated];
     [self updateGeoSpyButton];
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -711,11 +710,12 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 
     UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
 
-    if ((0 == orientation) || (UIDeviceOrientationPortrait == orientation) || 
-            (UIDeviceOrientationPortraitUpsideDown == orientation))  {
-        cell.button.frame = CGRectMake(cell.button.frame.origin.x, cell.button.frame.origin.y, 50, 50);
+    if (!UIInterfaceOrientationIsLandscape(orientation)) {
+        cell.button.frame = CGRectMake(cell.button.frame.origin.x, 
+                cell.button.frame.origin.y, 50, 50);
     } else {
-        cell.button.frame = CGRectMake(cell.button.frame.origin.x, cell.button.frame.origin.y, 45, 50);
+        cell.button.frame = CGRectMake(cell.button.frame.origin.x, 
+                cell.button.frame.origin.y, 45, 50);
     }
 
     return cell; 
@@ -729,12 +729,11 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 
     UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
 
-    if ((0 == orientation) || (UIDeviceOrientationPortrait == orientation) || 
-            (UIDeviceOrientationPortraitUpsideDown == orientation))  {
-        return UIEdgeInsetsMake(0, 40, 0, 40);
+    if (UIInterfaceOrientationIsLandscape(orientation))  {
+        return UIEdgeInsetsMake(20, 20, 0, 20);
     }
 
-    return UIEdgeInsetsMake(20, 20, 0, 20);
+    return UIEdgeInsetsMake(0, 40, 0, 40);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView 
@@ -743,18 +742,18 @@ NSLog(@"handleResponse reloadCurrentURL %d", self.launchedFromApp);
 
     UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
 
-    if ((0 == orientation) || (UIDeviceOrientationPortrait == orientation) || 
-            (UIDeviceOrientationPortraitUpsideDown == orientation))  {
+    if (!UIInterfaceOrientationIsLandscape(orientation))  {
         return CGSizeMake(60, 60);
     }
     
-    if ([ [ UIScreen mainScreen ] bounds ].size.height < 568)  {
+    if ([[UIScreen mainScreen] bounds].size.height < 568)  {
         return CGSizeMake(35, 50);
     }
 
     return CGSizeMake(45, 50);
 
 }
+
 /*- (UICollectionReusableView *)collectionView:
 (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {

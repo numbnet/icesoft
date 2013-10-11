@@ -98,7 +98,7 @@
             stringByAppendingPathComponent:@"console.log"];
     NSString *logText = [[NSString alloc] initWithContentsOfFile:logPath
             encoding:NSASCIIStringEncoding error:&error];
-    self.logLines = [IceUtil linesFromString:logText]; 
+    self.logLines = [IceUtil logLinesFromString:logText]; 
 }
 
 - (void)populateLogCell:(UITableViewCell *)cell 
