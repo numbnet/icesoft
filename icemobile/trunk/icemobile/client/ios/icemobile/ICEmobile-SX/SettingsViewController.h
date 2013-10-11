@@ -12,6 +12,7 @@
     <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 
 @property (atomic) NSInteger logPage;
+@property (atomic) BOOL captureConsole;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (retain) NSDictionary *settings;
 

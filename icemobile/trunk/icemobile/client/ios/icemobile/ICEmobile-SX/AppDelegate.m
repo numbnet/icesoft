@@ -152,6 +152,9 @@ NSLog(@"splash image URL %@", splashImageURL);
 }
 
 - (void) redirectConsoleLog {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"captureconsole"])  {
+        return;
+    }
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   NSString *documentsDirectory = [paths objectAtIndex:0];
   NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"console.log"];

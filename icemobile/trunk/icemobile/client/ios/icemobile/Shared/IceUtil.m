@@ -102,7 +102,7 @@
     [IceUtil makeFancyButton:button withColor:[UIColor lightGrayColor]];
 }
 
-+ (NSArray*) linesFromString:(NSString*) text  {
++ (NSArray*) logLinesFromString:(NSString*) text  {
     NSMutableArray *lines = [[NSMutableArray alloc] init];
     NSScanner *scanner = [NSScanner scannerWithString:text];
     while (![scanner isAtEnd]) {
@@ -110,7 +110,16 @@
         [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] 
             intoString:&line];
         if (line) {
-            [lines addObject:line];
+            //line starts with date
+            if (0 == [line rangeOfString:@"\\d+-\\d+-\\d+ " 
+                    options:NSRegularExpressionSearch].location)  {
+                [lines addObject:line];
+            } else {
+                NSString *cat = [NSString stringWithFormat:@"%@%@",
+                        [lines lastObject], line];
+                [lines removeLastObject];
+                [lines addObject:cat];
+           }
         }
     }
     return lines;
