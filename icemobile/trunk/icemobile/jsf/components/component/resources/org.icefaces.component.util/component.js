@@ -1316,7 +1316,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 (function(im) {
     var isTouchDevice = 'ontouchstart' in document.documentElement,
         indicatorSelector = "i.mobi-dv-si",
-        blankInicatorClass = 'mobi-dv-si';
+        blankIndicatorClass = 'mobi-dv-si';
     function DataView(clientId, cfg) {
         function hideAddressBar() {
             if(!window.location.hash) {
@@ -1771,7 +1771,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             sortCriteria = [];
             Array.prototype.every.call(getNode('headcells'), function(c) {
                     var indi = c.querySelector(indicatorSelector);
-                    indi.className = blankInicatorClass;
+                    indi.className = blankIndicatorClass;
                     return true;
                 });
 
@@ -1792,8 +1792,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         function sortColumn(event) {
             var sortedRows, asc,
                 headCell = event.target,
-                ascendingClass = blankInicatorClass + ' icon-caret-up',
-                descendingClass = blankInicatorClass + ' icon-caret-down',
+                ascendingClass = blankIndicatorClass + ' icon-caret-up',
+                descendingClass = blankIndicatorClass + ' icon-caret-down',
                 ascIndi = headCell.querySelector(indicatorSelector),
                 ascClass = ascIndi.className;
 
@@ -1801,7 +1801,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             var columnIndex = getIndex(headCell);
 
             /* set ascending flag and indicator */
-            asc = ascClass == descendingClass || ascClass == blankInicatorClass;
+            asc = ascClass == descendingClass || ascClass == blankIndicatorClass;
             ascIndi.className = asc ? ascendingClass : descendingClass;
 
             // sortCriteria = sortCriteria.filter(function(c) { return c.index != columnIndex});
