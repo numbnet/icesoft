@@ -65,8 +65,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     public static final String LINK_SHORTCUT_ICON = "<link href='%s/resources/images/favicon.ico' rel='shortcut icon' type='image/x-icon'/>";
     public static final String LINK_FAV_ICON = "<link href='%s/resources/images/favicon.ico' rel='icon' type='image/x-icon'/>";
     
-    public static final String SCRIPT_ICEMOBILE = "<script type='text/javascript' src='%s%s/javascript/icemobile.js'></script>";
-	public static final String SCRIPT_SIMULATOR = "simulator-interface.js";
+    public static final String SCRIPT_SIMULATOR = "simulator-interface.js";
 	public static final String CSS_SIMULATOR = "simulator.css";
 
     public void processEvent(ComponentSystemEvent event)

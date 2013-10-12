@@ -16,28 +16,35 @@
 package org.icefaces.mobi.component.contentpane;
 
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import javax.el.ValueExpression;
 import javax.faces.component.StateHelper;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.icefaces.mobi.component.accordion.Accordion;
-import org.icefaces.mobi.component.contentstack.ContentStack;
-import org.icefaces.mobi.component.tabset.TabSet;
+import org.icefaces.mobi.api.ContentPaneController;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icemobile.component.IAccordion;
-import org.icemobile.component.IContentPane;
 import org.icemobile.util.ClientDescriptor;
 
-public class ContentPane extends ContentPaneBase implements IContentPane{
-    public static final String CONTENT_BASE_CLASS = "mobi-contentpane ui-body-c ";
-    public static final String CONTENT_HIDDEN_CLASS = "mobi-contentpane-hidden ";
-    public static final String CONTENT_SINGLE_BASE_CLASS = "mobi-contentpane-single ui-body-c ";
-    public static final String CONTENT_SINGLE_HIDDEN_CLASS = "mobi-contentpane-single-hidden";
-    public static final String CONTENT_SINGLE_MENUPANE_CLASS = "mobi-contentpane-single-menu-hidden";
-
+@SuppressWarnings({"rawtypes","unchecked"})
+public class ContentPane extends ContentPaneBase{
+    
+    private static final Logger logger =
+            Logger.getLogger(ContentPane.class.toString());
+    
+    public static final String CONTENT_SELECTED = "mobi-contentpane ui-body-c ";
+    public static final String CONTENT_LEFT_SELECTED = "mobi-contentpane-left ui-body-c";
+    public static final String CONTENT_HIDDEN = "mobi-contentpane-hidden ";
+    public static final String CONTENT_LEFT_HIDDEN = "mobi-contentpane-left-hidden";
+    public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs ui-bar-b");
+    public static final String TABSET_SPAN_CLASS = "mobitab";
+    public static final String TABSET_HIDDEN_PAGECLASS = "mobi-tabpage-hidden";
+    public static final String TABSET_ACTIVE_CONTENT_CLASS= "mobi-tabpage";
+    
+    private transient Boolean first;
 
     @Override
     public void setClient(boolean client) {
@@ -90,36 +97,56 @@ public class ContentPane extends ContentPaneBase implements IContentPane{
 			return true;
 		}
 	}
-    public boolean isAccordionPane(){
-        return (this.getParent() instanceof Accordion);
-    }
-    public IAccordion getAccordionParent(){
-        return (IAccordion)getParent();
-    }
-    public boolean isStackPane(){
-        return (this.getParent() instanceof ContentStack);
-    }
-    public boolean isTabPane(){
-        return (this.getParent() instanceof TabSet);
-    }
+    
     public ClientDescriptor getClient() {
         return MobiJSFUtils.getClientDescriptor();
     }
+    
+    public boolean isFirstPane(){
+        if( first == null ){
+            if( this.getParent().getChildren().get(0).equals(this)){
+                first = Boolean.TRUE;
+            }
+            else{
+                first = Boolean.FALSE;
+            }
+        }
+        return first.booleanValue();
+    }
+    
+    public boolean isSelected(){
+        UIComponent parent = this.getParent();
+        String selectedId= null;
+        if (parent instanceof ContentPaneController){
+            ContentPaneController paneController = (ContentPaneController)parent;
+            selectedId = paneController.getSelectedId();
+            
+            if (null == selectedId){
+                UIComponent pComp = (UIComponent)parent;
+                logger.warning("Parent controller of contentPane must have value for selectedId="+pComp.getClientId());
+                return false;
+            }
+        }
+        else {
+            logger.warning("Parent must implement ContentPaneController-> has instead="+parent.getClass().getName());
+            return false;
+        }
+        String id = this.getId();
+        if( id == null ){
+            return false;
+        }
+        else{
+            return (id.equals(selectedId));
+        }
+        
+    }
 
-    /**
-     * TODO implement disabled for this component which will affect
-     * contentStack, tabSet and accordion components.  Need to return something
-     * for IContentPane interface in core .
-     */
-    public boolean isDisabled(){
-        return false;
+    @Override
+    public String toString() {
+        return "ContentPane [first=" + first + ", getId()=" + getId() + "]";
     }
-    /**
-     * TODO implement disabled for this component which will affect
-     * contentStack, tabSet and accordion components.  Need to return something
-     * for IContentPane interface in core .
-     */
-    public void setDisabled(boolean disabled){
-        //noop
-    }
+    
+    
+    
+    
   }

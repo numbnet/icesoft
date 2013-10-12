@@ -13,28 +13,18 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-contentpane-hidden {
-    opacity: 0;
- }
 
- .mobi-contentpane {
-    opacity: 1;
- }
- .mobi-contentpane-single-menu-hidden {
-   -webkit-transition: left .1s ease-in;
-   -moz-transition: left .1s ease-in;
-   -o-transition: opacity .1s linear, visibility .1s linear .2s;
-   transition: opacity .1s linear, visibility .1s linear .2s;
+.mobi-contentStack-container.single > .mobi-contentStack-panes >  .mobi-contentpane-left-hidden,
+.mobi-contentStack-container.single > .mobi-contentStack-panes > .mobi-contentpane-hidden {
+   -webkit-transition: left .1s ease-in, opacity .1s linear .1s;
+      -moz-transition: left .1s ease-in, opacity .1s linear .1s;
+        -0-transition: left .1s ease-in, opacity .1s linear .1s;
+           transition: left .1s ease-in, opacity .1s linear .1s;
 }
-.mobi-contentpane-single-hidden {
-   -webkit-transition: left .1s ease-out;
-   -moz-transition: left .1s ease-in;
-   -o-transition: opacity .1s linear, visibility .1s linear .2s;
-   opacity: 0;
-}
-.mobi-contentpane-single {
-    opacity: 1;
-    -webkit-transition: left .1s ease-out;
-    -moz-transition: left .1s ease-out;
-    -o-transition: left .1s ease-out;
+.mobi-contentStack-container.single > .mobi-contentStack-panes > .mobi-contentpane,
+.mobi-contentStack-container.single > .mobi-contentStack-panes > .mobi-contentpane-left {
+    -webkit-transition: left .1s ease-out 0.1s;
+       -moz-transition: left .1s ease-out 0.1s;
+         -o-transition: left .1s ease-out 0.1s;
+            transition: left .1s ease-out 0.1s;
 }

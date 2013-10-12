@@ -115,9 +115,9 @@ public class  CommandButtonRenderer extends CoreRenderer {
             if (stack!=null){
                 StringBuilder noPanelConf = new StringBuilder("mobi.layoutMenu.showContent('").append(stack.getClientId());
                 noPanelConf.append("', event");
-                noPanelConf.append(",{ selectedId: '").append(button.getOpenContentPane()).append("'");
+                noPanelConf.append(",{ currentId: '").append(button.getOpenContentPane()).append("'");
                 noPanelConf.append(",singleSubmit: ").append(button.isSingleSubmit());
-                noPanelConf.append(", item: '").append(uiComponent.getClientId(facesContext)).append("'");
+                noPanelConf.append(", source: '").append(uiComponent.getClientId(facesContext)).append("'");
                 UIComponent pane = JSFUtils.findComponent(openContentPane, null);
                 if (pane!=null){
                     String paneId = pane.getClientId(facesContext);
