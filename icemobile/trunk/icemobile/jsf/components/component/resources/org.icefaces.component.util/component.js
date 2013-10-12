@@ -1811,11 +1811,12 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
             /* remove indicator from other cols */
             var sortedIndexes = sortCriteria.map(function(c) {return c.index});
-            var headcells = getNode('headcells');
-            for( var k = 0 ; k < headcells.length ; k++ ){
+            var headCells = getNode('headcells');
+            for( var k = 0 ; k < headCells.length ; k++ ){
+                var c = headCells[k];
                 if( sortedIndexes.indexOf(getIndex(c)) === -1 ){
                     var indi = c.querySelector(indicatorSelector);
-                    indi.className = blankInicatorClass;
+                    indi.className = blankIndicatorClass;
                 }
             }
 
