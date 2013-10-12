@@ -20,12 +20,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.component.StateHelper;
+import javax.faces.component.UIComponent;
 
 import org.icefaces.mobi.api.ContentPaneController;
+import org.icefaces.mobi.utils.JSFUtils;
 
 @SuppressWarnings("unchecked")
 public class ContentStack extends ContentStackBase implements ContentPaneController {
-    public static final String CONTAINER_SINGLEVIEW_CLASS = "mobi-contentStack-container";
+    public static final String CONTAINER_SINGLEVIEW_CLASS = "mobi-contentStack-container single";
     public static final String PANES_SINGLEVIEW_CLASS ="mobi-contentStack-panes";
 
      /**
@@ -123,6 +125,16 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
             }
         }
         return retVal;
+    }
+    
+    public void setCurrentId(String currentId) {
+        if( currentId != null ){
+            UIComponent uic = JSFUtils.findComponent(currentId, this);
+            if( uic == null ){
+                return;
+            }
+        }
+        super.setCurrentId(currentId);
     }
 }
 

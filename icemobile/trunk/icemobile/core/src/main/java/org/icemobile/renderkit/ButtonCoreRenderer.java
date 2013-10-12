@@ -16,17 +16,25 @@
 
 package org.icemobile.renderkit;
 
-import org.icemobile.component.IButton;
-import org.icemobile.component.IFragment;
-import org.icemobile.component.ISplitPane;
-import org.icemobile.util.CSSUtils;
-import org.icemobile.util.ClientDescriptor;
+import static org.icemobile.util.HTML.CLASS_ATTR;
+import static org.icemobile.util.HTML.DISABLED_ATTR;
+import static org.icemobile.util.HTML.DIV_ELEM;
+import static org.icemobile.util.HTML.ID_ATTR;
+import static org.icemobile.util.HTML.INPUT_ELEM;
+import static org.icemobile.util.HTML.NAME_ATTR;
+import static org.icemobile.util.HTML.ONCLICK_ATTR;
+import static org.icemobile.util.HTML.SPAN_ELEM;
+import static org.icemobile.util.HTML.STYLE_ATTR;
+import static org.icemobile.util.HTML.TYPE_ATTR;
+import static org.icemobile.util.HTML.VALUE_ATTR;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.icemobile.util.HTML.*;
+import org.icemobile.component.IButton;
+import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
 
 public class ButtonCoreRenderer extends BaseCoreRenderer {
     private static final Logger logger =
@@ -37,7 +45,6 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         IButton  button = (IButton) component;
         ClientDescriptor client = button.getClient();
         String clientId = button.getClientId();
-     //   logger.info("clientId for button="+clientId);
         // apply button type style classes
         StringBuilder baseClass = new StringBuilder(CSSUtils.STYLECLASS_BUTTON);
         String buttonType = button.getButtonType();
@@ -47,11 +54,11 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
          * not guarantee one.
          */
         if (button.isSelectedButton() || button.isSelected()) {
-            baseClass.append(button.SELECTED_STYLE_CLASS);
+            baseClass.append(IButton.SELECTED_STYLE_CLASS);
         }
         // apply disabled style state if specified.
         if (button.isDisabled()) {
-            baseClass.append(" ").append(button.DISABLED_STYLE_CLASS);
+            baseClass.append(" ").append(IButton.DISABLED_STYLE_CLASS);
         }
         String style = button.getStyle();
         if( style != null ){
@@ -62,14 +69,14 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         }
         // assign button type
         if( buttonType != null && !"".equals(buttonType)){
-            if (button.BUTTON_TYPE_UNIMPORTANT.equals(buttonType)) {
-                baseClass.append(button.UNIMPORTANT_STYLE_CLASS);
-            } else if (button.BUTTON_TYPE_BACK.equals(buttonType)) {
-                baseClass.append(button.BACK_STYLE_CLASS);
-            } else if (button.BUTTON_TYPE_ATTENTION.equals(buttonType)) {
-                baseClass.append(button.ATTENTION_STYLE_CLASS);
-            } else if (button.BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
-                baseClass.append(button.IMPORTANT_STYLE_CLASS);
+            if (IButton.BUTTON_TYPE_UNIMPORTANT.equals(buttonType)) {
+                baseClass.append(IButton.UNIMPORTANT_STYLE_CLASS);
+            } else if (IButton.BUTTON_TYPE_BACK.equals(buttonType)) {
+                baseClass.append(IButton.BACK_STYLE_CLASS);
+            } else if (IButton.BUTTON_TYPE_ATTENTION.equals(buttonType)) {
+                baseClass.append(IButton.ATTENTION_STYLE_CLASS);
+            } else if (IButton.BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
+                baseClass.append(IButton.IMPORTANT_STYLE_CLASS);
             } else if( !"default".equalsIgnoreCase(buttonType) && logger.isLoggable(Level.WARNING)) {
                 logger.warning("unsupported button type: '" + buttonType + "' for "+ clientId);
             }
@@ -86,7 +93,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             type = IButton.BUTTON_DEFAULT;
         }
 
-        if (button.BUTTON_TYPE_BACK.equals(buttonType) && client.isIOS()){
+        if (IButton.BUTTON_TYPE_BACK.equals(buttonType) && client.isIOS()){
             writer.startElement(DIV_ELEM, button);
             writer.writeAttribute(ID_ATTR, clientId+"_ctr");
             writer.writeAttribute(CLASS_ATTR, baseClass.toString());

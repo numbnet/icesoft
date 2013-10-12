@@ -47,6 +47,7 @@
         <include name="commons-logging.jar"/>
         <include name="commons-fileupload-1.2.2.jar"/>
         <include name="commons-dbcp-1.4.jar"/>
+        <include name="commons-io-2.0.1.jar"/>
         <include name="commons-pool-1.6.jar"/>
         <include name="hsqldb.jar"/>
         <include name="jackson-core-asl-1.8.1.jar"/>

@@ -16,110 +16,160 @@
  */
 package org.icefaces.mobi.component.contentpane;
 
+import static org.icemobile.util.HTML.CLASS_ATTR;
+import static org.icemobile.util.HTML.DIV_ELEM;
+import static org.icemobile.util.HTML.ID_ATTR;
+import static org.icemobile.util.HTML.SPAN_ELEM;
+import static org.icemobile.util.HTML.STYLE_ATTR;
+
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.icefaces.mobi.api.ContentPaneController;
 import org.icefaces.mobi.component.accordion.Accordion;
 import org.icefaces.mobi.component.tabset.TabSet;
-import org.icemobile.component.ITabPane;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
-
-import org.icemobile.component.IContentPane;
-import org.icemobile.renderkit.AccordionPaneCoreRenderer;
-import org.icemobile.renderkit.ContentPaneCoreRenderer;
-import org.icemobile.renderkit.IResponseWriter;
+import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
+import org.icemobile.util.Utils;
 
 
 public class ContentPaneRenderer extends BaseLayoutRenderer {
 
-    private static final Logger logger = Logger.getLogger(ContentPaneRenderer.class.getName());
-
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
         UIComponent parent = uiComponent.getParent();
-        IContentPane pane = (IContentPane) uiComponent;
-        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        boolean amSelected = iAmSelected(facesContext, uiComponent);
+        ContentPane pane = (ContentPane) uiComponent;
+        ResponseWriter writer =facesContext.getResponseWriter();
+        boolean selected = pane.isSelected();
         if (parent instanceof Accordion){
-            //use core renderer for accordion
-            AccordionPaneCoreRenderer renderer = new AccordionPaneCoreRenderer();
-            renderer.encodeBegin(pane, writer, false, amSelected);
+            encodeAccordionPaneBegin(pane, writer, selected);
         } else if (parent instanceof TabSet){
-            encodeTabSetPage(facesContext, uiComponent);
-        } else {  //plain old contentStack parent
-            ContentPaneCoreRenderer renderer = new ContentPaneCoreRenderer();
-            renderer.encodeBegin(pane, writer, amSelected);
+            encodeTabSetPaneBegin(facesContext, uiComponent);
+        } else {  
+            encodeContentPaneBegin(pane, writer, selected);
         }
     }
-
-    public boolean getRendersChildren() {
-        return true;
-    }
-
-    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException{
-        ContentPane pane = (ContentPane)uiComponent;
-        if (pane.isClient()){
-            JSFUtils.renderChildren(facesContext, uiComponent);
-        }
-        else if (iAmSelected(facesContext, uiComponent)){
-            JSFUtils.renderChildren(facesContext, uiComponent);
-        }
-
-    }
-
+    
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-          throws IOException {
-        IContentPane pane = (IContentPane)uiComponent;
-        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        if (pane.isAccordionPane()){
-            AccordionPaneCoreRenderer renderer = new AccordionPaneCoreRenderer();
-            renderer.encodeEnd(pane, writer, false);
-        } else {
-            ContentPaneCoreRenderer crenderer = new ContentPaneCoreRenderer();
-            crenderer.encodeEnd(pane, writer);
+            throws IOException {
+          UIComponent parent = uiComponent.getParent();
+          ContentPane pane = (ContentPane)uiComponent;
+          ResponseWriter writer =facesContext.getResponseWriter();
+          if (parent instanceof Accordion){
+              encodeAccordionPaneEnd(pane, writer);
+          } else if (parent instanceof TabSet){
+              encodeTabSetPaneEnd(writer);
+          } else {  
+              encodeContentPaneEnd(writer);
+          }
+      }
+
+    
+    /* ****************** CONTENT STACK RENDERING ********************** */
+    
+    private void encodeContentPaneBegin(ContentPane pane, ResponseWriter writer, boolean selected)
+        throws IOException{
+        String clientId = pane.getClientId();
+        writer.startElement(DIV_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId+"_wrp", null);
+        if( selected ){
+            writer.writeAttribute(CLASS_ATTR, 
+                    pane.isFirstPane() ? ContentPane.CONTENT_LEFT_SELECTED : ContentPane.CONTENT_SELECTED, null);
+                
         }
+        else{
+            writer.writeAttribute(CLASS_ATTR, 
+                    pane.isFirstPane() ? ContentPane.CONTENT_LEFT_HIDDEN : ContentPane.CONTENT_HIDDEN, null);
+        }
+        writer.writeAttribute("data-paneid", pane.getId(), null);
+
+        writer.startElement(DIV_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId, null);
+        if (pane.getStyleClass()!=null){
+            writer.writeAttribute(CLASS_ATTR, pane.getStyleClass(), null);
+        }
+        if (pane.getStyle()!=null){
+            writer.writeAttribute(STYLE_ATTR, pane.getStyle(), null);
+        }
+
     }
+    
+    public void encodeContentPaneEnd(ResponseWriter writer)
+            throws IOException {
+       writer.endElement(DIV_ELEM);
+       writer.endElement(DIV_ELEM);
+   }
+    
+    /* ****************** ACCORDION RENDERING ********************** */
 
+    private void encodeAccordionPaneBegin(ContentPane pane, ResponseWriter writer, boolean selected)
+    throws IOException{
+        Accordion accordion = (Accordion)pane.getParent();
+        String accordionId = accordion.getClientId();
+        String clientId = pane.getClientId();
+        boolean client = pane.isClient();
+        String handleClass = "handle " + CSSUtils.STYLECLASS_BAR_B;
+        String pointerClass = "pointer";
+        writer.startElement(DIV_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId+"_sect", null);
+        StringBuilder styleClass = new StringBuilder("closed");
+        if (selected){
+            styleClass = new StringBuilder("open") ;
+        }
+        String userDefinedClass = pane.getStyleClass();
+        if (userDefinedClass != null && userDefinedClass.length() > 0){
+             handleClass+= " " + userDefinedClass;
+             pointerClass+=" " + userDefinedClass;
+        }
+        writer.writeAttribute(CLASS_ATTR, styleClass, null);
+        writer.writeAttribute(STYLE_ATTR, pane.getStyle(), null);
+        writer.startElement(DIV_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId+"_hndl", null);
+        writer.writeAttribute(CLASS_ATTR, handleClass, null);
+        StringBuilder args = new StringBuilder("ice.mobi.accordionController.toggleClient('");
+        args.append(accordionId).append("', this, '").append(client).append("'");
+        ClientDescriptor cd = accordion.getClient();
+        if (Utils.isTransformerHack(cd)) {
+            args.append(", true");
+        }
+        args.append(");");
+        writer.writeAttribute(HTML.ONCLICK_ATTR, args.toString(), null);
+        writer.startElement(SPAN_ELEM, pane);
+        writer.writeAttribute(HTML.CLASS_ATTR, pointerClass, null);
+        writer.endElement(SPAN_ELEM);
+        String title = pane.getTitle();
+        writer.writeText(title, null);
+        writer.endElement(DIV_ELEM);
+        writer.startElement(DIV_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId+"wrp", null);
+        writer.startElement(DIV_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId, null);
 
-    private boolean iAmSelected(FacesContext facesContext, UIComponent uiComponent){
-        UIComponent parent = uiComponent.getParent();
-        String selectedId= null;
-        if (parent instanceof ContentPaneController){
-            ContentPaneController paneController = (ContentPaneController)parent;
-            selectedId = paneController.getSelectedId();
-            
-            if (null == selectedId){
-                UIComponent pComp = (UIComponent)parent;
-                logger.warning("Parent controller of contentPane must have value for selectedId="+pComp.getClientId());
-                return false;
-            }
-        }
-        else {
-            logger.warning("Parent must implement ContentPaneController-> has instead="+parent.getClass().getName());
-            return false;
-        }
-        String id = uiComponent.getId();
-        return (id.equals(selectedId));
     }
+    
+    private void encodeAccordionPaneEnd(ContentPane component, ResponseWriter writer)
+            throws IOException {
+       writer.endElement(DIV_ELEM);
+       writer.endElement(DIV_ELEM);
+       writer.endElement(DIV_ELEM);
+   }
 
+    /* ****************** TABSET RENDERING ********************** */
 
-    private void encodeTabSetPage(FacesContext facesContext, UIComponent uiComponent)
+    private void encodeTabSetPaneBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException{
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         ContentPane pane= (ContentPane)uiComponent;
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrapper", HTML.ID_ATTR);
-        String pageClass = ITabPane.TABSET_HIDDEN_PAGECLASS.toString();
-        if (iAmSelected(facesContext, uiComponent)){
-            pageClass = ITabPane.TABSET_ACTIVE_CONTENT_CLASS;
+        String pageClass = ContentPane.TABSET_HIDDEN_PAGECLASS;
+        if (pane.isSelected()){
+            pageClass = ContentPane.TABSET_ACTIVE_CONTENT_CLASS;
         }
         writer.writeAttribute(HTML.CLASS_ATTR, pageClass, "class");
         writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -131,6 +181,32 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.CLASS_ATTR, pane.getStyleClass(), HTML.STYLE_CLASS_ATTR);
         }
     }
+    
+    public void encodeTabSetPaneEnd(ResponseWriter writer)
+            throws IOException {
+       writer.endElement(DIV_ELEM);
+       writer.endElement(DIV_ELEM);
+   }
+
+    
+    
+    public boolean getRendersChildren() {
+        return true;
+    }
+
+    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException{
+        ContentPane pane = (ContentPane)uiComponent;
+        if (pane.isClient()){
+            JSFUtils.renderChildren(facesContext, uiComponent);
+        }
+        else if (pane.isSelected()){
+            JSFUtils.renderChildren(facesContext, uiComponent);
+        }
+    }
+    
+
+
+
 
 
 

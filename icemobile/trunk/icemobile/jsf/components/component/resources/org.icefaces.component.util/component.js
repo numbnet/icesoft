@@ -1820,7 +1820,6 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 }
             }
 
-
             var bodyRows = getNode('bodyrows');
             /* return bodyRows NodeList as Array for sorting */
             sortedRows = Array.prototype.map.call(bodyRows, function(row) { return row; });
@@ -2332,72 +2331,77 @@ ice.mobi.addListener(document, "touchstart", function(){});
     }
 
     function LayoutMenu(clientId, cfgIn) {
-        var singleVisClass = "mobi-contentpane-single ui-body-c";
-        var singleHidClass = "mobi-contentpane-single-hidden";
-        var nonSingleVisClass = "mobi-contentpane ui-body-c";
-        var nonSingleHidClass = "mobi-contentpane-hidden";
-        var singleLeftHidClass = "mobi-contentpane-single-menu-hidden";
-        var visClass = nonSingleVisClass;
-        var hideClass = nonSingleHidClass;
-        if (cfgIn.single){
-             visClass = singleVisClass;
-             hideClass = singleHidClass;
-        }
+        var stackId = clientId;
         var singleView = cfgIn.single || false;
-        var panes = document.getElementById(clientId+"_panes") || null;
+        var currentId = cfgIn.currentId || null;
+        
+        var LEFT_HIDDEN_CLASS = "mobi-contentpane-left-hidden",
+            LEFT_VISIBLE_CLASS = "mobi-contentpane-left ui-body-c",
+            VISIBLE_CLASS = "mobi-contentpane ui-body-c",
+            HIDDEN_CLASS = "mobi-contentpane-hidden"; 
+        
+        var panes = document.getElementById(clientId+"_panes") ? document.getElementById(clientId+"_panes").children : null;
         if (panes!=null){
-            var cpanes = panes.children;
-            var length = cpanes.length;
-            for (i=0; i< length-1; i++){
-                var iStr = i+'';
-                cpanes[i].setAttribute('data-order', iStr);
+            for (i=0; i< panes.length-1; i++){
                 //after remove the singleView and let it slide for a test
                 if ( i==0 && singleView) { //assume first panel is always menu or home
-                    cpanes[i].className = singleLeftHidClass;
+                    panes[i].className = LEFT_HIDDEN_CLASS;
                 } else {
-                    cpanes[i].className = hideClass;
+                    panes[i].className = HIDDEN_CLASS;
                 }
             }
         }
-        var myStackId = clientId;
-        var selectedPaneId = cfgIn.selectedId || null;
-        var selClientId = cfgIn.selClientId || null;
-        var wrpId;
-        if (selClientId==null) {
-            selClientId = wrpId = panes.childNodes[0].id;
+        var currPane;
+        if (currentId==null) {
+            curPane = panes[0];
         }
         else{
-            wrpId = selClientId+ "_wrp";
+            currPane = getPane(currentId);
         }
-        var currPane =  document.getElementById(wrpId);
-        if (currPane){
-            currPane.className=visClass;
+        if( getPaneOrder(currPane) == 0 ){
+            currPane.className = LEFT_VISIBLE_CLASS;
         }
-        var prevId = wrpId;
+        else{
+            currPane.className = VISIBLE_CLASS;
+        }
+        
+        var prevPane = currPane;
         return {
            showContent: function(event, cfgIn) {
-               if (cfgIn.selectedId == selectedPaneId){
+               if (cfgIn.currentId == currentId){
                     return;
                }
-               var item = cfgIn.item || myStackId;
-               selectedPaneId = cfgIn.selectedId;
+               var source = cfgIn.source || stackId;
+               currentId = cfgIn.currentId;
                var client = cfgIn.client || false;
                var singleSubmit = cfgIn.singleSubmit || false;
-               var selClId = cfgIn.selClientId || null;
-               var wrpId = selClId +"_wrp";
-               currPane = document.getElementById(wrpId);
-               var prevPane = document.getElementById(prevId);
-               var oldOrd = prevPane.getAttribute("data-order");
-               var newOrd = currPane.getAttribute("data-order");
-               if (singleView && oldOrd<newOrd){
-                   prevPane.className= singleLeftHidClass ;
-               } else {
-                   prevPane.className =  hideClass;
+               currPane = getPane(currentId);
+               updateHidden(stackId, currentId);
+               var oldOrd = prevPane ? getPaneOrder(prevPane) : 0;
+               var newOrd = getPaneOrder(currPane);
+               if( prevPane ){
+                   if( singleView && oldOrd < newOrd )
+                       prevPane.className = LEFT_HIDDEN_CLASS;
+                   else
+                       prevPane.className =  HIDDEN_CLASS;
                }
-               if (!client || selClId ==null){
+               //MOBI-904
+               for(var i = 0 ; i < panes.length ; i++ ){
+                   if( panes[i].tagName.toLowerCase()  == "div"
+                           && panes[i].className.indexOf('hidden') == -1 
+                           && panes[i] != currPane){
+                       if( i === 0 ){
+                           panes[i].className = LEFT_HIDDEN_CLASS;
+                       }
+                       else{
+                           panes[i].className = HIDDEN_CLASS;
+                       }
+                   }
+               }
+               if (!client){
                    if (singleSubmit){
                       try{
-                       ice.se(event,item);
+                       ice.se(event,source);
                       }catch(err){
                           ice.log.debug(ice.log, 'error message='+err.message);
                       }
@@ -2406,26 +2410,49 @@ ice.mobi.addListener(document, "touchstart", function(){});
                        ice.log.debug(ice.log, ' no implementation for full submit at this time');
                    }
                }
-               currPane.className=visClass;
-               prevId  = wrpId;
-           },
-           updateProperties: function (clientId, cfgUpd) {
-                if (cfgUpd.selClientId){
-                    this.showContent(null, cfgUpd);
-                }
-
+               if( singleView && oldOrd > newOrd ){
+                   currPane.className = LEFT_VISIBLE_CLASS;
+               }
+               else{
+                   currPane.className = VISIBLE_CLASS;
+               }
+               
+               prevPane  = currPane;
            }
         }
+        
+        function getPane(id){
+            for( var i = 0 ; i < panes.length ; i++ ){
+                if( panes[i].getAttribute('data-paneid') == id )
+                    return panes[i];
+            }
+        }
+        
+        function getPaneOrder(elem){
+            if( elem ){
+                console.log('in panes: ' + panes);
+                if( panes ){
+                    for( var i = 0 ; i < panes.length ; i++ ){
+                        if( panes[i].id == elem.id )
+                            return i;
+                    }
+                }
+            }
+            console.error('could not derive order for ' + elem.id );
+        }
+        
+        
+        
     }
     mobi.layoutMenu = {
-        last5Selected: {},
         menus: {},
-        menuId: {},
         initClient: function(clientId, cfg) {
             if (!this.menus[clientId]){
                 this.menus[clientId] = LayoutMenu(clientId, cfg);
             } else {
-                this.menus[clientId].updateProperties(clientId, cfg);
+                if (cfg.currentId){
+                    this.menus[clientId].showContent(null, cfg);
+                }
             }
         },
         showContent: function(clientId, el, cfgIn){
@@ -3322,11 +3349,10 @@ mobi.flipswitch = {
             }
         },
         toggleMenu: function(clientId, el){
-            if (this.panels[clientId]) {  //have yet to implement disabled for menu
-                this.panels[clientId].toggle(clientId, el, true);
-            } else{
+            if( !this.panels[clientId]){
                 this.initClient(clientId, {autoheight:false});
             }
+            this.panels[clientId].toggle(clientId, el, true);
         } ,
         updateHeight: function(clientId, handleHt){
             if (this.panels[clientId]){

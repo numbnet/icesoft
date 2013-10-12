@@ -119,35 +119,6 @@ public class CarouselRenderer extends BaseLayoutRenderer {
 
     }
 
-    /**
-     * jsf options to javascript for this component
-     * @param uiComponent
-     * @param facesContext
-     * @return
-     * @throws IOException
-     */
-  /*  private StringBuilder getCfgOptions(UIComponent uiComponent,FacesContext facesContext)
-          throws IOException{
-        StringBuilder builder = new StringBuilder(255);
-        String clientId = uiComponent.getClientId(facesContext);
-        Carousel carousel = (Carousel)uiComponent;
-        builder.append("',{ singleSubmit: ").append(carousel.isSingleSubmit());
-        int hashcode = MobiJSFUtils.generateHashCode(carousel.getSelectedItem());
-        builder.append(", hash: ").append(hashcode);
-        boolean hasBehaviors = !carousel.getClientBehaviors().isEmpty();
-        if (hasBehaviors){
-            ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
-            String behaviors = encodeClientBehaviors(facesContext, cbh, "change").toString();
-            behaviors = behaviors.replace("\"", "\'");
-            builder.append(behaviors);
-        }
-        builder.append("}");
-        return builder;
-    } */
-
-    /**
-     * will render it's own children
-     */
     public boolean getRendersChildren() {
         return true;
     }

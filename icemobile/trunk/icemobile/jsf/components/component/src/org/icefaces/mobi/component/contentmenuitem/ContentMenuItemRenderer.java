@@ -41,6 +41,10 @@ import org.icefaces.mobi.utils.JSFUtils;
 
 public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
     private static final Logger logger = Logger.getLogger(ContentMenuItemRenderer.class.getName());
+    
+    private static final String CLOSED = "closed";
+    private static final String HANDLE = "handle ui-bar-b";
+    private static final String POINTER = "pointer";
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map<String,String> requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
@@ -48,7 +52,7 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
         String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
         String clientId = item.getClientId();
         if (clientId.equals(source) ) {
-            try {
+            //try {
                 if (!item.isDisabled()) {
                     uiComponent.queueEvent(new ActionEvent(uiComponent));
                     UIComponent parent = item.getParent();
@@ -64,9 +68,11 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
                         stack.setCurrentId(newVal);
                     }
                 }
+                /*
             } catch (Exception e) {
-                logger.warning("Error queuing CommandButton event");
-            }
+               
+                logger.warning("Error queuing CommandButton event" + e);
+            }*/
         }
     }
 
@@ -123,12 +129,10 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
                     }
                     StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(stackClientId);
                     sb.append("', event");
-                    sb.append(",{ selectedId: '").append(item.getValue()).append("'");
+                    sb.append(",{ currentId: '").append(item.getValue()).append("'");
                     sb.append(",singleSubmit: ").append(item.isSingleSubmit());
-                    sb.append(", item: '").append(item.getClientId(facesContext)).append("'");
+                    sb.append(", source: '").append(item.getClientId(facesContext)).append("'");
                     if (pane!=null){
-                        String paneId = pane.getClientId(facesContext);
-                        sb.append(",selClientId: '").append(paneId).append("'");
                         ContentPane cp = (ContentPane)pane;
                         sb.append(",client: ").append(cp.isClient());
                     }
@@ -219,9 +223,9 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
         String icon = menuItem.getIcon();
         String iconPlacement = menuItem.getIconPlacement();
  
-        if (null==contentPaneId & url==null) {   // must be a heading or accordion label
+        if (null==contentPaneId && url==null) {   // must be a heading or accordion label
             if (accordion){
-                this.writeTitleAsAccordionHandle(facesContext, uiComponent, contentStackMenu, label);
+                this.writeTitleAsAccordionHandle(facesContext, menuItem, contentStackMenu, label);
             } else {
                 writeItemListStart(uiComponent, writer, clientId);
                 writer.writeAttribute("class", groupClass, "class");
@@ -242,6 +246,9 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
             }
         }
         else {  //otherwise has url or value
+            if( accordion && !contentStackMenu.isOpenAccordionHandle()){
+                startAccordionSection(menuItem, label, contentStackMenu, writer);
+            }
             writeItemListStart(uiComponent, writer, clientId);
             writer.writeAttribute("class", itemClass, "class");
             if (menuItem.getStyle() !=null){
@@ -262,13 +269,10 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
             }
             else {
                 StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(contentStack.getClientId()).append("', event");
-                sb.append(",{ selectedId: '").append(menuItem.getValue()).append("'");
+                sb.append(",{ currentId: '").append(menuItem.getValue()).append("'");
                 sb.append(",singleSubmit: ").append(menuItem.isSingleSubmit());
-                if (contentPaneClientId!=null){
-                    sb.append(",selClientId: '").append(contentPaneClientId).append("'");
-                }
                 sb.append(",client: ").append(client);
-                sb.append(", item: '").append(uiComponent.getClientId(facesContext)).append("'");
+                sb.append(", source: '").append(uiComponent.getClientId(facesContext)).append("'");
                 sb.append("});");
                 if (contentStack != null && !menuItem.isDisabled()){
                     writer.writeAttribute("onclick", sb.toString(), null);
@@ -292,52 +296,46 @@ public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
     }
+    
+    private void startAccordionSection(ContentMenuItem menuItem, String label, ContentStackMenu menu,
+           ResponseWriter writer) throws IOException{
+        writer.startElement(HTML.DIV_ELEM, menuItem);
+        String chId = menuItem.getClientId();
+        writer.writeAttribute(HTML.ID_ATTR, chId+"_sect", HTML.ID_ATTR);
+        writer.writeAttribute("class", CLOSED, null);
+        if( menuItem.getValue() == null ){
+            writer.startElement(HTML.DIV_ELEM, null);
+            writer.writeAttribute(HTML.ID_ATTR, chId+"_hndl", null );
+            writer.writeAttribute("class", HANDLE, null);
+            writer.writeAttribute("onclick", "ice.mobi.accordionController.toggleMenu('" + menu.getClientId() + "',this);", "onclick");
+            writer.startElement(HTML.SPAN_ELEM, menuItem);
+            writer.writeAttribute("class", POINTER, null);
+            writer.endElement(HTML.SPAN_ELEM);
+            writer.write(label);
+            writer.endElement(HTML.DIV_ELEM);
+        }
+        writer.startElement(HTML.DIV_ELEM, menuItem);
+        writer.writeAttribute("class", ContentStackMenu.LAYOUTMENU_CLASS, null);
+        writer.startElement(HTML.UL_ELEM, menuItem);
+        writer.writeAttribute("class", ContentStackMenu.LAYOUTMENU_LIST_CLASS, null);
+        menu.setOpenAccordionHandle(true);
+    }
+    
+    private void endAccordionSection(ContentStackMenu menu, ResponseWriter writer) throws IOException{
+        writer.endElement(HTML.UL_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
+        menu.setOpenAccordionHandle(false);
+    }
 
-
-    private void writeTitleAsAccordionHandle(FacesContext context, UIComponent childComp,
-        ContentStackMenu menu, String title) throws IOException {
+    private void writeTitleAsAccordionHandle(FacesContext context, ContentMenuItem menuItem,
+        ContentStackMenu menu, String label) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         if (menu.isOpenAccordionHandle()){
-            writer.endElement(HTML.UL_ELEM);
-            writer.endElement(HTML.DIV_ELEM);
-            writer.endElement(HTML.DIV_ELEM);
-            menu.setOpenAccordionHandle(false);
+            endAccordionSection(menu, writer);
         }
-        StringBuilder handleClass = new StringBuilder("handle ui-bar-b");
-        StringBuilder listClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_LIST_CLASS);
-        StringBuilder baseClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_CLASS);
-        StringBuilder pointerClass = new StringBuilder("pointer");
-        String closeClass= "closed";
-        String menuId = menu.getClientId();
-        String userDefinedClass = menu.getStyleClass();
-        if (userDefinedClass != null && userDefinedClass.length() > 0){
-              handleClass.append(" ").append(userDefinedClass);
-              pointerClass.append(" ").append(userDefinedClass);
-              listClass.append(" ").append(userDefinedClass);
-              baseClass.append(" ").append(userDefinedClass);
-        }
-        writer.startElement(HTML.DIV_ELEM, childComp);
-        String chId = childComp.getClientId();
-        writer.writeAttribute(HTML.ID_ATTR, chId+"_sect", HTML.ID_ATTR);
-        writer.writeAttribute("class", closeClass, "class");
-        writer.startElement(HTML.DIV_ELEM, childComp);
-        writer.writeAttribute(HTML.ID_ATTR, chId+"_hndl", HTML.ID_ATTR );
-        writer.writeAttribute("class", handleClass, "class");
-        writer.writeAttribute("onclick", "ice.mobi.accordionController.toggleMenu('" + menuId + "',this);", "onclick");
-        writer.startElement(HTML.SPAN_ELEM, childComp);
-        writer.writeAttribute("class", pointerClass, "class");
-     //   writer.write(Accordion.ACCORDION_RIGHT_POINTING_POINTER);
-        writer.endElement(HTML.SPAN_ELEM);
-        writer.write(title);
-        writer.endElement(HTML.DIV_ELEM);
-        writer.startElement(HTML.DIV_ELEM, childComp);
-        writer.writeAttribute("class", baseClass, "class");
-        writer.startElement(HTML.UL_ELEM, childComp);
-        writer.writeAttribute("class", listClass, "class");
-        if (menu.getStyle() !=null) {
-           writer.writeAttribute(HTML.STYLE_ATTR, menu.getStyle(), HTML.STYLE_ATTR);
-        }
-        menu.setOpenAccordionHandle(true);
+        startAccordionSection(menuItem, label, menu, writer);
+        
     }
 
     public String findCompIntree(FacesContext context, UIComponent compRoot, String id){

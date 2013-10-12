@@ -43,20 +43,12 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
     public void decode(FacesContext facesContext, UIComponent component) {
         ContentStack stack = (ContentStack) component;
         String clientId = stack.getClientId(facesContext);
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-        // ajax behavior comes from ContentStackMenu which sends the currently selected value
-        String indexStr = params.get(clientId + "_hidden");
-        String newStr = params.get(clientId);
-        if (newStr !=null){
-            logger.info("submitted "+newStr+" from request");
-        }
-        String oldIndex = stack.getCurrentId();
-        if( null != indexStr) {
-            //find the activeIndex and set it
-            if (!oldIndex.equals(indexStr)){
+        String indexStr = facesContext.getExternalContext()
+                .getRequestParameterMap().get(clientId + "_hidden");
+        
+        if( null != indexStr && indexStr.length() > 0 ) {
+            if (!indexStr.equals(stack.getCurrentId())){
                 stack.setCurrentId(indexStr);
-                /* do we want to queue an event for panel change in stack? */
-               // component.queueEvent(new ValueChangeEvent(component, oldIndex, indexStr)) ;
             }
         }
     }
@@ -119,7 +111,17 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
          ResponseWriter writer = facesContext.getResponseWriter();
          ContentStack stack = (ContentStack) uiComponent;
-         this.encodeHidden(facesContext, uiComponent);
+         String clientId = uiComponent.getClientId(facesContext);
+         writer.startElement("span", uiComponent);
+         writer.startElement("input", uiComponent);
+         writer.writeAttribute("type", "hidden", null);
+         writer.writeAttribute("id", clientId+"_hidden", null);
+         writer.writeAttribute("name", clientId+"_hidden", null);
+         String currentId = stack.getCurrentId();
+         if( currentId != null && currentId.length() > 0 )
+             writer.writeAttribute("value", currentId, null);
+         writer.endElement("input");
+         writer.endElement("span");
          writer.endElement(HTML.DIV_ELEM);
          if (stack.getContentMenuId() !=null || stack.hasNavBar()){
              encodeScript(facesContext, uiComponent);
@@ -136,12 +138,12 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("id", clientId+"_initScr", "id");
         writer.startElement("script", uiComponent);
         writer.writeAttribute("type", "text/javascript", null);
-        String currentPaneId = stack.getSelectedId();
+        String currentPaneId = stack.getCurrentId();
         boolean client = false;
         int hashcode = MobiJSFUtils.generateHashCode(System.currentTimeMillis());
         StringBuilder sb = new StringBuilder("mobi.layoutMenu.initClient('").append(clientId).append("'");
         sb.append(",{stackId: '").append(clientId).append("'");
-        sb.append(",selectedId: '").append(currentPaneId).append("'");
+        sb.append(",currentId: '").append(currentPaneId).append("'");
         sb.append(", single: ").append(stack.getSingleView());
         sb.append(",hash: ").append(hashcode);
        
@@ -163,7 +165,6 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
             stack.setCurrentId(currentPaneId);
         }
         else{
-            sb.append(",selClientId: '").append(currentPane.getClientId(facesContext)).append("'");
             client = currentPane.isClient();
         }
         String contentMenuId = stack.getContentMenuId();

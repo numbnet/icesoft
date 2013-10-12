@@ -17,11 +17,6 @@
 package org.icefaces.mobi.component.contentstackmenu;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.faces.component.StateHelper;
-
 import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icefaces.mobi.utils.JSFUtils;
 
@@ -30,6 +25,7 @@ public class ContentStackMenu extends ContentStackMenuBase {
     public static final String LAYOUTMENU_LIST_CLASS = "mobi-list ";
 
     private boolean openAccordionHandle;
+    private boolean ulElementStarted = false;
     
     private ContentStack contentStack;
     
@@ -52,5 +48,13 @@ public class ContentStackMenu extends ContentStackMenuBase {
 
     public void setOpenAccordionHandle(boolean openAccordionHandle) {
         this.openAccordionHandle = openAccordionHandle;
+    }
+
+    public boolean isUlElementStarted() {
+        return ulElementStarted;
+    }
+
+    public void setUlElementStarted(boolean ulElementStarted) {
+        this.ulElementStarted = ulElementStarted;
     }
 }
