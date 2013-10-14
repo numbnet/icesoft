@@ -55,7 +55,7 @@ public class FocusManager extends UIComponentBase {
         writer.writeAttribute("id", getClientId(context), null);
         //apply focus only if not already specified in the browser
         String iceFocus = context.getExternalContext().getRequestParameterMap().get("ice.focus");
-        if (iceFocus == null || "".equals(iceFocus)) {
+        if (iceFocus == null) {
             Map attributes = context.getAttributes();
             UIComponent source = null;
             UIInput invalidUIInput = (UIInput) attributes.get(DetectInvalidChild.class.getName());
