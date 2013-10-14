@@ -30,6 +30,7 @@
         <phase-listener>com.icesoft.faces.application.PartialSubmitPhaseListener</phase-listener>
     </lifecycle>
     <application>
+        <resource-handler>com.icesoft.faces.application.ExtrasSymbolicResourceHandler</resource-handler>
         <resource-handler>com.icesoft.faces.component.inputrichtext.InputRichTextResourceHandler</resource-handler>
         <resource-handler>com.icesoft.faces.component.gmap.GMapResourceHandler</resource-handler>
         <system-event-listener>
