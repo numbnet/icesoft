@@ -28,9 +28,8 @@
     <script type="text/javascript">
     window.geoSpying = false;
     
-    var geospyPushId = ice.push.createPushId();
-    ice.push.addGroupMember("geospy", geospyPushId);
-    ice.push.register([geospyPushId], function(pushIds) {
+    bridgeit.usePushService("http://labs.icesoft.com/push");
+    bridgeit.addPushListener('geospy', function() {
         console.log("geospy Push received");
         updateMarkers();
     });
