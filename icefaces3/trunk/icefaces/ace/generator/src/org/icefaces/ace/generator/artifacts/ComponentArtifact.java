@@ -33,18 +33,15 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public class ComponentArtifact extends Artifact{
     private static final Logger logger = Logger.getLogger(ComponentArtifact.class.getName());
     private StringBuilder writer = new StringBuilder();
-    private final static Logger Log = Logger.getLogger(ComponentArtifact.class.getName());
     private ComponentContext componentContext;
+
 
     public ComponentArtifact(ComponentContext componentContext) {
         super(componentContext);
@@ -67,6 +64,8 @@ public class ComponentArtifact extends Artifact{
         writer.append("import java.util.Map;\n");
         writer.append("import java.util.HashMap;\n");
         writer.append("import java.util.Arrays;\n\n");
+        writer.append("import java.util.EnumSet;\n\n");
+        writer.append("import java.util.Iterator;\n\n");
         writer.append("import javax.faces.context.FacesContext;\n");
         writer.append("import javax.el.MethodExpression;\n");
         writer.append("import javax.el.ValueExpression;\n\n");
@@ -196,6 +195,7 @@ public class ComponentArtifact extends Artifact{
         }
 
         writer.append("\n\tpublic static final String RENDERER_TYPE = "+ rendererType + ";\n");
+        writer.append("\n\tprivate EnumSet<PropertyKeys> setOfUsedProperties = EnumSet.noneOf(PropertyKeys.class);\n") ;
 
         writer.append("\n\tpublic ");
         writer.append(generatedSimpleClassName);
@@ -352,7 +352,10 @@ public class ComponentArtifact extends Artifact{
         writer.append(" ");
         writer.append(varName);
         writer.append(") {");
-
+        writer.append("\n\t\tPropertyKeys propToUse = PropertyKeys.").append(varName).append(";");
+/*        writer.append("\nSystem.out.println(\"SETTER propToUse is\"+").append("propToUse").append(");");*/
+        writer.append("\n\t\taddToSetOfUsedProperties(propToUse);");
+ /*       writer.append("System.out.println("+varName+"+\" SETTER FOR PROP\");\n");*/
         if (!prop.isDelegatingProperty()) {
             writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
             writer.append(varName);
@@ -453,7 +456,7 @@ public class ComponentArtifact extends Artifact{
             // be handled for various cases. primitives must have a default of some kind
             // and Strings have to return null (not "null") to work.
             String defaultValue = prop.defaultValue;
-            Log.fine("Evaluating field name: " + varName + ", isPRIMITIVE " +
+            logger.info("Evaluating field name: " + varName + ", isPRIMITIVE " +
                     isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
             if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
@@ -609,7 +612,8 @@ public class ComponentArtifact extends Artifact{
         writer.append(" ");
         writer.append(field.getName());
         writer.append(") {");
-
+     /*   StringBuilder sb = new StringBuilder("\nSystem.out.println(\"").append("setMethodname=").append(setMethodName).append(" value=\"+").append(varName).append(");\n");
+        writer.append(sb);*/
         writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
         writer.append("\n\t\tString clientId = getClientId();");
         writer.append("\n\t\tString valuesKey = PropertyKeys.").append(varName).
@@ -653,7 +657,7 @@ public class ComponentArtifact extends Artifact{
         // be handled for various cases. primitives must have a default of some kind
         // and Strings have to return null (not "null") to work.
         String defaultValue = fieldAnnotation.defaultValue();
-        Log.fine("Evaluating field name: " + field.getName().trim() + ", isPRIMITIVE " +
+        logger.fine("Evaluating field name: " + field.getName().trim() + ", isPRIMITIVE " +
                 isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
         if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
@@ -708,7 +712,62 @@ public class ComponentArtifact extends Artifact{
         writer.append("\t\t}\n");
         writer.append("\t}\n");
     }
-
+    private void isInEnumSet() {
+        writer.append("\n\tprotected boolean isInEnumSet(String finder){\n");
+        writer.append("\t\tif (setOfUsedProperties.isEmpty()){\n");
+/*        writer.append("\t\t  System.out.println(\"     empty enum set\");\n");*/
+        writer.append("\t\t\treturn false;\n");
+        writer.append("\t\t}\n");
+/*        writer.append("\t\tSystem.out.println(\" size of enumset=\"+ setOfUsedProperties.size());\n");*/
+        writer.append("\t\tif (null != enumTypeContains( finder)){\n");
+/*       writer.append("\t\tSystem.out.println(\" have value   \");\n");*/
+        writer.append("\t\t\treturn true;\n");
+        writer.append("\t\t}\n");
+/*      writer.append("\t\t  System.out.println(\"     NOT  found so return FALSE \");\n");*/
+        writer.append("\t\treturn false;\n");
+        writer.append("\t}\n");
+    }
+    private void addToSetOfUsedProperties(){
+        writer.append("\n\t private void addToSetOfUsedProperties(PropertyKeys propertyKey){\n");
+        writer.append("\t\tthis.setOfUsedProperties.add(propertyKey);\n");
+ /*       writer.append("\t\tSystem.out.println(\" added prop to enumSet size=\"+setOfUsedProperties.size());\n");
+        writer.append("\t\tIterator<PropertyKeys> ite = setOfUsedProperties.iterator();\n");
+        writer.append("\t\tSystem.out.println(\" component type=\"+ this.getClass().getName());");*/
+ /*       writer.append("\t\twhile(ite.hasNext()){\n");
+        writer.append("\t\t\t\tSystem.out.println(\":- in set is =\"+ite.next());\n");
+        writer.append("\t\t}\n");*/
+        writer.append("\t}\n");
+    }
+    private void setValueExpression(){
+        writer.append("\n @Override\n");
+        writer.append("\tpublic void setValueExpression(String name, ValueExpression binding){\n");
+        writer.append("\t\tPropertyKeys pkey = enumTypeContains( name);\n");
+        writer.append("\t\tif (null != enumTypeContains( name)){\n");
+        writer.append("\t\t\taddToSetOfUsedProperties(pkey);\n");
+        writer.append("\t\t}\n");
+        writer.append("\t\tsuper.setValueExpression(name, binding);\n");
+        writer.append("\t}\n");
+    }
+    private void enumTypeContains(){
+        writer.append("\n\tprivate PropertyKeys enumTypeContains( String name){\n");
+/*        writer.append("\t\tSystem.out.println(\" looking for label =\"+name);\n");*/
+        writer.append("\t\tfor (PropertyKeys pkey: PropertyKeys.values()){\n");
+/*        writer.append("\t\tSystem.out.println(\" pkey =\"+pkey.toString());\n");*/
+        writer.append("\t\t\tif (pkey.toString().equals(name)){ \n");
+/*        writer.append("\t\t\t\tSystem.out.println(\" enum contains name=\"+name); \n");*/
+        writer.append("\t\t\t\treturn pkey; \n");
+        writer.append("\t\t\t} \n");
+        writer.append("\t\t} \n");
+/*        writer.append("\t\tSystem.out.println(\" enum DOES NOT contain name=\"+name);\n");*/
+        writer.append("\t\treturn null;\n");
+        writer.append("\t}\n");
+    }
+        private void checkEnumSetSize(){
+        writer.append("\n\tprotected int checkEnumSetSize( ){\n");
+        writer.append("\t\treturn setOfUsedProperties.size();\n");
+        writer.append("\t}\n");
+    }
+/*
     private void handleAttribute() {
         writer.append("\n\tprivate void handleAttribute(String name, Object value) {\n");
         writer.append("\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
@@ -728,8 +787,13 @@ public class ComponentArtifact extends Artifact{
         writer.append("\t\t\t\tsetAttributes.add(name);\n");
         writer.append("\t\t\t}\n");
         writer.append("\t\t}\n");
+        writer.append("\t\tfor(int i=0; i< setAttributes.size(); i++){\n");
+        writer.append("\t\t\t System.out.println(\"Attribute set = \"+setAttributes.get(i));\n");
+        writer.append("\t\t}\n") ;
+        writer.append("if (setAttributes.isEmpty()){\n System.out.println(\"EMPTY LIST\");}\n");
         writer.append("\t}\n");
     }
+*/
 
     public void build() {
         ComponentContext compCtx = getComponentContext();
@@ -740,7 +804,14 @@ public class ComponentArtifact extends Artifact{
         addFacet(compCtx, getMetaContext().getActiveClass(), component);
         addInternalFields(compCtx);
         isDisconnected();
-        handleAttribute();
+        addToSetOfUsedProperties();
+        isInEnumSet();
+        setValueExpression();
+        checkEnumSetSize();
+        enumTypeContains();
+       /* System.out.println("BEFORE handleAttribute");*/
+       /* handleAttribute();*/
+      /*  System.out.println("AFTER handleAttribute");*/
         endComponentClass(compCtx);
 
         // add entry to faces-config
