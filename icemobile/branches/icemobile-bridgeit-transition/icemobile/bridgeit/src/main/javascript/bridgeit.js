@@ -721,7 +721,7 @@ if (!window.console) {
      */
     b.usePushService = function(uri, apiKey) {
         if (ice && ice.push) {
-            throw 'Push servie already loaded and configured';
+            throw 'Push service already loaded and configured';
         } else {
             var baseURI = uri + (endsWith(uri, '/') ? '' : '/');
             var codeURI = baseURI + 'code.icepush';
