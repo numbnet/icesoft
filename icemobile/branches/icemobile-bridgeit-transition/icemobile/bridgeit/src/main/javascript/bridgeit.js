@@ -530,14 +530,17 @@ if (!window.console) {
         return s.lastIndexOf(pattern) == s.length - pattern.length;
     }
 
+    var absoluteGoBridgeItURL = null;
+
     function fetchGoBridgeIt(url) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (4 == xhr.readyState)  {
                 if (200 == xhr.status)  {
-                    if (!bridgeit.goBridgeItURL)  {
-                        bridgeit.goBridgeItURL = url;
-                        console.log("Cloud Push return via goBridgeIt: " + url);
+                    if (!absoluteGoBridgeItURL)  {
+                        absoluteGoBridgeItURL = getAbsoluteURL(url);
+                        console.log("Cloud Push return via goBridgeIt: " + 
+                                absoluteGoBridgeItURL);
                     }
                 }
             }
@@ -549,12 +552,21 @@ if (!window.console) {
     function findGoBridgeIt() {
         if (!!bridgeit.goBridgeItURL)  {
             //page setting overrides detection
+            absoluteGoBridgeItURL = getAbsoluteURL(bridgeit.goBridgeItURL);
             return;
         }
         //host-wide page
         fetchGoBridgeIt('/goBridgeIt.html');
         //application-specific page
         fetchGoBridgeIt('goBridgeIt.html');
+    }
+
+    function getAbsoluteURL(url)  {
+        var img = document.createElement('img');
+        img.src = url;
+        url = img.src;
+        img.src = null; //prevent server request
+        return url;
     }
 
     /* *********************** PUBLIC **********************************/
@@ -721,7 +733,7 @@ if (!window.console) {
      */
     b.usePushService = function(uri, apiKey) {
         if (ice && ice.push) {
-            throw 'Push service already loaded and configured';
+            console.log('Push service already loaded and configured');
         } else {
             var baseURI = uri + (endsWith(uri, '/') ? '' : '/');
             var codeURI = baseURI + 'code.icepush';
@@ -755,8 +767,22 @@ if (!window.console) {
      * @param options that a notification can carry
      */
     b.push = function(groupName, options) {
+        if (!absoluteGoBridgeItURL)  {
+            if (!!bridgeit.goBridgeItURL)  {
+                absoluteGoBridgeItURL = getAbsoluteURL(bridgeit.goBridgeItURL);
+            }
+        }
+        if (!!absoluteGoBridgeItURL)  {
+            if (options && !options.url)  {
+                options.url = absoluteGoBridgeItURL;
+            }
+        }
         if (ice && ice.push && ice.push.configuration.contextPath) {
-            ice.push.notify(groupName, options);
+            if (options && options.delay)  {
+                ice.push.notify(groupName, options, options);
+            } else {
+                ice.push.notify(groupName, options);
+            }
         } else {
             throw 'Push service is not setup';
         }

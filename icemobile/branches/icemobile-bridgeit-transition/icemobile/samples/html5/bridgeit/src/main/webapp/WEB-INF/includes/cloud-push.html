@@ -33,10 +33,9 @@
         alert(event);
     }
 
+    bridgeit.usePushService("http://labs.icesoft.com/push");
     //change to a uniquely generated pushID once initial testing is complete
-    var cloudPushId = ice.push.createPushId();
-    ice.push.addGroupMember("bridgeit", cloudPushId);
-    ice.push.register([cloudPushId], function(pushIds) {
+    bridgeit.addPushListener('bridgeit', function() {
         console.log("notified");
         alert("You have been notified.");
     });
@@ -50,9 +49,9 @@
     }, false);
 
     function delayedPush()  {
-        ice.push.notify( 'bridgeit',
+        bridgeit.push( 'bridgeit',
             {subject:'BridgeIt Cloud Push',
-            detail:'You have been notified.'}, {delay:10000} );
+            detail:'You have been notified.', delay:10000} );
     }
 
     </script>
