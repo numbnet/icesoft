@@ -530,6 +530,33 @@ if (!window.console) {
         return s.lastIndexOf(pattern) == s.length - pattern.length;
     }
 
+    function fetchGoBridgeIt(url) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (4 == xhr.readyState)  {
+                if (200 == xhr.status)  {
+                    if (!bridgeit.goBridgeItURL)  {
+                        bridgeit.goBridgeItURL = url;
+                        console.log("Cloud Push return via goBridgeIt: " + url);
+                    }
+                }
+            }
+        };
+        xhr.open('GET', url, true);
+        xhr.send();
+    }
+
+    function findGoBridgeIt() {
+        if (!!bridgeit.goBridgeItURL)  {
+            //page setting overrides detection
+            return;
+        }
+        //host-wide page
+        fetchGoBridgeIt('/goBridgeIt.html');
+        //application-specific page
+        fetchGoBridgeIt('goBridgeIt.html');
+    }
+
     /* *********************** PUBLIC **********************************/
     
     /**
@@ -680,6 +707,14 @@ if (!window.console) {
     b.allowAnonymousCallbacks = false;
 
     /**
+     * Set goBridgeItURL to the URL of your goBridgeIt.html file
+     * to allow Cloud Push to go back to the most recent page
+     * The defaults of the host root and the current relative
+     * directory URL do not need to be specified
+     */
+    b.goBridgeItURL = null;
+
+    /**
      * Configure Push service and connect to it.
      * @param uri the location of the service
      * @param apiKey
@@ -692,6 +727,7 @@ if (!window.console) {
 
         ice.push.configuration.contextPath = baseURI;
         ice.push.connection.startConnection();
+        findGoBridgeIt();
     };
 
     /**
