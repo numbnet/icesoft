@@ -41,11 +41,9 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        System.out.println("ViewManagerRenderer.decode");
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        System.out.println("ViewManagerRenderer.encodeBegin");
         ViewManager vm = (ViewManager)uiComponent;
         validate(vm, facesContext);
         Stack<String> history = vm.getHistoryStack();
@@ -55,7 +53,6 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         }
         
         String selected = vm.getSelected();
-        System.out.println("selected = " + selected + ", history = " + vm.getHistoryAsJSON());
         
         String formId = vm.getId() + "_form";
         for(int i = 0; i < vm.getChildCount(); i++) {
@@ -167,7 +164,6 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         writer.startElement(HTML.SCRIPT_ELEM, null);
         String state = "ice.mobi.viewManager.setState('" + vm.getTransitionType() 
             + "','" + vm.getId() + "_form'," + vm.getHistoryAsJSON() + ");";
-        System.out.println("ViewManager state = " + state);
         writer.write(state);
         writer.endElement(HTML.SCRIPT_ELEM);
         
