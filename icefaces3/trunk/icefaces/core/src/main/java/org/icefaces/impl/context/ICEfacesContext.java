@@ -47,9 +47,7 @@ public class ICEfacesContext extends FacesContextWrapper {
             }
             //avoid encoding external URLs
             String requestServerName = wrapped.getRequestServerName();
-            URI uri = URI.create(url);
-            String hostName = uri == null ? null : uri.getHost();
-            if (requestServerName!= null && hostName !=null && !requestServerName.equals(hostName)) {
+            if (!url.contains("://" + requestServerName)) {
                 return url;
             }
             String mimeType = wrapped.getMimeType(url);
