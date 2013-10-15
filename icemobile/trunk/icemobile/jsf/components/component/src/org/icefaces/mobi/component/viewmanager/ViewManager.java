@@ -62,16 +62,14 @@ public class ViewManager extends ViewManagerBase {
     }
    
     public void setSelected(String selected){
-        System.out.println( this + " ViewManager.setSelected('" + selected + "')");
         super.setSelected(selected);
-        System.out.println("ViewManager.setSelected() history: " + getHistoryAsJSON());
-        Stack history = getHistory();
+        Stack<String> history = getHistory();
         if( history.size() == 1 && history.get(0).equals(selected)){
             return;
         }
         if( history.size() > 1 && getHistory().contains(selected)){
             System.out.println("slicing history " + getHistory().subList(0, getHistory().indexOf(selected)+1));
-            Stack newHistory = new Stack();
+            Stack<String> newHistory = new Stack<String>();
             newHistory.addAll(getHistory().subList(0, getHistory().indexOf(selected)+1));
             setHistory(newHistory);
         }
@@ -129,8 +127,9 @@ public class ViewManager extends ViewManagerBase {
         return null;
     }
     
-    public Stack getHistory(){
-        Stack history = super.getHistory();
+    @SuppressWarnings("unchecked")
+    public Stack<String> getHistory(){
+        Stack<String> history = super.getHistory();
         if( history == null || history.size() == 0 ){
             System.out.println("ViewManager.getHistory() setting first history '" + getSelected() + "'");
             history = new Stack<String>();
