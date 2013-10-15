@@ -720,14 +720,18 @@ if (!window.console) {
      * @param apiKey
      */
     b.usePushService = function(uri, apiKey) {
-        var baseURI = uri + (endsWith(uri, '/') ? '' : '/');
-        var codeURI = baseURI + 'code.icepush';
-        var code = httpGET(codeURI, 'apiKey=' + apiKey);
-        eval(code);
+        if (ice && ice.push) {
+            throw 'Push servie already loaded and configured';
+        } else {
+            var baseURI = uri + (endsWith(uri, '/') ? '' : '/');
+            var codeURI = baseURI + 'code.icepush';
+            var code = httpGET(codeURI, 'apiKey=' + apiKey);
+            eval(code);
 
-        ice.push.configuration.contextPath = baseURI;
-        ice.push.connection.startConnection();
-        findGoBridgeIt();
+            ice.push.configuration.contextPath = baseURI;
+            ice.push.connection.startConnection();
+            findGoBridgeIt();
+        }
     };
 
     /**
