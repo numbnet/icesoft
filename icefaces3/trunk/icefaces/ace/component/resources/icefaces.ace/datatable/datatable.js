@@ -1267,6 +1267,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             // when using different stylesheets per table, rules added to anything but the first sheet are not applied in FF
             // though isolated test of this works, the rules from the multiple stylesheets are applied
             var styleSheet = ice.ace.util.getStyleSheet(cssid) || ice.ace.util.addStyleSheet(cssid);
+			var text = '';
 
             for (var i = 0; i < bodySingleCols.length; i++) {
                 bodyColumn = ice.ace.jq(bodySingleCols[i]);
@@ -1286,10 +1287,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 // Equiv of max width
                 var index = /ui-col-([0-9]+)/g.exec(bodySingleCols[i].parentNode.className)[1],
                     selector =  this.jqId+' .ui-col-'+index+' > div';
-                if (styleSheet.insertRule)
-                    styleSheet.insertRule(selector + ' { width:' + bodyColumnWidth + 'px; }', styleSheet.length);
-                else if (styleSheet.addRule)
-                    styleSheet.addRule(selector, 'width:' + bodyColumnWidth + 'px;');
+				text += selector + ' { width:' + bodyColumnWidth + 'px; }\n';
 
                 // Adjust last column size to stop prevent horizontal scrollbar / align vertical
                 if (i == 0) {
@@ -1300,11 +1298,19 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
                 // Equiv of min width
                 selector =  this.jqId+' .ui-col-'+index;
-                if (styleSheet.insertRule)
-                    styleSheet.insertRule(selector + ' { width:' + bodyColumnWidth + 'px; }', styleSheet.length);
-                else if (styleSheet.addRule)
-                    styleSheet.addRule(selector, 'width:' + bodyColumnWidth + 'px;');
+				text += selector + ' { width:' + bodyColumnWidth + 'px; }\n';
             }
+
+			var ownerNode = styleSheet.ownerNode;
+			var oldNode = null;
+			for (var i = 0; i < ownerNode.childNodes.length; i++) {
+				if (ownerNode.childNodes[i].nodeValue.substring(0,21) == '/* resizeScrolling */') oldNode = ownerNode.childNodes[i];
+			}
+			if (oldNode) {
+				styleSheet.ownerNode.replaceChild(document.createTextNode('/* resizeScrolling */'+text),oldNode);
+			} else {
+				styleSheet.ownerNode.appendChild(document.createTextNode('/* resizeScrolling */'+text));
+			}
 
             for (var i = 0; i < realHeadCols.length; i++) {
                 realHeadColumn = ice.ace.jq(realHeadCols[i]);
