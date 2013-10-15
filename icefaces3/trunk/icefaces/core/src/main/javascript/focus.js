@@ -147,6 +147,7 @@ var restoreMonitorFocusChangesOnUpdate;
             element.attachEvent('onfocusin', saveCurrentFocus);
         } else {
             element.addEventListener('focus', saveCurrentFocus, true);
+            element.addEventListener('click', saveCurrentFocus, true);
         }
     };
 
