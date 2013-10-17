@@ -2504,30 +2504,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         }
     }
 
-    function setWidthStyle(root){
-        if( root ){
-            var nodes = root.getElementsByTagName('ul');
-            var ul = nodes[0];
-            var children = ul.getElementsByTagName('li');
-            var containerWidth = root.clientWidth;        
-            var width = Math.floor(containerWidth/children.length);
-            var remainingPixels = containerWidth - (children.length*width);
-            var percentageWidth = Math.floor(100/children.length);
-            var remainingPercentage = 100 - (children.length*percentageWidth);
-            
-            for (var i = 0; i < children.length; i++){
-                if( i < (children.length -1 )){
-                    children[i].style.width = width+"px";
-                    children[i].style.maxWidth = percentageWidth+"%";
-                }
-                else{
-                    children[i].style.width = (width+remainingPixels)+"px";
-                    children[i].style.maxWidth = (percentageWidth+remainingPercentage)+"%";
-                }
-                
-            }
-        }
-    }
+    
 
     function setTabActive(id, cls) {
         var curTab = document.getElementById(id);
@@ -2539,25 +2516,27 @@ ice.mobi.addListener(document, "touchstart", function(){});
     }
 
     function TabSet(clientId, cfgIn) {
-        var tabContainer = document.getElementById(clientId);
+        var id = clientId;
+        var tabset = document.getElementById(clientId);
         var contentId = clientId+"_tabContent";
         var tabContent = document.getElementById(contentId);
         var classHid = "mobi-tabpage-hidden";
         var classVis = "mobi-tabpage";
         var clsActiveTab = "activeTab ui-btn-active";
         var tabCtrl = clientId + "tab_";
+        var tabs = document.querySelector( '#' + clientId.replace(/:/g, '\\:') + ' > .mobi-tabset-tabs > ul');
         var tabIndex = cfgIn.tIndex;
         var autoWidth = cfgIn.autoWidth;
         if (autoWidth){
             setTimeout( function(){
-                setWidthStyle(tabContainer);
+                setWidthStyle();
             }, 10);
             var setWidthStyleListener = function(){ 
-                if( !tabContainer ){
+                if( !tabset ){
                     ice.mobi.removeListener(window,"resize", this);
                     return;
                 };
-                setWidthStyle(tabContainer); 
+                setWidthStyle(); 
             }
             ice.mobi.addListener(window, 'resize', setWidthStyleListener);
         }
@@ -2584,6 +2563,27 @@ ice.mobi.addListener(document, "touchstart", function(){});
         for (i = 0; i < length; i++) {
             if (i != tabIndex) {
                contents[i].className = classHid;
+            }
+        }
+        
+        function setWidthStyle(){
+            if( tabset && tabs ){
+                var containerWidth = tabset.clientWidth;        
+                var width = Math.floor(containerWidth/tabs.children.length);
+                var remainingPixels = containerWidth - (tabs.children.length*width);
+                var percentageWidth = Math.floor(100/tabs.children.length);
+                var remainingPercentage = 100 - (tabs.children.length*percentageWidth);
+                
+                for (var i = 0; i < tabs.children.length; i++){
+                    if( i < (tabs.children.length -1 )){
+                        tabs.children[i].style.width = width+'px';
+                        tabs.children[i].style.maxWidth = percentageWidth+'%';
+                    }
+                    else{
+                        tabs.children[i].style.width = (width+remainingPixels)+'px';
+                        tabs.children[i].style.maxWidth = (percentageWidth+remainingPercentage)+'%';
+                    }
+                }
             }
         }
 
@@ -2627,20 +2627,20 @@ ice.mobi.addListener(document, "touchstart", function(){});
             updateProperties: function (clientId, cfgUpd) {
                 var newHt = cfgUpd.height || -1;
                 if (newHt !== -1 && newHt !== height ){
-                    tabContainer.style.maxHeight = newHt;
-                    tabContainer.style.height = newHt;
+                    tabset.style.maxHeight = newHt;
+                    tabset.style.height = newHt;
                 }
                 var autoWidth = cfgUpd.autoWidth;
                 if (autoWidth){
                     setTimeout( function(){
-                        setWidthStyle(document.getElementById(clientId));
+                        setWidthStyle();
                     }, 1);
                     var setWidthStyleListener = function(){ 
                         if( !document.getElementById(clientId) ){
                             ice.mobi.removeListener(window,"resize", this);
                             return;
                         };
-                        setWidthStyle(document.getElementById(clientId)); 
+                        setWidthStyle(); 
                     }
                     ice.mobi.addListener(window, 'resize', setWidthStyleListener);
                 }
