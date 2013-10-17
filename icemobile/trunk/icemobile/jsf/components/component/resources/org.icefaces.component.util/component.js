@@ -2517,14 +2517,12 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
     function TabSet(clientId, cfgIn) {
         var id = clientId;
-        var tabset = document.getElementById(clientId);
         var contentId = clientId+"_tabContent";
         var tabContent = document.getElementById(contentId);
         var classHid = "mobi-tabpage-hidden";
         var classVis = "mobi-tabpage";
         var clsActiveTab = "activeTab ui-btn-active";
         var tabCtrl = clientId + "tab_";
-        var tabs = document.querySelector( '#' + clientId.replace(/:/g, '\\:') + ' > .mobi-tabset-tabs > ul');
         var tabIndex = cfgIn.tIndex;
         var autoWidth = cfgIn.autoWidth;
         if (autoWidth){
@@ -2532,7 +2530,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 setWidthStyle();
             }, 10);
             var setWidthStyleListener = function(){ 
-                if( !tabset ){
+                if( !getTabset() ){
                     ice.mobi.removeListener(window,"resize", this);
                     return;
                 };
@@ -2566,7 +2564,17 @@ ice.mobi.addListener(document, "touchstart", function(){});
             }
         }
         
+        function getTabset(){
+            return document.getElementById(id);
+        }
+        
+        function getTabs(){
+            return document.querySelector( '#' + id.replace(/:/g, '\\:') + ' > .mobi-tabset-tabs > ul');
+        }
+        
         function setWidthStyle(){
+            var tabset = getTabset();
+            var tabs = getTabs();
             if( tabset && tabs ){
                 var containerWidth = tabset.clientWidth;        
                 var width = Math.floor(containerWidth/tabs.children.length);
@@ -2627,6 +2635,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             updateProperties: function (clientId, cfgUpd) {
                 var newHt = cfgUpd.height || -1;
                 if (newHt !== -1 && newHt !== height ){
+                    var tabset = getTabset();
                     tabset.style.maxHeight = newHt;
                     tabset.style.height = newHt;
                 }
