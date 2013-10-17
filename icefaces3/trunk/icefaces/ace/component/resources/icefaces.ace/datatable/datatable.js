@@ -1151,6 +1151,16 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         }
         initializeVar();
 
+		if (this.rulesNodes) { // remove previous column size rules
+			for (var i = 0; i < this.rulesNodes.length; i++) {
+				var node = this.rulesNodes[i];
+				node.parentNode.removeChild(node);
+			}
+			while (this.rulesNodes.length > 0) {
+				this.rulesNodes.pop();
+			}
+		}
+
         if (!ie7) {
             var dupeHeadCols = dupeHead.find('th > div.ui-header-column').get().reverse();
             var dupeFootCols = dupeFoot.find('td > div.ui-footer-column').get().reverse();
@@ -1158,6 +1168,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             var realHeadCols = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-header:first > table > thead > tr > th > .ui-header-column').get().reverse();
             var realFootCols = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-footer:first > table > tfoot > tr > td > .ui-footer-column').get().reverse();
             var bodySingleCols = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body:first > table > tbody > tr:visible:not(.dt-cond-row):first > td > div').get().reverse();
+            var bodySingleColsTds = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body:first > table > tbody > tr:visible:not(.dt-cond-row):first > td').get().reverse();
         }
 
         var resetScrollingOverflow = function() {
@@ -1173,6 +1184,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             // Reset fixed sizing if set by previous sizing.
             for (var i = 0; i < bodySingleCols.length; i++)
                 ice.ace.jq(bodySingleCols[i]).css('width', '');
+				ice.ace.jq(bodySingleColsTds[i]).css('width', '');
         }
 
         // Reset padding if added to offset scrollbar issues
@@ -1301,16 +1313,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 				text += selector + ' { width:' + bodyColumnWidth + 'px; }\n';
             }
 
-			var ownerNode = styleSheet.ownerNode;
-			var oldNode = null;
-			for (var i = 0; i < ownerNode.childNodes.length; i++) {
-				if (ownerNode.childNodes[i].nodeValue.substring(0,21) == '/* resizeScrolling */') oldNode = ownerNode.childNodes[i];
-			}
-			if (oldNode) {
-				styleSheet.ownerNode.replaceChild(document.createTextNode('/* resizeScrolling */'+text),oldNode);
-			} else {
-				styleSheet.ownerNode.appendChild(document.createTextNode('/* resizeScrolling */'+text));
-			}
+			var rulesNode = document.createTextNode(text);
+			styleSheet.ownerNode.appendChild(rulesNode);
+			if (!this.rulesNodes) this.rulesNodes = [];
+			this.rulesNodes.push(rulesNode);
 
             for (var i = 0; i < realHeadCols.length; i++) {
                 realHeadColumn = ice.ace.jq(realHeadCols[i]);
