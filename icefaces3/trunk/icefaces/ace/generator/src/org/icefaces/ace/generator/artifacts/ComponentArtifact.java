@@ -713,17 +713,17 @@ public class ComponentArtifact extends Artifact{
         writer.append("\t}\n");
     }
     private void isInEnumSet() {
-        writer.append("\n\tprotected boolean isInEnumSet(String finder){\n");
+        writer.append("\n\tprotected boolean isPropertySet(String finder){\n");
         writer.append("\t\tif (setOfUsedProperties.isEmpty()){\n");
-/*        writer.append("\t\t  System.out.println(\"     empty enum set\");\n");*/
         writer.append("\t\t\treturn false;\n");
         writer.append("\t\t}\n");
 /*        writer.append("\t\tSystem.out.println(\" size of enumset=\"+ setOfUsedProperties.size());\n");*/
-        writer.append("\t\tif (null != enumTypeContains( finder)){\n");
-/*       writer.append("\t\tSystem.out.println(\" have value   \");\n");*/
-        writer.append("\t\t\treturn true;\n");
+        writer.append("\t\tPropertyKeys pk = enumTypeContains(finder);\n");
+        writer.append("\t\tif ((null != pk) && setOfUsedProperties.contains(pk)){\n");
+/*        writer.append("\t\t\tSystem.out.println(finder+\" valid property key\");\n");*/
+/*        writer.append("\t\t\t\tSystem.out.println(\" set contains finder=\"+finder);\n");*/
+        writer.append("\t\t\t\treturn true;\n");
         writer.append("\t\t}\n");
-/*      writer.append("\t\t  System.out.println(\"     NOT  found so return FALSE \");\n");*/
         writer.append("\t\treturn false;\n");
         writer.append("\t}\n");
     }
@@ -807,11 +807,10 @@ public class ComponentArtifact extends Artifact{
         addToSetOfUsedProperties();
         isInEnumSet();
         setValueExpression();
-        checkEnumSetSize();
+/*        checkEnumSetSize();*/
         enumTypeContains();
-       /* System.out.println("BEFORE handleAttribute");*/
+       /* old code was unused so removed*/
        /* handleAttribute();*/
-      /*  System.out.println("AFTER handleAttribute");*/
         endComponentClass(compCtx);
 
         // add entry to faces-config
