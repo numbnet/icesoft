@@ -272,6 +272,7 @@ public class ResourceOrdering implements SystemEventListener {
         for (UIComponent componentResource : orderedCSSChildren) {
             root.addComponentResource(context, componentResource, target);
         }
+        //follow with the loading of JS resources
         for (UIComponent componentResource : orderedJSChildren) {
             root.addComponentResource(context, componentResource, target);
         }
