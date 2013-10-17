@@ -38,6 +38,8 @@ import java.util.logging.Logger;
 
 public class ResourceOrdering implements SystemEventListener {
     private final static Logger Log = Logger.getLogger(ResourceOrdering.class.getName());
+    public static final String JS = ".js";
+    public static final String CSS = ".css";
     private HashMap<String, ResourceEntry> resourceMap = new HashMap<String, ResourceEntry>();
     private ArrayList<ResourceEntry> nonRootDependencies = new ArrayList<ResourceEntry>();
     private ArrayList<ResourceEntry> masterDependencyList = new ArrayList<ResourceEntry>();
@@ -234,7 +236,8 @@ public class ResourceOrdering implements SystemEventListener {
         //make resource containers transient so that the removal and addition of resource is not track by the JSF state saving
         resourceContainer.setInView(false);
 
-        ArrayList<UIComponent> orderedChildren = new ArrayList();
+        ArrayList<UIComponent> orderedJSChildren = new ArrayList();
+        ArrayList<UIComponent> orderedCSSChildren = new ArrayList();
 
         for (ResourceEntry resourceEntry : masterDependencyList) {
             List children = resourceContainer.getChildren();
@@ -245,7 +248,11 @@ public class ResourceOrdering implements SystemEventListener {
 
                 if (resourceEntry.name.equals(name) && resourceEntry.library.equals(library)) {
                     root.removeComponentResource(context, next, target);
-                    orderedChildren.add(next);
+                    if (name.endsWith(JS)) {
+                        orderedJSChildren.add(next);
+                    } else if (name.endsWith(CSS)) {
+                        orderedCSSChildren.add(next);
+                    }
                 }
             }
         }
@@ -253,10 +260,19 @@ public class ResourceOrdering implements SystemEventListener {
         List<UIComponent> remainingChildren = new ArrayList<UIComponent>(resourceContainer.getChildren());
         for (UIComponent next: remainingChildren) {
             root.removeComponentResource(context, next, target);
-            orderedChildren.add(next);
+            String name = (String) next.getAttributes().get("name");
+            if (name == null || name.endsWith(JS)) {
+                orderedJSChildren.add(next);
+            } else if (name.endsWith(CSS)) {
+                orderedCSSChildren.add(next);
+            }
         }
 
-        for (UIComponent componentResource : orderedChildren) {
+        //add first the CSS to speed up the page rendering
+        for (UIComponent componentResource : orderedCSSChildren) {
+            root.addComponentResource(context, componentResource, target);
+        }
+        for (UIComponent componentResource : orderedJSChildren) {
             root.addComponentResource(context, componentResource, target);
         }
 
