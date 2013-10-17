@@ -21,44 +21,6 @@
     <import file="../../build/common-html5.xml"/>
 
     <target name="war">
-        <loadfile property="camera.html" srcFile="${web.dir}/WEB-INF/includes/camera.html"/>
-        <loadfile property="camcorder.html" srcFile="${web.dir}/WEB-INF/includes/camcorder.html"/>
-        <loadfile property="ar.html" srcFile="${web.dir}/WEB-INF/includes/arlocations.html"/>
-        <loadfile property="contacts.html" srcFile="${web.dir}/WEB-INF/includes/contact-list.html"/>
-        <loadfile property="microphone.html" srcFile="${web.dir}/WEB-INF/includes/microphone.html"/>
-        <loadfile property="scan.html" srcFile="${web.dir}/WEB-INF/includes/scan.html"/>
-        <loadfile property="geospy.html" srcFile="${web.dir}/WEB-INF/includes/geospy.html"/>
-        <loadfile property="sms.html" srcFile="${web.dir}/WEB-INF/includes/sms.html"/>
-        <loadfile property="cloudpush.html" srcFile="${web.dir}/WEB-INF/includes/cloud-push.html"/>
-        
-        <copy file="${web.dir}/WEB-INF/includes/mobile.html" todir="${web.dir}" overwrite="true">
-           <filterset>
-               <filter token="CAMERA_DEMO" value="${camera.html}"/>
-               <filter token="CAMCORDER_DEMO" value="${camcorder.html}"/>
-               <filter token="AR_DEMO" value="${ar.html}"/>
-               <filter token="CONTACTLIST_DEMO" value="${contacts.html}"/>
-               <filter token="MICROPHONE_DEMO" value="${microphone.html}"/>
-               <filter token="SCAN_DEMO" value="${scan.html}"/>
-               <filter token="CLOUDPUSH_DEMO" value="${cloudpush.html}"/>
-               <filter token="SMS_DEMO" value="${sms.html}"/>
-               <filter token="GEOSPY_DEMO" value="${geospy.html}"/>
-           </filterset>
-       </copy>
-       <copy file="${web.dir}/WEB-INF/includes/mobile-jqm.html" todir="${web.dir}" overwrite="true">
-           <filterset>
-               <filter token="CAMERA_DEMO" value="${camera.html}"/>
-               <filter token="CAMCORDER_DEMO" value="${camcorder.html}"/>
-               <filter token="AR_DEMO" value="${ar.html}"/>
-               <filter token="CONTACTLIST_DEMO" value="${contacts.html}"/>
-               <filter token="MICROPHONE_DEMO" value="${microphone.html}"/>
-               <filter token="SCAN_DEMO" value="${scan.html}"/>
-               <filter token="CLOUDPUSH_DEMO" value="${cloudpush.html}"/>
-               <filter token="SMS_DEMO" value="${sms.html}"/>
-               <filter token="GEOSPY_DEMO" value="${geospy.html}"/>
-           </filterset>
-       </copy>
        <antcall target="war.basic"/>
-
-    </target>
-    
+   </target>
 </project>
