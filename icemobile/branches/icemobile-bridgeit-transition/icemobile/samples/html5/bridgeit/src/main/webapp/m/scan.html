@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>BridgeIt Scan</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+   <meta name='apple-itunes-app' content="app-id=485908934, app-argument=icemobile://c=register&amp;r=./mobile.html&amp;u=./service/upload"/>
+   <link rel="icon" type="image/png" href="favicon.png">
+   <link rel="apple-touch-icon" href="bridgeit-logo-touch-icon.png" />
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <link href='http://fonts.googleapis.com/css?family=Euphoria+Script' rel='stylesheet' type='text/css'>
+   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+   <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+   <script type="application/x-javascript" src="bridgeit.js"></script>
+   <script type="text/javascript" src="bridgeit-demos.js"></script>
+   <link rel="stylesheet" href="../css/main.css"/>
+   <link rel="stylesheet" href="../css/icons.css"/>
+   <link rel="stylesheet" href="../css/mobile.css" type="text/css" />
+</head>
+<body>
+    <div data-role="page" id="scan">  
+        <div data-role="header" data-position="fixed" class="hdr">
+            <a data-rel="back" class="btnBack"><i class="icon-angle-left"></i></a>
+            <h1>Scan It</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <div id="scan" title="Scan It" class="panel" >
+                <h2>QR Code Scanning</h2>
+                <fieldset>
+                    <div class="row"><p class="normalText">Scan a QR Code with a simple line of JavaScript...</p></div>
+                    <div class="row">
+                        <code>
+                            bridgeit.scan(id,callback);
+                        </code>
+                    </div>
+                </fieldset>
+                
+                <a id="scanBtn" type="button" class="whiteButton bridgeItBtn"
+                    onclick="bridgeit.scan('scanBtn','handleScan');">Scan a Code</a>
+                    
+                <fieldset id="scans">
+                </fieldset>
+                
+                <div class="footer">
+                    <a href="#">
+                        <img src="../images/icesoft-emblem.png" class="icesoft-emblem"/>
+                    </a>
+                    &copy; 2013 ICEsoft Technologies
+                </div>
+                <script type="text/javascript">
+                function handleScan(event)  {
+                    var HTTP = "http";
+                    var text = event.value;
+                    if (HTTP == text.substring(0, HTTP.length))  {
+                        text = "<span class='ellipsis'><a href='" + text + "'>" + text + "</a></span>";
+                    }
+                    var elem = document.getElementById("scans");
+                    var row1 = document.createElement('div');
+                    row1.setAttribute('class','row');
+                    row1.innerHTML = "<span class='ellipsis'>Scanned on " + new Date() + "</span>";
+                    elem.appendChild(row1);
+                    var row2 = document.createElement('div');
+                    row2.setAttribute('class','row');
+                    row2.innerHTML = text;
+                    elem.appendChild(row2);
+                }
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
