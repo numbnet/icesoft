@@ -40,13 +40,13 @@ public class GMapInfoWindowRenderer extends CoreRenderer {
         writer.writeAttribute("style", "display:none;", null);
 
         // content container
-        writer.startElement("span", null);
+        writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_content", null);
 
         if (!infoWindow.getChildren().toString().contains("GMapEvent"))
             renderChildren(context, infoWindow);
 
-        writer.endElement("span");
+        writer.endElement("div");
 
         // script
         writer.startElement("script", null);
