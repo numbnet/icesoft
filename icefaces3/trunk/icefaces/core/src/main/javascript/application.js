@@ -262,7 +262,7 @@ if (!window.ice.icefaces) {
             appendOrReplaceHiddenInputElement(form, 'ice.view', viewID);
             appendOrReplaceHiddenInputElement(form, 'ice.window', namespace.window);
 
-            return function() {
+            var requestUpdates = function() {
                 var form = lookupElementById(formID);
                 //form is missing after navigating to a non-icefaces page
                 if (form) {
@@ -278,6 +278,14 @@ if (!window.ice.icefaces) {
                     }
                 }
             };
+            var delayedUpdates = function()  {
+                if (eventInProgress)  {
+                    setTimeout(delayedUpdates, 20);
+                    return;
+                }
+                requestUpdates();
+            }
+            return delayedUpdates;
         }
 
         var client = Client();
@@ -419,8 +427,14 @@ if (!window.ice.icefaces) {
         jsf.ajax.addOnEvent(submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners));
         jsf.ajax.addOnError(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners, sessionExpired));
 
+        var eventInProgress;
         //setup submit error logging
         function logReceivedUpdates(e) {
+            if ('begin' == e.status)  {
+                eventInProgress = e;
+            } else {
+                eventInProgress = null;
+            }
             if ('success' == e.status) {
                 var xmlContent = e.responseXML;
                 var updates = xmlContent.documentElement.firstChild.childNodes;
