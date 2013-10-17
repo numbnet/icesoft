@@ -18,11 +18,10 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p/>
- * User: Nils Lundquist
- * Date: 2013-04-01
- * Time: 2:45 PM
  */
+@SuppressWarnings("rawtypes")
 public class DataViewListDataModel extends DataViewDataModel {
+    
     List list;
 
     public DataViewListDataModel(List list) {
@@ -30,10 +29,6 @@ public class DataViewListDataModel extends DataViewDataModel {
     }
 
     public IndexedIterator<Object> iterator() {
-        List<Object> sublist = (getPageSize() >= 0)
-                ? list.subList(getPageStartIndex(), getPageSize())
-                : list;
-
         return new IndexedIterator<Object>(
                 list.iterator(),
                 getPageStartIndex()
@@ -41,7 +36,12 @@ public class DataViewListDataModel extends DataViewDataModel {
     }
 
     public Object getDataByIndex(int index) {
-        return list.get(index);
+        Object retVal = null;
+        if( list != null && index > -1 
+            && list.size() > index && index < list.size() ){
+                retVal = list.get(index);
+        }
+        return retVal;
     }
 
     public int length() {
