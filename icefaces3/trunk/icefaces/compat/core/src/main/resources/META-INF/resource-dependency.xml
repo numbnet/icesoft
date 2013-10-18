@@ -26,9 +26,14 @@
             <resource name="compat.js" library="ice.compat" target="head"/>
         </requires>
     </resource>
-    <resource name="ICEfacesCompatSetup" library="ice.compat" target="body">
+    <resource name="ICEfacesCompatSetup.js" library="ice.compat" target="body">
         <requires>
-            <resource name="ICEfacesSetup" library="ice.core" target="body"/>
+            <resource name="ICEfacesSetup.js" library="ice.core" target="body"/>
+        </requires>
+    </resource>
+    <resource name="JavaScriptContextSetup.js" library="ice.compat" target="body">
+        <requires>
+            <resource name="bridge.js" library="ice.core"/>
         </requires>
     </resource>
     <resource name="ckeditor/ckeditor.mapping.js" library="inputrichtext" target="head">

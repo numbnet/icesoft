@@ -25,12 +25,12 @@
             <resource name="icepush.js" library="ice.push"/>
         </depends-on>
     </resource>
-    <resource name="JavaScriptRunnerSetup" target="body">
+    <resource name="ICEfacesSetup.js" library="ice.core" target="body">
         <requires>
             <resource name="bridge.js" library="ice.core"/>
         </requires>
     </resource>
-    <resource name="JavaScriptContextSetup" target="body">
+    <resource name="JavaScriptRunnerSetup.js" library="ice.core" target="body">
         <requires>
             <resource name="bridge.js" library="ice.core"/>
         </requires>
