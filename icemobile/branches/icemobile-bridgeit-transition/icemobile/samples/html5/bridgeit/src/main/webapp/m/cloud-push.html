@@ -19,14 +19,14 @@
 </head>
 <body> 
     <div data-role="page" id="cloudpush">
-        <div data-role="header" data-position="fixed" class="hdr">
-            <a data-rel="back" class="btnBack"><i class="icon-angle-left"></i></a>
-            <h1>Notify It</h1>
+        <div data-role="header" data-position="fixed" class="hdr demo">
+            <a data-rel="back" class="btnBack" data-transition="slide"><i class="icon-chevron-left"></i></a>
+            <h1><span class="bridge-font-color">Bridge</span><span class="it-font-color">It</span></h1>
         </div><!-- /header -->
         <div data-role="content">
             <div id="cloudpush" title="Notify It" class="panel">
                 <h2>Device Notifications</h2>
-                <fieldset>
+                <fieldset class="desc">
                     <div class="row"><p class="normalText">Cloud notifications with ICEpush...</p></div>
                     <div class="row">
                         <code>
@@ -36,10 +36,10 @@
                     </div>
                 </fieldset>
             
-                <a id="regBtn" type="button" class="whiteButton bridgeItBtn"
+                <a id="regBtn" type="button" class="btn"
                     onclick="bridgeit.register('_reg');">Enable Cloud Push</a>
             
-                <a id="pushBtn" type="button" class="whiteButton bridgeItBtn"
+                <a id="pushBtn" type="button" class="btn"
                     onclick="delayedPush();">Push in 10 seconds ...</a>
             
                 <fieldset>
@@ -47,12 +47,6 @@
                 </fieldset>
                 <fieldset id="notifications">
                 </fieldset>
-                <div class="footer">
-                    <a href="#">
-                        <img src="../images/icesoft-emblem.png" class="icesoft-emblem"/>
-                    </a>
-                    &copy; 2013 ICEsoft Technologies
-                </div>
                 <script type="text/javascript">
             
                 function handleNotification(event)  {
@@ -82,6 +76,15 @@
                 </script>
             </div>
         </div>
+        <div data-role="footer"> 
+            <a href="#" class="icesoft-link" data-role="none">
+                <img src="../images/icesoft-logo-bw-2x.png"/>
+            </a>
+            <div class="copyright">&copy;&nbsp;2002-2013 ICEsoft Technologies Inc. All rights reserved.</div>
+            <i class="icon-twitter-sign"></i>
+            <i class="icon-facebook-sign"></i>
+        </div> 
+
     </div>
 </body>
 </html>

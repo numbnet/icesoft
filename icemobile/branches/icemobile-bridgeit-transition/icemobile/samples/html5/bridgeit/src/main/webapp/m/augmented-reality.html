@@ -20,9 +20,9 @@
 </head>
 <body>
     <div data-role="page" id="augmented-reality">  
-        <div data-role="header" data-position="fixed" class="hdr">
-            <a data-rel="back" class="btnBack"><i class="icon-angle-left"></i></a>
-            <h1>See It</h1>
+        <div data-role="header" data-position="fixed" class="hdr demo">
+            <a data-rel="back" class="btnBack" data-transition="slide"><i class="icon-chevron-left"></i></a>
+            <h1><span class="bridge-font-color">Bridge</span><span class="it-font-color">It</span></h1>
         </div><!-- /header -->
         <div data-role="content">
             <div id="ar" title="See It" class="panel" onfocus="setTimeout(function(){google.maps.event.trigger(map, 'resize')},1000);" >
@@ -87,7 +87,7 @@
                 </script>
             
                 <h2>Augmented Reality</h2>
-                <fieldset>
+                <fieldset class="desc">
                     <div class="row"><p class="normalText">Access an augmented world with a simple line of JavaScript...</p></div>
                     <div class="row">
                         <code>
@@ -120,7 +120,7 @@
                     <div id="map-canvas" style="margin: 0 0 20px 0;height:380px;"></div>
                   
                     <div id="overlay" >
-                        <style scoped>
+                        <style>
                             .overbutton {
                                 height: 50px;
                                 line-height : 50px;
@@ -137,15 +137,17 @@
                 <fieldset >
                     Selected location: <img style="height:40px;" id="selected" >
                 </fieldset>
-            
-                <div class="footer">
-                    <a href="#">
-                        <img src="../images/icesoft-emblem.png" class="icesoft-emblem"/>
-                    </a>
-                    &copy; 2013 ICEsoft Technologies
-                </div>
             </div>
         </div>
+        <div data-role="footer"> 
+            <a href="#" class="icesoft-link" data-role="none">
+                <img src="../images/icesoft-logo-bw-2x.png"/>
+            </a>
+            <div class="copyright">&copy;&nbsp;2002-2013 ICEsoft Technologies Inc. All rights reserved.</div>
+            <i class="icon-twitter-sign"></i>
+            <i class="icon-facebook-sign"></i>
+        </div> 
+
     </div>
 </body>
 </html>
