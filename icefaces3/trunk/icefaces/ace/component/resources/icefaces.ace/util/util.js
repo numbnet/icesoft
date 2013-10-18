@@ -248,7 +248,11 @@ ice.ace.util.getStyleSheet = function (sheetId) {
 ice.ace.util.addStyleSheet = function (sheetId, parentSelector) {
     var s = document.createElement('style');
     s.type = 'text/css';
-    s.appendChild(document.createTextNode(""));
+	if (s.styleSheet) { // IE
+		s.styleSheet.cssText = "";
+	} else {
+		s.appendChild(document.createTextNode(""));
+	}
     document.querySelector(parentSelector || "head").appendChild(s);
 
     if (ice.ace.jq.browser.safari || ice.ace.jq.browser.chrome) // must title after insertion to prevent chrome bug
@@ -256,7 +260,8 @@ ice.ace.util.addStyleSheet = function (sheetId, parentSelector) {
     else
         s.title = sheetId;
 
-    return s.sheet;
+    if (s.styleSheet) return s.styleSheet;
+	return s.sheet;
 };
 
 ice.ace.util.getOpacity = function(elem) {
