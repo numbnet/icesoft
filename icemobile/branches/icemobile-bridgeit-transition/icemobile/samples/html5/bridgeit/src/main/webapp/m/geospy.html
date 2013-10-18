@@ -19,14 +19,14 @@
 </head>
 <body>
     <div data-role="page" id="geospy">
-        <div data-role="header" data-position="fixed" class="hdr">
-            <a data-rel="back" class="btnBack"><i class="icon-angle-left"></i></a>
-            <h1>Locate It</h1>
+        <div data-role="header" data-position="fixed" class="hdr demo">
+            <a data-rel="back" class="btnBack" data-transition="slide"><i class="icon-chevron-left"></i></a>
+            <h1><span class="bridge-font-color">Bridge</span><span class="it-font-color">It</span></h1>
         </div><!-- /header -->
         <div data-role="content">
             <div id="geospy" title="Locate It" class="panel" onfocus="geoSpyVisible();">
                 <h2>GeoSpy Location Tracking</h2>
-                <fieldset>
+                <fieldset class="desc">
                     <div class="row"><p class="normalText">Continual geolocation tracking with a simple line of JavaScript...</p></div>
                     <div class="row">
                         <code>
@@ -39,18 +39,11 @@
                 <!--expected final, privacy-preserving variant below-->
                 <!--a id="track" type="button" class="whiteButton bridgeItBtn"
                     onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/echoput/geospy'+jguid, parameters: {strategy:'significant',duration:1,_jguid:jguid}});">Start Tracking</a-->
-                <a id="track" type="button" class="whiteButton bridgeItBtn"
+                <a id="track" type="button" class="btn"
                     onclick="bridgeit.geoSpy('tracker','handleSpy', {postURL: window.serviceHub + '/echoput/geospy', parameters: {strategy:'significant',duration:1,_jguid:jguid}});">Start Tracking</a>
             
                     
                 <div id="spyMapCanvas" style="height:200px"></div>
-                
-                <div class="footer">
-                    <a href="#">
-                        <img src="../images/icesoft-emblem.png" class="icesoft-emblem"/>
-                    </a>
-                    &copy; 2013 ICEsoft Technologies
-                </div>
                 <script type="text/javascript">
                 window.geoSpying = false;
                 
@@ -167,6 +160,15 @@
                 </script>
             </div>
         </div>
+        <div data-role="footer"> 
+            <a href="#" class="icesoft-link" data-role="none">
+                <img src="../images/icesoft-logo-bw-2x.png"/>
+            </a>
+            <div class="copyright">&copy;&nbsp;2002-2013 ICEsoft Technologies Inc. All rights reserved.</div>
+            <i class="icon-twitter-sign"></i>
+            <i class="icon-facebook-sign"></i>
+        </div> 
+
     </div>
 </body>
 </html>

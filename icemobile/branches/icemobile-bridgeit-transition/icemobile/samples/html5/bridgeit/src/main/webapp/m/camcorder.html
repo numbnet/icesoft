@@ -19,65 +19,68 @@
 </head>
 <body>
     <div data-role="page" id="camcorder">  
-        <div data-role="header" data-position="fixed" class="hdr">
-            <a data-rel="back" class="btnBack"><i class="icon-angle-left"></i></a>
-            <h1>Film It</h1>
+        <div data-role="header" data-position="fixed" class="hdr demo">
+            <a data-rel="back" class="btnBack" data-transition="slide"><i class="icon-chevron-left"></i></a>
+            <h1><span class="bridge-font-color">Bridge</span><span class="it-font-color">It</span></h1>
         </div><!-- /header -->
         <div data-role="content">
-            <div id="camcorder" title="Film It" class="panel" >
-    <h2>Video Recording</h2>
-    <fieldset>
-        <div class="row"><p class="normalText">Access the native video recording features with a simple line of JavaScript...</p></div>
-        <div class="row">
-            <code>
-                bridgeit.camcorder(id,callback,<br/>
-                &nbsp;&nbsp;{postURL:myURL});
-            </code>
+            <div>
+                <h2>Native Video Recording</h2>
+                <fieldset class="desc">
+                    <div class="row"><p class="normalText">Access the native video recording features with a simple line of JavaScript...</p></div>
+                    <div class="row">
+                        <code>
+                            bridgeit.camcorder(id,callback,<br/>
+                            &nbsp;&nbsp;{postURL:myURL});
+                        </code>
+                    </div>
+                </fieldset>
+                
+                <a id="camcorderBtn" type="button" class="btn"
+                    onclick="bridgeit.camcorder('camcorderBtn','handleVideo', {postURL: window.serviceHub + '/video-upload'});">Record some video</a>
+                    
+                <fieldset id="videoThumbnailField" style="display:none">
+                    <div class="row">
+                        <img id="videoThumbnail"/>
+                        <span class="ellipsis" id="currentVideoDesc" ></span>
+                    </div>
+                </fieldset>
+                
+                <fieldset id="videos">
+                </fieldset>
+                <script type="text/javascript">
+                function handleVideo(event)  {
+                    var text = event.value;
+                    if (event.preview)  {
+                        document.getElementById("videoThumbnailField").style.display = "block";
+                        document.getElementById("currentVideoDesc").innerHTML = "Last video taken at " + new Date();
+                        document.getElementById("videoThumbnail").setAttribute("src", event.preview);
+                    }
+                    if (event.response)  {
+                        var videos = JSON.parse(event.response);
+                        var elem = document.getElementById("videos");
+                        for( var i = 0 ; i < videos.length ; i++ ){
+                            var row = document.createElement('div');
+                            row.setAttribute('class','row');
+                            row.innerHTML = "<video src='" + window.serviceHub + "/" + videos[i] + "' controls='controls' preload='auto' type='video/mp4' webkit-playsinline='yes'/>";
+                            elem.appendChild(row);
+                        }
+                    }
+                }
+                </script>
+            </div>
         </div>
-    </fieldset>
-    
-    <a id="camcorderBtn" type="button" class="whiteButton bridgeItBtn"
-        onclick="bridgeit.camcorder('camcorderBtn','handleVideo', {postURL: window.serviceHub + '/video-upload'});">Record some video</a>
-        
-    <fieldset id="videoThumbnailField" style="display:none">
-        <div class="row">
-            <img id="videoThumbnail"/>
-            <span class="ellipsis" id="currentVideoDesc" ></span>
-        </div>
-    </fieldset>
-    
-    <fieldset id="videos">
-    </fieldset>
-    
-    <div class="footer">
-        <a href="#">
-            <img src="../images/icesoft-emblem.png" class="icesoft-emblem"/>
-        </a>
-        &copy; 2013 ICEsoft Technologies
-    </div>
-    <script type="text/javascript">
-    function handleVideo(event)  {
-        var text = event.value;
-        if (event.preview)  {
-            document.getElementById("videoThumbnailField").style.display = "block";
-            document.getElementById("currentVideoDesc").innerHTML = "Last video taken at " + new Date();
-            document.getElementById("videoThumbnail").setAttribute("src", event.preview);
-        }
-        if (event.response)  {
-            var videos = JSON.parse(event.response);
-            var elem = document.getElementById("videos");
-            for( var i = 0 ; i < videos.length ; i++ ){
-                var row = document.createElement('div');
-                row.setAttribute('class','row');
-                row.innerHTML = "<video src='" + window.serviceHub + "/" + videos[i] + "' controls='controls' preload='auto' type='video/mp4' webkit-playsinline='yes'/>";
-                elem.appendChild(row);
-            }
-        }
-    }
-    </script>
-</div>
-
-        </div>
+        <div data-role="footer"> 
+            <a href="#" class="icesoft-link" data-role="none">
+                <img src="../images/icesoft-logo-bw-2x.png"/>
+            </a>
+            <div class="copyright">&copy;&nbsp;2002-2013 ICEsoft Technologies Inc. All rights reserved.</div>
+            <i class="icon-twitter-sign"></i>
+            <i class="icon-facebook-sign"></i>
+        </div> 
+        <script type="text/javascript">
+            $("#camcorder div[data-role='content']").css({minHeight: $(window).height()-95});
+        </script>
     </div>
 </body>
 </html>
