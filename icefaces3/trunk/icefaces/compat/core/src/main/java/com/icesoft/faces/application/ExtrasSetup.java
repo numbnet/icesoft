@@ -156,7 +156,7 @@ public class ExtrasSetup implements SystemEventListener {
                 }
             };
             Map attributes = output.getAttributes();
-            attributes.put("name", "ICEfacesCompatSetup");
+            attributes.put("name", "ICEfacesCompatSetup.js");
             attributes.put("library", "ice.compat");
             output.setTransient(true);
             output.setId(BridgeSetup.getViewID(context.getExternalContext()) + "_icefaces_compat_config");

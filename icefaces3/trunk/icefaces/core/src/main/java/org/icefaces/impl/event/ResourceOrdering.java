@@ -238,6 +238,7 @@ public class ResourceOrdering implements SystemEventListener {
 
         ArrayList<UIComponent> orderedJSChildren = new ArrayList();
         ArrayList<UIComponent> orderedCSSChildren = new ArrayList();
+        ArrayList<UIComponent> orderedUnknownTypeChildren = new ArrayList();
 
         for (ResourceEntry resourceEntry : masterDependencyList) {
             List children = resourceContainer.getChildren();
@@ -252,6 +253,8 @@ public class ResourceOrdering implements SystemEventListener {
                         orderedJSChildren.add(next);
                     } else if (name.endsWith(CSS)) {
                         orderedCSSChildren.add(next);
+                    } else {
+                        orderedUnknownTypeChildren.add(next);
                     }
                 }
             }
@@ -261,10 +264,14 @@ public class ResourceOrdering implements SystemEventListener {
         for (UIComponent next: remainingChildren) {
             root.removeComponentResource(context, next, target);
             String name = (String) next.getAttributes().get("name");
-            if (name == null || name.endsWith(JS)) {
+            if (name == null) {
+                orderedUnknownTypeChildren.add(next);
+            } else if (name.endsWith(JS)) {
                 orderedJSChildren.add(next);
             } else if (name.endsWith(CSS)) {
                 orderedCSSChildren.add(next);
+            } else {
+                orderedUnknownTypeChildren.add(next);
             }
         }
 
@@ -274,6 +281,10 @@ public class ResourceOrdering implements SystemEventListener {
         }
         //follow with the loading of JS resources
         for (UIComponent componentResource : orderedJSChildren) {
+            root.addComponentResource(context, componentResource, target);
+        }
+        //and with the loading of unknown content type resources
+        for (UIComponent componentResource : orderedUnknownTypeChildren) {
             root.addComponentResource(context, componentResource, target);
         }
 

@@ -27,6 +27,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.io.IOException;
+import java.util.Map;
 
 public class JavaScriptContextSetup implements SystemEventListener {
 
@@ -56,7 +57,9 @@ public class JavaScriptContextSetup implements SystemEventListener {
                 writer.endElement("span");
             }
         };
-        jsContextOutput.getAttributes().put("name", "JavaScriptContextSetup");
+        Map<String,Object> attributes = jsContextOutput.getAttributes();
+        attributes.put("name", "JavaScriptContextSetup.js");
+        attributes.put("library", "ice.compat");
 
         UIViewRoot root = facesContext.getViewRoot();
         jsContextOutput.setTransient(true);
