@@ -1151,13 +1151,17 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         }
         initializeVar();
 
-		if (this.rulesNodes) { // remove previous column size rules
-			for (var i = 0; i < this.rulesNodes.length; i++) {
-				var node = this.rulesNodes[i];
-				node.parentNode.removeChild(node);
+		if (this.styleSheets) { // remove previous column size rules
+			for (var i = 0; i < this.styleSheets.length; i++) {
+				var sheet = this.styleSheets[i];
+				if (ie8 || ie9) {
+					sheet.cssText = "";
+				} else {
+					sheet.parentNode.removeChild(sheet);
+				}
 			}
-			while (this.rulesNodes.length > 0) {
-				this.rulesNodes.pop();
+			while (this.styleSheets.length > 0) {
+				this.styleSheets.pop();
 			}
 		}
 
@@ -1313,10 +1317,15 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 				text += selector + ' { width:' + bodyColumnWidth + 'px; }\n';
             }
 
-			var rulesNode = document.createTextNode(text);
-			styleSheet.ownerNode.appendChild(rulesNode);
-			if (!this.rulesNodes) this.rulesNodes = [];
-			this.rulesNodes.push(rulesNode);
+			if (!this.styleSheets) this.styleSheets = [];
+			if (ie8 || ie9) {
+				styleSheet.cssText = text;
+				this.styleSheets.push(styleSheet);
+			} else {
+				var rulesNode = document.createTextNode(text);
+				styleSheet.ownerNode.appendChild(rulesNode);
+				this.styleSheets.push(rulesNode);
+			}
 
             for (var i = 0; i < realHeadCols.length; i++) {
                 realHeadColumn = ice.ace.jq(realHeadCols[i]);
@@ -1363,9 +1372,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Recheck scrollable, it may have changed again post resize
         if (ie9 && bodyTable.parent().is(':scrollable(horizontal)')) {
             bodyTable.css('table-layout','fixed');
-            bodySingleCols.each(function(e) {
-                e.parentNode.style.width = '';
-            });
+			for (var i = 0; i < bodySingleCols.length; i++) {
+				bodySingleCols[i].parentNode.style.width = '';
+			}
         }
 
 
