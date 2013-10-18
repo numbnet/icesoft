@@ -328,16 +328,21 @@ fieldset.desc{
     color: #000;
     text-shadow: none;
 }
-.ui-footer .icon-twitter-sign, .ui-footer .icon-facebook-sign{
+.ui-footer .icon-twitter-sign, .ui-footer .icon-facebook-sign, .ui-footer .icon-github{
     color: #EB6135;
     font-size: 39px;
     text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
     position: absolute;
     top: 10px;
+    
+}
+.ui-footer .icon-twitter-sign, .ui-footer .icon-facebook-sign, .ui-footer .icon-github,
+.ui-footer .icon-twitter-sign:hover, .ui-footer .icon-facebook-sign:hover, .ui-footer .icon-github:hover{
+    text-decoration: none;
 }
 .ui-footer .icon-twitter-sign{
     right: 60px;
 }
-.ui-footer .icon-facebook-sign{
+.ui-footer .icon-facebook-sign, .ui-footer .icon-github{
     right: 15px;
 }
