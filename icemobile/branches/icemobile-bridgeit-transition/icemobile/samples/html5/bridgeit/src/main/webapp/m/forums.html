@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>BridgeIt</title>
+   <title>BridgeIt Scan</title>
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-   <meta name='apple-itunes-app' content="app-id=485908934, app-argument=icemobile://c=register&amp;r=./sms.html&amp;u=./service/upload"/>
+   <meta name='apple-itunes-app' content="app-id=485908934, app-argument=icemobile://c=register&amp;r=./index.html&amp;u=./service/upload"/>
    <link rel="icon" type="image/png" href="../favicon.png">
    <link rel="apple-touch-icon" href="bridgeit-logo-touch-icon.png" />
    <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -17,40 +17,14 @@
    <link rel="stylesheet" href="../css/icons.css"/>
    <link rel="stylesheet" href="../css/mobile.css" type="text/css" />
 </head>
-<body>   
-    <div data-role="page" id="sms">
+<body>
+    <div data-role="page" id="scan">  
         <div data-role="header" data-position="fixed" class="hdr demo">
             <a data-rel="back" class="btnBack" data-transition="slide"><i class="icon-chevron-left"></i></a>
             <h1><span class="bridge-font-color">Bridge</span><span class="it-font-color">It</span></h1>
         </div><!-- /header -->
         <div data-role="content">
-           <div>
-                <h2>Native SMS</h2>
-                <fieldset class="desc">
-                    <div class="row"><p class="normalText">Send an SMS with a simple line of JavaScript...</p></div>
-                    <div class="row">
-                        <code>
-                            bridgeit.sms(id,callback,<br/>
-                            &nbsp;&nbsp;{postURL:myURL});
-                        </code>
-                    </div>
-                </fieldset>
-                
-                <a id="smsBtn" type="button" class="btn"
-                    onclick="bridgeit.sms('smsBtn',handleSMS, {postURL: window.serviceHub + '/sms'});">Take a Photo</a>
-                    
-                <fieldset>
-                    <div class="row"></div>
-                </fieldset>
-                <fieldset id="images">
-                </fieldset>
-                <script type="text/javascript">
-                function handleSMS(event)  {
-                    alert(event);
-                }
-                </script>
-            
-            </div>
+               <h2>Forums</h2>
         </div>
         <div data-role="footer"> 
             <a href="#" class="icesoft-link" data-role="none">
@@ -61,7 +35,7 @@
             <i class="icon-facebook-sign"></i>
         </div> 
         <script type="text/javascript">
-            $("#sms div[data-role='content']").css({minHeight: $(window).height()-95});
+            $("#scan div[data-role='content']").css({minHeight: $(window).height()-95});
         </script>
     </div>
 </body>
