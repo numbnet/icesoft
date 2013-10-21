@@ -1130,6 +1130,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7,
             ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
             ie9 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 9,
+			ie10 = ice.ace.jq.browser.msie && !ie7 && !ie8 && !ie9,
             ie8as7 = this.cfg.scrollIE8Like7 && ie8,
             firefox = ice.ace.jq.browser.mozilla;
 
@@ -1244,19 +1245,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 ice.ace.jq('html').css('overflow', 'hidden');
             }
 
-            for (var i = 0; i < dupeHeadCols.length; i++) {
-                dupeHeadColumn = ice.ace.jq(dupeHeadCols[i]);
-                dupeHeadColumnWidths[i] = dupeHeadColumn.width();
-            }
-
             for (var i = 0; i < bodySingleCols.length; i++) {
                 bodyColumn = ice.ace.jq(bodySingleCols[i]);
                 bodySingleColWidths[i] = bodyColumn.width();
-            }
-
-            for (var i = 0; i < dupeFootCols.length; i++) {
-                dupeFootColumn = ice.ace.jq(dupeFootCols[i]);
-                dupeFootColumnWidths[i] = dupeFootColumn.width();
             }
 
             // Return overflow value
@@ -1326,6 +1317,33 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 				styleSheet.ownerNode.appendChild(rulesNode);
 				this.styleSheets.push(rulesNode);
 			}
+			
+			// Get Duplicate Sizing
+			// Return overflow to visible so sizing doesn't have scrollbar errors
+			if (dupeCausesScrollChange) {
+				bodyTable.parent().css('overflow', 'visible');
+			}
+			if (dupeCausesBodyScrollChange) {
+				ice.ace.jq('html').css('overflow', 'hidden');
+			}
+
+			for (var i = 0; i < dupeHeadCols.length; i++) {
+				dupeHeadColumn = ice.ace.jq(dupeHeadCols[i]);
+				dupeHeadColumnWidths[i] = dupeHeadColumn.width();
+			}
+
+			for (var i = 0; i < dupeFootCols.length; i++) {
+				dupeFootColumn = ice.ace.jq(dupeFootCols[i]);
+				dupeFootColumnWidths[i] = dupeFootColumn.width();
+			}
+
+			// Return overflow value
+			if (dupeCausesScrollChange) {
+				bodyTable.parent().css('overflow', '');
+			}
+			if (dupeCausesBodyScrollChange) {
+				ice.ace.jq('html').css('overflow', '');
+			}
 
             for (var i = 0; i < realHeadCols.length; i++) {
                 realHeadColumn = ice.ace.jq(realHeadCols[i]);
@@ -1370,12 +1388,12 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
         // Recheck scrollable, it may have changed again post resize
-        if (ie9 && bodyTable.parent().is(':scrollable(horizontal)')) {
+        /*if (ie9 && bodyTable.parent().is(':scrollable(horizontal)')) {
             bodyTable.css('table-layout','fixed');
 			for (var i = 0; i < bodySingleCols.length; i++) {
 				bodySingleCols[i].parentNode.style.width = '';
 			}
-        }
+        }*/
 
 
         if (!ie7 && vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
