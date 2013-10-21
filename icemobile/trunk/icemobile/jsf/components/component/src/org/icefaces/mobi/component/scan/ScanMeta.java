@@ -58,4 +58,7 @@ public class ScanMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue="Scan QR Code", tlddoc="The button label for this component.")
     private String buttonLabel;
+    
+    @Property(tlddoc = "The text value of the scan")
+    private String value;
 }
