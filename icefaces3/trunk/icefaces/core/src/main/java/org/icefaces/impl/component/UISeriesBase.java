@@ -303,7 +303,7 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
         int rowIndex = getRowIndex();
         if (rowIndex == -1) {
             //System.out.println("UISeries.getContainerClientId [NOT ITER] : " + getClass().getSimpleName() + " : " + clientId);
-            return clientId;
+            rowIndex = 0;
         }
 
         StringBuilder bld = getSharedStringBuilder(facesContext);
