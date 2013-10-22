@@ -450,8 +450,10 @@ public class DataTable extends DataTableBase implements Serializable {
 
         pushComponentToEL(context, this);
         //super.preDecode() - private and difficult to port
-        iterate(context, PhaseId.APPLY_REQUEST_VALUES);
-        decode(context);
+		if (isAlwaysExecuteContents() || !isTableFeatureRequest(context))
+			iterate(context, PhaseId.APPLY_REQUEST_VALUES);
+
+		decode(context);
 
         if (isApplyingFilters()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -475,7 +477,10 @@ public class DataTable extends DataTableBase implements Serializable {
         Application app = context.getApplication();
         app.publishEvent(context, PreValidateEvent.class, this);
         //preValidate(context);
-        iterate(context, PhaseId.PROCESS_VALIDATIONS);
+		
+		if (isAlwaysExecuteContents() || !isTableFeatureRequest(context))
+			iterate(context, PhaseId.PROCESS_VALIDATIONS);
+
         app.publishEvent(context, PostValidateEvent.class, this);
         popComponentFromEL(context);
     }
