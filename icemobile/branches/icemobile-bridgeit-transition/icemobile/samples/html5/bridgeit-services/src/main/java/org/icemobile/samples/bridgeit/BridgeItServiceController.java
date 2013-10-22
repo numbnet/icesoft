@@ -16,31 +16,21 @@
 package org.icemobile.samples.bridgeit;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.net.URL;
-import java.net.URLConnection;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.icemobile.application.Resource;
 import org.icemobile.spring.annotation.ICEmobileResource;
 import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.springframework.stereotype.Controller;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.ui.Model;
-import org.springframework.web.context.WebApplicationContext;
 
 
 @Controller
@@ -48,13 +38,11 @@ import org.springframework.web.context.WebApplicationContext;
 @ICEmobileResourceStore(bean="basicResourceStore")
 public class BridgeItServiceController {
 
-    @Autowired
-    private WebApplicationContext context;
-
     //private List<RealityMessage> arMessages = new ArrayList<RealityMessage>();
     
     @ModelAttribute("photos")
     public List<String> createPhotoList() {
+        System.out.println("createPhotoList()");
         return new ArrayList<String>();
     }
     
@@ -76,8 +64,7 @@ public class BridgeItServiceController {
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
     public @ResponseBody List<String> cameraUpload(HttpServletRequest request,
             @ICEmobileResource("cameraBtn") Resource cameraUpload,
-            @ModelAttribute("photos") List<String> photos
-            ) throws IOException {
+            @ModelAttribute("photos") List<String> photos) throws IOException {
         System.out.println("entering /camera-upload");
         if( cameraUpload != null ){
             if (cameraUpload.getContentType().startsWith("image")) {
