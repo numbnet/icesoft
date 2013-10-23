@@ -1138,10 +1138,6 @@ public class PanelTabSet
                 spacerClass);
     }
 
-    public String getClientId(FacesContext context) {
-        return super.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "0";
-    }
-
     public String getClientIdForRootElement(FacesContext context){
         return super.getClientId(context); 
     }
