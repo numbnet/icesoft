@@ -99,9 +99,9 @@ public class FocusManager extends UIComponentBase {
                     id = source.getClientId(context);
                 }
 
-                writer.writeText("try { document.getElementById('", null);
+                writer.writeText("try { ice.applyFocus('", null);
                 writer.writeText(id, null);
-                writer.writeText("').focus(); } catch (ex) {ice.log.warn(ice.logger, 'failed to focus element ", null);
+                writer.writeText("'); } catch (ex) {ice.log.warn(ice.logger, 'failed to focus element ", null);
                 writer.writeText(id, null);
                 writer.writeText("'); }//", null);
                 writer.writeText(RANDOM.nextLong(), null);
