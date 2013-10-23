@@ -41,14 +41,37 @@ ice.ace.Dialog = function(id, cfg) {
             jqo.dialog("close", {type: "close", synthetic: true});
         }
     }
-    cfg.width = cfg.width || "auto";
     cfg.height = cfg.height || "auto";
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
     this.jq = ice.ace.jq(this.jqId);
     var _self = this, closable = this.cfg.closable;
+	var root = this.jq.get(0);
+	
+	var hasSpecificWidth = function(node) {
+		if (node == root) return false;
+		var width = ice.ace.jq(node).css('width');
+		if (width != '100%' && width != 'auto' && width.substring(0,1) != '0') return true;
+		else return hasSpecificWidth(node.parentNode);
+	}
 
+	if (!cfg.width) {
+		var tables = this.jq.find('.ui-datatable');
+		var tableWithoutSpecificWidthFound = false;
+		for (var i = 0; i < tables.length; i++) {
+			if (!hasSpecificWidth(tables.eq(i).get(0))) {
+				tableWithoutSpecificWidthFound = true;
+				break;
+			}
+		}
+		if (tableWithoutSpecificWidthFound) {
+			cfg.width = '98%';
+		} else {
+			cfg.width = 'auto';
+		}
+	}
+	
     if (closable == false) {
         this.cfg.closeOnEscape = false;
     }
