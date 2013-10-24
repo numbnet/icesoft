@@ -219,10 +219,6 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                 row["iceHdnLnk"] = focusElement;
             }
         }
-        //if focusElement has found, its mean keyboard navigation is enabled set the focus id.
-        if (focusElement) {
-            setFocus(focusElement.id);
-        }
         // If preStyleOnSelection=false, then toggleClassNames=='', so we
         // should leave the row styling alone
         if (toggleClassNames) {
