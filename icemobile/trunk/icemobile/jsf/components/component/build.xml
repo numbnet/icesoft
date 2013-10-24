@@ -84,7 +84,7 @@
     <property name="taglib.generated.core" location="${core.exploded}/META-INF/icefaces.taglib.xml" />
 	<property name="taglib.generated.jsf" location="${exploded}/META-INF/icefaces.taglib.xml" />
 	<tstamp>
-		<format property="build.time" pattern="yyyy-mm-dd hh:mm:ss" />
+		<format property="build.time" pattern="yyyy-MM-dd hh:mm:ss" />
 	</tstamp>
 	
 	<presetdef name="subant" uri="urn:ICEsoft">
