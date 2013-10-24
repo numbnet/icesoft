@@ -22,7 +22,6 @@ import org.icemobile.component.IDevice;
 import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
 public class Scan extends ScanBase implements IDevice{
 
