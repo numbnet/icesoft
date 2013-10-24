@@ -1399,54 +1399,57 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             if (!sheet) sheet = im.addStyleSheet(clientId + '_colvis', selectorId);;
 
             var firstRowBodyCells = [];
-            for(var i = 0 ; i < firstrow.children.length ; i++ ){
-                if( firstrow.children[i].nodeName.toLowerCase() === 'td' ){
-                    firstRowBodyCells.push(firstrow.children[i]);
+            if( firstrow ){
+                for(var i = 0 ; i < firstrow.children.length ; i++ ){
+                    if( firstrow.children[i].nodeName.toLowerCase() === 'td' ){
+                        firstRowBodyCells.push(firstrow.children[i]);
+                    }
                 }
-            }
-
-            if( window.getComputedStyle ){
-                var frbcWidths = Array.prototype.map.call(
-                    firstRowBodyCells,
-                    function(n) {
+            
+                if( window.getComputedStyle ){
+                    var frbcWidths = Array.prototype.map.call(
+                        firstRowBodyCells,
+                        function(n) {
+                            var compd = document.defaultView.getComputedStyle(n, null);
+                            return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
+                    });
+        
+                    /* fix body column widths */
+                    for (var i = 0; i < frbcWidths.length; i++) {
+                        if( sheet.insertRule ){
+                            sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { width: "+frbcWidths[i] + 'px'+"; }", 0);
+                        }
+                    }
+    
+                    var dupeHeadCellWidths = [];
+                    for( var i = 0 ; i < dupeHeadCells.length; i++ ){
+                        var n = dupeHeadCells[i];
                         var compd = document.defaultView.getComputedStyle(n, null);
-                        return n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight));
-                });
-    
-                /* fix body column widths */
-                for (var i = 0; i < frbcWidths.length; i++) {
-                    if( sheet.insertRule ){
-                        sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { width: "+frbcWidths[i] + 'px'+"; }", 0);
+                        dupeHeadCellWidths.push( n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight)) );
+                    }
+        
+                    var dupeFootCellWidths = [];
+                    for( var i = 0 ; i < dupeFootCells.length ; i++ ){
+                        var n = dupeFootCells[i];
+                        var compd = document.defaultView.getComputedStyle(n, null);
+                        dupeFootCellWidths.push( n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight)) );
+                    }
+        
+                    /* copy head col widths from duplicate header */
+                    for (var i = 0; i < dupeHeadCellWidths.length; i++) {
+                        headCells[i].style.width = dupeHeadCellWidths[i] + 'px';
+                    }
+        
+                    /* copy foot col widths from duplicate footer */
+                    if (footCells.length > 0){
+                        for (var i = 0; i < dupeFootCellWidths.length; i++) {
+                            footCells[i].style.width = dupeFootCellWidths[i] + 'px';
+                        }
                     }
                 }
-
-                var dupeHeadCellWidths = [];
-                for( var i = 0 ; i < dupeHeadCells.length; i++ ){
-                    var n = dupeHeadCells[i];
-                    var compd = document.defaultView.getComputedStyle(n, null);
-                    dupeHeadCellWidths.push( n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight)) );
-                }
     
-                var dupeFootCellWidths = [];
-                for( var i = 0 ; i < dupeFootCells.length ; i++ ){
-                    var n = dupeFootCells[i];
-                    var compd = document.defaultView.getComputedStyle(n, null);
-                    dupeFootCellWidths.push( n.clientWidth - Math.round(parseFloat(compd.paddingLeft)) - Math.round(parseFloat(compd.paddingRight)) );
-                }
-    
-                /* copy head col widths from duplicate header */
-                for (var i = 0; i < dupeHeadCellWidths.length; i++) {
-                    headCells[i].style.width = dupeHeadCellWidths[i] + 'px';
-                }
-    
-                /* copy foot col widths from duplicate footer */
-                if (footCells.length > 0)
-                    for (var i = 0; i < dupeFootCellWidths.length; i++) {
-                        footCells[i].style.width = dupeFootCellWidths[i] + 'px';
-                    }
+                if (config.colvispri) setupColumnVisibiltyRules(firstrow.children);
             }
-
-            if (config.colvispri) setupColumnVisibiltyRules(firstrow.children);
 
             /* hide duplicate header */
             setTimeout(function() {
@@ -1697,56 +1700,57 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
         function getRowComparator() {
             var firstrow = getNode('firstrow');
-
-            function getValueComparator(cri) {
-                var firstRowVal = firstrow.children[cri.index].innerHTML;
-                var ascending = cri.ascending ? 1 : -1;
-
-                if (isNumber(firstRowVal))
-                    return function(a,b) {
-                        return (a.children[cri.index].innerHTML
-                            - b.children[cri.index].innerHTML) * ascending;
-                    }
-                if (isDate(firstRowVal))
-                    return function(a,b) {
-                        var av = new Date(a.children[cri.index].innerHTML),
-                            bv = new Date(b.children[cri.index].innerHTML);
-
-                        if (av > bv) return 1 * ascending;
-                        else if (bv > av) return -1 * ascending;
-                        return 0;
-                    }
-                if (isCheckboxCol(firstrow.children[cri.index]))
-                /* checkmark markup is shorter - reverse string sort */
-                    return function(a,b) {
-                        var av = a.children[cri.index].innerHTML,
-                            bv =  b.children[cri.index].innerHTML;
-
-                        if (av < bv) return 1 * ascending;
-                        else if (bv < av) return -1 * ascending;
-                        return 0;
-                    }
-                else
-                /* fall back to string comparison */
-                    return function(a,b) {
-                        var av = a.children[cri.index].innerHTML,
-                            bv =  b.children[cri.index].innerHTML;
-
-                        if (av > bv) return 1 * ascending;
-                        else if (bv > av) return -1 * ascending;
-                        return 0;
-                    }
-            }
-
-            return sortCriteria.map(getValueComparator)
-                    .reduceRight(function(comp1, comp2) {
-                if (comp1 == undefined) return function(a,b) { return comp2(a, b); }
-                else return function(a,b) {
-                    var v = comp2(a, b);
-                    if (v != 0) return v;
-                    else return comp1(a, b);
+            if( firstrow ){
+                function getValueComparator(cri) {
+                    var firstRowVal = firstrow.children[cri.index].innerHTML;
+                    var ascending = cri.ascending ? 1 : -1;
+    
+                    if (isNumber(firstRowVal))
+                        return function(a,b) {
+                            return (a.children[cri.index].innerHTML
+                                - b.children[cri.index].innerHTML) * ascending;
+                        }
+                    if (isDate(firstRowVal))
+                        return function(a,b) {
+                            var av = new Date(a.children[cri.index].innerHTML),
+                                bv = new Date(b.children[cri.index].innerHTML);
+    
+                            if (av > bv) return 1 * ascending;
+                            else if (bv > av) return -1 * ascending;
+                            return 0;
+                        }
+                    if (isCheckboxCol(firstrow.children[cri.index]))
+                    /* checkmark markup is shorter - reverse string sort */
+                        return function(a,b) {
+                            var av = a.children[cri.index].innerHTML,
+                                bv =  b.children[cri.index].innerHTML;
+    
+                            if (av < bv) return 1 * ascending;
+                            else if (bv < av) return -1 * ascending;
+                            return 0;
+                        }
+                    else
+                    /* fall back to string comparison */
+                        return function(a,b) {
+                            var av = a.children[cri.index].innerHTML,
+                                bv =  b.children[cri.index].innerHTML;
+    
+                            if (av > bv) return 1 * ascending;
+                            else if (bv > av) return -1 * ascending;
+                            return 0;
+                        }
                 }
-            });
+    
+                return sortCriteria.map(getValueComparator)
+                        .reduceRight(function(comp1, comp2) {
+                    if (comp1 == undefined) return function(a,b) { return comp2(a, b); }
+                    else return function(a,b) {
+                        var v = comp2(a, b);
+                        if (v != 0) return v;
+                        else return comp1(a, b);
+                    }
+                });
+            }
         }
 
         function getIndex(elem) {
@@ -1790,6 +1794,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         }
 
         function sortColumn(event) {
+            var bodyRows = getNode('bodyrows');
+            if( bodyRows.length == 0 )
+                return;
+            
             var sortedRows, asc,
                 headCell = event.target,
                 ascendingClass = blankIndicatorClass + ' icon-caret-up',
@@ -1819,8 +1827,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                     indi.className = blankIndicatorClass;
                 }
             }
-
-            var bodyRows = getNode('bodyrows');
+            
             /* return bodyRows NodeList as Array for sorting */
             sortedRows = Array.prototype.map.call(bodyRows, function(row) { return row; });
             sortedRows = sortedRows.sort(getRowComparator());
