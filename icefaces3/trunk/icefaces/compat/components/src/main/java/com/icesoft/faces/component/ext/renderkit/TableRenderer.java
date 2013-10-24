@@ -768,7 +768,12 @@ public class TableRenderer
             selectedClass = getPortletAlternateRowClass(selectedClass, rowIndex);
             tr.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(selectedClass));
 
-            if(rowStylesMaxIndex >= 0){ // Thanks denis tsyplakov
+           String anchorID = clientId + "_idx_" + countOfRowsDisplayed;
+           //move focus on the anchor when the row receives focus so that keyboard navigation will kick in
+           tr.setAttribute(HTML.ONFOCUS_ATTR, "ice.applyFocus('" + anchorID + "');");
+           anchor.setAttribute(HTML.ID_ATTR, anchorID);
+
+           if(rowStylesMaxIndex >= 0){ // Thanks denis tsyplakov
                if (++rowStyleIndex > rowStylesMaxIndex) {
                     rowStyleIndex = 0;
                }
@@ -795,8 +800,7 @@ public class TableRenderer
                                     && rowSelector.isSingleRowAutoSelect()) {
                                 singleSelection = true;
                             }
-                            anchor.setAttribute(HTML.ID_ATTR, clientId + "_idx_"+ countOfRowsDisplayed);                               
-                            anchor.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT.FOCUS_HIDDEN_LINK_STYLE_CLASS);             
+                            anchor.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT.FOCUS_HIDDEN_LINK_STYLE_CLASS);
                             anchor.setAttribute(HTML.HREF_ATTR, "#"); 
                             anchor.appendChild(domContext.createTextNodeUnescaped("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
                                         "/xmlhttp/css/xp/css-images/spacer.gif") + "' alt=''/>"));
