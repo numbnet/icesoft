@@ -1,0 +1,127 @@
+<!--
+ * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+  -->
+
+<project name="icepush" default="lib" basedir=".">
+
+    <!-- This property file is only used for EE builds and overrides various
+         property values if it is available. -->
+    <property file="../../ee-bundle.properties"/>
+
+    <property file="local.properties"/>
+    <property file="../build.properties"/>
+    <property file="build.properties"/>
+    <property name="root.offset" value=".."/>
+    <property name="java.dir" location="src/main/java"/>
+    <property name="javadocs.dir" location="${build.dir}/javadocs"/>
+    <property name="push.product" value="ICEpush"/>
+    <property file="${root.offset}/build.properties"/>
+    <property name="product.info" value="org/icepush/ProductInfo.java"/>
+
+	<!-- Check if release.type is set, and if so append it after the tertiary value -->
+	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
+    	<isset property="release.type"/>
+	</condition>
+    <property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
+    	
+    <property name="javadoc.title" value="${product.lib} Java API Documentation" />
+    <property name="javadoc.header" value="${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
+    
+
+    <import file="${root.offset}/build-common.xml"/>
+
+    <patternset id="lib.compile">
+        <include name="*.jar"/>
+    </patternset>
+
+    <target name="product.info" description="update product information">
+        <copy file="conf/${product.info}"
+              tofile="${java.dir}/${product.info}"
+              overwrite="true"/>
+        <replace file="${java.dir}/${product.info}" >
+            <replacefilter token="@company@"           value="${company}"/>
+            <replacefilter token="@product@"           value="${product}"/>
+            <replacefilter token="@release.type@"      value="${release.type}"/>
+            <replacefilter token="@version.primary@"   value="${version.primary}"/>
+            <replacefilter token="@version.secondary@" value="${version.secondary}"/>
+            <replacefilter token="@version.tertiary@"  value="${version.tertiary}"/>
+            <replacefilter token="@build.number@"      value="${build.number}"/>
+            <replacefilter token="@revision@"          value="${revision}"/>
+        </replace>
+
+    </target>
+
+    <target name="clean.product.info">
+        <delete file="${java.dir}/${product.info}" failonerror="no"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="build.bridge" description="collate JS code">
+        <echo>Building ICEpush bridge</echo>
+        <ant antfile="build.javascript.xml" target="build" inheritall="no" dir=".">
+            <property name="no-compress" value="true"/>
+        </ant>
+    </target>
+
+    <target name="compile" depends="pre.compile, product.info" description="compile classes">
+        <compile/>
+    </target>
+
+    <target name="javadoc">
+        <echo message="lib.dir: '${root.offset}/${lib.dir}'" />
+        <delete dir="${javadocs.dir}"/>
+        <javadoc destdir="${javadocs.dir}"
+                 windowtitle="${javadoc.title}"
+                 failonerror="true"
+                 bottom="Copyright ${year} ${copyright}"
+                 access="public"
+                 useexternalfile="true" >
+            <fileset dir="${java.dir}" defaultexcludes="yes">
+                <include name="org/icepush/PushConfiguration.java"/>
+                <include name="org/icepush/PushContext.java"/>
+                <include name="org/icepush/PushNotification.java"/>
+            </fileset>
+            <classpath>
+                <fileset dir="${root.offset}/${lib.dir}">
+                    <patternset refid="lib.compile"/>
+                </fileset>
+            </classpath>
+            <header><![CDATA[${javadoc.header}]]></header>
+            <footer><![CDATA[${javadoc.header}]]></footer>
+            <doctitle><![CDATA[<h2>${javadoc.title}</h2>]]></doctitle>
+        </javadoc>
+    </target>
+
+    <target name="jar" depends="compile, build.bridge" description="fill the jar">
+        <build.jar>
+            <add.filesets>
+                <!--<file file="${sources}"/>-->
+                <fileset dir="${build.dir}/javascript"/>
+            </add.filesets>
+        </build.jar>
+        <antcall target="clean.product.info"/>
+    </target>
+
+    <target name="lib" depends="jar" description="copy icepush.jar to main lib directory">
+        <copy file="${dist.dir}/${ant.project.name}.jar"
+              todir="../../lib"
+              overwrite="true"/>
+    </target>
+
+</project>
+
