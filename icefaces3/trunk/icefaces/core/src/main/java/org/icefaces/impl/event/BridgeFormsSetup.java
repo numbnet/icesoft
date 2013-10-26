@@ -33,10 +33,10 @@ public class BridgeFormsSetup implements SystemEventListener {
         String viewID = BridgeSetup.getViewID(context.getExternalContext());
         //add the form used by ice.retrieveUpdate function to retrieve the updates
         //use viewID and '-retrieve-update' suffix as element ID
-        addNewTransientForm(viewID + "-retrieve-update", c.getChildren());
+        addNewTransientForm(viewID + "-retrieve-update", c);
         //add the form used by ice.singleSubmit function for submitting event data
         //use viewID and '-single-submit' suffix as element ID
-        addNewTransientForm(viewID + "-single-submit", c.getChildren());
+        addNewTransientForm(viewID + "-single-submit", c);
     }
 
     public boolean isListenerForSource(final Object source) {
@@ -44,13 +44,15 @@ public class BridgeFormsSetup implements SystemEventListener {
                 "javax.faces.Body".equals(((UIComponent) source).getRendererType());
     }
 
-    private static void addNewTransientForm(String id, List<UIComponent> parent) {
-        UIForm uiForm = new ShortIdForm();
-        uiForm.setTransient(true);
-        uiForm.setId(id);
-        //disable capture submit for this form
-        uiForm.getAttributes().put(FormSubmit.DISABLE_CAPTURE_SUBMIT, FormSubmit.DISABLE_CAPTURE_SUBMIT);
-        parent.add(uiForm);
+    private static void addNewTransientForm(String id, UIComponent parent) {
+        if( parent.findComponent(id) == null ){
+            UIForm uiForm = new ShortIdForm();
+            uiForm.setTransient(true);
+            uiForm.setId(id);
+            //disable capture submit for this form
+            uiForm.getAttributes().put(FormSubmit.DISABLE_CAPTURE_SUBMIT, FormSubmit.DISABLE_CAPTURE_SUBMIT);
+            parent.getChildren().add(uiForm);
+        }
     }
 
     public static class ShortIdForm extends UIForm {
