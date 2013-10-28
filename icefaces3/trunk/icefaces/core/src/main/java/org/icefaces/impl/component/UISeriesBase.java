@@ -303,7 +303,7 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
         int rowIndex = getRowIndex();
         if (rowIndex == -1) {
             //System.out.println("UISeries.getContainerClientId [NOT ITER] : " + getClass().getSimpleName() + " : " + clientId);
-            rowIndex = 0;
+            return clientId;
         }
 
         StringBuilder bld = getSharedStringBuilder(facesContext);
@@ -1203,8 +1203,10 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
             // Visit as required on the *children* of the UIColumn
             // (facets have been done a single time with rowIndex=-1 already)
             if (getChildCount() > 0) {
+                int index = 0;
                 for (UIComponent kid : getChildren()) {
                     if (!(kid instanceof UIColumn)) {
+                        setRowIndex(index++);
                         if (kid.visitTree(context, callback)) {
                             return true;
                         }
