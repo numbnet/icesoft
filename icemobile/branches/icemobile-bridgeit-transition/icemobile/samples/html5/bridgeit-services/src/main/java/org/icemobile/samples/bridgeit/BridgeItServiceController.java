@@ -34,18 +34,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 
 @Controller
-@SessionAttributes({"photos","videos","recordings", "arPhoto"})
+@SessionAttributes({"videos","recordings", "arPhoto"})
 @ICEmobileResourceStore(bean="basicResourceStore")
 public class BridgeItServiceController {
 
-    //private List<RealityMessage> arMessages = new ArrayList<RealityMessage>();
-    
-    @ModelAttribute("photos")
-    public List<String> createPhotoList() {
-        System.out.println("createPhotoList()");
-        return new ArrayList<String>();
-    }
-    
     @ModelAttribute("videos")
     public List<String> createVideoList() {
         return new ArrayList<String>();
@@ -62,16 +54,14 @@ public class BridgeItServiceController {
     }
     
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
-    public @ResponseBody List<String> cameraUpload(HttpServletRequest request,
-            @ICEmobileResource("cameraBtn") Resource cameraUpload,
-            @ModelAttribute("photos") List<String> photos) throws IOException {
-        System.out.println("entering /camera-upload");
+    public @ResponseBody String cameraUpload(HttpServletRequest request,
+            @ICEmobileResource("cameraBtn") Resource cameraUpload) throws IOException {
         if( cameraUpload != null ){
             if (cameraUpload.getContentType().startsWith("image")) {
                 try {
-                    photos.add( "icemobile-store/"+ cameraUpload.getUuid() );
-                    System.out.println("returning " + photos);
-                    return photos;
+                    String retval = "icemobile-store/"+ cameraUpload.getUuid();
+                    System.out.println(retval);
+                    return retval;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
