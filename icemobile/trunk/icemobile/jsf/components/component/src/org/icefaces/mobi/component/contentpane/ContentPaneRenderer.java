@@ -131,7 +131,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         writer.writeAttribute(ID_ATTR, clientId+"_hndl", null);
         writer.writeAttribute(CLASS_ATTR, handleClass, null);
         StringBuilder args = new StringBuilder("ice.mobi.accordionController.toggleClient('");
-        args.append(accordionId).append("', this, '").append(client).append("'");
+        args.append(accordionId).append("', this, ").append(client);
         ClientDescriptor cd = accordion.getClient();
         if (Utils.isTransformerHack(cd)) {
             args.append(", true");
