@@ -40,13 +40,17 @@ import java.io.Serializable;
                     resource = "/resources/examples/ace/autocompleteentry/autoCompleteEntryLabel.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="...LabelBean.java",
+                    title="LabelBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
                     "/example/ace/autocompleteentry/AutoCompleteEntryLabelBean.java"),
             @ExampleResource(type = ResourceType.java,
                     title="AutoCompleteEntryBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/autocompleteentry/AutoCompleteEntryBean.java")
+                    "/example/ace/autocompleteentry/AutoCompleteEntryBean.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="PositionBean.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/util/PositionBean.java")
         }
 )
 @ManagedBean(name= AutoCompleteEntryLabelBean.BEAN_NAME)
