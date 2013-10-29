@@ -42,11 +42,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.ResourceBundle;
 
 @MandatoryResourceComponent(tagName="dataTable", value="org.icefaces.ace.component.datatable.DataTable")
 public class DataTableRenderer extends CoreRenderer {
     private static final String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
     private static final String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.datatable.";
+    private static final String PAG_MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.datatable.paginator.";
 
     @Override
 	public void decode(FacesContext context, UIComponent component) {
@@ -417,11 +419,25 @@ public class DataTableRenderer extends CoreRenderer {
         String rowCounts= table.getRowsPerPageTemplate();
         String currPgTemplate = table.getCurrentPageReportTemplate();
         boolean notAlwaysVis = !table.isPaginatorAlwaysVisible();
-
+        ResourceBundle bundle = getComponentResourceBundle(context, ACE_MESSAGES_BUNDLE);
+        String first = "firstINIT";
+        String next = "nextINIT";
+        String last = "lastINIT";
+        String prev = "prevINIT";
+        if (null != bundle){
+            first = getLocalisedMessageFromBundle(bundle, PAG_MESSAGE_KEY_PREFIX, "FIRST_LABEL");
+            last = getLocalisedMessageFromBundle(bundle, PAG_MESSAGE_KEY_PREFIX, "LAST_LABEL");
+            next = getLocalisedMessageFromBundle(bundle, PAG_MESSAGE_KEY_PREFIX, "NEXT_LABEL");
+            prev = getLocalisedMessageFromBundle(bundle, PAG_MESSAGE_KEY_PREFIX, "PREV_LABEL");
+        }
         configJson.beginMap();
         configJson.entry("rowsPerPage", table.getRows());
         configJson.entry("totalRecords", table.getRowCount());
         configJson.entry("initialPage", table.getPage());
+        configJson.entry("firstLbl", first);
+        configJson.entry("lastLbl", last);
+        configJson.entry("nextLbl", next);
+        configJson.entry("prevLbl", prev);
         configJson.entry("containers", "[" + paginatorContainers + "]", true);
         configJson.entryNonNullValue("template", template);
         configJson.entryNonNullValue("pageReportTemplate", currPgTemplate);
@@ -438,17 +454,7 @@ public class DataTableRenderer extends CoreRenderer {
                         configJson.item(Integer.parseInt(i.trim()));
                     } catch (NumberFormatException e) {
                         if ("all".equals(i.toLowerCase())) {
-                            Locale locale = context.getViewRoot().getLocale();
-                            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-                            String bundleName = context.getApplication().getMessageBundle();
-
-                            if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
-                            if (bundleName == null) bundleName = ACE_MESSAGES_BUNDLE;
-
-                            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
-
                             String label = bundle.getString(MESSAGE_KEY_PREFIX + "ALL_LABEL");
-
                             configJson.beginMap();
                             configJson.entry("text",label);
                             configJson.entry("value",0);

@@ -1,13 +1,16 @@
 ice.ace.DataTable.Paginator = function(table) {
+    var labels = {} ;
     var cfg = table.cfg.paginator,
         container = ice.ace.jq(table.jqId + ' > .ui-paginator'),
         template = cfg.template || "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}",
         activeIndex = cfg.initialPage,
     // Maximum number of pages given total row count, if rowsPerPage zero set to 1.
         max = cfg.rowsPerPage == 0 || cfg.totalRecords < cfg.rowsPerPage ? 1 : Math.ceil(cfg.totalRecords / cfg.rowsPerPage);
-
+        labels.first = cfg.firstLbl,
+        labels.last = cfg.lastLbl,
+        labels.next = cfg.nextLbl,
+        labels.prev = cfg.prevLbl,
     this.container = container;
-
     function initPageMarkup() {
         function getTemplateControlMarkup(keyword) {
             var markup = '';
@@ -18,22 +21,22 @@ ice.ace.DataTable.Paginator = function(table) {
             else if (keyword == 'firstPageLink') {
                 var className = 'ui-paginator-first ui-state-default ui-corner-all';
                 if (activeIndex == 1) className += ' ui-state-disabled';
-                markup = '<a href="#" class="'+className+'"><span class="ui-icon ui-icon-seek-first">First</span></a>';
+                markup = '<a href="#" class="'+className+'"><span class="ui-icon ui-icon-seek-first">'+labels.first+'</span></a>';
             }
             else if (keyword == 'lastPageLink') {
                 var className = 'ui-paginator-last ui-state-default ui-corner-all';
                 if (activeIndex == max) className += ' ui-state-disabled';
-                markup = '<a href="#" class="'+className+'"><span class="ui-icon ui-icon-seek-end">Last</span></a>';
+                markup = '<a href="#" class="'+className+'"><span class="ui-icon ui-icon-seek-end">'+labels.last+'</span></a>';
             }
             else if (keyword == 'previousPageLink') {
                 var className = 'ui-paginator-previous ui-state-default ui-corner-all';
                 if (activeIndex == 1) className += ' ui-state-disabled';
-                markup = '<a href="#" class="'+className+'"><span class="ui-icon ui-icon-seek-prev">Prev</span></a>';
+                markup = '<a href="#" class="'+className+'"><span class="ui-icon ui-icon-seek-prev">'+labels.prev+'</span></a>';
             }
             else if (keyword == 'nextPageLink') {
                 var className = 'ui-paginator-next ui-state-default ui-corner-all';
                 if (activeIndex == max) className += ' ui-state-disabled';
-                markup = '<a href="#" class="'+className+'"><span class="ui-icon ui-icon-seek-next">Next</span></a>';
+                markup = '<a href="#" class="'+className+'"><span class="ui-icon ui-icon-seek-next">'+labels.next+'</span></a>';
             }
             else if (keyword == 'rowsPerPageDropdown' && cfg.rowsPerPageOptions) {
                 markup = '<select class="ui-paginator-rpp-options" title="Rows per page">';
