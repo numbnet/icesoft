@@ -16,11 +16,11 @@
 package org.icemobile.samples.bridgeit;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.icemobile.application.Resource;
 import org.icemobile.spring.annotation.ICEmobileResource;
 import org.icemobile.spring.annotation.ICEmobileResourceStore;
@@ -28,26 +28,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 
 @Controller
-@SessionAttributes({"videos","recordings", "arPhoto"})
+@SessionAttributes({"arPhoto"})
 @ICEmobileResourceStore(bean="basicResourceStore")
 public class BridgeItServiceController {
 
-    @ModelAttribute("videos")
-    public List<String> createVideoList() {
-        return new ArrayList<String>();
-    }
-    
-    @ModelAttribute("recordings")
-    public List<String> createAudioList() {
-        return new ArrayList<String>();
-    }
-    
+    private static final Log LOG = LogFactory.getLog(BridgeItServiceController.class);
+
     @ModelAttribute("arPhoto")
     public String createARPhoto() {
         return new String();
@@ -60,7 +51,7 @@ public class BridgeItServiceController {
             if (cameraUpload.getContentType().startsWith("image")) {
                 try {
                     String retval = "icemobile-store/"+ cameraUpload.getUuid();
-                    System.out.println(retval);
+                    LOG.debug("uploaded image: " + retval);
                     return retval;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -79,7 +70,7 @@ public class BridgeItServiceController {
             if (cameraUpload.getContentType().startsWith("image")) {
                 try {
                     arPhoto = "service/icemobile-store/"+ cameraUpload.getUuid();
-                    System.out.println("returning " + arPhoto);
+                    LOG.debug("returning " + arPhoto);
                     return arPhoto;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -90,15 +81,14 @@ public class BridgeItServiceController {
     }
 
     @RequestMapping(value = "/audio-upload", method=RequestMethod.POST, produces="application/json")
-    public @ResponseBody List<String> audioUpload(HttpServletRequest request, 
-            @ICEmobileResource("micBtn") Resource audioUpload, 
-            @ModelAttribute("recordings") List<String> recordings) throws IOException {
+    public @ResponseBody String audioUpload(HttpServletRequest request, 
+            @ICEmobileResource("micBtn") Resource audioUpload) throws IOException {
         if( audioUpload != null ){
             if (audioUpload.getContentType().startsWith("audio")) {
                 try {
-                    recordings.add( "icemobile-store/"+ audioUpload.getUuid() );
-                    System.out.println("returning " + recordings);
-                    return recordings;
+                    String retval = "icemobile-store/"+ audioUpload.getUuid();
+                    LOG.debug("uploade audio: " + retval);
+                    return retval;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -112,40 +102,21 @@ public class BridgeItServiceController {
         System.out.println("postAugmentedReality()");
     }
         
-    @RequestMapping(value="/photo-list", method=RequestMethod.GET, produces="application/json")
-    public @ResponseBody List<String> getPhotoList(
-            @RequestParam(value="since") long since,
-            @RequestParam(value="_", required=false) String jqTimestamp,
-            @ModelAttribute("photos") List<String> photos){
-
-        return photos;
-    }
-    
     @RequestMapping(value = "/video-upload", method=RequestMethod.POST, produces="application/json")
-    public @ResponseBody List<String> camcorderUpload(HttpServletRequest request, 
-            @ICEmobileResource("camcorderBtn") Resource camcorderUpload, 
-            @ModelAttribute("videos") List<String> videos) throws IOException {
+    public @ResponseBody String camcorderUpload(HttpServletRequest request, 
+            @ICEmobileResource("camcorderBtn") Resource camcorderUpload) throws IOException {
         if( camcorderUpload != null ){
             if (camcorderUpload.getContentType().startsWith("video")) {
                 try {
-                    videos.add( "icemobile-store/"+ camcorderUpload.getUuid() );
-                    System.out.println("returning " + videos);
-                    return videos;
+                    String retval = "icemobile-store/"+ camcorderUpload.getUuid();
+                    LOG.debug("uploaded video: " + retval);
+                    return retval;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
         return null;
-    }
-    
-    @RequestMapping(value="/video-list", method=RequestMethod.GET, produces="application/json")
-    public @ResponseBody List<String> getVideoList(
-            @RequestParam(value="since") long since,
-            @RequestParam(value="_", required=false) String jqTimestamp,
-            @ModelAttribute("videos") List<String> videos){
-
-        return videos;
     }
 
 }
