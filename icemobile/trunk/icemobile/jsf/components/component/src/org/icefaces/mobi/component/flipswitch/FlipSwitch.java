@@ -17,25 +17,18 @@
 package org.icefaces.mobi.component.flipswitch;
 
 import org.icefaces.mobi.utils.Attribute;
-import org.icefaces.impl.util.Util;
-
-
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.ValueChangeEvent;
 
 
 public class FlipSwitch extends FlipSwitchBase {
-    //src is NOT part of the pass through attributes
+    
     public static final String FLIPSWITCH_ON_CLASS = "mobi-flipswitch mobi-flipswitch-on ui-btn-down-c";
     public static final String FLIPSWITCH_OFF_CLASS = "mobi-flipswitch mobi-flipswitch-off ui-btn-down-c";
     private Attribute[] attributesNames = {
             new Attribute("tabindex", null),
             new Attribute("style", null)};
 
-    private Attribute[] booleanAttNames = {new Attribute("required", null),
+    private Attribute[] booleanAttNames = {
+            new Attribute("required", null),
             new Attribute("immediate", null)
     };
  
@@ -46,9 +39,5 @@ public class FlipSwitch extends FlipSwitchBase {
 	public Attribute[] getBooleanAttNames() {
 		return booleanAttNames;
 	}
-
- /*   public String getDefaultEventName(){
-        return "activate";
-    } */
 
 }
