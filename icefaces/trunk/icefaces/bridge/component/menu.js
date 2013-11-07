@@ -190,6 +190,7 @@ Ice.Menu = {
 
             var styleTop = showY + "px";
             submenu.style.top = styleTop;
+			submenu.style.position = 'fixed';
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
         }
         Ice.Menu.currentMenu = submenu;
