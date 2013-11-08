@@ -88,13 +88,12 @@ public class EchoServiceController {
             pushServiceURL = pushServiceConfig;
         }
         URLConnection pushServiceConnection =
-                new URL(pushServiceURL + "/notify.icepush" +
-                "?apikey=01B5B7AF-5B83-48F9-880A-B853165B98DC")
+                new URL(pushServiceURL + "/notify.icepush")
                 .openConnection();
         pushServiceConnection.setDoOutput(true);
         OutputStream commandStream = pushServiceConnection.getOutputStream();
         commandStream.write(
-                ("ice.push.browser=deadbeef&group=" + group).getBytes());
+                ("ice.push.apikey=01B5B7AF-5B83-48F9-880A-B853165B98DC&ice.push.browser=deadbeef&group=" + group).getBytes());
         commandStream.flush();
         commandStream.close();
 
