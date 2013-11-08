@@ -81,14 +81,15 @@ public class EchoServiceController {
 
     public void push(String group) throws IOException {
         //should be encapsulated in an ICEpush service API
-        String pushServiceURL = "http://labs.icesoft.com/push";
+        String pushServiceURL = "http://api.bridgeit.mobi/push";
         String pushServiceConfig = context.getServletContext()
                 .getInitParameter("ice.push.configuration.contextPath");
         if (null != pushServiceConfig)  {
             pushServiceURL = pushServiceConfig;
         }
         URLConnection pushServiceConnection =
-                new URL(pushServiceURL + "/notify.icepush")
+                new URL(pushServiceURL + "/notify.icepush" +
+                "?apikey=01B5B7AF-5B83-48F9-880A-B853165B98DC")
                 .openConnection();
         pushServiceConnection.setDoOutput(true);
         OutputStream commandStream = pushServiceConnection.getOutputStream();
