@@ -87,15 +87,20 @@ public class EchoServiceController {
         if (null != pushServiceConfig)  {
             pushServiceURL = pushServiceConfig;
         }
+        //REST variant
+//        URLConnection pushServiceConnection =
+//                new URL(pushServiceURL + "/rest/groups/" + group + "?apikey=01B5B7AF-5B83-48F9-880A-B853165B98DC")
+//                .openConnection();
         URLConnection pushServiceConnection =
-                new URL(pushServiceURL + "/rest/groups/" + group + "?apikey=01B5B7AF-5B83-48F9-880A-B853165B98DC")
+                new URL(pushServiceURL + "/notify.icepush")
                 .openConnection();
-//        pushServiceConnection.setDoOutput(true);
-//        OutputStream commandStream = pushServiceConnection.getOutputStream();
-//        commandStream.write(
-//                ("ice.push.apikey=01B5B7AF-5B83-48F9-880A-B853165B98DC&ice.push.browser=deadbeef&group=" + group).getBytes());
-//        commandStream.flush();
-//        commandStream.close();
+        pushServiceConnection.addRequestProperty("Referer", "http://bridgeit.mobi/demo");
+        pushServiceConnection.setDoOutput(true);
+        OutputStream commandStream = pushServiceConnection.getOutputStream();
+        commandStream.write(
+        ("delay=0&duration=0&ice.push.apikey=01B5B7AF-5B83-48F9-880A-B853165B98DC&ice.push.browser=deadbeef&group=" + group).getBytes());
+        commandStream.flush();
+        commandStream.close();
 
         //wait for but discard server response
         InputStream result = pushServiceConnection.getInputStream();
