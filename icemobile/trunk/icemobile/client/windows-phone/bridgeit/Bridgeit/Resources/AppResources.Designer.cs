@@ -61,6 +61,24 @@ namespace Bridgeit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to accept.
+        /// </summary>
+        public static string BarCodeScannerAccept {
+            get {
+                return ResourceManager.GetString("BarCodeScannerAccept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to initialize the camera.
+        /// </summary>
+        public static string BarCodeScannerCameraError {
+            get {
+                return ResourceManager.GetString("BarCodeScannerCameraError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BridgeIt Camera Integration.
         /// </summary>
         public static string CameraAppBarAboutMenuItemMessage {
@@ -165,6 +183,222 @@ namespace Bridgeit.Resources {
         public static string CameraAppProgressIndicatorSuccess {
             get {
                 return ResourceManager.GetString("CameraAppProgressIndicatorSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to no results.
+        /// </summary>
+        public static string ContactsNoResults {
+            get {
+                return ResourceManager.GetString("ContactsNoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to results are loading....
+        /// </summary>
+        public static string ContactsResultsLoading {
+            get {
+                return ResourceManager.GetString("ContactsResultsLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string ContactsSearch {
+            get {
+                return ResourceManager.GetString("ContactsSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to people.
+        /// </summary>
+        public static string ContactsSubTitle {
+            get {
+                return ResourceManager.GetString("ContactsSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BRIDGEIT.
+        /// </summary>
+        public static string ContactsTitle {
+            get {
+                return ResourceManager.GetString("ContactsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to accept.
+        /// </summary>
+        public static string ContractsAccept {
+            get {
+                return ResourceManager.GetString("ContractsAccept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cancel.
+        /// </summary>
+        public static string ContractsCancel {
+            get {
+                return ResourceManager.GetString("ContractsCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to device status.
+        /// </summary>
+        public static string DeviceStatus {
+            get {
+                return ResourceManager.GetString("DeviceStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application Memory.
+        /// </summary>
+        public static string DeviceStatusApplicationMemoryUsage {
+            get {
+                return ResourceManager.GetString("DeviceStatusApplicationMemoryUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string DeviceStatusCancel {
+            get {
+                return ResourceManager.GetString("DeviceStatusCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device Firmware Version.
+        /// </summary>
+        public static string DeviceStatusFirmwareVersion {
+            get {
+                return ResourceManager.GetString("DeviceStatusFirmwareVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hardware Version.
+        /// </summary>
+        public static string DeviceStatusHardwareVersion {
+            get {
+                return ResourceManager.GetString("DeviceStatusHardwareVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard Present.
+        /// </summary>
+        public static string DeviceStatusKeyboard {
+            get {
+                return ResourceManager.GetString("DeviceStatusKeyboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device Manufacturer.
+        /// </summary>
+        public static string DeviceStatusManufacturer {
+            get {
+                return ResourceManager.GetString("DeviceStatusManufacturer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MemoryUsage Limit.
+        /// </summary>
+        public static string DeviceStatusMemoryUsageLimit {
+            get {
+                return ResourceManager.GetString("DeviceStatusMemoryUsageLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multi Resolution .
+        /// </summary>
+        public static string DeviceStatusMultiResolution {
+            get {
+                return ResourceManager.GetString("DeviceStatusMultiResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviceName.
+        /// </summary>
+        public static string DeviceStatusName {
+            get {
+                return ResourceManager.GetString("DeviceStatusName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string DeviceStatusNo {
+            get {
+                return ResourceManager.GetString("DeviceStatusNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string DeviceStatusOK {
+            get {
+                return ResourceManager.GetString("DeviceStatusOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Peak Memory Usuage.
+        /// </summary>
+        public static string DeviceStatusPeakMemoryUsage {
+            get {
+                return ResourceManager.GetString("DeviceStatusPeakMemoryUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Power Source.
+        /// </summary>
+        public static string DeviceStatusPowerSource {
+            get {
+                return ResourceManager.GetString("DeviceStatusPowerSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BRIDGEIT .
+        /// </summary>
+        public static string DeviceStatusTitle {
+            get {
+                return ResourceManager.GetString("DeviceStatusTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device Total Memory.
+        /// </summary>
+        public static string DeviceStatusTotalMemory {
+            get {
+                return ResourceManager.GetString("DeviceStatusTotalMemory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string DeviceStatusYes {
+            get {
+                return ResourceManager.GetString("DeviceStatusYes", resourceCulture);
             }
         }
         
@@ -322,7 +556,7 @@ namespace Bridgeit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BRIDGET SETTINGS.
+        ///   Looks up a localized string similar to BRIDGEIT SETTINGS.
         /// </summary>
         public static string SettingsTitle {
             get {

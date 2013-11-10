@@ -27,6 +27,7 @@ using Microsoft.Phone.Tasks;
 using Windows.Storage.Streams;
 using System.ComponentModel;
 using Windows.Foundation;
+using Bridgeit.ViewModels;
 
 namespace Bridgeit.Views
 {
@@ -38,7 +39,7 @@ namespace Bridgeit.Views
     /// <item></item>
     /// </list>
     /// </summary>
-    public partial class CameraPage : PhoneApplicationPage
+    public partial class CameraPage : BridgeitPhoneApplicationPage
     {
         public const int ThumbnailWidth = 30;
         public const int ThumbnailHeight = 20;
@@ -70,16 +71,6 @@ namespace Bridgeit.Views
         /// Photo chooser task for selecting photos from the image real 
         /// </summary>
         private PhotoChooserTask _photoChooserTask;
-
-        /// <summary>
-        ///  store of paramaters that made up the orginal bridgeIt request. 
-        /// </summary>
-        private BridgeItRequest _bridgeitRequest;
-
-        /// <summary>
-        /// store of paramaters that will make up the pridgeIt repsonse.
-        /// </summary>
-        private BridgeItResponse _bridgeitResponse;
 
         /// <summary>
         /// Persisted application settings. 
@@ -366,25 +357,9 @@ namespace Bridgeit.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void AcceptButton_Click(object sender, EventArgs e)
+        private void AcceptButton_Click(object sender, EventArgs e)
         {
-            // create an isnt of the Bridgeit Response
-            _bridgeitResponse.EchoValue = _bridgeitRequest.EchoValue;
-
-            String url = _bridgeitResponse.generateResponseUri(
-                _bridgeitRequest.ReturnURL, _bridgeitRequest.Options);
-
-            // go back to the calling URL. 
-            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(url));
-            if (success)
-            {
-                System.Diagnostics.Debug.WriteLine("Accepted Photo going back... " + url);
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("Failed to capture image can't navigate ... " + url);
-                await Windows.System.Launcher.LaunchUriAsync(new Uri(_bridgeitRequest.ReturnURL));
-            }
+            base.SubmitData_Click(sender, e);
         }
 
         /// <summary>
@@ -393,22 +368,9 @@ namespace Bridgeit.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void CancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
-            if (_fileUploadWorker != null && _fileUploadWorker.WorkerSupportsCancellation == true)
-            {
-                _fileUploadWorker.CancelAsync();
-            }
-
-            // navigate back the 
-            var options = new Windows.System.LauncherOptions();
-            options.TreatAsUntrusted = true;
-            string url = _bridgeitRequest.ReturnURL;
-            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(url));
-            if (success)
-            {
-                System.Diagnostics.Debug.WriteLine("Canceling going back... " + url);
-            }
+            base.Cancel_Click(sender, e);
         }
 
         /// <summary>
@@ -693,25 +655,6 @@ namespace Bridgeit.Views
                 e.ImageStream.Close();
                 e.ImageStream.Dispose();
             }
-        }
-
-        /// <summary>
-        /// Resizes the given imageStream to the specified width and height and encodes the new images
-        /// bite in base64 enocding 
-        /// </summary>
-        /// <param name="imageStream">Name of stream to scale</param>
-        /// <param name="width">thumbnail width</param>
-        /// <param name="height">thumbnail height</param>
-        /// <returns>Thumbnail image sized to the specified width and height.</returns>
-        private string CreateResizedBase64Thumbnail(Stream imageStream, int width, int height)
-        {
-            WriteableBitmap wbOutput = Microsoft.Phone.PictureDecoder.DecodeJpeg(imageStream, width, height);
-            System.IO.MemoryStream ms = new MemoryStream();
-            wbOutput.SaveJpeg(ms, wbOutput.PixelWidth, wbOutput.PixelHeight, width, height);
-            byte[] smallBinaryData = ms.GetBuffer();
-            string encodedThumbNail = System.Convert.ToBase64String(smallBinaryData);
-            ms.FlushAsync();
-            return encodedThumbNail;
         }
 
         /// <summary>
