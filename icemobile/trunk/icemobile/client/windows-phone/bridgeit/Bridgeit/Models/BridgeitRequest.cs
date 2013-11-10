@@ -10,6 +10,7 @@ namespace Bridgeit.Models
     /// BridgeitParams stores the parsed values of know keys in the a Bridgeit url. 
     /// The know keys are as follows:
     /// <list>
+    ///      id: id of the calling html element
     ///      c: command name with parameters
     ///      u: URL to POST command data
     ///      r: URL to return to in the browser
@@ -22,8 +23,23 @@ namespace Bridgeit.Models
     /// </list>
     /// There are also params that are used to pass data back to the calling url.   
     /// </summary>
-    class BridgeItRequest
+    public class BridgeItRequest
     {
+        /// <summary>
+        /// command name with parameters key.
+        /// </summary>
+        public const string MsKey = "ms";
+
+        /// <summary>
+        /// id of calling element name with parameters key.
+        /// </summary>
+        public const string IdKey = "id";
+
+        /// <summary>
+        /// Ub parameters key.
+        /// </summary>
+        public const string UbKey = "ub";
+
         /// <summary>
         /// command name with parameters key.
         /// </summary>
@@ -74,6 +90,17 @@ namespace Bridgeit.Models
         /// </summary>
         public const string HKey = "h";
 
+
+        /// <summary>
+        /// command name with parameters 'id='
+        /// </summary>
+        private string id;
+
+        /// <summary>
+        /// 'ub='
+        /// </summary>
+        private string ub;
+
         /// <summary>
         /// command name with parameters 'c:'
         /// </summary>
@@ -116,6 +143,7 @@ namespace Bridgeit.Models
         public BridgeItRequest(IDictionary<string, string> queryStrings, String decodedUrl)
         {
             // url hashcode fragement used for restoring 
+            queryStrings.TryGetValue(IdKey, out id);
             queryStrings.TryGetValue(CKey, out commandName);
             queryStrings.TryGetValue(UKey, out postBackURL);
             queryStrings.TryGetValue(RKey, out returnURL);
@@ -123,6 +151,15 @@ namespace Bridgeit.Models
             queryStrings.TryGetValue(SKey, out splashScreen);
             queryStrings.TryGetValue(HKey, out echoValue);
 
+            // pull out the ms query string which we add via the AssociationUriMapper
+            string msQueryString; 
+            queryStrings.TryGetValue(MsKey, out msQueryString);
+            Dictionary<string,string> subCommands = parseMsQueryString(msQueryString);
+            if (subCommands != null)
+            {
+                subCommands.TryGetValue(IdKey, out id);
+                subCommands.TryGetValue(UbKey, out ub);
+            }
 
             // TODO: parse out the options to 
             String optionstring;
@@ -139,6 +176,46 @@ namespace Bridgeit.Models
                     }
                 }
             }
+        }
+
+        private Dictionary<string,string> parseMsQueryString(string msQueryString)
+        {
+            // deocde
+            if (msQueryString != null)
+            {
+                msQueryString = System.Net.HttpUtility.UrlDecode(msQueryString);
+                // split on the &
+                string[] parts = msQueryString.Split('&');
+                Dictionary<string, string> store = new Dictionary<string, string>();
+                foreach (String nameValuePairs in parts)
+                {
+                    String[] pairs = nameValuePairs.Split('=');
+                    if (pairs.Length == 2)
+                    {
+                        store.Add(pairs[0], pairs[1]);
+                    }
+                }
+                return store;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// <value>Property <c>CommandName</c> bridgeIt command call,  camera, microphone, etc.</value>
+        /// </summary>
+        public string Id
+        {
+            get { return id; }
+            private set { }
+        }
+
+        /// <summary>
+        /// <value>Property <c>Ub</c> bridgeIt var.</value>
+        /// </summary>
+        public string Ub
+        {
+            get { return Ub; }
+            private set { }
         }
 
         /// <summary>
@@ -165,7 +242,7 @@ namespace Bridgeit.Models
         public string ReturnURL
         {
             get { return returnURL; }
-            private set { }
+            set { returnURL = value; }
         }
 
         /// <summary>

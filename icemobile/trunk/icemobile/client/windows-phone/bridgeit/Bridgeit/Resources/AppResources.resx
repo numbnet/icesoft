@@ -119,7 +119,7 @@
   </resheader>
   <data name="ResourceFlowDirection" xml:space="preserve">
     <value>LeftToRight</value>
-    <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
+    <comment>http://10.18.39.175:8080/bridgeit/simplecamera.html</comment>
   </data>
   <data name="ResourceLanguage" xml:space="preserve">
     <value>en-US</value>
@@ -135,7 +135,7 @@
     <value>launch</value>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
-    <value>BRIDGET SETTINGS</value>
+    <value>BRIDGEIT SETTINGS</value>
   </data>
   <data name="SettingsLaunchGoButtonText" xml:space="preserve">
     <value>go</value>
@@ -209,5 +209,84 @@
   </data>
   <data name="LaunchURL" xml:space="preserve">
     <value>http://www.bridgeit.mobi/</value>
+    <comment>http://www.bridgeit.mobi/   http://www.bridgeit.mobi/demo/contact-list.html</comment>
+  </data>
+  <data name="DeviceStatus" xml:space="preserve">
+    <value>device status</value>
+  </data>
+  <data name="DeviceStatusApplicationMemoryUsage" xml:space="preserve">
+    <value>Application Memory</value>
+  </data>
+  <data name="DeviceStatusCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DeviceStatusFirmwareVersion" xml:space="preserve">
+    <value>Device Firmware Version</value>
+  </data>
+  <data name="DeviceStatusHardwareVersion" xml:space="preserve">
+    <value>Hardware Version</value>
+  </data>
+  <data name="DeviceStatusKeyboard" xml:space="preserve">
+    <value>Keyboard Present</value>
+  </data>
+  <data name="DeviceStatusManufacturer" xml:space="preserve">
+    <value>Device Manufacturer</value>
+  </data>
+  <data name="DeviceStatusMemoryUsageLimit" xml:space="preserve">
+    <value>MemoryUsage Limit</value>
+  </data>
+  <data name="DeviceStatusMultiResolution" xml:space="preserve">
+    <value>Multi Resolution </value>
+  </data>
+  <data name="DeviceStatusName" xml:space="preserve">
+    <value>DeviceName</value>
+  </data>
+  <data name="DeviceStatusNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="DeviceStatusOK" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="DeviceStatusPeakMemoryUsage" xml:space="preserve">
+    <value>Peak Memory Usuage</value>
+  </data>
+  <data name="DeviceStatusPowerSource" xml:space="preserve">
+    <value>Power Source</value>
+  </data>
+  <data name="DeviceStatusTitle" xml:space="preserve">
+    <value>BRIDGEIT </value>
+  </data>
+  <data name="DeviceStatusTotalMemory" xml:space="preserve">
+    <value>Device Total Memory</value>
+  </data>
+  <data name="DeviceStatusYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="ContactsNoResults" xml:space="preserve">
+    <value>no results</value>
+  </data>
+  <data name="ContactsResultsLoading" xml:space="preserve">
+    <value>results are loading...</value>
+  </data>
+  <data name="ContactsSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="ContactsSubTitle" xml:space="preserve">
+    <value>people</value>
+  </data>
+  <data name="ContactsTitle" xml:space="preserve">
+    <value>BRIDGEIT</value>
+  </data>
+  <data name="ContractsAccept" xml:space="preserve">
+    <value>accept</value>
+  </data>
+  <data name="ContractsCancel" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="BarCodeScannerAccept" xml:space="preserve">
+    <value>accept</value>
+  </data>
+  <data name="BarCodeScannerCameraError" xml:space="preserve">
+    <value>Unable to initialize the camera</value>
   </data>
 </root>

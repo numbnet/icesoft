@@ -53,6 +53,25 @@ namespace Bridgeit.Models
         public const string DataUploadMessageKey = "dataUploadMessageEnabled";
         public const bool DataUploadMessageDefault = true;
 
+        /// <summary>
+        /// Enable/disable the camera uri command launching, on by default. 
+        /// </summary>
+        public const string CameraSupportedKey = "cameraSupportEnabled";
+        public const bool CameraSupportedDefault = true;
+
+        /// <summary>
+        /// Enable/disable the fetchContacts uri command launching, on by default. 
+        /// </summary>
+        public const string ContactSupportedKey = "contactSupportEnabled";
+        public const bool ContactSupportedDefault = true;
+
+        /// <summary>
+        /// Enable/disable the fetchContacts uri command launching, on by default. 
+        /// </summary>
+        public const string ScannerSupportedKey = "scannerEnabledSetting";
+        public const bool ScannerSupportedDefault = true;
+        
+
         // Our settings. 
         private IsolatedStorageSettings settings;
 
@@ -164,76 +183,19 @@ namespace Bridgeit.Models
             }
         }
 
-/*
+
         /// <summary>
-        /// Property to get and set a CheckBox Setting Key.
+        /// Property to get and set the cameraSupportedKey.
         /// </summary>
-        public bool CheckBoxSetting
+        public bool cameraEnabledSetting
         {
             get
             {
-                return GetValueOrDefault<bool>(CheckBoxSettingKeyName, CheckBoxSettingDefault);
+                return GetValueOrDefault<bool>(CameraSupportedKey, CameraSupportedDefault);
             }
             set
             {
-                if (AddOrUpdateValue(CheckBoxSettingKeyName, value))
-                {
-                    Save();
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Property to get and set a ListBox Setting Key.
-        /// </summary>
-        public int ListBoxSetting
-        {
-            get
-            {
-                return GetValueOrDefault<int>(ListBoxSettingKeyName, ListBoxSettingDefault);
-            }
-            set
-            {
-                if (AddOrUpdateValue(ListBoxSettingKeyName, value))
-                {
-                   Save();
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Property to get and set a RadioButton Setting Key.
-        /// </summary>
-        public bool RadioButton1Setting
-        {
-            get
-            {
-                return GetValueOrDefault<bool>(RadioButton1SettingKeyName, RadioButton1SettingDefault);
-            }
-            set
-            {
-                if (AddOrUpdateValue(RadioButton1SettingKeyName, value))
-                {    
-                    Save();
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Property to get and set a RadioButton Setting Key.
-        /// </summary>
-        public bool RadioButton2Setting
-        {
-            get
-            {
-                return GetValueOrDefault<bool>(RadioButton2SettingKeyName, RadioButton2SettingDefault);
-            }
-            set
-            {
-                if (AddOrUpdateValue(RadioButton2SettingKeyName, value))
+                if (AddOrUpdateValue(CameraSupportedKey, value))
                 {
                     Save();
                 }
@@ -241,17 +203,17 @@ namespace Bridgeit.Models
         }
 
         /// <summary>
-        /// Property to get and set a RadioButton Setting Key.
+        /// Property to get and set the cameraSupportedKey.
         /// </summary>
-        public bool RadioButton3Setting
+        public bool contactsEnabledSetting
         {
             get
             {
-                return GetValueOrDefault<bool>(RadioButton3SettingKeyName, RadioButton3SettingDefault);
+                return GetValueOrDefault<bool>(ContactSupportedKey, ContactSupportedDefault);
             }
             set
             {
-                if (AddOrUpdateValue(RadioButton3SettingKeyName, value))
+                if (AddOrUpdateValue(ContactSupportedKey, value))
                 {
                     Save();
                 }
@@ -259,40 +221,131 @@ namespace Bridgeit.Models
         }
 
         /// <summary>
-        /// Property to get and set a Username Setting Key.
+        /// Property to get and set the cameraSupportedKey.
         /// </summary>
-        public string UsernameSetting
+        public bool scannerEnabledSetting
         {
             get
             {
-                return GetValueOrDefault<string>(UsernameSettingKeyName, UsernameSettingDefault);
+                return GetValueOrDefault<bool>(ScannerSupportedKey, ContactSupportedDefault);
             }
             set
             {
-                if (AddOrUpdateValue(UsernameSettingKeyName, value))
+                if (AddOrUpdateValue(ScannerSupportedKey, value))
                 {
                     Save();
                 }
             }
         }
 
-        /// <summary>
-        /// Property to get and set a Password Setting Key.
-        /// </summary>
-        public string PasswordSetting
-        {
-            get
-            {
-                return GetValueOrDefault<string>(PasswordSettingKeyName, PasswordSettingDefault);
-            }
-            set
-            {
-                if (AddOrUpdateValue(PasswordSettingKeyName, value))
+        /*
+       
+                public int ListBoxSetting
                 {
-                    Save();
+                    get
+                    {
+                        return GetValueOrDefault<int>(ListBoxSettingKeyName, ListBoxSettingDefault);
+                    }
+                    set
+                    {
+                        if (AddOrUpdateValue(ListBoxSettingKeyName, value))
+                        {
+                           Save();
+                        }
+                    }
                 }
-            }
-        }
-  */
+
+
+                /// <summary>
+                /// Property to get and set a RadioButton Setting Key.
+                /// </summary>
+                public bool RadioButton1Setting
+                {
+                    get
+                    {
+                        return GetValueOrDefault<bool>(RadioButton1SettingKeyName, RadioButton1SettingDefault);
+                    }
+                    set
+                    {
+                        if (AddOrUpdateValue(RadioButton1SettingKeyName, value))
+                        {    
+                            Save();
+                        }
+                    }
+                }
+
+
+                /// <summary>
+                /// Property to get and set a RadioButton Setting Key.
+                /// </summary>
+                public bool RadioButton2Setting
+                {
+                    get
+                    {
+                        return GetValueOrDefault<bool>(RadioButton2SettingKeyName, RadioButton2SettingDefault);
+                    }
+                    set
+                    {
+                        if (AddOrUpdateValue(RadioButton2SettingKeyName, value))
+                        {
+                            Save();
+                        }
+                    }
+                }
+
+                /// <summary>
+                /// Property to get and set a RadioButton Setting Key.
+                /// </summary>
+                public bool RadioButton3Setting
+                {
+                    get
+                    {
+                        return GetValueOrDefault<bool>(RadioButton3SettingKeyName, RadioButton3SettingDefault);
+                    }
+                    set
+                    {
+                        if (AddOrUpdateValue(RadioButton3SettingKeyName, value))
+                        {
+                            Save();
+                        }
+                    }
+                }
+
+                /// <summary>
+                /// Property to get and set a Username Setting Key.
+                /// </summary>
+                public string UsernameSetting
+                {
+                    get
+                    {
+                        return GetValueOrDefault<string>(UsernameSettingKeyName, UsernameSettingDefault);
+                    }
+                    set
+                    {
+                        if (AddOrUpdateValue(UsernameSettingKeyName, value))
+                        {
+                            Save();
+                        }
+                    }
+                }
+
+                /// <summary>
+                /// Property to get and set a Password Setting Key.
+                /// </summary>
+                public string PasswordSetting
+                {
+                    get
+                    {
+                        return GetValueOrDefault<string>(PasswordSettingKeyName, PasswordSettingDefault);
+                    }
+                    set
+                    {
+                        if (AddOrUpdateValue(PasswordSettingKeyName, value))
+                        {
+                            Save();
+                        }
+                    }
+                }
+          */
     }
 }

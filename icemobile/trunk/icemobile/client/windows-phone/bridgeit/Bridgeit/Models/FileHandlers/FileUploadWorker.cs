@@ -82,7 +82,7 @@ namespace Bridgeit.Models.FileHandlers
             try { 
                 uri = new Uri(_uploadUrl);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show(Bridgeit.Resources.AppResources.CameraAppProgresIndicatorFailure2 + _uploadUrl);
             }

@@ -26,7 +26,7 @@ namespace Bridgeit.Models
     /// 
     /// 
     /// </summary>
-    class BridgeItResponse
+    public class BridgeItResponse
     {
         /// <summary>
         /// Server response text key.
@@ -49,18 +49,20 @@ namespace Bridgeit.Models
         private const string CKey = "!c=";
 
         // uri building chars. 
-        private const char Amp = '&';
-        private const char Equals = '=';
-        private const char SemiColon = ';';
-        private const char Comma = ',';
-        private const string Namespace = "#icemobilesx_";
-        private const string DataContentType = "data:";
-        private const string Base64Encoding = "base64";
+        public const char Amp = '&';
+        public const char EqualsChar = '=';
+        public const char SemiColon = ';';
+        public const char Comma = ',';
+        public const string Namespace = "#icemobilesx";
+        public const string Underscore = "_";
+        public const string DataContentType = "data:";
+        public const string Base64Encoding = "base64";
 
         /// <summary>
         ///result of command associated with id 'id='
         /// </summary>
         public string Id { get; set; }
+        public string IdValue { get; set; }
 
         /// <summary>
         /// server response text '!r='
@@ -85,7 +87,7 @@ namespace Bridgeit.Models
         /// <summary>
         /// Content type of preview data. 
         /// </summary>
-        private string contentType;
+        public string ContentType { get; set; }
 
         /// <summary>
         /// Create a new BridgeItRepsonse. 
@@ -93,7 +95,12 @@ namespace Bridgeit.Models
         /// <param name="contentType">contentType of the data privew !p= data. </param>
         public BridgeItResponse(string contentType)
         {
-            this.contentType = contentType;
+            this.ContentType = contentType;
+        }
+
+        public BridgeItResponse()
+        {
+
         }
 
         /// <summary>
@@ -106,26 +113,49 @@ namespace Bridgeit.Models
         /// <returns></returns>
         public string generateResponseUri(string postBackUrl, IDictionary<String,String> options)
         {
+
+            // check if we need to encode the url as base 64
+            string encoding = null;
+            bool found = options.TryGetValue(BridgeItRequest.OptionsEncodingKey, out encoding);
+            bool base64Encoding = false;
+            // check for en-base64 in the options map. 
+            if (found && encoding.Equals(Base64Encoding))
+            {
+                base64Encoding = true;
+            }
+
             // base url construction
-            StringBuilder responseUrl = new StringBuilder(postBackUrl);
-            // the responseURL allready ends with #icemobilesx but the callback is expecting #icemobilesx_
-            responseUrl.Append(Namespace);
+            StringBuilder baseUrl = new StringBuilder(postBackUrl);
+            // the responseURL should ends with #icemobilesx but the callback is expecting #icemobilesx_
+            // but we only to this if the icemobilesx was found as it means our javascript made the call. 
+            if (postBackUrl.EndsWith(Namespace)) baseUrl.Append(Underscore);
+
+            // url params to be appended to the basue url. 
             StringBuilder responseParams = new StringBuilder();
             // append id if specified by the calling component 
             if (Id != null)
             {
-                responseParams.Append(Id).Append(Equals);
+                if (!base64Encoding) {
+                    responseParams.Append(Id).Append(EqualsChar).Append(IdValue);
+                }
+                // double encode for base64 enocding 
+                else
+                {
+                    String id = Id + EqualsChar + IdValue;
+                    responseParams.Append(System.Net.HttpUtility.UrlEncode(id));
+                }
             }
             // servers response text from data upload
             if (ServerResponse != null)
             {
-                //// json, {data:<server-response-value>}
+                //// plain text server response copy
                 responseParams.Append(RKey).Append(ServerResponse);
             }
             // echo value of h request param
             if (EchoValue != null)
             {
                 EchoValue = EchoValue.Substring(1);
+                // quick encoding of the '=' in the 
                 EchoValue = EchoValue.Replace("=", "%3d");
                 responseParams.Append(HKey).Append(EchoValue);
             }
@@ -142,16 +172,13 @@ namespace Bridgeit.Models
                 // POST request and GET request URLs. 
                 int length = PreviewContent.Length;
                 System.Diagnostics.Debug.WriteLine("Preview Length " + length);
-                responseParams.Append(PKey).Append(DataContentType).Append(contentType).Append(SemiColon)
+                responseParams.Append(PKey).Append(DataContentType).Append(ContentType).Append(SemiColon)
                     .Append(Base64Encoding).Append(Comma).Append(PreviewContent);
             }
-
-            String responseParameters = responseParams.ToString(); 
-            // check if we need to encode the url as base 64
-            string encoding = null;
-            bool found = options.TryGetValue(BridgeItRequest.OptionsEncodingKey, out encoding);
-            // check for en-base64 in the options map. 
-            if (found && encoding.Equals(Base64Encoding))
+            // finalize the response string.  
+            String responseParameters = responseParams.ToString();
+            // check for en-base64 in the options map.
+            if (base64Encoding)
             {
                 //responseParameters = System.Convert.ToBase64String(GetBytes(responseParameters));
                 responseParameters = System.Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes(responseParameters));
@@ -159,8 +186,8 @@ namespace Bridgeit.Models
                 responseParameters = responseParameters.Replace('/', '.');
                 responseParameters = responseParameters.Replace('=', '~');
             }
-            string response = responseUrl.ToString() + responseParameters;
-            return response;
+            string responseUrl = baseUrl.ToString() + responseParameters;
+            return responseUrl;
         }
 
         /// <summary>
