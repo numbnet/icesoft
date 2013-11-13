@@ -89,7 +89,7 @@ public class EchoServiceController {
         }
         //REST variant
 //        URLConnection pushServiceConnection =
-//                new URL(pushServiceURL + "/rest/groups/" + group + "?apikey=01B5B7AF-5B83-48F9-880A-B853165B98DC")
+//                new URL(pushServiceURL + "/rest/groups/" + group + "?apikey=197EBF31-40CD-444F-826F-10158A0F3581")
 //                .openConnection();
         URLConnection pushServiceConnection =
                 new URL(pushServiceURL + "/notify.icepush")
@@ -98,7 +98,7 @@ public class EchoServiceController {
         pushServiceConnection.setDoOutput(true);
         OutputStream commandStream = pushServiceConnection.getOutputStream();
         commandStream.write(
-        ("delay=2000&duration=0&ice.push.apikey=01B5B7AF-5B83-48F9-880A-B853165B98DC&ice.push.browser=deadbeef&group=" + group).getBytes());
+        ("delay=2000&duration=0&ice.push.apikey=197EBF31-40CD-444F-826F-10158A0F3581&ice.push.browser=deadbeef&group=" + group).getBytes());
         commandStream.flush();
         commandStream.close();
 
