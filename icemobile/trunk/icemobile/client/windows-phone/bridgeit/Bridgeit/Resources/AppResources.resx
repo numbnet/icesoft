@@ -202,13 +202,13 @@
     <value>There was a problem uploading your photo</value>
   </data>
   <data name="CameraAppProgressIndicatorCanceled" xml:space="preserve">
-    <value>photo upload canceled</value>
+    <value>photo upload cancelled</value>
   </data>
   <data name="CameraAppBarAboutMenuItemMessage" xml:space="preserve">
     <value>BridgeIt Camera Integration</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>http://www.bridgeit.mobi/</value>
+    <value>http://10.18.39.175:8080/bridgeit/simplecamera.html</value>
     <comment>http://www.bridgeit.mobi/   http://www.bridgeit.mobi/demo/contact-list.html</comment>
   </data>
   <data name="DeviceStatus" xml:space="preserve">
@@ -288,5 +288,38 @@
   </data>
   <data name="BarCodeScannerCameraError" xml:space="preserve">
     <value>Unable to initialize the camera</value>
+  </data>
+  <data name="MicrophoneAcceptBtn" xml:space="preserve">
+    <value>accept</value>
+  </data>
+  <data name="MicrophonePlayBtn" xml:space="preserve">
+    <value>play</value>
+  </data>
+  <data name="MicrophoneRecordBtn" xml:space="preserve">
+    <value>record</value>
+  </data>
+  <data name="MicrophoneSubTitle" xml:space="preserve">
+    <value>record audio</value>
+  </data>
+  <data name="MicrophoneTitle" xml:space="preserve">
+    <value>BRIDGEIT</value>
+  </data>
+  <data name="MicrophoneUploadBtn" xml:space="preserve">
+    <value>upload</value>
+  </data>
+  <data name="MicrophoneAppProgresIndicatorFailure" xml:space="preserve">
+    <value>sound bite failed to upload {0}</value>
+  </data>
+  <data name="MicrophoneCancelBtn" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="MicrophoneProgresIndicatorFailure2" xml:space="preserve">
+    <value>There was a problem uploading your sound bite</value>
+  </data>
+  <data name="MicrophoneProgressIndicator" xml:space="preserve">
+    <value>uploading sound bite {0} %</value>
+  </data>
+  <data name="MicrophoneProgressIndicatorCanceled" xml:space="preserve">
+    <value>sound bite upload cancelled </value>
   </data>
 </root>

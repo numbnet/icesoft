@@ -7,9 +7,9 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bridgeit")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("BridgeIt is the bridge between the web and your phone.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ICEsoft Technologies Canada Corp.")]
 [assembly: AssemblyProduct("Bridgeit")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]

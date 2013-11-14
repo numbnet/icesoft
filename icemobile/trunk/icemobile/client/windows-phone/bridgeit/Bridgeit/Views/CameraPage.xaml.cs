@@ -181,16 +181,6 @@ namespace Bridgeit.Views
         }
 
         /// <summary>
-        /// Helper to show/hide the progress bar. 
-        /// </summary>
-        /// <param name="isVisible"></param>
-        private static void SetProgressIndicator(bool isVisible)
-        {
-            SystemTray.ProgressIndicator.IsIndeterminate = isVisible;
-            SystemTray.ProgressIndicator.IsVisible = isVisible;
-        }
-
-        /// <summary>
         /// Build out the camera and upload controls using the application bar. 
         /// </summary>
         private void BuildLocalizedApplicationBar()
@@ -213,7 +203,7 @@ namespace Bridgeit.Views
             ApplicationBar.Buttons.Add(_folderButton);
 
             // Create a the uplod button for sending the photo the the upload url in BridgeitRequest
-            _uploadButton = new ApplicationBarIconButton(new Uri("/Assets/camera/upload.png", UriKind.Relative));
+            _uploadButton = new ApplicationBarIconButton(new Uri("/Assets/common/upload.png", UriKind.Relative));
             _uploadButton.Text = AppResources.CameraAppBarUploadButtonText;
             _uploadButton.IsEnabled = false;
             _uploadButton.Click += UploadButton_Click;
@@ -310,7 +300,8 @@ namespace Bridgeit.Views
 
             // upload the selected photo
             string postBackURL = _bridgeitRequest.PostBackURL;
-            _fileUploadWorker.setUploadLocation(_currenLargeImageFileName, postBackURL);
+            string commandId = _bridgeitRequest.Id;
+            _fileUploadWorker.setUploadLocation(_currenLargeImageFileName, commandId, postBackURL);
             
             bool failure = false;
             try

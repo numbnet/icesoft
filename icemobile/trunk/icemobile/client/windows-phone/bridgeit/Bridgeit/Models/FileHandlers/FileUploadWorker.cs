@@ -35,6 +35,7 @@ namespace Bridgeit.Models.FileHandlers
 
         // file upload properties
         private string _fileName;
+        private string _idName;
         private string _contentType;
         private string _uploadUrl;
         // running boundary string used to speerated the image data into blocks. 
@@ -52,11 +53,13 @@ namespace Bridgeit.Models.FileHandlers
         /// Sets the upload url and file name used for the multipart response. 
         /// </summary>
         /// <param name="fileName">filename used in request</param>
+        /// <param name="idName">id of the calling html elmeent</param>
         /// <param name="uploadURL">url to send request to</param>
-        public void setUploadLocation(string fileName, string uploadURL)
+        public void setUploadLocation(string fileName, string idName, string uploadURL)
         {
             this._fileName = fileName;
             this._uploadUrl = uploadURL;
+            this._idName = idName;
         }
 
         /// <summary>
@@ -123,7 +126,7 @@ namespace Bridgeit.Models.FileHandlers
             // Send headers.
             string headerTemplate = "Content-Disposition: form-data; ";
             headerTemplate += "name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: " + contentType + "\r\n\r\n";
-            string header = string.Format(headerTemplate, "cameraBtn", _fileName);
+            string header = string.Format(headerTemplate, _idName, _fileName);
             byte[] headerbytes = System.Text.Encoding.UTF8.GetBytes(header);
             memStream.Write(headerbytes, 0, headerbytes.Length);
 

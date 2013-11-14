@@ -113,6 +113,9 @@
     <Compile Include="Views\ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MicrophonePage.xaml.cs">
+      <DependentUpon>MicrophonePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ScannerPage.xaml.cs">
       <DependentUpon>ScannerPage.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MicrophonePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ScannerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -168,13 +175,16 @@
   <ItemGroup>
     <Content Include="Assets\camera\camera.png" />
     <Content Include="Assets\camera\folder.png" />
-    <Content Include="Assets\camera\upload.png" />
+    <Content Include="Assets\common\upload.png" />
     <Content Include="Assets\common\cancel.png" />
     <Content Include="Assets\common\check.png" />
     <Content Include="Assets\common\search.png" />
     <Content Include="Assets\Tiles\win-100-70.png" />
     <Content Include="Assets\Tiles\win-159-100.png" />
     <Content Include="Assets\Tiles\win-336-215.png" />
+    <Content Include="ReadMe.Coding4Fun.Toolkit.txt" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <None Include="SplashScreenImage_disabledjpg" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +194,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Coding4Fun.Toolkit.Audio">
+      <HintPath>..\packages\Coding4Fun.Toolkit.Audio.2.0.7\lib\windowsphone8\Coding4Fun.Toolkit.Audio.dll</HintPath>
+    </Reference>
     <Reference Include="zxing.wp8.0">
       <HintPath>..\packages\ZXing.Net.0.12.0.0\lib\wp8\zxing.wp8.0.dll</HintPath>
     </Reference>
