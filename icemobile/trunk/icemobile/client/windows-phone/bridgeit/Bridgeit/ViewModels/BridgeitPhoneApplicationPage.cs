@@ -1,5 +1,6 @@
 ﻿using Bridgeit.Models;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -105,6 +106,16 @@ namespace Bridgeit.ViewModels
             string encodedThumbNail = System.Convert.ToBase64String(smallBinaryData);
             ms.FlushAsync();
             return encodedThumbNail;
+        }
+
+        /// <summary>
+        /// Helper to show/hide the progress bar. 
+        /// </summary>
+        /// <param name="isVisible"></param>
+        protected static void SetProgressIndicator(bool isVisible)
+        {
+            SystemTray.ProgressIndicator.IsIndeterminate = isVisible;
+            SystemTray.ProgressIndicator.IsVisible = isVisible;
         }
     }
 }

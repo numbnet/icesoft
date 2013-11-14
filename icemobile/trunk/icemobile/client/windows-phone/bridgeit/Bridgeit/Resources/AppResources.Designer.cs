@@ -169,7 +169,7 @@ namespace Bridgeit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to photo upload canceled.
+        ///   Looks up a localized string similar to photo upload cancelled.
         /// </summary>
         public static string CameraAppProgressIndicatorCanceled {
             get {
@@ -403,11 +403,110 @@ namespace Bridgeit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://www.bridgeit.mobi/.
+        ///   Looks up a localized string similar to http://10.18.39.175:8080/bridgeit/simplecamera.html.
         /// </summary>
         public static string LaunchURL {
             get {
                 return ResourceManager.GetString("LaunchURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to accept.
+        /// </summary>
+        public static string MicrophoneAcceptBtn {
+            get {
+                return ResourceManager.GetString("MicrophoneAcceptBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sound bite failed to upload {0}.
+        /// </summary>
+        public static string MicrophoneAppProgresIndicatorFailure {
+            get {
+                return ResourceManager.GetString("MicrophoneAppProgresIndicatorFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cancel.
+        /// </summary>
+        public static string MicrophoneCancelBtn {
+            get {
+                return ResourceManager.GetString("MicrophoneCancelBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to play.
+        /// </summary>
+        public static string MicrophonePlayBtn {
+            get {
+                return ResourceManager.GetString("MicrophonePlayBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was a problem uploading your sound bite.
+        /// </summary>
+        public static string MicrophoneProgresIndicatorFailure2 {
+            get {
+                return ResourceManager.GetString("MicrophoneProgresIndicatorFailure2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to uploading sound bite {0} %.
+        /// </summary>
+        public static string MicrophoneProgressIndicator {
+            get {
+                return ResourceManager.GetString("MicrophoneProgressIndicator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sound bite upload cancelled .
+        /// </summary>
+        public static string MicrophoneProgressIndicatorCanceled {
+            get {
+                return ResourceManager.GetString("MicrophoneProgressIndicatorCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to record.
+        /// </summary>
+        public static string MicrophoneRecordBtn {
+            get {
+                return ResourceManager.GetString("MicrophoneRecordBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to record audio.
+        /// </summary>
+        public static string MicrophoneSubTitle {
+            get {
+                return ResourceManager.GetString("MicrophoneSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BRIDGEIT.
+        /// </summary>
+        public static string MicrophoneTitle {
+            get {
+                return ResourceManager.GetString("MicrophoneTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to upload.
+        /// </summary>
+        public static string MicrophoneUploadBtn {
+            get {
+                return ResourceManager.GetString("MicrophoneUploadBtn", resourceCulture);
             }
         }
         

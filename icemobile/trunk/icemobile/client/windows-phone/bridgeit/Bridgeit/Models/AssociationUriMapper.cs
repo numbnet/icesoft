@@ -14,6 +14,8 @@ namespace Bridgeit.Models
     ///        camera - lanches CamerPage.xaml 
     ///        fetchContacts - lanches ContctsPage.xaml 
     ///        fetchDeviceStatus - lanches DeviceStatus.xaml 
+    ///        scan - lanches ScannerPage.xaml 
+    ///        microphone - lanches MicrophonePage.xaml 
     /// </summary>
     class AssociationUriMapper : UriMapperBase
     {
@@ -55,11 +57,17 @@ namespace Bridgeit.Models
                     // /Protocol?encodedLaunchUri=icemobile:c=scan%3F (46 chars to remove)
                     return new Uri("/Views/ScannerPage.xaml?" + MsKey + tempUri.Substring(46), UriKind.Relative);
                 }
-                else if (commandId.StartsWith("fetchDeviceStatus"))
+                else if (setting.scannerEnabledSetting && commandId.StartsWith("microphone"))
                 {
                     // Map the show products request to ShowProducts.xaml
-                    return new Uri("/Views/DeviceStatusPage.xaml?" + tempUri, UriKind.Relative);
+                    // /Protocol?encodedLaunchUri=icemobile:c=microphone%3F (52 chars to remove)
+                    return new Uri("/Views/MicrophonePage.xaml?" + MsKey + tempUri.Substring(52), UriKind.Relative);
                 }
+                //else if (commandId.StartsWith("fetchDeviceStatus"))
+                //{
+                //    // Map the show products request to ShowProducts.xaml
+                //    return new Uri("/Views/DeviceStatusPage.xaml?" + tempUri, UriKind.Relative);
+                //}
                 // TODO had other device integration xaml pages. 
             }
             // Otherwise return to the bridgeit main site. 
