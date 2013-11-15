@@ -434,19 +434,24 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         public void shutdown() {
             //notify all the contexts associated to this monitored session
-            synchronized (contexts){
-                Iterator i = contexts.iterator();
-                while (i.hasNext()) {
-                    ServletContext context = (ServletContext) i.next();
-                    notifySessionShutdown(session, context);
+            synchronized (SessionMonitors) {
+                synchronized (contexts) {
+                    Iterator i = contexts.iterator();
+                    while (i.hasNext()) {
+                        ServletContext context = (ServletContext) i.next();
+                        notifySessionShutdown(session, context);
+                    }
                 }
             }
             try {
                 session.invalidate();
             } catch (IllegalStateException e) {
                 Log.debug("Session already invalidated.");
-                SessionMonitors.remove(id);
+                synchronized (SessionMonitors) {
+                    SessionMonitors.remove(id);
+                }
             }
+
         }
 
         public void shutdownIfExpired() {
