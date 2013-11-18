@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Windows;
 
 using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework.Media;
-using System.Windows;
+using System.Windows.Threading;
 
 namespace Bridgeit.Models.FileHandlers
 {
@@ -87,7 +88,20 @@ namespace Bridgeit.Models.FileHandlers
             }
             catch (Exception)
             {
-                MessageBox.Show(Bridgeit.Resources.AppResources.CameraAppProgresIndicatorFailure2 + _uploadUrl);
+                String message;
+                if (uri != null)
+                {
+                    message = Bridgeit.Resources.AppResources.AppUploadFailure;
+                    message = String.Format(message, uri.ToString());
+                }
+                else
+                {
+                    message = Bridgeit.Resources.AppResources.AppUploadNull;
+                }
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show(message);
+                });
             }
 
             if (uri != null) { 

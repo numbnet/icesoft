@@ -40,6 +40,8 @@ namespace Bridgeit.Views
 
         private ApplicationBarIconButton _acceptButton;
 
+        private bool isScannerInitialized = false;
+
         public ScannerPage()
         {
             InitializeComponent();
@@ -76,7 +78,7 @@ namespace Bridgeit.Views
             // tack on contact info 
             buildBarcodeResponse();
 
-            base.SubmitData_Click(sender, e);    
+            base.SubmitData_Click(sender, e);
         }
 
         /// <summary>
@@ -84,15 +86,20 @@ namespace Bridgeit.Views
         /// </summary>
         private void buildBarcodeResponse()
         {
-
             // add contact name for a test. 
             StringBuilder barcodeParams = new StringBuilder(tbBarcodeData.Text);
-            
+
             // add the id=<element id>=UrlEncode<name=<contactName>&email=<contactEmail>&phone=<phoneNumber>
             _bridgeitResponse.Id = _bridgeitRequest.Id;
-            _bridgeitResponse.IdValue = System.Net.HttpUtility.UrlEncode(barcodeParams.ToString());
+            if (barcodeParams != null)
+            {
+                _bridgeitResponse.IdValue = System.Net.HttpUtility.UrlEncode(barcodeParams.ToString());
+            }
             // replace the older '+' encoding with '%20'
-            _bridgeitResponse.IdValue = _bridgeitResponse.IdValue.Replace("+", "%20");
+            if (_bridgeitResponse.IdValue != null)
+            {
+                _bridgeitResponse.IdValue = _bridgeitResponse.IdValue.Replace("+", "%20");
+            }
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -166,7 +173,10 @@ namespace Bridgeit.Views
         /// <param name="e"></param>
         void CameraButtons_ShutterKeyHalfPressed(object sender, EventArgs e)
         {
-            _phoneCamera.Focus();
+            if (isScannerInitialized)
+            {
+                _phoneCamera.Focus();
+            }
         }
 
         /// <summary>
@@ -219,6 +229,7 @@ namespace Bridgeit.Views
 
                     _barcodeReader.ResultFound += _bcReader_ResultFound;
                     _scanTimer.Start();
+                    isScannerInitialized = true;
                 });
             }
             else

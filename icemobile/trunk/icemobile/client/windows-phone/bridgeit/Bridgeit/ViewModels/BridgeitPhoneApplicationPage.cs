@@ -64,15 +64,25 @@ namespace Bridgeit.ViewModels
                 _bridgeitRequest.ReturnURL, _bridgeitRequest.Options);
 
             // go back to the calling URL. 
-            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(url));
-            if (success)
+            if (_bridgeitRequest.ReturnURL != null)
             {
-                System.Diagnostics.Debug.WriteLine("Accepted device data going back... " + url);
+                var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(url));
+                if (success)
+                {
+                    System.Diagnostics.Debug.WriteLine("Accepted device data going back... " + url);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed to send device data  can't navigate ... " + url);
+                    await Windows.System.Launcher.LaunchUriAsync(new Uri(_bridgeitRequest.ReturnURL));
+                }
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Failed to send device data  can't navigate ... " + url);
-                await Windows.System.Launcher.LaunchUriAsync(new Uri(_bridgeitRequest.ReturnURL));
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
             }
         }
 
@@ -82,10 +92,20 @@ namespace Bridgeit.ViewModels
             var options = new Windows.System.LauncherOptions();
             options.TreatAsUntrusted = true;
             string url = _bridgeitRequest.ReturnURL;
-            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(url));
-            if (success)
+            if (url != null)
             {
-                System.Diagnostics.Debug.WriteLine("Canceling going back... " + url);
+                var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(url));
+                if (success)
+                {
+                    System.Diagnostics.Debug.WriteLine("Canceling going back... " + url);
+                }
+            }
+            else
+            {
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
             }
         }
 

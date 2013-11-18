@@ -21,6 +21,12 @@ namespace Bridgeit.Models
     {
         private const string MsKey = "ms=";
 
+        public const string BaseCommnd = "icemobile:c";
+        public const string CameraCommnd = "camera";
+        public const string FetchCommnd = "fetchContacts";
+        public const string ScanCommnd = "scan";
+        public const string MicrophoneCommnd = "microphone";
+
         /// TODO, application settings to turn on/off support for various hardwares support. 
         public override Uri MapUri(Uri uri)
         {
@@ -43,25 +49,25 @@ namespace Bridgeit.Models
                 {
                     // Map the show products request to ShowProducts.xaml
                     // /Protocol?encodedLaunchUri=icemobile:c=camera%3F (48 chars to remove)
-                    return new Uri("/Views/CameraPage.xaml?" + tempUri.Substring(48), UriKind.Relative);
+                    return processCommand("/Views/CameraPage.xaml?", tempUri, 48);
                 }
                 else if (setting.contactsEnabledSetting && commandId.StartsWith("fetchContacts"))
                 {
                     // Map the show products request to ShowProducts.xaml
                     // /Protocol?encodedLaunchUri=icemobile:c=fetchContacts%3F (55 chars to remove)
-                    return new Uri("/Views/ContactsPage.xaml?" + MsKey + tempUri.Substring(55), UriKind.Relative);
+                    return processCommand("/Views/ContactsPage.xaml?", tempUri, 55);
                 }
                 else if (setting.scannerEnabledSetting && commandId.StartsWith("scan"))
                 {
                     // Map the show products request to ShowProducts.xaml
                     // /Protocol?encodedLaunchUri=icemobile:c=scan%3F (46 chars to remove)
-                    return new Uri("/Views/ScannerPage.xaml?" + MsKey + tempUri.Substring(46), UriKind.Relative);
+                    return processCommand("/Views/ScannerPage.xaml?", tempUri, 46);
                 }
                 else if (setting.scannerEnabledSetting && commandId.StartsWith("microphone"))
                 {
                     // Map the show products request to ShowProducts.xaml
                     // /Protocol?encodedLaunchUri=icemobile:c=microphone%3F (52 chars to remove)
-                    return new Uri("/Views/MicrophonePage.xaml?" + MsKey + tempUri.Substring(52), UriKind.Relative);
+                    return processCommand("/Views/MicrophonePage.xaml?", tempUri, 52);
                 }
                 //else if (commandId.StartsWith("fetchDeviceStatus"))
                 //{
@@ -71,8 +77,30 @@ namespace Bridgeit.Models
                 // TODO had other device integration xaml pages. 
             }
             // Otherwise return to the bridgeit main site. 
-            return new Uri("/Views/Bounce.xaml?" + tempUri, UriKind.Relative);
+            return new Uri("/Views/LauncherPage.xaml?", UriKind.Relative);
             
+        }
+
+        /// <summary>
+        /// Utility to correctly build the url for lauching from a bridgeit html5 app or via the 
+        /// launcher page. 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="tempUri"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        private Uri processCommand(string page, string tempUri, int offset)
+        {
+            // html5 javascript url detected. 
+            if (tempUri.Contains("%3F"))
+            {
+                return new Uri(page + MsKey + tempUri.Substring(offset), UriKind.Relative);
+            }
+            // build a url with the return url for an Launchpage demo. 
+            else
+            {
+                return new Uri(page + tempUri, UriKind.Relative);
+            }
         }
     }
 }

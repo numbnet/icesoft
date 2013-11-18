@@ -28,7 +28,7 @@ namespace Bridgeit.Models
         /// Key to store the default URL used to lauch a test application from BridgeIt UI. 
         /// </summary>
         public const string LaunchUrlKey = "launchUrlKey";
-        public string LaunchUrlDefault = AppResources.SettingsLaunchUriValue;
+        public string LaunchUrlDefault = AppResources.LauncherUriValue;
 
         // General Settings 
 
