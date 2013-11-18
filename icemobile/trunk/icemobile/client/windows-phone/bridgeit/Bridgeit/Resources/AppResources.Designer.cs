@@ -61,6 +61,24 @@ namespace Bridgeit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an error upoloading to {0}.
+        /// </summary>
+        public static string AppUploadFailure {
+            get {
+                return ResourceManager.GetString("AppUploadFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No upload URL was specified, please specify a upload url. .
+        /// </summary>
+        public static string AppUploadNull {
+            get {
+                return ResourceManager.GetString("AppUploadNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to accept.
         /// </summary>
         public static string BarCodeScannerAccept {
@@ -151,7 +169,7 @@ namespace Bridgeit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There was a problem uploading your photo.
+        ///   Looks up a localized string similar to There was a problem uploading your photo .
         /// </summary>
         public static string CameraAppProgresIndicatorFailure2 {
             get {
@@ -403,11 +421,128 @@ namespace Bridgeit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to barcode.
+        /// </summary>
+        public static string LauncherBarcode {
+            get {
+                return ResourceManager.GetString("LauncherBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to camera.
+        /// </summary>
+        public static string LauncherCamera {
+            get {
+                return ResourceManager.GetString("LauncherCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to contacts.
+        /// </summary>
+        public static string LauncherContacts {
+            get {
+                return ResourceManager.GetString("LauncherContacts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note: File uploads may constitute data usage against your carrier data plan.
+        /// </summary>
+        public static string LauncherDataWarning {
+            get {
+                return ResourceManager.GetString("LauncherDataWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify the upload service URL to which the data is to be conveyed..
+        /// </summary>
+        public static string LauncherInstructions {
+            get {
+                return ResourceManager.GetString("LauncherInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://mediacast.icemobile.org/mediacast/upload/ can be used to test functionality..
+        /// </summary>
+        public static string LauncherInstructionsDemoURL {
+            get {
+                return ResourceManager.GetString("LauncherInstructionsDemoURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to microphone.
+        /// </summary>
+        public static string LauncherMicrophone {
+            get {
+                return ResourceManager.GetString("LauncherMicrophone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to launcher.
+        /// </summary>
+        public static string LauncherSubTitle {
+            get {
+                return ResourceManager.GetString("LauncherSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BridgeIt.
+        /// </summary>
+        public static string LauncherTitle {
+            get {
+                return ResourceManager.GetString("LauncherTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to server upload url.
+        /// </summary>
+        public static string LauncherUploadUrl {
+            get {
+                return ResourceManager.GetString("LauncherUploadUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LauncherUriValue {
+            get {
+                return ResourceManager.GetString("LauncherUriValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to file upload may incure carrier data fees. .
+        /// </summary>
+        public static string LauncherWarning {
+            get {
+                return ResourceManager.GetString("LauncherWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://10.18.39.175:8080/bridgeit/simplecamera.html.
         /// </summary>
         public static string LaunchURL {
             get {
                 return ResourceManager.GetString("LaunchURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to upload url.
+        /// </summary>
+        public static string LuncherSubUploadTitle {
+            get {
+                return ResourceManager.GetString("LuncherSubUploadTitle", resourceCulture);
             }
         }
         
@@ -525,141 +660,6 @@ namespace Bridgeit.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to camera.
-        /// </summary>
-        public static string SettingsCameraTitle {
-            get {
-                return ResourceManager.GetString("SettingsCameraTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to turned {0}.
-        /// </summary>
-        public static string SettingsGeneralSplashScreenSubText {
-            get {
-                return ResourceManager.GetString("SettingsGeneralSplashScreenSubText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to splash screen.
-        /// </summary>
-        public static string SettingsGeneralSplashScreenText {
-            get {
-                return ResourceManager.GetString("SettingsGeneralSplashScreenText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to general.
-        /// </summary>
-        public static string SettingsGeneralTitle {
-            get {
-                return ResourceManager.GetString("SettingsGeneralTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to go.
-        /// </summary>
-        public static string SettingsLaunchGoButtonText {
-            get {
-                return ResourceManager.GetString("SettingsLaunchGoButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to launch.
-        /// </summary>
-        public static string SettingsLaunchTitle {
-            get {
-                return ResourceManager.GetString("SettingsLaunchTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to url to load in Internet Explorer.
-        /// </summary>
-        public static string SettingsLaunchUriSubText {
-            get {
-                return ResourceManager.GetString("SettingsLaunchUriSubText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to bridgeIt url.
-        /// </summary>
-        public static string SettingsLaunchUriText {
-            get {
-                return ResourceManager.GetString("SettingsLaunchUriText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://bridgeit.github.io/demo/.
-        /// </summary>
-        public static string SettingsLaunchUriValue {
-            get {
-                return ResourceManager.GetString("SettingsLaunchUriValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Off.
-        /// </summary>
-        public static string SettingsSplashScreenOffTitle {
-            get {
-                return ResourceManager.GetString("SettingsSplashScreenOffTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to On.
-        /// </summary>
-        public static string SettingsSplashScreenOnTitle {
-            get {
-                return ResourceManager.GetString("SettingsSplashScreenOnTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SETTINGS.
-        /// </summary>
-        public static string SettingsSplashScreenPageTitle {
-            get {
-                return ResourceManager.GetString("SettingsSplashScreenPageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to status.
-        /// </summary>
-        public static string SettingsSplashScreenStatusTitle {
-            get {
-                return ResourceManager.GetString("SettingsSplashScreenStatusTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SplashScreen.
-        /// </summary>
-        public static string SettingsSplashScreenTitle {
-            get {
-                return ResourceManager.GetString("SettingsSplashScreenTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BRIDGEIT SETTINGS.
-        /// </summary>
-        public static string SettingsTitle {
-            get {
-                return ResourceManager.GetString("SettingsTitle", resourceCulture);
             }
         }
     }

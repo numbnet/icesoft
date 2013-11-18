@@ -101,6 +101,8 @@
     <Compile Include="Models\FileHandlers\FileUploadWorker.cs" />
     <Compile Include="Models\ApplicationSettings.cs" />
     <Compile Include="ViewModels\BridgeitPhoneApplicationPage.cs" />
+    <Compile Include="ViewModels\FeatureData.cs" />
+    <Compile Include="ViewModels\FeatureModel.cs" />
     <Compile Include="Views\CameraPage.xaml.cs">
       <DependentUpon>CameraPage.xaml</DependentUpon>
     </Compile>
@@ -119,8 +121,8 @@
     <Compile Include="Views\ScannerPage.xaml.cs">
       <DependentUpon>ScannerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsPage.xaml.cs">
-      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    <Compile Include="Views\LauncherPage.xaml.cs">
+      <DependentUpon>LauncherPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
@@ -128,12 +130,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\VideoPage.xaml.cs">
+      <DependentUpon>VideoPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="SampleData\SampleData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CameraPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -158,7 +167,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsPage.xaml">
+    <Page Include="Views\LauncherPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VideoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,6 +188,9 @@
   <ItemGroup>
     <Content Include="Assets\camera\camera.png" />
     <Content Include="Assets\camera\folder.png" />
+    <Content Include="Assets\common\contact.png" />
+    <Content Include="Assets\common\mic.png" />
+    <Content Include="Assets\common\scanner.png" />
     <Content Include="Assets\common\upload.png" />
     <Content Include="Assets\common\cancel.png" />
     <Content Include="Assets\common\check.png" />
@@ -182,6 +198,10 @@
     <Content Include="Assets\Tiles\win-100-70.png" />
     <Content Include="Assets\Tiles\win-159-100.png" />
     <Content Include="Assets\Tiles\win-336-215.png" />
+    <Content Include="Assets\video\feature.video.png" />
+    <Content Include="Assets\video\stop.png" />
+    <Content Include="Assets\video\transport.pause.png" />
+    <Content Include="Assets\video\transport.play.png" />
     <Content Include="ReadMe.Coding4Fun.Toolkit.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />

@@ -8,6 +8,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Bridgeit.Resources;
 using Bridgeit.Models;
+using Bridgeit.ViewModels;
 
 namespace Bridgeit
 {
@@ -19,6 +20,23 @@ namespace Bridgeit
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
+
+        private static FeatureModel viewModel = null;
+
+        public static FeatureModel ViewModel
+        {
+            get
+            {
+                if (viewModel == null)
+                {
+                    viewModel = new FeatureModel();
+                    viewModel.LoadData();
+                }
+
+
+                return viewModel;
+            }
+        }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -69,7 +87,10 @@ namespace Bridgeit
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            
+            if (!App.ViewModel.IsDataLoaded)
+            {
+                App.ViewModel.LoadData();
+            }    
         }
 
         // Code to execute when the application is deactivated (sent to background)

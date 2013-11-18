@@ -128,7 +128,7 @@ namespace Bridgeit.Models
             StringBuilder baseUrl = new StringBuilder(postBackUrl);
             // the responseURL should ends with #icemobilesx but the callback is expecting #icemobilesx_
             // but we only to this if the icemobilesx was found as it means our javascript made the call. 
-            if (postBackUrl.EndsWith(Namespace)) baseUrl.Append(Underscore);
+            if (postBackUrl != null && postBackUrl.EndsWith(Namespace)) baseUrl.Append(Underscore);
 
             // url params to be appended to the basue url. 
             StringBuilder responseParams = new StringBuilder();

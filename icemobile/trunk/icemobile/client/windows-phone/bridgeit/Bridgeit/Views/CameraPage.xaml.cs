@@ -296,7 +296,7 @@ namespace Bridgeit.Views
 
             // setup the progress bar. 
             SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = AppResources.CameraAppProgressIndicator;
+            // SystemTray.ProgressIndicator.Text = AppResources.CameraAppProgressIndicator;
 
             // upload the selected photo
             string postBackURL = _bridgeitRequest.PostBackURL;

@@ -131,23 +131,11 @@
   <data name="CameraAppBarAboutMenuItemText" xml:space="preserve">
     <value>about</value>
   </data>
-  <data name="SettingsLaunchTitle" xml:space="preserve">
-    <value>launch</value>
+  <data name="LauncherTitle" xml:space="preserve">
+    <value>BridgeIt</value>
   </data>
-  <data name="SettingsTitle" xml:space="preserve">
-    <value>BRIDGEIT SETTINGS</value>
-  </data>
-  <data name="SettingsLaunchGoButtonText" xml:space="preserve">
-    <value>go</value>
-  </data>
-  <data name="SettingsLaunchUriText" xml:space="preserve">
-    <value>bridgeIt url</value>
-  </data>
-  <data name="SettingsLaunchUriValue" xml:space="preserve">
-    <value>http://bridgeit.github.io/demo/</value>
-  </data>
-  <data name="SettingsLaunchUriSubText" xml:space="preserve">
-    <value>url to load in Internet Explorer</value>
+  <data name="LauncherUriValue" xml:space="preserve">
+    <value />
   </data>
   <data name="CameraAppBarAcceptButtonText" xml:space="preserve">
     <value>accept</value>
@@ -161,34 +149,6 @@
   <data name="CameraAppBarUploadButtonText" xml:space="preserve">
     <value>upload</value>
   </data>
-  <data name="SettingsCameraTitle" xml:space="preserve">
-    <value>camera</value>
-  </data>
-  <data name="SettingsGeneralSplashScreenSubText" xml:space="preserve">
-    <value>turned {0}</value>
-    <comment>Turned on|off</comment>
-  </data>
-  <data name="SettingsGeneralSplashScreenText" xml:space="preserve">
-    <value>splash screen</value>
-  </data>
-  <data name="SettingsGeneralTitle" xml:space="preserve">
-    <value>general</value>
-  </data>
-  <data name="SettingsSplashScreenOffTitle" xml:space="preserve">
-    <value>Off</value>
-  </data>
-  <data name="SettingsSplashScreenOnTitle" xml:space="preserve">
-    <value>On</value>
-  </data>
-  <data name="SettingsSplashScreenPageTitle" xml:space="preserve">
-    <value>SETTINGS</value>
-  </data>
-  <data name="SettingsSplashScreenStatusTitle" xml:space="preserve">
-    <value>status</value>
-  </data>
-  <data name="SettingsSplashScreenTitle" xml:space="preserve">
-    <value>SplashScreen</value>
-  </data>
   <data name="CameraAppProgresIndicatorFailure" xml:space="preserve">
     <value>photo failed to upload {0}</value>
   </data>
@@ -199,7 +159,7 @@
     <value>photo uploaded successfully</value>
   </data>
   <data name="CameraAppProgresIndicatorFailure2" xml:space="preserve">
-    <value>There was a problem uploading your photo</value>
+    <value>There was a problem uploading your photo </value>
   </data>
   <data name="CameraAppProgressIndicatorCanceled" xml:space="preserve">
     <value>photo upload cancelled</value>
@@ -321,5 +281,44 @@
   </data>
   <data name="MicrophoneProgressIndicatorCanceled" xml:space="preserve">
     <value>sound bite upload cancelled </value>
+  </data>
+  <data name="AppUploadFailure" xml:space="preserve">
+    <value>There was an error upoloading to {0}</value>
+  </data>
+  <data name="AppUploadNull" xml:space="preserve">
+    <value>No upload URL was specified, please specify a upload url. </value>
+  </data>
+  <data name="LauncherBarcode" xml:space="preserve">
+    <value>barcode</value>
+  </data>
+  <data name="LauncherCamera" xml:space="preserve">
+    <value>camera</value>
+  </data>
+  <data name="LauncherContacts" xml:space="preserve">
+    <value>contacts</value>
+  </data>
+  <data name="LauncherDataWarning" xml:space="preserve">
+    <value>Note: File uploads may constitute data usage against your carrier data plan</value>
+  </data>
+  <data name="LauncherInstructions" xml:space="preserve">
+    <value>Please specify the upload service URL to which the data is to be conveyed.</value>
+  </data>
+  <data name="LauncherInstructionsDemoURL" xml:space="preserve">
+    <value>http://mediacast.icemobile.org/mediacast/upload/ can be used to test functionality.</value>
+  </data>
+  <data name="LauncherMicrophone" xml:space="preserve">
+    <value>microphone</value>
+  </data>
+  <data name="LauncherSubTitle" xml:space="preserve">
+    <value>launcher</value>
+  </data>
+  <data name="LauncherUploadUrl" xml:space="preserve">
+    <value>server upload url</value>
+  </data>
+  <data name="LauncherWarning" xml:space="preserve">
+    <value>file upload may incure carrier data fees. </value>
+  </data>
+  <data name="LuncherSubUploadTitle" xml:space="preserve">
+    <value>upload url</value>
   </data>
 </root>
