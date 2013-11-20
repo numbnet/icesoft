@@ -63,21 +63,6 @@
                class="org.icemobile.spring.handler.ResourceStoreRequestHandler">
           <property name="resourceStore" ref="basicResourceStore"/>
    </bean>
-
-   <!-- for Augmented Reality example ResourceStore request support -->
-   <bean id="arResourceStoreRequestHandler"
-               class="org.icemobile.spring.handler.ResourceStoreRequestHandler">
-        <property name="resourceStore" ref="arResourceStore"/>
-   </bean>
-    
-    
-    <!-- handle all requests to /media/* with the RangingResourceRequestHandler 
-        for iOS media support -->
-    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="mappings">
-            <value>/media/**=rangingResourceHandler</value>
-        </property>
-    </bean>
     
     <!-- handle all requests to /icemobile-store/* with the ICEmobileResourceStoreRequestHandler 
        for iOS media support
