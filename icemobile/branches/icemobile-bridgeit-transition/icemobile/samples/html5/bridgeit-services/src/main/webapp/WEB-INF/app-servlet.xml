@@ -80,16 +80,12 @@
     </bean>
     
     <!-- handle all requests to /icemobile-store/* with the ICEmobileResourceStoreRequestHandler 
-       for iOS media support 
-       Augmented Reality media requests routed through /icemobile-ar-store/*
+       for iOS media support
        -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
-<!--             <value>/icemobile-store/**=resourceStoreRequestHandler</value> -->
-<!--             <value>/icemobile-ar-store/**=arResourceStoreRequestHandler</value> -->
             <props>
-              <prop key="/icemobile-store/**">resourceStoreRequestHandler</prop>
-              <prop key="/icemobile-ar-store/**">arResourceStoreRequestHandler</prop>
+              <prop key="/store/**">resourceStoreRequestHandler</prop>
             </props>
         </property>
     </bean>
@@ -144,12 +140,6 @@
     <!-- A Basic ICEmobile Resource Store that does not resource processing -->
     <bean class="org.icemobile.spring.handler.support.MapFileStore"
             name="basicResourceStore">
-    </bean>
-    
-    <!-- A Resource Store that scales all uploaded images -->
-    <bean class="org.icemobile.spring.handler.support.MapFileStore"
-            name="arResourceStore">
-    </bean>
- 
+    </bean> 
 
 </beans>
