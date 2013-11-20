@@ -25,23 +25,21 @@ import org.icemobile.application.Resource;
 import org.icemobile.spring.annotation.ICEmobileResource;
 import org.icemobile.spring.annotation.ICEmobileResourceStore;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 
 @Controller
-@SessionAttributes({"arPhoto"})
 @ICEmobileResourceStore(bean="basicResourceStore")
 public class BridgeItServiceController {
 
     private static final Log LOG = LogFactory.getLog(BridgeItServiceController.class);
 
-    @ModelAttribute("arPhoto")
-    public String createARPhoto() {
-        return new String();
+    
+    private String getBaseURL(HttpServletRequest request){
+        return request.getScheme() + "://" + request.getServerName() 
+            + ":" + request.getServerPort() + request.getContextPath() + "/";
     }
     
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
@@ -50,28 +48,9 @@ public class BridgeItServiceController {
         if( cameraUpload != null ){
             if (cameraUpload.getContentType().startsWith("image")) {
                 try {
-                    String retval = "icemobile-store/"+ cameraUpload.getUuid();
+                    String retval = getBaseURL(request) + "store/"+ cameraUpload.getUuid();
                     LOG.debug("uploaded image: " + retval);
                     return retval;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
-    
-    @RequestMapping(value = "/ar-upload", method=RequestMethod.POST, produces="application/json")
-    public @ResponseBody String arUpload(HttpServletRequest request,
-            @ICEmobileResource("arCameraBtn") Resource cameraUpload,
-            @ModelAttribute("arPhoto") String arPhoto) throws IOException {
-        System.out.println("entering /ar-upload");
-        if( cameraUpload != null ){
-            if (cameraUpload.getContentType().startsWith("image")) {
-                try {
-                    arPhoto = "service/icemobile-store/"+ cameraUpload.getUuid();
-                    LOG.debug("returning " + arPhoto);
-                    return arPhoto;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -86,7 +65,7 @@ public class BridgeItServiceController {
         if( audioUpload != null ){
             if (audioUpload.getContentType().startsWith("audio")) {
                 try {
-                    String retval = "icemobile-store/"+ audioUpload.getUuid();
+                    String retval = getBaseURL(request) + "store/"+ audioUpload.getUuid();
                     LOG.debug("uploade audio: " + retval);
                     return retval;
                 } catch (Exception e) {
@@ -97,10 +76,6 @@ public class BridgeItServiceController {
         return null;
     }
     
-    @RequestMapping(value = "/ar", method=RequestMethod.POST, produces="application/json")
-    public void postAugmentedReality(HttpServletRequest request) throws IOException {
-        System.out.println("postAugmentedReality()");
-    }
         
     @RequestMapping(value = "/video-upload", method=RequestMethod.POST, produces="application/json")
     public @ResponseBody String camcorderUpload(HttpServletRequest request, 
@@ -108,7 +83,7 @@ public class BridgeItServiceController {
         if( camcorderUpload != null ){
             if (camcorderUpload.getContentType().startsWith("video")) {
                 try {
-                    String retval = "icemobile-store/"+ camcorderUpload.getUuid();
+                    String retval = getBaseURL(request) + "store/"+ camcorderUpload.getUuid();
                     LOG.debug("uploaded video: " + retval);
                     return retval;
                 } catch (Exception e) {
