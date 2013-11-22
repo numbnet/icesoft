@@ -41,3 +41,15 @@ html.simulator .mobi-splitpane-scrollable::-webkit-scrollbar,
 html.simulator .mobi-pagePanel-body::-webkit-scrollbar{
     width: 0;
 }
+.icon-mobi-online{
+    color: green;
+}
+.icon-mobi-online:before{
+    content: "\f0c1";
+}
+.icon-mobi-offline{
+    color: red;
+}
+.icon-mobi-offline:before{
+    content: "\f127";
+}

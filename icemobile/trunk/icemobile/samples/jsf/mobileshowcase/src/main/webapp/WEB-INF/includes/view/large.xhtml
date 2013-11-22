@@ -33,9 +33,11 @@
                                     name="icemobile_thumb.png"/>
                 </h:commandLink>
                 <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
+                
                 <!-- theme selector -->
                 <c:if test="#{!mobiClient.IE8orLessBrowser}">
                      <div style="position: absolute;right: 1.5em;top: 6px;">
+                        <mobi:onlineStatus/>
                         <span style="font-size: 14px">
                             <i class="icon-eye-open" style="padding:3px"/>Theme: 
                         </span>
