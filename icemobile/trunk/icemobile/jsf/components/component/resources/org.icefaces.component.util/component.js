@@ -3456,3 +3456,66 @@ ice.mobi.menubutton = {
 
         }
     };
+
+/* Online Status */
+(function() {
+    function OnlineStatus(clientId, cfg) {
+        var id = clientId;
+        var onlineStyleClass = cfg.onlineStyleClass;
+        var offlineStyleClass = cfg.offlineStyleClass;
+        var onOnline = cfg.onOnline;
+        var onOffline = cfg.onOffline;
+        
+        function deregisterEvents(){
+            window.removeEventListener('online', updateOnlineStatus, false);
+            window.removeEventListener('offline', updateOnlineStatus, false);
+        } 
+        
+        function registerEvents(){
+            window.addEventListener('online', updateOnlineStatus, false);
+            window.addEventListener('offline', updateOnlineStatus, false);
+        }
+        
+        registerEvents();
+        
+        function updateOnlineStatus(event) {
+            var elem = document.getElementById(id);
+            if( !elem ){
+                deregisterEvents();
+                return;
+            }
+            if( navigator.onLine ){
+                elem.classList.remove(offlineStyleClass);
+                elem.classList.add(onlineStyleClass);
+                if( onOnline ){
+                    eval(onOnline);
+                }
+            }
+            else{
+                elem.classList.remove(onlineStyleClass);
+                elem.classList.add(offlineStyleClass);
+                if( onOffline ){
+                    eval(onOffline);
+                }
+            }
+        }
+        
+        return {
+            registerEvents: registerEvents,
+            deregisterEvents: deregisterEvents
+        }
+    };
+    ice.mobi.onlineStatus = {
+        instances: {},
+        
+        initClient: function(clientId, cfg) {
+            if (!this.instances[clientId]) {
+                this.instances[clientId] = new OnlineStatus(clientId, cfg);
+            } else {
+                this.instances[clientId].deregisterEvents();
+                this.instances[clientId].registerEvents();
+            }
+        }
+    
+    }
+})();
