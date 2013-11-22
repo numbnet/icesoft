@@ -50,11 +50,33 @@ public class OnlineStatusRenderer extends Renderer {
         
         writer.endElement("i");
         
+        String onOnline = comp.getOnOnline();
+        String onOffline = comp.getOnOffline();
+        
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         String script = "ice.mobi.onlineStatus.initClient('" + clientId 
                 + "', {onlineStyleClass: '" + OnlineStatus.ONLINE_STYLECLASS + "',"
-                + " offlineStyleClass: '" + OnlineStatus.OFFLINE_STYLECLASS + "'});";
+                + " offlineStyleClass: '" + OnlineStatus.OFFLINE_STYLECLASS + "'";
+        
+        if( onOnline != null && onOnline.length() > 0 ){
+            script += ",onOnline: onOnline_" + clientId;
+        }
+        
+        if( onOffline != null && onOffline.length() > 0 ){
+            script += ",onOffline: onOffline_" + clientId;
+        }
+        script += "});";
+        if( onOnline != null && onOnline.length() > 0 ){
+            script += "function onOnline_" + clientId + "(event){"
+                       + onOnline
+                   + "};";
+        }
+        if( onOffline != null && onOffline.length() > 0 ){
+            script += "function onOffline_" + clientId + "(event){"
+                       + onOffline
+                   + "};";
+        }
         writer.write(script);
         writer.endElement("script");
     }

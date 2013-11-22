@@ -58,7 +58,9 @@
                                        rendered="#{mobiNavigationModel.selectedPanel eq 'splash'}"/>
                     </h:form>
                     <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
-                    <mobi:onlineStatus style="position: absolute;right: 10px;top: 12px;"/>
+                    <mobi:onlineStatus style="position: absolute;right: 10px;top: 12px;"
+                        onOnline="console.log('online: ' + event);"
+                        onOffline="console.log'offline: ' + event);"/>
                     <ui:insert name="toolBarContent"/>
                 </f:facet>
         

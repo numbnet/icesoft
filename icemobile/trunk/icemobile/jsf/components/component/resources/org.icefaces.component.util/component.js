@@ -3488,14 +3488,14 @@ ice.mobi.menubutton = {
                 elem.classList.remove(offlineStyleClass);
                 elem.classList.add(onlineStyleClass);
                 if( onOnline ){
-                    eval(onOnline);
+                    onOnline(event);
                 }
             }
             else{
                 elem.classList.remove(onlineStyleClass);
                 elem.classList.add(offlineStyleClass);
                 if( onOffline ){
-                    eval(onOffline);
+                    onOffline(event);
                 }
             }
         }
