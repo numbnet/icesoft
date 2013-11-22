@@ -55,7 +55,6 @@ public class OnlineStatusRenderer extends Renderer {
         String script = "ice.mobi.onlineStatus.initClient('" + clientId 
                 + "', {onlineStyleClass: '" + OnlineStatus.ONLINE_STYLECLASS + "',"
                 + " offlineStyleClass: '" + OnlineStatus.OFFLINE_STYLECLASS + "'});";
-        System.out.println("onlineStatus script: " + script);
         writer.write(script);
         writer.endElement("script");
     }
