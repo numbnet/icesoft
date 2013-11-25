@@ -38,8 +38,11 @@ public class BridgeItServiceController {
 
     
     private String getBaseURL(HttpServletRequest request){
-        return request.getScheme() + "://" + request.getServerName() 
-            + ":" + request.getServerPort() + request.getContextPath() + "/";
+        String server = request.getServerName() + ":" + request.getServerPort();
+        if( "54.244.249.24:8080".equals(server)){
+            server = "api.bridgeit.mobi";
+        }
+        return request.getScheme() + "://" + server + request.getContextPath() + "/";
     }
     
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
