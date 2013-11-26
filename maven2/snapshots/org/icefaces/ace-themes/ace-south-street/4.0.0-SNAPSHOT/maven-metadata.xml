@@ -25,6 +25,11 @@
         <value>4.0.0-20131126.224605-1</value>
         <updated>20131126224605</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom.asc</extension>
+        <value>4.0.0-20131126.224605-1</value>
+        <updated>20131126224605</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
