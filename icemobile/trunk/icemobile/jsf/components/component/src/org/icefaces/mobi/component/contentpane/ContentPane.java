@@ -17,6 +17,7 @@ package org.icefaces.mobi.component.contentpane;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -104,7 +105,8 @@ public class ContentPane extends ContentPaneBase{
     
     public boolean isFirstPane(){
         if( first == null ){
-            if( this.getParent().getChildren().get(0).equals(this)){
+            List<UIComponent> children = this.getParent().getChildren();
+            if( children != null && children.size() > 0 && children.get(0).equals(this)){
                 first = Boolean.TRUE;
             }
             else{
