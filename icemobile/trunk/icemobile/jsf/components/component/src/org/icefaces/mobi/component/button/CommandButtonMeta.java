@@ -94,6 +94,9 @@ public class CommandButtonMeta extends UICommandMeta {
     
     @Property(tlddoc="The id of a contentPane in a contentStack that will be displayed when selecting the commandButton. ")
     private String openContentPane;
+    
+    @Property(tlddoc="If true, default false, the commandButton will disable itself when offline ")
+    private boolean disableOffline;
 
     @Field
     private String groupId;

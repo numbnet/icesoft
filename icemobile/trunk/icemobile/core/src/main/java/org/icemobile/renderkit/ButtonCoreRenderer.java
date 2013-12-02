@@ -40,7 +40,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
     private static final Logger logger =
             Logger.getLogger(ButtonCoreRenderer.class.toString());
 
-    public void encodeEnd(IButton component, IResponseWriter writer)
+    public void encodeEnd(IButton component, IResponseWriter writer, boolean disableOffline)
             throws IOException {
         IButton  button = (IButton) component;
         ClientDescriptor client = button.getClient();
@@ -147,7 +147,8 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
                         + "', but client side JavaScript handler not set");
             }
         }else if ( !button.getType().trim().toLowerCase().equals(IButton.BUTTON_SUBMIT)){
-            StringBuilder sb = new StringBuilder("ice.mobi.button.select('");
+            StringBuilder sb = new StringBuilder((disableOffline? "if(navigator.offline)return;": "")+
+                    "ice.mobi.button.select('");
             sb.append(clientId).append("', event, {");
             sb.append("singleSubmit: ").append(button.isSingleSubmit());
             if (null !=button.getParams() && button.getParams().trim()!="") {
