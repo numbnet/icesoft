@@ -25,7 +25,8 @@
             <mobi:fieldsetRow>
                 <mobi:commandButtonGroup orientation="vertical" style="width:80%;margin:0 auto;">
                     <mobi:commandButton value="Yes"
-                             actionListener="#{buttonBean.commandGroup1Selected}">
+                             actionListener="#{buttonBean.commandGroup1Selected}"
+                             disableOffline="true">
                         <f:attribute name="selectedName" value="Yes"/>
                     </mobi:commandButton>
                     <mobi:commandButton value="No"
@@ -64,7 +65,7 @@
         <mobi:fieldsetGroup styleClass="buttons">
             <mobi:fieldsetRow>
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Default">
+                                    value="Default" disableOffline="true">
                     <f:attribute name="bType" value=""/>
                 </mobi:commandButton>
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"

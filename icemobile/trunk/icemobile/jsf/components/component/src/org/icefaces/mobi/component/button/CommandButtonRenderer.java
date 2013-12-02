@@ -82,6 +82,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         /*
           check to see if I am the selectedId if I have parent CommandButtonGroup
          */
+        boolean disableOffline = ((CommandButton)uiComponent).isDisableOffline();
         String clientId = button.getClientId();
         Object parent = uiComponent.getParent();
         if (parent instanceof IButtonGroup)  {
@@ -113,7 +114,9 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 stack = findContentStack(facesContext.getViewRoot());
             }
             if (stack!=null){
-                StringBuilder noPanelConf = new StringBuilder("mobi.layoutMenu.showContent('").append(stack.getClientId());
+                StringBuilder noPanelConf = new StringBuilder( 
+                        (disableOffline? "if(navigator.offline)return;": "")
+                        +"mobi.layoutMenu.showContent('").append(stack.getClientId());
                 noPanelConf.append("', event");
                 noPanelConf.append(",{ currentId: '").append(button.getOpenContentPane()).append("'");
                 noPanelConf.append(",singleSubmit: ").append(button.isSingleSubmit());
@@ -130,7 +133,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 }
                 noPanelConf.append("});");
                 button.setJsCall(noPanelConf);
-                renderer.encodeEnd(button, writer);
+                renderer.encodeEnd(button, writer, disableOffline);
                 return;
             }
             else{
@@ -181,7 +184,32 @@ public class  CommandButtonRenderer extends CoreRenderer {
         } else {
             button.setSubmitNotificationId(null);
         }
-        renderer.encodeEnd(button, writer);
+        renderer.encodeEnd(button, writer, disableOffline);
+        
+        if( disableOffline ){
+            writer.startElement("script");
+            writer.writeAttribute("type", "text/javascript");
+            String funcName = "commmandButtonOfflineListener_" + clientId.replace(":", "_");
+            writer.writeText(
+                 "function " + funcName + "(){"
+                    + "var elem = document.getElementById('" + clientId + "');"
+                    + "if(!elem){"
+                         + "window.removeEventListener('online', " + funcName + ", false);"
+                         + "window.removeEventListener('offline', " + funcName + ", false);"
+                    + "}"
+                    + "if( navigator.onLine ){"
+                        + "elem.classList.remove('mobi-button-dis');"
+                        + "elem.removeAttribute('disabled');"
+                    + "}"
+                    + "else{"
+                        + "elem.classList.add('mobi-button-dis');"
+                        + "elem.setAttribute('disabled','disabled');"
+                    + "}"
+               + "};"
+               + "window.addEventListener('online', " + funcName + ", false);"
+               + "window.addEventListener('offline'," + funcName + ", false);");
+            writer.endElement("script");
+        }
     }
         
     protected static UIComponent findParentContentStack(UIComponent component) {
