@@ -128,8 +128,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
             return;
         }
 
-        TabSet.IdIndex idIndex = controller.resolveCurrentIdAndIndex();
-
+        controller.resolveCurrentIdAndIndex();
         boolean autoWidth = controller.isAutoWidth();
         // calculate the percent width for th tabs
         int percent = 100/tabsNum;
@@ -144,7 +143,6 @@ public class TabSetRenderer extends BaseLayoutRenderer {
 
         writer.startElement(HTML.UL_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_dc", HTML.ID_ATTR);
-     //   writer.writeAttribute("data-current", idIndex.getIndex(), null);
         for (int i = 0; i < tabsNum; i++) {
             //check to see that children are of type contentPane
             UIComponent child = controller.getChildren().get(i);
@@ -159,9 +157,6 @@ public class TabSetRenderer extends BaseLayoutRenderer {
                 sb.append(",client: ").append(client);
                 sb.append("});");
                 writer.writeAttribute("onclick", sb.toString(), "onclick");
-          /*      if (cp.getId().equals(idIndex.getId())) {
-                    writer.writeAttribute("class", TabSet.TABSET_ACTIVETAB_CLASS, "class");
-                } */
                 if (autoWidth){
                     String width = null;
                     if( i < tabsNum-1){
@@ -181,7 +176,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
                 String title = cp.getTitle();
                 writer.write(title);
                 writer.endElement(HTML.LI_ELEM);
-            }//else log an error statement ?
+            }
         }
         writer.endElement(HTML.UL_ELEM);
         writer.endElement(HTML.DIV_ELEM);
@@ -189,17 +184,13 @@ public class TabSetRenderer extends BaseLayoutRenderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-     //   ResponseWriter writer = facesContext.getResponseWriter();
         IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         TabSetCoreRenderer renderer = new TabSetCoreRenderer();
         ITabSet tabSet = (ITabSet) uiComponent;
         encodeHidden(facesContext, uiComponent, String.valueOf(tabSet.getIndex()));
         writer.endElement(HTML.DIV_ELEM);  //end of content div
-        boolean parentFooter = tabSet.isParentFooter();
         String orientation = tabSet.getOrientation();
-        int idIndex = tabSet.getIndex();
         boolean bottom = TabSet.OrientationType.bottom.name().equals(orientation);
-        StringBuilder styleClass = new StringBuilder(TabSet.TABSET_CONTAINER_CLASS);
         if (bottom){
             encodeTabs(facesContext, uiComponent);
         }

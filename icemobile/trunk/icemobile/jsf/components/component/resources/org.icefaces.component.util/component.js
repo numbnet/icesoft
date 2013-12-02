@@ -2635,12 +2635,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 }
                 var submitted = tabIndex +","+cntr;
                 updateHidden(clientId, submitted);
-                contents[old].setAttribute("class", classHid);
+                //contents[old].setAttribute("class", classHid);
                 if (!isClient) {
                     ice.se(null, clientId);
-                } else {
-                    contents[tabIndex].setAttribute("class", classVis);
                 }
+                contents[tabIndex].setAttribute("class", classVis);
                 el.setAttribute("class", clsActiveTab);
             },
             updateProperties: function (clientId, cfgUpd) {
