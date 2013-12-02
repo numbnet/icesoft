@@ -3480,6 +3480,7 @@ ice.mobi.menubutton = {
         }
         
         registerEvents();
+        updateIndicator();
         
         function updateOnlineStatus(event) {
             var elem = document.getElementById(id);
@@ -3487,20 +3488,24 @@ ice.mobi.menubutton = {
                 deregisterEvents();
                 return;
             }
+            updateIndicator();
             if( navigator.onLine ){
-                elem.classList.remove(offlineStyleClass);
-                elem.classList.add(onlineStyleClass);
                 if( onOnline ){
                     onOnline(event);
                 }
             }
             else{
-                elem.classList.remove(onlineStyleClass);
-                elem.classList.add(offlineStyleClass);
                 if( onOffline ){
                     onOffline(event);
                 }
             }
+        }
+        
+        function updateIndicator() {
+            var elem = document.getElementById(id);
+            var online = navigator.onLine;
+            elem.classList.remove( online ? offlineStyleClass : onlineStyleClass );
+            elem.classList.add( online ? onlineStyleClass :offlineStyleClass );
         }
         
         return {
