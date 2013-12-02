@@ -2360,7 +2360,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         }
         var currPane;
         if (currentId==null) {
-            curPane = panes[0];
+            currPane = panes[0];
         }
         else{
             currPane = getPane(currentId);
