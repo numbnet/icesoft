@@ -81,7 +81,7 @@ public class CommandButtonTag extends BaseSimpleTag implements IButton{
         checkSelected();
         writer = new TagWriter(getContext());
         renderer = new ButtonCoreRenderer();
-        renderer.encodeEnd(this, writer);
+        renderer.encodeEnd(this, writer, false);
     }
 
     private CommandButtonGroupTag findParent(){
