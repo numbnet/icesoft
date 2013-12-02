@@ -2615,14 +2615,18 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 if (!parent) {
                     parent = el.parentElement;
                 }
+                var isClient = cfgIn.client || false;
                 var old = tabIndex;
+                tabIndex = cfgIn.tIndex;
+                if( old == tabIndex ){
+                    return;
+                }
                 var oldPage = contents[old];
                 oldPage.className = classHid;
                 var currCtrl = tabCtrl + old;
                 var oldCtrl = document.getElementById(currCtrl);
                 removeClass(oldCtrl, clsActiveTab);
-                var isClient = cfgIn.client || false;
-                tabIndex = cfgIn.tIndex;
+                
                 if (lastServerIndex==tabIndex){
                     cntr= cntr + 1;
                 } else {
