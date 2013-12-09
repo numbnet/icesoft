@@ -2333,6 +2333,15 @@ ice.mobi.addListener(document, "touchstart", function(){});
             hidden.value = value;
         }
     }
+    function updateProxyFormHidden(stackId, currentId){
+        var stack = document.getElementById(stackId);
+        if( stack && stack.querySelector ){
+            var formProxies = stack.querySelectorAll('.mobi-contentstack-proxy');
+            for( var i = 0 ; i < formProxies.length ; i++ ){
+                formProxies[i].value = currentId;
+            }
+        }
+    }
     function hasClass(ele,cls) {
         return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
     }
@@ -2384,6 +2393,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                var singleSubmit = cfgIn.singleSubmit || false;
                currPane = getPane(currentId);
                updateHidden(stackId, currentId);
+               updateProxyFormHidden(stackId, currentId);
                var oldOrd = prevPane ? getPaneOrder(prevPane) : 0;
                var newOrd = getPaneOrder(currPane);
                if( prevPane ){
