@@ -121,7 +121,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 noPanelConf.append(",{ currentId: '").append(button.getOpenContentPane()).append("'");
                 noPanelConf.append(",singleSubmit: ").append(button.isSingleSubmit());
                 noPanelConf.append(", source: '").append(uiComponent.getClientId(facesContext)).append("'");
-                UIComponent pane = JSFUtils.findComponent(openContentPane, null);
+                UIComponent pane = JSFUtils.findChildComponent(FacesContext.getCurrentInstance().getViewRoot(), openContentPane);
                 if (pane!=null){
                     String paneId = pane.getClientId(facesContext);
                     noPanelConf.append(",selClientId: '").append(paneId).append("'");
