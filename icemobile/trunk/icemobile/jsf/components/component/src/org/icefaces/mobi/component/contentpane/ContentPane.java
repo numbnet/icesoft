@@ -118,8 +118,12 @@ public class ContentPane extends ContentPaneBase{
     
     public boolean isSelected(){
         UIComponent parent = this.getParent();
+        while( !(parent instanceof ContentPaneController) && parent != null ){
+            parent = parent.getParent();
+        }
+        
         String selectedId= null;
-        if (parent instanceof ContentPaneController){
+        if (parent != null){
             ContentPaneController paneController = (ContentPaneController)parent;
             selectedId = paneController.getSelectedId();
             
@@ -130,7 +134,7 @@ public class ContentPane extends ContentPaneBase{
             }
         }
         else {
-            logger.warning("Parent must implement ContentPaneController-> has instead="+parent.getClass().getName());
+            logger.warning("ContentPane must be nested within a ContentStack: " + this.getClientId());
             return false;
         }
         String id = this.getId();
@@ -147,8 +151,5 @@ public class ContentPane extends ContentPaneBase{
     public String toString() {
         return "ContentPane [first=" + first + ", getId()=" + getId() + "]";
     }
-    
-    
-    
     
   }
