@@ -151,7 +151,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
             //auto-select the first contentPane
             currentPaneId = stack.getChildren().get(0).getId();
         }
-        ContentPane currentPane = (ContentPane)JSFUtils.findComponent(currentPaneId, stack);
+        ContentPane currentPane = (ContentPane)JSFUtils.findChildComponent(stack, currentPaneId);
         //if the selectedPaneId is not valid, auto-select the first contentPane
         if( currentPaneId != null && currentPane == null ){
             String warning = "Invalid value for ContentStack.currentId: " + currentPaneId; 
