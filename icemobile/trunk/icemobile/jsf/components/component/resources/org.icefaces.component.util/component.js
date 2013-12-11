@@ -3537,3 +3537,60 @@ ice.mobi.menubutton = {
     
     }
 })();
+/* Online Listener */
+(function() {
+    function OnlineStatusListener(clientId, cfg) {
+        var id = clientId;
+        var onOnline = cfg.onOnline;
+        var onOffline = cfg.onOffline;
+        
+        function deregisterEvents(){
+            window.removeEventListener('online', updateOnlineStatus, false);
+            window.removeEventListener('offline', updateOnlineStatus, false);
+        } 
+        
+        function registerEvents(){
+            window.addEventListener('online', updateOnlineStatus, false);
+            window.addEventListener('offline', updateOnlineStatus, false);
+        }
+        
+        registerEvents();
+        updateOnlineStatus(new Object());
+        
+        function updateOnlineStatus(event) {
+            var elem = document.getElementById(id);
+            if( !elem ){
+                deregisterEvents();
+                return;
+            }
+            if( navigator.onLine ){
+                if( onOnline ){
+                    onOnline(event, elem);
+                }
+            }
+            else{
+                if( onOffline ){
+                    onOffline(event, elem);
+                }
+            }
+        }
+        
+        return {
+            registerEvents: registerEvents,
+            deregisterEvents: deregisterEvents
+        }
+    };
+    ice.mobi.onlineStatusListener = {
+        instances: {},
+        
+        initClient: function(clientId, cfg) {
+            if (!this.instances[clientId]) {
+                this.instances[clientId] = new OnlineStatusListener(clientId, cfg);
+            } else {
+                this.instances[clientId].deregisterEvents();
+                this.instances[clientId].registerEvents();
+            }
+        }
+    
+    }
+})();
