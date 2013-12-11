@@ -37,7 +37,6 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
         StringBuilder baseClass = new StringBuilder(CSSUtils.STYLECLASS_BUTTON);
         String comptype = component.getComponentType();
         ClientDescriptor cd = component.getClient();
-        boolean isEnhanced = cd.isICEmobileContainer()  || cd.isSXRegistered();
     //    logger.info("is SX="+cd.isSXRegistered()+" and useCookie="+ component.isUseCookie());
         if (cd.isICEmobileContainer())  {
             // button element
@@ -62,7 +61,6 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             writer.writeAttribute(NAME_ATTR, clientId+"_button");
             writer.writeAttribute(TYPE_ATTR, "button");
             writer.writeAttribute("data-id", component.getClientId());
-        /*   Ithink this is only used for augmented reality..must check */
             if (null != component.getParams())  {
                 writer.writeAttribute("data-params", component.getParams());
             }
@@ -101,16 +99,15 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             writer.writeAttribute(NAME_ATTR, clientId);
             writeStandardAttributes(writer, component, "", "");
             if (comptype.equals("camera")){
-                writer.writeAttribute("accept", "image/*");
+                writer.writeAttribute("accept", "image/*;capture=camera");
             }
-            if (!cd.isDesktopBrowser()){
-                if (comptype.equals("camcorder")){
-                    writer.writeAttribute("accept", "video/*");
-                }
-                if (comptype.equals("microphone")){
-                    writer.writeAttribute("accept", "audio/*");
-                }
+            if (comptype.equals("camcorder")){
+                writer.writeAttribute("accept", "video/*;capture=camcorder");
             }
+            if (comptype.equals("microphone")){
+                writer.writeAttribute("accept", "audio/*;capture=microphone");
+            }
+            writer.writeAttribute("capture", "true");
             writer.endElement(INPUT_ELEM);
         }
     }
