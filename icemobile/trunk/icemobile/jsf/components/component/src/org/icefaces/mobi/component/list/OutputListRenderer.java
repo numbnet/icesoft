@@ -17,6 +17,7 @@
 package org.icefaces.mobi.component.list;
 
 
+import org.icefaces.mobi.component.onlinestatus.OnlineStatusListenerUtil;
 import org.icefaces.mobi.utils.HTML;
 
 import javax.faces.application.ProjectStage;
@@ -24,6 +25,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -70,6 +72,7 @@ public class OutputListRenderer extends Renderer {
      public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
          ResponseWriter writer = facesContext.getResponseWriter();
+         OnlineStatusListenerUtil.renderOnlineStatusScript((OutputList)uiComponent, writer);
          writer.endElement(HTML.UL_ELEM);
      }
 }
