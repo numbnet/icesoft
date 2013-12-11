@@ -42,6 +42,7 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
     protected int maxheight = Integer.MIN_VALUE;
     protected int maxwidth = Integer.MIN_VALUE;
     protected boolean isUseNative;
+    protected String onchange;
 
     
     public int doEndTag() throws JspException {
@@ -164,6 +165,16 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
         maxheight = Integer.MIN_VALUE;
         maxwidth = Integer.MIN_VALUE;
         isUseNative = false;
+    }
+
+
+    public String getOnchange() {
+        return onchange;
+    }
+
+
+    public void setOnchange(String onchange) {
+        this.onchange = onchange;
     }
 
 }

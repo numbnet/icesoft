@@ -85,4 +85,7 @@ public class MicrophoneMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue="Record", tlddoc = "The button label.")
     private String buttonLabel;
+    
+    @Property(tlddoc="The onchange pass-through event ")
+    private String onchange;
 }

@@ -20,6 +20,7 @@ package org.icefaces.mobi.component.scan;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -61,4 +62,7 @@ public class ScanMeta extends UIComponentBaseMeta {
     
     @Property(tlddoc = "The text value of the scan")
     private String value;
+    
+    @Property(tlddoc="The onchange pass-through event ")
+    private String onchange;
 }

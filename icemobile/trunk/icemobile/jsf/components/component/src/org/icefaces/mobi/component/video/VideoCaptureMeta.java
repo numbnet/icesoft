@@ -29,6 +29,7 @@ import javax.faces.application.ResourceDependency;
 
 
 import javax.el.MethodExpression;
+
 import java.util.Map;
 
 
@@ -96,5 +97,8 @@ public class VideoCaptureMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue="Camcorder", tlddoc = "The button label. ")
     private String buttonLabel;
+    
+    @Property(tlddoc="The onchange pass-through event ")
+    private String onchange;
 
 }
