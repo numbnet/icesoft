@@ -92,5 +92,8 @@ public class CameraMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue="Camera", tlddoc="The label to be displayed on the button. ")
     private String buttonLabel;
+    
+    @Property(tlddoc="The onchange pass-through event ")
+    private String onchange;
 
 }

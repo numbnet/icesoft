@@ -108,6 +108,10 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
                 writer.writeAttribute("accept", "audio/*;capture=microphone");
             }
             writer.writeAttribute("capture", "true");
+            String onchange = component.getOnchange();
+            if( onchange != null && onchange.length() > 0 ){
+                writer.writeAttribute("onchange", onchange);
+            }
             writer.endElement(INPUT_ELEM);
         }
     }
