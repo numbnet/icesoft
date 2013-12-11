@@ -3501,12 +3501,12 @@ ice.mobi.menubutton = {
             updateIndicator();
             if( navigator.onLine ){
                 if( onOnline ){
-                    onOnline(event);
+                    onOnline(event, elem);
                 }
             }
             else{
                 if( onOffline ){
-                    onOffline(event);
+                    onOffline(event, elem);
                 }
             }
         }
