@@ -16,8 +16,10 @@
 
 package org.icefaces.mobi.component.fieldset;
 
+import org.icefaces.mobi.component.onlinestatus.OnlineStatusListener;
 
-public class FieldSetGroup extends FieldSetGroupBase {
+
+public class FieldSetGroup extends FieldSetGroupBase implements OnlineStatusListener {
 
 	public static final String FIELDSET_CLASS = "mobi-fieldset ui-field-contain";
 	public static final String FIELDSETINSET_CLASS = "mobi-fieldset-inset";

@@ -17,12 +17,15 @@
 package org.icefaces.mobi.component.fieldset;
 
 
+import org.icefaces.mobi.component.onlinestatus.OnlineStatus;
+import org.icefaces.mobi.component.onlinestatus.OnlineStatusListenerUtil;
 import org.icefaces.mobi.utils.HTML;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -53,12 +56,15 @@ public class FieldSetGroupRenderer extends Renderer {
         writer.writeAttribute("class", styleClass.toString(), "styleClass");
 
         // write out any users specified style attributes.
+        String style = field.getStyle(); 
         writer.writeAttribute(HTML.STYLE_ATTR, field.getStyle(), "style");
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
+        FieldSetGroup field = (FieldSetGroup) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
+        OnlineStatusListenerUtil.renderOnlineStatusScript(field, writer);
         writer.endElement(HTML.FIELDSET_ELEM);
      }
 }
