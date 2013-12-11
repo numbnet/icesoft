@@ -20,6 +20,7 @@ package org.icefaces.mobi.component.list;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -52,5 +53,11 @@ public class OutputListMeta extends UIComponentBaseMeta {
 
      @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
      private String styleClass;
+     
+     @Property(tlddoc = "JavaScript to be evaluated when the browser goes online. Two arguments are passed through to the context: the online or offline 'event' argument, and the 'elem' argument for the root element of the component. ")
+     private String onOnline;
+     
+     @Property(tlddoc = "JavaScript to be evaluated when the browser goes offline. Two arguments are passed through to the context: the online or offline 'event' argument, and the 'elem' argument for the root element of the component.")
+     private String onOffline;
 
 }

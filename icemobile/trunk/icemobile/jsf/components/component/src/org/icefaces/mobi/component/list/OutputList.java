@@ -16,8 +16,10 @@
 
 package org.icefaces.mobi.component.list;
 
+import org.icefaces.mobi.component.onlinestatus.OnlineStatusListener;
 
-public class OutputList extends OutputListBase {
+
+public class OutputList extends OutputListBase implements OnlineStatusListener{
     public static final String OUTPUTLIST_CLASS = "mobi-list ui-listview ";
 	public static final String OUTPUTLISTINSET_CLASS="mobi-list-inset ui-listview-inset ";
 	
