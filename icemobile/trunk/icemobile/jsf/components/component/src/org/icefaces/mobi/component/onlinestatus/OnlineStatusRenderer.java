@@ -68,12 +68,12 @@ public class OnlineStatusRenderer extends Renderer {
         }
         script += "});";
         if( onOnline != null && onOnline.length() > 0 ){
-            script += "function onOnline_" + clientId + "(event){"
+            script += "function onOnline_" + clientId + "(event, elem){"
                        + onOnline
                    + "};";
         }
         if( onOffline != null && onOffline.length() > 0 ){
-            script += "function onOffline_" + clientId + "(event){"
+            script += "function onOffline_" + clientId + "(event, elem){"
                        + onOffline
                    + "};";
         }

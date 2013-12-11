@@ -41,10 +41,10 @@ public class OnlineStatusMeta extends UIComponentBaseMeta {
     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
     private String styleClass;
     
-    @Property(tlddoc = "JavaScript to be evaluated when the browser goes online. An 'event' argument will be passed through to the context.")
+    @Property(tlddoc = "JavaScript to be evaluated when the browser goes online. Two arguments are passed through to the context: the online or offline 'event' argument, and the 'elem' argument for the root element of the component. ")
     private String onOnline;
     
-    @Property(tlddoc = "JavaScript to be evaluated when the browser goes offline. An 'event' argument will be passed through to the context.")
+    @Property(tlddoc = "JavaScript to be evaluated when the browser goes offline. Two arguments are passed through to the context: the online or offline 'event' argument, and the 'elem' argument for the root element of the component.")
     private String onOffline;
     
 }
