@@ -20,12 +20,14 @@ import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIParameter;
+
 import java.util.List;
 
 @Component(
@@ -121,5 +123,11 @@ public class CommandButtonMeta extends UICommandMeta {
 
     @Field
     private String name;
+    
+    @Property(tlddoc = "JavaScript to be evaluated when the browser goes online. Two arguments are passed through to the context: the online or offline 'event' argument, and the 'elem' argument for the root element of the component. ")
+    private String ononline;
+    
+    @Property(tlddoc = "JavaScript to be evaluated when the browser goes offline. Two arguments are passed through to the context: the online or offline 'event' argument, and the 'elem' argument for the root element of the component.")
+    private String onoffline;
 
 }

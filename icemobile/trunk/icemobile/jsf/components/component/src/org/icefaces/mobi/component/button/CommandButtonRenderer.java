@@ -27,16 +27,16 @@ import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.icefaces.mobi.component.contentpane.ContentPane;
 import org.icefaces.mobi.component.contentstack.ContentStack;
+import org.icefaces.mobi.component.onlinestatus.OnlineStatusListenerUtil;
 import org.icefaces.mobi.component.panelconfirmation.PanelConfirmation;
 import org.icefaces.mobi.component.submitnotification.SubmitNotification;
-
 import org.icefaces.mobi.renderkit.CoreRenderer;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IButton;
@@ -76,8 +76,9 @@ public class  CommandButtonRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         List <UIParameter> uiParamChildren;
-        IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        IButton button = (IButton)uiComponent;
+        ResponseWriter writer = facesContext.getResponseWriter();
+        IResponseWriter iwriter = new ResponseWriterWrapper(writer);
+        CommandButton button = (CommandButton)uiComponent;
         ButtonCoreRenderer renderer = new ButtonCoreRenderer();
         /*
           check to see if I am the selectedId if I have parent CommandButtonGroup
@@ -133,7 +134,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 }
                 noPanelConf.append("});");
                 button.setJsCall(noPanelConf);
-                renderer.encodeEnd(button, writer, disableOffline);
+                renderer.encodeEnd(button, iwriter, disableOffline);
                 return;
             }
             else{
@@ -184,13 +185,14 @@ public class  CommandButtonRenderer extends CoreRenderer {
         } else {
             button.setSubmitNotificationId(null);
         }
-        renderer.encodeEnd(button, writer, disableOffline);
+        renderer.encodeEnd(button, iwriter, disableOffline);
         
-        if( disableOffline ){
-            writer.startElement("script");
-            writer.writeAttribute("type", "text/javascript");
+        if( disableOffline  ){
+            iwriter.startElement("script");
+            iwriter.writeAttribute("type", "text/javascript");
+            
             String funcName = "commmandButtonOfflineListener_" + clientId.replace(":", "_");
-            writer.writeText(
+            iwriter.writeText(
                  "function " + funcName + "(){"
                     + "var elem = document.getElementById('" + clientId + "');"
                     + "if(!elem){"
@@ -210,6 +212,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
                + "window.addEventListener('offline'," + funcName + ", false);");
             writer.endElement("script");
         }
+        OnlineStatusListenerUtil.renderOnlineStatusScript(button, writer);
     }
         
     protected static UIComponent findParentContentStack(UIComponent component) {
