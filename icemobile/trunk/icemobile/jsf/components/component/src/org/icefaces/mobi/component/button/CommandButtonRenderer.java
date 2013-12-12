@@ -135,6 +135,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 noPanelConf.append("});");
                 button.setJsCall(noPanelConf);
                 renderer.encodeEnd(button, iwriter, disableOffline);
+                OnlineStatusListenerUtil.renderOnlineStatusScript(button, writer);
                 return;
             }
             else{
