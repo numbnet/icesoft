@@ -55,9 +55,9 @@ public class OutputListMeta extends UIComponentBaseMeta {
      private String styleClass;
      
      @Property(tlddoc = "JavaScript to be evaluated when the browser goes online. Two arguments are passed through to the context: the online or offline 'event' argument, and the 'elem' argument for the root element of the component. ")
-     private String onOnline;
+     private String ononline;
      
      @Property(tlddoc = "JavaScript to be evaluated when the browser goes offline. Two arguments are passed through to the context: the online or offline 'event' argument, and the 'elem' argument for the root element of the component.")
-     private String onOffline;
+     private String onoffline;
 
 }

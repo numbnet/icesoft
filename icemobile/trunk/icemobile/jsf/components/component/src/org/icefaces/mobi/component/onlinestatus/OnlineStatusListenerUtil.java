@@ -23,11 +23,11 @@ public class OnlineStatusListenerUtil {
     
     public static void renderOnlineStatusScript(OnlineStatusListener listener, ResponseWriter writer)
         throws IOException{
-        String onOffline = listener.getOnOffline();
+        String onOffline = listener.getOnoffline();
         if( onOffline != null && onOffline.length() == 0 ){
             onOffline = null;
         }
-        String onOnline = listener.getOnOnline();
+        String onOnline = listener.getOnonline();
         if( onOnline != null && onOnline.length() == 0 ){
             onOnline = null;
         }

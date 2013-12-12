@@ -17,10 +17,10 @@ package org.icefaces.mobi.component.onlinestatus;
 
 public interface OnlineStatusListener {
     
-    public void setOnOffline(String str);
-    public String getOnOffline();
-    public void setOnOnline(String str);
-    public String getOnOnline();
+    public void setOnoffline(String str);
+    public String getOnoffline();
+    public void setOnonline(String str);
+    public String getOnonline();
     public String getClientId();
 
 }
