@@ -2387,6 +2387,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                if (cfgIn.currentId == currentId){
                     return;
                }
+               var contentPanes = getPanes();
                var source = cfgIn.source || stackId;
                currentId = cfgIn.currentId;
                var client = cfgIn.client || false;
@@ -2403,15 +2404,15 @@ ice.mobi.addListener(document, "touchstart", function(){});
                        prevPane.className =  HIDDEN_CLASS;
                }
                //MOBI-904
-               for(var i = 0 ; i < panes.length ; i++ ){
-                   if( panes[i].tagName.toLowerCase()  == "div"
-                           && panes[i].className.indexOf('hidden') == -1 
-                           && panes[i] != currPane){
+               for(var i = 0 ; i < contentPanes.length ; i++ ){
+                   if( contentPanes[i].tagName.toLowerCase()  == "div"
+                           && contentPanes[i].className.indexOf('hidden') == -1 
+                           && contentPanes[i] != currPane){
                        if( i === 0 ){
-                           panes[i].className = LEFT_HIDDEN_CLASS;
+                           contentPanes[i].className = LEFT_HIDDEN_CLASS;
                        }
                        else{
-                           panes[i].className = HIDDEN_CLASS;
+                           contentPanes[i].className = HIDDEN_CLASS;
                        }
                    }
                }
@@ -2439,20 +2440,23 @@ ice.mobi.addListener(document, "touchstart", function(){});
         }
         
         function getPane(id){
-            for( var i = 0 ; i < panes.length ; i++ ){
-                if( panes[i].getAttribute('data-paneid') == id )
-                    return panes[i];
+            var contentPanes = getPanes();
+            for( var i = 0 ; i < contentPanes.length ; i++ ){
+                if( contentPanes[i].getAttribute('data-paneid') == id )
+                    return contentPanes[i];
             }
+        }
+        
+        function getPanes(){
+           return document.getElementById(stackId+"_panes") ? document.getElementById(stackId+"_panes").children : [];
         }
         
         function getPaneOrder(elem){
             if( elem ){
-                console.log('in panes: ' + panes);
-                if( panes ){
-                    for( var i = 0 ; i < panes.length ; i++ ){
-                        if( panes[i].id == elem.id )
-                            return i;
-                    }
+                var contentPanes = getPanes();
+                for( var i = 0 ; i < contentPanes.length ; i++ ){
+                    if( contentPanes[i].id == elem.id )
+                        return i;
                 }
             }
             console.error('could not derive order for ' + elem.id );
