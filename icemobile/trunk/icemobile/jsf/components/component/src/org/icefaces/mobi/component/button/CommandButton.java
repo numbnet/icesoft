@@ -17,12 +17,13 @@
 package org.icefaces.mobi.component.button;
 
 
+import org.icefaces.mobi.component.onlinestatus.OnlineStatusListener;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IButton;
 import org.icemobile.util.ClientDescriptor;
 
 
-public class CommandButton extends CommandButtonBase implements IButton{
+public class CommandButton extends CommandButtonBase implements IButton, OnlineStatusListener{
 
     private boolean parentDisabled = false;
     public ClientDescriptor getClient() {
