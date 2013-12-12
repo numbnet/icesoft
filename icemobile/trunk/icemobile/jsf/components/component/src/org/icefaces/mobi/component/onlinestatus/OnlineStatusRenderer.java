@@ -50,8 +50,8 @@ public class OnlineStatusRenderer extends Renderer {
         
         writer.endElement("i");
         
-        String onOnline = comp.getOnOnline();
-        String onOffline = comp.getOnOffline();
+        String onOnline = comp.getOnonline();
+        String onOffline = comp.getOnoffline();
         
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
