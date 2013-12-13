@@ -298,6 +298,9 @@ ice.mobi.ready = function (callback) {
         window.attachEvent('onload', callback);
     }
 };
+ice.mobi.getTarget = function(e){
+    return e.srcElement ? e.srcElement : e.target;
+}
 ice.mobi.escapeJsfId = function(id) {
     return id.replace(/:/g,"\\:");
 }
@@ -1637,7 +1640,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 /* filter events for those bubbled from tr elems */
                 isRowEvent = function(callback) {
                     return function(e) {
-                        var tr = closest(e.srcElement, "tr");
+                        var tr = closest(ice.mobi.getTarget(e), "tr");
                         if (tr && im.matches(tr, bodyRowSelector)) {
                             e.delegateTarget = tr;
                             callback(e);
@@ -1792,14 +1795,14 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 return true;
             });
         }
-
+        
         function sortColumn(event) {
             var bodyRows = getNode('bodyrows');
             if( bodyRows.length == 0 )
                 return;
             
             var sortedRows, asc,
-                headCell = event.target,
+                headCell = ice.mobi.getTarget(event),
                 ascendingClass = blankIndicatorClass + ' icon-caret-up',
                 descendingClass = blankIndicatorClass + ' icon-caret-down',
                 ascIndi = headCell.querySelector(indicatorSelector),
