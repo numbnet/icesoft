@@ -146,7 +146,7 @@ public class MapFileStore implements ResourceStore<FileResource> {
      * @param request The servlet request to parse.
      * @param token The user token.
      */
-    public void handleRequest(HttpServletRequest request, String token) {
+    public FileResource[] handleRequest(HttpServletRequest request, String token) {
         FileResource[] resources = null;
         if( resourceAdapter != null ){
             resources = resourceAdapter.handleRequest(request);
@@ -158,6 +158,7 @@ public class MapFileStore implements ResourceStore<FileResource> {
                 this.add(resource);
             }
         }
+        return resources;
     }
 
     /**

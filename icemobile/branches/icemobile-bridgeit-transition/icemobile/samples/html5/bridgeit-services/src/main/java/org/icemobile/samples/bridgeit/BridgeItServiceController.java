@@ -44,7 +44,22 @@ public class BridgeItServiceController {
         }
         return request.getScheme() + "://" + server + request.getContextPath() + "/";
     }
-    
+
+    @RequestMapping(value = "/blob", method=RequestMethod.POST, produces="application/json")
+    public @ResponseBody String blobUpload(HttpServletRequest request,
+            @ICEmobileResource Resource blob) throws IOException {
+        if (blob != null)  {
+            try {
+                String retval = getBaseURL(request) + "store/"+ blob.getUuid();
+                LOG.debug("uploaded blob: " + retval);
+                return retval;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     @RequestMapping(value = "/camera-upload", method=RequestMethod.POST, produces="application/json")
     public @ResponseBody String cameraUpload(HttpServletRequest request,
             @ICEmobileResource("cameraBtn") Resource cameraUpload) throws IOException {
