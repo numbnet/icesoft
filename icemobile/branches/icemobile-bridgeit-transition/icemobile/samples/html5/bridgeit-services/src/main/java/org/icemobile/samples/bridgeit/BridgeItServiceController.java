@@ -52,7 +52,7 @@ public class BridgeItServiceController {
             try {
                 String retval = getBaseURL(request) + "store/"+ blob.getUuid();
                 LOG.debug("uploaded blob: " + retval);
-                return retval;
+                return "\"" + retval + "\"";
             } catch (Exception e) {
                 e.printStackTrace();
             }
