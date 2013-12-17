@@ -25,7 +25,7 @@ public interface ResourceStore<T extends Resource>{
     public void remove(T resource);
     public void remove(String token, String key);
     public void add(T resource);
-    public T[] handleRequest(HttpServletRequest request, String token);
+    public Resource[] handleRequest(HttpServletRequest request, String token);
     public void handleInputStream(InputStream is, String contentType, String name, String token);
     public void clear();
     public T get(String token, String key);
