@@ -38,6 +38,15 @@ public class BridgeItServiceController {
 
     
     private String getBaseURL(HttpServletRequest request){
+        String forwardedHost = request.getHeader("X-Forwarded-Host");
+        String forwardedPort = request.getHeader("X-Forwarded-Port");
+        if (null != forwardedHost)  {
+            String baseURL = request.getScheme() + "://" + forwardedHost;
+            if (null != forwardedPort)  {
+                baseURL += ":" + forwardedPort;
+            }
+            return baseURL + request.getContextPath() + "/";
+        }
         String server = request.getServerName() + ":" + request.getServerPort();
         if( "54.244.249.24:8080".equals(server)){
             server = "api.bridgeit.mobi";
