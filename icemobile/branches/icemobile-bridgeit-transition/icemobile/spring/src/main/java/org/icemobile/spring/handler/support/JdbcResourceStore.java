@@ -174,7 +174,7 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
      * @param request The HttpServletRequest
      * @param token Then user-specific token, such as the session id
      */
-	public void handleRequest(HttpServletRequest request, String token) {
+	public Resource[] handleRequest(HttpServletRequest request, String token) {
         Resource[] resources = null;
         if( resourceAdapter != null ){
             resources = resourceAdapter.handleRequest(request);
@@ -185,7 +185,8 @@ public class JdbcResourceStore implements ResourceStore<ByteArrayResource>{
                 resource.setStore(this);
                 this.add((ByteArrayResource)resource);
             }
-        } 
+        }
+        return resources;
     }
 
 	/**
