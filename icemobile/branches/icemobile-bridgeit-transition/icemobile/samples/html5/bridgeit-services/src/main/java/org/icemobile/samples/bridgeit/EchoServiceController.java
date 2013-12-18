@@ -78,6 +78,21 @@ public class EchoServiceController {
         return new ArrayList(echoTable.values());
    }
 
+    @RequestMapping(value = "/list/{tableName}", 
+            method=RequestMethod.POST, consumes="application/json")
+    public @ResponseBody String postList(HttpServletRequest request,
+        @PathVariable String tableName,
+        @RequestBody Map jsonBlob) throws IOException {
+            return this.postEchoPut(request, tableName, jsonBlob);
+    }
+
+    @RequestMapping(value = "/list/{tableName}", 
+            method=RequestMethod.GET)
+    public @ResponseBody List getList(HttpServletRequest request,
+        @PathVariable String tableName) throws IOException {
+            return this.postEchoFetch(request, tableName);
+    }
+
     public void push(String group) throws IOException {
         //should be encapsulated in an ICEpush service API
         String pushServiceURL = "http://api.bridgeit.mobi/push";
