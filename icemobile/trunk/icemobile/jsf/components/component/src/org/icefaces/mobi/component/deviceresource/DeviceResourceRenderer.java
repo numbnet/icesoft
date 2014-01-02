@@ -57,7 +57,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     public static final String IOS_APP_ID = "485908934";
     
     public static final String META_CONTENTTYPE = "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>";
-    public static final String META_VIEWPORT = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>";
+    public static final String META_VIEWPORT = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui'/>";
     public static final String META_IOS_WEBAPPCAPABLE = "<meta name='apple-mobile-web-app-capable' content='yes'/>";
     public static final String META_IOS_APPSTATUSBAR = "<meta name='apple-mobile-web-app-status-bar-style' content='black'/>";
     public static final String META_IOS_SMARTAPPBANNER = "<meta name='apple-itunes-app' content=\"app-id=%s, app-argument=%s\"/>";
@@ -240,7 +240,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     public void encodeMarkers(ResponseWriter writer, Theme theme, ClientDescriptor client) throws IOException {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
-        String markers = " " + theme.fileName() + " ui-mobile";
+        String markers = " " + theme.fileName();// + " ui-mobile";
         if( client.isIE10Browser() ){
             markers += " ie10";
         }

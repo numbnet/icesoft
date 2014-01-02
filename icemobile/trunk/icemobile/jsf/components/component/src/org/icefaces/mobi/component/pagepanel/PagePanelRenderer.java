@@ -41,20 +41,23 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         String clientId = component.getClientId(facesContext);
         // render a top level div and apply the style and style class pass through attributes
         writer.startElement(HTML.DIV_ELEM, pagePanel);
-        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-pagePanel", null);
+        String styleClass = "mobi-pagePanel";
+        if( pagePanel.isFixedHeader()){
+            styleClass += " mobi-fixed-header";
+        }
+        if( pagePanel.isFixedFooter()){
+            styleClass += " mobi-fixed-footer";
+        }
+        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, pagePanel,
                 pagePanel.getCommonAttributeNames());
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnl", HTML.ID_ATTR);
         if (pagePanel.getStyle()!=null){
             writer.writeAttribute(HTML.STYLE_ATTR, pagePanel.getStyle(), HTML.STYLE_ATTR);
         }
-        StringBuilder headerClass = new StringBuilder(PagePanel.HEADER_CLASS
-                + (MobiJSFUtils.getClientDescriptor().isSupportsFixedPosition() ? "ui-header-fixed " : "")
-                +" ui-bar-"+component.getAttributes().get("headerSwatch"));
-        StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS+"ui-body-"+component.getAttributes().get("bodySwatch"));
-        StringBuilder footerClass = new StringBuilder(PagePanel.FOOTER_CLASS
-                + (MobiJSFUtils.getClientDescriptor().isSupportsFixedPosition() ? "ui-footer-fixed " : "")
-                +"ui-bar-"+component.getAttributes().get("footerSwatch"));
+        StringBuilder headerClass = new StringBuilder(PagePanel.HEADER_CLASS + " ui-bar-a");
+        StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS+"ui-body-c");
+        StringBuilder footerClass = new StringBuilder(PagePanel.FOOTER_CLASS +"ui-bar-a");
         StringBuilder headerFooterContentsClass = new StringBuilder(PagePanel.CTR_CLASS);
 
         // find out if header and/or footer facets are present as this will directly 
