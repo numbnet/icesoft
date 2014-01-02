@@ -45,14 +45,13 @@ public class PagePanelMeta extends UIPanelMeta {
     @Property(tlddoc = "Space-separated list of CSS style class(es) to be applied when this element is rendered.")
     private String styleClass;
     
-    @Property(tlddoc = "", defaultValue="a")
-    private String headerSwatch;
+    @Property(tlddoc = "Set to false to use a non-fixed header", defaultValue="true")
+    private boolean fixedHeader = true;
     
-    @Property(tlddoc = "", defaultValue="c")
-    private String bodySwatch;
+    @Property(tlddoc = "Set to false to use a non-fixed footer", defaultValue="true")
+    private boolean fixedFooter = true;
     
-    @Property(tlddoc = "", defaultValue="a")
-    private String footerSwatch;
+    
 
     /**
      * The page component defines three sections headr, body and footer which

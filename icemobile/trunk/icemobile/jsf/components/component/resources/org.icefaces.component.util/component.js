@@ -325,6 +325,24 @@ ice.mobi.removeListener= function(obj, event, fnc){
 ice.mobi.hasClass = function(ele, remove_cls) {
     return ele.className.replace( /(?:^|\s)remove_cls(?!\S)/ , '' );
 };
+ice.mobi.toggleClass = function(ele, clazz) {
+    if( elem.className.indexOf(clazz) > -1){
+        ice.mobi.removeClass(ele, clazz);
+    }
+    else{
+        ice.mobi.addClass(ele, clazz);
+    }
+};
+ice.mobi.addClass = function(ele, clazz) {
+    if( elem.className.indexOf(clazz) < 0){
+        ele.className = ele.className + ( ele.className && ele.className.length > 0 ? ' ' : '') + clazz;
+    }
+};
+ice.mobi.removeClass = function(ele, clazz) {
+    if( elem.className.indexOf(clazz) > -1){
+        ele.className.replace(clazz,'');
+    }
+};
 mobi.findForm = function (sourceId) {
     if (!sourceId){
         console.log("source cannot be null to find form for ajax submit") ;
@@ -1943,36 +1961,38 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 ice.mobi.addListener(document, "touchstart", function(){});
 
 (function(){
-    ice.mobi.sizePagePanelsToViewPort = function(){
-        var desktop = document.documentElement.className.indexOf('desktop') > -1;
-        if( !desktop ){
-            var pagePanels = document.querySelectorAll(".mobi-pagePanel"), i=0;
-            while( i < pagePanels.length ){
-                var hasHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel-header").length > 0;
-                var hasFixedHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel-header.ui-header-fixed").length > 0;
-                var hasFooter = pagePanels[i].querySelectorAll(".mobi-pagePanel-footer").length > 0;
-                var hasFixedFooter = pagePanels[i].querySelectorAll(".mobi-pagePanel-footer.ui-footer-fixed").length > 0;
-                var pagePanelBodyMinHeight = window.innerHeight;
-                if( hasHeader && !hasFixedHeader ){
-                    pagePanelBodyMinHeight -= 40;
+    var hideBar = true;
+    ice.mobi.resizePagePanelsToViewPort = function(){
+        var pagePanels = document.querySelectorAll(".mobi-pagePanel"), i=0;
+        while( i < pagePanels.length ){
+            var header = pagePanels[i].querySelector(".mobi-pagePanel-header");
+            var hasFixedHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel-header.ui-header-fixed").length > 0;
+            var footer = pagePanels[i].querySelector(".mobi-pagePanel-footer");
+            var pagePanelBodyMinHeight = window.innerHeight;
+            if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
+                if( window.innerHeight != window.outerHeight){
+                    pagePanelBodyMinHeight += hideBar ? 90 : 0;
                 }
-                if( hasFooter && !hasFixedFooter ){
-                    pagePanelBodyMinHeight -= 40;
-                }
-                var body = pagePanels[i].querySelector(".mobi-pagePanel-body");
-                if( body ){
-                    body.style.minHeight = ''+pagePanelBodyMinHeight+'px';
-                }
-                i++;
             }
             
+            if( header ){
+                pagePanelBodyMinHeight -= header.offsetHeight;
+            }
+            if( footer ){
+                pagePanelBodyMinHeight -= footer.offsetHeight;
+            }
+            //pagePanels[i].style.height = ''+document.documentElement.clientHeight+'px';
+            var body = pagePanels[i].querySelector(".mobi-pagePanel-body");
+            if( body ){
+                body.style.height = ''+pagePanelBodyMinHeight+'px';
+            }
+            i++;
         }
-        
     };
     if( window.innerHeight ){
-        window.addEventListener('load', ice.mobi.sizePagePanelsToViewPort);
-        ice.mobi.addListener(window,"orientationchange",ice.mobi.sizePagePanelsToViewPort);
-        ice.mobi.addListener(window,"resize",ice.mobi.sizePagePanelsToViewPort);
+        ice.mobi.addListener(window, 'load', function(){ setTimeout(ice.mobi.resizePagePanelsToViewPort,100)});
+        ice.mobi.addListener(window,"orientationchange",ice.mobi.resizePagePanelsToViewPort);
+        ice.mobi.addListener(window,"resize",ice.mobi.resizePagePanelsToViewPort);
     }
 }());
 
@@ -2439,6 +2459,8 @@ ice.mobi.addListener(document, "touchstart", function(){});
                }
                
                prevPane  = currPane;
+               ice.mobi.resizePagePanelsToViewPort();
+               ice.mobi.splitpane.resizeAllSplitPanes();
            }
         }
         
@@ -2738,11 +2760,18 @@ ice.mobi.splitpane = {
             }
         },
         resizeHt: function(clientId) {
-            if (this.panels[clientId])
+            if (this.panels[clientId]){
                 this.panels[clientId].resize(clientId);
-            else {
-                this.panels[clientId].unload(clientId);
             }
+        },
+        resizeAllSplitPanes: function(){
+            if( document.querySelectorAll ){
+                var panes = document.querySelectorAll('.mobi-splitpane');
+                for(var i = 0 ; i < panes.length ; i++ ){
+                    ice.mobi.splitpane.resizeHt(panes[i].id);
+                }
+            }
+            
         },
         Scrollable: function Scrollable(clientId, cfgIn) {
             var wrapPanel = clientId + "_wrp";

@@ -19,23 +19,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.el.MethodExpression;
-import javax.faces.application.ProjectStage;
-import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.mobi.api.ContentPaneController;
-import org.icemobile.component.IPagePanel;
-import org.icefaces.mobi.component.pagepanel.PagePanel;
-import org.icefaces.mobi.renderkit.InlineScriptEventListener;
+import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.ITabSet;
-import org.icefaces.mobi.utils.JSFUtils;
 import org.icemobile.util.ClientDescriptor;
 
 
@@ -103,7 +96,6 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
     public void broadcast(FacesEvent event)
             throws AbortProcessingException {
         if (event instanceof ValueChangeEvent) {
-            ValueChangeEvent vce = (ValueChangeEvent) event;
             MethodExpression method = getTabChangeListener();
             if (method != null) {
                 method.invoke(getFacesContext().getELContext(), new Object[]{event});
@@ -181,12 +173,12 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
 
     private void setHeaderFooter(UIComponent parent) {
         if (parent.getFacetCount() > 0) {
-            if (null != parent.getFacet(IPagePanel.HEADER_FACET)) {
+            if (null != parent.getFacet("header")) {
                 this.setParentHeader(true);
             } else {
                 this.setParentHeader(false);
             }
-            if (null != parent.getFacet(IPagePanel.FOOTER_FACET)){
+            if (null != parent.getFacet("footer")){
                 this.setParentFooter(true);
             }else {
                 this.setParentFooter(false);
