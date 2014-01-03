@@ -27,7 +27,7 @@
                 <h:outputLabel for="cap" value="Auto-Capitalization"/>
                 <mobi:flipswitch id="cap" style="float:right"
                                  labelOn="ON" labelOff="OFF"
-                                 singleSubmit="true"
+                                 singleSubmit="true" disableOffline="true"
                                  valueChangeListener="#{flipSwitchBean.autoCapitalizationChange}"
                                  value="#{flipSwitchBean.autoCapitalization}"/>&#160;
             </mobi:fieldsetRow>

@@ -17,9 +17,6 @@
 package org.icefaces.mobi.component.flipswitch;
 
 import org.icefaces.ace.meta.annotation.*;
-import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
-import org.icefaces.ace.meta.annotation.ClientEvent;
-
 import org.icefaces.ace.meta.baseMeta.UISelectBooleanMeta;
 
 import javax.el.MethodExpression;
@@ -70,6 +67,9 @@ public class FlipSwitchMeta extends UISelectBooleanMeta {
     private String labelOn;
     
     @Property(defaultValue="OFF", tlddoc = "The label for the switch when \"false\". ")
-    private String labelOff;    
+    private String labelOff;
+    
+    @Property(tlddoc="If true, default false, the flipswitch will disable itself when offline ")
+    private boolean disableOffline;
 
 }

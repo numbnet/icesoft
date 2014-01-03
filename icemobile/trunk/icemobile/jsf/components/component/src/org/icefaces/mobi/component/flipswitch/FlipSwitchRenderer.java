@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.flipswitch;
 
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icefaces.mobi.component.button.CommandButton;
 import org.icefaces.mobi.renderkit.CoreRenderer;
 import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.UserAgentInfo;
@@ -28,6 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -78,10 +80,10 @@ public class FlipSwitchRenderer extends CoreRenderer {
         String labelOn = flipswitch.getLabelOn();
         String labelOff = flipswitch.getLabelOff();
         boolean readonly = flipswitch.isReadonly();
-        
+        boolean disableOffline = flipswitch.isDisableOffline();
         if (!disabled && !readonly){
             StringBuilder jsCall = new StringBuilder(255);
-            jsCall.append("mobi.flipswitch.init('").append(clientId).append("',{ event: event,elVal: this,");
+            jsCall.append((disableOffline? "if(!navigator.onLine)return;": "")+"mobi.flipswitch.init('").append(clientId).append("',{ event: event,elVal: this,");
             jsCall.append("singleSubmit: ").append(flipswitch.isSingleSubmit());
     
             if (hasBehaviors){
@@ -110,6 +112,31 @@ public class FlipSwitchRenderer extends CoreRenderer {
         writer.writeAttribute("class", "mobi-flipswitch-txt-off" + (switchVal ? " ui-btn-up-c" : ""), null);
         writer.write(labelOff);
         writer.endElement(HTML.SPAN_ELEM);
+        if( disableOffline  ){
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+            
+            String funcName = "flipSwitchOfflineListener_" + clientId.replace(":", "_");
+            writer.writeText(
+                 "function " + funcName + "(){"
+                    + "var elem = document.getElementById('" + clientId + "');"
+                    + "if(!elem){"
+                         + "window.removeEventListener('online', " + funcName + ", false);"
+                         + "window.removeEventListener('offline', " + funcName + ", false);"
+                    + "}"
+                    + "if( navigator.onLine ){"
+                        + "elem.classList.remove('mobi-button-dis');"
+                        + "elem.removeAttribute('disabled');"
+                    + "}"
+                    + "else{"
+                        + "elem.classList.add('mobi-button-dis');"
+                        + "elem.setAttribute('disabled','disabled');"
+                    + "}"
+               + "};"
+               + "window.addEventListener('online', " + funcName + ", false);"
+               + "window.addEventListener('offline'," + funcName + ", false);", null);
+            writer.endElement("script");
+        }
         writer.endElement(HTML.ANCHOR_ELEM);
 
     }

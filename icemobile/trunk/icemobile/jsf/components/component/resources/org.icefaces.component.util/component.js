@@ -1981,7 +1981,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
             if( footer ){
                 pagePanelBodyMinHeight -= footer.offsetHeight;
             }
-            //pagePanels[i].style.height = ''+document.documentElement.clientHeight+'px';
             var body = pagePanels[i].querySelector(".mobi-pagePanel-body");
             if( body ){
                 body.style.height = ''+pagePanelBodyMinHeight+'px';
