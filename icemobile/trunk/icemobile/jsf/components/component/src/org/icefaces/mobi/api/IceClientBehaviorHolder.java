@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.api;
+package org.icefaces.mobi.api;
 
 public interface IceClientBehaviorHolder extends javax.faces.component.behavior.ClientBehaviorHolder {
 
