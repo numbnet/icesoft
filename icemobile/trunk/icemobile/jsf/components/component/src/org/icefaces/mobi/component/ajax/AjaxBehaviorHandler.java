@@ -28,7 +28,7 @@ import javax.faces.view.BehaviorHolderAttachedObjectHandler;
 import javax.faces.view.BehaviorHolderAttachedObjectTarget;
 import javax.faces.view.facelets.*;
 
-import org.icefaces.mobi.api.IceClientBehaviorHolder;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 import java.beans.BeanDescriptor;
 import java.beans.BeanInfo;

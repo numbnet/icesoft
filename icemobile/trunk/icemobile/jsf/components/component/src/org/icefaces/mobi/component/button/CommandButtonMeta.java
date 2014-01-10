@@ -21,7 +21,7 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.mobi.api.IceClientBehaviorHolder;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
