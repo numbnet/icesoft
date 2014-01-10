@@ -27,7 +27,7 @@ import javax.faces.render.ClientBehaviorRenderer;
 import javax.faces.render.FacesBehaviorRenderer;
 
 import org.icefaces.ace.JSONBuilder;
-import org.icefaces.mobi.api.IceClientBehaviorHolder;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 import org.icefaces.mobi.utils.JSFUtils;
 
 @FacesBehaviorRenderer(rendererType="org.icefaces.mobi.component.AjaxBehaviorRenderer")
