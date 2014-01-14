@@ -2004,6 +2004,9 @@ ice.mobi.addListener(document, "touchstart", function(){});
     var proxyFormId;
     var transitionDuration = 100;
     var vendor = (function () {
+        if( !window.getComputedStyle ){
+            return '';
+        }
         var styles = window.getComputedStyle(document.documentElement, ''),
           pre = (Array.prototype.slice
             .call(styles)
