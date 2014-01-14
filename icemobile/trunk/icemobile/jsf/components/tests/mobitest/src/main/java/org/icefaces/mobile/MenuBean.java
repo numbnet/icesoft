@@ -185,10 +185,10 @@ public class MenuBean implements Serializable {
         public ModelData (String val, String label, String pcId, String snId){
             this.value = val;
             this.label = label;
-            if (null != snId && !snId.isEmpty()){
+            if (null != snId && snId.length() > 0){
                this.submitNotif = snId;
             }
-            if (null != pcId && !pcId.isEmpty()){
+            if (null != pcId && pcId.length() > 0){
                 this.panelConfId = pcId;
             }
         }
