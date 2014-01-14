@@ -14,8 +14,6 @@
  * governing permissions and limitations under the License.
  */
  
- @import "../mixins";
-
 .mobi-date-popup-btn {
     width: 27px;
     height: 24px;
@@ -31,7 +29,9 @@
 .mobi-date-container, .mobi-time-container {
     background-color: #ccc;
     border-radius: 3px;
-    @include box-shadow(3px 3px 5px black);
+    -moz-box-shadow: 3px 3px 5px black;
+    -webkit-box-shadow: 3px 3px 5px black;
+    box-shadow: 3px 3px 5px black;
     border: 3px solid white;
     color: #000000;
 }

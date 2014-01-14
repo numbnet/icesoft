@@ -14,8 +14,8 @@
  * governing permissions and limitations under the License.
  */
  
- @import "../mixins";
-
 .mobi-input-text, .mobi-input-secret, .mobi-input-textarea {
-    @include box-shadow(inset 0 1px 4px rgba(0, 0, 0, .2));
+    -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, .2);
+    -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, .2);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, .2);
 }
