@@ -81,3 +81,13 @@
 .mobi-date-select-value, .mobi-time-select-value {
     background-color: #E2E3EC;
 }
+
+.mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr  {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f7f7f7', EndColorStr = '#bdbebd');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd')";
+}
+
+.mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#bdbebd', EndColorStr = '#f7f7f7');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7')";
+}

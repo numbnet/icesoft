@@ -14,8 +14,6 @@
  * governing permissions and limitations under the License.
  */
  
- @import "../mixins";
- 
 .mobi-button, a.mobi-button:visited {
      background-color: #555;
      border-top-color: #878787;
@@ -26,7 +24,9 @@
      border-left: none;
 }
 .mobi-button:active, .mobi-button:focus, .mobi-button[selected], div.mobi-button-back > input:active {
-    @include box-shadow2(inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF);
+    -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    -webkit-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
     background-color:#66AFFF;
 }
 .mobi-button.mobi-button-attention{
@@ -66,7 +66,9 @@
     color:#F1F1F1;
     font-weight:bold;
     text-shadow: none;
-    @include box-shadow(none);
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 .mobi-button.mobi-button-back:active, .mobi-button.mobi-button-back:hover{
     background-image: url('back-active.png');
