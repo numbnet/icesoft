@@ -5,15 +5,15 @@
   <version>4.0.0-SNAPSHOT</version>
   <versioning>
     <snapshot>
-      <timestamp>20131211.192012</timestamp>
-      <buildNumber>3</buildNumber>
+      <timestamp>20140118.000438</timestamp>
+      <buildNumber>4</buildNumber>
     </snapshot>
-    <lastUpdated>20131211192012</lastUpdated>
+    <lastUpdated>20140118000438</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>4.0.0-20131211.192012-3</value>
-        <updated>20131211192012</updated>
+        <value>4.0.0-20140118.000438-4</value>
+        <updated>20140118000438</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom.asc</extension>
