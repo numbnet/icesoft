@@ -22,8 +22,8 @@
       </snapshotVersion>
       <snapshotVersion>
         <extension>war.asc</extension>
-        <value>4.0.0-20131211.192421-3</value>
-        <updated>20131211192421</updated>
+        <value>4.0.0-20140118.001143-4</value>
+        <updated>20140118001143</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom.asc</extension>
