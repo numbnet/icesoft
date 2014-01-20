@@ -74,6 +74,11 @@ body.landscape .mobi-vm-header > h1 {
     background-repeat: no-repeat;
     background-size: 16px;
 }
+@media screen and (min-resolution: 300dpi){
+    .mobi-vm-back{
+        background-image: url('back_2x.png');
+    }
+}
 .mobi-vm-back:hover{
     text-decoration: none;
 }
