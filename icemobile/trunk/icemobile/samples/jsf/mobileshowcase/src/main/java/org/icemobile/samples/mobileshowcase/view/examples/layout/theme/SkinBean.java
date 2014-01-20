@@ -40,13 +40,12 @@ import java.io.Serializable;
         resources = {
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title = "footer.xhtml",
-                        resource = "/WEB-INF/includes/view/small.xhtml"),
+                        title = "showcase.xhtml",
+                        resource = "/showcase.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
                         title = "SkinBean.java",
-                        resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/theme/ThemeBean.java")
+                        resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase/view/examples/layout/theme/SkinBean.java")
         }
 )
 @ManagedBean(name = SkinBean.BEAN_NAME)
