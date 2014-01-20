@@ -18,7 +18,9 @@
 
 /* Theme Roller compatibility */
 .ui-icon-shadow {
-    @include box-shadow(0px 1px 0 rgba(255,255,255,.4));
+    -moz-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
+    -webkit-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
+    box-shadow: 0px 1px 0 rgba(255,255,255,.4);
 }
 /* Flexbox */
 .mobi-grid{
@@ -29,7 +31,10 @@
     -webkit-box-align:center;
     -moz-box-align:center;
     padding: 0 10px;
-    @include border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
     -moz-box-orient: horizontal;
     box-orient: horizontal;
     min-width:100%;
@@ -52,7 +57,10 @@
     -moz-box-pack: center;
 }
 .mobi-col {
-    @include border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
     overflow:hidden;
     display:block !important;
     float:none !important;

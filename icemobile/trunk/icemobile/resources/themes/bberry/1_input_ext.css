@@ -21,7 +21,9 @@
     color: #333333;
     text-shadow: 0 1px 0 #fff;
     background: white;
-    @include box-shadow(inset 0px 1px 4px rgba(0, 0, 0, .2));
+    -moz-box-shadow: inset 0px 1px 4px rgba(0, 0, 0, .2);
+    -webkit-box-shadow: inset 0px 1px 4px rgba(0, 0, 0, .2);
+    box-shadow: inset 0px 1px 4px rgba(0, 0, 0, .2);
     background-clip: padding;
     border-radius: .6em;
 }

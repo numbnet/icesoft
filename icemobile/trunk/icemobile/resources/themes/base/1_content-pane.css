@@ -21,7 +21,10 @@
     opacity: 0;
     visibility: hidden;
     height: 0;
-    @include border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
 /* visible panes */
 .mobi-contentpane, .mobi-contentpane-left {
@@ -29,7 +32,10 @@
     visibility: visible;
     display:block;
     overflow: auto;
-    @include border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
 /* hidden single view */
 .mobi-contentStack-container.single > .mobi-contentStack-panes > .mobi-contentpane-hidden,

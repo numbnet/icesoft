@@ -28,7 +28,9 @@
 .mobi-date-container, .mobi-time-container {
     background-color: #ccc;
     border-radius: 3px;
-    @include box-shadow(3px 3px 5px black);
+    -moz-box-shadow: 3px 3px 5px black;
+    -webkit-box-shadow: 3px 3px 5px black;
+    box-shadow: 3px 3px 5px black;
     border: 1px solid white;
     color: #000000;
 }

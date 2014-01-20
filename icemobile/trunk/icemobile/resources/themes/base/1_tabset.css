@@ -82,7 +82,10 @@
     text-overflow: ellipsis;
     height: 40px;
     float: left;
-    @include border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .mobi-tabpage-hidden { 
     display: none; 

@@ -20,7 +20,9 @@
     opacity: 1;
     background-color: #EFEFEF;
     width: 80%;
-    @include box-shadow(0px 0px 12px #009ADC);
+    -moz-box-shadow: 0px 0px 12px #009ADC;
+    -webkit-box-shadow: 0px 0px 12px #009ADC;
+    box-shadow: 0px 0px 12px #009ADC;
     border-radius: 5px;
     max-width: 400px;
 }

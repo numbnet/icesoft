@@ -24,7 +24,9 @@
 .mobi-mic-record {
     background-color: #59aada;
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F902B6), to(#FFA4E6));
-    @include box-shadow(3px 3px 3px #000000);
+    -moz-box-shadow: 3px 3px 3px #000000;
+    -webkit-box-shadow: 3px 3px 3px #000000;
+    box-shadow: 3px 3px 3px #000000;
     color: #369;
     border-radius: 6px;
 }
