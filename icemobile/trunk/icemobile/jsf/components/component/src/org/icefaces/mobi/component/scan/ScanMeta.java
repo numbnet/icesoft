@@ -31,7 +31,7 @@ import javax.faces.application.ResourceDependency;
         generatedClass = "org.icefaces.mobi.component.scan.ScanBase",
         componentType = "org.icefaces.Scan",
         rendererType = "org.icefaces.ScanRenderer",
-        extendsClass = "javax.faces.component.UIComponentBase",
+        extendsClass = "javax.faces.component.UIInput",
         componentFamily = "org.icefaces.Scan",
         tlddoc = "The Scan component captures a QR code value."
 )
