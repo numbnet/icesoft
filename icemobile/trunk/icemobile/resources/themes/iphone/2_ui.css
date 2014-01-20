@@ -1,4 +1,4 @@
-@import "../mixins";
+
 
 @media all and (min-width: 450px){
     .ui-popup .ui-field-contain label.ui-submit,

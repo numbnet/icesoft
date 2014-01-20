@@ -14,7 +14,6 @@
  * governing permissions and limitations under the License.
  */
  
- @import "../mixins";
 
 .mobi-date-wrapper, .mobi-time-wrapper {
     display: inline-block;

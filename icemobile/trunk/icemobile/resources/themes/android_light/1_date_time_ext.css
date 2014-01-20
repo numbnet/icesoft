@@ -14,8 +14,6 @@
  * governing permissions and limitations under the License.
  */
  
- @import "../mixins";
-
 .mobi-date-popup-btn {
     width: 27px;
     height: 24px;

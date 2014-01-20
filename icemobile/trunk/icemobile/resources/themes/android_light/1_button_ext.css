@@ -14,8 +14,6 @@
  * governing permissions and limitations under the License.
  */
  
- @import "../mixins";
- 
 .mobi-button, a.mobi-button:visited {
      background-color: #555;
      border-top-color: #878787;

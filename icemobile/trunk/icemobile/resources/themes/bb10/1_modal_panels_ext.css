@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
  
- @import "../mixins";
+ 
  
 .mobi-panelconf-container, .mobi-panelpopup-container  {
     opacity: 1;
