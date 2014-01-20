@@ -14,23 +14,15 @@
  * governing permissions and limitations under the License.
  */
  
- 
- 
-.mobi-video a,.mobi-video a:hover, .mobi-video a:visited,
-.mobi-audio a,.mobi-audio a:hover, .mobi-audio a:visited  {
-    color: black;
-}
 
-.mobi-mic-record,.mobi-mic-stop{
-    color: #369;
+.mobi-fieldset {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-color: #999999;
+    border-radius: 0.6em;
+    -moz-box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
+    -webkit-box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
+    box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
 }
-.mobi-mic-record {
-    background-color: #59aada;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F902B6), to(#FFA4E6));
-    -webkit-box-shadow: 3px 3px 3px #000000;
-    border-radius: 6px;
-}
-
-.mobi-mic-stop {
-    background: #f9d543;
+.mobi-fieldset-row {
+    border-bottom-color: #999999;
 }

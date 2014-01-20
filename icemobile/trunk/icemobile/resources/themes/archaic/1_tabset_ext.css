@@ -14,8 +14,6 @@
  * governing permissions and limitations under the License.
  */
  
- @import "../mixins";
- 
 .mobi-tabset-tabs-top > .mobi-tabset-tabs {
     border-bottom: 1px solid #999;
     border-top: 1px solid #999;
