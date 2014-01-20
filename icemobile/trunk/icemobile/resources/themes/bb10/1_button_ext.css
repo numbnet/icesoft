@@ -89,6 +89,11 @@
     font-weight: bold;
     text-shadow: none;
 }
+@media screen and (min-resolution: 300dpi){
+    .mobi-button.mobi-button-back{
+        background-image: url('back_2x.png');
+    }
+}
 .mobi-pagePanel-header div.mobi-button-back {
     min-width: 18px;
 }

@@ -35,11 +35,16 @@
     background: url('back.png');
     background-position: 0px 44%;
     background-repeat: no-repeat;
-    background-size: 15px;
+    background-size: 15px 12px;
     background-color: rgb(225, 228, 225);
     font-weight: bold;
     padding: 0.6em 20px;
     text-shadow: 1px 1px 1px #FFF;
+}
+@media screen and (min-resolution: 300dpi){
+    .mobi-button.mobi-button-back{
+        background-image: url('back_2x.png');
+    }
 }
 .mobi-button-placeholder{
     padding-left: 2em;
