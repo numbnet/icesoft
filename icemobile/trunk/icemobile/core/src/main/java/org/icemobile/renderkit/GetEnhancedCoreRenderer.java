@@ -36,10 +36,6 @@ public class GetEnhancedCoreRenderer {
     public void encode(IGetEnhanced component, IResponseWriter writer)
             throws IOException {
         
-        if( component.isIOSSmartBannerRendered() ){
-            return;
-        }
-        
         String clientId = component.getClientId();
         ClientDescriptor client = component.getClient();
         
