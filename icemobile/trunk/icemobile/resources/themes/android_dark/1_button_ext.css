@@ -70,6 +70,11 @@
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+@media screen and (min-resolution: 300dpi){
+    .mobi-button.mobi-button-back{
+        background-image: url('back_2x.png');
+    }
+}
 .mobi-button.mobi-button-back:active, .mobi-button.mobi-button-back:hover{
     background-image: url('back-active.png');
     color: #33B5E5;

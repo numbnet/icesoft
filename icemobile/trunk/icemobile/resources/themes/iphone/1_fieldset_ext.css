@@ -20,7 +20,9 @@
     background: none repeat scroll 0 0 #FFFFFF;
     border-color: #999999;
     border-radius: 0.6em;
-    @include box-shadow2(0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset);
+    -moz-box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
+    -webkit-box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
+    box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
 }
 .mobi-fieldset-row {
     border-bottom-color: #999999;

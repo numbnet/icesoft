@@ -26,7 +26,9 @@
      border-left: none;
 }
 .mobi-button:active, .mobi-button:focus, .mobi-button[selected], div.mobi-button-back > input:active {
-    @include box-shadow2(inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF);
+    -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    -webkit-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    box-shadow: inset 0px 0px 3px #66AFFF, $shadow2;
     background-color:#66AFFF;
 }
 .mobi-button.mobi-button-attention{
@@ -66,7 +68,14 @@
     color:#666;
     font-weight:bold;
     text-shadow: none;
-    @include box-shadow(none);
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+@media screen and (min-resolution: 300dpi){
+    .mobi-button.mobi-button-back{
+        background-image: url('back_2x.png');
+    }
 }
 .mobi-button.mobi-button-back:active, .mobi-button.mobi-button-back:hover{
     background-image: url('back-active.png');

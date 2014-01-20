@@ -18,7 +18,9 @@
  
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container  {
     border-radius: 6px;
-    @include box-shadow(3px 3px 5px black);
+    -moz-box-shadow: 3px 3px 5px black;
+    -webkit-box-shadow: 3px 3px 5px black;
+    box-shadow: 3px 3px 5px black;
     border: 1px solid #333;
     color: #000000;
     background: -moz-linear-gradient(top, #DEDEDE, black, black, black) repeat scroll 0 0 black;

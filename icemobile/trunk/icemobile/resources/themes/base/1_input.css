@@ -22,7 +22,10 @@
     padding: 3px 3px;
 }
 .mobi-input-text, .mobi-input-secret, .mobi-input-textarea, .mobi-fieldset-row label{
-    @include border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
 input[type='date'].mobi-input-text, 
 input[type='time'].mobi-input-text, 

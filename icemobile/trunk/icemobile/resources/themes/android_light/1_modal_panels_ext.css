@@ -54,5 +54,7 @@
     color: #F7F7F7 !important;
     text-shadow: none !important;
     border-bottom: 1px solid #33B5E5 !important;
-    @include box-shadow(none !important);
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
 }
