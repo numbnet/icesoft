@@ -44,6 +44,11 @@
         <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
     </context-param>
+    
+    <context-param>
+        <param-name>org.icemobile.RUN_SIMULATOR_IN_PRODUCTION</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
     <context-param>
         <param-name>org.icefaces.mandatoryResourceConfiguration</param-name>
