@@ -933,8 +933,9 @@ div.ui-mobile-viewport { overflow-x: hidden; }
     width: 100%;
     height: 100%;
     overflow: hidden;
-    -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
     box-sizing: border-box;
 }
 .ui-page-pre-in {
@@ -2907,9 +2908,10 @@ div.ui-slider-switch.ui-mini {
     .ui-table-reflow.ui-responsive td,
     .ui-table-reflow.ui-responsive th {
         width: 100%;
-        -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
-        box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
         float: left;
         clear: left;
     }
