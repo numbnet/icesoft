@@ -41,7 +41,7 @@
         </style>
 
         <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="server"
-                       rowStripe="true">
+                       rowStripe="true" rowStyle="#{car.cost > 30000 ? 'color:red' : 'color:green'}">
             <mobi:dataViewDetails>
                 <h:panelGrid columns="3" styleClass="innerBorder">
                     <h:outputText value="Name"/>

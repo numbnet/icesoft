@@ -95,4 +95,10 @@ public class DataViewMeta extends UIComponentBaseMeta {
         tlddoc="Enabling causes the table region to display as many columns as possible in the given device width, " +
                 "hiding the remainder, following priority given with the 'reactivePriority' attribute of DataViewColumnModel.")
     boolean reactiveColumnVisibility;
+    
+    @Property
+    String rowStyleClass;
+    
+    @Property
+    String rowStyle;
 }
