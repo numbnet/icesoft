@@ -636,18 +636,11 @@
 <target name="min-js-compress" depends="init-skip-comp-js-properties" unless="comp.js.skip" description="Compress individual javascript files for each component ">
 	<echo message="Compressing individual javascript files" />
 	<compressjs comp="component" path="${resources}/org.icefaces.component.util" />
-	<compressjs comp="menubutton" path="${resources}/org.icefaces.component.button" />
 	<compressjs comp="carousel" path="${resources}/org.icefaces.component.carousel" />
 	<compressjs comp="datespinner" path="${resources}/org.icefaces.component.datespinner" />
-	<compressjs comp="flipswitch" path="${resources}/org.icefaces.component.flipswitch" />
 	<compressjs comp="panelconfirmation" path="${resources}/org.icefaces.component.panelconfirmation" />
-	<compressjs comp="panelpopup" path="${resources}/org.icefaces.component.panelpopup" />
 	<compressjs comp="submitnotification" path="${resources}/org.icefaces.component.submitnotification" />
-	<compressjs comp="splitpane" path="${resources}/org.icefaces.component.splitpane" />
 	<compressjs comp="timespinner" path="${resources}/org.icefaces.component.timespinner" />
-	<compressjs comp="tabset" path="${resources}/org.icefaces.component.tabset" />
-	<compressjs comp="accordion" path="${resources}/org.icefaces.component.accordion" />
-	<compressjs comp="layoutmenu" path="${resources}/org.icefaces.component.layoutmenu" />
 	<touch file="${build}/comp-js.done" />
 </target>
 
