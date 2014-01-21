@@ -69,14 +69,14 @@
   <h:form id="tabset">
       <mobi:tabSet id="test1" selectedId="#{layoutBean.selectedPane}"
                    orientation="#{layoutBean.orientation}"
-                   fixedPosition="#{layoutBean.fixedPosition}"
+                   fitToParent="#{layoutBean.fitToParent}"
                    tabChangeListener="#{layoutBean.tabChangeListener}">
           <mobi:contentPane id="panel1" title="panel1" client="true">
                   <h3> mobi comps with mobi ajax</h3>
                   <mobi:fieldsetGroup>
                       <mobi:fieldsetRow >
-                          <h:outputLabel for="fixedPos" value="Fixed Position:" />
-                          <mobi:flipswitch id="fixedPos" value="#{layoutBean.fixedPosition}">
+                          <h:outputLabel for="fitToParent" value="Fit to parent:" />
+                          <mobi:flipswitch id="fitToParent" value="#{layoutBean.fitToParent}">
                               <mobi:ajax render="tabset" execute="tabset"/>
                           </mobi:flipswitch>
                       </mobi:fieldsetRow>

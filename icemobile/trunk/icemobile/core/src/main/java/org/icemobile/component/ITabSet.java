@@ -24,7 +24,6 @@ public interface ITabSet extends IMobiComponent{
     public static final StringBuilder TABSET_CONTAINER_BOTTOM_FOOTER_CLASS = new StringBuilder("mobi-tabset-tabs-bottom-footer");
     public static final StringBuilder TABSET_CONTAINER_TOP_CLASS = new StringBuilder("mobi-tabset-tabs-top");
     public static final StringBuilder TABSET_CONTAINER_TOP_HEADER_CLASS = new StringBuilder("mobi-tabset-tabs-top-header");
-    public static final StringBuilder TABSET_TABS_UNFIXED_CLASS = new StringBuilder("mobi-tabset-tabs-nonfixed ui-bar-b");
     public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs ui-bar-b");
     /* activeTab is now done with javascript so tabs are not rendered every request if not changed */
   //  public static final StringBuilder TABSET_ACTIVETAB_CLASS = new StringBuilder("activeTab ");
@@ -45,12 +44,10 @@ public interface ITabSet extends IMobiComponent{
     public boolean setIsTop(String orientation);
     public Boolean isParentFooter();
     public Boolean isParentHeader();
-  //  public void setParentHeaderFooter();
     public boolean isSingleSubmit();
     public boolean isAutoHeight();
     public String getDefaultId();
     public void setDefaultId(String defId);
-    public boolean isFixedPosition();
-    public void setFixedPosition(boolean fixedHeader);
+    public boolean isFitToParent();
 
 }

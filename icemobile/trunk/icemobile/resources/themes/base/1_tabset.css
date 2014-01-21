@@ -14,57 +14,27 @@
  * governing permissions and limitations under the License.
  */
  
- @import "../mixins";
+ 
  
 .mobi-tabset {
     margin: 0;
     padding: 0;
 }
-/* padding for pagepanel */
-.mobi-tabset.mobi-tabset-tabs-top-header{
-    padding-top: 39px;
-}
-.mobi-tabset.mobi-tabset-tabs-bottom-footer{ 
-    padding-bottom:40px;
-}
 .mobi-tabset > .mobi-tabset-tabs{
-    position: fixed;
+/*     position: fixed; */
     text-align:center;
     width: 100%;
     z-index: 496;
     border: none;
 }
-
-.mobi-tabset > .mobi-tabset-tabs-nonfixed{
-    position: static;
-    top: 0 !important;
-    bottom: 0!important;
-}
-.mobi-tabset.mobi-tabset-tabs-top-header > .mobi-tabset-tabs-nonfixed{
-    margin-top: -39px !important;
-}
-.mobi-tabset.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs-nonfixed{
-    margin-bottom: -40px !important;
-}
-
-.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs{
-    top: 0;
-}
-.mobi-tabset-tabs-bottom > .mobi-tabset-tabs{ 
-    bottom: 0; 
-}
-.mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
-    top: 40px;
-}
-
-.mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
-    bottom: 40px;
-}
-
 .mobi-tabset > .mobi-tabset-tabs > ul{
     margin: 0;
     padding: 0;
     height: 40px;
+}
+.mobi-tabset-content{
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
     cursor: pointer;

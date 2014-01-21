@@ -57,7 +57,7 @@
                     disabled="#{layoutBean.disabled}"
                     orientation="#{layoutBean.orientation}"
                     height="#{layoutBean.fixedHeightString}"
-                    fixedPosition="#{layoutBean.fixedPosition}"
+                    fitToParent="#{layoutBean.fitToParent}"
                     tabChangeListener="#{layoutBean.tabChangeListener}">
               <mobi:contentPane id="panel1" title="panel1" client="true">
                   <div id="inner1">
@@ -150,8 +150,8 @@
                     style="font-size:12px"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="fixedPosition" value="FixedPosition:" />
-                <mobi:flipswitch id="fixedPosition" value="#{layoutBean.fixedPosition}" singleSubmit="true"/>
+                <h:outputLabel for="fitToParent" value="Fit to parent:" />
+                <mobi:flipswitch id="fitToParent" value="#{layoutBean.fitToParent}" singleSubmit="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="fixedHeight" value="Fixed Height:" style="width:50px"/>

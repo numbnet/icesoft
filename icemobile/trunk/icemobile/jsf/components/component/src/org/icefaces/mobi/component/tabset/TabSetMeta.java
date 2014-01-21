@@ -97,13 +97,9 @@ public class TabSetMeta extends UIPanelMeta {
     @Property(defaultValue = "true")
     private boolean autoWidth;
 
-    @Property(defaultValue = "true", tlddoc="This attribute, when true, will allow the tabs of the component " +
-            "to nest immediately at the top of the page. If a pagePanelHeader is present, then it will " +
-            "render directly under that.  If false, then the headers will appear at the top of the div defined " +
-            "for the tabSet component. Due to the unreliable browser support for fixed positioning, fixed " +
-            "positioning of tabs is not currently supported on the Android browser or " +
-            "Android containers. ")
-    private boolean fixedPosition;
+    @Property(defaultValue = "true", tlddoc="This attribute, when true, will allow the tab content " +
+            "region to fit to the bounds of the parent container of the tabset. " )
+    private boolean fitToParent;
 
     @Field
     private String hashVal;

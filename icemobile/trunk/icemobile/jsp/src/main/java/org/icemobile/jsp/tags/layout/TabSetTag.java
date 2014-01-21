@@ -373,4 +373,8 @@ public class TabSetTag extends BaseBodyTag implements ITabSet{
         this.styleClass = null;
         this.style=null;
     }
+
+    public boolean isFitToParent() {
+        return false;
+    }
 }

@@ -2590,6 +2590,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         var height = cfgIn.height || -1;
         var disabled = cfgIn.disabled;
         var autoheight = cfgIn.autoheight || false;
+        var fit = cfgIn.fitToParent || true;
         var cntr = 0;
         if (height !== -1) {
             tabContent.style.maxHeight = height;
@@ -2611,6 +2612,12 @@ ice.mobi.addListener(document, "touchstart", function(){});
                contents[i].className = classHid;
             }
         }
+        if( fit ){
+            ice.mobi.addListener(window,"orientationchange",fitToParent);
+            ice.mobi.addListener(window,"resize",fitToParent);
+            fitToParent();
+        }
+        
         
         function getTabset(){
             return document.getElementById(id);
@@ -2641,6 +2648,22 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     }
                 }
             }
+        }
+        
+        function fitToParent(){
+            setTimeout(function(){
+                var container = getTabset();
+                var parent = container.parentElement;
+                var height = container.offsetHeight;
+                while( parent != null ){
+                    if( parent.offsetHeight != height ){
+                        container.querySelector('.mobi-tabset-content').style.height 
+                            = ''+(parent.offsetHeight-40)+'px';
+                        break;
+                    }
+                    parent = parent.parentElement;
+                }
+            },100);
         }
 
         return {
@@ -2682,7 +2705,13 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 }
                 contents[tabIndex].setAttribute("class", classVis);
                 el.setAttribute("class", clsActiveTab);
+                
+                if( fit ){
+                    fitToParent();
+                }
+               
             },
+            
             updateProperties: function (clientId, cfgUpd) {
                 var newHt = cfgUpd.height || -1;
                 if (newHt !== -1 && newHt !== height ){
@@ -2690,6 +2719,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     tabset.style.maxHeight = newHt;
                     tabset.style.height = newHt;
                 }
+                var fit = cfgUpd.fitToParent || true;
                 var autoWidth = cfgUpd.autoWidth;
                 if (autoWidth){
                     setTimeout( function(){
@@ -2719,6 +2749,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 if (oldIdx != tabIndex){
                     contents[oldIdx].setAttribute("class", classHid);
                     contents[tabIndex].setAttribute("class", classVis);
+                }
+                if( fit ){
+                    ice.mobi.addListener(window,"orientationchange",fitToParent);
+                    ice.mobi.addListener(window,"resize",fitToParent);
+                    fitToParent();
                 }
             },
             setDisabled: function(disabledIn){
