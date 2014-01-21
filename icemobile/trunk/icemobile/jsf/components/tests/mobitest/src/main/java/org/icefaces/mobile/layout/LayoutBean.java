@@ -59,7 +59,7 @@ public class LayoutBean implements Serializable {
     private long timestamp;
     private long headTimestamp;
     private String orientation="top";
-    private boolean fixedPosition=false;
+    private boolean fitToParent=false;
     private String inputString;
     private String inputString2;
 
@@ -133,20 +133,20 @@ public class LayoutBean implements Serializable {
         this.selectedPane = THIRDPANE;
     }
 
-    public boolean isFixedPosition() {
-        return fixedPosition;
-    }
-
-    public void setFixedPosition(boolean fixedPosition) {
-        this.fixedPosition = fixedPosition;
-    }
-
     public boolean isAutoHeight() {
         return autoHeight;
     }
 
     public void setAutoHeight(boolean autoHeight) {
         this.autoHeight = autoHeight;
+    }
+    
+    public void setFitToParent(boolean fitToParent){
+        this.fitToParent = fitToParent;
+    }
+    
+    public boolean getFitToParent(){
+        return fitToParent;
     }
 
     public boolean isDisabled() {

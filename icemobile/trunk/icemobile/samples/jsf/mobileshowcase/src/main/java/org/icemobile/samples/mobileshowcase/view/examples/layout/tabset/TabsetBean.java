@@ -59,7 +59,7 @@ public class TabsetBean extends ExampleImpl<TabsetBean> implements
 
     private String currentId = "tab1";
     
-    private boolean fixedPosition = true;
+    private boolean fitToParent = true;
     private boolean orientationTop = false;
 
     public TabsetBean() {
@@ -74,19 +74,19 @@ public class TabsetBean extends ExampleImpl<TabsetBean> implements
         this.currentId = currentId;
     }
 
-    public boolean isFixedPosition() {
-        return fixedPosition;
-    }
-
-    public void setFixedPosition(boolean fixedPosition) {
-        this.fixedPosition = fixedPosition;
-    }
-
     public boolean isOrientationTop() {
         return orientationTop;
     }
 
     public void setOrientationTop(boolean orientationTop) {
         this.orientationTop = orientationTop;
+    }
+
+    public boolean isFitToParent() {
+        return fitToParent;
+    }
+
+    public void setFitToParent(boolean fitToParent) {
+        this.fitToParent = fitToParent;
     }
 }

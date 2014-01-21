@@ -30,7 +30,7 @@
 
         <h:form id="tabset"> 
             <mobi:tabSet selectedId="#{tabsetBean.currentId}"
-                    fixedPosition="#{tabsetBean.fixedPosition}"
+                    fitToParent="#{tabsetBean.fitToParent}"
                     parentFooter="#{mobiClient.handheldBrowser}"
                     orientation="#{tabsetBean.orientationTop ? 'top' : 'bottom'}"
                     height="200px"
@@ -40,9 +40,9 @@
                 <mobi:contentPane title="Settings" id="tab0"
                                   facelet="false" client="true" >
                     <mobi:fieldsetGroup>
-                        <mobi:fieldsetRow rendered="#{mobiClient.supportsFixedPosition}">
-                            <h:outputLabel for="fixedPosition" value="Fixed Position:" styleClass="ui-input-text"/>
-                            <mobi:flipswitch id="fixedPosition" value="#{tabsetBean.fixedPosition}">
+                        <mobi:fieldsetRow>
+                            <h:outputLabel for="fitToParent" value="Fit to Parent:" styleClass="ui-input-text"/>
+                            <mobi:flipswitch id="fitToParent" value="#{tabsetBean.fitToParent}">
                                 <mobi:ajax render="tabset" execute="tabset"/>
                             </mobi:flipswitch>
                         </mobi:fieldsetRow>
