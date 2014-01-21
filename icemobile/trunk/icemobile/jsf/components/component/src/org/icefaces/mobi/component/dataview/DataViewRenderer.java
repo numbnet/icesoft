@@ -283,8 +283,17 @@ public class DataViewRenderer extends Renderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_" + dataModelIterator.getIndex(), null);
             writer.writeAttribute("data-index", index, null);
 
-            if (activeIndex != null && activeIndex.equals(index))
-                writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_ROW_ACTIVE_CLASS, null);
+            String style = dataView.getRowStyle();
+            if( style != null && style.length() > 0 ){
+                writer.writeAttribute(HTML.STYLE_ATTR, style, null);
+            }
+            String styleClass = dataView.getRowStyleClass();
+            if (activeIndex != null && activeIndex.equals(index)){
+                styleClass += IDataView.DATAVIEW_ROW_ACTIVE_CLASS;
+            }
+            if( styleClass != null && styleClass.length() > 0 ){
+                writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+            }
 
             if (ActivationMode.client.equals(dataView.getActivationMode()))
                 writer.writeAttribute("data-state", encodeRowDetailString(context, dvId, detailHolders), null);
