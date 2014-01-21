@@ -102,6 +102,10 @@
                 <include name="**/*.jar" if="jsf" />
             </lib>
 
+            <lib dir="${lib.icemobile.dir}">
+                <include name="servlet2.5/*.jar" if="servlet2_5" />
+            </lib>
+
             <lib dir="${lib.application.dir}">
             	<patternset refid="pattern.all"/>
             </lib>
