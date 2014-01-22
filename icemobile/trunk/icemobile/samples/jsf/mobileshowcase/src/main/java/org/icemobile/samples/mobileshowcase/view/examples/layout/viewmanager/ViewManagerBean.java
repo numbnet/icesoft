@@ -95,12 +95,10 @@ public class ViewManagerBean extends ExampleImpl<ViewManagerBean> implements
     }
 
     public String getView() {
-        System.out.println("ViewManagerBean.getView()="+view);
         return view;
     }
 
     public void setView(String view) {
-        System.out.println("ViewManagerBean.setView()="+view);
         this.view = view;
     }
 
