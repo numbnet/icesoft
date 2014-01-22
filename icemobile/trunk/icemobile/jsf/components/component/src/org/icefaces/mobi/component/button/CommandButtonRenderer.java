@@ -209,8 +209,8 @@ public class  CommandButtonRenderer extends CoreRenderer {
                         + "elem.setAttribute('disabled','disabled');"
                     + "}"
                + "};"
-               + "window.addEventListener('online', " + funcName + ", false);"
-               + "window.addEventListener('offline'," + funcName + ", false);");
+               + "ice.mobi.addListener(window,'online', " + funcName + ");"
+               + "ice.mobi.addListener(window,'offline'," + funcName + ");");
             writer.endElement("script");
         }
         OnlineStatusListenerUtil.renderOnlineStatusScript(button, writer);

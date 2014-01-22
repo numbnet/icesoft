@@ -133,8 +133,8 @@ public class FlipSwitchRenderer extends CoreRenderer {
                         + "elem.setAttribute('disabled','disabled');"
                     + "}"
                + "};"
-               + "window.addEventListener('online', " + funcName + ", false);"
-               + "window.addEventListener('offline'," + funcName + ", false);", null);
+               + "ice.mobi.addListener(window,'online', " + funcName + ");"
+               + "ice.mobi.addListener(window,'offline'," + funcName + ");", null);
             writer.endElement("script");
         }
         writer.endElement(HTML.ANCHOR_ELEM);
