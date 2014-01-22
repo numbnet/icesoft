@@ -58,9 +58,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
 
     // CSS style extension circa 2011
     private static final String CSS_EXT = ".css";
-    // compressed css post-fix notation.
-    public static final String CSS_COMPRESSION_POSTFIX = "-min";
-
+    
     // iPhone style sheet name found in jar.
     public static final String IPHONE_CSS = "iphone.css";
     // iPad style sheet name found in jar.
@@ -106,13 +104,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
         if( name != null ){
         	contextMap.put(MOBILE_DEVICE_TYPE_KEY, name);
         	
-        	String css = name;
-        	// load compressed css if this is production environment.
-            if (context.isProjectStage(ProjectStage.Production)){
-            	css = name.concat(CSS_COMPRESSION_POSTFIX);
-            }
-            css = css.concat(CSS_EXT);
-            
+        	String css = name + CSS_EXT;
             String library = deriveLibrary(attributes);
 
             // create URL that the resource can be loaded from.
