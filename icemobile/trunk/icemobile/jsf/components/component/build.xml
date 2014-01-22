@@ -230,19 +230,10 @@
 	</macrodef>
 
 
-	<macrodef name="compresscssmacro">
+	<macrodef name="prepare-skin">
 		<attribute name="name" />
 		<sequential>
-			<yui-compressor name="@{name}" inputDir="${resources}/org.icefaces.component.skins/@{name}" outputDir="${resources}/org.icefaces.component.skins/@{name}" />
-
-			<!-- removes ';'from  the url('#{resource['resourcePath'];}' -->
-			<replaceregexp match="];}" replace="]}" flags="g" file="${resources}/org.icefaces.component.skins/@{name}/@{name}-min.css">
-			</replaceregexp>
-
 			<move verbose="true" file="${resources}/org.icefaces.component.skins/@{name}/@{name}.css" tofile="${resources}/org.icefaces.component.skins/@{name}.css" overwrite="yes" />
-			<move verbose="true" file="${resources}/org.icefaces.component.skins/@{name}/@{name}-min.css" tofile="${resources}/org.icefaces.component.skins/@{name}-min.css" overwrite="yes" />
-
-
 		</sequential>
 	</macrodef>
 	
@@ -541,16 +532,16 @@
 </target>
 
 <target name="compress-skins" unless="skins.skip">
-	<compresscssmacro name="base" />
-	<compresscssmacro name="iphone" />
-	<compresscssmacro name="ipad" />
-	<compresscssmacro name="android_light" />
-	<compresscssmacro name="android_dark" />
-	<compresscssmacro name="jqm" />
-	<compresscssmacro name="bberry" />
-	<compresscssmacro name="bb10" />
-	<compresscssmacro name="archaic" />
-	<compresscssmacro name="simulator" />
+	<prepare-skin name="base" />
+	<prepare-skin name="iphone" />
+	<prepare-skin name="ipad" />
+	<prepare-skin name="android_light" />
+	<prepare-skin name="android_dark" />
+	<prepare-skin name="jqm" />
+	<prepare-skin name="bberry" />
+	<prepare-skin name="bb10" />
+	<prepare-skin name="archaic" />
+	<prepare-skin name="simulator" />
 </target>
 
 <target name="smartsprites" description="Performs CSS sprite processing." if="${skin}.modified">

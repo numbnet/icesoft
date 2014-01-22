@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public class CSSUtils {
     
-    public static final String CSS_COMPRESSION_POSTFIX = "-min";
-    
     /* Common CSS Class Names */
     public static final String HIDDEN = "ui-screen-hidden";
     
@@ -143,7 +141,7 @@ public class CSSUtils {
     }
     
     public static String getThemeCSSFileName(Theme theme, boolean production){
-        return theme.fileName() + (production ? CSS_COMPRESSION_POSTFIX : "") + ".css";
+        return theme.fileName() + ".css";
     }
 
 

@@ -38,22 +38,7 @@
         </sequential>
     </macrodef>
 
-    <macrodef name="yui-compressor">
-        <attribute name="name"/>
-        <attribute name="inputDir"/>
-        <attribute name="outputDir"/>
-        <sequential>
-            <java jar="${lib.dir}/generator/yui-compressor.jar" fork="yes">
-                <arg value="--type"/>
-                <arg value="css"/>
-                <arg value="@{inputDir}/@{name}.css"/>
-                <arg value="-o"/>
-                <arg value="@{outputDir}/@{name}-min.css"/>
-            </java>
-        </sequential>
-    </macrodef>
-	
-	<macrodef name="copy.theme.resources">
+    <macrodef name="copy.theme.resources">
 		<attribute name="name"/>
 		<attribute name="build.dir"/>
 		<sequential>

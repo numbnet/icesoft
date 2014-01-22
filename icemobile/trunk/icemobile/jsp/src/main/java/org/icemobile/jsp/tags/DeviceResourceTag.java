@@ -42,9 +42,6 @@ public class DeviceResourceTag extends BaseSimpleTag {
 
 	static Logger log = Logger.getLogger(DeviceResourceTag.class.getName());
 
-	// compressed css post-fix notation.
-	public static final String CSS_COMPRESSION_POSTFIX = "-min";
-
 	// default resource library for a default themes,  if not specified in
 	// component definition this library will be loaded.
 	private static final String DEFAULT_LIBRARY = "org.icefaces.component.skins";
@@ -179,11 +176,6 @@ public class DeviceResourceTag extends BaseSimpleTag {
         }
 		
 		String fileName = theme;
-		
-		if (MobiEnvUtils.isProductionStage(getServletContext())) {
-            fileName = fileName.concat(CSS_COMPRESSION_POSTFIX);
-        }
-		
 		String contextRoot = Util.getContextRoot(pageContext.getRequest());
 		
 		String markers = " " + theme + " ui-mobile";
