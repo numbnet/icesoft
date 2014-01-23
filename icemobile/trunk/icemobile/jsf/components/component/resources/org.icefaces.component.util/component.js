@@ -298,8 +298,16 @@ if (!window.console) {
     if (ice.logInContainer) {
         console.log = ice.logInContainer;
     } else {
-        log = function() {
-        };
+        var methods = [ "debug", "warn", "info", "error", "log"];   
+        for(var i=0;i<methods.length;i++){      
+            if(!console[methods[i]]) {
+                if ( console["log"] ) {
+                    console[methods[i]] = console.log;
+                } else {
+                    console[methods[i]] = function(){};
+                }
+            }
+        }
     }
 }
 ice.mobi.BUTTON_UNPRESSED = " ui-btn-up-c";
