@@ -33,6 +33,7 @@ public class MenuButtonCoreRenderer extends BaseCoreRenderer {
         String clientId = menu.getClientId();
         writer.startElement(DIV_ELEM, menu);
         writer.writeAttribute(ID_ATTR, clientId);
+        writer.writeAttribute("data-lastselected", menu.getLastSelected());
         if (null!=menu.getStyle()){
             String style= menu.getStyle();
             if ( style.trim().length() > 0) {

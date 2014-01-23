@@ -36,12 +36,12 @@ public class MenuButtonItemCoreRenderer extends BaseCoreRenderer {
         if (item.isDisabled()) {
             writer.writeAttribute(DISABLED_ATTR, DISABLED_ATTR);
         }
-        writer.writeAttribute("singleSubmit",item.isSingleSubmit());
+        writer.writeAttribute("data-singleSubmit",item.isSingleSubmit());
         if (null != item.getPanelConfirmationId()){
-            writer.writeAttribute("pcId",item.getPanelConfirmationId());
+            writer.writeAttribute("data-pcId",item.getPanelConfirmationId());
         }
         if (null != item.getSubmitNotificationId()){
-            writer.writeAttribute("snId",item.getSubmitNotificationId());
+            writer.writeAttribute("data-snId",item.getSubmitNotificationId());
         }
         if (null != item.getBehaviors()){
             writer.writeAttribute("behaviors",item.getBehaviors());

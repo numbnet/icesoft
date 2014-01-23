@@ -72,5 +72,8 @@ public class MenuButtonMeta extends UISeriesBaseMeta {
 
     @Field
     private String name;
+    
+    @Field
+    private String lastSelected;
 
 }
