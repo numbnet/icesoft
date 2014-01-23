@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -48,12 +47,19 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
         String source = String.valueOf(facesContext.getExternalContext().getRequestParameterMap().get("ice.event.captured"));
         String clientId = item.getClientId();
         String parentId = item.getParent().getClientId();
-        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         if (clientId.equals(source) || parentId.equals(source)) {
             try {
                 if (!item.isDisabled()) {
                     uiComponent.queueEvent(new ActionEvent(uiComponent));
                     decodeBehaviors(facesContext, uiComponent);
+                    
+                    UIComponent parent = item.getParent();
+                    if( parent instanceof MenuButtonGroup ){
+                        parent = parent.getParent();
+                    }
+                    if( parent instanceof MenuButton ){
+                        ((MenuButton)parent).setLastSelected((String)item.getValue());
+                    }
                 }
             } catch (Exception e) {
                 logger.warning("Error queuing CommandButton event");

@@ -144,4 +144,8 @@ public class MenuButtonTag extends BaseBodyTag implements IMenuButton{
         this.writer= null;
         this.renderer=null;
     }
+
+    public String getLastSelected() {
+        return null;
+    }
 }

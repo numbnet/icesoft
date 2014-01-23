@@ -33,6 +33,7 @@ public interface IMenuButton extends IMobiComponent  {
     public String getSelectTitle();
 
     public String getName();
+    public String getLastSelected();
 
 
 }

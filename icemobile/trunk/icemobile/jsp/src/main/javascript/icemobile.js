@@ -2436,7 +2436,7 @@ ice.mobi.menubutton = {
         var myOptions = myselect.options;
         var index = myselect.selectedIndex;
         var behaviors = myOptions[index].getAttribute('cfg');
-        var singleSubmit = myOptions[index].getAttribute("singleSubmit") || null;
+        var singleSubmit = myOptions[index].getAttribute("data-singleSubmit") || null;
         var myForm = ice.formOf(document.getElementById(clientId));
         var params = myOptions[index].getAttribute("params") || null;
         var optId = myOptions[index].id || null;
@@ -2456,8 +2456,8 @@ ice.mobi.menubutton = {
         var cfg = {
             source: optId,
         }
-        var snId = myOptions[index].getAttribute("snId") || null ;
-        var pcId = myOptions[index].getAttribute("pcId") || null;
+        var snId = myOptions[index].getAttribute("data-snId") || null ;
+        var pcId = myOptions[index].getAttribute("data-pcId") || null;
         if (singleSubmit){
             options.execute="@this";
         } else {
