@@ -156,7 +156,7 @@ public class UrlOccurrence {
 			case 6: // whitespace and comments after the actual url, there might be other characters as well
 				endBuffer.appendCodePoint(c);
 				if (c == ')') {
-					this.complete = true;
+				    this.complete = true;
 				}
 				break;
 			default:
@@ -175,6 +175,7 @@ public class UrlOccurrence {
 	}
 	
 	public String getTrailingChars() {
+	    System.out.println("trailing chars: " + this.endBuffer.toString());
 		return this.endBuffer.toString();
 	}
 	
