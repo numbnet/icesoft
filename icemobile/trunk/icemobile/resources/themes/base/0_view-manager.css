@@ -118,7 +118,7 @@ body.landscape .mobi-vm-header > h1 {
     -moz-transform: translateX(0%);
     -ms-transform: translateX(0%);
     -o-transform: translateX(0%);
-    tranform: translateX(0%);
+    transform: translateX(0%);
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     -o-backface-visibility: hidden;
@@ -130,11 +130,6 @@ body.landscape .mobi-vm-header > h1 {
 .mobi-vm-view-content{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-}
-.mobi-vm-image-cache{
-    display: none;
-    background-image: url(selection.png), url(list-arrow-selected.png), 
-       url(loading.gif), url(list-group.png), url(list-arrow.png);
 }
 .mobi-vm-menu > div{
     background-color: #FFFFFF;
@@ -233,7 +228,7 @@ body.landscape .mobi-vm-header > h1 {
         -moz-transform: translateX(0%) !important;
         -ms-transform: translateX(0%) !important;
         -o-transform: translateX(0%) !important;
-        tranform: translateX(0%) !important;
+        transform: translateX(0%) !important;
         display: inline-block;
         opacity: 1 !important;
         width: 25%;

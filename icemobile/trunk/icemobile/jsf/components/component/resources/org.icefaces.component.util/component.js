@@ -2060,7 +2060,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     var vendorPrefix = vendor.lowercase;
 
     function getCurrentView(){
-        var views = document.getElementsByClassName('mobi-vm-view');
+        var views = document.querySelectorAll('.mobi-vm-view');
         for( var i = 0 ; i < views.length ; i++ ){
             var selected = views[i].getAttribute('data-selected');
             if( selected == "true" ){
@@ -2069,7 +2069,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         }
     }
     function getNodeForView(view){
-        var views = document.getElementsByClassName('mobi-vm-view');
+        var views = document.querySelectorAll('.mobi-vm-view');
         for( var i = 0 ; i < views.length ; i++ ){
             var viewId = views[i].getAttribute('data-view');
             if( viewId ==  view ){
@@ -2118,17 +2118,17 @@ ice.mobi.addListener(document, "touchstart", function(){});
         
         var contentHeight = currentHeight - 45; //adjust for header
         var currentView = getNodeForView(getCurrentView());
-        if( currentView.getElementsByClassName('mobi-vm-nav-bar').length > 0 ){
+        if( currentView.querySelectorAll('.mobi-vm-nav-bar').length > 0 ){
             contentHeight -= 40; //adjust for nav bar if exists
         }
-        var contentNode = currentView.getElementsByClassName('mobi-vm-view-content')[0];
+        var contentNode = currentView.querySelectorAll('.mobi-vm-view-content')[0];
         if( contentNode ){
             contentNode.style.height = '' + contentHeight + 'px';
             console.log('set view content height to ' + contentHeight);
         }
         else
             console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find content node for view = ' + currentView.id);
-        var menuNode = document.getElementsByClassName('mobi-vm-menu')[0];
+        var menuNode = document.querySelectorAll('.mobi-vm-menu')[0];
         if( menuNode ){
             menuNode.style.height = '' + (currentHeight - 45) + 'px';
             console.log('set menu height to ' + (currentHeight - 45));
@@ -2283,7 +2283,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     }
     function refreshBackButton(toNode){
         console.log('refreshBackButton()');
-        var headerNode = document.getElementsByClassName('mobi-vm-header')[0];
+        var headerNode = document.querySelectorAll('.mobi-vm-header')[0];
         var backButton = headerNode.children[1];
         var selected = getCurrentView();
         if (backButton){
@@ -2311,7 +2311,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     }
     function refreshView(toNode){
         console.log('refreshView()');
-        var headerNode = document.getElementsByClassName('mobi-vm-header')[0];
+        var headerNode = document.querySelectorAll('.mobi-vm-header')[0];
         var titleNode = headerNode.firstChild;
         var title = toNode.getAttribute('data-title');
         if (title){
@@ -2321,7 +2321,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         
     }
     function viewHasNavBar(view){
-        return view.getElementsByClassName('mobi-vm-nav-bar').length > 0;
+        return view.querySelectorAll('.mobi-vm-nav-bar').length > 0;
     }
 
     im.viewManager = {
