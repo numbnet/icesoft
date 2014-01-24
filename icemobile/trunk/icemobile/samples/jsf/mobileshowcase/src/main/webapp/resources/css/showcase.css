@@ -225,7 +225,7 @@ html.ipad #splash > h5, html.iphone #splash > h5{
 }
 .imageView{ 
     margin: 0 auto;
-    width:50%;
+    max-width:50%;
 }
 html.iphone .examplesLink{
     font-weight: bold;
