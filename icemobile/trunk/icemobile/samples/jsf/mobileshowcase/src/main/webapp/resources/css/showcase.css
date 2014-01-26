@@ -205,9 +205,6 @@ html.ipad #splash > h5, html.iphone #splash > h5{
         max-width: 35%;
         margin-bottom:10px;
     }
-    #splash fieldset{ 
-        padding: 20px;
-    }
 }
 /* SMALL SCREEN */
 @media screen and (max-width: 579px) {  
