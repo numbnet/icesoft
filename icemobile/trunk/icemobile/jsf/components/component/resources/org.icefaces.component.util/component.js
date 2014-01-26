@@ -640,6 +640,33 @@ mobi.registerAuxUpload = function (sessionid, uploadURL) {
         document.body.appendChild(auxiframe);
     }
 };
+ice.mobi.getScrollOffset = function(elem){
+    if( !elem ){
+        return 0;
+    }
+    var scroll = document.documentElement.scrollTop;
+    var parent = elem;
+    while( parent && parent != document.body){
+        scroll += parent.scrollTop;
+        parent = parent.parentElement;
+    }
+    return scroll;
+};
+ice.mobi.getAbsoluteOffset = function(elem){
+    if( !elem || !window.getComputedStyle ){
+        return 0;
+    }
+    var offset = 0;
+    var parent = elem.parentElement;
+    while( parent ){
+        var style = window.getComputedStyle(parent);
+        if( style.position == 'absolute'){
+            offset += parent.offsetTop;            
+        }
+        parent = parent.parentElement;
+    }
+    return offset;
+}
 ice.mobi.panelCenter = function(clientId, cfg){
     var paneNode = document.getElementById(clientId);
     var containerElem = cfg.containerElem || null;
@@ -670,21 +697,19 @@ ice.mobi.panelCenter = function(clientId, cfg){
         contWidth = mobi._windowWidth();
         contHeight = mobi._windowHeight();
     }
-    var scrollTop = document.body.scrollTop;
-    if (scrollTop == 0){
-        scrollTop = document.documentElement.scrollTop;
-    }
+    var offsetTop = ice.mobi.getAbsoluteOffset(paneNode);
+    var elemOffset = (contHeight-elemHeight)/2;
+    var scrollTop = ice.mobi.getScrollOffset(paneNode);
     if (contHeight > 0){
-        var posStyle = " position: absolute;";
-        var posLeft =((contWidth/2)-(elemWidth/2))+'px';
-        var top = scrollTop +((contHeight/2)-(elemHeight/2))+'px';
-        if (contHeight - elemHeight >0){
-            styleVar += posStyle;
-            styleVar += " top: " +top +";";
-            styleVar +=" left:"+posLeft+";";
+        var left = (contWidth-elemWidth)/2;
+        if( contHeight > elemHeight ){
+            styleVar += " position: fixed;"
+            styleVar += " top: " + elemOffset +"px;";
+            styleVar +=" left:" + left + "px;";
         }else {
-            styleVar += posStyle;
-            styleVar +=" left:"+posLeft+";";
+            styleVar += " position: absolute;";
+            styleVar += " top: " + (scrollTop-offsetTop) +"px;";
+            styleVar +=" left:" + left + "px;";
         }
         if (cfg.style){
             styleVar+=cfg.style;
