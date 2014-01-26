@@ -179,29 +179,29 @@ if (typeof document !== "undefined" && !("classList" in document.createElement("
 }
 
 (function (window, html, body) {
-    if (!window.innerWidth) Object.defineProperty(window, 'innerWidth', {
+    if (!('innerWidth' in window)) Object.defineProperty(window, 'innerWidth', {
         get: function () { return html.clientWidth }
     });
 
-    if (!window.innerHeight) Object.defineProperty(window, 'innerHeight', {
+    if (!('innerHeight' in window)) Object.defineProperty(window, 'innerHeight', {
         get: function () { return html.clientHeight }
     });
 
 
-    if (!document.width) Object.defineProperty(document, 'width', {
+    if (!('width' in document)) Object.defineProperty(document, 'width', {
         get: function () { return Math.max(html.clientWidth, html.scrollWidth, body.scrollWidth) }
     });
 
-    if (!document.height) Object.defineProperty(document, 'height', {
+    if (!('height' in document)) Object.defineProperty(document, 'height', {
         get: function () { return Math.max(html.clientHeight, html.scrollHeight, body.scrollHeight) }
     });
 
 
-    if (!window.scrollY) Object.defineProperty(window, 'scrollY', {
+    if (!('scrollY' in window)) Object.defineProperty(window, 'scrollY', {
         get: function () { return html.scrollTop || body.scrollTop }
     });
 
-    if (!window.scrollX) Object.defineProperty(window, 'scrollX', {
+    if (!('scrollX' in window)) Object.defineProperty(window, 'scrollX', {
         get: function () { return html.scrollLeft || body.scrollLeft }
     });
 }(this, document.documentElement, document.body));
