@@ -1,9 +1,3 @@
-/* Override broken style */
-.mobi-tabset.mobi-tabset-tabs-top-header {
-    padding-top: 45px !important;
-}
-
-
 /* JQM Derived Styles as stop-gap until true JQM based themes */
 
 .mobi-dv .ui-bar-b {
