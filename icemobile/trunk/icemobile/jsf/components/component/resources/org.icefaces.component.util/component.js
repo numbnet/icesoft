@@ -1286,6 +1286,10 @@ ice.mobi.geolocation = {
      * @param timeout longest time to wait for value (in ms)
      */
     watchLocation: function (pClientId, highAccuracy, maxAge, timeout) {
+        
+        if( !navigator.geolocation ){
+            return;
+        }
 
         ice.mobi.geolocation.clientId = pClientId;
         ice.mobi.geolocation.clearWatch();
@@ -1374,7 +1378,7 @@ ice.mobi.geolocation = {
             navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
             ice.mobi.geolocation.watchId = 0;
         }
-        window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+        ice.mobi.removeListener(window, 'deviceorientation', ice.mobi.geolocation.orientationCallback);
     }
 };
 
