@@ -13,7 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
- 
+
 .mobi-panelconf-bg-hide, .mobi-panelconf-container-hide,
 .mobi-panelpopup-bg-hide, .mobi-panelpopup-container-hide,
 .mobi-submitnotific-bg-hide, .mobi-submitnotific-container-hide{
@@ -23,8 +23,8 @@
 .mobi-panelconf-bg, .mobi-panelpopup-bg, .mobi-submitnotific-bg {
     opacity: 0.2;
     filter: alpha(opacity = 20);
+    background: #000;
 }
-
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container {
     opacity: 1;
 }
