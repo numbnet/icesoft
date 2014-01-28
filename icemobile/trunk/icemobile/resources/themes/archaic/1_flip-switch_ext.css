@@ -28,11 +28,11 @@
 .mobi-flipswitch-on .mobi-flipswitch-txt-on{
      color: #FFF;
 }
-.mobi-flipswitch-txt-off {
+.mobi-flipswitch-off .mobi-flipswitch-txt-off {
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff')";
 }
-.mobi-flipswitch-txt-on {
+.mobi-flipswitch-on .mobi-flipswitch-txt-on {
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc')";  
 }
