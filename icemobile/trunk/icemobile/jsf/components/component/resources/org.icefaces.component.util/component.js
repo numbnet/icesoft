@@ -2718,6 +2718,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 return;
             }
             var container = getTabset();
+            if( !container ){
+                ice.mobi.removeListener(window,'resize', this);
+                ice.mobi.removeListener(window,'orientationchange', this);
+                return;
+            }
             var parent = container.parentElement;
             var height = container.offsetHeight;
             while( parent != null ){
