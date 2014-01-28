@@ -35,9 +35,12 @@
                       continuousUpdates="#{geoLocationBean.continuousUpdates}"/>
 
     <mobi:fieldsetGroup styleClass="intro">
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow rendered="#{not mobiClient.IE8orLessBrowser}">
             Click the 'Locate Me' button below to calculate your current location and update the map. 
             Various settings for the geolocation component can also be adjusted below.
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow rendered="#{mobiClient.IE8orLessBrowser}">
+            The Geolocation feature in ICEmobile is not available on IE8.
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
@@ -130,6 +133,9 @@
             var lat = '#{geoLocationBean.latitude}';
             var lon = '#{geoLocationBean.longitude}';
             var image = document.getElementById('map');
+            if( !image ){
+                return;
+            }
             var height = image.clientHeight;
             var width = image.clientWidth;
             var x = Math.floor(lon * width / 2 / 180 + (width / 2));
