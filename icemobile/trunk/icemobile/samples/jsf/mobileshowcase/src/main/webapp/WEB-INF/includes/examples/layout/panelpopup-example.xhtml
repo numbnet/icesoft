@@ -103,8 +103,8 @@
                             rendered="#{not panelPopupBean.clientSide}"/>
                             
         <c:if test="#{panelPopupBean.clientSide}">
-            <button onclick="ice.mobi.panelPopup.openClient('panelPopup');"
-                class="mobi-button ui-btn-up-c submit">Show Client-side Popup</button>
+            <a href="#" onclick="ice.mobi.panelPopup.openClient('panelPopup');"
+                class="mobi-button ui-btn-up-c submit">Show Client-side Popup</a>
         </c:if>
                             
         <mobi:fieldsetGroup>
