@@ -46,6 +46,8 @@
     padding: 7px 7px 7px 40px;
     background: url('spinner.gif') no-repeat left;
     display: inline-block;
+    color: #FFF;
+    text-shadow: none;
 }
 .mobi-panelconf-title-container {
     color: white;
