@@ -27,6 +27,7 @@ import static org.icemobile.util.HTML.STYLE_ATTR;
 
 import java.io.IOException;
 
+import org.icefaces.mobi.utils.HTML;
 import org.icemobile.component.IGetEnhanced;
 import org.icemobile.util.CSSUtils;
 import org.icemobile.util.ClientDescriptor;
@@ -92,7 +93,9 @@ public class GetEnhancedCoreRenderer {
             else{
                 link = IGetEnhanced.ICEMOBILE_LINK;
             }
+            writer.startElement(HTML.SPAN_ELEM);
             writer.writeText(msg);
+            writer.endElement(HTML.SPAN_ELEM);
 
             if( client.isIOS() || client.isAndroidOS() || client.isBlackBerry10OS() ){
                 writer.startElement(ANCHOR_ELEM, null);
