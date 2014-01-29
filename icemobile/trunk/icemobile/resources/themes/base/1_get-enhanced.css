@@ -21,7 +21,8 @@
 	padding: 0 10px;
 }
 .mobi-getenhanced a {
-	max-width: 140px;
+	max-width: 200px;
 	margin: 10px;
 	line-height: 20px;
+	vertical-align: middle;
 }
