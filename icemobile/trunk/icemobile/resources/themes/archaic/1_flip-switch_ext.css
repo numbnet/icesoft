@@ -19,7 +19,7 @@
     cursor: pointer;
 }
 .mobi-flipswitch span{
-    min-width: 27px;
+    min-width: 35px;
     margin: 0;
 }
 .mobi-flipswitch-off .mobi-flipswitch-txt-off{
@@ -29,11 +29,11 @@
      color: #FFF;
 }
 .mobi-flipswitch-off .mobi-flipswitch-txt-off {
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff')";
 }
 .mobi-flipswitch-on .mobi-flipswitch-txt-on {
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc')";  
 }
-
+.mobi-flipswitch.disabled{
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}

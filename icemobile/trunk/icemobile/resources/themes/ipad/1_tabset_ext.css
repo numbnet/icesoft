@@ -36,7 +36,6 @@
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #d9dadb));
     border: 1px solid #999;
     color:#868688;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f1f1f2', EndColorStr = '#d9dadb');
     font-weight: bold;
     line-height: 36px;
     margin: 2px;

@@ -3,8 +3,6 @@
 .mobi-dv .ui-bar-b {
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #909faa), color-stop(1, #b8c1c8));
     background-image: -moz-linear-gradient(top, #909faa, #b8c1c8);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#909faa', EndColorStr = '#b8c1c8');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#909faa', EndColorStr='#b8c1c8')";
     background-color: #B6C9CF;
     border-bottom: 1px solid #999fa5;
     border-top: 1px solid #717d85;

@@ -13,3 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
+ .mobi-menu-btn-menu {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}

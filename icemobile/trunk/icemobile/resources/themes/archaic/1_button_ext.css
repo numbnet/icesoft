@@ -41,27 +41,24 @@
     background-clip: border-box;
 }
 .mobi-button, a.mobi-button:visited {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
     background-color: #4A6C9B;
     border: 1px solid #155678;
     border-radius: 0.6em;
     color: #FFFFFF;
-    font-weight: bold;
+    font-weight: bold !important;
     text-shadow: 0 -1px 1px #145072;
 }
 .mobi-button-unimportant {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#FEFEFE', EndColorStr = '#EEEEEE');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#FEFEFE', EndColorStr='#EEEEEE')";
     background-color: #f5f5f5;
     border-color: #BEBEBE;
     border-radius: 0.6em;
     color: #444444;
-    font-weight: bold;
+    font-weight: bold !important;
     text-shadow:none;
 }
 .mobi-button-group .mobi-button{
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#FEFEFE', EndColorStr = '#EEEEEE');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#FEFEFE', EndColorStr='#EEEEEE')";
     background-color: #f5f5f5;
     border-color: #BEBEBE;
@@ -70,7 +67,6 @@
     text-shadow:none;
 }
 .mobi-button-group .mobi-button-selected {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#6792E8', EndColorStr = '#2463DE');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#6792E8', EndColorStr='#2463DE')";
     background-color: #2463DE;
     border-color: #155678;
@@ -78,9 +74,7 @@
     text-shadow: 0 -1px 1px #145072;
 }
 .mobi-button:active, .mobi-button[selected] {
-    /* 4286F5  194FDB */
     background-color: #0099ff !important;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
     background-color: #4A6C9B;
 }
@@ -92,27 +86,29 @@
 .mobi-button-important, .mobi-button-attention {
     border: 1px solid #155678;
     text-shadow: 0 -1px 1px #145072;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
 }
 .mobi-button-important {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#6792E8', EndColorStr = '#2463DE');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#6792E8', EndColorStr='#2463DE')";
     background-color: #2463DE;
 }
 .mobi-button-attention {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#DF9F9F', EndColorStr = '#BC3839');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#DF9F9F', EndColorStr='#BC3839')";
     background-color: #BC3839;
 }
 .mobi-button-back{
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
+    filter: none;
     border-top: 1px solid #155678;
     border-right: 1px solid #155678;
     border-bottom: 1px solid #155678;
     color:#FFF;
     font-weight:bold;
+    background-image: url('back.png');
+    background-color: #4A6C9B;
+    background-position: 0 47%;
+    background-repeat: no-repeat;
 }
-.mobi-button.mobi-button-dis, .mobi-button.mobi-button:disabled {
-    filter: alpha(opacity = 50);
+.mobi-button-dis{
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#9aaabf', endColorstr='#828b99',GradientType=0 )";
 }

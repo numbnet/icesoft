@@ -24,8 +24,6 @@
     background-color: #0099ff !important;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #4286F5), color-stop(1, #194FDB));
     background-image: -moz-linear-gradient(top, #4286F5, #194FDB);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#4286F5', EndColorStr = '#194FDB');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#4286F5', EndColorStr='#194FDB')";
     -webkit-tap-highlight-color: #0099ff;
     color: #FFFFFF !important;
     text-shadow: 0 1px 0 #666666;
@@ -43,14 +41,10 @@
     border-bottom: 1px solid #b5b9c0;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #e8eaed), color-stop(1, #e6e8eb));
     background-image: -moz-linear-gradient(top, #e8eaed, #e6e8eb);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#e8eaed', EndColorStr = '#e6e8eb');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#e8eaed', EndColorStr='#e6e8eb')";
 }
 .mobi-list .mobi-list-item-group {
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #909faa), color-stop(1, #b8c1c8));
     background-image: -moz-linear-gradient(top, #909faa, #b8c1c8);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#909faa', EndColorStr = '#b8c1c8');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#909faa', EndColorStr='#b8c1c8')";
     background-color: #B6C9CF;
     border-bottom: 1px solid #999fa5;
     border-top: 1px solid #717d85;

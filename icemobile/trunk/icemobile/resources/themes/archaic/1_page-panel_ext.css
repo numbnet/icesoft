@@ -16,7 +16,6 @@
  
 .mobi-pagePanel-header {
     background-color: #a8acb9;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f4f5f7', EndColorStr = '#a8acb9');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
     border-top-color: white;
     border-bottom-color: #7a8091;

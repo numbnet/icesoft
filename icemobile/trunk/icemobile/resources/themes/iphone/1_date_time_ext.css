@@ -57,8 +57,7 @@
     height: 28px;
     padding: 5px 3px;
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#AAB8C9), to(#6E84A2), color-stop(.5,#6E84A2));
-    background: -moz-linear-gradient(0% 65% 90deg,#6E84A2, #AAB8C9, #AAB8C9 100%);filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f4f5f7', EndColorStr = '#a8acb9');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
+    background: -moz-linear-gradient(0% 65% 90deg,#6E84A2, #AAB8C9, #AAB8C9 100%);
 }
 
 .mobi-date-submit-container .mobi-button,
@@ -88,16 +87,12 @@
     border-radius: 6px 6px 0 0;
     background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #fff), color-stop(1, #bdbebd));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f7f7f7', EndColorStr = '#bdbebd');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd')";
 }
 
 .mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
     border-radius: 0 0 6px 6px;
     background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #fff));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#bdbebd', EndColorStr = '#f7f7f7');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7')";
 }
 
 .mobi-date-btn-incr, .mobi-time-btn-incr {

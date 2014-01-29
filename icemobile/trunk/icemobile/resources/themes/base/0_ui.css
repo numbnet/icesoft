@@ -79,7 +79,6 @@
 }
 .ui-header-fullscreen,
 .ui-footer-fullscreen {
-    filter: Alpha(Opacity=90);
     opacity: .9;
 }
 .ui-page-header-fixed {

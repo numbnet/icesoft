@@ -21,7 +21,7 @@
     border: none !important;
  }
   .mobi-flipswitch span{
-    min-width: 27px;
+    min-width: 35px;
   }
  .mobi-flipswitch-txt-on, .mobi-flipswitch-txt-off {
     font-weight: bold;
@@ -32,7 +32,7 @@
     background-color: #33B5E5;
     border-top: 1px solid #6FCAEC;
     color: #FFF;
-    height: 21px;
+    height: 28px;
 }
 .mobi-flipswitch-on .mobi-flipswitch-txt-off{
     border-radius: 0;
@@ -40,12 +40,12 @@
     background: #555;
     border: none;
     border-top: 1px solid #555;
-    height: 21px;
+    height: 28px;
     min-width: 27px;
 }
 .mobi-flipswitch-off .mobi-flipswitch-txt-off {
     background-color: #DDD;
-    border-top: 1px solid #878787;
+    border: 1px solid #878787;
     color: #666;
 }
 .mobi-flipswitch-off .mobi-flipswitch-txt-on{
@@ -54,5 +54,6 @@
     background: #555;
     border-top: 1px solid #555;
     border-bottom: 1px solid #555;
+    border-right: none;
     min-width: 25px;
 }

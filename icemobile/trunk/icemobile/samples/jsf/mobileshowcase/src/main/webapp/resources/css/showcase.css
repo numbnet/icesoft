@@ -197,8 +197,13 @@ html.ipad #splash > h5, html.iphone #splash > h5{
 }
 
 /* LARGE SCREEN */
+.submit{
+    margin: 10px auto 0px; 
+    width: 300px; 
+    display: block;
+}
 @media screen and (min-width: 580px) {  
-    input.submit, button.submit{
+    .submit{
         float: right !important;
         margin: 0 10px;
         width: 100%;
@@ -208,7 +213,7 @@ html.ipad #splash > h5, html.iphone #splash > h5{
 }
 /* SMALL SCREEN */
 @media screen and (max-width: 579px) {  
-    input.submit, button.submit{
+    .submit{
         display: block;
         margin: 10px auto;
         width: 100%;

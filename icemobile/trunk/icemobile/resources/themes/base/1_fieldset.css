@@ -30,6 +30,11 @@
     border-bottom-style: solid;
     padding: 10px;
 }
+.mobi-fieldset .mobi-fieldset-row:after {
+    content:"";
+    display:table;
+    clear:both;
+}
 .mobi-fieldset .mobi-fieldset-row:last-child {
     border-bottom: none;
 }

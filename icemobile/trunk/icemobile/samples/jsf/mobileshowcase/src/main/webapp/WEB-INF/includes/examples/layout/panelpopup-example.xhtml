@@ -38,28 +38,28 @@
                          style="#{panelPopupBean.autoCenter ? '' : (mobiClient.handheldBrowser ? 'top:50px;left:10px' : 'top:50px;left:32%' )}">
             <mobi:outputList inset="false">
                 <mobi:outputListItem>
-                    <h:commandLink
+                    <h:commandLink styleClass="ui-link-inherit"
                             actionListener="#{panelPopupBean.selectListItemAction}">
                         <f:param name="listItem" value="System Update"/>
                         System Update
                     </h:commandLink>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
-                    <h:commandLink
+                    <h:commandLink styleClass="ui-link-inherit"
                             actionListener="#{panelPopupBean.selectListItemAction}">
                         <f:param name="listItem" value="Status"/>
                         Status
                     </h:commandLink>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
-                    <h:commandLink
+                    <h:commandLink styleClass="ui-link-inherit"
                             actionListener="#{panelPopupBean.selectListItemAction}">
                         <f:param name="listItem" value="Battery Use"/>
                         Battery use
                     </h:commandLink>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
-                    <h:commandLink
+                    <h:commandLink styleClass="ui-link-inherit"
                             actionListener="#{panelPopupBean.selectListItemAction}">
                         <f:param name="listItem"
                                  value="Device Information"/>
@@ -67,14 +67,14 @@
                     </h:commandLink>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
-                    <h:commandLink
+                    <h:commandLink styleClass="ui-link-inherit"
                             actionListener="#{panelPopupBean.selectListItemAction}"
                             action="#{panelPopupBean.toggleVisible}"
                             rendered="#{not panelPopupBean.clientSide}">
                         <f:param name="listItem" value="Model Number"/>
                         Model Number (Dismisses Popup)
                     </h:commandLink>
-                    <h:commandLink
+                    <h:commandLink styleClass="ui-link-inherit"
                             actionListener="#{panelPopupBean.selectListItemAction}"
                             rendered="#{panelPopupBean.clientSide}">
                         <f:param name="listItem" value="Model Number"/>
@@ -89,8 +89,10 @@
                             value="Close Popup"/>
                    </c:if>
                    <c:if test="#{panelPopupBean.clientSide}">
+                   <div>
                     <a onclick="ice.mobi.panelPopup.closeClient('panelPopup');"
                         class="mobi-button mobi-button-important ui-btn-up-c">Close Popup</a>
+                   </div>
                   </c:if>
                 </mobi:outputListItem>
             </mobi:outputList>
@@ -98,13 +100,14 @@
         </mobi:panelPopup>
 
         <mobi:commandButton styleClass="submit"
+                            buttonType="important"
                             value="Show Popup"
                             actionListener="#{panelPopupBean.toggleVisible}"
                             rendered="#{not panelPopupBean.clientSide}"/>
                             
         <c:if test="#{panelPopupBean.clientSide}">
             <a href="#" onclick="ice.mobi.panelPopup.openClient('panelPopup');"
-                class="mobi-button ui-btn-up-c submit">Show Client-side Popup</a>
+                class="mobi-button mobi-button-important ui-btn-up-c submit">Show Client-side Popup</a>
         </c:if>
                             
         <mobi:fieldsetGroup>

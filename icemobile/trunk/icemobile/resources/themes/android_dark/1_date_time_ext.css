@@ -14,16 +14,8 @@
  * governing permissions and limitations under the License.
  */
  
-.mobi-date-popup-btn {
-    width: 27px;
-    height: 24px;
-}
 .mobi-date-btn, .mobi-time-btn, .mobi-date-popup-btn, .mobi-time-popup-btn {
     -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
-}
-.mobi-time-popup-btn {
-    width: 28px;
-    height: 26px;
 }
 
 .mobi-date-container, .mobi-time-container {
@@ -55,14 +47,10 @@
     border-radius: 3px 3px 0 0;
     background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f7f7f7), color-stop(1, #bdbebd));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f7f7f7', EndColorStr = '#bdbebd');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd')";
 }
 
 .mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
     border-radius: 0 0 3px 3px;
     background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #f7f7f7));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#bdbebd', EndColorStr = '#f7f7f7');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7')";
 }

@@ -31,10 +31,6 @@
     -webkit-box-align:center;
     -moz-box-align:center;
     padding: 0 10px;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
     -moz-box-orient: horizontal;
     box-orient: horizontal;
     min-width:100%;
@@ -57,10 +53,6 @@
     -moz-box-pack: center;
 }
 .mobi-col {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
     overflow:hidden;
     display:block !important;
     float:none !important;
