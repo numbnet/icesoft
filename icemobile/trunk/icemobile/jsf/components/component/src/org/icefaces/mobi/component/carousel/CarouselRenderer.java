@@ -75,7 +75,8 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         CarouselCoreRenderer renderer = new CarouselCoreRenderer();
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_iSlib");
-        if (!isScriptLoaded(facesContext, ICarousel.JS_ISCROLL)){
+        if (!isScriptLoaded(facesContext, ICarousel.JS_ISCROLL) && 
+                !MobiJSFUtils.getClientDescriptor().isIE8orLessBrowser()){
             renderer.encodeIScrollLib(carousel, writer);
             setScriptLoaded(facesContext, ICarousel.JS_ISCROLL);
         }

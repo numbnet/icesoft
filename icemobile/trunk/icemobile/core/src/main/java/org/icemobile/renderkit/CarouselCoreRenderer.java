@@ -106,7 +106,11 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
         writer.writeAttribute(ID_ATTR, clientId+"_upd");
         writer.writeAttribute(NAME_ATTR, clientId+"_upd");
         encodeHiddenSelected(writer, clientId, selected, carousel.getName());
-        renderScript(carousel, writer);
+        ClientDescriptor client = carousel.getClient();
+        if( !client.isIE8orLessBrowser() ){
+            renderScript(carousel, writer);
+        }
+        
         writer.endElement(DIV_ELEM);
         writer.endElement(DIV_ELEM);
     }
