@@ -23,8 +23,6 @@
     background-image: -moz-linear-gradient(top, #F2F2F2, #7B7B7B);
     border-bottom: 1px solid #b5b9c0;
     color: #000;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#F2F2F2', EndColorStr = '#7B7B7B');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#F2F2F2', EndColorStr='#7B7B7B')";
     font-weight:bold;
     text-shadow: 0 1px 0 white;
 }

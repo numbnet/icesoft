@@ -16,20 +16,15 @@
  
 .mobi-tabset-tabs-top > .mobi-tabset-tabs {
     border-bottom: 1px solid #999;
-    border-top: 1px solid #999;
     margin-top: -1px;
 }
 .mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
-    border-top:1px solid #f4f4f6;
-    filter: progid:DXImageTransform.Microsoft.Shadow(color=grey,direction=135,strength=10);
+    border-top:1px solid #999;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul{
     background-color: #e8e9ea;
-     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f1f1f2', EndColorStr = '#d9dadb');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f1f1f2', EndColorStr='#d9dadb')";
 }
-.mobi-tabset > .mobi-tabset-tabs > ul > li{
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f1f1f2', EndColorStr = '#d9dadb');
+.mobi-tabset > .mobi-tabset-tabs > ul > li {
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f1f1f2', EndColorStr='#d9dadb')";
     background-color: #d9dadb;
     border-left: 1px solid #999;

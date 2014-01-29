@@ -22,7 +22,6 @@
 
 .mobi-panelconf-bg, .mobi-panelpopup-bg, .mobi-submitnotific-bg {
     opacity: 0.2;
-    filter: alpha(opacity = 20);
     background: #000;
 }
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container {

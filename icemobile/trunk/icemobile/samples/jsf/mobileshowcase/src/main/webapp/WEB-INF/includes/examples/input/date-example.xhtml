@@ -29,13 +29,13 @@
                 <h:outputLabel for="useNative" value="Use Native:"/>
                 <mobi:flipswitch id="useNative" value="#{dateBean.useNative}" style="float:right">
                     <mobi:ajax render="dateSpinnerForm" execute="dateSpinnerForm"/>
-                </mobi:flipswitch>&#160;
+                </mobi:flipswitch>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="readonly" value="Read Only:"/>
                 <mobi:flipswitch id="readonly" value="#{dateBean.readonly}" style="float:right">
                     <mobi:ajax render="dateSpinnerForm" execute="dateSpinnerForm"/>
-                </mobi:flipswitch>&#160;
+                </mobi:flipswitch>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
@@ -48,7 +48,7 @@
                                  value="#{dateBean.dateInput}" 
                                  style="float:right">
                     <f:convertDateTime type="date" pattern="yyyy-MM-dd" timeZone="#{dateBean.timeZone}"/>
-                </mobi:dateSpinner>&#160;
+                </mobi:dateSpinner>
             </mobi:fieldsetRow>
             <!-- time spinner -->
             <mobi:fieldsetRow>
@@ -56,7 +56,7 @@
                 <mobi:timeSpinner id="time" useNative="#{dateBean.useNative}" timeZone="#{dateBean.timeZone}"
                                  value="#{dateBean.timeInput}" readonly="#{dateBean.readonly}"
                                  style="float:right">
-                </mobi:timeSpinner>&#160;
+                </mobi:timeSpinner>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         

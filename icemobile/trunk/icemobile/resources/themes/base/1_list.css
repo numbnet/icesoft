@@ -44,10 +44,6 @@
     padding: 8px 10px;
     top: 0;
     line-height: 26px;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
 }
 
 .mobi-list > .mobi-list-item:last-child {

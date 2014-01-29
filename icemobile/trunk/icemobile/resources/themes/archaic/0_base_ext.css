@@ -17,3 +17,7 @@
 body{
     background: #c8c8c8;
 }
+
+.mobi-vm-nav-bar a{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=0 )"; 
+}

@@ -22,8 +22,6 @@
     color: #000;
     background: -moz-linear-gradient(top, #cccccc, #999999) repeat scroll 0 0 #999999;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#cccccc', EndColorStr = '#999999');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#999999')";
     border-bottom: 1px solid #999999;
 }
 .mobi-accordion > .open > .handle > .pointer{

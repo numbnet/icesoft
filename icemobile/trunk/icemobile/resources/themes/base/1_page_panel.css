@@ -13,6 +13,10 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+.mobi-pagePanel{
+    border: 0px solid #000;
+    overflow-y: hidden;
+}
 .mobi-pagePanel-header, .mobi-pagePanel-footer {
     border-bottom-style: solid;
     border-bottom-width: 1px;
@@ -28,11 +32,6 @@
     width: 100%;
     white-space: nowrap;
     z-index: 500;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
-    
 }
 .mobi-pagePanel-header:before, .mobi-pagePanel-footer:before {
     content: '';

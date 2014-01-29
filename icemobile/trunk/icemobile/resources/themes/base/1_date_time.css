@@ -29,13 +29,13 @@
 }
 .mobi-date-popup-btn {
     background-image: url('btn-calendar.png');
-    width: 28px;
-    height: 26px;
+    width: 27px;
+    height: 24px;
 }
 .mobi-time-popup-btn {
     background-image: url('btn-time.png');
-    width: 27px;
-    height: 24px;
+    width: 28px;
+    height: 26px;
 }
 .mobi-date-bg, .mobi-time-bg {
     width: 100%;
@@ -46,7 +46,6 @@
     left: 0;
     z-index: 1000;
     opacity: 0.5;
-    filter: alpha(opacity = 50);
 }
 
 .mobi-date-bg-inv, .mobi-time-bg-inv {
@@ -96,7 +95,7 @@
 }
 
 .mobi-date-submit-container, .mobi-time-submit-container {
-    height: 34px;
+    height: 40px;
     padding: 3px;
 }
 
@@ -108,16 +107,12 @@
     border-radius: 3px 3px 0 0;
     background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f7f7f7), color-stop(1, #bdbebd));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f7f7f7', EndColorStr = '#bdbebd');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd')";
 }
 
 .mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
     border-radius: 0 0 3px 3px;
     background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #f7f7f7));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#bdbebd', EndColorStr = '#f7f7f7');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7')";
 }
 
 .mobi-date-submit-container .mobi-button,

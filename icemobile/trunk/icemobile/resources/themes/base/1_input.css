@@ -18,13 +18,7 @@
 .mobi-input-text, .mobi-input-secret, .mobi-input-textarea {
     background-color: white;
     border: 1px solid #999999;
-    padding: 3px 3px;
-}
-.mobi-input-text, .mobi-input-secret, .mobi-input-textarea, .mobi-fieldset-row label{
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
+    padding: 2px;
 }
 input[type='date'].mobi-input-text, 
 input[type='time'].mobi-input-text, 

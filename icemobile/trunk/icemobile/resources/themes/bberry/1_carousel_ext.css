@@ -21,8 +21,6 @@
 .mobi-carousel-cursor {
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #0099ff), color-stop(1, #0066cc));
     background: -moz-linear-gradient(top, #0099ff, #0066cc);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#0099ff', EndColorStr = '#0066cc');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc')";
     border-bottom: 1px solid #0099ff;
     border-top: 1px solid #0066cc;
     color: #FFFFFF;

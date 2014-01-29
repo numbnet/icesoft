@@ -14,15 +14,6 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-date-popup-btn {
-    width: 22px;
-    height: 21px;
-}
-.mobi-time-popup-btn {
-    width: 28px;
-    height: 26px;
-}
-
 .mobi-date-container, .mobi-time-container {
     background-color: #ccc;
     border: 1px solid #e4e4e4;
@@ -44,7 +35,6 @@
 
 .mobi-date-submit-container, .mobi-time-submit-container {
     color: black;
-    height: 35px;
     padding: 5px 3px;
     background-color:#a8acb9;
 }
@@ -81,13 +71,13 @@
 .mobi-date-select-value, .mobi-time-select-value {
     background-color: #E2E3EC;
 }
-
+.mobi-date-bg, .mobi-time-bg {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
 .mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr  {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f7f7f7', EndColorStr = '#bdbebd');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd')";
 }
 
 .mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#bdbebd', EndColorStr = '#f7f7f7');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7')";
 }

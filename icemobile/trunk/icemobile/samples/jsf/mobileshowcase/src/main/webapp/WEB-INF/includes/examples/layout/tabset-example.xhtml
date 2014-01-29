@@ -20,25 +20,24 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
              
-        <mobi:fieldsetGroup styleClass="intro">
-            <mobi:fieldsetRow>
-                The tabSet is a container component that renders a tabbed layout. 
-                Click the "Settings" tab to display some of the available attributes.
-            </mobi:fieldsetRow>
-        </mobi:fieldsetGroup>
-             
 
-        <h:form id="tabset"> 
+        <h:form id="tabset" style="height:100%"> 
             <mobi:tabSet selectedId="#{tabsetBean.currentId}"
                     fitToParent="#{tabsetBean.fitToParent}"
                     parentFooter="#{mobiClient.handheldBrowser}"
                     orientation="#{tabsetBean.orientationTop ? 'top' : 'bottom'}"
-                    height="200px"
                     styleClass="exampleTabs">
                     
                     
                 <mobi:contentPane title="Settings" id="tab0"
                                   facelet="false" client="true" >
+                    <mobi:fieldsetGroup styleClass="intro">
+                        <mobi:fieldsetRow>
+                            The tabSet is a container component that renders a tabbed layout. 
+                            Click the "Settings" tab to display some of the available attributes.
+                        </mobi:fieldsetRow>
+                    </mobi:fieldsetGroup>
+             
                     <mobi:fieldsetGroup>
                         <mobi:fieldsetRow>
                             <h:outputLabel for="fitToParent" value="Fit to Parent:" styleClass="ui-input-text"/>

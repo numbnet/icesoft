@@ -23,8 +23,6 @@
 .mobi-flipswitch-off {
     background: -moz-linear-gradient(top, #c8c8c8, #ffffff) repeat scroll 0 0 #ffffff;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #c8c8c8), color-stop(1, #ffffff));
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff')";
 }
 .mobi-flipswitch-off .mobi-flipswitch-txt-off{
     color: #666666;
@@ -33,8 +31,6 @@
 .mobi-flipswitch-on {
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #0099ff), color-stop(1, #0066cc));
     background-image: -moz-linear-gradient(top, #0099ff, #0066cc);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc')";
 }
 .mobi-flipswitch-on span{
     border-left: 1px solid #888888;
@@ -47,8 +43,6 @@
 .mobi-flipswitch-off .mobi-flipswitch-txt-on, .mobi-flipswitch-on .mobi-flipswitch-txt-off {
     background: -moz-linear-gradient(top, #e3e3e3, #fcfcfc) repeat scroll 0 0 #fcfcfc;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #e3e3e3), color-stop(1, #fcfcfc));
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#e3e3e3', EndColorStr='#fcfcfc');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#e3e3e3', EndColorStr='#fcfcfc')";
     color: transparent;
     text-shadow: none;
     border-radius: 0.2em;

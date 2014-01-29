@@ -68,7 +68,7 @@
 .mobi-button-important, .mobi-button-attention {
     border: 1px solid #155678;
     text-shadow: 0 -1px 1px #145072;
-    color: #FFFFFF;
+    color: #FFFFFF  !important;
 }
 .mobi-button-important {
     background: -moz-linear-gradient(top, #6792E8, #376FE0, #1F57C6, #2463DE) repeat scroll 0 0 #2463DE;

@@ -48,8 +48,6 @@
     background: -moz-linear-gradient(0% 65% 90deg,#6E84A2, #AAB8C9, #AAB8C9 100%);
     border-bottom-color: #7a8091;
     border-top-color: white;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f4f5f7', EndColorStr = '#a8acb9');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
     border-bottom: 1px solid #2D3642;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
     color: #FFFFFF;

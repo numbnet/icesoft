@@ -60,7 +60,8 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="type" value="Type:" class="ui-input-text"/>
-                <h:selectOneMenu id="type" value="#{panelConfirmationBean.type}">
+                <h:selectOneMenu id="type" value="#{panelConfirmationBean.type}"
+                    styleClass="mobi-input-text" style="font-size:15px">
                     <f:selectItem itemValue="both"/>
                     <f:selectItem itemValue="acceptOnly"/>
                     <f:selectItem itemValue="cancelOnly"/>

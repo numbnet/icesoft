@@ -19,7 +19,6 @@
     border: 2px solid #F6F6F8;
     color: #F7F7F7 !important;
     opacity: 0.9;
-    filter: Alpha(Opacity=90);
     font-size: 1.1em;
 }
 .mobi-panelconf-container, .mobi-submitnotific-container {

@@ -24,6 +24,9 @@
         <mobi:fieldsetRow>
             Carousel items can be moved via a finger swipe or mouse drag gesture.
         </mobi:fieldsetRow>
+        <mobi:fieldsetRow rendered="#{mobiClient.IE8orLessBrowser}">
+            The Carousel is not available on IE8.
+        </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
     <h:form>

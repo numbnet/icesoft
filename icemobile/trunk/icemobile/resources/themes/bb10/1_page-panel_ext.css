@@ -23,7 +23,6 @@
     background: -o-linear-gradient(top,  #3dbce7 0%,#31b6e1 4%,#2db2dd 8%,#34b9e4 16%,#2bb2df 24%,#27b0dc 36%,#1ca6d4 56%,#1ba3d5 64%,#139cca 76%,#1698c9 80%,#1496c8 84%,#0d95c7 88%,#0c92c5 92%,#0b8bbc 96%,#188ebc 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top,  #3dbce7 0%,#31b6e1 4%,#2db2dd 8%,#34b9e4 16%,#2bb2df 24%,#27b0dc 36%,#1ca6d4 56%,#1ba3d5 64%,#139cca 76%,#1698c9 80%,#1496c8 84%,#0d95c7 88%,#0c92c5 92%,#0b8bbc 96%,#188ebc 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #3dbce7 0%,#31b6e1 4%,#2db2dd 8%,#34b9e4 16%,#2bb2df 24%,#27b0dc 36%,#1ca6d4 56%,#1ba3d5 64%,#139cca 76%,#1698c9 80%,#1496c8 84%,#0d95c7 88%,#0c92c5 92%,#0b8bbc 96%,#188ebc 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3dbce7', endColorstr='#188ebc',GradientType=0 ); /* IE6-8 */
     border-color: #25617C;
     text-shadow: 0 1px 1px #727272;
     top: 2px;

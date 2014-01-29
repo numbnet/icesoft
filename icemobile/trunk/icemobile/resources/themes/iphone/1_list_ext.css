@@ -20,8 +20,6 @@
     background-color: #194FDB !important;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #4286F5), color-stop(1, #194FDB));
     background-image: -moz-linear-gradient(top, #4286F5, #194FDB);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#4286F5', EndColorStr = '#194FDB');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#4286F5', EndColorStr='#194FDB')";
     color: #FFFFFF !important;
     text-shadow: 0 1px 0 #666666;
 }
@@ -36,8 +34,6 @@
 .mobi-list-item-group {
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #8DABB4), color-stop(1, #B6C9CF));
     background-image: -moz-linear-gradient(top, #8DABB4, #B6C9CF);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8DABB4', EndColorStr = '#B6C9CF');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8DABB4', EndColorStr='#B6C9CF')";
     background-color: #B6C9CF;
     border-bottom: 1px solid #999999;
     border-top: 1px solid #7D7D7D;

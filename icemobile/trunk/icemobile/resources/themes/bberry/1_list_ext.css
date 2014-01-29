@@ -21,8 +21,6 @@
 .mobi-list-item a:active, .mobi-list-item a[selected] {
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #0099ff), color-stop(1, #0066cc));
     background: -moz-linear-gradient(top, #0099ff, #0066cc);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#0099ff', EndColorStr = '#0066cc');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc')";
     -webkit-tap-highlight-color: #0099ff;
     color: white !important;
 }

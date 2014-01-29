@@ -24,10 +24,6 @@
 /* Flexbox */
 .mobi-grid{
     padding: 0 10px;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
     position: relative;
 }
 .mobi-left{
@@ -45,10 +41,6 @@
     text-align:center;
 }
 .mobi-col {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
     overflow:hidden;
     display:inline-block !important;
     float:none !important;
