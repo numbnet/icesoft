@@ -2678,13 +2678,9 @@ ice.mobi.addListener(document, "touchstart", function(){});
             }
         }
         if( fit ){
-            ice.mobi.addListener(window,"orientationchange",fitToParent);
-            ice.mobi.addListener(window,"resize",fitToParent);
-            ice.mobi.addListener(window, 'load', 
-                    function(){ setTimeout(fitToParent,100)});
-            
+            setTimeout(ice.mobi.tabsetController.fitTabsetsToParents,100);
+            ice.mobi.tabsetController.addFitToParentListener(clientId,fitToParent);
         }
-        
         
         function getTabset(){
             return document.getElementById(id);
@@ -2723,19 +2719,43 @@ ice.mobi.addListener(document, "touchstart", function(){});
             }
             var container = getTabset();
             if( !container ){
-                ice.mobi.removeListener(window,'resize', this);
-                ice.mobi.removeListener(window,'orientationchange', this);
+                ice.mobi.tabsetController.removeFitToParentListener(clientId);
                 return;
             }
             var parent = container.parentElement;
             var height = container.offsetHeight;
+            var offsetTop = container.offsetTop;
+            var siblingHeight = 0;
+            var snapped = false;
+            var ancestorLine = [];
+            ancestorLine.push(container);
             while( parent != null ){
-                if( parent.offsetHeight != height ){
+                ancestorLine.push(parent);
+                var currentSiblingHeight = 0;
+                if( parent.children.length > 1 ){
+                    for( var index = 0 ; index < parent.children.length ; index++ ){
+                        if( ancestorLine.indexOf(parent.children[index]) == -1 
+                                && parent.children[index].offsetTop < offsetTop
+                                && parent.children[index].offsetHeight > 0){
+                            offsetTop = parent.children[index].offsetTop;
+                            siblingHeight += parent.children[index].offsetHeight;
+                        }
+                    }
+                }
+                if( parent.offsetHeight > height ){
                     container.querySelector('.mobi-tabset-content').style.height 
-                        = ''+(parent.offsetHeight-40)+'px';
+                        = ''+(parent.offsetHeight-40 - siblingHeight)+'px';
+                    snapped = true;
+                    break;
+                }
+                if( parent.parentElement && parent.parentElement.offsetTop < container.offsetTop ){
                     break;
                 }
                 parent = parent.parentElement;
+            }
+            if( !snapped ){
+                container.querySelector('.mobi-tabset-content').style.height 
+                    = ''+(height-40-siblingHeight)+'px';
             }
         }
 
@@ -2780,7 +2800,8 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 el.setAttribute("class", clsActiveTab);
                 
                 if( fit ){
-                    fitToParent();
+                    //fitToParent();
+                    ice.mobi.tabsetController.addFitToParentListener(clientId, fitToParent);
                 }
                
             },
@@ -2824,9 +2845,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     contents[tabIndex].setAttribute("class", classVis);
                 }
                 if( fit ){
-                    ice.mobi.addListener(window,"orientationchange",fitToParent);
-                    ice.mobi.addListener(window,"resize",fitToParent);
-                    fitToParent();
+                    setTimeout(ice.mobi.tabsetController.fitTabsetsToParents,100);
                 }
             },
             setDisabled: function(disabledIn){
@@ -2842,6 +2861,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
     ice.mobi.tabsetController = {
         tabsets: {},
+        fitToParents: {},
         initClient: function(clientId, cfg) {
             if (!this.tabsets[clientId]) {
                 this.tabsets[clientId] = TabSet(clientId, cfg);
@@ -2854,10 +2874,33 @@ ice.mobi.addListener(document, "touchstart", function(){});
             if (this.tabsets[clientId]) {
                 this.tabsets[clientId].showContent(clientId, el, cfgIn);
             }
+        },
+        fitTabsetsToParents: function(){
+            var tabsets = document.querySelectorAll('.mobi-tabset');
+            for( var i = 0 ; i < tabsets.length ; i++ ){
+                if( ice.mobi.tabsetController.fitToParents[tabsets[i].id]){
+                    ice.mobi.tabsetController.fitToParents[tabsets[i].id]();
+                }
+            }
+        },
+        addFitToParentListener: function(clientId, func){
+            ice.mobi.tabsetController.fitToParents[clientId] =  func;
+        },
+        removeFitToParentListener: function(clientId){
+            delete ice.mobi.tabsetController.fitToParents[clientId];
         }
-    }
+    };
+    
+    
 
 })();
+if( window.innerHeight ){
+    ice.mobi.addListener(window, 'load', function(){ setTimeout(ice.mobi.tabsetController.fitTabsetsToParents,1)});
+    ice.mobi.addListener(window,"orientationchange", ice.mobi.tabsetController.fitTabsetsToParents);
+    ice.mobi.addListener(window,"resize", ice.mobi.tabsetController.fitTabsetsToParents);
+}
+
+
 
 ice.mobi.splitpane = {
         panels: {},

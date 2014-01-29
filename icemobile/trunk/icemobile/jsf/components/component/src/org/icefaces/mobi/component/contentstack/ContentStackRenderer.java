@@ -68,6 +68,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
             /* write out root tag.  For current incarnation html5 semantic markup is ignored */
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+         writer.writeAttribute(HTML.CLASS_ATTR, "mobi-contentstack", null);
          //if layoutMenu is used then another div with panes Id is used
          if (container.getContentMenuId()!=null){
              if (null == container.getSingleView()){
