@@ -53,7 +53,7 @@ html.simulator .mobi-pagePanel-body::-webkit-scrollbar{
     width: 0;
 }
 .icon-mobi-online{
-    color: green;
+    color: #666;
 }
 .icon-mobi-online:before{
     content: "\f0c1";
