@@ -17,7 +17,6 @@
 .mobi-tabset-tabs-top > .mobi-tabset-tabs {
     border-bottom: 1px solid #999;
     border-top: 1px solid #999;
-    margin-top: -1px;
 }
 .mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
     border-top:2px solid #f4f4f6;
@@ -38,6 +37,7 @@
     color:#868688;
     font-weight: bold;
     line-height: 36px;
+    height: 36px;
     margin: 2px;
     margin-right: -3px;
     padding: 0 10px;
