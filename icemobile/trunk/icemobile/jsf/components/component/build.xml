@@ -453,6 +453,7 @@
 	<includeBase3Resources dir="${theme.build.path}/android_light" skin="android_light" />
 	<includeBase3Resources dir="${theme.build.path}/android_dark" skin="android_dark" />
 	<includeBase3Resources dir="${theme.build.path}/jqm" skin="jqm" />
+	<includeBase3Resources dir="${theme.build.path}/ios7" skin="ios7" />
 	<buildSimulatorSkin/>
 
     <replaceregexp match="(\/\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="">
@@ -470,6 +471,7 @@
 	<concatskin name="android_light" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="android_dark" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="jqm" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	<concatskin name="ios7" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
     
 	<!-- Copy all resources to the skins resource library -->
 	<copy todir="${resources}/${skins.lib}">
@@ -529,6 +531,7 @@
 	<generatesprites skin="bberry" />
 	<generatesprites skin="bb10" />
 	<generatesprites skin="archaic" />
+	<generatesprites skin="ios7" />
 </target>
 
 <target name="compress-skins" unless="skins.skip">
@@ -542,6 +545,7 @@
 	<prepare-skin name="bb10" />
 	<prepare-skin name="archaic" />
 	<prepare-skin name="simulator" />
+	<prepare-skin name="ios7" />
 </target>
 
 <target name="smartsprites" description="Performs CSS sprite processing." if="${skin}.modified">

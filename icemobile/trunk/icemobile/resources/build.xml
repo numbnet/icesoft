@@ -99,6 +99,7 @@
         <mkdir dir="${themes.build.dir}/ipad" />
         <mkdir dir="${themes.build.dir}/iphone" />
         <mkdir dir="${themes.build.dir}/simulator" />
+		<mkdir dir="${themes.build.dir}/ios7" />
         <copy.theme.resources build.dir="${themes.build.dir}" name="android_dark"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="android_light"/>
 		<copy.theme.resources build.dir="${themes.build.dir}" name="jqm"/>
@@ -110,6 +111,7 @@
         <copy.theme.resources build.dir="${themes.build.dir}" name="ipad"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="iphone"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="simulator"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="ios7"/>
 		
 		<rubyrunner file="themes/compile.scss.rb"/>
 		<echo message="Done compiling scss files!" />
