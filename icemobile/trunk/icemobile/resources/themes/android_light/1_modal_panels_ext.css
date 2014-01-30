@@ -56,3 +56,6 @@
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
 }
+.mobi-submitnotific-container > div {
+    color: #FFF;
+}

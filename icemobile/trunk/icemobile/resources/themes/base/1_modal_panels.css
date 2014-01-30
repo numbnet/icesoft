@@ -38,14 +38,14 @@
     border: 1px solid #CCC;
 }
 .mobi-submitnotific-container {
-    background-color: black;
+    background-color: #FFF;
     padding: 10px
 }
 .mobi-submitnotific-container > div {
     padding: 7px 7px 7px 40px;
     background: url('spinner.gif') no-repeat left;
     display: inline-block;
-    color: #FFF;
+    color: #000;
     text-shadow: none;
 }
 .mobi-panelconf-title-container {
