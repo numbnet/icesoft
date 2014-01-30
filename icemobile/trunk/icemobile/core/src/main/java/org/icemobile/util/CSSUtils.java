@@ -52,7 +52,9 @@ public class CSSUtils {
     public static final String STYLECLASS_ACTIVE = "ui-btn-active";
     
         
-    public enum Theme{ BASE, IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, ARCHAIC, ANDROID_LIGHT, ANDROID_DARK, BB10, JQM;
+    public enum Theme{ 
+        BASE, IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, 
+        ARCHAIC, ANDROID_LIGHT, ANDROID_DARK, BB10, JQM, IOS7;
         public String fileName(){
             return this.name().toLowerCase();
         }
@@ -112,7 +114,10 @@ public class CSSUtils {
             theme = Theme.ANDROID_LIGHT;
         } 
         else if (client.isIOS()) {
-            if (view == View.SMALL) {
+            if( client.isIOS7() ){
+                theme = Theme.IOS7;
+            }
+            else if (view == View.SMALL) {
                 theme = Theme.IPHONE;
             }
             else if( view == View.LARGE ){
