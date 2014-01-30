@@ -53,3 +53,6 @@
     border-bottom: 1px solid #33B5E5 !important;
     box-shadow: none !important;
 }
+.mobi-submitnotific-container > div {
+    color: #FFF;
+}

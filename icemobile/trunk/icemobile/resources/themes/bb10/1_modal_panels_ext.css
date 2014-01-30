@@ -31,6 +31,7 @@
     background-color: #4B4B4B;
     border: none;
     border-radius: 5px;
+    border: 1px solid #549FD8;
 }
 .mobi-panelconf-body-container {
     padding: 30px;
@@ -50,4 +51,7 @@
 .mobi-submitnotific-container > div {
     padding: 10px 10px 10px 30px;
     background-size: 20px;
+}
+.mobi-submitnotific-container > div {
+    color: #FFF;
 }
