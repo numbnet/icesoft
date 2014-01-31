@@ -23,40 +23,39 @@ if (!window.ice['mobi']) {
     window.ice.mobi = {};
 }
 (function() {
-    //functions that do not encapsulate any state, they just work with the provided parameters
-    //and globally accessible variables
     function is_firefox(){
         return navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
     }
     function enhance(clientId, key)  {
         var carouselId = clientId+'_carousel';
         var page = key || 0;
-        var iscroller = new iScroll(carouselId, {
-	                    snap: 'li',
-	                    momentum: false,
-	                    hScrollbar: false,
-                        checkDOMChanges: false,
-                        bounce: false,
-                        zoom: false,
-	                    onScrollEnd: function () {
-                            if (is_firefox){
-                                var myevent = window.event || null;
-                                ice.mobi.carousel.scrollUpd(myevent, clientId, this.currPageX);
-                            } else {
-                                ice.mobi.carousel.scrollUpd(event, clientId, this.currPageX);
-                            }
-    	                }
+        var iscroller = new IScroll(document.getElementById(carouselId), {
+            scrollX: true,
+            scrollY: false,
+            snap: 'li',
+            snapSpeed: 400,
+            momentum: false,
+            scrollbars: false,
+            bounce: false,
+            keyBindings: true,
+            zoom: false
 	    });
+        iscroller.on('scrollEnd', function () {
+            var evt = window.event; 
+            if( !evt ) evt = null;
+            ice.mobi.carousel.scrollUpd(evt, clientId, this.currPageX);
+            });
         return iscroller;
     }
     function Carousel(clientId, key) {
         var myScroll = enhance(clientId, key);
-        myScroll.scrollToPage(key, 0, 10);
+        myScroll.goToPage(key, 0, 10);
         var myId = clientId;
         var currentVal=key;
         return {
-           scrollUpdate: function(event, pageVal, cfg) {
+           scrollUpdate: function(event, cfg) {
                var changedVal = false;
+               var pageVal = myScroll.currentPage.pageX;
             //   console.log('pageVal passed in='+pageVal);
                if (currentVal!=pageVal){
                     changedVal = true;
@@ -113,6 +112,7 @@ if (!window.ice['mobi']) {
               }
            },
            setActive: function(pageVal){
+               
                if (currentVal != pageVal){
                   var nodeoldActive = document.querySelector('.mobi-carousel-cursor-list > li.active');
                   if (nodeoldActive){
@@ -128,7 +128,7 @@ if (!window.ice['mobi']) {
                myScroll.refresh();
            },
            scrollToPage: function(key){
-               myScroll.scrollToPage(key,0);
+               myScroll.goToPage(key,0);
                var newVal = currentVal;
                if (key == "next"){
                    newVal++;
@@ -146,7 +146,7 @@ if (!window.ice['mobi']) {
            updateProperties: function (clientId, cfgIn) {
                var hid= this.getHiddenVal();
                if (hid != currentVal){
-                  this.scrollToPage(hid, 0, 10);
+                  this.goToPage(hid, 0, 10);
                   this.setActive(hid);
                }
                if (!myScroll.wrapper)  {
@@ -188,7 +188,7 @@ if (!window.ice['mobi']) {
         },
         scrollUpd: function(event, clientId, pageVal){
             if (this.acarousel[clientId]){
-                this.acarousel[clientId].scrollUpdate(event, pageVal, this.cfg[clientId]);
+                this.acarousel[clientId].scrollUpdate(event, this.cfg[clientId]);
             }
         },
         scrollTo: function(clientId, key){
