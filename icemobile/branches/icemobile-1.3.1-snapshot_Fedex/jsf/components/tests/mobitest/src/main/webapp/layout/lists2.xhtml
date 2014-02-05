@@ -1,0 +1,78 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+   <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
+    <title>outputList with var for lists</title>
+
+</h:head>
+
+<h:body>
+
+    <p><a href="http://jira.icefaces.org/browse/MOBI-62" > using var attribute for outputList</a></p>
+
+    <h5> simple outputLIst with group of simple text items</h5>
+    <mobi:outputList id="simpleList" inset="false" >
+        <mobi:outputListItem type="group">Simple List</mobi:outputListItem>
+        <mobi:outputListItems value="#{list.simpleList}" var="simple" type="default">
+            <h:outputText value="#{simple}"/>
+        </mobi:outputListItems>
+    </mobi:outputList>
+    <h5> next list has 2 lists of items stacked into one group</h5>
+    <mobi:outputList id="stackedGroupslist" inset="true"  >
+        <mobi:outputListItem type="group">Cars List</mobi:outputListItem>
+        <mobi:outputListItems   value="#{list.carList}" var="car">
+            #{car.make} #{car.model}, #{car.year} price: #{car.price}
+        </mobi:outputListItems>
+        <mobi:outputListItem type="group">List of Links</mobi:outputListItem>
+        <mobi:outputListItems id="linksList"  value="#{list.linksList}" var="item">
+            <h:outputLink  value="#{item.url}">#{item.title}</h:outputLink>
+        </mobi:outputListItems>
+    </mobi:outputList>
+    <h5> next list has gropu of images in h link component</h5>
+    <mobi:outputList id="imgList" type="thumb" inset="false">
+        <mobi:outputListItem type="group">Image List</mobi:outputListItem>
+        <mobi:outputListItems value="#{carousel.imageList}" var="item" type="thumb">
+            <h:link >
+                <img alt="" src="#{item.imageUrl}" height="20px"/>
+                <h3 >#{item.title}"</h3>
+                <p >picture with img link</p>
+             </h:link>
+        </mobi:outputListItems>
+    </mobi:outputList>
+    <h:form id="layoutform">
+    <h5>this list has list of commandLinks</h5>
+        <mobi:outputList id="commandLinkList" inset="true">
+            <mobi:outputListItem type="group">commandLinks List</mobi:outputListItem>
+            <mobi:outputListItems value="#{list.linksList}" var="cmdLnk">
+                <h:commandLink  value="#{cmdLnk.title}" action="#{cmdLnk.getAction}"/>
+            </mobi:outputListItems>
+        </mobi:outputList>
+    </h:form>
+
+     <br />
+     <a href="../layoutComponents.html">index page</a>
+
+</h:body>
+</html>
