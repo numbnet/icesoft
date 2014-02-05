@@ -1,0 +1,167 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>flipswitch and inputText using mobi ajax inside tabset</title>
+    <mobi:deviceResource
+            name="#{themeSwitcher.theme}" />
+ <script language="javascript" type="text/javascript">
+      function myFunction(mobiEvent) {
+            var divElem = document.getElementById('jsChangeDiv');
+            if (divElem){
+               divElem.innerHTML = "This div updated by event="+mobiEvent;
+                return true;
+            }else {
+                console.log('no div elem to update');
+                return "false";
+            }
+        }
+      function myFunction2(mobiEvent) {
+            var divElem = document.getElementById('jsChangeDiv');
+            if (divElem){
+               divElem.innerHTML = "This div updated by event="+mobiEvent;
+              //  return true;
+            }else {
+                console.log('no div elem to update');
+             //   return "false";
+            }
+        }
+    </script>
+</h:head>
+
+<h:body>
+   <header>
+             <a href="../ajaxComponents.html">index page</a>
+  </header>
+
+  <h:form id="selectForm">
+      <h:panelGroup id="selectorGroup">
+         <h:outputText  value="select the pane to open:-"/>
+         <h:selectOneMenu id="selectPane"  value="#{layoutBean.selectedPane}">
+             <f:selectItem itemValue="panel1" itemLabel="Open First panel"/>
+             <f:selectItem itemValue="panel2" itemLabel="Open 2nd panel" />
+             <f:selectItem itemValue="panel3" itemLabel="Open 3rd panel" />
+             <f:ajax execute="@this" render="@all"/>
+         </h:selectOneMenu>
+      </h:panelGroup>
+  </h:form>
+      <h1> test page for tabset with mobi ajax comps inside pane1 </h1>
+      <br />
+  <h:form id="tabset">
+      <mobi:tabSet id="test1" selectedId="#{layoutBean.selectedPane}"
+                   orientation="#{layoutBean.orientation}"
+                   fitToParent="#{layoutBean.fitToParent}"
+                   tabChangeListener="#{layoutBean.tabChangeListener}">
+          <mobi:contentPane id="panel1" title="panel1" client="true">
+                  <h3> mobi comps with mobi ajax</h3>
+                  <mobi:fieldsetGroup>
+                      <mobi:fieldsetRow >
+                          <h:outputLabel for="fitToParent" value="Fit to parent:" />
+                          <mobi:flipswitch id="fitToParent" value="#{layoutBean.fitToParent}">
+                              <mobi:ajax render="tabset" execute="tabset"/>
+                          </mobi:flipswitch>
+                      </mobi:fieldsetRow>
+                      <mobi:fieldsetRow >
+                          <h:outputLabel for="inputField" value="Random string input with change event:" />
+                          <mobi:inputText id="inputField" value="#{layoutBean.inputString}">
+                              <mobi:ajax render="tabset" execute="@this" event="change" onStart="myFunction2('change'); return true;" />
+                          </mobi:inputText>
+                      </mobi:fieldsetRow>
+                      <mobi:fieldsetRow >
+                          <h:outputLabel for="inputField2" value="String2 input with blur event:" />
+                          <mobi:inputText id="inputField2" value="#{layoutBean.inputString2}">
+                              <mobi:ajax render="tabset" execute="@this" event="blur" onStart="return myFunction('blur');" />
+                          </mobi:inputText>
+                      </mobi:fieldsetRow>
+                      <mobi:fieldsetRow>
+                          <h:outputLabel for="orientation" value="Orientation:" />
+                          <mobi:flipswitch id="orientation" value="#{layoutBean.orientation}"
+                              labelOff="Bottom" labelOn="Top">
+                              <mobi:ajax render="tabset" execute="tabset"/>
+                          </mobi:flipswitch>
+                      </mobi:fieldsetRow>
+                  </mobi:fieldsetGroup>
+                  <mobi:fieldsetGroup>
+                      <mobi:fieldsetRow>
+                          <h:outputLabel for="outText" value="String submitted="/>
+                          <h:outputText id="outText" value="#{layoutBean.inputString}"/>
+                      </mobi:fieldsetRow>
+                      <mobi:fieldsetRow>
+                          <h:outputLabel for="outText2" value="String2 submitted="/>
+                          <h:outputText id="outText2" value="#{layoutBean.inputString2}"/>
+                      </mobi:fieldsetRow>
+                      <mobi:fieldsetRow>
+                           <div id="jsChangeDiv"> </div>
+                      </mobi:fieldsetRow>
+                  </mobi:fieldsetGroup>
+
+              </mobi:contentPane>
+               <mobi:contentPane id="panel2" title="panel2" >
+                 <div id="inner2">
+                 <fieldset title="panel2">
+                   <legend>Panel2</legend>
+                  <h3> header for panel 2</h3>
+                  <p> content for panel 2 - ace of diamonds   </p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../images/queen.jpg"
+                            alt="queen of clubs" />
+                         <figcaption>Queen of Clubs</figcaption>
+                        </figure>
+                      <br />
+                     Change panes with this button
+                   <br />
+                     <mobi:commandButton id="but2"  singleSubmit="true"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                      </mobi:commandButton>
+                     <br />
+
+                  </fieldset>
+                </div>
+              </mobi:contentPane>
+             <mobi:contentPane id="panel3" title="panel3" facelet="true">
+                <div id="inner3">
+                 <fieldset title="panel3">
+                      <legend>Panel3</legend>
+                  <h3> header for panel 3</h3>
+                  <p> content for panel 3 - some other card..</p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../images/Joker.jpg"
+                            alt="joker" />
+                         <figcaption>joker</figcaption>
+                        </figure>
+
+                  </fieldset>
+                 </div>
+              </mobi:contentPane>
+       </mobi:tabSet>
+
+     </h:form>
+     <h:form id="outputfrm">
+         <div id="output" style="display:block;">
+          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
+         </div>
+     </h:form>
+
+</h:body>
+</html>

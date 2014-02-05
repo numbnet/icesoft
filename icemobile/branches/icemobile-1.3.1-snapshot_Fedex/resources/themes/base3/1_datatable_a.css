@@ -1,0 +1,65 @@
+.mobi-tbl table{
+    width: 100%;
+    border-spacing: 0;
+}
+.mobi-tbl thead{
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    font-size: 1.2em;
+    font-weight: bold;
+    height: 38px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 500;
+    background: -moz-linear-gradient(top,#F4F5F7,#A8ACB9) repeat scroll 0 0 #A8ACB9;
+    background-image: -webkit-gradient(linear,0 0,0 100%,color-stop(0,#F4F5F7),color-stop(1,#A8ACB9));
+    border-top-color: white;
+    border-bottom-color: #7A8091;
+    color: #717880;
+    text-shadow: 0 1px 0 #D8DAE0;
+}
+.mobi-tbl-data tr:nth-of-type(odd) { 
+  background: rgba(238, 238, 238, 0.5); 
+}
+.mobi-tbl-detail{ overflow-y: auto; -webkit-overflow-scrolling: touch;}
+.mobi-tbl-data{ 
+    overflow-y: scroll; 
+    -webkit-overflow-scrolling: touch;
+    border-bottom: 1px solid #7A8091;
+}
+.mobi-tbl-headers{ height: 25px; }
+.mobi-tbl-headers th{ cursor: pointer; text-align: left; overflow-x:hidden; text-overflow: ellipsis;}
+.mobi-tbl-detail{ padding: 5px 0}
+.mobi-tbl-detail label{
+    font-weight: bold;
+    width: 30%;
+    display: inline-block;
+    padding: 0 20px;
+}
+.mobi-tbl-detail span{
+    width: 68%;
+    display: inline-block;
+}
+.mobi-tbl-master tr{ cursor: pointer }
+.mobi-tbl-master th, .mobi-tbl-master td{ padding: 1px 2px; min-width: 50px}
+.mobi-tbl-divider{
+    width: 100%;
+    height: 2px;
+    background-color: rgb(239, 239, 239);
+    border-top: 1px solid rgb(171, 171, 171);
+    border-bottom: 1px solid rgb(171, 171, 171);
+    cursor: n-resize;
+}
+.mobi-tbl-hor{
+    display: inline-block;
+    vertical-align: top;
+    border-left: 1px solid #7A8091;
+}
+.mobi-tbl-detail-template{ display: none; }
+.mobi-tbl-data tr{ -webkit-tap-highlight-color: #194FDB; }
+.mobi-tbl-data tr.mobi-tbl-row-sel{ background-color: rgba(25, 79, 219,0.2)}

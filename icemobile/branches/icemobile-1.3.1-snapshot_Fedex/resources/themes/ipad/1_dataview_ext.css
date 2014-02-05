@@ -1,0 +1,92 @@
+/* JQM Derived Styles as stop-gap until true JQM based themes */
+
+.mobi-dv .ui-bar-b {
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #909faa), color-stop(1, #b8c1c8));
+    background-image: -moz-linear-gradient(top, #909faa, #b8c1c8);
+    background-color: #B6C9CF;
+    border-bottom: 1px solid #999fa5;
+    border-top: 1px solid #717d85;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 0 1px 0 #969fa6;
+    height: 28px;
+    line-height: 13px;
+    font-size: 15px;
+}
+
+.mobi-dv, .mobi-dv .ui-body-c,
+.mobi-dv .ui-overlay-c {
+    border: 1px solid 		#999999 /*{c-body-border}*/;
+    color: 					#333 /*{c-body-color}*/;
+    text-shadow: 0 /*{c-body-shadow-x}*/ 1px /*{c-body-shadow-y}*/ 0 /*{c-body-shadow-radius}*/ #fff /*{c-body-shadow-color}*/;
+    background: 			#E2E5EA /*{c-body-background-color}*/;
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #E2E5EA /*{c-body-background-start}*/), to( #DCDFE3 /*{c-body-background-end}*/)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( #E2E5EA /*{c-body-background-start}*/, #DCDFE3 /*{c-body-background-end}*/); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #E2E5EA /*{c-body-background-start}*/, #DCDFE3 /*{c-body-background-end}*/); /* FF3.6 */
+    background-image:     -ms-linear-gradient( #E2E5EA /*{c-body-background-start}*/, #DCDFE3 /*{c-body-background-end}*/); /* IE10 */
+    background-image:      -o-linear-gradient( #E2E5EA /*{c-body-background-start}*/, #DCDFE3 /*{c-body-background-end}*/); /* Opera 11.10+ */
+    background-image:         linear-gradient( #E2E5EA /*{c-body-background-start}*/, #DCDFE3 /*{c-body-background-end}*/);
+}
+.mobi-dv,
+.mobi-dv .ui-body-c,
+.mobi-dv .ui-body-c input,
+.mobi-dv .ui-body-c select,
+.mobi-dv .ui-body-c textarea,
+.mobi-dv .ui-body-c button {
+    font-family: "Droid Sans", Helvetica, Arial, sans-serif /*{global-font-family}*/;
+}
+.mobi-dv .ui-body-c .ui-link-inherit {
+    color: 	#333 /*{c-body-color}*/;
+}
+.mobi-dv .ui-body-c .ui-link {
+    color: #2489ce /*{c-body-link-color}*/;
+    font-weight: bold;
+}
+.mobi-dv .ui-body-c .ui-link:visited {
+    color: #2489ce /*{c-body-link-visited}*/;
+}
+.mobi-dv .ui-body-c .ui-link:hover,
+.mobi-dv .ui-body-c a:hover {
+    color: #2489ce /*{c-body-link-hover}*/;
+}
+.mobi-dv .ui-body-c .ui-link:active {
+    color: #2489ce /*{c-body-link-active}*/;
+}
+
+.mobi-dv .ui-bar-e {
+    border: 1px solid 		#f7c942 /*{e-bar-border}*/;
+    background: 			#fadb4e /*{e-bar-background-color}*/;
+    color: 					#333 /*{e-bar-color}*/;
+    font-weight: bold;
+    text-shadow: 0 /*{e-bar-shadow-x}*/ 1px /*{e-bar-shadow-y}*/ 0 /*{e-bar-shadow-radius}*/ 	#fff /*{e-bar-shadow-color}*/;
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #fceda7 /*{e-bar-background-start}*/), to( #fbef7e /*{e-bar-background-end}*/)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/); /* FF3.6 */
+    background-image:     -ms-linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/); /* IE10 */
+    background-image:      -o-linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/); /* Opera 11.10+ */
+    background-image:         linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/);
+}
+.mobi-dv .ui-bar-e,
+.mobi-dv .ui-bar-e input,
+.mobi-dv .ui-bar-e select,
+.mobi-dv .ui-bar-e textarea,
+.mobi-dv .ui-bar-e button {
+    font-family: "Droid Sans", Helvetica, Arial, sans-serif /*{global-font-family}*/;
+}
+.mobi-dv .ui-bar-e .ui-link-inherit {
+    color: 	#333 /*{e-bar-color}*/;
+}
+.mobi-dv .ui-bar-e a.ui-link {
+    color: #2489ce /*{e-bar-link-color}*/;
+    font-weight: bold;
+}
+.mobi-dv .ui-bar-e a.ui-link:visited {
+    color: #2489ce /*{e-bar-link-visited}*/;
+}
+.mobi-dv .ui-bar-e a.ui-link:hover,
+.mobi-dv .ui-bar-e a:hover {
+    color: #2489ce /*{e-bar-link-hover}*/;
+}
+.mobi-dv .ui-bar-e a.ui-link:active {
+    color: #2489ce /*{e-bar-link-active}*/;
+}

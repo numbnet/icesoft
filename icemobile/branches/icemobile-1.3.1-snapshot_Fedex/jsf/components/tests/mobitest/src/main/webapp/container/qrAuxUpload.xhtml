@@ -1,0 +1,81 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+  <meta charset="UTF-8"></meta>
+  <meta name = "viewport" content = "width = device-width"></meta>
+  <title>QR Scan Component</title>
+  <style>.centered * {vertical-align:middle;padding-left:2px;padding-right:2px;}</style>
+</h:head>
+<h:body style="font-family:sans-serif">
+    <h3>Scan Component</h3>
+    <div style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
+        <h:form prependId="false" class="centered" enctype="multipart/form-data" >
+            <mobi:scan value="#{input.someText}" id="scanOne" singleSubmit="true" />
+            <br />
+            <h:commandButton value="submit"/>
+
+        </h:form>
+    </div>
+    <br/>
+    <div align="center" style="border-radius: 15px; border: 1px dotted silver;max-width: 500px;">
+    <label>Scanned: </label><h:outputText style="font-style: italic" id="out1" value="#{input.someText}"/>
+    <br/>
+    </div>
+
+    <br />
+    <input type="button" value="pause"
+            onclick="ice.push.connection.pauseConnection();" />
+    <li><a href="../index.html">index page</a>
+    </li>
+<script>
+var iceCloudPushId = "#{auxUpload.cloudPushId}";
+if ("" != iceCloudPushId)  {
+    window.addEventListener("load", function() {
+        ice.push.parkInactivePushIds(iceCloudPushId);
+    }, false);
+    window.addEventListener("pagehide", function() {
+        ice.push.connection.pauseConnection();
+    }, false);
+    window.addEventListener("pageshow", function() {
+        ice.push.connection.resumeConnection();
+    }, false);
+}
+if (!#{auxUpload.enabled})  {
+    var auxiframe = document.getElementById('auxiframe');
+    var ampstr = unescape("%26");
+    if (null == auxiframe)  {
+        auxiframe = document.createElement('iframe');
+        auxiframe.setAttribute("id", "auxiframe");
+        auxiframe.setAttribute("style", "width:0px; height:0px; border: 0px");
+        auxiframe.setAttribute("src", 
+            "icemobile:c=register" + ampstr + "r=" +
+                escape(window.location) + ampstr + "JSESSIONID=#{session.id}" +
+                ampstr + "u=" + escape('#{auxUpload.uploadURL}')
+        );
+        document.body.appendChild(auxiframe);
+    }
+}
+</script>
+		
+
+</h:body>
+</html>
