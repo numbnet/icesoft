@@ -14,11 +14,11 @@
  * governing permissions and limitations under the License.
  */
  
-.mobi-tabset-tabs-top > .mobi-tabset-tabs {
+.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul > li {
     border-bottom: 1px solid #999;
     margin-top: -1px;
 }
-.mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
+.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul > li{
     border-top:1px solid #999;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul{
