@@ -2951,6 +2951,10 @@ ice.mobi.splitpane = {
                     var body = window.document.body || null;
                     if (body == null) return;
                     if (leftNode && rtNode) {
+                        var tabsetsToAdjustFor = document.querySelectorAll('.mobi-tabset').length 
+                            - leftNode.querySelectorAll('.mobi-tabset').length
+                            - rightNode.querySelectorAll('.mobi-tabset').length;
+                        var pagePanelFootersToAdjustFor = document.querySelectorAll('.mobi-pagePanel-footer');
                         if (window.innerHeight) {
                             height = window.innerHeight;
                         } else if (body.parentElement.clientHeight) {
@@ -2961,8 +2965,13 @@ ice.mobi.splitpane = {
                             }
                         }
                         if (height > 0) {
-                            var leftHeight = height - leftNode.offsetTop;
-                            var rightHeight = height - rtNode.offsetTop;
+                            var leftHeight = height - leftNode.offsetTop - (40*tabsetsToAdjustFor);
+                            var rightHeight = height - rtNode.offsetTop - (40*tabsetsToAdjustFor);
+                            for(var i = 0 ; i < pagePanelFootersToAdjustFor.length ; i++ ){
+                                var footerHeight = pagePanelFootersToAdjustFor[i].offsetHeight;
+                                leftHeight -= footerHeight;
+                                rightHeight -= footerHeight;
+                            }
                             if( leftHeight > 0 ){
                                 leftNode.style.height = "" + leftHeight + "px";
                             }
