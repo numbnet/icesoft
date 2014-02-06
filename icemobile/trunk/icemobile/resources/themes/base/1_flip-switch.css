@@ -49,6 +49,7 @@
     text-shadow: none;
     margin: 1px;
     border-radius: 2em;
+    width:28px;
 }
 .mobi-flipswitch-txt-on, .mobi-flipswitch-txt-off {
     font-size: 15px;
