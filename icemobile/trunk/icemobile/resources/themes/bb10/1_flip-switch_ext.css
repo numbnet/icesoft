@@ -43,7 +43,6 @@
     text-shadow: none;
     border-radius: 1em;
     background-clip: border-box;
-    width:20px;
 }
 .mobi-flipswitch-txt-on, .mobi-flipswitch-txt-off {
     font-size: 15px;
