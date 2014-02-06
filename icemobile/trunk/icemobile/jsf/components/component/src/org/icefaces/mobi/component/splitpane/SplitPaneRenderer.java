@@ -79,12 +79,12 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
         writer.writeAttribute(CLASS_ATTR, "mobi-hidden", null);
         writer.startElement("script", uiComponent);
         writer.writeAttribute("type", "text/javascript", null);
-        StringBuilder sb = new StringBuilder("ice.mobi.splitpane.initClient('").append(clientId).append("'");
+        StringBuilder sb = new StringBuilder("setTimeout(function(){ ice.mobi.splitpane.initClient('").append(clientId).append("'");
         sb.append(",{ scrollable: '").append(pane.isScrollable()).append("'");
      //   sb.append(", resize: ").append(pane.isResizable()); not yet implemented.
         int width = pane.getColumnDivider();
         sb.append(",width: '").append(width).append("'");
-        sb.append("});");
+        sb.append("})},10);");
         writer.write(sb.toString());
         writer.endElement("script");
         writer.endElement("span");

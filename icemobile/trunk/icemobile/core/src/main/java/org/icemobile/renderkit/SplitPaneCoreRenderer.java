@@ -116,14 +116,14 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
         writer.writeAttribute(CLASS_ATTR, "mobi-hidden");
         writer.startElement(SCRIPT_ELEM, pane);
         writer.writeAttribute("type", "text/javascript");
-        StringBuilder sb = new StringBuilder("ice.mobi.splitpane.initClient('").append(pane.getClientId()).append("'");
+        StringBuilder sb = new StringBuilder("setTimeout(function(){ice.mobi.splitpane.initClient('").append(pane.getClientId()).append("'");
         sb.append(",{ scrollable: '").append(pane.isScrollable()).append("'");
         int width = pane.getColumnDivider();
         if (width < 1 || width > 99){
             width = DEFAULT_COLUMN_WIDTH;
         }
         sb.append(",width: '").append(width).append("'");
-        sb.append("});");
+        sb.append("})},10);");
         writer.writeText(sb.toString());
         writer.endElement(SCRIPT_ELEM);
         writer.endElement(SPAN_ELEM);
