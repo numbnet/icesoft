@@ -1,4 +1,0 @@
-/* ThemeRoller global overrides */
-
-/* border causing y overflow */
-.ui-body-a, .ui-body-b, .ui-body-c, .ui-body-d, .ui-body-e { border-width: 0 !important; }
