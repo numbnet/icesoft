@@ -1,0 +1,87 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">panelConfirmation Tests</title>
+   <mobi:deviceResource   includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}"/>
+
+</h:head>
+
+<h:body>
+ 
+    <h3>panelConfirmation Dynamic Attributes testing</h3>
+  <fieldset title="form1">
+    <h:form id="inputForm">
+    
+       <h5>commandButton to submit form</h5>
+
+       <h5>No SingleSubmit is
+            available with panelConfirmation</h5>
+       <mobi:commandButton id="defaultOne" value="ExecuteAndIncrementCount"
+                           panelConfirmation="pc1"
+                           actionListener="#{panelConfirmation.incrementCount}"/>
+       <mobi:panelConfirmation id="pc1" title="Confirm"
+                                        message="#{panelConfirmation.message}"
+                                        acceptLabel="#{panelConfirmation.acceptLabel}"
+                                        cancelLabel="#{panelConfirmation.cancelLabel}"
+                                        type="#{panelConfirmation.type}" />
+        <br />
+    </h:form>
+
+ </fieldset>
+    <h:form id="dynamo">
+     <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="count" value="count Of execute:"/>
+                <h:outputText id="count" value="#{panelConfirmation.count}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="message" value="Message:"/>
+                <mobi:inputText id="message" value="#{panelConfirmation.message}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="acceptLabel" value="Accept Label:"/>
+                <mobi:inputText id="acceptLabel" value="#{panelConfirmation.acceptLabel}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="cancelLabel" value="Cancel Label:"/>
+                <mobi:inputText id="cancelLabel" value="#{panelConfirmation.cancelLabel}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="type" value="Type:"/>
+                <h:selectOneMenu id="type" value="#{panelConfirmation.type}">
+                    <f:selectItem itemValue="both"/>
+                    <f:selectItem itemValue="acceptOnly"/>
+                    <f:selectItem itemValue="cancelOnly"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+      </h:form>
+	<li><a href="../layoutComponents.html">layout components page</a>
+	</li>
+    <br />
+    <li><a href="../inputComponents.html">input components page</a>
+	</li>
+</h:body>
+</html>

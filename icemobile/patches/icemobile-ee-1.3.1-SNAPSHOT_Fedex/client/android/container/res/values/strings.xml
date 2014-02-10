@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name">ICEmobile</string>
+    <string name="pref_name">Container Preferences</string>
+    <string name="history_name">URL History</string>
+    <string name="reload">Reload</string>
+    <string name="preferences">Preferences</string>
+    <string name="history">History</string>
+    <string name="stop">Stop</string>
+    <string name="clear_cookies">Clear Cookies</string>
+    <string name="networkDialogTitle">Internet Unavailable</string>
+    <string name="networkDialogMsg">Check your network settings</string>
+    <string name="auth_title">Please Login</string>
+    <string name="auth_user_title">User Name: </string>
+    <string name="auth_pw_title">Password: </string>
+    <string name="auth_login">Login</string>
+    <string name="auth_cancel">Cancel</string>
+</resources>

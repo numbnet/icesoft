@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>ICEmobile</title>
+    <mobi:deviceResource/>
+</h:head>
+<h:body>
+    <h:form>
+        <mobi:pagePanel>
+            <f:facet name="header">
+                My App
+            </f:facet>
+            <f:facet name="body">
+                <mobi:splitPane columnDivider="30">
+                    <f:facet name="left">
+                        <mobi:contentStackMenu id="contentStackMenu" contentStackId="contentStack">
+                            <mobi:contentMenuItem label="Page 1" value="page1"/>
+                            <mobi:contentMenuItem label="Page 2" value="page2"/>
+                            <mobi:contentMenuItem label="Page 3" value="page3"/>
+                        </mobi:contentStackMenu>
+                    </f:facet>
+                    <f:facet name="right">
+                        <mobi:contentStack id="contentStack" contentMenuId="contentStackMenu"
+                            currentId="#{contentStackMenu3.selectedPane}">
+                            <mobi:contentPane id="page1" client="true">
+                                <h2>Page 1</h2>
+                                
+                            </mobi:contentPane>
+                            <mobi:contentPane id="page2" client="true">
+                                <h2>Page 2</h2>
+                                
+                            </mobi:contentPane>
+                            <mobi:contentPane id="page3" client="true">
+                                <h2>Page 3</h2>
+                                
+                            </mobi:contentPane>
+                        </mobi:contentStack>
+                    </f:facet>
+                </mobi:splitPane>
+                    
+            </f:facet>
+            <f:facet name="footer">&#169; 2013</f:facet>
+        </mobi:pagePanel>
+     </h:form>
+</h:body>
+</html>

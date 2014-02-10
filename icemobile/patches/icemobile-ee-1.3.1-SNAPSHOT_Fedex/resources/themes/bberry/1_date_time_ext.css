@@ -1,0 +1,62 @@
+/*
+ * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+ 
+
+.mobi-date-container, .mobi-time-container {
+    background-color: #ccc;
+    border-radius: 3px;
+    -moz-box-shadow: 3px 3px 5px black;
+    -webkit-box-shadow: 3px 3px 5px black;
+    box-shadow: 3px 3px 5px black;
+    border: 1px solid white;
+    color: #000000;
+}
+
+.mobi-date-title-container, .mobi-time-title-container {
+    background-color: #444;
+    color: white;
+    text-align: center;
+    border-bottom: 1px solid white;
+    color: #FFF;
+    text-shadow: none;
+}
+
+.mobi-date-select-container, .mobi-time-select-container {
+    background-color: #fff;
+    color: white;
+}
+
+.mobi-date-submit-container, .mobi-time-submit-container {
+    color: black;
+}
+
+
+.mobi-date-select-value-cont, .mobi-time-select-value-cont {
+    border: 1px solid #999999;
+}
+
+.mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr {
+    border-radius: 3px 3px 0 0;
+    background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f7f7f7), color-stop(1, #bdbebd));
+}
+
+.mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
+    border-radius: 0 0 3px 3px;
+    background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #f7f7f7));
+}

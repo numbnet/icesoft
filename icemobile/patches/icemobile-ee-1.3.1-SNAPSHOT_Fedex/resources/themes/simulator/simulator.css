@@ -1,0 +1,95 @@
+/*
+ * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+
+.simRoot {
+    width: 200px;
+    height: 300px;
+    background-color: #567;
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -100px;
+    margin-top: -150px;
+    z-index: 1000;
+}
+
+.galButton {
+    border-radius: 8px;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 60px;
+    width: 60px;
+    margin: 2px;
+}
+
+.simTitle {
+    background-color:#999;
+    background: -webkit-linear-gradient(top, #DDD, #999);
+    padding: 4px;
+    margin: 2px;
+}
+
+.simContact {
+    background-color:#EEE;
+    padding: 4px;
+    margin: 2px;
+    margin-top: 4px;
+}
+
+.simAugL {
+    background-image: url('sim-augl.jpg');
+    height: 225px;
+}
+
+.simAugM {
+    background-image: url('sim-augm.jpg');
+    height: 225px;
+}
+
+.simScan {
+    background-image: url('sim-qrscan.jpg');
+    height: 225px;
+}
+
+.simClose {
+    position:absolute;
+    bottom:0;
+    right:0;
+    float:right;
+}
+
+.b1 {
+    background-image: url('sim-one.png');
+}
+
+.b2 {
+    background-image: url('sim-two.png');
+}
+
+.b3 {
+    background-image: url('sim-three.png');
+}
+
+.vid1 {
+    background-image: url('sim-vid1.png');
+}
+
+.mic1 {
+    background-image: url('sim-snd1.png');
+}
+

@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            Carousel items can be moved via a finger swipe or mouse drag gesture.
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow rendered="#{mobiClient.IE8orLessBrowser}">
+            The Carousel is not available on IE8.
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+
+    <h:form>
+        <mobi:carousel id="flagCarousel" selectedItem="#{carouselBean.selectedItem}"
+                       value="#{carouselBean.images}"
+                       singleSubmit="true"
+                       var="item">
+            <h:panelGroup>
+                <h:graphicImage library="images" name="#{item}" style="height:98px;"/>
+            </h:panelGroup>
+        </mobi:carousel>
+    </h:form>
+    
+    <h3 style="clear:both;padding-top:10px;">Carousel Echo</h3>
+    <div id="outputCarousel">
+     <mobi:fieldsetGroup>
+         <!-- Text output-->
+         <mobi:fieldsetRow>
+             <h:outputLabel value="Current position: " style="vertical-align:top;"/>
+             <h:panelGroup>
+                <h:graphicImage id="selimg" library="images" name="#{carouselBean.selected}"
+                    style="width:98px;"/>
+            </h:panelGroup>
+         </mobi:fieldsetRow>
+     </mobi:fieldsetGroup>
+    </div>
+</ui:composition>

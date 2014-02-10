@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ResourceFlowDirection" xml:space="preserve">
+    <value>LeftToRight</value>
+    <comment>http://10.18.39.175:8080/bridgeit/simplecamera.html</comment>
+  </data>
+  <data name="ResourceLanguage" xml:space="preserve">
+    <value>en-US</value>
+    <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
+  </data>
+  <data name="CameraAppBarCameraButtonText" xml:space="preserve">
+    <value>camera</value>
+  </data>
+  <data name="CameraAppBarAboutMenuItemText" xml:space="preserve">
+    <value>about</value>
+  </data>
+  <data name="LauncherTitle" xml:space="preserve">
+    <value>BridgeIt</value>
+  </data>
+  <data name="LauncherUriValue" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CameraAppBarAcceptButtonText" xml:space="preserve">
+    <value>accept</value>
+  </data>
+  <data name="CameraAppBarBrowseButtonText" xml:space="preserve">
+    <value>browse</value>
+  </data>
+  <data name="CameraAppBarCancelButtonText" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="CameraAppBarUploadButtonText" xml:space="preserve">
+    <value>upload</value>
+  </data>
+  <data name="CameraAppProgresIndicatorFailure" xml:space="preserve">
+    <value>photo failed to upload {0}</value>
+  </data>
+  <data name="CameraAppProgressIndicator" xml:space="preserve">
+    <value>uploading photo {0} %</value>
+  </data>
+  <data name="CameraAppProgressIndicatorSuccess" xml:space="preserve">
+    <value>photo uploaded successfully</value>
+  </data>
+  <data name="CameraAppProgresIndicatorFailure2" xml:space="preserve">
+    <value>There was a problem uploading your photo </value>
+  </data>
+  <data name="CameraAppProgressIndicatorCanceled" xml:space="preserve">
+    <value>photo upload cancelled</value>
+  </data>
+  <data name="CameraAppBarAboutMenuItemMessage" xml:space="preserve">
+    <value>BridgeIt Camera Integration</value>
+  </data>
+  <data name="LaunchURL" xml:space="preserve">
+    <value>http://10.18.39.175:8080/bridgeit/simplecamera.html</value>
+    <comment>http://www.bridgeit.mobi/   http://www.bridgeit.mobi/demo/contact-list.html</comment>
+  </data>
+  <data name="DeviceStatus" xml:space="preserve">
+    <value>device status</value>
+  </data>
+  <data name="DeviceStatusApplicationMemoryUsage" xml:space="preserve">
+    <value>Application Memory</value>
+  </data>
+  <data name="DeviceStatusCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DeviceStatusFirmwareVersion" xml:space="preserve">
+    <value>Device Firmware Version</value>
+  </data>
+  <data name="DeviceStatusHardwareVersion" xml:space="preserve">
+    <value>Hardware Version</value>
+  </data>
+  <data name="DeviceStatusKeyboard" xml:space="preserve">
+    <value>Keyboard Present</value>
+  </data>
+  <data name="DeviceStatusManufacturer" xml:space="preserve">
+    <value>Device Manufacturer</value>
+  </data>
+  <data name="DeviceStatusMemoryUsageLimit" xml:space="preserve">
+    <value>MemoryUsage Limit</value>
+  </data>
+  <data name="DeviceStatusMultiResolution" xml:space="preserve">
+    <value>Multi Resolution </value>
+  </data>
+  <data name="DeviceStatusName" xml:space="preserve">
+    <value>DeviceName</value>
+  </data>
+  <data name="DeviceStatusNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="DeviceStatusOK" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="DeviceStatusPeakMemoryUsage" xml:space="preserve">
+    <value>Peak Memory Usuage</value>
+  </data>
+  <data name="DeviceStatusPowerSource" xml:space="preserve">
+    <value>Power Source</value>
+  </data>
+  <data name="DeviceStatusTitle" xml:space="preserve">
+    <value>BRIDGEIT </value>
+  </data>
+  <data name="DeviceStatusTotalMemory" xml:space="preserve">
+    <value>Device Total Memory</value>
+  </data>
+  <data name="DeviceStatusYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="ContactsNoResults" xml:space="preserve">
+    <value>no results</value>
+  </data>
+  <data name="ContactsResultsLoading" xml:space="preserve">
+    <value>results are loading...</value>
+  </data>
+  <data name="ContactsSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="ContactsSubTitle" xml:space="preserve">
+    <value>people</value>
+  </data>
+  <data name="ContactsTitle" xml:space="preserve">
+    <value>BRIDGEIT</value>
+  </data>
+  <data name="ContractsAccept" xml:space="preserve">
+    <value>accept</value>
+  </data>
+  <data name="ContractsCancel" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="BarCodeScannerAccept" xml:space="preserve">
+    <value>accept</value>
+  </data>
+  <data name="BarCodeScannerCameraError" xml:space="preserve">
+    <value>Unable to initialize the camera</value>
+  </data>
+  <data name="MicrophoneAcceptBtn" xml:space="preserve">
+    <value>accept</value>
+  </data>
+  <data name="MicrophonePlayBtn" xml:space="preserve">
+    <value>play</value>
+  </data>
+  <data name="MicrophoneRecordBtn" xml:space="preserve">
+    <value>record</value>
+  </data>
+  <data name="MicrophoneSubTitle" xml:space="preserve">
+    <value>record audio</value>
+  </data>
+  <data name="MicrophoneTitle" xml:space="preserve">
+    <value>BRIDGEIT</value>
+  </data>
+  <data name="MicrophoneUploadBtn" xml:space="preserve">
+    <value>upload</value>
+  </data>
+  <data name="MicrophoneAppProgresIndicatorFailure" xml:space="preserve">
+    <value>sound bite failed to upload {0}</value>
+  </data>
+  <data name="MicrophoneCancelBtn" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="MicrophoneProgresIndicatorFailure2" xml:space="preserve">
+    <value>There was a problem uploading your sound bite</value>
+  </data>
+  <data name="MicrophoneProgressIndicator" xml:space="preserve">
+    <value>uploading sound bite {0} %</value>
+  </data>
+  <data name="MicrophoneProgressIndicatorCanceled" xml:space="preserve">
+    <value>sound bite upload cancelled </value>
+  </data>
+  <data name="AppUploadFailure" xml:space="preserve">
+    <value>There was an error upoloading to {0}</value>
+  </data>
+  <data name="AppUploadNull" xml:space="preserve">
+    <value>No upload URL was specified, please specify a upload url. </value>
+  </data>
+  <data name="LauncherBarcode" xml:space="preserve">
+    <value>barcode</value>
+  </data>
+  <data name="LauncherCamera" xml:space="preserve">
+    <value>camera</value>
+  </data>
+  <data name="LauncherContacts" xml:space="preserve">
+    <value>contacts</value>
+  </data>
+  <data name="LauncherDataWarning" xml:space="preserve">
+    <value>Note: File uploads may constitute data usage against your carrier data plan</value>
+  </data>
+  <data name="LauncherInstructions" xml:space="preserve">
+    <value>Please specify the upload service URL to which the data is to be conveyed.</value>
+  </data>
+  <data name="LauncherInstructionsDemoURL" xml:space="preserve">
+    <value>http://mediacast.icemobile.org/mediacast/upload/ can be used to test functionality.</value>
+  </data>
+  <data name="LauncherMicrophone" xml:space="preserve">
+    <value>microphone</value>
+  </data>
+  <data name="LauncherSubTitle" xml:space="preserve">
+    <value>launcher</value>
+  </data>
+  <data name="LauncherUploadUrl" xml:space="preserve">
+    <value>server upload url</value>
+  </data>
+  <data name="LauncherWarning" xml:space="preserve">
+    <value>file upload may incure carrier data fees. </value>
+  </data>
+  <data name="LuncherSubUploadTitle" xml:space="preserve">
+    <value>upload url</value>
+  </data>
+</root>

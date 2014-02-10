@@ -1,0 +1,157 @@
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<project name="common-spring">
+    
+    <import file="common.xml"/>
+    
+    <patternset id="pattern.compile.spring">
+        <include name="${icemobile-jsp.lib.name}.jar"/>
+        <include name="${icepush.lib.name}.jar"    unless="no-icepush"/>
+        <include name="${icemobile-spring.lib.name}.jar"/>
+        <include name="jstl-1.2.jar"/>
+        <include name="el-api-2.2.1-b03.jar"/>
+        <include name="commons-logging.jar"/>
+        <include name="javax.servlet-api.jar"/>
+        <include name="javax.annotation.jar"/>
+        <include name="org.springframework.beans-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.context-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.context.support-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.core-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.jdbc-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.transaction-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.web-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.web.servlet-3.1.1.RELEASE.jar"/>
+    </patternset>
+    
+    <patternset id="pattern.distribute.spring">
+        <include name="aopalliance-1.0.jar"/>
+        <include name="${icemobile-jsp.lib.name}.jar"/>
+        <include name="${icepush.lib.name}.jar"    unless="no-icepush"/>
+        <include name="${icemobile-spring.lib.name}.jar"/>
+        <include name="icemobile-ee-simulator.jar"/>
+        <include name="jstl-1.2.jar"/>
+        <include name="commons-logging.jar"/>
+        <include name="commons-fileupload-1.2.2.jar"/>
+        <include name="commons-dbcp-1.4.jar"/>
+        <include name="commons-io-2.0.1.jar"/>
+        <include name="commons-pool-1.6.jar"/>
+        <include name="hsqldb.jar"/>
+        <include name="jackson-core-asl-1.8.1.jar"/>
+        <include name="jackson-mapper-asl-1.8.1.jar"/>
+        <include name="mail.jar"/>
+        <include name="org.springframework.beans-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.context-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.context.support-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.core-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.jdbc-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.transaction-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.web-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.web.servlet-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.asm-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.aop-3.1.1.RELEASE.jar"/>
+        <include name="org.springframework.expression-3.1.1.RELEASE.jar"/>
+    </patternset>
+    
+    <target name="compile" depends="pre.compile">
+    
+        <available property="isJDK16" classname="java.util.ServiceLoader"/> 
+                
+        <javac srcdir="${java.dir}"
+               destdir="${classes.dir}"
+               source="${compile.source}" 
+               target="${compile.target}"
+               debug="${compile.debug}"
+               includeantruntime="false">
+            
+            <exclude name="${src.javac.excludes}"/>
+
+            <classpath>
+                <fileset dir="${lib.icemobile.dir}">
+                    <patternset refid="pattern.compile.spring"/>
+                </fileset>
+                <fileset dir="${lib.icemobile.dir}/spring">
+                    <patternset refid="pattern.compile.spring"/>
+                </fileset>
+                <fileset dir="${lib.application.dir}" >
+                    <patternset refid="pattern.all"/>
+                </fileset>
+            </classpath>
+        </javac>
+
+        <copy todir="${classes.dir}">
+            <fileset dir="${res.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+        <copy todir="${classes.dir}">
+            <fileset dir="${java.dir}">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy file="${web.dir}/WEB-INF/web.xml" todir="${webxml.dir}">
+          <filterset>
+            <filter token="FACES_SERVLET" value="${FACES_SERVLET}"/>
+            <filter token="WEBXML_PREAMBLE" value="${WEBXML_PREAMBLE}"/>
+            <filter token="MULTIPART_CONFIG" value="${MULTIPART_CONFIG}"/>
+            <filter token="EXTRA_CONTEXT_PARAMS" value="${EXTRA_CONTEXT_PARAMS}"/>
+            <filter token="EXTRA_FILTERS" value="${EXTRA_FILTERS}"/>
+            <filter token="EXTRA_FILTER_MAPPINGS"
+              value="${EXTRA_FILTER_MAPPINGS}"/>
+            <filter token="EXTRA_SERVLET_MAPPINGS"
+              value="${EXTRA_SERVLET_MAPPINGS}"/>
+            <filter token="EXTRA_SERVLETS" value="${EXTRA_SERVLETS}"/>
+          </filterset>
+        </copy>
+    </target>
+
+    <target name="war.basic" depends="compile">
+        <war duplicate="preserve" basedir="${web.dir}"
+             destfile="${dist.dir}/${ant.project.name}.war"
+             webxml="${webxml.dir}/web.xml"
+             excludes="WEB-INF/web.xml">
+
+            <lib dir="${lib.application.dir}">
+                <patternset refid="pattern.all"/>
+            </lib>
+            <lib dir="${lib.icemobile.dir}/spring">
+                <patternset refid="pattern.distribute.spring"/>
+            </lib>
+            <lib dir="${lib.icemobile.dir}">
+                <patternset refid="pattern.distribute.spring"/>
+            </lib>
+
+            <classes dir="${classes.dir}"/>
+        </war>
+        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
+        <copy file="${dist.dir}/${ant.project.name}.war" todir="${samples.dist.dir}" 
+            verbose="true" overwrite="true"/>
+    </target>
+
+    <target name="servlet-profile"
+            description="Generate a .war file">
+
+        <antcall target="war.basic">
+        </antcall>
+    </target>
+
+    <target name="web-profile"
+            description="Generate a .war file">
+
+        <antcall target="war.basic" />
+    </target>
+
+</project>
