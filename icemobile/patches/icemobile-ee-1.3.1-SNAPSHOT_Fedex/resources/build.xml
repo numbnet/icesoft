@@ -1,0 +1,124 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<project name="icemobile-comp-common">
+
+    <path id="ruby.runner.classpath">
+    	<pathelement location="lib/jruby-complete-1.6.8.jar"/>
+    	<pathelement location="lib/ant-ruby-runner.jar" />
+    </path>
+	
+	<macrodef name="gen.tld.doc">
+        <attribute name="tld.file"/>
+        <sequential>
+            <delete dir="${tld.doc}"/>
+            <mkdir dir="${tld.doc}"/>
+            <java jar="${tld.jar}/tlddoc.jar" fork="true" failonerror="true">
+                <arg value="-d"/>
+                <arg value="${tld.doc}"/>
+                <arg value="-doctitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="-windowtitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="@{tld.file}"/>
+            </java>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="copy.theme.resources">
+		<attribute name="name"/>
+		<attribute name="build.dir"/>
+		<sequential>
+			<copy todir="@{build.dir}/@{name}/">
+	            <fileset dir="./themes/@{name}/" excludes="**/*.scss" />
+	        </copy>
+		</sequential>
+	</macrodef>
+
+    <macrodef name="concatskin">
+        <attribute name="name"/>
+        <attribute name="inputdir"/>
+        <attribute name="outputdir"/>
+        <sequential>
+            <delete file="@{outputdir}/@{name}/@{name}.css"/>
+            <concat destfile="@{outputdir}/@{name}/@{name}.css"
+                    append="true">
+                <header filtering="no" trimleading="yes" trim="yes">
+/*
+ * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+                </header>
+                <fileset dir="@{inputdir}/@{name}"
+                         includes="*.css"/>
+            </concat>
+        </sequential>
+    </macrodef>
+	
+	
+
+	<target name="compile.scss">
+		<taskdef name="rubyrunner" classname="org.icesoft.tools.ant.RubyRunnerTask">
+	        <classpath refid="ruby.runner.classpath"/>  
+	    </taskdef>
+	
+		<echo>${basedir}</echo>
+		<property name="themes.build.dir" location="./build/themes"/>
+		<mkdir dir="${themes.build.dir}/android_dark" />
+        <mkdir dir="${themes.build.dir}/android_light" />
+		<mkdir dir="${themes.build.dir}/jqm" />
+        <mkdir dir="${themes.build.dir}/archaic" />
+        <mkdir dir="${themes.build.dir}/base" />
+        <mkdir dir="${themes.build.dir}/base3" />
+        <mkdir dir="${themes.build.dir}/bberry" />
+		<mkdir dir="${themes.build.dir}/bb10" />
+        <mkdir dir="${themes.build.dir}/ipad" />
+        <mkdir dir="${themes.build.dir}/iphone" />
+        <mkdir dir="${themes.build.dir}/simulator" />
+		<mkdir dir="${themes.build.dir}/ios7" />
+        <copy.theme.resources build.dir="${themes.build.dir}" name="android_dark"/>
+        <copy.theme.resources build.dir="${themes.build.dir}" name="android_light"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="jqm"/>
+        <copy.theme.resources build.dir="${themes.build.dir}" name="archaic"/>
+        <copy.theme.resources build.dir="${themes.build.dir}" name="base"/>
+        <copy.theme.resources build.dir="${themes.build.dir}" name="base3"/>
+        <copy.theme.resources build.dir="${themes.build.dir}" name="bberry"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="bb10"/>
+        <copy.theme.resources build.dir="${themes.build.dir}" name="ipad"/>
+        <copy.theme.resources build.dir="${themes.build.dir}" name="iphone"/>
+        <copy.theme.resources build.dir="${themes.build.dir}" name="simulator"/>
+		<copy.theme.resources build.dir="${themes.build.dir}" name="ios7"/>
+		
+		<rubyrunner file="themes/compile.scss.rb"/>
+		<echo message="Done compiling scss files!" />
+	</target>
+	
+	<target name="clean">
+		<delete dir="build/themes" />
+	</target>
+
+</project>

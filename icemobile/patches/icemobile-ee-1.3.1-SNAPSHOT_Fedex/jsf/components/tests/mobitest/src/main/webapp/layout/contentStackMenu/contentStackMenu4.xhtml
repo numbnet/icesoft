@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>ICEmobile</title>
+    <mobi:deviceResource theme="bb10"/>
+</h:head>
+<h:body>
+        <mobi:pagePanel>
+            <f:facet name="header">
+                My App
+            </f:facet>
+            <f:facet name="body">
+                <mobi:smallView>
+                    <mobi:contentStack id="contentStack" contentMenuId="contentStackMenu"
+                        currentId="#{contentStackMenu4.currentPane}">
+                        <mobi:contentPane id="menu" client="true" menuOrHome="true">
+                                <h:form>
+                                <mobi:contentStackMenu id="contentStackMenu" contentStackId="contentStack">
+                                    <mobi:contentMenuItem label="Menu"/>
+                                    <mobi:contentMenuItem label="Page 1" value="page1"/>
+                                    <mobi:contentMenuItem label="Page 2" value="page2"/>
+                                    <mobi:contentMenuItem label="Page 3" value="page3"/>
+                                </mobi:contentStackMenu>
+                                </h:form>
+                        </mobi:contentPane>
+                        <ui:include src="pages.xhtml"/>
+                    </mobi:contentStack>
+                </mobi:smallView>
+                <mobi:largeView>
+                    <mobi:splitPane columnDivider="30">
+                        <f:facet name="left">
+                                <h:form>
+                                <mobi:contentStackMenu id="contentStackMenu" contentStackId="contentStack">
+                                    <mobi:contentMenuItem label="Menu"/>
+                                    <mobi:contentMenuItem label="Page 1" value="page1"/>
+                                    <mobi:contentMenuItem label="Page 2" value="page2"/>
+                                    <mobi:contentMenuItem label="Page 3" value="page3"/>
+                                </mobi:contentStackMenu>
+                                 
+                                </h:form>
+                        </f:facet>
+                        <f:facet name="right">
+                            <mobi:contentStack id="contentStack" contentMenuId="contentStackMenu" 
+                                currentId="#{contentStackMenu4.currentPane}">
+                                 <mobi:contentPane id="page1" client="true" >
+                                    <h:form>
+                                        <h2>Page 1</h2>
+                                        <mobi:contentStackFormProxy/>
+                                    </h:form>
+                                    </mobi:contentPane>
+                                    <mobi:contentPane id="page2" client="true">
+                                        <h2>Page 2</h2>
+                                        <mobi:contentStackFormProxy/>
+                                    </mobi:contentPane>
+                                    <mobi:contentPane id="page3" client="true">
+                                        <h2>Page 3</h2>
+                                        <mobi:contentStackFormProxy/>
+                                    </mobi:contentPane>
+                            </mobi:contentStack>
+                        </f:facet>
+                    </mobi:splitPane>
+                    
+                </mobi:largeView>
+            </f:facet>
+            <f:facet name="footer">&#169; 2013</f:facet>
+        </mobi:pagePanel>
+    
+    
+</h:body>
+</html>

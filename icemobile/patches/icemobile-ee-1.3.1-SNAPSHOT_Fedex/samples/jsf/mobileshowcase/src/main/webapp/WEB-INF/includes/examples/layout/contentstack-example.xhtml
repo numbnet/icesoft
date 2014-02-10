@@ -1,0 +1,115 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <h:form>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                The contentStack component can be used to show content
+                dynamically.  The following contentStack can be controlled
+                by the selectOne menu or the next and previous controls.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="selectedPanel" value="Select Pane:"/>
+                <h:selectOneMenu id="selectedPanel" styleClass="mobi-input-text"
+                                 style="float:right;font-size:15px"
+                                value="#{contentStackBean.selectedPaneId}">
+                    <f:selectItem itemLabel="Ice Sailor" itemValue="panel1"/>
+                    <f:selectItem itemLabel="Ice Breaker" itemValue="panel2"/>
+                    <f:selectItem itemLabel="Ice Skate" itemValue="panel3"/>
+                    <f:selectItem itemLabel="Ice Car" itemValue="panel4"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+
+        </mobi:fieldsetGroup>
+
+        <mobi:contentStack currentId="#{contentStackBean.selectedPaneId}">
+            <mobi:contentPane id="panel1" facelet="true" client="false">
+                <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
+                <div style="text-align:center">
+                    <mobi:commandButton value="Previous"
+                                        style="width:45%;"
+                                        action="#{contentStackBean.nextPaneParam}" 
+                                        disabled="true">
+                        <f:param name="paneName" value="panel1" />
+                    </mobi:commandButton>
+                    <mobi:commandButton value="Next"
+                                action="#{contentStackBean.nextPaneParam}" 
+                                style="width:45%;">
+                        <f:param name="paneName" value="panel2" />
+                    </mobi:commandButton>
+                </div>
+            </mobi:contentPane>
+            <mobi:contentPane id="panel2" facelet="true" client="false">
+                <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
+                <div style="text-align:center;min-height:40px">
+                    <mobi:commandButton value="Previous"
+                                        style="width:45%;"
+                                        action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel1" />
+                    </mobi:commandButton>
+                    <mobi:commandButton value="Next"
+                                        style="width:45%;"
+                                        action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel3" />
+                    </mobi:commandButton>
+                </div>
+            </mobi:contentPane>
+            <mobi:contentPane id="panel3" facelet="true" client="false">
+                <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
+                <div style="text-align:center;min-height:40px">
+                    <mobi:commandButton value="Previous"
+                                        style="width:45%;"
+                                        action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel2" />
+                    </mobi:commandButton>
+                    <mobi:commandButton value="Next"
+                                        style="width:45%;"
+                                        action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel4" />
+                    </mobi:commandButton>
+                </div>
+            </mobi:contentPane>
+            <mobi:contentPane id="panel4" facelet="true" client="false">
+                <ui:include src="/WEB-INF/includes/content/fieldset-icecar.xhtml"/>
+                <div style="text-align:center">
+                    <mobi:commandButton value="Previous"
+                                        style="width:45%;"
+                                        action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel3" />
+                    </mobi:commandButton>
+                    <mobi:commandButton value="Next"
+                                        style="width:45%;"
+                                        action="#{contentStackBean.nextPaneParam}" 
+                                        disabled="true">
+                        <f:param name="paneName" value="panel4" />
+                    </mobi:commandButton>
+                </div>
+            </mobi:contentPane>
+
+        </mobi:contentStack>
+    </h:form>
+
+
+</ui:composition>
