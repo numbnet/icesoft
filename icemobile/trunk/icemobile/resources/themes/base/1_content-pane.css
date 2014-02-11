@@ -32,7 +32,8 @@
     opacity: 1;
     visibility: visible;
     display:block;
-    overflow: auto;
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
 }
 /* hidden single view */
 .mobi-contentStack-container.single > .mobi-contentStack-panes > .mobi-contentpane-hidden,
