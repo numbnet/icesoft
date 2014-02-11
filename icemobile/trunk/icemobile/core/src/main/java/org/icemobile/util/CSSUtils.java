@@ -114,10 +114,11 @@ public class CSSUtils {
             theme = Theme.ANDROID_LIGHT;
         } 
         else if (client.isIOS()) {
+            /*
             if( client.isIOS7() ){
                 theme = Theme.IOS7;
             }
-            else if (view == View.SMALL) {
+            else*/ if (view == View.SMALL) {
                 theme = Theme.IPHONE;
             }
             else if( view == View.LARGE ){

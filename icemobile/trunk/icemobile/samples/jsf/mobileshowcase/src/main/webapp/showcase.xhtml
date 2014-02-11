@@ -58,7 +58,7 @@
                                        rendered="#{mobiNavigationModel.selectedPanel eq 'splash'}"/>
                     </h:form>
                     <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
-                    <mobi:onlineStatus style="position: absolute;right: 10px;top: 12px;"
+                    <mobi:onlineStatus style="position: absolute;top: 10px;"
                         onOnline="console.log('online: ' + event);"
                         onOffline="console.log'offline: ' + event);"/>
                     <ui:insert name="toolBarContent"/>
@@ -83,10 +83,10 @@
                                          onchange="ice.s(event, this);"
                                          style="font-size:13px;">
                             <f:selectItem itemLabel="Auto" itemValue=""/>
-                            <f:selectItem itemLabel="iOS 6"
+                            <f:selectItem itemLabel="iPhone"
                                           itemValue="iphone"/>
-                            <f:selectItem itemLabel="iOS 7"
-                                          itemValue="ios7"/>
+                            <!-- f:selectItem itemLabel="iOS 7"
+                                          itemValue="ios7"/-->
                             <f:selectItem itemLabel="Android Light"
                                           itemValue="android_light"/>
                             <f:selectItem itemLabel="Android Dark"

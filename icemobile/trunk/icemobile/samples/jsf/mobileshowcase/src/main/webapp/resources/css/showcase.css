@@ -253,4 +253,6 @@ html.iphone .examplesLink{
     text-overflow: ellipsis;
 }
 .span-2{ display: inline-block; width: 45%; margin: 0 1%; }
-
+.icon-mobi-online{
+    right: 10px;
+}
