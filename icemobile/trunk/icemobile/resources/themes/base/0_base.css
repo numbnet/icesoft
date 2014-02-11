@@ -48,8 +48,7 @@ html.ie10 *{ filter: none !important; } /* turn off filters for ie10 */
 
 html.android-browser .ice-status-indicator-overlay{ display: none !important; } /* avoid android container rendering issues on session expiry */
 
-html.simulator .mobi-splitpane-scrollable::-webkit-scrollbar, 
-html.simulator .mobi-pagePanel-body::-webkit-scrollbar{
+html.simulator *::-webkit-scrollbar{
     width: 0;
 }
 .icon-mobi-online{
