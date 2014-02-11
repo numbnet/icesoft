@@ -305,8 +305,8 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
             if (parts.contains("iceskate=on"))  {
                 bought.put("iceskate", Boolean.TRUE);
             }
-            if (parts.contains("icesailer=on"))  {
-                bought.put("icesailer", Boolean.TRUE);
+            if (parts.contains("icesailor=on"))  {
+                bought.put("icesailor", Boolean.TRUE);
             }
             return;
         }
