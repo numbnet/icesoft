@@ -93,7 +93,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             type = IButton.BUTTON_DEFAULT;
         }
 
-        if (IButton.BUTTON_TYPE_BACK.equals(buttonType) && client.isIOS6()){
+        if (IButton.BUTTON_TYPE_BACK.equals(buttonType) && client.isIOS()){
             writer.startElement(DIV_ELEM, button);
             writer.writeAttribute(ID_ATTR, clientId+"_ctr");
             writer.writeAttribute(CLASS_ATTR, baseClass.toString());
@@ -108,7 +108,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         writer.writeAttribute(ID_ATTR, clientId);
         writer.writeAttribute(VALUE_ATTR, button.getValue());
         //style and class written to ctr div when back button
-        if (!IButton.BUTTON_TYPE_BACK.equals(buttonType) || !client.isIOS6()){
+        if (!IButton.BUTTON_TYPE_BACK.equals(buttonType) || !client.isIOS()){
             writer.writeAttribute(CLASS_ATTR, baseClass.toString());
             // should be auto base though
             if (style != null ) {
@@ -129,7 +129,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
             writer.writeAttribute(DISABLED_ATTR, "disabled");
             writer.endElement(INPUT_ELEM);
             //end ctr div for back button
-            if (IButton.BUTTON_TYPE_BACK.equals(button.getButtonType()) && client.isIOS6()){
+            if (IButton.BUTTON_TYPE_BACK.equals(button.getButtonType()) && client.isIOS()){
                 writer.endElement(DIV_ELEM);
             }
             return;
@@ -178,7 +178,7 @@ public class ButtonCoreRenderer extends BaseCoreRenderer {
         /*
         last thing to do is to check if back button and then end the ctr div with b elem.
          */
-        if (IButton.BUTTON_TYPE_BACK.equals(button.getButtonType()) && client.isIOS6()){
+        if (IButton.BUTTON_TYPE_BACK.equals(button.getButtonType()) && client.isIOS()){
             writer.startElement("b", button);
             writer.writeAttribute(CLASS_ATTR, "mobi-button-placeholder");
             Object oVal2 = button.getValue();
