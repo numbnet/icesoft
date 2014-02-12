@@ -34,7 +34,7 @@
     height: 40px;
 }
 .mobi-tabset-content{
-    overflow-x: auto;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     width:100%;
 }
@@ -56,7 +56,8 @@
     float: left;
 }
 .mobi-tabpage, .mobi-tabpage > div{
-    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 .mobi-tabpage-hidden { 
     display: none; 
