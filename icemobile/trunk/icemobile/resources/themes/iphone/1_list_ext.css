@@ -27,7 +27,7 @@
 .mobi-list-item {
     padding: 8px 0 8px 10px;
     margin-top: -1px;
-    border: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
     background-color: #fff;
 }
 
@@ -35,8 +35,6 @@
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #8DABB4), color-stop(1, #B6C9CF));
     background-image: -moz-linear-gradient(top, #8DABB4, #B6C9CF);
     background-color: #B6C9CF;
-    border-bottom: 1px solid #999999;
-    border-top: 1px solid #7D7D7D;
     color: #FFFFFF;
     margin-bottom: -2px;
     padding: 5px 10px;
