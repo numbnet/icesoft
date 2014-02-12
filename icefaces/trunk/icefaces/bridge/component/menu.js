@@ -188,7 +188,7 @@ Ice.Menu = {
                 submenu.style.left = showX - extraWidth + "px";
             }
 
-            var styleTop = showY + "px";
+            var styleTop = (showY - window.pageYOffset) + "px";
             submenu.style.top = styleTop;
 			submenu.style.position = 'fixed';
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
