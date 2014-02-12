@@ -53,6 +53,7 @@
 	<property name="tld.doc" location="${doc}/tld" />
 	<property name="java.doc" location="${doc}/javadoc" />
 	<property name="tld.file" location="${build}/exploded/META-INF/components.tld" />
+	<property name="tld.file2" location="${core.exploded}/META-INF/components.tld" />
 	<property name="tld.jar" location="${lib.dir}" />
 	<property name="smartsprites.basedir" location="${lib.dir}/generator/tools/smartsprites" />
 	<property name="javadocs.dir" location="${build}/docs" />
@@ -555,7 +556,10 @@
 
 
 <target name="tlddoc" description="Generate the component TLD Documentation in HTML format.">
+	<delete dir="${tld.doc}"/>
+	<mkdir dir="${tld.doc}"/>
 	<gen.tld.doc tld.file="${tld.file}" />
+	<gen.tld.doc tld.file="${tld.file2}" />
 </target>
 
 
