@@ -1977,6 +1977,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             initSortingEvents();
             initTableAlignment();
         }
+        
+        function resize(){
+            initTableAlignment();
+        }
 
         initActivationEvents();
         initSortingEvents();
@@ -1985,29 +1989,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         *  else heights are miscalculated for following elems */
         setTimeout(initTableAlignment, 100);
 
-        /* resize height adjust */
-        ice.mobi.addListener(window, "resize", function() {
-            // Timeout to prevent double recalc when resize is due to orientation
-            if (!oriChange) {
-                setTimeout(function() {
-                    if (!oriChange) {
-                        recalcScrollHeight();
-                    }
-                },100);
-            }
-        });
-
         var oriChange = false;
-        ice.mobi.addListener(window, "orientationchange", function() {
-            oriChange = true;
-
-            setTimeout(function() { recalcScrollHeight(); },500);
-            // prevent resize-init'd height recalcs for the next 200ms
-            setTimeout(function() { oriChange = false; },2000);
-        });
-
+        
         /* Instance API */
-        return { update: update }
+        return { update: update, resize: resize }
     }
 
     im.dataView = {
@@ -2034,12 +2019,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             var hasFixedHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel-header.ui-header-fixed").length > 0;
             var footer = pagePanels[i].querySelector(".mobi-pagePanel-footer");
             var pagePanelBodyMinHeight = window.innerHeight;
-            if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
-                if( window.innerHeight != window.outerHeight){
-                    pagePanelBodyMinHeight += hideBar ? 90 : 0;
-                }
-            }
-            
+                        
             if( header ){
                 pagePanelBodyMinHeight -= header.offsetHeight;
             }
@@ -2053,11 +2033,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
             i++;
         }
     };
-    if( window.innerHeight ){
-        ice.mobi.addListener(window, 'load', function(){ setTimeout(ice.mobi.resizePagePanelsToViewPort,1)});
-        ice.mobi.addListener(window,"orientationchange",ice.mobi.resizePagePanelsToViewPort);
-        ice.mobi.addListener(window,"resize",ice.mobi.resizePagePanelsToViewPort);
-    }
 }());
 
 //view manager
@@ -2526,8 +2501,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
                }
                
                prevPane  = currPane;
-               ice.mobi.resizePagePanelsToViewPort();
-               ice.mobi.splitpane.resizeAllSplitPanes();
            }
         }
         
@@ -2698,7 +2671,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 var width = Math.floor(containerWidth/tabs.children.length);
                 var remainingPixels = containerWidth - (tabs.children.length*width);
                 var percentageWidth = Math.floor(100/tabs.children.length);
-                var remainingPercentage = 100 - (tabs.children.length*percentageWidth);
+                var remainingPercentage = 99 - (tabs.children.length*percentageWidth);
                 
                 for (var i = 0; i < tabs.children.length; i++){
                     if( i < (tabs.children.length -1 )){
@@ -2742,7 +2715,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                         }
                     }
                 }
-                if( parent.offsetHeight > height ){
+                if( parent.offsetHeight != height ){
                     container.querySelector('.mobi-tabset-content').style.height 
                         = ''+(parent.offsetHeight-40 - siblingHeight)+'px';
                     snapped = true;
@@ -2894,11 +2867,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
     
 
 })();
-if( window.innerHeight ){
-    ice.mobi.addListener(window, 'load', function(){ setTimeout(ice.mobi.tabsetController.fitTabsetsToParents,1)});
-    ice.mobi.addListener(window,"orientationchange", ice.mobi.tabsetController.fitTabsetsToParents);
-    ice.mobi.addListener(window,"resize", ice.mobi.tabsetController.fitTabsetsToParents);
-}
 
 
 
@@ -2940,7 +2908,6 @@ ice.mobi.splitpane = {
                     rightNode.style.width = (100 - width) + "%";
                 }
             }
-            ice.mobi.addListener(window, 'resize', resizeCall);
 
             return {
                 resize: function(elId) {
@@ -3792,3 +3759,34 @@ ice.mobi.menubutton = {
     
     }
 })();
+
+/* container resizing */
+(function(im){
+    var bodyHeight = window.innerHeight;
+    setInterval(function(){
+        if( window.innerHeight != bodyHeight ){
+            resizeAllContainers();
+            bodyHeight = window.innerHeight;
+        }
+    },1000);
+    function resizeAllContainers(){
+        var containers = document.querySelectorAll('.mobi-pagePanel, .mobi-splitpane, .mobi-tabset, .mobi-dv');
+        for( var i = 0 ; i < containers.length ; i++ ){
+            if( containers[i].classList.contains('mobi-pagePanel')){
+                ice.mobi.resizePagePanelsToViewPort();
+            }
+            else if( containers[i].classList.contains('mobi-splitpane')){
+                ice.mobi.splitpane.resizeHt(containers[i].id);
+            }
+            if( containers[i].classList.contains('mobi-tabset')){
+                ice.mobi.tabsetController.fitToParents[containers[i].id]();
+            }
+            if( containers[i].classList.contains('mobi-dv')){
+                ice.mobi.dataView.instances[containers[i].id].resize();
+            }
+        }
+    }
+    ice.mobi.addListener(window, 'load', resizeAllContainers);
+    ice.mobi.addListener(window,"orientationchange", resizeAllContainers);
+    ice.mobi.addListener(window,"resize", resizeAllContainers);
+})(ice.mobi);
