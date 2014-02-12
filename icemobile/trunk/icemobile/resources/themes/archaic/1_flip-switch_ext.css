@@ -28,6 +28,9 @@
 .mobi-flipswitch-on .mobi-flipswitch-txt-on{
      color: #FFF;
 }
+.mobi-flipswitch-on .mobi-flipswitch-txt-off, .mobi-flipswitch-off .mobi-flipswitch-txt-on{
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
 .mobi-flipswitch-off .mobi-flipswitch-txt-off {
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff')";
 }
