@@ -23,9 +23,7 @@
 	
 	<macrodef name="gen.tld.doc">
         <attribute name="tld.file"/>
-        <sequential>
-            <delete dir="${tld.doc}"/>
-            <mkdir dir="${tld.doc}"/>
+		<sequential>
             <java jar="${tld.jar}/tlddoc.jar" fork="true" failonerror="true">
                 <arg value="-d"/>
                 <arg value="${tld.doc}"/>
