@@ -13,8 +13,11 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
+.mobi-fieldset{
+    border-color: #C0C0C0;
+}
 .mobi-fieldset-row {
+    border-color: #C0C0C0;
     border-bottom-color: #F3F3F3;
 	background: #DDD;
 }
