@@ -36,7 +36,6 @@
     
     <!-- Maps '/' requests to the 'home' view -->
     <mvc:view-controller path="/jqmmic" view-name="jqmmic"/>
-    <mvc:view-controller path="/device-simulator.html" view-name="device-simulator"/>
     <mvc:view-controller path="/" view-name="index"/>
 
     <context:component-scan base-package="org.icemobile.samples.spring.controllers"/>
