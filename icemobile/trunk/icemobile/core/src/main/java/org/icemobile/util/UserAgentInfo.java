@@ -206,6 +206,10 @@ public class UserAgentInfo implements Serializable{
        return userAgentString.contains(MSIE6) || userAgentString.contains(MSIE7) || userAgentString.contains(MSIE8);
    }
    
+   public boolean isIE9orLess(){
+       return userAgentString.contains(MSIE6) || userAgentString.contains(MSIE7) || userAgentString.contains(MSIE8) || userAgentString.contains(MSIE9);
+   }
+   
    public boolean isIE9(){
        return userAgentString.contains(MSIE9);
    }
