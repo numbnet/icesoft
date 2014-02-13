@@ -125,7 +125,7 @@ public class CSSUtils {
                 theme = Theme.IPAD;
             }
         } 
-        else if( client.isIE8orLessBrowser()){ 
+        else if( client.isIE9orLessBrowser()){ 
             theme = Theme.ARCHAIC;
         }
         else{
