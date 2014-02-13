@@ -97,8 +97,8 @@
     line-height: 22px;
 }
 .mobi-pagePanel-header div.mobi-button-back {
-    height: 23px;
-    min-width: 18px;
+    height: 35px;
+    min-width: 50px;
 }
 div.mobi-button-back > input{
     left: 5px;

@@ -53,7 +53,8 @@
 	left: 0;
 }
 .mobi-pagePanel-header div.mobi-button-back {
-    min-width: 14px;
+    min-width: 50px;
+    height: 30px;
 }
 div.mobi-button-back > input{
     left: 3px;

@@ -15,7 +15,7 @@
  */
  
  .mobi-contentstack{
-    height: 100%;
+    min-height: 100%;
  }
  
 /* hidden panes */
@@ -26,7 +26,7 @@
 }
 /* visible panes */
 .mobi-contentpane, .mobi-contentpane > div{
-    height: 100%;
+    min-height: 100%;
 }
 .mobi-contentpane, .mobi-contentpane-left {
     opacity: 1;
@@ -46,7 +46,7 @@
     display: block;
     left: 0;
     position: absolute;
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     overflow: auto;
 }
