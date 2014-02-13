@@ -1409,11 +1409,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 window.scrollTo(0, 0);
             }
         }
-        if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
-            ice.mobi.addListener(window, "load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
-            ice.mobi.addListener(window, "orientationchange", hideAddressBar );
-        }
-
+        
         var config = cfg,
             selectorId = '#' + im.escapeJsfId(clientId),
             bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
@@ -1614,8 +1610,6 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 bottomResize = function() {
                     fullHeight -= (container.scrollHeight - container.clientHeight);
                     if( isNumber(fullHeight)){
-                        if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i))
-                            fullHeight += 60;
                         bodyDivWrapper.style.height = fullHeight + 'px';
                     }
                 };
@@ -1685,24 +1679,27 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         }
 
         function rowTouchEnd(e) {
-            var row = closest(document.elementFromPoint(e.changedTouches[0].pageX, e.changedTouches[0].pageY), 'tr'),
-                index = row.getAttribute("data-index"),
-                y = touchedRowIndex[e.changedTouches[0].identifier].y - e.changedTouches[0].pageY ,
-                x = touchedRowIndex[e.changedTouches[0].identifier].x - e.changedTouches[0].pageX;
+            var row = closest(document.elementFromPoint(e.changedTouches[0].pageX, e.changedTouches[0].pageY), 'tr');
+            if( row ){
+                var index = row.getAttribute("data-index"),
+                    y = touchedRowIndex[e.changedTouches[0].identifier].y - e.changedTouches[0].pageY ,
+                    x = touchedRowIndex[e.changedTouches[0].identifier].x - e.changedTouches[0].pageX;
 
-            /* prevent input when scrolling rows or drag in wide cell*/
-            y = y > -25 && y < 25;
-            x = x > -25 && y < 25;
-
-            if (index == touchedRowIndex[e.changedTouches[0].identifier].i && y && x){
-                tapFlash(e.delegateTarget);
-
-                if (e.delegateTarget.classList.contains('ui-bar-e'))
-                    deactivateDetail()
-                else activateRow(e);
+                /* prevent input when scrolling rows or drag in wide cell*/
+                y = y > -25 && y < 25;
+                x = x > -25 && y < 25;
+    
+                if (index == touchedRowIndex[e.changedTouches[0].identifier].i && y && x){
+                    tapFlash(e.delegateTarget);
+    
+                    if (e.delegateTarget.classList.contains('ui-bar-e'))
+                        deactivateDetail()
+                    else activateRow(e);
+                }
+    
+                touchedRowIndex[e.changedTouches[0].identifier] = null;
             }
-
-            touchedRowIndex[e.changedTouches[0].identifier] = null;
+                
         }
 
         function initSortingEvents() {
@@ -3787,6 +3784,7 @@ ice.mobi.menubutton = {
         }
     }
     ice.mobi.addListener(window, 'load', resizeAllContainers);
-    ice.mobi.addListener(window,"orientationchange", resizeAllContainers);
-    ice.mobi.addListener(window,"resize", resizeAllContainers);
+    ice.mobi.addListener(window, 'orientationchange', resizeAllContainers);
+    ice.mobi.addListener(window, 'resize', resizeAllContainers);
+    ice.onAfterUpdate(resizeAllContainers);
 })(ice.mobi);
