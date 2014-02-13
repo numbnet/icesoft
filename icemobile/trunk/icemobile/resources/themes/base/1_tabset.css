@@ -58,6 +58,7 @@
 .mobi-tabpage, .mobi-tabpage > div{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    height: 100%;
 }
 .mobi-tabpage-hidden { 
     display: none; 
