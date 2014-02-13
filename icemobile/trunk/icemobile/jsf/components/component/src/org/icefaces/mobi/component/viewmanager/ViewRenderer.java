@@ -61,7 +61,11 @@ public class ViewRenderer extends BaseLayoutRenderer {
     }
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        JSFUtils.renderChildren(facesContext, uiComponent);
+        View view = (View)uiComponent;
+        ViewManager vm = (ViewManager)(uiComponent.getParent());
+        if( view.isSplash() || vm.getSelectedView() == view ){
+            JSFUtils.renderChildren(facesContext, uiComponent);
+        }
     }
 
 
