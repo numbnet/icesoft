@@ -57,7 +57,8 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     public static final String IOS_APP_ID = "485908934";
     
     public static final String META_CONTENTTYPE = "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>";
-    public static final String META_VIEWPORT = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui'/>";
+    public static final String META_VIEWPORT = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>";
+    public static final String META_VIEWPORT_IOS7 = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui'/>";
     public static final String META_IOS_WEBAPPCAPABLE = "<meta name='apple-mobile-web-app-capable' content='yes'/>";
     public static final String META_IOS_APPSTATUSBAR = "<meta name='apple-mobile-web-app-status-bar-style' content='black'/>";
     public static final String META_IOS_SMARTAPPBANNER = "<meta name='apple-itunes-app' content=\"app-id=%s, app-argument=%s\"/>";
@@ -107,7 +108,13 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.write(String.format(LINK_FAV_ICON, contextRoot));
         writer.write(String.format(LINK_SHORTCUT_ICON, contextRoot));
         if( !desktop ){
-            writer.write(META_VIEWPORT);
+            if( client.isIOS7() ){
+                writer.write(META_VIEWPORT_IOS7);
+            }
+            else{
+                writer.write(META_VIEWPORT);
+            }
+            
             if( ios6orHigher ){
                 writer.write(META_IOS_WEBAPPCAPABLE);
                 writer.write(META_IOS_APPSTATUSBAR);
