@@ -138,9 +138,9 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 } else {
                     monitor = (Monitor) SessionMonitors.get(id);
                 }
+                //it is possible to have multiple web-app contexts associated with the same session ID
+                monitor.addInSessionContext(context);
             }
-            //it is possible to have multiple web-app contexts associated with the same session ID
-            monitor.addInSessionContext(context);
 
             synchronized (sessionBoundServers) {
                 if (!sessionBoundServers.containsKey(id)) {
@@ -376,7 +376,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
     public static class Monitor implements Externalizable {
         private final String POSITIVE_SESSION_TIMEOUT = "positive_session_timeout";
-        private Set contexts = Collections.synchronizedSet(new HashSet());
+        private Set contexts = new HashSet();
         private HttpSession session;
         private long lastAccess;
         private String id;
@@ -435,12 +435,10 @@ public abstract class SessionDispatcher implements PseudoServlet {
         public void shutdown() {
             //notify all the contexts associated to this monitored session
             synchronized (SessionMonitors) {
-                synchronized (contexts) {
-                    Iterator i = contexts.iterator();
-                    while (i.hasNext()) {
-                        ServletContext context = (ServletContext) i.next();
-                        notifySessionShutdown(session, context);
-                    }
+                Iterator i = new ArrayList(contexts).iterator();
+                while (i.hasNext()) {
+                    ServletContext context = (ServletContext) i.next();
+                    notifySessionShutdown(session, context);
                 }
             }
             try {
