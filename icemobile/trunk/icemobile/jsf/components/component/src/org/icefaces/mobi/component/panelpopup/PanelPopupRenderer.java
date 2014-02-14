@@ -32,7 +32,7 @@ import org.icemobile.util.CSSUtils;
 
 
 public class PanelPopupRenderer extends BaseLayoutRenderer {
-    private static final Logger logger = Logger.getLogger(PanelPopupRenderer.class.getName());
+    //private static final Logger logger = Logger.getLogger(PanelPopupRenderer.class.getName());
 
     @Override
     public void decode(FacesContext facesContext, UIComponent component) {

@@ -26,14 +26,12 @@ import org.icemobile.util.Utils;
 import static org.icemobile.util.HTML.*;
 
 public class PanelPopupCoreRenderer extends BaseCoreRenderer {
-    private static final Logger logger =
-            Logger.getLogger(PanelPopupCoreRenderer.class.toString());
+    //private static final Logger logger = Logger.getLogger(PanelPopupCoreRenderer.class.toString());
 
     public void encodeBegin(IPanelPopup component, IResponseWriter writer)
             throws IOException {
         IPanelPopup panelPopup = (IPanelPopup) component;
         boolean visible = panelPopup.isVisible();
-        boolean disabled = panelPopup.isDisabled();
         String clientId = panelPopup.getClientId();
         writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, clientId);
@@ -76,7 +74,7 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
             writer.startElement(INPUT_ELEM, panelPopup);
             writer.writeAttribute(TYPE_ATTR, "hidden");
             writer.writeAttribute(ID_ATTR, clientId+"_hidden");
-         //   writer.writeAttribute(HTML.VALUE_ATTR, String.valueOf(panelPopup.isVisible()), HTML.VALUE_ATTR);
+            writer.writeAttribute(VALUE_ATTR, panelPopup.isClientSide() ? "false" : String.valueOf(panelPopup.isVisible()));
             writer.writeAttribute(NAME_ATTR, clientId+"_hidden");
             writer.endElement(INPUT_ELEM);
         }
@@ -97,16 +95,12 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript");
         StringBuilder builder = new StringBuilder(255);
-        String hashString = String.valueOf(panelPopup.isClientSide()) + String.valueOf(panelPopup.isVisible())+
-                String.valueOf(panelPopup.isAutoCenter());
-        int hashcode = Utils.generateHashCode(hashString);
         boolean disabled = panelPopup.isDisabled();
         if (disabled && !panelPopup.isClientSide()){
             panelPopup.setVisible(false);
         }
         builder.append("ice.mobi.panelPopup.init('").append(clientId)
                 .append("', {visible: ").append(panelPopup.isVisible())
-                .append(", hash: ").append(hashcode)
                 .append(", autocenter: ").append(panelPopup.isAutoCenter())
                 .append(", client: ").append(panelPopup.isClientSide())
                 .append(", id: '").append(panelPopup.getId()).append("'") ;
@@ -118,9 +112,6 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
         if (null !=panelPopup.getStyleClass()){
             builder.append(", sclass: '").append(panelPopup.getStyleClass()).append("'");
         }
-  /*      if (panelPopup.isCenterOnForm()){
-            builder.append(", useForm: ").append(panelPopup.isCenterOnForm());
-        }       */
         if (panelPopup.getStyle()!=null){
             builder.append(", style: '").append(panelPopup.getStyle()).append("'");
         }
@@ -129,7 +120,6 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
         }
         builder.append("});");
         writer.write(builder.toString());
-      //  logger.info(" script is="+builder.toString());
         writer.endElement("script");
         writer.endElement(SPAN_ELEM);
         writer.endElement(DIV_ELEM);
