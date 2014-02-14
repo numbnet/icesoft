@@ -51,6 +51,9 @@ html.android-browser .ice-status-indicator-overlay{ display: none !important; } 
 html.simulator *::-webkit-scrollbar{
     width: 0;
 }
+html.simulator *{
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
 .icon-mobi-online{
     color: #666;
 }
