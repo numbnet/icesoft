@@ -3045,7 +3045,10 @@ ice.mobi.splitpane = {
                     containerNode.setAttribute("style", styleVar);
                 }
                 ice.mobi.panelPopup.visible[clientId] = true;
-                updateHidden(clientId, "true");
+                if( !cfg.client ){
+                    updateHidden(clientId, "true");
+                }
+                
            },
            closePopup: function(clientId, cfg){
                var containerNode = clientId+"_popup";
@@ -3069,7 +3072,9 @@ ice.mobi.splitpane = {
                      centerCalculation[clientId] = undefined;
                }
                ice.mobi.panelPopup.visible[clientId] = false;
-               updateHidden(clientId, "false");
+               if( !cfg.client ){
+                   updateHidden(clientId, "false");
+               }
            },
            getId: function(){
                return myId;
