@@ -14,25 +14,7 @@
  * governing permissions and limitations under the License.
  */
  
- 
- 
 .mobi-video a,.mobi-video a:hover, .mobi-video a:visited,
 .mobi-audio a,.mobi-audio a:hover, .mobi-audio a:visited  {
     color: #000000;
-}
-
-.mobi-mic-record {
-    background-color: #59aada;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F902B6), to(#FFA4E6));
-    -moz-box-shadow: 3px 3px 3px #000000;
-    -webkit-box-shadow: 3px 3px 3px #000000;
-    box-shadow: 3px 3px 3px #000000;
-    color: #369;
-    border-radius: 6px;
-}
-
-.mobi-mic-stop {
-    border: 1px outset;
-    color: #369;
-    background: #f9d543;
 }

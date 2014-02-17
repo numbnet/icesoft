@@ -20,17 +20,3 @@
 .mobi-audio a,.mobi-audio a:hover, .mobi-audio a:visited  {
     color: black;
 }
-
-.mobi-mic-record,.mobi-mic-stop{
-    color: #369;
-}
-.mobi-mic-record {
-    background-color: #59aada;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F902B6), to(#FFA4E6));
-    -webkit-box-shadow: 3px 3px 3px #000000;
-    border-radius: 6px;
-}
-
-.mobi-mic-stop {
-    background: #f9d543;
-}
