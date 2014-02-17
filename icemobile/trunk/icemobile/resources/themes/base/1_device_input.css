@@ -27,10 +27,6 @@
     text-decoration: underline;
 }
 
-.mobi-mic-record,.mobi-mic-stop{
-    border: 1px outset;
-}
-
 .mobi-thumb, .mobi-thumb-done {
     background-repeat: no-repeat;
     width: 64px;
