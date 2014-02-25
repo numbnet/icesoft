@@ -48,7 +48,7 @@ public class EchoServiceController {
 
     @RequestMapping(value = "/echoput/{tableName}", 
             method=RequestMethod.POST, consumes="application/json")
-    public @ResponseBody String postEchoPut(HttpServletRequest request,
+    public @ResponseBody Map postEchoPut(HttpServletRequest request,
         @PathVariable String tableName,
         @RequestBody Map jsonBlob) throws IOException {
         
@@ -61,7 +61,7 @@ public class EchoServiceController {
         echoTable.put(new Object(), jsonBlob);
         push(tableName);
 
-        return "Thanks!";
+        return jsonBlob;
    }
 
     @RequestMapping(value = "/echofetch/{tableName}", 
@@ -80,7 +80,7 @@ public class EchoServiceController {
 
     @RequestMapping(value = "/list/{tableName}", 
             method=RequestMethod.POST, consumes="application/json")
-    public @ResponseBody String postList(HttpServletRequest request,
+    public @ResponseBody Map postList(HttpServletRequest request,
         @PathVariable String tableName,
         @RequestBody Map jsonBlob) throws IOException {
             return this.postEchoPut(request, tableName, jsonBlob);
