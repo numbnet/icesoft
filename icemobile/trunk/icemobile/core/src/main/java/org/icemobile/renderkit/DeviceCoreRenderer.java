@@ -99,7 +99,12 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             writer.writeAttribute(NAME_ATTR, clientId);
             writeStandardAttributes(writer, component, "", "");
             if (comptype.equals("camera")){
-                writer.writeAttribute("accept", "image/*;capture=camera");
+                if( cd.isIEBrowser() ){
+                    writer.writeAttribute("accept", "image/*;capture=camera");
+                }
+                else{
+                    writer.writeAttribute("accept", "image/*");
+                }
             }
             if (comptype.equals("camcorder")){
                 writer.writeAttribute("accept", "video/*;capture=camcorder");
