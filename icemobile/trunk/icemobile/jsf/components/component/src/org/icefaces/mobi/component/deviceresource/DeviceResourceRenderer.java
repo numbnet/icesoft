@@ -128,11 +128,18 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
             }
         }
         String themeParam = context.getExternalContext().getRequestParameterMap().get("theme");
-        Theme theme = Theme.getEnum(themeParam != null ? themeParam : (String)comp.getAttributes().get("theme"));
-        if( theme == null ){
-            String targetView = (String)comp.getAttributes().get("view");
-            theme = CSSUtils.deriveTheme(targetView, JSFUtils.getRequest());
+        Theme theme = null;
+        if( client.isIE9orLessBrowser() ){
+            theme = Theme.ARCHAIC;
         }
+        else{
+            theme = Theme.getEnum(themeParam != null ? themeParam : (String)comp.getAttributes().get("theme"));
+            if( theme == null ){
+                String targetView = (String)comp.getAttributes().get("view");
+                theme = CSSUtils.deriveTheme(targetView, JSFUtils.getRequest());
+            }
+        }
+        
         //android and honeycomb themes deprecated
         if( theme == Theme.ANDROID || theme == Theme.HONEYCOMB ){
             theme = Theme.ANDROID_DARK;
