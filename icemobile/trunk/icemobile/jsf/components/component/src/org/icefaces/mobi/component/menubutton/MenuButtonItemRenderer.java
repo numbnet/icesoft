@@ -31,6 +31,7 @@ import org.icefaces.mobi.component.menubutton.MenuButtonGroup;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.JSONBuilder;
 
 import org.icemobile.component.IMenuButton;
 import org.icemobile.component.IMenuButtonGroup;
@@ -93,10 +94,13 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         if (hasBehaviors){
-                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "change").toString();
-                behaviors = behaviors.replace("\"", "\'");
-                mbi.setBehaviors(behaviors);
-            }
+           JSONBuilder jb = JSONBuilder.create();
+           this.encodeClientBehaviors(facesContext, cbh, jb);
+           String bh = ", "+jb.toString();
+           bh = bh.replace("\"", "\'");
+   // System.out.println(" behaviors for commandButton="+bh);
+           mbi.setBehaviors(bh);
+        }
         if (null != subNotId && subNotId.length()>0) {
             submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent, subNotId);
             if (null == submitNotificationId){

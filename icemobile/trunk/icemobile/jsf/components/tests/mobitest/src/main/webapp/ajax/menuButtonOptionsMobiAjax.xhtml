@@ -1,0 +1,110 @@
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">MenuButton dynamic Attributes</title>
+
+     <mobi:deviceResource
+            name="#{themeSwitcher.theme}" />
+</h:head>
+
+<h:body>
+    <h3>Menu Button with menuButtonGroup</h3>
+    <br />
+    <h:form id="inputForm">
+       <mobi:fieldsetGroup>
+           <mobi:fieldsetRow>
+               <mobi:menuButton id="buttonOne"
+                            buttonLabel="#{menu.buttonLabel}"
+                            selectTitle="#{menu.selTitle}"
+                            disabled="#{menu.disabled}"
+                            style="#{menu.mbstyle}"
+                            styleClass="#{menu.styleClass}">
+                   <mobi:menuButtonGroup label="Group1" >
+                       <mobi:menuButtonItem id="item1a" label="oneA with pc1 sn1" value="1A"
+                                  actionListener="#{menu.actionMethodSleep}"
+                                  panelConfirmation="pc1"
+                                  submitNotification="sn1">
+                           <mobi:ajax execute="@this" render="@all" onStart="alert('using mobi ajax');"/>
+                        </mobi:menuButtonItem>
+                       <mobi:menuButtonItem id="item2a" label="twoA has sn" value="2A"
+                                   actionListener="#{menu.actionMethodSleep}"
+                                  submitNotification="sn1"/>
+                       <mobi:menuButtonItem id="item3a" label="threeA"
+                                            actionListener="#{menu.actionMethod}"
+                                            value="3A"/>
+                   </mobi:menuButtonGroup>
+                   <mobi:menuButtonGroup label="Group2">
+                       <mobi:menuButtonItem id="item1b" label="oneB mobi ajax" value="1B"
+                               actionListener="#{menu.actionMethod}">
+                           <mobi:ajax execute="@this" render="@all" onStart="alert('using mobi ajax');"/>
+                       </mobi:menuButtonItem>
+                       <mobi:menuButtonItem id="item2b" label="twoB has pc2 sn1" value="2B"
+                                  actionListener="#{menu.actionMethodSleep}"
+                                  panelConfirmation="pc2"
+                                  submitNotification="sn1"/>
+                       <mobi:menuButtonItem id="item3b" label="threeB" value="3B"
+                               actionListener="#{menu.actionMethod}"/>
+                    </mobi:menuButtonGroup>
+               </mobi:menuButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h5> item chosen</h5>
+                <h:outputText value="#{menu.itemChosen}"/>
+            </mobi:fieldsetRow>
+       </mobi:fieldsetGroup>
+       <mobi:panelConfirmation id="pc1" message="working..."/>
+       <mobi:panelConfirmation id="pc2" message="panelConf2.."/>
+       <mobi:submitNotification id="sn1">
+              <h:outputText value="...working"/>
+       </mobi:submitNotification>
+    </h:form>
+    <h:form id="sel">
+        <h3>Dynamic attributes</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="buttonLabel" value="button label:" />
+                <mobi:inputText id="buttonLabel" value="#{menu.buttonLabel}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="selectTitle" value="select title:" />
+                <mobi:inputText id="selectTitle" value="#{menu.selTitle}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                <h:outputLabel for="styleClass" value="StyleClass:" />
+                <mobi:inputText id="styleClass" value="#{menu.styleClass}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="style" value="Style:" />
+                <mobi:inputText id="style" value="#{menu.mbstyle}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:" />
+                <mobi:flipswitch id="disabled" value="#{menu.disabled}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
+    <br />
+	<li><a href="../inputComponents.html">input components index page</a>
+	</li>
+</h:body>
+</html>
