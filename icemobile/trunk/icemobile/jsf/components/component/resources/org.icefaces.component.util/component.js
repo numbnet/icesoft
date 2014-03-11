@@ -1045,7 +1045,6 @@ ice.mobi.inputText = {
             options.render = "@all";
         }
         if (cfg.behaviors){
-           console.log(" using mobi ajax");
            ice.mobi.ab(cfg.behaviors.change);
         }
         else {
