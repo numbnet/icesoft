@@ -381,7 +381,7 @@ ice.mobi.removeClass = function(ele, clazz) {
 };
 mobi.findForm = function (sourceId) {
     if (!sourceId){
-        console.log("source cannot be null to find form for ajax submit") ;
+      //  console.log("source cannot be null to find form for ajax submit") ;
         return null;
     }
     var node = document.getElementById(sourceId);
@@ -403,7 +403,7 @@ ice.formOf = function formOf(element) {
 }
 ice.mobi.findFormFromNode = function (sourcenode) {
     if (!sourcenode){
-        console.log("source cannot be null to find form for ajax submit") ;
+     //   console.log("source cannot be null to find form for ajax submit") ;
         return null;
     }
     var node = sourcenode;
@@ -429,6 +429,7 @@ mobi.AjaxRequest = function (cfg) {
         return;//cancel request
     }
     var form = mobi.findForm(cfg.source);
+
     var source = (typeof cfg.source == 'string') ? document.getElementById(cfg.source) : cfg.source;
     if (!source) {
         if (cfg.node) {
@@ -436,11 +437,14 @@ mobi.AjaxRequest = function (cfg) {
             source.id = cfg.source;
         }
     }
-    if (form.length == 0) {
+    if (!form ){
+        ice.mobi.findFormFromNode(source);
+    }
+    if (!form || form.length == 0) {
         form = source.form;
         ice.log.debug(ice.log, "had to find form via element form length = " + form.length);
     }
-    if (form.length == 0) {
+    if (!form || form.length == 0) {
         form = document.forms[0]; //just return first form in the page
         ice.log.debug(ice.log, 'had to find first form on page');
     }
@@ -497,6 +501,14 @@ ice.mobi.extendAjaxArguments = function(callArguments, options) {
     // The cb arguments, being a configured property of the component will live past this request.
     callArguments = ice.mobi.clone(callArguments);
 
+    // Premerge arrays of arguments supplied by the server
+    if (callArguments instanceof Array) {
+        var arrayArguments = callArguments;
+        var callArguments = {};
+        for (var x in arrayArguments) {
+            callArguments = ice.ace.extendAjaxArgs(callArguments, arrayArguments[x]);
+        }
+    }
     var params     = options.params,
         execute    = options.execute,
         render     = options.render,
@@ -1015,6 +1027,32 @@ if (window.addEventListener) {
         }
     }, false);
 }
+ice.mobi.inputText = {
+    activate: function(clientId, cfg){
+        var singleSubmit = cfg.singleSubmit || false;
+        var options = {
+            source : clientId
+        };
+        options.source = clientId;
+        if (cfg.disabled){
+            return;
+        }
+        if (singleSubmit==true){
+            options.execute="@this";
+            options.render = "@all";
+        } else if (!cfg.behaviors){
+            options.execute="@all";
+            options.render = "@all";
+        }
+        if (cfg.behaviors){
+           console.log(" using mobi ajax");
+           ice.mobi.ab(cfg.behaviors.change);
+        }
+        else {
+            mobi.AjaxRequest(options);
+        }
+    }
+}
 /* javascript for mobi:commandButton component put into component.js as per MOBI-200 */
 ice.mobi.button = {
     select: function(clientId, event, cfg) {
@@ -1046,33 +1084,32 @@ ice.mobi.button = {
             onsuccess: keyCall,
             source : clientId
         };
-        if (behaviors && behaviors.click){
-            /* does not yet support mobi ajax for panelConf or submitNotification need to modify first */
-            /* need to rework AjaxBehaviorRenderer before I can combine the options and cfg */
-             behaviors.click();
-        }else{
-            if (singleSubmit){
-                options.execute="@this";
-            } else {
-                options.execute="@all";
-            }
-            if (params !=null){
-                options.params = params;
-            }else {
-                options.params = {};
-            }
+        if (singleSubmit==true){
+            options.execute="@this";
             options.render = "@all";
-            if (cfg.pcId) {
-                ice.mobi.panelConf.init(cfg.pcId, clientId, cfg, options);
-                return;
-             }
-             if (cfg.snId) {
-                 ice.mobi.submitnotify.open(cfg.snId, clientId, cfg, options);
-                 return;
-             }
-             else {
-                 mobi.AjaxRequest(options);
-            }
+        } else if (!behaviors){
+            options.execute="@all";
+            options.render = "@all";
+        }
+        if (params !=null){
+            options.params = params;
+        }else {
+            options.params = {};
+        }
+        if (cfg.pcId){
+            ice.mobi.panelConf.init(cfg.pcId, clientId, cfg, options);
+            return;
+        }
+        if (cfg.snId){
+            ice.mobi.submitnotify.open(cfg.snId, clientId, cfg, options);
+            return;
+        }
+        if (behaviors){
+           // alert(" no submitNotify or panelConf with mobi ajax");
+            ice.mobi.ab(cfg.behaviors.click);
+        }
+        else {
+            mobi.AjaxRequest(options);
         }
     },
     unSelect: function(clientId, classNm){
@@ -3213,9 +3250,10 @@ mobi.flipswitch = {
                         ice.se(this.event, this.id);
                     }
                 if (hasBehaviors){
-                    if (this.cfg.behaviors.activate){
+                  /*  if (this.cfg.behaviors.activate){
                         this.cfg.behaviors.activate();
-                    }
+                    }   */
+                    ice.mobi.ab(cfg.behaviors.activate);
                 }
              }
         }

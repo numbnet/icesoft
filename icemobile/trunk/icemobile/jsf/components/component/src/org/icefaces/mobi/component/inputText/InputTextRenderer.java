@@ -20,7 +20,9 @@ import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icemobile.util.ClientDescriptor;
+import org.icefaces.mobi.utils.JSONBuilder;
 
+import java.lang.StringBuilder;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import javax.faces.component.UIComponent;
@@ -131,13 +133,18 @@ public class InputTextRenderer extends BaseInputRenderer {
         //ClientBehaviors
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
-
-        if (!disabled && !readOnly && hasBehaviors){
-              String cbhCall = "ice.setFocus(null); " + this.buildAjaxRequest(facesContext, cbh, "onchange");
-              writer.writeAttribute("onchange", cbhCall, null);
-        }
-        else if (inputText.isSingleSubmit()){
-            String jsCall = "ice.setFocus(null); ice.se(event, '" + clientId + "');";
+        StringBuilder jsCall = new StringBuilder("ice.setFocus(null); ice.mobi.inputText.activate('");
+        if (!disabled && !readOnly){
+            boolean singleSubmit = inputText.isSingleSubmit();
+            jsCall.append(inputText.getClientId()).append("',{");
+            jsCall.append("singleSubmit:").append(inputText.isSingleSubmit());
+            if (hasBehaviors){
+                String bh = this.buildAjaxRequest(facesContext, cbh, "onchange");
+                bh = bh.replace("\"", "\'");
+                jsCall.append(",'behaviors':{'change':").append(bh).append("}});");
+            } else {
+                jsCall.append("});") ;
+            }
             writer.writeAttribute("onchange", jsCall, null);
         }
         writer.endElement(componentType);

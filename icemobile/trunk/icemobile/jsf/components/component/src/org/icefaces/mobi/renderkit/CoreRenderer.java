@@ -16,11 +16,10 @@
 package org.icefaces.mobi.renderkit;
 
 
-
-
 import static org.icemobile.util.HTML.CLASS_ATTR;
 
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSONBuilder;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
@@ -32,6 +31,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 import java.io.IOException;
+import java.lang.StringBuilder;
 import java.util.*;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -85,6 +85,7 @@ public class CoreRenderer extends MobileBaseRenderer {
                 req.append(",");
             }
         }
+    //    logger.info(" request string = "+req.toString());
         return req.toString();
     }
 
@@ -109,7 +110,7 @@ public class CoreRenderer extends MobileBaseRenderer {
       * will be replaced in 1.4 Beta to reflect support for both mobi:transition and mobi:ajax behaviors
       * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
       */
-    protected StringBuilder encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, String eventDef) throws IOException {
+   /* protected StringBuilder encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, String eventDef) throws IOException {
        StringBuilder sb = new StringBuilder(255);
          //ClientBehaviors
        Map<String,List<ClientBehavior>> eventBehaviors = component.getClientBehaviors();
@@ -143,6 +144,50 @@ public class CoreRenderer extends MobileBaseRenderer {
            sb.append("}");
        }
        return sb;
+    }   */
+     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, JSONBuilder jb) throws IOException {
+        Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
+        if (behaviorEvents.isEmpty()) return;
+
+        String clientId = ((UIComponent) component).getClientId(context);
+        List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+
+        jb.beginMap("behaviors");
+
+		List<String> sortedBehaviourList = new ArrayList<String>(behaviorEvents.keySet());
+		Collections.sort(sortedBehaviourList);
+
+        for(Iterator<String> eventIterator = sortedBehaviourList.iterator(); eventIterator.hasNext();) {
+            String event = eventIterator.next();
+            String domEvent = getDomEvent(event);
+            ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
+            List<ClientBehavior> cbList = behaviorEvents.get(event);
+            Boolean writeArray = false;
+            JSONBuilder cbJson = JSONBuilder.create();
+
+            if (cbList.size() > 1) {
+                writeArray = true;
+                cbJson.beginArray();
+            }
+
+            for (ClientBehavior cb : cbList) {
+                if (cb instanceof javax.faces.component.behavior.AjaxBehavior) continue; // ignore f:ajax
+
+                String script = cb.getScript(cbc);    //could be null if disabled
+                if (script != null) {
+                    if (writeArray) cbJson.item(script, false); // item: false == no escape
+                    else jb.entry(domEvent, script, true); // entry: true == no escape
+                }
+            }
+
+            if (writeArray) {
+                cbJson.endArray();
+                jb.entry(domEvent, cbJson.toString(), true);
+            }
+        }
+
+        jb.endMap();
+ // System.out.println(" return back jb object ="+jb.toString());
     }
 
      private String getDomEvent(String event) {

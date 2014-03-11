@@ -236,10 +236,8 @@ mobi.datespinner = {
             if (behaviors) {
                 hasBehaviors = true;
             }
-            if (hasBehaviors) {
-                if (behaviors.change) {
-                    behaviors.change();
-                }
+            if (hasBehaviors && behaviors.change) {
+                ice.mobi.ab(behaviors.change);
             }
             if (!hasBehaviors && singleSubmit) {
                 ice.se(event, clientId);

@@ -43,7 +43,14 @@ ice.mobi.panelConf = {
         var snId = this.cfg[clientId].snId || this.options[clientId].snId || null;
         if (snId ==null && callerId) {
             this.close(clientId);
-            mobi.AjaxRequest(this.options[clientId]);
+            var behaviors = cfgIn.behaviors && cfgIn.behaviors.click || null;
+            if (behaviors){
+            if (!cfg.source)cfg.source = callerId;
+                ice.mobi.ab(ice.mobi.extendAjaxArguments(behaviors, options));
+            }
+            else {
+                mobi.AjaxRequest(this.options[clientId]);
+            }
         }
         else if (snId!=null) {
             this.close(clientId);

@@ -35,6 +35,7 @@ import org.icemobile.component.ICarousel;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.mobi.utils.JSONBuilder;
 
 
 public class CarouselRenderer extends BaseLayoutRenderer {
@@ -76,7 +77,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_iSlib");
         if (!isScriptLoaded(facesContext, ICarousel.JS_ISCROLL) && 
-                !MobiJSFUtils.getClientDescriptor().isIE8orLessBrowser()){
+            !MobiJSFUtils.getClientDescriptor().isIE8orLessBrowser()){
             renderer.encodeIScrollLib(carousel, writer);
             setScriptLoaded(facesContext, ICarousel.JS_ISCROLL);
         }
@@ -86,10 +87,13 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         encodeCarouselList(carousel, facesContext);
         boolean hasBehaviors = !carousel.getClientBehaviors().isEmpty();
         if (hasBehaviors){
-            ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
-            String behaviors = encodeClientBehaviors(facesContext, cbh, "change").toString();
-            behaviors = behaviors.replace("\"", "\'");
-            carousel.setBehaviors(behaviors);
+           JSONBuilder jb = JSONBuilder.create();
+           this.encodeClientBehaviors(facesContext, carousel, jb);
+   // System.out.println(" jb to string="+jb.toString());
+            String bh = ", "+jb.toString();
+            bh = bh.replace("\"", "\'");
+   // System.out.println(" behaviors for commandButton="+bh);
+            carousel.setBehaviors(bh);
         } else {
             carousel.setBehaviors(null);
         }

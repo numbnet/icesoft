@@ -22,6 +22,7 @@ import org.icefaces.mobi.component.button.CommandButton;
 import org.icefaces.mobi.renderkit.CoreRenderer;
 import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.UserAgentInfo;
+import org.icefaces.mobi.utils.JSONBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -87,9 +88,11 @@ public class FlipSwitchRenderer extends CoreRenderer {
             jsCall.append("singleSubmit: ").append(flipswitch.isSingleSubmit());
     
             if (hasBehaviors){
-                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
-                behaviors = behaviors.replace("\"", "\'");
-                jsCall.append(behaviors);
+                JSONBuilder jb = JSONBuilder.create();
+                this.encodeClientBehaviors(facesContext, cbh, jb);
+                String bh = ", "+jb.toString();
+                bh = bh.replace("\"", "\'");
+                jsCall.append(bh);
             }
             // Mobi-526 pass transformer hack flag
             if (isTransformerHack(facesContext)) {

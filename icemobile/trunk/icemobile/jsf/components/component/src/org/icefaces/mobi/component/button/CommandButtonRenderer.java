@@ -40,6 +40,7 @@ import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IButton;
+import org.icefaces.mobi.utils.JSONBuilder;
 import org.icemobile.component.IButtonGroup;
 import org.icemobile.renderkit.IResponseWriter;
 import org.icemobile.renderkit.ButtonCoreRenderer;
@@ -152,9 +153,14 @@ public class  CommandButtonRenderer extends CoreRenderer {
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         if (hasBehaviors){
-            String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
-            behaviors = behaviors.replace("\"", "\'");
-            button.setBehaviors(behaviors);
+          //  String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
+            JSONBuilder jb = JSONBuilder.create();
+            this.encodeClientBehaviors(facesContext, cbh, jb);
+   // System.out.println(" jb to string="+jb.toString());
+            String bh = ", "+jb.toString();
+            bh = bh.replace("\"", "\'");
+   // System.out.println(" behaviors for commandButton="+bh);
+            button.setBehaviors(bh);
         }
         // panelConfirmation, submitNotification or both?
         if (null!= button.getPanelConfirmation()){
