@@ -43,10 +43,12 @@ ice.mobi.panelConf = {
         var snId = this.cfg[clientId].snId || this.options[clientId].snId || null;
         if (snId ==null && callerId) {
             this.close(clientId);
-            var behaviors = cfgIn.behaviors && cfgIn.behaviors.click || null;
+            var behaviors = this.cfg[clientId].behaviors && this.cfg[clientId].behaviors.click || null;
             if (behaviors){
-            if (!cfg.source)cfg.source = callerId;
-                ice.mobi.ab(ice.mobi.extendAjaxArguments(behaviors, options));
+            if (!this.cfg[clientId].source){
+                this.cfg[clientId].source = callerId;
+            }
+                ice.mobi.ab(ice.mobi.extendAjaxArguments(behaviors, this.options[clientId]));
             }
             else {
                 mobi.AjaxRequest(this.options[clientId]);
