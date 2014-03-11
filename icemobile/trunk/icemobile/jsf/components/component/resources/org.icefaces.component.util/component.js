@@ -3627,12 +3627,12 @@ ice.mobi.menubutton = {
             var params = myOptions[index].getAttribute("params") || null;
             var optId = myOptions[index].id || null;
             if (!optId){
-                console.log(" Problem selecting items in menuButton. See docs. index = ") ;
+           //     console.log(" Problem selecting items in menuButton. See docs. index = ") ;
                 return;
             }
             var disabled = myOptions[index].getAttribute("disabled") || false;
             if (disabled==true){
-                console.log(" option id="+optId+" is disabled no submit");
+            //    console.log(" option id="+optId+" is disabled no submit");
                 return;
             }
             var options = {
@@ -3646,7 +3646,7 @@ ice.mobi.menubutton = {
             var pcId = myOptions[index].getAttribute("data-pcId") || null;
             if (singleSubmit){
                 options.execute="@this";
-            } else {
+            } else if (!behaviors){
                 options.execute="@all";
             }
             if (behaviors){
@@ -3667,12 +3667,17 @@ ice.mobi.menubutton = {
                 ice.mobi.submitnotify.open(snId, optId, cfg, options);
                 return;
             }
-            mobi.AjaxRequest(options);
+           // mobi.AjaxRequest(options);
+            if (behaviors){
+                ice.mobi.ab(behaviors.click) ;
+            }else {
+                mobi.AjaxRequest(options);
+            }
             this.reset(myselect, index);
         },
         reset: function reset(myselect, index) {
             console.log("RESET");
-             myselect.options[index].selected = false;
+            myselect.options[index].selected = false;
             myselect.options[0].selected=true;
 
         }
