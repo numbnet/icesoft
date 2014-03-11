@@ -59,7 +59,6 @@ if (!window.ice['mobi']) {
             //   console.log('pageVal passed in='+pageVal);
                if (currentVal!=pageVal){
                     changedVal = true;
-                   // this.setActive();
                    var undoNode = document.querySelector('.mobi-carousel-cursor-list > li.active');
                    if (undoNode){
                        undoNode.className = '';
@@ -83,10 +82,8 @@ if (!window.ice['mobi']) {
                        submitcfg.oncomplete = refreshXHR;
                        mobi.AjaxRequest(submitcfg);
                    }
-                   else if (hasBehaviors){
-                      if (behaviors.change){
-                          behaviors.change();
-                      }
+                   else if (hasBehaviors && cfg.behaviors.change){
+                       ice.mobi.ab(cfg.behaviors.change);
                    }
                }
            },

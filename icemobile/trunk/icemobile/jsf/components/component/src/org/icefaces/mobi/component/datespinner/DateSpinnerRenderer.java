@@ -23,6 +23,7 @@ import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.HTML;
 import org.icemobile.util.CSSUtils;
+import org.icefaces.mobi.utils.JSONBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -150,9 +151,12 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         builder2.append(clientId).append("',{ event: event,");
         builder2.append("singleSubmit: ").append(singleSubmit);
         if (hasBehaviors) {
-            String behaviors = this.encodeClientBehaviors(context, cbh, "change").toString();
-            behaviors = behaviors.replace("\"", "\'");
-            builder2.append(behaviors);
+            JSONBuilder jb = JSONBuilder.create();
+            this.encodeClientBehaviors(context, cbh, jb);
+   // System.out.println(" jb to string="+jb.toString());
+            String bh = ", "+jb.toString();
+            bh = bh.replace("\"", "\'");
+            builder2.append(bh.toString());
         }
         builder2.append("});");
         boolean disabledOrReadonly = false;

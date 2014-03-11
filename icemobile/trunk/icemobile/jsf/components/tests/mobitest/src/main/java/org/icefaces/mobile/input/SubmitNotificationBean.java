@@ -88,13 +88,28 @@ public class SubmitNotificationBean implements Serializable {
 
     public void actionMethod(ActionEvent ae){
         try{
-            Thread.sleep(5000);
+            Thread.sleep(3000);
             this.label="After actionMethod";
         }  catch (Exception e){
-           System.out.println("exception in actionMethod") ;
+           this.label="exception in actionMethod";
         }
     }
-
+    public void actionMethod2(ActionEvent ae){
+        try{
+            Thread.sleep(3000);
+            this.label="After actionMethod using singleSubmit true";
+        }  catch (Exception e){
+           this.label =("exception in actionMethod2") ;
+        }
+    }
+    public void actionMethod3(ActionEvent ae){
+        try{
+            Thread.sleep(3000);
+            this.label="After actionMethod with mobi ajax";
+        }  catch (Exception e){
+           this.label = "exception in actionMethod mobi ajax";
+        }
+    }
     public String getLabel() {
         return label;
     }

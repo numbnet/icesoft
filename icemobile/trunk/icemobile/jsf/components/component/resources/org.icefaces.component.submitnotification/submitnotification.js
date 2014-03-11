@@ -28,7 +28,7 @@ ice.mobi.submitnotify = {
         //console.log("submitNotif OPEN for clientId="+clientId);
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
-        var behaviors = cfg.behaviors ||null;
+        var behaviors = cfg.behaviors && cfg.behaviors.click || null;
         var bgNode = document.getElementById(idPanel);
         var pNode = document.getElementById(containerId);
         ice.mobi.swapClasses(bgNode, this.bgHideClass, this.bgClass);
@@ -44,41 +44,32 @@ ice.mobi.submitnotify = {
         // calculate center for first view
         mobi.panelAutoCenter(containerId);
         var closeCall = function(xhr, status, args) {ice.mobi.submitnotify.close(clientId);};
+        options.oncomplete = closeCall;
       //  var keyCall = function(xhr, status, args) {ice.mobi.button.unSelect(callerId);};
         if (behaviors){
-            cfg.oncomplete = closeCall;
-            if (options.onsuccess){
-                cfg.onsuccess = options.onsuccess;
-            }
-            mobi.AjaxRequest(cfg);
-        }else{
-            options.oncomplete = closeCall;
-            mobi.AjaxRequest(options);
+             if (!cfg.source)cfg.source = callerId;
+             ice.mobi.ab(ice.mobi.extendAjaxArguments(behaviors, options));
+        }else {
+             mobi.AjaxRequest(options);
         }
     },
     close:function (clientId) {
-        //console.log("submitNotif CLOSE for clientId="+clientId);
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
         var bgNode = document.getElementById(idPanel);
         var pNode = document.getElementById(containerId);
         if (bgNode==null || pNode == null){
-            //console.log("bgNode="+bgNode+" pNode="+pNode);
             return;
         }
-  //      console.log("bgNode class="+bgNode.className+" pNode class="+pNode.className);
         var contains = (bgNode.className.indexOf(this.bgHideClass)>-1) ;
         if (!contains){
-          //  console.log("have to switch to hide class");
             ice.mobi.swapClasses(bgNode, this.bgClass, this.bgHideClass);
         }
         var contains2 = (pNode.className.indexOf(this.contHideClass)>-1) ;
         if (!contains2){
-       //     console.log("have to switch to container hide class");
             ice.mobi.swapClasses(pNode, this.containerClass, this.contHideClass);
         }
         // clean up centering listeners.
-     //   console.log("end of CLOSE and class for bgNode="+bgNode.className);
         var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
         ice.mobi.removeListener(window, scrollEvent, this.centerCalculation[clientId]);
         ice.mobi.removeListener(window, 'resize', this.centerCalculation[clientId]);

@@ -23,6 +23,7 @@ import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icemobile.util.CSSUtils;
+import org.icefaces.mobi.utils.JSONBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -31,6 +32,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
+import java.lang.String;
+import java.lang.StringBuilder;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -106,11 +109,9 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             if (readonly) {
                 writer.writeAttribute("readonly", component, "readonly");
             }
-            if (!readonly && !disabled && hasBehaviors) {
-                String cbhCall = this.buildAjaxRequest(context, cbh, "onchange");
-                writer.writeAttribute("onblur", cbhCall, null);
-            } else if (!readonly && !disabled && singleSubmit) {
-                writer.writeAttribute("onblur", "ice.se(event, this);", null);
+            if (!readonly && !disabled && hasBehaviors || singleSubmit) {
+                String jsCall = getJSCall(context, hasBehaviors, clientId, cbh, singleSubmit);
+                writer.writeAttribute("onblur", jsCall, null);
             }
             writer.endElement("input");
         } else {
@@ -288,16 +289,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("value", "Set", null);
         //prep for singleSubmit
         boolean singleSubmit = timeEntry.isSingleSubmit();
-        StringBuilder builder = new StringBuilder(255);
-        builder.append("mobi.timespinner.select('").append(clientId).append("',{ event: event,");
-        builder.append("singleSubmit: ").append(singleSubmit);
-        if (hasBehaviors) {
-            String behaviors = this.encodeClientBehaviors(context, cbh, "change").toString();
-            behaviors = behaviors.replace("\"", "\'");
-            builder.append(behaviors);
-        }
-        builder.append("});");
-        String jsCall = builder.toString();
+        String jsCall = getJSCall(context, hasBehaviors, clientId, cbh, singleSubmit);
         if (!timeEntry.isDisabled() || !timeEntry.isReadonly()) {
             writer.writeAttribute(CLICK_EVENT, jsCall, null);
         }
@@ -311,6 +303,22 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("div");                                        //end of button container
 
         writer.endElement("div");                                         //end of entire container
+    }
+
+    private String getJSCall(FacesContext context, boolean hasBehaviors, String clientId,
+                             ClientBehaviorHolder cbh, boolean singleSubmit) throws IOException{
+        StringBuilder builder = new StringBuilder(255);
+        builder.append("mobi.timespinner.select('").append(clientId).append("',{ event: event,");
+        builder.append("singleSubmit: ").append(singleSubmit);
+        if (hasBehaviors) {
+            JSONBuilder jb = JSONBuilder.create();
+            this.encodeClientBehaviors(context, cbh, jb);
+            String bh = ", "+jb.toString();
+            bh = bh.replace("\"", "\'");
+            builder.append(bh.toString());
+        }
+        builder.append("});");
+        return builder.toString();
     }
 
     public void encodeScript(FacesContext context, UIComponent uiComponent) throws IOException {

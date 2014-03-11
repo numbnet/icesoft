@@ -161,10 +161,8 @@ mobi.timespinner = {
         var inputEl = document.getElementById(clientId + '_input');
         var titleEl = document.getElementById(clientId + '_title');
         inputEl.value = titleEl.innerHTML;
-        if (hasBehaviors) {
-            if (behaviors.change) {
-                behaviors.change();
-            }
+        if (hasBehaviors && behaviors.change) {
+            ice.mobi.ab(behaviors.change);
         }
         if (!hasBehaviors && singleSubmit) {
             ice.se(event, clientId);

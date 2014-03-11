@@ -56,7 +56,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         if(ajaxBehavior.isDisabled()) {
             return null;
         }
-        
+
         FacesContext fc = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
         String clientId = component.getClientId(fc);
@@ -64,7 +64,10 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         boolean nonACE = !(component instanceof IceClientBehaviorHolder);
 
         JSONBuilder jb = JSONBuilder.create();
-        jb.beginFunction("mobi.AjaxRequest");
+        if (nonACE) {
+            jb.beginFunction("ice.mobi.ab");
+        }
+     //   jb.beginFunction("mobi.AjaxRequest");
         //source
         if (source !=null){
 		   jb.beginMap()
@@ -72,7 +75,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         }else {
             jb.entry("source", clientId);
         }
-		
+
         //execute
 		String execute = null;
         if (ajaxBehavior.getExecute() != null) {
@@ -117,9 +120,12 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
         //params
         jb.entry("params", "arguments[1]", true);
-		
-		jb.endMap().endFunction();
-  //      System.out.println("AjaxBehaviorRender creates:-"+jb.toString());
+
+		jb.endMap();
+        if (nonACE){
+            jb.endFunction();
+        }
+ //  System.out.println("AjaxBehaviorRender creates:-"+jb.toString());
         return jb.toString();
     }
 
