@@ -33,6 +33,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
 
@@ -347,15 +348,21 @@ public class JSFUtils {
                 UIComponent comp = component.findComponent(id);
                 // System.out.println("ComponentUtils.findClientIds()    ["+i+"]  comp   : "
                 // + (comp == null ? "null" : comp.getClientId(context)));
+                if(comp == null){
+                    String encodedId = encodeNameSpace(context,id);
+                    if( !encodedId.startsWith(":")){
+                        encodedId = ":" + encodedId;
+                    }
+                    comp = component.findComponent(encodedId);
+//System.out.println("ComponentUtils.findClientIds()   ["+i+"]  comp   : " + (comp == null ? "null" : comp.getClientId(context)) + "  id: " + encodedId);
+                }
+
                 if (comp != null) {
                     buffer.append(comp.getClientId(context));
-                } else {
-                    if (context.getApplication().getProjectStage()
-                            .equals(ProjectStage.Development)) {
-                        logger.log(
-                                Level.INFO,
-                                "Cannot find component with identifier \"{0}\" in view.",
-                                id);
+                }
+                else {
+                    if (context.getApplication().getProjectStage().equals(ProjectStage.Development)) {
+                        logger.log(Level.INFO, "Cannot find component with identifier \"{0}\" in view.", id);
                     }
                     buffer.append(id);
                 }
@@ -363,7 +370,50 @@ public class JSFUtils {
         }
         return buffer.toString();
     }
+    /**
+     * Environments like portlets need to namespace the components in order to uniquely identify them
+     * on the page in case there are multiple instances of the same portlet or different portlets that use
+     * the same ids.  This method will prepend the namespace properly taking care to ensure that the
+     * namespace is not added twice and that a colon (:) is added if necessary.
+     *
+     * @param fc The current FacesContext instance
+     * @param id The id to encode
+     * @return The namespace encoded id
+     */
+    public static String encodeNameSpace(FacesContext fc, String id){
 
+        if( id == null || id.trim().length() == 0){
+            return id;
+        }
+
+        String tempId = id;
+        ExternalContext ec = fc.getExternalContext();
+        String encodedId = ec.encodeNamespace(tempId);
+
+        //If no namespace was applied, we're done.
+        if( encodedId.equals(id)){
+            return id;
+        }
+
+        //Extract the actual namespace.
+        int idStart = encodedId.indexOf(id);
+        String ns = encodedId.substring(0,idStart);
+
+        //Check if the id already had the namespace.  If so, we're done.
+        if( id.startsWith(ns) ){
+            return id;
+        }
+
+        //If necessary, add the separator character before including the namespace.
+        String sep = String.valueOf(UINamingContainer.getSeparatorChar(fc));
+        if( !id.startsWith(sep)){
+            id = ":" + id;
+        }
+
+        //Add the namespace.
+        id = ns + id;
+        return id;
+    }
     /**
      * Capture UIParameter (f:param) children of a component used by
      * commandButton for f:param support
