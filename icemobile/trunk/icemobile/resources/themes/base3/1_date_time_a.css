@@ -14,13 +14,26 @@
  * governing permissions and limitations under the License.
  */
  
-.mobi-pagePanel-header {
-    background-color: #a8acb9;
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
-    border-top-color: white;
-    border-bottom-color: #7a8091;
-    color: #555;
+
+.mobi-date-container, .mobi-time-container {
+    border-radius: 3px;
 }
-.mobi-pagePanel-body{
-    background-color: #e2e5ea;
+.mobi-date-title-container, .mobi-time-title-container {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr {
+    border-radius: 3px 3px 0 0;
+}
+
+.mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
+    border-radius: 0 0 3px 3px;
+}
+
+.mobi-date-btn-incr, .mobi-time-btn-incr {
+    border-radius: 3px 3px 0 0;
+}
+
+.mobi-date-btn-decr, .mobi-time-btn-decr  {
+    border-radius: 0 0 3px 3px;
 }
