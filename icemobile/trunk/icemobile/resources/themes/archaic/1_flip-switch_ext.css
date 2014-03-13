@@ -17,6 +17,7 @@
 .mobi-flipswitch{
     border: 1px solid #888888;
     cursor: pointer;
+    border-radius: 0;
 }
 .mobi-flipswitch span{
     min-width: 35px;
