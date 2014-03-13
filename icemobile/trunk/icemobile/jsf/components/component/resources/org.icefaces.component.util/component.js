@@ -3825,10 +3825,12 @@ ice.mobi.menubutton = {
             else if( containers[i].classList.contains('mobi-splitpane')){
                 ice.mobi.splitpane.resizeHt(containers[i].id);
             }
-            if( containers[i].classList.contains('mobi-tabset')){
+            if( containers[i].classList.contains('mobi-tabset')
+                 && ice.mobi.tabsetController.fitToParents[containers[i].id]){
                 ice.mobi.tabsetController.fitToParents[containers[i].id]();
             }
-            if( containers[i].classList.contains('mobi-dv')){
+            if( containers[i].classList.contains('mobi-dv')
+                && ice.mobi.dataView.instances[containers[i].id]){
                 ice.mobi.dataView.instances[containers[i].id].resize();
             }
         }
