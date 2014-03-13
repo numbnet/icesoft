@@ -35,7 +35,7 @@
                 <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
                 
                 <!-- theme selector -->
-                <c:if test="#{!mobiClient.IE8orLessBrowser}">
+                <c:if test="#{!mobiClient.IE9orLessBrowser}">
                      <div style="position: absolute;right: 10px;top: 6px;">
                         <mobi:onlineStatus onOnline="console.log('online: ' + event);"
                             onOffline="console.log('offline: ' + event);"/>
