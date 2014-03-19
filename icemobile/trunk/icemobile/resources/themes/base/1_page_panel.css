@@ -67,7 +67,7 @@
 /* layout for buttons in headers and footers */
 .mobi-pagePanel-body {
     padding: 0;
-    position: static;
+    position: absolute;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     width: 100%;
