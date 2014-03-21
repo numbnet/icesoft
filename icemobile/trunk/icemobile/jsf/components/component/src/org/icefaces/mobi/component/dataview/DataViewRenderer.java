@@ -4,6 +4,7 @@ import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.mobi.component.inputText.InputText;
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IDataView;
 import org.icemobile.model.DataViewColumnModel;
 import org.icemobile.model.DataViewColumnsModel;
@@ -17,8 +18,8 @@ import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+
 import java.io.IOException;
-import java.io.OptionalDataException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -39,16 +40,15 @@ import java.util.logging.Logger;
  * <p/>
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * <p/>
- * User: Nils Lundquist
- * Date: 2013-04-01
- * Time: 10:47 AM
  */
 public class DataViewRenderer extends Renderer {
     private static final Logger logger = Logger.getLogger(DataViewRenderer.class.getName());
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        
+        MobiJSFUtils.assertIsInForm(component);
+        
         DataView dataView = (DataView) component;
         String dvId = dataView.getClientId();
         ResponseWriter writer = context.getResponseWriter();

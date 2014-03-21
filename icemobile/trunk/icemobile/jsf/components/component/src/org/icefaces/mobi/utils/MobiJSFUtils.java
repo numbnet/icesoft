@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -299,6 +300,16 @@ public class MobiJSFUtils {
         }
         builder.append("}");
         return builder.toString();
+    }
+    
+    public static void assertIsInForm(UIComponent component){
+        UIComponent parent = component.getParent();
+        while( parent != null && !(parent instanceof UIForm)){
+            parent = parent.getParent();
+        }
+        if( parent == null || !(parent instanceof UIForm)){
+            throw new RuntimeException("Component " + component.getClass().getSimpleName() + " must be contained within a UIForm, ie. an <h:form> or subclass of UIForm.");
+        }
     }
 
 }
