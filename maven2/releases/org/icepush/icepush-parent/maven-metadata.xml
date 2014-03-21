@@ -3,12 +3,13 @@
   <groupId>org.icepush</groupId>
   <artifactId>icepush-parent</artifactId>
   <versioning>
-    <release>3.3.0</release>
+    <release>4.0.0-BETA</release>
     <versions>
       <version>3.2.0</version>
       <version>3.3.0-RC1</version>
       <version>3.3.0</version>
+      <version>4.0.0-BETA</version>
     </versions>
-    <lastUpdated>20130416190037</lastUpdated>
+    <lastUpdated>20140321195811</lastUpdated>
   </versioning>
 </metadata>
