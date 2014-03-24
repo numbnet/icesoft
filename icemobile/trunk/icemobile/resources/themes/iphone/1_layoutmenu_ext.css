@@ -20,8 +20,13 @@
 .mobi-layoutmenu-navbar {
     left: 0;
     padding: 5px 0px;
-    background-image: -moz-linear-gradient(top, #B0BCCD, #889BB3 50%, #8195AF 50%, #6D84A2);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#B0BCCD), color-stop(0.5, #889BB3), color-stop(0.5, #8195AF), to(#6D84A2));
+    background: #b0bccd; /* Old browsers */
+    background: -moz-linear-gradient(top,  #b0bccd 0%, #889bb3 50%, #8195af 50%, #6d84a2 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b0bccd), color-stop(50%,#889bb3), color-stop(50%,#8195af), color-stop(100%,#6d84a2)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #b0bccd 0%,#889bb3 50%,#8195af 50%,#6d84a2 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #b0bccd 0%,#889bb3 50%,#8195af 50%,#6d84a2 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #b0bccd 0%,#889bb3 50%,#8195af 50%,#6d84a2 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #b0bccd 0%,#889bb3 50%,#8195af 50%,#6d84a2 100%); /* W3C */
     display: -webkit-box;
     -webkit-box-orient: horizontal;
     -webkit-box-pack: justify;
@@ -36,8 +41,13 @@
 
 .mobi-layoutmenu-navbar-hidden {
     padding: 5px 0px;
-    background-image: -moz-linear-gradient(top, #B0BCCD, #889BB3 50%, #8195AF 50%, #6D84A2);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#B0BCCD), color-stop(0.5, #889BB3), color-stop(0.5, #8195AF), to(#6D84A2));
+    background: #b0bccd; /* Old browsers */
+    background: -moz-linear-gradient(top,  #b0bccd 0%, #889bb3 50%, #8195af 50%, #6d84a2 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b0bccd), color-stop(50%,#889bb3), color-stop(50%,#8195af), color-stop(100%,#6d84a2)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #b0bccd 0%,#889bb3 50%,#8195af 50%,#6d84a2 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #b0bccd 0%,#889bb3 50%,#8195af 50%,#6d84a2 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #b0bccd 0%,#889bb3 50%,#8195af 50%,#6d84a2 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #b0bccd 0%,#889bb3 50%,#8195af 50%,#6d84a2 100%); /* W3C */
     display: -webkit-box;
     -webkit-box-orient: horizontal;
     -webkit-box-pack: justify;

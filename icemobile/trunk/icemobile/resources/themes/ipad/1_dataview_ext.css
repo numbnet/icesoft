@@ -1,9 +1,14 @@
 /* JQM Derived Styles as stop-gap until true JQM based themes */
 
 .mobi-dv .ui-bar-b {
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #909faa), color-stop(1, #b8c1c8));
-    background-image: -moz-linear-gradient(top, #909faa, #b8c1c8);
-    background-color: #B6C9CF;
+    background: #b8c1c8; /* Old browsers */
+    background: -moz-linear-gradient(top,  #909faa 0%, #b8c1c8 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#909faa), color-stop(100%,#b8c1c8)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #909faa 0%,#b8c1c8 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #909faa 0%,#b8c1c8 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #909faa 0%,#b8c1c8 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #909faa 0%,#b8c1c8 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#909faa', endColorstr='#b8c1c8',GradientType=0 ); /* IE6-9 */
     border-bottom: 1px solid #999fa5;
     border-top: 1px solid #717d85;
     color: #FFFFFF;

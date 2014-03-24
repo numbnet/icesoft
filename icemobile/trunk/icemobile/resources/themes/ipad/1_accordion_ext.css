@@ -19,8 +19,13 @@
     border-bottom: 1px solid #b5b9c0;
 }
 .mobi-accordion .handle {
-    background-image: -moz-linear-gradient(top, #F4F5F7, #A8ACB9);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #F4F5F7), color-stop(1, #A8ACB9));
+    background: #f4f5f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f4f5f7 0%, #a8acb9 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f4f5f7), color-stop(100%,#a8acb9)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f4f5f7 0%,#a8acb9 100%); /* W3C */
     border-bottom: 1px solid #7A8091;
     border-top: 1px solid #fff;
     color: #717880;
