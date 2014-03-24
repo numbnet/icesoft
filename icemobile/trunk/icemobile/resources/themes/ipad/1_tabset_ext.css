@@ -29,15 +29,21 @@
 }
 .mobi-tabset > .mobi-tabset-tabs > ul{
     background-color: #e8e9ea;
+    height: 38px;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
-    background: -moz-linear-gradient(top, #f1f1f2, #d9dadb) repeat scroll 0 0 #d9dadb;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #d9dadb));
+    background: #f1f1f2; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f1f1f2 0%, #d9dadb 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1f1f2), color-stop(100%,#d9dadb)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f1f1f2 0%,#d9dadb 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f1f1f2 0%,#d9dadb 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f1f1f2 0%,#d9dadb 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f1f1f2 0%,#d9dadb 100%); /* W3C */
     border: 1px solid #999;
     color:#868688;
     font-weight: bold;
     line-height: 36px;
-    height: 36px;
+    height: 35px;
     margin: 2px;
     margin-right: -3px;
     padding: 0 10px;
@@ -52,7 +58,12 @@
     border-bottom-right-radius:5px;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li.activeTab {
-    background: -moz-linear-gradient(top, #f1f1f2, #b5b6b7) repeat scroll 0 0 #c1c2c3 !important;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #b5b6b7)) !important;
+    background: #f1f1f2; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f1f1f2 0%, #b5b6b7 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1f1f2), color-stop(100%,#b5b6b7)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f1f1f2 0%,#b5b6b7 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f1f1f2 0%,#b5b6b7 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f1f1f2 0%,#b5b6b7 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f1f1f2 0%,#b5b6b7 100%); /* W3C */
     color:#525253;
 }

@@ -16,8 +16,13 @@
  .mobi-carousel-list li { background-color: white;}
 
 .mobi-carousel-cursor {
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #F2F2F2), color-stop(1, #7B7B7B));
-    background-image: -moz-linear-gradient(top, #F2F2F2, #7B7B7B);
+    background: #f2f2f2; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f2f2f2 0%, #7b7b7b 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f2f2f2), color-stop(100%,#7b7b7b)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f2f2f2 0%,#7b7b7b 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f2f2f2 0%,#7b7b7b 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f2f2f2 0%,#7b7b7b 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f2f2f2 0%,#7b7b7b 100%); /* W3C */
     border-bottom: 1px solid #999999;
     border-top: 1px solid #7D7D7D;
     color: #FFFFFF;

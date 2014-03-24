@@ -15,14 +15,30 @@
  */
  
  .mobi-pagePanel-header, .mobi-pagePanel-footer {
-    background: -moz-linear-gradient(top, #f4f5f7, #a8acb9) repeat scroll 0 0 #a8acb9;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f4f5f7), color-stop(1, #a8acb9));
-    border-top-color: white;
-    border-bottom-color: #7a8091;
-    color: #717880;
-    text-shadow: 0 1px 0 #d8dae0;
+    background: -moz-linear-gradient(top,  #f4f4f6 0%, #ebecef 22%, #cfd1da 73%, #cbcdd7 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f4f4f6), color-stop(22%,#ebecef), color-stop(73%,#cfd1da), color-stop(100%,#cbcdd7)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f4f4f6 0%,#ebecef 22%,#cfd1da 73%,#cbcdd7 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f4f4f6 0%,#ebecef 22%,#cfd1da 73%,#cbcdd7 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f4f4f6 0%,#ebecef 22%,#cfd1da 73%,#cbcdd7 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f4f4f6 0%,#ebecef 22%,#cfd1da 73%,#cbcdd7 100%); /* W3C */
+    border-bottom-color: #C9CBD3;
+    border-top-color: #F4F4F6;
+    color: #6C737A;
+    text-shadow: 0 1px 0 #E9EAEE;
+    box-shadow: 1px 1px 4px #6C737A;
+    -moz-box-shadow: 1px 1px 4px #6C737A;
+    -webkit-box-shadow: 1px 1px 4px #6C737A;
 }
  .mobi-pagePanel-body{
     background-color: #e2e5ea;
-    margin-top: -1px;
  }
+ 
+ .mobi-pagePanel-header select, .mobi-pagePanel-footer select{
+    border-radius: 9px;
+    border-bottom-color: #B5B5B5;
+    border-top-color: #5B5B5B;
+    border-left-color: #8E8E8E;
+    border-right-color: #8E8E8E;
+    box-shadow: inset 0 1px 2px #888;
+    padding: 0 5px;
+}

@@ -21,39 +21,45 @@
     border-right: 1px solid #B5B9C0;
 }
 .mobi-list .mobi-list-item a:active, .mobi-list .mobi-list-item a[selected] {
-    background-color: #0099ff !important;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #4286F5), color-stop(1, #194FDB));
-    background-image: -moz-linear-gradient(top, #4286F5, #194FDB);
+    background: #4286f5; /* Old browsers */
+    background: -moz-linear-gradient(top,  #4286f5 0%, #194fdb 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4286f5), color-stop(100%,#194fdb)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #4286f5 0%,#194fdb 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #4286f5 0%,#194fdb 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #4286f5 0%,#194fdb 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #4286f5 0%,#194fdb 100%); /* W3C */
     -webkit-tap-highlight-color: #0099ff;
-    color: #FFFFFF !important;
-    text-shadow: 0 1px 0 #666666;
+    color: #0648F3 !important;
 }
 .mobi-list .mobi-list-item {
-    background-color: #fff;
-    padding: 8px 0 8px 10px;
+    padding: 7px 0 7px 10px;
     margin: 0;
-    font-size: 17px;
     font-weight: bold;
     list-style: none;
-    line-height: 26px;
+    line-height: 18px;
     color: black;
+    background-color: #FFF;
     text-shadow: 0 1px 0 white;
     border-bottom: 1px solid #b5b9c0;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #e8eaed), color-stop(1, #e6e8eb));
-    background-image: -moz-linear-gradient(top, #e8eaed, #e6e8eb);
 }
 .mobi-list .mobi-list-item-group {
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #909faa), color-stop(1, #b8c1c8));
-    background-image: -moz-linear-gradient(top, #909faa, #b8c1c8);
-    background-color: #B6C9CF;
-    border-bottom: 1px solid #999fa5;
-    border-top: 1px solid #717d85;
+    background: #797f92; /* Old browsers */
+    background: -moz-linear-gradient(top,  #a1adb7 0%, #93a0ac 9%, #929fac 13%, #adb8c1 65%, #b7c0c8 91%, #b7bec6 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a1adb7), color-stop(9%,#93a0ac), color-stop(13%,#929fac), color-stop(65%,#adb8c1), color-stop(91%,#b7c0c8), color-stop(100%,#b7bec6)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #a1adb7 0%,#93a0ac 9%,#929fac 13%,#adb8c1 65%,#b7c0c8 91%,#b7bec6 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #a1adb7 0%,#93a0ac 9%,#929fac 13%,#adb8c1 65%,#b7c0c8 91%,#b7bec6 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #a1adb7 0%,#93a0ac 9%,#929fac 13%,#adb8c1 65%,#b7c0c8 91%,#b7bec6 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #a1adb7 0%,#93a0ac 9%,#929fac 13%,#adb8c1 65%,#b7c0c8 91%,#b7bec6 100%); /* W3C */
+    border-bottom: 1px solid #989ea5;
     color: #FFFFFF;
     font-weight: bold;
-    text-shadow: 0 1px 0 #969fa6;
-    height: 28px;
-    line-height: 13px;
+    text-shadow: 1px 1px 0 #656B6F;
+    height: 30px;
+    line-height: 18px;
     font-size: 15px;
+}
+.mobi-list .mobi-list-item:first-child{
+    margin-top: 2px;
 }
 .mobi-list-inset,
 .mobi-list-inset > .mobi-list-item:first-child{
