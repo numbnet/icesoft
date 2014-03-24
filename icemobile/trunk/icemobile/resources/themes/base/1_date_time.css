@@ -105,14 +105,24 @@
 
 .mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr {
     border-radius: 3px 3px 0 0;
-    background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f7f7f7), color-stop(1, #bdbebd));
+    background: #f7f7f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f7f7f7 0%, #bdbebd 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(100%,#bdbebd)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f7f7f7 0%,#bdbebd 100%); /* W3C */
 }
 
 .mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
     border-radius: 0 0 3px 3px;
-    background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #f7f7f7));
+    background: #f7f7f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f7f7f7 0%, #bdbebd 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(100%,#bdbebd)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f7f7f7 0%,#bdbebd 100%); /* W3C */
 }
 
 .mobi-date-submit-container .mobi-button,
