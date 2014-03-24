@@ -40,8 +40,13 @@
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid #e4e4e4;
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#AAB8C9), to(#6E84A2), color-stop(.5,#6E84A2));
-    background: -moz-linear-gradient(0% 65% 90deg,#6E84A2, #AAB8C9, #AAB8C9 100%);
+    background: #aab8c9; /* Old browsers */
+    background: -moz-linear-gradient(top,  #aab8c9 0%, #6e84a2 50%, #6e84a2 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#aab8c9), color-stop(50%,#6e84a2), color-stop(100%,#6e84a2)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #aab8c9 0%,#6e84a2 50%,#6e84a2 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #aab8c9 0%,#6e84a2 50%,#6e84a2 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #aab8c9 0%,#6e84a2 50%,#6e84a2 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #aab8c9 0%,#6e84a2 50%,#6e84a2 100%); /* W3C */
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
     font-weight: bold;
 }
@@ -54,8 +59,13 @@
     color: black;
     height: 35px;
     padding: 5px 3px;
-    background: -moz-linear-gradient(top, #f4f5f7, #a8acb9) repeat scroll 0 0 #a8acb9;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f4f5f7), color-stop(1, #a8acb9));
+    background: #f4f5f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f4f5f7 0%, #a8acb9 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f4f5f7), color-stop(100%,#a8acb9)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f4f5f7 0%,#a8acb9 100%); /* W3C */
 }
 
 .mobi-date-submit-container .mobi-button,
@@ -82,14 +92,24 @@
 
 .mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr {
     border-radius: 6px 6px 0 0;
-    background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #fff), color-stop(1, #bdbebd));
+    background: #f7f7f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f7f7f7 0%, #bdbebd 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(100%,#bdbebd)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f7f7f7 0%,#bdbebd 100%); /* W3C */
 }
 
 .mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
     border-radius: 0 0 6px 6px;
-    background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #fff));
+    background: #bdbebd; /* Old browsers */
+    background: -moz-linear-gradient(top,  #bdbebd 0%, #f7f7f7 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bdbebd), color-stop(100%,#f7f7f7)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #bdbebd 0%,#f7f7f7 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #bdbebd 0%,#f7f7f7 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #bdbebd 0%,#f7f7f7 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #bdbebd 0%,#f7f7f7 100%); /* W3C */
 }
 
 .mobi-date-btn-incr, .mobi-time-btn-incr {
