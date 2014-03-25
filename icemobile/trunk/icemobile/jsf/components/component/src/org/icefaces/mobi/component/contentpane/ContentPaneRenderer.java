@@ -116,6 +116,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         String pointerClass = "pointer";
         writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId+"_sect", null);
+        writer.writeAttribute("data-pane", pane.getId(), null);
         StringBuilder styleClass = new StringBuilder("closed");
         if (selected){
             styleClass = new StringBuilder("open") ;
