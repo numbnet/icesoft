@@ -41,7 +41,6 @@ public class Accordion extends AccordionBase implements ContentPaneController, I
     public static final String JS_LIBRARY = "org.icefaces.component.accordion";
     
     private static Logger logger = Logger.getLogger(Accordion.class.getName());
-    private String hashVal;
     /**
      * method is required by ContentPaneController interface
      * returns null if their are no children of type contentPane or no children at all.
@@ -51,15 +50,6 @@ public class Accordion extends AccordionBase implements ContentPaneController, I
     public Accordion(){
         super();
     }
-
-    public void setHashVal(String hashVal){
-        this.hashVal = hashVal;
-    }
-
-    public String getHashVal(){
-        return this.hashVal;
-    }
-
 
      public void queueEvent(FacesEvent event) {
        if (event.getComponent() == this) {

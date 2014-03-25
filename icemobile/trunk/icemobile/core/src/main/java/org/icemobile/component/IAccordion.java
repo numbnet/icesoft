@@ -37,6 +37,5 @@ public interface IAccordion extends IMobiComponent{
     public boolean isAutoHeight();
     public String getJavascriptFileRequestPath();
     public String getOpenedPaneClientId();
-    public String getHashVal();
  //   public boolean isScrollablePaneContent();
 }

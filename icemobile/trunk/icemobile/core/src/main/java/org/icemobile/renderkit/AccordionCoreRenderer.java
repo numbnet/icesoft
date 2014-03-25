@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import org.icemobile.component.IAccordion;
 import org.icemobile.component.IMobiComponent;
 import static org.icemobile.util.HTML.*;
-import org.icemobile.util.Utils;
 
 public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer{
     
@@ -36,11 +35,10 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         IAccordion accordion = (IAccordion)component;
         String clientId = accordion.getClientId();
         
-        /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(DIV_ELEM, accordion);
         writer.writeAttribute(ID_ATTR, clientId);
         writer.startElement(DIV_ELEM, accordion);
-        writer.writeAttribute(ID_ATTR, clientId+"_acc");
+        writer.writeAttribute(ID_ATTR, clientId+"_ctr");
         StringBuilder styleClass = new StringBuilder(IAccordion.ACCORDION_CLASS);
         String userDefinedClass = accordion.getStyleClass();
         if (userDefinedClass != null && userDefinedClass.length() > 0){
@@ -54,7 +52,7 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
             throws IOException {
         IAccordion accordion = (IAccordion)component;
         String clientId=accordion.getClientId();
-        String openedPaneId = accordion.getOpenedPaneClientId();
+        String openedPaneId = accordion.getSelectedId();
         writer.endElement(DIV_ELEM);  //end of _acc div
         writer.startElement(DIV_ELEM, accordion); //start of div for hidden and script
         writer.writeAttribute(CLASS_ATTR, "mobi-hidden");
@@ -75,11 +73,6 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
             jsCall.append(", opened: '").append(openedPaneId).append("'");
         }
         boolean autoheight = accordion.isAutoHeight();
-        int hashcode = Utils.generateHashCode(openedPaneId);
-        if (null != accordion.getHashVal()){
-            hashcode = Utils.generateHashCode(accordion.getHashVal());
-        }
-        jsCall.append(", hash: ").append(hashcode);
         jsCall.append(", autoHeight: ").append(autoheight);
         if (accordion.isDisabled()){
             jsCall.append(", disabled: ").append(accordion.isDisabled());
