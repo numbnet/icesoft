@@ -45,7 +45,8 @@ function Logger(category, handler) {
 
 function ConsoleLogHandler(priority) {
     function formatOutput(category, message) {
-        return join(['[', join(category, '.'), '] ', message], '');
+        var timestamp = (new Date()).toUTCString();
+        return join(['[', join(category, '.'), '] [', timestamp, '] ', message], '');
     }
 
     var ieConsole = !window.console.debug;
