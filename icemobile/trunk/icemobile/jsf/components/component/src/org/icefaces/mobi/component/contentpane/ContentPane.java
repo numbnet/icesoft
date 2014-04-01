@@ -138,13 +138,11 @@ public class ContentPane extends ContentPaneBase{
             return false;
         }
         String id = this.getId();
-        if( id == null ){
-            return false;
+        boolean result = false;
+        if( id != null ){
+            result = id.equals(selectedId);
         }
-        else{
-            return (id.equals(selectedId));
-        }
-        
+        return result;
     }
 
     @Override

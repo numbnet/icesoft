@@ -128,6 +128,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         }
         writer.writeAttribute(CLASS_ATTR, styleClass, null);
         writer.writeAttribute(STYLE_ATTR, pane.getStyle(), null);
+        writer.writeAttribute("data-client", pane.isClient(), null);
         writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId+"_hndl", null);
         writer.writeAttribute(CLASS_ATTR, handleClass, null);
@@ -147,6 +148,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         writer.endElement(DIV_ELEM);
         writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId+"wrp", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-accordion-pane-content", null);
         writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId, null);
 

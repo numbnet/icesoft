@@ -23,8 +23,8 @@ import org.icefaces.mobi.utils.Attribute;
 public class PagePanel extends PagePanelBase {
 
     // base styles for the three page sections
-    public static final String HEADER_CLASS = "mobi-pagePanel-header ui-header ";
-    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ui-footer ";
+    public static final String HEADER_CLASS = "mobi-pagePanel-header ";
+    public static final String FOOTER_CLASS = "mobi-pagePanel-footer ";
     public static final String BODY_CLASS = "mobi-pagePanel-body overthrow ";
     public static final String CTR_CLASS = "mobi-pagePanel-ctr";
 

@@ -24,7 +24,7 @@
     border-top-width: 1px;
     font-size: 1.2em;
     font-weight: bold;
-    height: 38px; /* keep the header at 40px (38+2px border + 0 padding) */
+    height: 40px;
     left: 0;
     margin: 0;
     padding: 0; /* keep at 0 for stable header height */
@@ -67,17 +67,34 @@
 /* layout for buttons in headers and footers */
 .mobi-pagePanel-body {
     padding: 0;
-    position: absolute;
+    position: relative;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     width: 100%;
 }
-.ui-header-fixed + .mobi-pagePanel-body {
-    padding: 39px 0 40px 0;
+
+
+.mobi-pagePanel.mobi-fixed-header .mobi-pagePanel-header{
+    position: fixed;
+    top: 0;
+}
+.mobi-pagePanel.mobi-fixed-header .mobi-pagePanel-body{
+    margin-top: 40px;
+}
+.mobi-pagePanel.mobi-fixed-header .mobi-pagePanel-header{
+    position: fixed;
+    top: 0;
+}
+.mobi-pagePanel.mobi-fixed-footer .mobi-pagePanel-body{
+    margin-bottom: 40px;
+}
+.mobi-pagePanel.mobi-fixed-footer .mobi-pagePanel-footer{
+    position: fixed;
+    bottom: 0;
 }
 .mobi-pagePanel .mobi-pagePanel-body-noheader {
-    padding-top: 0 !important;
+    margin-top: 0 !important;
 }
 .mobi-pagePanel .mobi-pagePanel-body-nofooter {
-    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }

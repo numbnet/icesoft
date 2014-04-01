@@ -29,12 +29,12 @@ public interface IAccordion extends IMobiComponent{
     public static final String LIB_JSF = "org.icefaces.component.accordion";
     public static final String LIB_JSP = "javascript";
         
-    public void setHeight(String fixedHeight);
-    public String getHeight();
+    public void setHeight(int height);
+    public int getHeight();
     public void setSelectedId(String currentId);
     public String getSelectedId();
-    public void setAutoHeight(boolean autoHeight);
-    public boolean isAutoHeight();
+    public void setFitToParent(boolean autoHeight);
+    public boolean isFitToParent();
     public String getJavascriptFileRequestPath();
     public String getOpenedPaneClientId();
  //   public boolean isScrollablePaneContent();

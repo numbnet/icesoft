@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
  
-.mobi-accordion{
+.mobi-accordion-ctr{
     border-top: 1px solid #b5b9c0;
     border-bottom: 1px solid #b5b9c0;
 }
@@ -24,9 +24,9 @@
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999));
     border-bottom: 1px solid #999999;
 }
-.mobi-accordion > .open > .handle > .pointer{
+.mobi-accordion-ctr > .open > .handle > .pointer{
     border-top-color: #000;
 }
-.mobi-accordion > .closed > .handle > .pointer{
+.mobi-accordion-ctr > .closed > .handle > .pointer{
     border-left-color: #000;
 }

@@ -34,8 +34,8 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     private static Logger LOG = Logger.getLogger(AccordionTag.class.getName());
     
     private String name;
-    private boolean autoHeight = true;//default
-    private String height;
+    private boolean fitToParent = true;
+    private int height;
     private String selectedId;
     private AccordionCoreRenderer renderer;
     private TagWriter writer;
@@ -79,20 +79,20 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     public void setSelectedId(String selectedId) {
         this.selectedId = selectedId;
     }
-    public void setHeight(String fixedHeight) {
+    public void setHeight(int fixedHeight) {
         this.height = fixedHeight;
     }
 
-    public String getHeight() {
+    public int getHeight() {
         return this.height;
     }
 
-    public void setAutoHeight(boolean autoHeight) {
-        this.autoHeight = autoHeight;       
+    public void setFitToParent(boolean fitToParent) {
+        this.fitToParent = fitToParent;       
     }
 
-    public boolean isAutoHeight() {
-        return this.autoHeight;
+    public boolean isFitToParent() {
+        return this.fitToParent;
     }
     /**
      *  responsible for providing the src attribute to load the javascript
