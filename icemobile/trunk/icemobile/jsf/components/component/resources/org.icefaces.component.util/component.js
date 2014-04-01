@@ -2041,10 +2041,6 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
                 processUpdateStr(newValue);
 
-                // if vertical orientation
-                if( config.autoResize ){
-                    recalcScrollHeight();
-                }
             } else {
                 var options = {
                     source : clientId,
@@ -2066,6 +2062,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         
         function resize(){
             recalcScrollHeight();
+            var activeRow = getNode('body').querySelector('.ui-bar-e');
+            if( activeRow ){
+                activeRow.scrollIntoView();
+            }
         }
 
         initActivationEvents();
