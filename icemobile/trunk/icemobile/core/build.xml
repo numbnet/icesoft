@@ -51,8 +51,7 @@
 	</condition>
 	<property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}" />
 
-    <property name="jsp.tld.merge" location="../jsp/src/main/resources/META-INF/icemobile.tld"/>
-	<tstamp>
+    <tstamp>
 		<format property="build.time" pattern="yyyy-MM-dd hh:mm:ss" />
 	</tstamp>
 
@@ -114,8 +113,6 @@
                          value="${version.string}" />
             <sysproperty key="generator.build.dir"
                          value="${build}"/>
-            <sysproperty key="generator.jsp.tld.merge"
-                         value="${jsp.tld.merge}"/>
         </java>
     </target>
 
