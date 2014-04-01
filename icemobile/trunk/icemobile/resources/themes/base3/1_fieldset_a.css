@@ -22,3 +22,6 @@
 .mobi-fieldset-row label {
     line-height: 1.8em;
 }
+.mobi-fieldset-row > * ~ *:last-child{
+    float: right;
+} 

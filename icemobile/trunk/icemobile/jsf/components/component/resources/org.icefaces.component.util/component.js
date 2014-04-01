@@ -683,7 +683,7 @@ ice.mobi.panelCenter = function(clientId, cfg){
     var paneNode = document.getElementById(clientId);
     var containerElem = cfg.containerElem || null;
     if (!paneNode){
-       console.log ("Element Not Found id="+clientId);
+       ice.log.warn ("Element Not Found id="+clientId);
        return;
     }
     var container =document.getElementById(containerElem);
@@ -1341,7 +1341,7 @@ ice.mobi.geolocation = {
         if (highAccuracy != 'false')  {
             geoParams.enableHighAccuracy = true;
         }
-        console.log('Launching watchPosition, ' +
+        ice.log.debug(ice.log, 'Launching watchPosition, ' +
             'maxAge: ' + geoParams.maximumAge + '(ms),' +
             ' timeout: ' + geoParams.timeout + '(ms)' +
             ' highAccuracy: ' + geoParams.enableHighAccuracy);
@@ -1374,7 +1374,7 @@ ice.mobi.geolocation = {
         if (highAccuracy != 'false')  {
             geoParams.enableHighAccuracy = true;
         }
-        console.log('Launching getCurrentPosition, ' +
+        ice.log.debug(ice.log, 'Launching getCurrentPosition, ' +
             'maxAge: ' + geoParams.maximumAge + '(ms),' +
             ' timeout: ' + geoParams.timeout + '(ms)' +
             ' highAccuracy: ' + geoParams.enableHighAccuracy);
@@ -1387,18 +1387,18 @@ ice.mobi.geolocation = {
     },
 
     successCallback: function(pos) {
-        console.log('Position update for client: ' + ice.mobi.geolocation.clientId);
+        ice.log.debug(ice.log, 'Position update for client: ' + ice.mobi.geolocation.clientId);
         try {
             inputId = ice.mobi.geolocation.clientId + "_locHidden";
             ice.mobi.storeLocation(inputId, pos.coords);
 
         } catch(e) {
-            console.log('Exception: ' + e);
+            ice.log.error('Exception: ' + e);
         }
     },
 
     errorCallback: function(positionError) {
-        console.log('Error in watchPosition, code: ' + positionError.code + ' Message: ' + positionError.message);
+        ice.log.error('Error in watchPosition, code: ' + positionError.code + ' Message: ' + positionError.message);
         ice.mobi.geolocation.clearWatch();
     },
 
@@ -1410,12 +1410,63 @@ ice.mobi.geolocation = {
     // Clear any existing positionUpdate listeners
     clearWatch: function() {
         if (ice.mobi.geolocation.watchId > 0) {
-            console.log('Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
+            ice.log.debug(ice.log, 'Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
             navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
             ice.mobi.geolocation.watchId = 0;
         }
         ice.mobi.removeListener(window, 'deviceorientation', ice.mobi.geolocation.orientationCallback);
     }
+};
+
+ice.mobi.calcFittedHeight = function(elem){
+    if( !elem ){
+        return;
+    }
+    var parent = elem.parentElement || elem.parentNode,
+        parentRect,
+        ancestor = elem,
+        elemRect,
+        fittedHeight = null,
+        ancestorLine = [elem,parent],
+        siblingHeight = 0;
+
+    elemRect = elem.getBoundingClientRect();
+    
+    while( parent !== null ){
+        parentRect = parent.getBoundingClientRect();
+        //if the parent is now out of current dimensions revert to last parent and break
+        if( parentRect.bottom < elemRect.top ){
+            parent = ancestorLine.pop();
+            break;
+        }
+        if( elemRect.height !== parentRect.height && parentRect.height > 0){
+            break;
+        }
+        parent = parent.parentElement || parent.parentNode;
+        ancestorLine.push(parent);
+    }
+    if( parent === null ){
+        parent = document.documentElement;
+    }
+
+    /*if parent is scrolling, return null as there is no space
+    if( parent.scrollHeight > parent.getBoundingClientRect().height ){
+        ice.log.debug(ice.log, 'calcFittedHeight: parent scrollable');
+        return null;
+    }*/
+
+    //calculate sibling height
+    for( var i = 0 ; i < parent.children.length ; i++ ){
+        //only count children that are not parents of the target element
+        if( ancestorLine.indexOf(parent.children[i]) === -1 ){
+            siblingHeight += parent.children[i].getBoundingClientRect().height;
+        }
+    }
+
+    var fittedHeight = parent.getBoundingClientRect().height - siblingHeight;
+    ice.log.debug(ice.log, 'fittedHeight = ' + fittedHeight );
+    return fittedHeight;
+
 };
 
 ice.mobi.getStyleSheet = function (sheetId) {
@@ -1435,11 +1486,14 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
     return ice.mobi.getStyleSheet(sheetId);
 };
 
+
+
 (function(im) {
     var isTouchDevice = 'ontouchstart' in document.documentElement,
         indicatorSelector = "i.mobi-dv-si",
         blankIndicatorClass = 'mobi-dv-si';
     function DataView(clientId, cfg) {
+        ice.log.debug(ice.log, 'create DataView ' + clientId);
         var config = cfg,
             selectorId = '#' + im.escapeJsfId(clientId),
             bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
@@ -1496,6 +1550,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
 
         function initTableAlignment() {
+            ice.log.debug(ice.log, 'dataView.initTableAlignment');
             var dupeHead = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead'),
                 dupeHeadCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead > tr > th'),
                 dupeFoot = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tfoot'),
@@ -1613,6 +1668,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
         /* arguments optional to avoid lookup */
         function recalcScrollHeight(inHead, inFoot, inDivWrap) {
+            ice.log.debug(ice.log, 'dataView.recalcScrollHeight()');
             /* set scroll body to maximum height, reserving space for head / foot */
             var head = inHead ? inHead : getNode('head'),
                 foot = inFoot ? inFoot : getNode('foot'),
@@ -1623,12 +1679,13 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             if (!element) return;
 
             var dim = element.getBoundingClientRect(),
-                maxHeight = window.innerHeight - dim.top,
+                maxHeight = (window.innerHeight || document.documentElement.clientHeight) - dim.top,
                 headHeight = head ? head.clientHeight : 0,
                 footHeight = foot ? foot.clientHeight : 0,
                 fullHeight = maxHeight - headHeight - footHeight - 1;
 
             /* set height to full visible size of parent */
+            ice.log.debug(ice.log, 'dataView: bodyDivWrapper fullHeight='+fullHeight);
             if( isNumber(fullHeight) )
                 bodyDivWrapper.style.height = '' + fullHeight + 'px';
 
@@ -1637,7 +1694,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             var container = getScrollableContainer(element),
                 bottomResize = function() {
                     fullHeight -= (container.scrollHeight - container.clientHeight);
-                    if( isNumber(fullHeight)){
+                    ice.log.debug(ice.log, 'dataView: bottomResize bodyDivWrapper fullHeight='+fullHeight);
+                    if( isNumber(fullHeight) && fullHeight > 0 ){
                         bodyDivWrapper.style.height = '' + fullHeight + 'px';
                     }
                 };
@@ -1879,9 +1937,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 e.classList.remove('ui-bar-e');
                 return true
             });
-            if( config.autoResize ){
-                recalcScrollHeight();
-            }
+            recalcScrollHeight();
         }
 
         function clearSort() {
@@ -2005,6 +2061,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             initActivationEvents();
             initSortingEvents();
             initTableAlignment();
+            recalcScrollHeight();
         }
         
         function resize(){
@@ -2016,7 +2073,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
         /* first alignment needs to occur shortly after script eval
         *  else heights are miscalculated for following elems */
-        setTimeout(initTableAlignment, 1);
+        setTimeout( function(){
+            initTableAlignment();
+            recalcScrollHeight();
+        }, 1);
 
         var oriChange = false;
         
@@ -2044,10 +2104,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
     ice.mobi.resizePagePanelsToViewPort = function(){
         var pagePanels = document.querySelectorAll(".mobi-pagePanel"), i=0;
         while( i < pagePanels.length ){
-            var header = pagePanels[i].querySelector(".mobi-pagePanel-header");
-            var hasFixedHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel-header.ui-header-fixed").length > 0;
-            var footer = pagePanels[i].querySelector(".mobi-pagePanel-footer");
-            var pagePanelBodyMinHeight = window.innerHeight;
+            var header = pagePanels[i].querySelector(".mobi-pagePanel-header"),
+                footer = pagePanels[i].querySelector(".mobi-pagePanel-footer"),
+                //hasFixedHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel.mobi-fixed-header").length > 0,
+                //hasFixedFooter = pagePanels[i].querySelectorAll(".mobi-pagePanel.mobi-fixed-footer").length > 0,
+                pagePanelBodyMinHeight = window.innerHeight;
                         
             if( header ){
                 pagePanelBodyMinHeight -= header.offsetHeight;
@@ -2057,8 +2118,10 @@ ice.mobi.addListener(document, "touchstart", function(){});
             }
             var body = pagePanels[i].querySelector(".mobi-pagePanel-body");
             if( body ){
+                body.style.maxHeight = ''+pagePanelBodyMinHeight+'px';
                 body.style.height = ''+pagePanelBodyMinHeight+'px';
             }
+
             i++;
         }
     };
@@ -2141,7 +2204,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     }
 
     function refreshViewDimensions(){
-        console.log('refreshViewDimensions()');
+        ice.log.debug(ice.log, 'refreshViewDimensions()');
         if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight)){
             currentWidth = window.innerWidth;
             currentHeight = window.innerHeight;
@@ -2157,14 +2220,14 @@ ice.mobi.addListener(document, "touchstart", function(){});
         var contentNode = currentView.querySelectorAll('.mobi-vm-view-content')[0];
         if( contentNode ){
             contentNode.style.height = '' + contentHeight + 'px';
-            console.log('set view content height to ' + contentHeight);
+            ice.log.debug(ice.log, 'set view content height to ' + contentHeight);
         }
         else
             console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find content node for view = ' + currentView.id);
         var menuNode = document.querySelectorAll('.mobi-vm-menu')[0];
         if( menuNode ){
             menuNode.style.height = '' + (currentHeight - 45) + 'px';
-            console.log('set menu height to ' + (currentHeight - 45));
+            ice.log.debug(ice.log, 'set menu height to ' + (currentHeight - 45));
         }
         else
             console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find menu node');
@@ -2270,7 +2333,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         elem.removeEventListener('transitionEnd', f, false);
     }
     function updateViews(fromNode, toNode, reverse){
-        console.log('updateViews() enter');
+        ice.log.debug(ice.log, 'updateViews() enter');
         if( supportsTransitions() ){
             var transitions = getTransitionFunctions(reverse);
             transitions[0](fromNode,toNode);
@@ -2278,7 +2341,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             setTransitionDuration(toNode, '');
             setTimeout(transitionComplete, transitionDuration);
             setTimeout(function(){
-                console.log('transition() for transition supported');
+                ice.log.debug(ice.log, 'transition() for transition supported');
                 transitions[1](fromNode,toNode);
             }, 0);
         } 
@@ -2291,7 +2354,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             var timer = setInterval(transition, 0);
 
             function transition(){
-                console.log('transition() for transition unsupported');
+                ice.log.debug(ice.log, 'transition() for transition unsupported');
                 percent -= 20;
                 if (percent <= 0){
                     percent = 0;
@@ -2304,7 +2367,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         }
         
         function transitionComplete(){
-            console.log('transitionComplete');
+            ice.log.debug(ice.log, 'transitionComplete');
             if( fromNode )
                 fromNode.removeAttribute('data-selected');
             checkTimer = setTimeout(refreshViewDimensions, 0);
@@ -2312,10 +2375,10 @@ ice.mobi.addListener(document, "touchstart", function(){});
             if( fromNode )
                 removeTransitionEndListener(fromNode, transitionComplete);
         }
-        console.log('updateViews() exit');
+        ice.log.debug(ice.log, 'updateViews() exit');
     }
     function refreshBackButton(toNode){
-        console.log('refreshBackButton()');
+        ice.log.debug(ice.log, 'refreshBackButton()');
         var headerNode = document.querySelectorAll('.mobi-vm-header')[0];
         var backButton = headerNode.children[1];
         
@@ -2346,7 +2409,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         refreshViewDimensions();
     }
     function refreshView(toNode){
-        console.log('refreshView()');
+        ice.log.debug(ice.log, 'refreshView()');
         var headerNode = document.querySelectorAll('.mobi-vm-header')[0];
         var titleNode = headerNode.firstChild;
         var title = toNode.getAttribute('data-title');
@@ -2362,7 +2425,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
     im.viewManager = {
         showView: function(view){
-            console.log('showView(' + view + ') current');
+            ice.log.debug(ice.log, 'showView(' + view + ') current');
             var currentView = getCurrentView();
             if( view == currentView ){
                 return;
@@ -2555,11 +2618,10 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     if( contentPanes[i].id == elem.id )
                         return i;
                 }
-            }
-            console.error('could not derive order for ' + elem.id );
+                console.error('could not derive order for ' + elem.id );
+            } 
         }
-        
-        
+             
         
     }
     mobi.layoutMenu = {
@@ -2629,7 +2691,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         if (curTab) {
             curTab.setAttribute("class", cls);
         }  else {
-            console.log("PROBLEM SETTING ATIVE TAB FOR id="+id);
+            ice.log.debug(ice.log, "PROBLEM SETTING ATIVE TAB FOR id="+id);
         }
     }
 
@@ -2747,9 +2809,14 @@ ice.mobi.addListener(document, "touchstart", function(){});
                         }
                     }
                 }
-                if( parent.offsetHeight != height ){
+                if( parent.offsetHeight != height || parent.classList.contains('mobi-pagePanel-body')){
+                    var calcHeight = parent.offsetHeight - 40 - siblingHeight;
+                    /*
+                    if( parent.className && parent.className.indexOf('mobi-pagePanel') > -1){
+                        calcHeight -= 40;
+                    }*/
                     container.querySelector('.mobi-tabset-content').style.height 
-                        = ''+(parent.offsetHeight-40 - siblingHeight)+'px';
+                        = ''+calcHeight+'px';
                     snapped = true;
                     break;
                 }
@@ -2943,7 +3010,7 @@ ice.mobi.splitpane = {
 
             return {
                 resize: function(elId) {
-                    var height = 0;
+                    var height = window.innerHeight || document.documentElement.clientHeight;
                     var leftNode = document.getElementById(elId + "_left");
                     var rtNode = document.getElementById(elId + "_right");
                     var splt = document.getElementById(elId + "_splt");
@@ -2954,18 +3021,9 @@ ice.mobi.splitpane = {
                             - leftNode.querySelectorAll('.mobi-tabset').length
                             - rightNode.querySelectorAll('.mobi-tabset').length;
                         var pagePanelFootersToAdjustFor = document.querySelectorAll('.mobi-pagePanel-footer');
-                        if (window.innerHeight) {
-                            height = window.innerHeight;
-                        } else if (body.parentElement.clientHeight) {
-                            height = body.parentElement.clientHeight;
-                        } else if (body) {
-                            if (body.clientHeight) {
-                                height = body.clientHeight;
-                            }
-                        }
                         if (height > 0) {
-                            var leftHeight = height - leftNode.offsetTop - (40*tabsetsToAdjustFor);
-                            var rightHeight = height - rtNode.offsetTop - (40*tabsetsToAdjustFor);
+                            var leftHeight = height - leftNode.getBoundingClientRect().top - (40*tabsetsToAdjustFor);
+                            var rightHeight = height - rtNode.getBoundingClientRect().top - (40*tabsetsToAdjustFor);
                             for(var i = 0 ; i < pagePanelFootersToAdjustFor.length ; i++ ){
                                 var footerHeight = pagePanelFootersToAdjustFor[i].offsetHeight;
                                 leftHeight -= footerHeight;
@@ -3204,7 +3262,7 @@ mobi.flipswitch = {
             if (cfg.transHack) {
                 var currentTimeMillis = new Date().getTime();
                 if ( (currentTimeMillis - mobi.flipswitch.lastTime) < 100 ) {
-                    console.log("Double click suppression required");
+                    ice.log.debug(ice.log, "Double click suppression required");
                     return;
                 }
                 mobi.flipswitch.lastTime = currentTimeMillis;
@@ -3260,41 +3318,40 @@ mobi.flipswitch = {
     function Accordion(clientId, cfgIn) {
         var id = clientId,
             disabled = cfgIn.disabled || false,
-            autoheight = cfgIn.autoHeight || false,
-            fixedHeight =  cfgIn.fixedHeight || null,
-            origHeight = fixedHeight,
+            fitToParent = cfgIn.fitToParent || false,
+            height =  cfgIn.height || null,
+            currentHeight = null,
             containerElem = document.getElementById( clientId+"_ctr"),
+            rootElem = containerElem.parentElement || containerElem.parentNode,
             openId = cfgIn.opened || null,
             lastServerId = openId,
             origHeight,
-            fixedHeight,
             handleHeight,
             maxHeight,
             scp = cfgIn.scp || false,
-            cntr = 0,
-            fHtVal = cfgIn.fHtVal || null;
-        
-        handleHeight = calcHandleHeight();
-        
-        if (autoheight){ //default
-            maxHeight = calcMaxDivHeight();
-        }
-        if (autoheight && (maxHeight > 0)){
-            ice.mobi.accordionController.maxHt[clientId] = maxHeight;
-            fixedHeight = maxHeight;
-        } 
-        else if (fixedHeight){
-            if (fHtVal){
-                fixedHeight = parseInt(fHtVal)+ parseInt(handleHeight);
-            } 
-            else {
-                fixedHeight = calcFixedSectionHeight(fixedHeight, handleHeight);
-            }
-        }
+            cntr = 0;
+
         if( !disabled && openId){
             openPane(openId);
         }else {
              ice.log.debug(ice.log, "Accordion has been disabled");
+        }
+
+        setTimeout(function(){ ice.mobi.accordionController.updateHeight(id); }, 50);
+
+        function calcCurrentHeight(){
+            handleHeight = calcHandleHeight();
+        
+            if (height){
+                currentHeight = height;
+            }
+            else if( fitToParent && openId ){
+                currentHeight = rootElem.getBoundingClientRect().height - (containerElem.children.length * handleHeight);
+                if( currentHeight === 0 ){
+                    currentHeight = null;
+                }
+            }
+            ice.log.debug(ice.log, 'calcCurrentHeight = ' + currentHeight);
         }
 
         function getPane(id){
@@ -3317,10 +3374,10 @@ mobi.flipswitch = {
             var handleNode = containerElem.querySelector('.mobi-accordion .handle');
             var height = 33; //default css handle height is 33px
             if (handleNode){
-               var temp = handleNode.scrollHeight || handleNode.height || handleNode.offsetHeight || handleNode.maxHeight;
-               if (temp > 0){
-                   height = temp;
-               }
+               height = handleNode.getBoundingClientRect().height;
+            }
+            if( height === 0 ){
+                height = 33;
             }
             return height;
         }
@@ -3334,6 +3391,7 @@ mobi.flipswitch = {
                     var max = Math.max(anode.scrollHeight, anode.offsetHeight, anode.clientHeight);
                     if (max > 0 && max > mxht) {
                         mxht = max;
+                        ice.log.debug(ice.log,"max height = " + max);
                     }
                 }
                 if (mxht <= handleHeight ) {
@@ -3343,16 +3401,8 @@ mobi.flipswitch = {
             }
             return mxht;
         }
-        function calcFixedSectionHeight(fixedHeight){
-            try {
-                var fHtVal =parseInt(fixedHeight);
-            }
-            catch (e){
-                ice.log.debug("problem calculating height of contentPane to set section Height: " + e);
-            }
-            return  fHtVal ? fHtVal + handleHeight : null;
-        }
         function setHeight(elem, height){
+            ice.log.debug(ice.log, 'setting accordion height on ' + elem.id + ' to ' + height);
             if (elem ){
                 if(height){
                     elem.style.height = elem.style.maxHeight = '' + height + 'px';
@@ -3365,29 +3415,16 @@ mobi.flipswitch = {
         function openPane(id){
             var paneElem = getPane(id);
             if( paneElem ){
-                setHeight(paneElem, fixedHeight);
+                setHeight(paneElem.children[1], currentHeight);
                 paneElem.className="open";
             }
         }
         function closePane(id){
             var paneElem = getPane(id);
             if( paneElem ){
-                setHeight(paneElem, handleHeight);
+                setHeight(paneElem.children[1], null);
                 paneElem.className="closed";
             }
-        }
-        function updateMaxHeight(clientId, mH, hH){
-            var tmp = ice.mobi.accordionController.maxHt[clientId];
-            if (tmp && mH==0){
-                mH = tmp;
-            }
-            else if (tmp && mH > 0){
-                mH = Math.max(tmp, mH);
-            }
-            else {
-                mH = calcMaxDivHeight();
-            }
-            return mH ;
         }
 
 
@@ -3397,20 +3434,13 @@ mobi.flipswitch = {
                     return;
                 }
                 var newId = (el.parentElement || el.parentNode).getAttribute('data-pane');
-                if (autoheight){
-                    maxHeight = updateMaxHeight(clientId, maxHeight, handleHeight);
-                }
-                if (autoheight && openId && (maxHeight > 0)){
-                    fixedHeight = maxHeight;
-                }
+                var closingEvent = openId === newId;
+                calcCurrentHeight();
                 closePane(openId);
 
-                if( newId === openId ){
+                if( closingEvent ){
                     openId = null;
-                    getHiddenInput().value = '';
-                    if (cached !== true){
-                        ice.se(null, clientId);
-                    }
+                    getHiddenInput().value = 'null';
                 }
                 else{
                     getHiddenInput().value = newId;
@@ -3420,15 +3450,16 @@ mobi.flipswitch = {
                     }
                     openPane(newId);
                 }
+                ice.mobi.resizeAllContainers(containerElem);
                 
             },
-            updateHeight: function(clientId){
-                if (autoheight && (maxHeight==0)){
-                    var node = document.getElementById(clientId);
-                    if (node){
-                        maxHeight = calcMaxDivHeight();
-                        return maxHeight;
-                    }
+            updateHeight: function(){
+                if( fitToParent ){
+                    setHeight(rootElem, ice.mobi.calcFittedHeight(rootElem));
+                }
+                calcCurrentHeight();
+                if( openId ){
+                    setHeight(getPane(openId).children[1], currentHeight);
                 }
             } ,
             updateProperties: function (clientId, cfgUpd) {
@@ -3436,57 +3467,14 @@ mobi.flipswitch = {
                 if (disabled==true){
                     return;
                 }
-                var changedFH, changed, changedAH;
-                changedFH = changed = changedAH = false;
 
+                fitToParent = cfgUpd.fitToParent || false;
+                
                 if (cfgUpd.scp != scp){
                     changed= true;
                     scp = cfgUpd.scp;
                 }
-                if (origHeight != cfgUpd.fixedHeight) {
-                    origHeight=cfgUpd.fixedHeight || null;
-                    fixedHeight = origHeight;
-                    changed = changedFH = true;
-                }
-                if (autoheight != cfgUpd.autoHeight){
-                    autoheight = cfgUpd.autoHeight;
-                    changed = changedAH=true;
-                }
-                if (changedAH || changedFH && autoheight){
-                    ice.mobi.accordionController.maxHt[clientId]=null;
-                    maxHeight=0;
-                }
-                handleHeight = calcHandleHeight();
-                if (autoheight) {
-                    //calc new maxHeight
-                    var tmp1 = calcMaxDivHeight();
-                    var storedHt = ice.mobi.accordionController.maxHt[clientId];
-                    maxHeight = Math.max(tmp1, maxHeight);
-                    if (maxHeight == 0 && !storedHt){
-                        /*
-                           ice.onAfterUpdate(function() {
-                               ice.mobi.accordionController.updateHeight(clientId, handleheight);
-                            }) ;
-                        */
-                    }
-                    else {
-                        maxHeight = Math.max(storedHt, maxHeight);
-                    }
-                    if (maxHeight && maxHeight > 0){
-                        ice.mobi.accordionController.maxHt[clientId]=maxHeight;
-                        fixedHeight = maxHeight;
-                    }
-                } else if (fixedHeight && changed){
-                    if (cfgUpd.fHtVal){
-                        var val = parseInt(cfgUpd.fHtVal) + parseInt(handleHeight);
-                        fixedHeight = val;
-                    }else if (changedFH){
-                        var temp = calcFixedSectionHeight(fixedHeight, handleHeight);
-                        if (temp !=null){
-                            fixedHeight = temp;
-                        }
-                    }
-                }
+                
                 //did the active pane change?
                 var pushedId = getHiddenInput().value;
                 if ((openId == pushedId) || disabled==true){
@@ -3497,6 +3485,10 @@ mobi.flipswitch = {
                     closePane(openId);
                 } 
                 openPane(openId);
+                calcCurrentHeight();
+                if( openId ){
+                    setHeight(getPane(openId).children[1], currentHeight);
+                }
             },
             getDisabled: function(){
                 return disabled;
@@ -3508,21 +3500,16 @@ mobi.flipswitch = {
 
     }
     ice.mobi.accordionController = {
-        panels: {},
-        autoheight: {},
-        maxHt: {},
-        singleSubmit: {},
+        instances: {},
         lastTime: 0,
         initClient: function(clientId, cfg) {
-            if (!this.panels[clientId]) {
-                this.autoheight[clientId]= cfg.autoHeight;
-                this.singleSubmit[clientId] = cfg.singleSubmit;
-                this.panels[clientId] = Accordion(clientId, cfg);
+            if (!this.instances[clientId]) {
+                this.instances[clientId] = Accordion(clientId, cfg);
                 ice.onElementUpdate(clientId, function(){
                     ice.mobi.accordionController.unload(clientId);
                 });
             } else {
-                this.panels[clientId].updateProperties(clientId, cfg);
+                this.instances[clientId].updateProperties(clientId, cfg);
             }
         },
         toggleClient: function(clientId, el, cachetyp, transHack) {
@@ -3534,36 +3521,28 @@ mobi.flipswitch = {
                 }
                 this.lastTime = currentTimeMillis;
             }
-            if (this.panels[clientId] && !this.panels[clientId].getDisabled()){
-                   this.panels[clientId].toggle(clientId, el, cachetyp);
-            } else if (!this.panels[clientId].getDisabled()) {
-               this.initClient(clientId, {});
-                   this.panels[clientId].toggle(clientId, el, cachetyp);
+            if (this.instances[clientId] && !this.instances[clientId].getDisabled()){
+                this.instances[clientId].toggle(clientId, el, cachetyp);
+            } else if (!this.instances[clientId].getDisabled()) {
+                this.initClient(clientId, {});
+                this.instances[clientId].toggle(clientId, el, cachetyp);
             }
         },
         toggleMenu: function(clientId, el){
-            if( !this.panels[clientId]){
-                this.initClient(clientId, {autoheight:false});
+            if( !this.instances[clientId]){
+                this.initClient(clientId);
             }
-            this.panels[clientId].toggle(clientId, el, true);
+            this.instances[clientId].toggle(clientId, el, true);
         } ,
         updateHeight: function(clientId){
-            if (this.panels[clientId]){
-                var tmp = this.panels[clientId].updateHeight(clientId);
-                if (!this.maxHt[clientId] && tmp > 0){
-                    this.maxHt[clientId] = tmp;
-                }else {
-                    this.maxHt[clientId] = Math.max(tmp, this.maxHt[clientId]);
-                }
+            if (this.instances[clientId]){
+                this.instances[clientId].updateHeight();
             }
         },
         unload: function(clientId){
             var anode = document.getElementById(clientId);
             if (!anode){
-                this.panels[clientId] = null;
-                this.autoheight[clientId]=null;
-                this.panels[clientId]=null;
-                this.maxHt[clientId]=null;
+                this.instances[clientId] = null;
             }
         }
     }
@@ -3583,12 +3562,12 @@ ice.mobi.menubutton = {
             var params = myOptions[index].getAttribute("params") || null;
             var optId = myOptions[index].id || null;
             if (!optId){
-           //     console.log(" Problem selecting items in menuButton. See docs. index = ") ;
+           //     ice.log.debug(ice.log, " Problem selecting items in menuButton. See docs. index = ") ;
                 return;
             }
             var disabled = myOptions[index].getAttribute("disabled") || false;
             if (disabled==true){
-            //    console.log(" option id="+optId+" is disabled no submit");
+            //    ice.log.debug(ice.log, " option id="+optId+" is disabled no submit");
                 return;
             }
             var options = {
@@ -3632,7 +3611,7 @@ ice.mobi.menubutton = {
             this.reset(myselect, index);
         },
         reset: function reset(myselect, index) {
-            console.log("RESET");
+            ice.log.debug(ice.log, "RESET");
             myselect.options[index].selected = false;
             myselect.options[0].selected=true;
 
@@ -3767,37 +3746,50 @@ ice.mobi.menubutton = {
 /* container resizing */
 (function(im){
     var bodyHeight = window.innerHeight;
+    /*
     setInterval(function(){
         if( window.innerHeight != bodyHeight ){
             resizeAllContainers();
             bodyHeight = window.innerHeight;
         }
-    },1000);
-    function resizeAllContainers(){
-        console.log('resizeAllContainers');
-        var containers = document.querySelectorAll('.mobi-pagePanel, .mobi-splitpane, .mobi-tabset, .mobi-dv, .mobi-accordion');
+    },1000);*/
+    im.resizeAllContainers = function(context){
+        if( !context || !(context instanceof Element)){
+            context = document;
+        }
+        ice.log.debug(ice.log, 'resizeAllContainers');
+
+        var containers = context.querySelectorAll('.mobi-pagePanel, .mobi-splitpane, .mobi-tabset, .mobi-dv, .mobi-accordion');
         for( var i = 0 ; i < containers.length ; i++ ){
             if( containers[i].classList.contains('mobi-pagePanel')){
+                ice.log.debug(ice.log, 'resizing panePanel ' + containers[i].id);
                 ice.mobi.resizePagePanelsToViewPort();
             }
             else if( containers[i].classList.contains('mobi-splitpane')){
+                ice.log.debug(ice.log, 'resizing splitPane ' + containers[i].id);
                 ice.mobi.splitpane.resizeHt(containers[i].id);
             }
             else if( containers[i].classList.contains('mobi-tabset')
                  && ice.mobi.tabsetController.fitToParents[containers[i].id]){
+                ice.log.debug(ice.log, 'resizing tabSet ' + containers[i].id);
                 ice.mobi.tabsetController.fitToParents[containers[i].id]();
             }
             else if( containers[i].classList.contains('mobi-accordion')){
+                ice.log.debug(ice.log, 'resizing accordion ' + containers[i].id);
                 ice.mobi.accordionController.updateHeight(containers[i].id);
             }
             else if( containers[i].classList.contains('mobi-dv')
                 && ice.mobi.dataView.instances[containers[i].id]){
+                ice.log.debug(ice.log, 'resizing dataView ' + containers[i].id);
                 ice.mobi.dataView.instances[containers[i].id].resize();
             }
         }
     }
-    ice.mobi.addListener(window, 'load', resizeAllContainers);
-    ice.mobi.addListener(window, 'orientationchange', resizeAllContainers);
-    ice.mobi.addListener(window, 'resize', resizeAllContainers);
-    ice.onAfterUpdate(resizeAllContainers);
+    ice.mobi.addListener(window, 'load', im.resizeAllContainers);
+    ice.mobi.addListener(window, 'orientationchange', im.resizeAllContainers);
+    ice.mobi.addListener(window, 'resize', im.resizeAllContainers);
+    ice.onAfterUpdate( function(){
+        ice.log.debug(ice.log, 'ice.onAfterUpdate: resizing containers');
+        im.resizeAllContainers();
+    });
 })(ice.mobi);

@@ -40,7 +40,7 @@
       <h1> test page for accordion with c for each</h1>
       <br />
      <h:form id="contentForm">
-       <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}" height="200px">
+       <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}" height="200">
            <c:forEach items="#{layoutBean.eachContentPane}" var="currContentPane">
               <mobi:contentPane id="#{currContentPane.id}" title="#{currContentPane.legend}" cacheType="#{currContentPane.client}"
                       facelet="#{currContentPane.facelet}">

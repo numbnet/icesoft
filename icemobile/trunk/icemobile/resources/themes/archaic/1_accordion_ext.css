@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-accordion{
+.mobi-accordion-ctr{
     border-top: 1px solid #b5b9c0;
     border-bottom: 1px solid #b5b9c0;
 }
@@ -26,9 +26,9 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#F4F5F7', EndColorStr='#A8ACB9')";
     font-weight: bold;
 }
-.mobi-accordion > .open > .handle > .pointer{
+.mobi-accordion-ctr > .open > .handle > .pointer{
     border-top-color: #717880;
 }
-.mobi-accordion > .closed > .handle > .pointer{
+.mobi-accordion-ctr > .closed > .handle > .pointer{
     border-left-color: #717880;
 }

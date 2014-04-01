@@ -38,3 +38,6 @@
 .mobi-fieldset .mobi-fieldset-row:last-child {
     border-bottom: none;
 }
+.mobi-fieldset-row {
+    border-color: #D8D6D9;
+}

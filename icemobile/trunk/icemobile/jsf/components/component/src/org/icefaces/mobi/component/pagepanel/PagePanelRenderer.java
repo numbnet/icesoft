@@ -25,9 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
-import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
-import org.icemobile.util.CSSUtils;
 
 
 public class PagePanelRenderer extends BaseLayoutRenderer {
@@ -65,8 +63,8 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         UIComponent headerFacet = pagePanel.getFacet(PagePanel.HEADER_FACET);
         UIComponent bodyFacet = pagePanel.getFacet(PagePanel.BODY_FACET);
         UIComponent footerFacet = pagePanel.getFacet(PagePanel.FOOTER_FACET);
-        if (headerFacet == null && bodyFacet == null && footerFacet == null) {
-            logger.warning("PagePanel header, body and footer were not defined, " +
+        if (bodyFacet == null) {
+            logger.warning("PagePanel body was not defined, " +
                     "no content will be rendered by this component.");
         }
         if (headerFacet==null) {

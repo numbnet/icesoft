@@ -44,8 +44,13 @@ public class AccordionRenderer extends BaseLayoutRenderer {
          if( submittedValue != null && submittedValue.length() == 0)
              submittedValue = null;
          String oldId = accordion.getSelectedId();
-         if (submittedValue == null || !submittedValue.equals(oldId)) {
-             accordion.setSelectedId(submittedValue);
+         if ( submittedValue != null && !submittedValue.equals(oldId)) {
+             if( "null".equals(submittedValue)){
+                 accordion.setSelectedId(null);
+             }
+             else{
+                 accordion.setSelectedId(submittedValue);
+             }
              component.queueEvent(new ValueChangeEvent(component, oldId, submittedValue));
          }
     }

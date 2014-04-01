@@ -26,7 +26,7 @@
 }
 /* visible panes */
 .mobi-contentpane, .mobi-contentpane > div{
-    min-height: 100%;
+    height: 100%;
 }
 .mobi-contentpane, .mobi-contentpane-left {
     opacity: 1;

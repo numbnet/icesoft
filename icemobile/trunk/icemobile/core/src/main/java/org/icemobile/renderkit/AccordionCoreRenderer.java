@@ -37,9 +37,10 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         
         writer.startElement(DIV_ELEM, accordion);
         writer.writeAttribute(ID_ATTR, clientId);
+        writer.writeAttribute(CLASS_ATTR, IAccordion.ACCORDION_CLASS);
         writer.startElement(DIV_ELEM, accordion);
         writer.writeAttribute(ID_ATTR, clientId+"_ctr");
-        StringBuilder styleClass = new StringBuilder(IAccordion.ACCORDION_CLASS);
+        StringBuilder styleClass = new StringBuilder(IAccordion.ACCORDION_CLASS+"-ctr");
         String userDefinedClass = accordion.getStyleClass();
         if (userDefinedClass != null && userDefinedClass.length() > 0){
                 styleClass.append(" ").append(userDefinedClass);
@@ -72,34 +73,14 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         if (null!=openedPaneId){
             jsCall.append(", opened: '").append(openedPaneId).append("'");
         }
-        boolean autoheight = accordion.isAutoHeight();
-        jsCall.append(", autoHeight: ").append(autoheight);
+        boolean fitToParent = accordion.isFitToParent();
+        jsCall.append(", fitToParent: ").append(fitToParent);
         if (accordion.isDisabled()){
             jsCall.append(", disabled: ").append(accordion.isDisabled());
         }
-        String fixedHeight = accordion.getHeight();
-        if (fixedHeight!=null && !autoheight && fixedHeight.length()>0){
-            int fixedHtVal = -1;
-            StringBuffer numbers = new StringBuffer();
-            for(char c : fixedHeight.toCharArray()){
-               if(Character.isDigit(c)) {
-                   numbers.append(c);
-               }
-            }
-            try {
-               fixedHtVal = Integer.valueOf(numbers.toString());
-            }   catch (NumberFormatException nfe){
-                if (logger.isLoggable(Level.WARNING)){
-                    logger.warning(" could not parse int value of fixedHeight="+fixedHeight);
-                }
-            }
-            jsCall.append(", fixedHeight: '").append(fixedHeight).append("'");
-         /*   if (accordion.isScrollablePaneContent()){
-                jsCall.append(", scp: true");
-            }  */
-            if (fixedHtVal > 30) {
-               jsCall.append(", fHtVal: ").append(fixedHtVal);
-            }
+        int height = accordion.getHeight();
+        if (height > 30){
+            jsCall.append(", height: ").append(height);
         }
         jsCall.append("});");
          //just have to add behaviors if we are going to use them.

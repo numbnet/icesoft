@@ -23,7 +23,7 @@
     display:table;
     clear:both;
 }
-
+html, body{ height: 100% }
 html {
   height:auto !important; /* fix issue with body background images */
   -webkit-text-size-adjust: none;

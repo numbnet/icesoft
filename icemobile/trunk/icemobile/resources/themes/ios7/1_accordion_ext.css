@@ -17,9 +17,9 @@
 .mobi-accordion{
     border: 1px solid #C8C7CC;
 }
-.mobi-accordion > .closed > .handle > .pointer {
+.mobi-accordion-ctr > .closed > .handle > .pointer {
     border-left: 8px solid #C8C7CC;
 }
-.mobi-accordion > .open > .handle > .pointer {
+.mobi-accordion-ctr > .open > .handle > .pointer {
     border-top: 9px solid #C8C7CC;
 }

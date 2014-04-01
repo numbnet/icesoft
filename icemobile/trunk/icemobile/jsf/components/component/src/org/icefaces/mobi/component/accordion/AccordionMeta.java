@@ -64,15 +64,15 @@ public class AccordionMeta extends UIPanelMeta {
 	@Property(tlddoc = TLDConstants.DISABLED, defaultValue="false")
 	private boolean disabled;
 
-	@Property(tlddoc = "When \"true\", (default), the pane with highest known content is used to " +
-            "calculate the height.", defaultValue="true")
-	private boolean autoHeight;
+	@Property(defaultValue = "true", tlddoc="This attribute, when true, will allow the accordion content " +
+            "region to fit to the bounds of the parent container. If height is set, height will override this attribute. " )
+    private boolean fitToParent;
 
     @Property(tlddoc = "This attribute can be used only when autoHeight is false. " +
-            "It must represent a valid css height for element.style.height.  " +
+            "The height, in px, of each pane. " +
             "If no height is set and autoHeight is false, then " +
             "panes for accordion will just render at their content height.")
-    private String height;
+    private int height;
 
  	@Property(tlddoc = "Server side listener to invoke when the active pane changes",
                   expression= Expression.METHOD_EXPRESSION,

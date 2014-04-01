@@ -31,9 +31,9 @@
     color: #717880;
     font-weight: bold;
 }
-.mobi-accordion > .open > .handle > .pointer{
+.mobi-accordion-ctr > .open > .handle > .pointer{
     border-top-color: #717880;
 }
-.mobi-accordion > .closed > .handle > .pointer{
+.mobi-accordion-ctr > .closed > .handle > .pointer{
     border-left-color: #717880;
 }

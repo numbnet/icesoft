@@ -14,31 +14,34 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-accordion > div {
+.mobi-accordion-ctr > div {
     min-height: 33px;
     overflow: hidden;
 }
-.mobi-accordion > .closed {
+.mobi-accordion-ctr > .closed {
     height: 33px;
 }
-.mobi-accordion > div > .handle {
+.mobi-accordion-ctr > div > .handle {
     cursor: pointer;
     height:33px;
     line-height:33px;
 }
-.mobi-accordion > div > .handle > .pointer {
+.mobi-accordion-ctr > .open > .mobi-accordion-pane-content{
+    overflow: auto;
+}
+.mobi-accordion-ctr > div > .handle > .pointer {
     display:inline-block;
     font-size: 1px;
     line-height: 33px;
     vertical-align: middle;
     border:  6px solid transparent;
 }
-.mobi-accordion > .open > .handle > .pointer{
+.mobi-accordion-ctr > .open > .handle > .pointer{
     border-top: 9px solid #FFF;
     margin: 3px 7px 0 3px;
 /*     vertical-align: baseline; */
 }
-.mobi-accordion > .closed > .handle > .pointer{
+.mobi-accordion-ctr > .closed > .handle > .pointer{
     border-left: 8px solid #FFF;
     margin: 0 3px 3px 5px;
 }
