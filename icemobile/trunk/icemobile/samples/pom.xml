@@ -29,7 +29,6 @@ cense at
 
     <modules>
         <module>jsf</module>
-        <module>jsp</module>
     </modules>
     <repositories>
         <repository>
@@ -74,8 +73,6 @@ cense at
         <icemobile.product.group>org.icesoft</icemobile.product.group>
         <icemobile.product.name>ICEmobile</icemobile.product.name>
         <icemobile.faces.comps.lib.name>icefaces-mobi</icemobile.faces.comps.lib.name>
-        <icemobile.jsptags.lib.name>icemobile-jsp</icemobile.jsptags.lib.name>
-        <icemobile.spring.lib.name>icemobile-spring</icemobile.spring.lib.name>
         <icemobile.version>1.3.0</icemobile.version>
 
         <icepush.product.group>org.icepush</icepush.product.group>
@@ -95,8 +92,7 @@ cense at
         <!--<icemobile.product.group>com.icesoft.icemobile-ee</icemobile.product.group>-->
         <!--<icemobile.product.name>ICEmobile EE</icemobile.product.name>-->
         <!-- <icemobile.faces.comps.lib.name>icefaces-mobi-ee</icemobile.faces.comps.lib.name>
-        <icemobile.jsptags.lib.name>icemobile-jsp-ee</icemobile.jsptags.lib.name>
-        <icemobile.spring.lib.name>icemobile-spring-ee</icemobile.spring.lib.name> -->
+         -->
 
         <icesoft.company.name>ICEsoft Technologies Inc.</icesoft.company.name>
         <icesoft.copyright>ICEsoft Technologies Canada Corp., All Rights Reserved.</icesoft.copyright>

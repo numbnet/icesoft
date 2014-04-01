@@ -48,27 +48,7 @@
             <pom refid="mobiPom"/>
         </artifact:install>
 
-        <artifact:pom id="jspPom" file="icemobile-jsp.pom">
-            <localRepository refid="local.repository"/>
-        </artifact:pom>
-        <echo>installing ${icemobile-jsp.lib.name}.jar to local
-            repository
-        </echo>
-        <artifact:install file="${lib.dir}/${icemobile-jsp.lib.name}.jar">
-            <localRepository refid="local.repository"/>
-            <pom refid="jspPom"/>
-        </artifact:install>
-
-        <artifact:pom id="springPom" file="icemobile-spring.pom">
-            <localRepository refid="local.repository"/>
-        </artifact:pom>
-        <echo>installing ${icemobile-spring.lib.name}.jar to local
-            repository
-        </echo>
-        <artifact:install file="${lib.dir}/${icemobile-spring.lib.name}.jar">
-            <localRepository refid="local.repository"/>
-            <pom refid="springPom"/>
-        </artifact:install>
+        
     </target>
 
     <target name="get-maven" unless="maven.ant.task.available">

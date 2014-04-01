@@ -21,14 +21,12 @@
 
     <target name="all">
         <subant>
-            <fileset dir="." includes="jsp/*/build.xml" excludes=""/>
             <fileset dir="." includes="jsf/*/build.xml" excludes=""/>
         </subant>
     </target>
 
     <target name="clean">
         <subant target="clean">
-            <fileset dir="." includes="jsp/*/build.xml" excludes=""/>
             <fileset dir="." includes="jsf/*/build.xml" excludes=""/>
         </subant>
     </target>
