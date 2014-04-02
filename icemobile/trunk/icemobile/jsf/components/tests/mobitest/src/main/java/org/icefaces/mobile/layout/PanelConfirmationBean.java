@@ -128,6 +128,7 @@ public class PanelConfirmationBean implements Serializable {
     public void actionMethod(ActionEvent ae){
         try{
             Thread.sleep(5000);
+            count++;
             this.label="After actionMethod";
         }  catch (Exception e){
            System.out.println("exception in actionMethod") ;
@@ -137,6 +138,7 @@ public class PanelConfirmationBean implements Serializable {
     public void actionMethod2(ActionEvent ae){
         try{
             Thread.sleep(5000);
+            count++;
             this.label="After actionMethod2";
         }  catch (Exception e){
            System.out.println("exception in actionMethod2") ;
