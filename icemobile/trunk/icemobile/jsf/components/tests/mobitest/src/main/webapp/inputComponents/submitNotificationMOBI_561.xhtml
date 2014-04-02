@@ -35,14 +35,20 @@
       <h:form id="form2">
        <mobi:menuButton id="mnu3" disabled="#{panelConfirmation.menuButtonDisabled}">
            <mobi:menuButtonItem value="item1" label="label1"
-                                     panelConfirmation="pc1"
-                                     submitNotification="sn1"
-                                     disabled="false"
-                                     actionListener="#{panelConfirmation.actionMethod}"/>
+                                panelConfirmation="pc1"
+                                submitNotification="sn1"
+                                disabled="false"
+                                actionListener="#{panelConfirmation.actionMethod}"/>
            <mobi:menuButtonItem value="item2" label="label2"
                                 panelConfirmation="pc2"
                                 submitNotification="sn2"
                                 actionListener="#{panelConfirmation.actionMethod2}"/>
+           <mobi:menuButtonItem value="item3" label="mobiAjax"
+                                panelConfirmation="pc2"
+                                submitNotification="sn2"
+                                actionListener="#{panelConfirmation.actionMethod}">
+                 <mobi:ajax execute="@this" render="@form"/>
+           </mobi:menuButtonItem>
         </mobi:menuButton>
         <mobi:panelConfirmation id="pc1" message="panel Conf 1" />
         <mobi:panelConfirmation id="pc2" message="panel Conf 2"/>
