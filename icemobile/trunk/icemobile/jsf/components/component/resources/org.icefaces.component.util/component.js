@@ -3346,8 +3346,14 @@ mobi.flipswitch = {
                 currentHeight = height;
             }
             else if( fitToParent && openId ){
-                currentHeight = rootElem.getBoundingClientRect().height - (containerElem.children.length * handleHeight);
-                if( currentHeight === 0 ){
+                var rootRect = rootElem.getBoundingClientRect();
+                if( rootRect.height === 0 ){
+                    rootElem = document.getElementById( clientId );
+                    containerElem = document.getElementById( clientId + "_ctr");
+                    rootRect = rootElem.getBoundingClientRect();
+                }
+                currentHeight = rootRect.height - (containerElem.children.length * handleHeight);
+                if( currentHeight <= 0  ){
                     currentHeight = null;
                 }
             }
@@ -3435,16 +3441,18 @@ mobi.flipswitch = {
                 }
                 var newId = (el.parentElement || el.parentNode).getAttribute('data-pane');
                 var closingEvent = openId === newId;
-                calcCurrentHeight();
+                
                 closePane(openId);
 
                 if( closingEvent ){
                     openId = null;
+                    calcCurrentHeight();
                     getHiddenInput().value = 'null';
                 }
                 else{
                     getHiddenInput().value = newId;
                     openId = newId;
+                    calcCurrentHeight();
                     if (cached !== true){
                         ice.se(null, clientId);
                     }
