@@ -1686,7 +1686,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
             /* set height to full visible size of parent */
             ice.log.debug(ice.log, 'dataView: bodyDivWrapper fullHeight='+fullHeight);
-            if( isNumber(fullHeight) )
+            if( isNumber(fullHeight) && fullHeight > 0)
                 bodyDivWrapper.style.height = '' + fullHeight + 'px';
 
             /* set height to full visible size of parent minus
@@ -2118,8 +2118,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             }
             var body = pagePanels[i].querySelector(".mobi-pagePanel-body");
             if( body ){
-                body.style.maxHeight = ''+pagePanelBodyMinHeight+'px';
-                body.style.height = ''+pagePanelBodyMinHeight+'px';
+                body.style.minHeight = ''+pagePanelBodyMinHeight+'px';
             }
 
             i++;
@@ -3318,7 +3317,8 @@ mobi.flipswitch = {
     function Accordion(clientId, cfgIn) {
         var id = clientId,
             disabled = cfgIn.disabled || false,
-            fitToParent = cfgIn.fitToParent || false,
+            fitToParentCapable = true, //navigator.userAgent.toLowerCase().indexOf('android 2') === -1,
+            fitToParent = fitToParentCapable && (cfgIn.fitToParent || false),
             height =  cfgIn.height || null,
             currentHeight = null,
             containerElem = document.getElementById( clientId+"_ctr"),
@@ -3450,7 +3450,9 @@ mobi.flipswitch = {
                     getHiddenInput().value = 'null';
                 }
                 else{
+                    console.log('accordion val before change: ' + getHiddenInput().value);
                     getHiddenInput().value = newId;
+                    console.log('accordion val after change: ' + getHiddenInput().value);
                     openId = newId;
                     calcCurrentHeight();
                     if (cached !== true){
@@ -3476,7 +3478,8 @@ mobi.flipswitch = {
                     return;
                 }
 
-                fitToParent = cfgUpd.fitToParent || false;
+                fitToParentCapable = navigator.userAgent.toLowerCase().indexOf('android 2') === -1;
+                fitToParent = fitToParentCapable && (cfgUpd.fitToParent || false);
                 
                 if (cfgUpd.scp != scp){
                     changed= true;
