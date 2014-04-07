@@ -1418,6 +1418,10 @@ ice.mobi.geolocation = {
     }
 };
 
+ice.mobi.isSimulator = function(){
+    return document.querySelectorAll('html.simulator').length === 1
+}
+
 ice.mobi.calcFittedHeight = function(elem){
     if( !elem ){
         return;
@@ -2063,7 +2067,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         function resize(){
             recalcScrollHeight();
             var activeRow = getNode('body').querySelector('.ui-bar-e');
-            if( activeRow ){
+            if( activeRow && !ice.mobi.isSimulator()){
                 activeRow.scrollIntoView();
             }
         }
