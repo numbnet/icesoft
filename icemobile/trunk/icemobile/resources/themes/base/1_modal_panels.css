@@ -36,6 +36,7 @@
     overflow:auto;
     background-color: #FFF;
     border: 1px solid #CCC;
+    min-width: 200px;
 }
 .mobi-submitnotific-container {
     background-color: #FFF;
