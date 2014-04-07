@@ -3445,6 +3445,7 @@ mobi.flipswitch = {
             if( paneElem ){
                 setHeight(paneElem.children[1], null);
                 paneElem.className="closed";
+                paneElem.scrollTop = 0;
             }
         }
 
@@ -3463,6 +3464,7 @@ mobi.flipswitch = {
                     openId = null;
                     calcCurrentHeight();
                     getHiddenInput().value = 'null';
+                    ice.mobi.resizeAllContainers(containerElem);
                 }
                 else{
                     console.log('accordion val before change: ' + getHiddenInput().value);
@@ -3474,9 +3476,8 @@ mobi.flipswitch = {
                         ice.se(null, clientId);
                     }
                     openPane(newId);
-                }
-                ice.mobi.resizeAllContainers(containerElem);
-                
+                    ice.mobi.resizeAllContainers(getPane(newId));
+                }   
             },
             updateHeight: function(){
                 if( fitToParent ){
@@ -3803,6 +3804,11 @@ ice.mobi.menubutton = {
             else if( containers[i].classList.contains('mobi-accordion')){
                 ice.log.debug(ice.log, 'resizing accordion ' + containers[i].id);
                 ice.mobi.accordionController.updateHeight(containers[i].id);
+                var openPane = containers[i].querySelector('.open');
+                if( openPane ){
+                    im.resizeAllContainers(openPane);
+                }
+                break;
             }
             else if( containers[i].classList.contains('mobi-dv')
                 && ice.mobi.dataView.instances[containers[i].id]){
