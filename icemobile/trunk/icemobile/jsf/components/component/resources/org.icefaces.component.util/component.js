@@ -346,7 +346,7 @@ ice.mobi.addListener= function(obj, event, fnc){
     } else if (obj.attachEvent) {
         obj.attachEvent("on"+event, fnc);
     } else {
-        ice.log.debug(ice.log, 'WARNING:- this browser does not support addEventListener or attachEvent');
+        //ice.log.debug(ice.log, 'WARNING:- this browser does not support addEventListener or attachEvent');
     }
 } ;
 ice.mobi.removeListener= function(obj, event, fnc){
@@ -355,7 +355,7 @@ ice.mobi.removeListener= function(obj, event, fnc){
     } else if (obj.attachEvent){
         obj.detachEvent("on"+event, fnc);
     } else {
-        ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
+        //ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
     }
 };
 ice.mobi.hasClass = function(ele, remove_cls) {
@@ -388,7 +388,7 @@ mobi.findForm = function (sourceId) {
     while (node.nodeName.toLowerCase() != "form" && node.parentNode) {
         node = node.parentNode;
     }
-    ice.log.debug(ice.log, 'parent form node =' + node.name);
+    //ice.log.debug(ice.log, 'parent form node =' + node.name);
     return node;
 };
 /* copied from icemobile.js in jsp project for menuButton so can use same js */
@@ -442,11 +442,11 @@ mobi.AjaxRequest = function (cfg) {
     }
     if (!form || form.length == 0) {
         form = source.form;
-        ice.log.debug(ice.log, "had to find form via element form length = " + form.length);
+        //ice.log.debug(ice.log, "had to find form via element form length = " + form.length);
     }
     if (!form || form.length == 0) {
         form = document.forms[0]; //just return first form in the page
-        ice.log.debug(ice.log, 'had to find first form on page');
+        //ice.log.debug(ice.log, 'had to find first form on page');
     }
     var jsfExecute = cfg.execute || '@all';
     var jsfRender = cfg.render || '@all';
@@ -728,7 +728,7 @@ ice.mobi.panelCenter = function(clientId, cfg){
         }
         paneNode.setAttribute('style',styleVar);
     }  else {
-        ice.log.debug(ice.log," Containing div or window has no height to autocenter popup of id="+clientId);
+        //ice.log.debug(ice.log," Containing div or window has no height to autocenter popup of id="+clientId);
     }
 };
 mobi.panelAutoCenter = function (clientId) {
@@ -1468,7 +1468,7 @@ ice.mobi.calcFittedHeight = function(elem){
     }
 
     var fittedHeight = parent.getBoundingClientRect().height - siblingHeight;
-    ice.log.debug(ice.log, 'fittedHeight = ' + fittedHeight );
+    //ice.log.debug(ice.log, 'fittedHeight = ' + fittedHeight );
     return fittedHeight;
 
 };
@@ -1497,7 +1497,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         indicatorSelector = "i.mobi-dv-si",
         blankIndicatorClass = 'mobi-dv-si';
     function DataView(clientId, cfg) {
-        ice.log.debug(ice.log, 'create DataView ' + clientId);
+        //ice.log.debug(ice.log, 'create DataView ' + clientId);
         var config = cfg,
             selectorId = '#' + im.escapeJsfId(clientId),
             bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
@@ -1554,7 +1554,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
 
         function initTableAlignment() {
-            ice.log.debug(ice.log, 'dataView.initTableAlignment');
+            //ice.log.debug(ice.log, 'dataView.initTableAlignment');
             var dupeHead = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead'),
                 dupeHeadCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead > tr > th'),
                 dupeFoot = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tfoot'),
@@ -1672,7 +1672,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
         /* arguments optional to avoid lookup */
         function recalcScrollHeight(inHead, inFoot, inDivWrap) {
-            ice.log.debug(ice.log, 'dataView.recalcScrollHeight()');
+            //ice.log.debug(ice.log, 'dataView.recalcScrollHeight()');
             /* set scroll body to maximum height, reserving space for head / foot */
             var head = inHead ? inHead : getNode('head'),
                 foot = inFoot ? inFoot : getNode('foot'),
@@ -1689,7 +1689,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 fullHeight = maxHeight - headHeight - footHeight - 1;
 
             /* set height to full visible size of parent */
-            ice.log.debug(ice.log, 'dataView: bodyDivWrapper fullHeight='+fullHeight);
+            //ice.log.debug(ice.log, 'dataView: bodyDivWrapper fullHeight='+fullHeight);
             if( isNumber(fullHeight) && fullHeight > 0)
                 bodyDivWrapper.style.height = '' + fullHeight + 'px';
 
@@ -1698,7 +1698,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             var container = getScrollableContainer(element),
                 bottomResize = function() {
                     fullHeight -= (container.scrollHeight - container.clientHeight);
-                    ice.log.debug(ice.log, 'dataView: bottomResize bodyDivWrapper fullHeight='+fullHeight);
+                    //ice.log.debug(ice.log, 'dataView: bottomResize bodyDivWrapper fullHeight='+fullHeight);
                     if( isNumber(fullHeight) && fullHeight > 0 ){
                         bodyDivWrapper.style.height = '' + fullHeight + 'px';
                     }
@@ -2210,7 +2210,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     }
 
     function refreshViewDimensions(){
-        ice.log.debug(ice.log, 'refreshViewDimensions()');
+        //ice.log.debug(ice.log, 'refreshViewDimensions()');
         if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight)){
             currentWidth = window.innerWidth;
             currentHeight = window.innerHeight;
@@ -2226,14 +2226,14 @@ ice.mobi.addListener(document, "touchstart", function(){});
         var contentNode = currentView.querySelectorAll('.mobi-vm-view-content')[0];
         if( contentNode ){
             contentNode.style.height = '' + contentHeight + 'px';
-            ice.log.debug(ice.log, 'set view content height to ' + contentHeight);
+            //ice.log.debug(ice.log, 'set view content height to ' + contentHeight);
         }
         else
             console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find content node for view = ' + currentView.id);
         var menuNode = document.querySelectorAll('.mobi-vm-menu')[0];
         if( menuNode ){
             menuNode.style.height = '' + (currentHeight - 45) + 'px';
-            ice.log.debug(ice.log, 'set menu height to ' + (currentHeight - 45));
+            //ice.log.debug(ice.log, 'set menu height to ' + (currentHeight - 45));
         }
         else
             console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find menu node');
@@ -2339,7 +2339,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         elem.removeEventListener('transitionEnd', f, false);
     }
     function updateViews(fromNode, toNode, reverse){
-        ice.log.debug(ice.log, 'updateViews() enter');
+        //ice.log.debug(ice.log, 'updateViews() enter');
         if( supportsTransitions() ){
             var transitions = getTransitionFunctions(reverse);
             transitions[0](fromNode,toNode);
@@ -2347,7 +2347,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             setTransitionDuration(toNode, '');
             setTimeout(transitionComplete, transitionDuration);
             setTimeout(function(){
-                ice.log.debug(ice.log, 'transition() for transition supported');
+                //ice.log.debug(ice.log, 'transition() for transition supported');
                 transitions[1](fromNode,toNode);
             }, 0);
         } 
@@ -2360,7 +2360,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             var timer = setInterval(transition, 0);
 
             function transition(){
-                ice.log.debug(ice.log, 'transition() for transition unsupported');
+                //ice.log.debug(ice.log, 'transition() for transition unsupported');
                 percent -= 20;
                 if (percent <= 0){
                     percent = 0;
@@ -2373,7 +2373,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         }
         
         function transitionComplete(){
-            ice.log.debug(ice.log, 'transitionComplete');
+            //ice.log.debug(ice.log, 'transitionComplete');
             if( fromNode )
                 fromNode.removeAttribute('data-selected');
             checkTimer = setTimeout(refreshViewDimensions, 0);
@@ -2381,10 +2381,10 @@ ice.mobi.addListener(document, "touchstart", function(){});
             if( fromNode )
                 removeTransitionEndListener(fromNode, transitionComplete);
         }
-        ice.log.debug(ice.log, 'updateViews() exit');
+        //ice.log.debug(ice.log, 'updateViews() exit');
     }
     function refreshBackButton(toNode){
-        ice.log.debug(ice.log, 'refreshBackButton()');
+        //ice.log.debug(ice.log, 'refreshBackButton()');
         var headerNode = document.querySelectorAll('.mobi-vm-header')[0];
         var backButton = headerNode.children[1];
         
@@ -2415,7 +2415,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         refreshViewDimensions();
     }
     function refreshView(toNode){
-        ice.log.debug(ice.log, 'refreshView()');
+        //ice.log.debug(ice.log, 'refreshView()');
         var headerNode = document.querySelectorAll('.mobi-vm-header')[0];
         var titleNode = headerNode.firstChild;
         var title = toNode.getAttribute('data-title');
@@ -2431,7 +2431,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
     im.viewManager = {
         showView: function(view){
-            ice.log.debug(ice.log, 'showView(' + view + ') current');
+            //ice.log.debug(ice.log, 'showView(' + view + ') current');
             var currentView = getCurrentView();
             if( view == currentView ){
                 return;
@@ -2587,11 +2587,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
                       try{
                        ice.se(event,source);
                       }catch(err){
-                          ice.log.debug(ice.log, 'error message='+err.message);
+                          //ice.log.debug(ice.log, 'error message='+err.message);
                       }
                    }
                    else {
-                       ice.log.debug(ice.log, ' no implementation for full submit at this time');
+                       //ice.log.debug(ice.log, ' no implementation for full submit at this time');
                    }
                }
                if( singleView && oldOrd > newOrd ){
@@ -2697,7 +2697,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
         if (curTab) {
             curTab.setAttribute("class", cls);
         }  else {
-            ice.log.debug(ice.log, "PROBLEM SETTING ATIVE TAB FOR id="+id);
+            //ice.log.debug(ice.log, "PROBLEM SETTING ATIVE TAB FOR id="+id);
         }
     }
 
@@ -2804,7 +2804,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 hasHeader = document.querySelectorAll(".mobi-pagePanel-header").length > 0,
                 hasFooter = document.querySelectorAll(".mobi-pagePanel-footer").length > 0;
 
-            ice.log.debug(ice.log, 'tabset.fitToParent height: ' + height + ', offsetTop: ' + offsetTop);
+            //ice.log.debug(ice.log, 'tabset.fitToParent height: ' + height + ', offsetTop: ' + offsetTop);
             ancestorLine.push(container);
             while( parent != null ){
                 ancestorLine.push(parent);
@@ -2823,6 +2823,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     var calcHeight = window.innerHeight - 40 - siblingHeight - (hasHeader ? 40 : 0) - (hasFooter && window.innerHeight > 399 ? 40 : 0);
                     container.querySelector('.mobi-tabset-content').style.height 
                         = ''+calcHeight+'px';
+                    //ice.log.debug(ice.log, 'tabset.fitToParent height: window.innerHeight && parent.offsetHeight > window.innerHeight calcHeight:' + calcHeight);
                     snapped = true;
                     break;
                 }
@@ -2834,6 +2835,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     }*/
                     container.querySelector('.mobi-tabset-content').style.height 
                         = ''+calcHeight+'px';
+                    //ice.log.debug(ice.log, 'tabset.fitToParent height:parent.offsetHeight != height || parent.classList.contains(mobi-pagePanel-body) calcHeight:' + calcHeight);
                     snapped = true;
                     break;
                 }
@@ -3375,7 +3377,7 @@ mobi.flipswitch = {
                     currentHeight = null;
                 }
             }
-            ice.log.debug(ice.log, 'calcCurrentHeight = ' + currentHeight);
+            //ice.log.debug(ice.log, 'calcCurrentHeight = ' + currentHeight);
         }
 
         function getPane(id){
@@ -3415,7 +3417,7 @@ mobi.flipswitch = {
                     var max = Math.max(anode.scrollHeight, anode.offsetHeight, anode.clientHeight);
                     if (max > 0 && max > mxht) {
                         mxht = max;
-                        ice.log.debug(ice.log,"max height = " + max);
+                        //ice.log.debug(ice.log,"max height = " + max);
                     }
                 }
                 if (mxht <= handleHeight ) {
@@ -3426,7 +3428,7 @@ mobi.flipswitch = {
             return mxht;
         }
         function setHeight(elem, height){
-            ice.log.debug(ice.log, 'setting accordion height on ' + elem.id + ' to ' + height);
+            //ice.log.debug(ice.log, 'setting accordion height on ' + elem.id + ' to ' + height);
             if (elem ){
                 if(height){
                     elem.style.height = elem.style.maxHeight = '' + height + 'px';
@@ -3546,7 +3548,7 @@ mobi.flipswitch = {
             if (transHack ) {
                 var currentTimeMillis = new Date().getTime();
                 if ( (currentTimeMillis - this.lastTime) < 100 ) {
-                   ice.log.debug(ice.log,"__Accordion Double click suppression required");
+                   //ice.log.debug(ice.log,"__Accordion Double click suppression required");
                    return;
                 }
                 this.lastTime = currentTimeMillis;
@@ -3775,37 +3777,32 @@ ice.mobi.menubutton = {
 
 /* container resizing */
 (function(im){
-    var bodyHeight = window.innerHeight;
-    /*
     setInterval(function(){
-        if( window.innerHeight != bodyHeight ){
-            resizeAllContainers();
-            bodyHeight = window.innerHeight;
-        }
-    },1000);*/
+        im.resizeAllContainers();
+    },1000);
     im.resizeAllContainers = function(context){
         if( !context || !(context instanceof Element)){
             context = document;
         }
-        ice.log.debug(ice.log, 'resizeAllContainers');
+        //ice.log.debug(ice.log, 'resizeAllContainers');
 
         var containers = context.querySelectorAll('.mobi-pagePanel, .mobi-splitpane, .mobi-tabset, .mobi-dv, .mobi-accordion');
         for( var i = 0 ; i < containers.length ; i++ ){
             if( containers[i].classList.contains('mobi-pagePanel')){
-                ice.log.debug(ice.log, 'resizing panePanel ' + containers[i].id);
+                //ice.log.debug(ice.log, 'resizing panePanel ' + containers[i].id);
                 ice.mobi.resizePagePanelsToViewPort();
             }
             else if( containers[i].classList.contains('mobi-splitpane')){
-                ice.log.debug(ice.log, 'resizing splitPane ' + containers[i].id);
+                //ice.log.debug(ice.log, 'resizing splitPane ' + containers[i].id);
                 ice.mobi.splitpane.resizeHt(containers[i].id);
             }
             else if( containers[i].classList.contains('mobi-tabset')
                  && ice.mobi.tabsetController.fitToParents[containers[i].id]){
-                ice.log.debug(ice.log, 'resizing tabSet ' + containers[i].id);
+                //ice.log.debug(ice.log, 'resizing tabSet ' + containers[i].id);
                 ice.mobi.tabsetController.fitToParents[containers[i].id]();
             }
             else if( containers[i].classList.contains('mobi-accordion')){
-                ice.log.debug(ice.log, 'resizing accordion ' + containers[i].id);
+                //ice.log.debug(ice.log, 'resizing accordion ' + containers[i].id);
                 ice.mobi.accordionController.updateHeight(containers[i].id);
                 var openPane = containers[i].querySelector('.open');
                 if( openPane ){
@@ -3815,7 +3812,7 @@ ice.mobi.menubutton = {
             }
             else if( containers[i].classList.contains('mobi-dv')
                 && ice.mobi.dataView.instances[containers[i].id]){
-                ice.log.debug(ice.log, 'resizing dataView ' + containers[i].id);
+                //ice.log.debug(ice.log, 'resizing dataView ' + containers[i].id);
                 ice.mobi.dataView.instances[containers[i].id].resize();
             }
         }
@@ -3824,7 +3821,7 @@ ice.mobi.menubutton = {
     ice.mobi.addListener(window, 'orientationchange', im.resizeAllContainers);
     ice.mobi.addListener(window, 'resize', im.resizeAllContainers);
     ice.onAfterUpdate( function(){
-        ice.log.debug(ice.log, 'ice.onAfterUpdate: resizing containers');
+        //ice.log.debug(ice.log, 'ice.onAfterUpdate: resizing containers');
         im.resizeAllContainers();
     });
 })(ice.mobi);
