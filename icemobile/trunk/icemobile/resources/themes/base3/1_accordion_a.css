@@ -24,3 +24,9 @@
     transition:  max-height 0.2s, height 0.2s ease-in-out;
     transition-delay: 0.1s, 0.1s;
 }
+.mobi-accordion-pane-content {
+    -webkit-transition: max-height 0.1s, height 0.1s;
+    -o-transition: max-height 0.1s, height 0.1s ease-out;
+    -ms-transition: max-height 0.1s, height 0.1s ease-out;
+    transition:  max-height 0.1s, height 0.1s ease-out;
+}

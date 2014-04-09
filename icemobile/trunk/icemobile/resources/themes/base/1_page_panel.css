@@ -106,5 +106,10 @@ html.android .mobi-fixed-footer .mobi-pagePanel-body{
     margin-bottom: 0;
 }
 @media(min-height: 400px){ 
-    html.android .mobi-fixed-footer .mobi-pagePanel-footer{display: block;}
+    html.android .mobi-fixed-footer .mobi-pagePanel-footer{
+        display: block;
+    }
+    html.android .mobi-fixed-footer .mobi-pagePanel-body{
+        margin-bottom: 40px;
+    }
 }

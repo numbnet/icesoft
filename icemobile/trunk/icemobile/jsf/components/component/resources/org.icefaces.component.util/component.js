@@ -967,14 +967,14 @@ if (window.addEventListener) {
 
     window.addEventListener("pagehide", function () {
         if (ice.push) {
-            ice.log.debug(ice.log, 'PAUSING from pagehide');
+            //ice.log.debug(ice.log, 'PAUSING from pagehide');
             ice.push.connection.pauseConnection();
         }
     }, false);
 
     window.addEventListener("pageshow", function () {
         if (ice.push) {
-            ice.log.debug(ice.log, 'RESUMING from pageshow');
+            //ice.log.debug(ice.log, 'RESUMING from pageshow');
             ice.push.connection.resumeConnection();
         }
     }, false);
@@ -1341,7 +1341,7 @@ ice.mobi.geolocation = {
         if (highAccuracy != 'false')  {
             geoParams.enableHighAccuracy = true;
         }
-        ice.log.debug(ice.log, 'Launching watchPosition, ' +
+        //ice.log.debug(ice.log, 'Launching watchPosition, ' +
             'maxAge: ' + geoParams.maximumAge + '(ms),' +
             ' timeout: ' + geoParams.timeout + '(ms)' +
             ' highAccuracy: ' + geoParams.enableHighAccuracy);
@@ -1374,7 +1374,7 @@ ice.mobi.geolocation = {
         if (highAccuracy != 'false')  {
             geoParams.enableHighAccuracy = true;
         }
-        ice.log.debug(ice.log, 'Launching getCurrentPosition, ' +
+        //ice.log.debug(ice.log, 'Launching getCurrentPosition, ' +
             'maxAge: ' + geoParams.maximumAge + '(ms),' +
             ' timeout: ' + geoParams.timeout + '(ms)' +
             ' highAccuracy: ' + geoParams.enableHighAccuracy);
@@ -1387,7 +1387,7 @@ ice.mobi.geolocation = {
     },
 
     successCallback: function(pos) {
-        ice.log.debug(ice.log, 'Position update for client: ' + ice.mobi.geolocation.clientId);
+        //ice.log.debug(ice.log, 'Position update for client: ' + ice.mobi.geolocation.clientId);
         try {
             inputId = ice.mobi.geolocation.clientId + "_locHidden";
             ice.mobi.storeLocation(inputId, pos.coords);
@@ -1410,7 +1410,7 @@ ice.mobi.geolocation = {
     // Clear any existing positionUpdate listeners
     clearWatch: function() {
         if (ice.mobi.geolocation.watchId > 0) {
-            ice.log.debug(ice.log, 'Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
+            //ice.log.debug(ice.log, 'Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
             navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
             ice.mobi.geolocation.watchId = 0;
         }
@@ -1420,6 +1420,16 @@ ice.mobi.geolocation = {
 
 ice.mobi.isSimulator = function(){
     return document.querySelectorAll('html.simulator').length === 1
+}
+
+ice.mobi.hasScrollableParent = function(element) {
+    if( !element )
+        return false;
+    var parent = element.parentElement || element.parentNode;
+    if( !parent )
+        return false;
+
+    return parent.scrollHeight !== parent.clientHeight;
 }
 
 ice.mobi.calcFittedHeight = function(elem){
@@ -1443,6 +1453,10 @@ ice.mobi.calcFittedHeight = function(elem){
             parent = ancestorLine.pop();
             break;
         }
+        /*if parent's parent is scrolling, we don't want to go any further */
+        if( ice.mobi.hasScrollableParent(parent) ){
+            break;
+        }
         if( elemRect.height !== parentRect.height && parentRect.height > 0){
             break;
         }
@@ -1452,12 +1466,6 @@ ice.mobi.calcFittedHeight = function(elem){
     if( parent === null ){
         parent = document.documentElement;
     }
-
-    /*if parent is scrolling, return null as there is no space
-    if( parent.scrollHeight > parent.getBoundingClientRect().height ){
-        ice.log.debug(ice.log, 'calcFittedHeight: parent scrollable');
-        return null;
-    }*/
 
     //calculate sibling height
     for( var i = 0 ; i < parent.children.length ; i++ ){
@@ -3230,7 +3238,7 @@ ice.mobi.splitpane = {
                 if (!cfgA.disabled){
                     var chkNode = document.getElementById(cId);
                     if (!chkNode){
-                        ice.log.debug(ice.log,"NO ELEMENT CAN BE FOUND FOR ID="+popupId+" clientId="+cId);
+                        //ice.log.debug(ice.log,"NO ELEMENT CAN BE FOUND FOR ID="+popupId+" clientId="+cId);
                     } else {
                        opC.openPopup(cId, cfgA);
                     }
@@ -3247,7 +3255,7 @@ ice.mobi.splitpane = {
         },
         findPanel: function(popupId, isId){
             if (this.panels.length < 1){
-                ice.log.debug(ice.log,' no popups available in view to open');
+                //ice.log.debug(ice.log,' no popups available in view to open');
                 return;
             }
             var found = false;
@@ -3267,7 +3275,7 @@ ice.mobi.splitpane = {
                 }
             }
             if (!found){
-                ice.log.debug(ice.log, ' Cannot find popup with id='+popupId);
+                //ice.log.debug(ice.log, ' Cannot find popup with id='+popupId);
             }
             return null;
         }
@@ -3284,7 +3292,7 @@ mobi.flipswitch = {
             if (cfg.transHack) {
                 var currentTimeMillis = new Date().getTime();
                 if ( (currentTimeMillis - mobi.flipswitch.lastTime) < 100 ) {
-                    ice.log.debug(ice.log, "Double click suppression required");
+                    //ice.log.debug(ice.log, "Double click suppression required");
                     return;
                 }
                 mobi.flipswitch.lastTime = currentTimeMillis;
@@ -3357,7 +3365,7 @@ mobi.flipswitch = {
         if( !disabled && openId){
             openPane(openId);
         }else {
-             ice.log.debug(ice.log, "Accordion has been disabled");
+             //ice.log.debug(ice.log, "Accordion has been disabled");
         }
 
         setTimeout(function(){ ice.mobi.accordionController.updateHeight(id); }, 50);
@@ -3425,7 +3433,7 @@ mobi.flipswitch = {
                 }
                 if (mxht <= handleHeight ) {
                     mxht = 0;
-                    ice.log.debug(ice.log,"COULD NOT CALC A mxht");
+                    //ice.log.debug(ice.log,"COULD NOT CALC A mxht");
                 }
             }
             return mxht;
@@ -3489,7 +3497,8 @@ mobi.flipswitch = {
             },
             updateHeight: function(){
                 if( fitToParent ){
-                    setHeight(rootElem, ice.mobi.calcFittedHeight(rootElem));
+                    var calcHeight = ice.mobi.calcFittedHeight(rootElem);
+                    setHeight(rootElem, calcHeight);
                 }
                 calcCurrentHeight();
                 if( openId ){
@@ -3583,6 +3592,18 @@ mobi.flipswitch = {
     }
 })();
 
+ice.mobi.isIOS = function(){
+    var i = 0,
+        iOS = false,
+        iDevice = ['iPad','iPhone','iPod'];
+    for(; i < iDevice.length ; i++ ){
+        if( navigator.userAgent.indexOf(iDevice[i]) > -1 ){
+            iOS = true; break;
+        }
+    }
+    return iOS;
+}
+
 ice.mobi.menubutton = {
         select: function(clientId){
             var myselect = document.getElementById(clientId+'_sel');
@@ -3597,12 +3618,12 @@ ice.mobi.menubutton = {
             var params = myOptions[index].getAttribute("params") || null;
             var optId = myOptions[index].id || null;
             if (!optId){
-           //     ice.log.debug(ice.log, " Problem selecting items in menuButton. See docs. index = ") ;
+           //     //ice.log.debug(ice.log, " Problem selecting items in menuButton. See docs. index = ") ;
                 return;
             }
             var disabled = myOptions[index].getAttribute("disabled") || false;
             if (disabled==true){
-            //    ice.log.debug(ice.log, " option id="+optId+" is disabled no submit");
+            //    //ice.log.debug(ice.log, " option id="+optId+" is disabled no submit");
                 return;
             }
             var options = {
@@ -3646,7 +3667,7 @@ ice.mobi.menubutton = {
             this.reset(myselect, index);
         },
         reset: function reset(myselect, index) {
-            ice.log.debug(ice.log, "RESET");
+            //ice.log.debug(ice.log, "RESET");
             myselect.options[index].selected = false;
             myselect.options[0].selected=true;
 
@@ -3780,9 +3801,7 @@ ice.mobi.menubutton = {
 
 /* container resizing */
 (function(im){
-    setInterval(function(){
-        im.resizeAllContainers();
-    },1000);
+    
     im.resizeAllContainers = function(context){
         if( !context || !(context instanceof Element)){
             context = document;

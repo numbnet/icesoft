@@ -111,6 +111,9 @@ public class InputTextRenderer extends BaseInputRenderer {
             if( isDateType && client.isAndroidOS() && client.isICEmobileContainer() ){ //Android container borks date types
                 typeVal = "text";
             }
+            if( client.isIOS() ){
+                writer.writeAttribute("onblur", "setTimeout(ice.mobi.resizeAllContainers,10);", null);
+            }
             writer.writeAttribute("type", typeVal, null);
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getInputtextAttributeNames());
         }
@@ -135,7 +138,6 @@ public class InputTextRenderer extends BaseInputRenderer {
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         StringBuilder jsCall = new StringBuilder("ice.setFocus(null); ice.mobi.inputText.activate('");
         if (!disabled && !readOnly){
-            boolean singleSubmit = inputText.isSingleSubmit();
             jsCall.append(inputText.getClientId()).append("',{");
             jsCall.append("singleSubmit:").append(inputText.isSingleSubmit());
             if (hasBehaviors){

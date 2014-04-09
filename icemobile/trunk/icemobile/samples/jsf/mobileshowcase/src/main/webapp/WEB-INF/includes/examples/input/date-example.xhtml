@@ -27,13 +27,13 @@
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <h:outputLabel for="useNative" value="Use Native:"/>
-                <mobi:flipswitch id="useNative" value="#{dateBean.useNative}" style="float:right">
+                <mobi:flipswitch id="useNative" value="#{dateBean.useNative}">
                     <mobi:ajax render="dateSpinnerForm" execute="dateSpinnerForm"/>
                 </mobi:flipswitch>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="readonly" value="Read Only:"/>
-                <mobi:flipswitch id="readonly" value="#{dateBean.readonly}" style="float:right">
+                <mobi:flipswitch id="readonly" value="#{dateBean.readonly}">
                     <mobi:ajax render="dateSpinnerForm" execute="dateSpinnerForm"/>
                 </mobi:flipswitch>
             </mobi:fieldsetRow>
