@@ -118,12 +118,16 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
             if (readonly || disabled){
                 noJs = true;
             }
+            String onblur = "";
             if (!noJs && hasBehaviors) {
-                String cbhCall = this.buildAjaxRequest(context, cbh, ONCHANGE_EVENT);
-                writer.writeAttribute("onblur", cbhCall, null);
+                onblur = this.buildAjaxRequest(context, cbh, ONCHANGE_EVENT);
             } else if (!noJs && singleSubmit) {
-                writer.writeAttribute("onblur", "ice.se(event, this);", null);
+                onblur = "ice.se(event, this);";
             }
+            if( MobiJSFUtils.getClientDescriptor().isIOS()){
+                onblur += "setTimeout(ice.mobi.resizeAllContainers, 10);";
+            }
+            writer.writeAttribute("onblur", onblur, null);
             writer.endElement("input");
         } else {
             writeJavascriptFile(context, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);

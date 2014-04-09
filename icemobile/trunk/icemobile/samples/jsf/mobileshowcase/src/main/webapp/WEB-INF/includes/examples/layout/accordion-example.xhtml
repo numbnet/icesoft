@@ -25,14 +25,16 @@
             <mobi:fieldsetRow>
                 The accordion component shows one active content pane at a time.
                 Non-active content panes are represented as collapsed views. The
-                accordion component can be used with the autoHeight attribute, so that the
-                height of the tallest pane is used, or with the height attribute, where a
+                accordion component can be used with the default fitToParent attribute, 
+                so that the accordion will size itself to the bounding parent container 
+                (in this example the parent container is colored with a yellow border), 
+                or the accordion can have the height attribute set, where a
                 set height is used for all panes.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
-        <h3>Auto-height Accordion</h3>
-        <div style="min-height:240px">
+        <h3>Fit-to-parent Accordion (240px)</h3>
+        <div style="height:240px;border:2px dotted yellow">
             <mobi:accordion id="autoHeightAccordion" selectedId="#{accordionBean.selectedId}"
                 autoHeight="true" 
                 paneChangeListener="#{accordionBean.paneChangeListener}">
