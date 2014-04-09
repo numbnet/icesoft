@@ -278,6 +278,84 @@ if (!('forEach' in Array.prototype)) {
                 action.call(that, this[i], i, this);
     };
 }
+var _toString = Function.prototype.call.bind(Object.prototype.toString);
+
+if (!Array.prototype.reduceRight) {
+    Array.prototype.reduceRight = function reduceRight(fun /*, initial*/) {
+        var boxedString = Object("a"),
+            splitString = boxedString[0] != "a" || !(0 in boxedString),
+            object = Object(this),
+            self = splitString &&  _toString(this) == "[object String]" ?
+                this.split("") :
+                object,
+            length = self.length >>> 0;
+
+        // no value to return if no initial value, empty array
+        if (!length && arguments.length == 1) {
+            throw new TypeError("reduceRight of empty array with no initial value");
+        }
+
+        var result, i = length - 1;
+        if (arguments.length >= 2) {
+            result = arguments[1];
+        } else {
+            do {
+                if (i in self) {
+                    result = self[i--];
+                    break;
+                }
+
+                // if array contains no values, no initial value to return
+                if (--i < 0) {
+                    throw new TypeError("reduceRight of empty array with no initial value");
+                }
+            } while (true);
+        }
+
+        if (i < 0) {
+            return result;
+        }
+
+        do {
+            if (i in this) {
+                result = fun.call(void 0, result, self[i], i, object);
+            }
+        } while (i--);
+
+        return result;
+    };
+}
+
+var properlyBoxesContext = function properlyBoxed(method) {
+    // Check node 0.6.21 bug where third parameter is not boxed
+    var properlyBoxes = true;
+    if (method) {
+        method.call('foo', function (item, index, context) {
+            if (typeof context !== 'object') { properlyBoxes = false; }
+        });
+    }
+    return !!method && properlyBoxes;
+};
+if (!Array.prototype.every || !properlyBoxesContext(Array.prototype.every)) {
+    Array.prototype.every = function every(fun /*, thisp */) {
+        var boxedString = Object("a"),
+            splitString = boxedString[0] != "a" || !(0 in boxedString),object = Object(this),
+            self = splitString &&  _toString(this) == "[object String]" ?
+                this.split("") :
+                object,
+            length = self.length >>> 0,
+            thisp = arguments[1];
+
+        for (var i = 0; i < length; i++) {
+            if (i in self && !fun.call(thisp, self[i], i, object)) {
+                return false;
+            }
+        }
+        return true;
+    };
+}
+
+
 
 if (!window.ice) {
     window.ice = {};
@@ -1341,10 +1419,7 @@ ice.mobi.geolocation = {
         if (highAccuracy != 'false')  {
             geoParams.enableHighAccuracy = true;
         }
-        //ice.log.debug(ice.log, 'Launching watchPosition, ' +
-            'maxAge: ' + geoParams.maximumAge + '(ms),' +
-            ' timeout: ' + geoParams.timeout + '(ms)' +
-            ' highAccuracy: ' + geoParams.enableHighAccuracy);
+        //ice.log.debug(ice.log, 'Launching watchPosition, ' + 'maxAge: ' + geoParams.maximumAge + '(ms),' + ' timeout: ' + geoParams.timeout + '(ms)' + ' highAccuracy: ' + geoParams.enableHighAccuracy);
 
         ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
                 this.successCallback, this.errorCallback,
@@ -1374,10 +1449,7 @@ ice.mobi.geolocation = {
         if (highAccuracy != 'false')  {
             geoParams.enableHighAccuracy = true;
         }
-        //ice.log.debug(ice.log, 'Launching getCurrentPosition, ' +
-            'maxAge: ' + geoParams.maximumAge + '(ms),' +
-            ' timeout: ' + geoParams.timeout + '(ms)' +
-            ' highAccuracy: ' + geoParams.enableHighAccuracy);
+        //ice.log.debug(ice.log, 'Launching getCurrentPosition, ' + 'maxAge: ' + geoParams.maximumAge + '(ms),' + ' timeout: ' + geoParams.timeout + '(ms)' + ' highAccuracy: ' + geoParams.enableHighAccuracy);
 
        navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
                     geoParams );
@@ -3618,12 +3690,12 @@ ice.mobi.menubutton = {
             var params = myOptions[index].getAttribute("params") || null;
             var optId = myOptions[index].id || null;
             if (!optId){
-           //     //ice.log.debug(ice.log, " Problem selecting items in menuButton. See docs. index = ") ;
+                //ice.log.debug(ice.log, " Problem selecting items in menuButton. See docs. index = ") ;
                 return;
             }
             var disabled = myOptions[index].getAttribute("disabled") || false;
             if (disabled==true){
-            //    //ice.log.debug(ice.log, " option id="+optId+" is disabled no submit");
+                //ice.log.debug(ice.log, " option id="+optId+" is disabled no submit");
                 return;
             }
             var options = {
