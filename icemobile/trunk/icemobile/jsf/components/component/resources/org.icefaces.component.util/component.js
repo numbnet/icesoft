@@ -1516,7 +1516,7 @@ ice.mobi.calcFittedHeight = function(elem){
 
     elemRect = elem.getBoundingClientRect();
     
-    while( parent !== null ){
+    while( parent !== null && parent !== document ){
         parentRect = parent.getBoundingClientRect();
         //if the parent is now out of current dimensions revert to last parent and break
         if( parentRect.bottom < elemRect.top ){
@@ -2895,7 +2895,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             //ice.log.debug(ice.log, 'tabset.fitToParent height: ' + height + ', offsetTop: ' + offsetTop);
             ancestorLine.push(container);
             openPaneScrollPos = container.querySelector('.mobi-tabset-content > .mobi-tabpage > div').scrollTop;
-            while( parent != null ){
+            while( parent != null && parent !== document ){
                 ancestorLine.push(parent);
                 var currentSiblingHeight = 0;
                 if( parent.children.length > 1 ){
