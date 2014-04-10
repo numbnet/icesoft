@@ -136,10 +136,12 @@ public class InputTextRenderer extends BaseInputRenderer {
         //ClientBehaviors
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
+        boolean singleSubmit = inputText.isSingleSubmit();
+        boolean isAjax = hasBehaviors || singleSubmit;
         StringBuilder jsCall = new StringBuilder("ice.setFocus(null); ice.mobi.inputText.activate('");
-        if (!disabled && !readOnly){
+        if (!disabled && !readOnly && isAjax ){
             jsCall.append(inputText.getClientId()).append("',{");
-            jsCall.append("singleSubmit:").append(inputText.isSingleSubmit());
+            jsCall.append("singleSubmit:").append(singleSubmit);
             if (hasBehaviors){
                 String bh = this.buildAjaxRequest(facesContext, cbh, "onchange");
                 bh = bh.replace("\"", "\'");
