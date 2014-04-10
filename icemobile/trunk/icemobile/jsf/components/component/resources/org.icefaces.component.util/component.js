@@ -1425,8 +1425,7 @@ ice.mobi.geolocation = {
 
         ice.mobi.addListener(window, 'deviceorientation', ice.mobi.geolocation.orientationCallback);
         ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
-        console.log('Lauching positionWatch for client: ' + pClientId +
-                ' watchId: ' + ice.mobi.geolocation.watchId);
+        //ice.log.debug(ice.log, 'Lauching positionWatch for client: ' + pClientId + ' watchId: ' + ice.mobi.geolocation.watchId);
     },
 
     /**
@@ -1533,7 +1532,7 @@ ice.mobi.calcFittedHeight = function(elem){
         parent = parent.parentElement || parent.parentNode;
         ancestorLine.push(parent);
     }
-    if( parent === null ){
+    if( parent === null || parent === document ){
         parent = document.documentElement;
     }
 
@@ -3443,7 +3442,8 @@ mobi.flipswitch = {
         function init(clientId, cfgIn){
             id = clientId,
             disabled = cfgIn.disabled || false,
-            fitToParentCapable = true, //navigator.userAgent.toLowerCase().indexOf('android 2') === -1,
+            ua = navigator.userAgent.toLowerCase(),
+            fitToParentCapable = ua.indexOf('msie 8') === -1 && ua.indexOf('msie 9') === -1,
             fitToParent = fitToParentCapable && (cfgIn.fitToParent || false),
             height =  cfgIn.height || null,
             currentHeight = null,
@@ -3582,9 +3582,7 @@ mobi.flipswitch = {
                     ice.mobi.resizeAllContainers(getContainerElem());
                 }
                 else{
-                    console.log('accordion val before change: ' + getHiddenInput().value);
                     getHiddenInput().value = newId;
-                    console.log('accordion val after change: ' + getHiddenInput().value);
                     openId = newId;
                     calcCurrentHeight();
                     if (cached !== true){
