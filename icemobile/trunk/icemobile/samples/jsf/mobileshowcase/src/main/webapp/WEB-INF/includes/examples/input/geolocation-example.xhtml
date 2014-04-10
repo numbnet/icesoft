@@ -127,6 +127,8 @@
     </div>
     
     </h:form>
+    <h:panelGroup style="display:none" id="geolocScript">
+    <h:panelGroup id="geolocScriptCtr">
     <script type="text/javascript">
 
         function showLocation() {
@@ -160,6 +162,8 @@
         ice.mobi.addListener(window, 'orientationchange',showLocation);
 
     </script>
+    </h:panelGroup>
+    </h:panelGroup>
 
 
 </ui:composition>
