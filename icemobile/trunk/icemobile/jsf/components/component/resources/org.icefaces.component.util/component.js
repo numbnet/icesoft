@@ -1166,26 +1166,26 @@ ice.mobi.button = {
             options.execute="@all";
             options.render = "@all";
         }
-        if (params !=null){
-            options.params = params;
-        }else {
-            options.params = {};
-        }
-        if (cfg.pcId){
-            ice.mobi.panelConf.init(cfg.pcId, clientId, cfg, options);
-            return;
-        }
-        if (cfg.snId){
-            ice.mobi.submitnotify.open(cfg.snId, clientId, cfg, options);
-            return;
-        }
+            if (params !=null){
+                options.params = params;
+            }else {
+                options.params = {};
+            }
+            if (cfg.pcId) {
+                ice.mobi.panelConf.init(cfg.pcId, clientId, cfg, options);
+                return;
+             }
+             if (cfg.snId) {
+                 ice.mobi.submitnotify.open(cfg.snId, clientId, cfg, options);
+                 return;
+             }
         if (behaviors){
            // alert(" no submitNotify or panelConf with mobi ajax");
             ice.mobi.ab(cfg.behaviors.click);
         }
-        else {
-            mobi.AjaxRequest(options);
-        }
+             else {
+                 mobi.AjaxRequest(options);
+            }
     },
     unSelect: function(clientId, classNm){
         var elem = document.getElementById(clientId);
@@ -3464,6 +3464,19 @@ mobi.flipswitch = {
             setTimeout(function(){ ice.mobi.accordionController.updateHeight(id); }, 50);
         }
 
+        function updateProxyFormHidden(currentId){
+            var formProxies = getContainerElem().querySelectorAll('.mobi-accordion-proxy');
+            for( var i = 0 ; i < formProxies.length ; i++ ){
+                formProxies[i].value = currentId;
+            }
+            var proxies = document.querySelectorAll('.mobi-accordion-proxy');
+            for( var i = 0 ; i < proxies.length ; i++ ){
+                if( proxies[i].getAttribute('data-for') == clientId ){
+                   proxies[i].value = currentId;
+                }
+            }
+        }
+
         function getContainerElem(){
             return document.getElementById( clientId+"_ctr");   
         }
@@ -3579,14 +3592,34 @@ mobi.flipswitch = {
                     openId = null;
                     calcCurrentHeight();
                     getHiddenInput().value = 'null';
+                    updateProxyFormHidden('null');
                     ice.mobi.resizeAllContainers(getContainerElem());
                 }
                 else{
                     getHiddenInput().value = newId;
+                    updateProxyFormHidden(newId);
                     openId = newId;
                     calcCurrentHeight();
                     if (cached !== true){
-                        ice.se(null, clientId);
+                        var source = getContainerElem(),
+                            form = ice.formOf(source);
+                        if( !form ){
+                            source = getPane(openId).querySelector('.mobi-accordion-proxy');
+                            if( !source ){
+                                var proxies = document.querySelectorAll('.mobi-accordion-proxy');
+                                for( var i = 0 ; i < proxies.length ; i++ ){
+                                    if( proxies[i].getAttribute('data-for') == clientId ){
+                                        source = proxies[i];
+                                        break;
+                                    }
+                                }
+                            }
+                            if( !source ){
+                                ice.log.error(ice.log, 'Could not find proxy accordion form for ' + clientId + ' please include a <mobi:accordionFormProxy> in a nested form.');
+                            }
+                        }
+                        //ice.se(event, source);
+                        mobi.AjaxRequest({source:source.id});
                     }
                     openPane(newId);
                     ice.mobi.resizeAllContainers(getPane(newId));
