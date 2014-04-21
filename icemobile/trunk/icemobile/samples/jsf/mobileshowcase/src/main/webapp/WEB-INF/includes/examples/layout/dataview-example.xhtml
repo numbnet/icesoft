@@ -21,14 +21,18 @@
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <h:form id="frmDataview" styleClass="dataviewpage">
         <style type="text/css">
-            table.innerBorder { border-collapse: collapse; }
-            table.innerBorder td, table.innerBorder th { border: 1px solid black; }
-            table.innerBorder tr:first-child th { border-top: 0; }
-            table.innerBorder tr:last-child td { border-bottom: 0; }
-            table.innerBorder tr td:first-child,
-            table.innerBorder tr th:first-child { border-left: 0; }
-            table.innerBorder tr td:last-child,
-            table.innerBorder tr th:last-child { border-right: 0; }
+            .dv-fieldset label{ 
+                min-width: 30%;
+                display: inline-block;
+                vertical-align: middle;
+                font-weight: 600;
+                text-align: right;
+                padding-right: 20px;
+            }
+            .dv-fieldset { 
+                padding: 5px 10px; 
+                border-bottom: 1px solid #DFDFDF;
+            }
 
             .footButton {
                 padding: .5em 5px;
@@ -43,19 +47,24 @@
         <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="server"
                        rowStripe="true" rowStyle="#{car.cost > 30000 ? 'color:red' : 'color:green'}">
             <mobi:dataViewDetails>
-                <h:panelGrid columns="3" styleClass="innerBorder">
-                    <h:outputText value="Name"/>
-                    <h:outputText value="Manual"/>
-                    <h:outputText value="Cost"/>
-
-                    <h:outputText value="#{car.name}"/>
-                    <h:selectBooleanCheckbox value="#{car.manual}">
+                <h:panelGroup layout="block" styleClass="dv-fieldset">
+                    <label>Name:</label> <h:outputText value="#{car.name}"/>
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="dv-fieldset">
+                    <h:outputLabel for="manual" value="Manual:"/>  
+                    <h:selectBooleanCheckbox value="#{car.manual}" id="manual">
                         <f:ajax execute="@this" render="@form" />
                     </h:selectBooleanCheckbox>
-                    <h:inputText value="#{car.cost}">
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="dv-fieldset">
+                    <h:outputLabel for="cost" value="Cost:"/>
+                    <h:inputText value="#{car.cost}" id="cost">
                         <f:ajax execute="@this" render="@form" />
                     </h:inputText>
-                </h:panelGrid>
+                </h:panelGroup>
+                <h:panelGroup layout="block">
+                    <h:messages/>
+                </h:panelGroup>
             </mobi:dataViewDetails>
 
             <mobi:dataViewColumns>

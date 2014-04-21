@@ -167,13 +167,13 @@ public class DataViewRenderer extends Renderer {
                                boolean writeTable) throws IOException {
         /* Skip table when writing duplicate alignment header */
         if (writeTable) {
+            writer.startElement(HTML.DIV_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_HEAD_CLASS + " " + IDataView.DATAVIEW_HEADER_ROW_CLASS, null);
             writer.startElement(HTML.TABLE_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_HEAD_CLASS, null);
         }
 
         writer.startElement(HTML.THEAD_ELEM, null);
         writer.startElement(HTML.TR_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_HEADER_ROW_CLASS, null);
 
         for (IndexedIterator<DataViewColumnModel> columnIter = columnModel.iterator(); columnIter.hasNext();) {
             DataViewColumnModel column = columnIter.next();
@@ -199,7 +199,10 @@ public class DataViewRenderer extends Renderer {
         writer.endElement(HTML.TR_ELEM);
         writer.endElement(HTML.THEAD_ELEM);
 
-        if (writeTable) writer.endElement(HTML.TABLE_ELEM);
+        if (writeTable){
+            writer.endElement(HTML.TABLE_ELEM);
+            writer.endElement(HTML.DIV_ELEM);
+        }
     }
 
     private void encodeFooters(ResponseWriter writer,
@@ -255,13 +258,13 @@ public class DataViewRenderer extends Renderer {
         ELContext elContext = context.getELContext();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String clientId = dvId;
-        String bodyClass = IDataView.DATAVIEW_BODY_CLASS;
+        String bodyClass = "";
 
         if (dataView.isRowStroke()) bodyClass += " stroke";
         if (dataView.isRowStripe()) bodyClass += " stripe";
 
         writer.startElement(HTML.DIV_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "overthrow", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_BODY_CLASS + " overthrow", null);
         writer.startElement(HTML.TABLE_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, bodyClass, null);
 
@@ -287,7 +290,10 @@ public class DataViewRenderer extends Renderer {
             if( style != null && style.length() > 0 ){
                 writer.writeAttribute(HTML.STYLE_ATTR, style, null);
             }
-            String styleClass = dataView.getRowStyleClass();
+            String styleClass = "";
+            if( dataView.getRowStyleClass() != null ){
+                styleClass += dataView.getRowStyleClass();
+            }
             if (activeIndex != null && activeIndex.equals(index)){
                 styleClass += IDataView.DATAVIEW_ROW_ACTIVE_CLASS;
             }

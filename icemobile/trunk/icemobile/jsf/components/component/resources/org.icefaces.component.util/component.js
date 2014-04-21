@@ -1584,16 +1584,17 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         //ice.log.debug(ice.log, 'create DataView ' + clientId);
         var config = cfg,
             selectorId = '#' + im.escapeJsfId(clientId),
-            bodyRowSelector = selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tbody > tr',
-            headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead > tr > th';
+            bodyRowSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-body > table > tbody > tr',
+            headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > table > thead > tr > th';
 
         function getNode(elem) {
             var footCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot > tr > td',
                 firstRowSelector = bodyRowSelector + ':first-child',
                 detailsSelector = selectorId + ' > .mobi-dv-det',
-                headSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > thead',
+                headCtrSelector = selectorId + '> .mobi-dv-mst > .mobi-dv-head',
+                headSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > table > thead',
                 footSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot',
-                bodyDivSelector = selectorId + ' > .mobi-dv-mst > div';
+                bodyDivSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-body';
 
             switch (elem) {
                 case 'det': return document.querySelector(detailsSelector);
@@ -1605,6 +1606,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 case 'bodyrows': return document.querySelectorAll(bodyRowSelector);
                 case 'firstrow': return document.querySelector(firstRowSelector);
                 case 'footcells': return document.querySelectorAll(footCellSelector);
+                case 'headCtr': return document.querySelector(headCtrSelector);
             }
         }
 
@@ -1639,10 +1641,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
         function initTableAlignment() {
             //ice.log.debug(ice.log, 'dataView.initTableAlignment');
-            var dupeHead = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead'),
-                dupeHeadCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > thead > tr > th'),
-                dupeFoot = document.querySelector(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tfoot'),
-                dupeFootCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > div > .mobi-dv-body > tfoot > tr > td'),
+            var dupeHead = document.querySelector(selectorId + ' > .mobi-dv-mst > .mobi-dv-body > table > thead'),
+                dupeHeadCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > .mobi-dv-body > table > thead > tr > th'),
+                dupeFoot = document.querySelector(selectorId + ' > .mobi-dv-mst > .mobi-dv-body > table > tfoot'),
+                dupeFootCells = document.querySelectorAll(selectorId + ' > .mobi-dv-mst > .mobi-dv-body > table > tfoot > tr > td'),
                 head = getNode('head'),
                 headCells = getNode('headcells'),
                 foot = getNode('foot'),
@@ -1694,6 +1696,10 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                     for (var i = 0; i < dupeHeadCellWidths.length; i++) {
                         headCells[i].style.width = dupeHeadCellWidths[i] + 'px';
                     }
+
+                    if (navigator.appVersion.indexOf("Win")!=-1){
+                        getNode('headCtr').style.paddingRight = "18px";
+                    }
         
                     /* copy foot col widths from duplicate footer */
                     if (footCells.length > 0){
@@ -1704,6 +1710,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 }
     
                 if (config.colvispri) setupColumnVisibiltyRules(firstrow.children);
+
+
             }
 
             /* hide duplicate header */

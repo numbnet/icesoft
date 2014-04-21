@@ -54,7 +54,7 @@
 /******************************************************************************/
 
 /******************************* ICEsoft Styles *******************************/
-.mobi-dv-mst > div {
+.mobi-dv-body {
     overflow:scroll;
     -webkit-overflow-scrolling: touch;
 }
@@ -69,7 +69,7 @@
     border-collapse: collapse;
 }
 
-.mobi-dv-body {
+.mobi-dv-body table {
     width:100%;
     border-spacing: 0;
     border-collapse: collapse;
