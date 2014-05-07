@@ -3623,10 +3623,13 @@ mobi.flipswitch = {
                                 }
                             }
                             if( !source ){
+                                source = getContainerElem().querySelectorAll('.mobi-accordion-proxy')[0];
+                            }
+                            if( !source ){
                                 ice.log.error(ice.log, 'Could not find proxy accordion form for ' + clientId + ' please include a <mobi:accordionFormProxy> in a nested form.');
+                                return;
                             }
                         }
-                        //ice.se(event, source);
                         mobi.AjaxRequest({source:source.id});
                     }
                     openPane(newId);
@@ -3645,7 +3648,10 @@ mobi.flipswitch = {
                     var rootElem = getRootElem();
                     setHeight(rootElem, null);
                     var calcHeight = ice.mobi.calcFittedHeight(rootElem);
-                    setHeight(rootElem, calcHeight);
+                    //check if calcHeight leaves enough room for conent with the number of panes
+                    if( calcHeight - (getContainerElem().children.length * 33) > 100){
+                        setHeight(rootElem, calcHeight);
+                    }
                 }
                 calcCurrentHeight();
                 if( openId ){
