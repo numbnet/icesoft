@@ -108,7 +108,7 @@ public class InputTextRenderer extends BaseInputRenderer {
         } else {
             ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
             String typeVal = (String)uiComponent.getAttributes().get("type");
-            if( isDateType && client.isAndroidOS() && client.isICEmobileContainer() ){ //Android container borks date types
+            if( isDateType && client.isAndroidBrowserOrWebView() ){ //Android container borks date types
                 typeVal = "text";
             }
             if( client.isIOS() ){
