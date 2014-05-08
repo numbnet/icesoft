@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +43,6 @@ import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.icemobile.util.ClientDescriptor;
-import org.icemobile.util.SXUtils;
 import org.icemobile.util.Utils;
 
 public class MobiJSFUtils {
@@ -199,20 +200,7 @@ public class MobiJSFUtils {
         return inProgress;
     }
     
-    public static String getICEmobileSXScript(String command,
-            Map<String,String> params, UIComponent comp){
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest)facesContext.getExternalContext().getRequest();
-        String sessionID = getSessionIdCookie(facesContext);
-        return SXUtils.getICEmobileSXScript(request, command, params,
-                comp.getClientId(facesContext), sessionID,
-                MobiJSFConstants.SX_UPLOAD_PATH);
-    }
-
-    public static String getICEmobileSXScript(String command, UIComponent comp){
-        return getICEmobileSXScript(command, null, comp);
-    }
-
+    
     public static String getSessionIdCookie() {
         return getSessionIdCookie(FacesContext.getCurrentInstance());
     }
@@ -231,17 +219,7 @@ public class MobiJSFUtils {
         cookieFormatter.close();
         return out.toString();
     }
-    
-    public static String getICEmobileRegisterSXScript(){
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        String sessionIdParam = getSessionIdCookie(facesContext);
-        String uploadURL = AuxUploadSetup.getInstance().getUploadURL();
-        return "mobi.registerAuxUpload('"+sessionIdParam+"','"+uploadURL+"');";
-    }
 
-    public static String getPostURL()  {
-        return AuxUploadSetup.getInstance().getUploadURL();
-    }
 
     /**
      * use this to ascertain that the domdiff does not wipe out the script tag
@@ -311,5 +289,8 @@ public class MobiJSFUtils {
             throw new RuntimeException("Component " + component.getClass().getSimpleName() + " must be contained within a UIForm, ie. an <h:form> or subclass of UIForm.");
         }
     }
+
+
+
 
 }

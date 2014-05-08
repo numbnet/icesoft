@@ -17,6 +17,7 @@
 package org.icefaces.mobi.component.deviceresource;
 
 import java.io.IOException;
+import java.util.Formatter;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,25 +25,30 @@ import java.util.logging.Logger;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ListenerFor;
 import javax.faces.render.Renderer;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.utils.Attribute;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFConstants;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icefaces.util.EnvUtils;
 import org.icemobile.util.CSSUtils;
 import org.icemobile.util.CSSUtils.Theme;
 import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Constants;
-import org.icemobile.util.SXUtils;
 
 @ListenerFor(systemEventClass = javax.faces.event.PostAddToViewEvent.class)
 public class DeviceResourceRenderer  extends Renderer implements javax.faces.event.ComponentSystemEventListener {
@@ -53,8 +59,8 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     public static final String CSS_LOCATION = "org.icefaces.component.skins";
     public static final String UTIL_RESOURCE =
             "org.icefaces.component.util";
-    public static final String RESOURCE_URL_ERROR = "RES_NOT_FOUND";
-    public static final String IOS_APP_ID = "485908934";
+    public static final String RESOURCE_URL_ERROR = "MOBI_RES_NOT_FOUND";
+    public static final String IOS_APP_ID = "727736414";
     
     public static final String META_CONTENTTYPE = "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>";
     public static final String META_VIEWPORT = "<meta name='viewport' content='width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>";
@@ -68,6 +74,8 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     
     public static final String SCRIPT_SIMULATOR = "simulator-interface.js";
 	public static final String CSS_SIMULATOR = "simulator.css";
+	public final static String COOKIE_FORMAT = "org.icemobile.cookieformat";
+
 
     public void processEvent(ComponentSystemEvent event)
             throws AbortProcessingException {
@@ -81,6 +89,66 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         }
         context.getViewRoot().addComponentResource(context, component, HTML.HEAD_ELEM);
     }
+    
+    /**
+     * Get the default BridgeIt Register URL ending in /icemobile
+     * @return The full upload URL
+     */
+    public String getRegisterBridgetItURL(){
+        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String sessionID = getSessionIdCookie(request);
+        String redirectParm = "&r=" + getBaseURL(request);
+        String forward = (String)request.getAttribute("javax.servlet.forward.servlet_path");
+        if( forward == null ){
+            forward = "";
+        }
+        else if( forward.startsWith("/")){
+            forward = forward.substring(1);
+        }
+        String params = "";
+        if( request.getQueryString() != null ){
+            params = "?"+request.getQueryString();
+        }
+        redirectParm += forward + params;
+        String jsessionParam = "&JSESSIONID=" + sessionID;
+        String uploadParam = "&u="+getBaseURL(request) + "/icemobile";
+        String url = "icemobile:c=register"+redirectParm+jsessionParam+uploadParam;
+        return url;
+    }
+    
+    public static String getSessionIdCookie(HttpServletRequest request) {
+        String sessionID = null;
+        String cookieFormat = null;
+        HttpSession httpSession = EnvUtils.getSafeSession(FacesContext.getCurrentInstance());
+        if (null != httpSession) {
+            sessionID = httpSession.getId();
+            cookieFormat = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext())
+                .getInitParameter(COOKIE_FORMAT);
+        } else {
+            return sessionID;
+        }
+
+        if (null == cookieFormat) {
+            return sessionID;
+        }
+        StringBuilder out = new StringBuilder();
+        Formatter cookieFormatter = new Formatter(out);
+        cookieFormatter.format(cookieFormat, sessionID);
+        cookieFormatter.close();
+        return out.toString();
+    }
+    
+    public static String getBaseURL(ServletRequest request) {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String serverName = httpRequest.getHeader("x-forwarded-host");
+        if (null == serverName) {
+            serverName = httpRequest.getServerName() + ":"
+                    + httpRequest.getServerPort();
+        }
+        return httpRequest.getScheme() + "://" + serverName
+                + httpRequest.getContextPath() + "/";
+    }
+
     
     @Override
     public void encodeEnd(FacesContext context, UIComponent uiComponent) throws IOException {
@@ -120,8 +188,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
                 writer.write(META_IOS_APPSTATUSBAR);
                 if (isNeedAppBanner(context, comp, client))  {
                     String smartAppMeta = String.format(META_IOS_SMARTAPPBANNER, IOS_APP_ID, 
-                            SXUtils.getRegisterSXURL(MobiJSFUtils.getRequest(context),
-                                    MobiJSFConstants.SX_UPLOAD_PATH));
+                            this.getRegisterBridgetItURL());
                     writer.write(smartAppMeta);
                     context.getAttributes().put(Constants.IOS_SMART_APP_BANNER_KEY, Boolean.TRUE);
                 }
@@ -173,7 +240,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         if (ProjectStage.Development == projectStage)  {
             return false;
         }
-        return (comp.isIncludeIOSSmartAppBanner() && !client.isSXRegistered());
+        return (comp.isIncludeIOSSmartAppBanner() && !AuxUploadSetup.getInstance().getEnabled());
     }
 
     private void writeOutDeviceStyleSheets(FacesContext facesContext, DeviceResource comp, Theme theme) throws IOException {
