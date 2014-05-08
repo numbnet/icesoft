@@ -29,7 +29,6 @@
     <h3>Mobile Camera and Microphone</h3>
     <div style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
         <h:form prependId="false" id="cform2" class="centered" >
-            <mobi:uploadhelper/>
             <mobi:camera id="camera" value="#{mixedBean.cameraImage}"/>
             <mobi:thumbnail for="camera"/>           
             <br />
@@ -38,10 +37,7 @@
             <mobi:microphone id="mic_one" duration="10" value="#{mixedBean.audioClip}" />
             <br />
             <br />
-            <h:commandButton value="upload" rendered="#{mixedBean.enhancedBrowser}" />
-            <h:commandButton value="upload" rendered="#{!mixedBean.enhancedBrowser}">
-               <f:ajax disabled="true" />
-            </h:commandButton>
+            <h:commandButton value="upload" />
 
         </h:form>
     </div>

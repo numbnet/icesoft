@@ -26,8 +26,7 @@
 </h:head>
 <h:body>
 	<h:form prependId="false" id="cform" >
-        <mobi:uploadhelper/>
-		<h3>microphone with JSF Validator</h3>
+        <h3>microphone with JSF Validator</h3>
 
 		<h:outputText value="TalktoMe!" />
            <h5>message from value change listener</h5>
@@ -37,10 +36,7 @@
 		<mobi:microphone id="mic_one" duration="10" value="#{micBean.clip}"
                 valueChangeListener="#{micBean.methodOne}">
         </mobi:microphone>
-             <h:commandButton value="upload" rendered="#{micBean.enhancedBrowser}" />
-            <h:commandButton value="upload" rendered="#{!micBean.enhancedBrowser}">
-              <f:ajax disabled="true" />
-            </h:commandButton>
+             <h:commandButton value="upload" />
 	</h:form>
 	<h5>audio controls will appear if soundClipIsAvailable</h5>
 		<mobi:audioPlayer id="play"  controls="true" value="#{micBean.pathToFile}"

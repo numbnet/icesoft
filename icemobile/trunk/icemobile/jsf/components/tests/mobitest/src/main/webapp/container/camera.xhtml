@@ -39,10 +39,7 @@
             <mobi:camera id="camera" value="#{cameraBean.cameraImage}" useNative="#{cameraBean.useNative}"
                     valueChangeListener="#{cameraBean.methodOne}"/>
             <mobi:thumbnail for="camera"/>
-            <h:commandButton value="upload" rendered="#{cameraBean.enhancedBrowser}" />
-           <h:commandButton value="upload ajax disabled" rendered="#{!cameraBean.enhancedBrowser}">
-              <f:ajax disabled="true" />
-            </h:commandButton>
+            <h:commandButton value="upload"/>
         </h:form>
     </div>
     <br/>
