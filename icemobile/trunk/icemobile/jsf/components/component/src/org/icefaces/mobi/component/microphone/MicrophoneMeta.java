@@ -45,14 +45,12 @@ import java.util.Map;
 )
 
 @ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
+        @ResourceDependency(library = "org.icefaces.component.util", name = "bridgeit.js")
 })
 public class MicrophoneMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "Integer.MIN_VALUE", 
-            tlddoc = "The maxium length of audio clip in seconds.")
-    private int maxtime;
-
+    
     @Property(defaultValue = "false", tlddoc = TLDConstants.DISABLED)
     private boolean disabled;
 

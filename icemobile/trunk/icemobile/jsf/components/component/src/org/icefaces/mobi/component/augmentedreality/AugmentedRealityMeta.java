@@ -36,7 +36,8 @@ import javax.faces.application.ResourceDependency;
 )
 
 @ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
+        @ResourceDependency(library = "org.icefaces.component.util", name = "bridgeit.js")
 })
 public class AugmentedRealityMeta extends UIComponentBaseMeta  {
     @Property(tlddoc="Additional parameters for experimental features.", 

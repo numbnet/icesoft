@@ -17,6 +17,10 @@
 package org.icefaces.mobi.component.microphone;
 
 
+import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
+import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
+import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +32,10 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
-import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.impl.application.AuxUploadSetup;
+import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.util.EnvUtils;
-import org.icemobile.renderkit.DeviceCoreRenderer;
+import org.icemobile.util.CSSUtils;
 
 
 public class MicrophoneRenderer extends Renderer {
@@ -56,7 +58,7 @@ public class MicrophoneRenderer extends Renderer {
                   microphone.setValue(map);
              //   trigger valueChange and add map as newEvent value old event is NA
                   uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
-    		    		    null, map));
+                            null, map));
                 }
             }
         } catch (Exception e) {
@@ -75,9 +77,26 @@ public class MicrophoneRenderer extends Renderer {
         if (MobiJSFUtils.uploadInProgress(microphone))  {
            microphone.setButtonLabel(microphone.getCaptureMessageLabel()) ;
         } 
-        DeviceCoreRenderer renderer = new DeviceCoreRenderer();
-        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        renderer.encode(microphone, writer, false);
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = microphone.getClientId();
+        
+        RenderUtils.startButtonElem(microphone, writer);
+        
+        String script = "bridgeit.microphone('" + clientId + "', '', "
+                + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', "
+                + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}});";
+        writer.writeAttribute(ONCLICK_ATTR, script, null);
+        
+        RenderUtils.writeDisabled(uiComponent, writer);
+        RenderUtils.writeStyle(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+        RenderUtils.writeTabIndex(uiComponent, writer);
+        
+        writer.startElement(SPAN_ELEM, microphone);
+        writer.writeText(microphone.getButtonLabel(), null);
+        writer.endElement(SPAN_ELEM);
+        
+        writer.endElement(BUTTON_ELEM);
         microphone.setButtonLabel(oldLabel);
     }
 }

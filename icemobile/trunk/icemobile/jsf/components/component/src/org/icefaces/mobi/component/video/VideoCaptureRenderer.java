@@ -17,6 +17,10 @@
 package org.icefaces.mobi.component.video;
 
 
+import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
+import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
+import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,17 +28,19 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
-import org.icefaces.mobi.renderkit.BaseInputResourceRenderer;
-import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-import org.icefaces.mobi.utils.MobiJSFUtils;
 
-import org.icemobile.renderkit.DeviceCoreRenderer;
+import org.icefaces.impl.application.AuxUploadSetup;
+import org.icefaces.mobi.renderkit.BaseInputResourceRenderer;
+import org.icefaces.mobi.renderkit.RenderUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.CSSUtils;
 
 
 
 public class VideoCaptureRenderer extends BaseInputResourceRenderer {
-    private static final Logger logger = Logger.getLogger(VideoCaptureRenderer.class.getName());
+    //private static final Logger logger = Logger.getLogger(VideoCaptureRenderer.class.getName());
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -49,7 +55,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
                     camcorder.setValue(map);
              //     trigger valueChange and add map as newEvent value old event is NA
                     uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
-    		    		    null, map));
+                            null, map));
                 }
               }
 
@@ -70,9 +76,36 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         if (MobiJSFUtils.uploadInProgress(camcorder))  {
             camcorder.setButtonLabel(camcorder.getCaptureMessageLabel()) ;
         } 
-        DeviceCoreRenderer renderer = new DeviceCoreRenderer();
-        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        renderer.encode(camcorder, writer, false);
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = camcorder.getClientId();
+        
+        RenderUtils.startButtonElem(uiComponent, writer);
+        
+        String script = "bridgeit.camcorder('" + clientId + "', '', "
+                + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', ";
+        script += "cookies:{'JSESSIONID':'" + 
+            MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}";
+        int maxwidth = camcorder.getMaxwidth();
+        if (maxwidth > 0){
+            script += ", maxwidth: " + maxwidth;
+        }
+        int maxheight = camcorder.getMaxheight();
+        if (maxheight > 0){
+            script += ", maxheight:" + maxheight;
+        }
+        script += "});";
+        writer.writeAttribute(ONCLICK_ATTR, script, null);
+        
+        RenderUtils.writeDisabled(uiComponent, writer);
+        RenderUtils.writeStyle(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+        RenderUtils.writeTabIndex(uiComponent, writer);
+        
+        writer.startElement(SPAN_ELEM, camcorder);
+        writer.writeText(camcorder.getButtonLabel(), null);
+        writer.endElement(SPAN_ELEM);
+        
+        writer.endElement(BUTTON_ELEM);
         camcorder.setButtonLabel(oldLabel);
     }
 }

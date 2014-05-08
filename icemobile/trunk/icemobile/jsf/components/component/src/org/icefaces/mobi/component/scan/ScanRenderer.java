@@ -17,23 +17,28 @@
 package org.icefaces.mobi.component.scan;
 
 
+import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
+import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
+import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 import org.icefaces.impl.application.AuxUploadResourceHandler;
+import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
-import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
+import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-
-import org.icemobile.renderkit.DeviceCoreRenderer;
+import org.icemobile.util.CSSUtils;
 
 
 public class ScanRenderer extends BaseInputRenderer {
-    private static final Logger logger = Logger.getLogger(ScanRenderer.class.getName());
+    //private static final Logger logger = Logger.getLogger(ScanRenderer.class.getName());
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -56,7 +61,6 @@ public class ScanRenderer extends BaseInputRenderer {
                 Object convertedValue = this.getConvertedValue(facesContext, uiComponent, submittedString);
                 this.setSubmittedValue(scan, convertedValue);
             }
-
         }
     }
 
@@ -67,11 +71,27 @@ public class ScanRenderer extends BaseInputRenderer {
         if (MobiJSFUtils.uploadInProgress(scan))  {
            scan.setButtonLabel(scan.getCaptureMessageLabel()) ;
         } 
-        DeviceCoreRenderer renderer = new DeviceCoreRenderer();
-        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        renderer.encode(scan, writer, false);
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = uiComponent.getClientId();
+        
+        RenderUtils.startButtonElem(uiComponent, writer);
+        
+        String script = "bridgeit.scan('" + clientId + "', '', "
+                + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', " 
+                + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}});";
+        writer.writeAttribute(ONCLICK_ATTR, script, null);
+        
+        RenderUtils.writeDisabled(uiComponent, writer);
+        RenderUtils.writeStyle(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+        RenderUtils.writeTabIndex(uiComponent, writer);
+        
+        writer.startElement(SPAN_ELEM, uiComponent);
+        writer.writeText(scan.getButtonLabel(), null);
+        writer.endElement(SPAN_ELEM);
+        
+        writer.endElement(BUTTON_ELEM);
         scan.setButtonLabel(oldLabel);
     }
-
 
 }

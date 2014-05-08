@@ -36,13 +36,6 @@ public class ThumbnailCoreRenderer {
         //    logger.info("desktop browser");
             return;
         }
-        boolean renderThumbnail = false;
-        if (cd.isICEmobileContainer() || cd.isSXRegistered()){
-            renderThumbnail = true;
-        }
-        if (!renderThumbnail){
-            return;
-        }
         String thumbId = component.getMFor() + "-thumb";
         writer.startElement(SPAN_ELEM, component);
         String styleClass = component.getBaseClass();

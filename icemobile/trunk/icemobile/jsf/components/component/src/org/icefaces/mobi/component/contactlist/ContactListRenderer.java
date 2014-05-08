@@ -16,6 +16,10 @@
 
 package org.icefaces.mobi.component.contactlist;
 
+import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
+import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
+import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -23,17 +27,19 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
-import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-import org.icemobile.component.ContactDecoder;
-import org.icemobile.component.IContactList;
-import org.icemobile.renderkit.ContactListCoreRenderer;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
+import org.icefaces.impl.application.AuxUploadSetup;
+import org.icefaces.mobi.renderkit.RenderUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.ContactDecoder;
+import org.icemobile.util.CSSUtils;
 
 public class ContactListRenderer extends Renderer {
     
-    private static final Logger log = Logger.getLogger(ContactListRenderer.class.getName());
+ private static final Logger log = Logger.getLogger(ContactListRenderer.class.getName());
     
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -62,9 +68,28 @@ public class ContactListRenderer extends Renderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        ContactListCoreRenderer renderer = new ContactListCoreRenderer();
-        renderer.encode((IContactList)uiComponent, writer);
+
+        ContactList contactList = (ContactList) uiComponent;
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = contactList.getClientId();
+        
+        RenderUtils.startButtonElem(uiComponent, writer);
+        
+        String script = "bridgeit.fetchContact('" + clientId + "', '', {postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', "
+            + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) + "'}, "
+            + "fields: '" +contactList.getFields() + "'});";
+        writer.writeAttribute(ONCLICK_ATTR, script, null);
+        
+        RenderUtils.writeDisabled(uiComponent, writer);
+        RenderUtils.writeStyle(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+        RenderUtils.writeTabIndex(uiComponent, writer);
+        
+        writer.startElement(SPAN_ELEM, contactList);
+        writer.writeText(contactList.getButtonLabel(), null);
+        writer.endElement(SPAN_ELEM);
+        
+        writer.endElement(BUTTON_ELEM);
     }
 
 }
