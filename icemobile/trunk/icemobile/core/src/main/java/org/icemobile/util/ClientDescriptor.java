@@ -23,6 +23,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.icefaces.impl.application.AuxUploadSetup;
+
 /**
  * A central client feature and detection class for ICEmobile. 
  * Will detect the OS and 
@@ -47,8 +49,6 @@ public class ClientDescriptor implements Serializable{
     
     private OS os;
     private FORM_FACTOR formFactor;
-    private boolean icemobileContainer;
-    private boolean sxRegistered;
     private boolean isSimulator = false;
     
     private UserAgentInfo _userAgentInfo;
@@ -58,24 +58,16 @@ public class ClientDescriptor implements Serializable{
         updateUserAgent(request);
         updateOS();
         updateFormFactor(view);
-        updateICEmobileContainer(request);
-        updateSXRegistered(request);
         updateSimulator(request);
-        //TODO use getSession(false)
         request.getSession().setAttribute(SESSION_KEY, this);
     }
     
     public static ClientDescriptor getInstance(HttpServletRequest request){
-        //TODO use getSession(false)
         ClientDescriptor cd = (ClientDescriptor)request.getSession().getAttribute(SESSION_KEY);
         String view = request.getParameter("view");
         //always update if user agent changed
         if( cd == null || cd.isUserAgentUpdateRequired(request) || view != null){
             cd = new ClientDescriptor(request,view);
-        }
-        //check if sx has been newly registered
-        if( !cd.isSXRegistered() ){
-            cd.updateSXRegistered(request);
         }
         //check if simulator state updated
         if( !cd.isSimulator() ){
@@ -176,25 +168,12 @@ public class ClientDescriptor implements Serializable{
         return os == OS.IOS && _userAgentInfo.isIOS7();
     }
     
-    public boolean isSXRegistered(){
-        return sxRegistered;
+    public boolean isBridgeItRegistered(){
+        return AuxUploadSetup.getInstance().getEnabled();
     }
 
     public boolean isSimulator(){
         return isSimulator;
-    }
-    
-    public boolean isICEmobileContainer(){
-        if (isSimulator)  {
-            if (isDesktopBrowser())  {
-                return true;
-            }
-        }
-        return icemobileContainer;
-    }
-    
-    public boolean isEnhancedBrowser(){
-        return isICEmobileContainer() || isSXRegistered();
     }
     
     public boolean isDesktopBrowser(){
@@ -217,20 +196,6 @@ public class ClientDescriptor implements Serializable{
         httpAccepted = (accept == null ? "" : accept.toLowerCase());
     }
     
-    private void updateICEmobileContainer(HttpServletRequest request){
-        Cookie cookie = Utils.getCookie(COOKIE_NAME_ICEMOBILE_CONTAINER, request);
-        if (null != cookie && cookie.getValue().startsWith(COOKIE_VALUE_ICEMOBILE_CONTAINER)) {
-            icemobileContainer = true;
-        }
-        else{
-            icemobileContainer = false;
-        }
-    }
-    
-    private void updateSXRegistered(HttpServletRequest request){
-        sxRegistered = SXUtils.isSXRegistered(request);
-    }
-
     private void updateSimulator(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         ServletContext servletContext = null;
@@ -290,7 +255,7 @@ public class ClientDescriptor implements Serializable{
     }
 	
 	public boolean isAndroidBrowser(){
-        return _userAgentInfo.isAndroidBrowserOrWebView() && !isEnhancedBrowser();
+        return _userAgentInfo.isAndroidBrowserOrWebView();
     }
     
     public boolean isAndroidBrowserOrWebView(){
@@ -308,8 +273,7 @@ public class ClientDescriptor implements Serializable{
     public boolean isSupportsFixedPosition(){
         return !(isTabletBrowser() && isAndroidBrowserOrWebView())
                && !(isHandheldBrowser() && isAndroid2OS() && !_userAgentInfo.isFirefoxAndroid() ) //Handheld, Android2 (Firefox works well, no Chrome available)
-               && !_userAgentInfo.isBlackberry6OS() //BB6 & 7 do not support fixed well
-               && !(_userAgentInfo.isBlackberry10OS() && isEnhancedBrowser()); //BB10 container uses Android 2 browser
+               && !_userAgentInfo.isBlackberry6OS(); //BB6 & 7 do not support fixed well
     }
 
 
