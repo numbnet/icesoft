@@ -17,12 +17,22 @@
 .mobi-list-item:first-child {
     border-top: none;
 }
+
+.mobi-list-inset > .mobi-list-item:first-child {
+    border-top-width: 0;
+    border-radius: 0;
+}
 .mobi-list > .mobi-list-item {
     font-size: inherit;
     font-weight: 500;
 }
-.mobi-list-item-group {
+.ui-listview-inset .ui-li {
+    border-right-width: 0;
+    border-left-width: 0;
+}
+.mobi-list .mobi-list-item-group{
     text-shadow: none;
+    background-color: transparent;
 }
 .mobi-list > .mobi-list-item > .mobi-list-item-default > a {
     padding: 10px 25px;

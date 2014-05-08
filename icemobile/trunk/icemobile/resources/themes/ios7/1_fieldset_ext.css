@@ -1,0 +1,17 @@
+.mobi-list-inset > .mobi-list-item:first-child {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top-width: 1px;
+    border-top-color: #D8D6D9;
+}
+
+.mobi-fieldset {
+    border-width: 0;
+    padding: 0 10px;
+}
+.mobi-fieldset .mobi-fieldset-row-group{
+    background-color: transparent;
+}
+.mobi-fieldset .mobi-fieldset-row{
+    padding: 10px 0;
+}

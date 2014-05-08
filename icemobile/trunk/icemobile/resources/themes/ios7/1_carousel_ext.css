@@ -13,14 +13,6 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
- 
-.mobi-accordion{
-    border-top: 1px solid #C8C7CC;
-    border-bottom: 1px solid #C8C7CC;
-}
-.mobi-accordion-ctr > .closed > .handle > .pointer {
-    border-left: 8px solid #C8C7CC;
-}
-.mobi-accordion-ctr > .open > .handle > .pointer {
-    border-top: 9px solid #C8C7CC;
-}
+ .mobi-carousel-cursor-list > li.active { 
+    background-color: #549FD8;
+ }

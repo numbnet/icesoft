@@ -46,6 +46,9 @@
     overflow:hidden;
     text-overflow:ellipsis;
 }
+.mobi-button > span{
+    text-align: center;
+}
 a.mobi-button:hover{ text-decoration:none;}
 .mobi-pagePanel-header .mobi-button{
     position: absolute;

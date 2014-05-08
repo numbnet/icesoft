@@ -1,0 +1,15 @@
+/* Add strokes between each row */
+.mobi-dv table.stroke tbody th,
+.mobi-dv table.stroke tbody td {
+    border-bottom: 1px solid #e6e6e6; /* non-RGBA fallback  */
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+/* Add alternating row stripes */
+.mobi-dv table.stripe tbody tr:nth-child(odd) td,
+.mobi-dv table.stripe tbody tr:nth-child(odd) th {
+    background-color: #FFF; 
+}
+.mobi-dv table th {
+    font-weight: normal;
+    font-size: 15px;
+}
