@@ -37,7 +37,8 @@ import javax.faces.application.ResourceDependency;
 )
 
 @ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
+        @ResourceDependency(library = "org.icefaces.component.util", name = "bridgeit.js")
 })
 public class ScanMeta extends UIComponentBaseMeta {
 
@@ -57,12 +58,12 @@ public class ScanMeta extends UIComponentBaseMeta {
     @Property(defaultValue="Scan Captured", tlddoc="The message displays upon successful capture from device.")
     private String captureMessageLabel;
 
-    @Property(defaultValue="Scan QR Code", tlddoc="The button label for this component.")
+    @Property(defaultValue="Scan Code", tlddoc="The button label for this component.")
     private String buttonLabel;
-    
-    @Property(tlddoc = "The text value of the scan")
-    private String value;
     
     @Property(tlddoc="The onchange pass-through event ")
     private String onchange;
+    
+    @Property(tlddoc="The current value of the component.")
+    private Object value;
 }

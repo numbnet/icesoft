@@ -17,6 +17,10 @@
 package org.icefaces.mobi.component.camera;
 
 
+import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
+import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
+import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,17 +28,18 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
-import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
+import org.icefaces.impl.application.AuxUploadSetup;
+import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icemobile.renderkit.DeviceCoreRenderer;
+import org.icemobile.util.CSSUtils;
 
 
 public class CameraRenderer extends Renderer {
-    private static final Logger logger = Logger.getLogger(CameraRenderer.class.getName());
-
+    //private static final Logger logger = Logger.getLogger(CameraRenderer.class.getName());
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Camera camera = (Camera) uiComponent;
@@ -50,7 +55,7 @@ public class CameraRenderer extends Renderer {
 
              //   trigger valueChange and add map as newEvent value old event is NA
                        uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
-    		    		    null, map));
+                            null, map));
                     }
                 }
             }
@@ -83,11 +88,37 @@ public class CameraRenderer extends Renderer {
         if (MobiJSFUtils.uploadInProgress(camera))  {
             camera.setButtonLabel(camera.getCaptureMessageLabel()) ;
         } 
-        DeviceCoreRenderer renderer = new DeviceCoreRenderer();
-        ResponseWriterWrapper writer = new ResponseWriterWrapper(
-                facesContext.getResponseWriter());
-        renderer.encode(camera, writer, false);
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = camera.getClientId();
+        
+        RenderUtils.startButtonElem(uiComponent, writer);
+        
+        String script = "bridgeit.camera('" + clientId + "', '', "
+                + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', ";
+        script += "cookies:{'JSESSIONID':'" + 
+                MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}";
+        int maxwidth = camera.getMaxwidth();
+        if (maxwidth > 0){
+            script += ", maxwidth: " + maxwidth;
+        }
+        int maxheight = camera.getMaxheight();
+        if (maxheight > 0){
+            script += ", maxheight:" + maxheight;
+        }
+        script += "});";
+        writer.writeAttribute(ONCLICK_ATTR, script, null);
+        
+        RenderUtils.writeDisabled(uiComponent, writer);
+        RenderUtils.writeStyle(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+        RenderUtils.writeTabIndex(uiComponent, writer);
+        
+        writer.startElement(SPAN_ELEM, camera);
+        writer.writeText(camera.getButtonLabel(), null);
+        writer.endElement(SPAN_ELEM);
+        
+        writer.endElement(BUTTON_ELEM);
         camera.setButtonLabel(oldLabel);
     }
-
+    
 }

@@ -17,19 +17,17 @@
 package org.icefaces.mobi.component.camera;
 
 
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.Expression;
-import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
-import javax.el.MethodExpression;
-import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
-import org.icefaces.ace.meta.annotation.ClientEvent;
-import org.icefaces.mobi.utils.TLDConstants;
+import java.util.Map;
 
+import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-import java.util.Map;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 @Component(
         tagName = "camera",
@@ -46,7 +44,8 @@ import java.util.Map;
 )
 
 @ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
+        @ResourceDependency(library = "org.icefaces.component.util", name = "bridgeit.js")
 })
 public class CameraMeta extends UIComponentBaseMeta {
 

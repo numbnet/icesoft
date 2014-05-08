@@ -16,7 +16,6 @@
 package org.icefaces.mobi.component.augmentedreality;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Map;
 
@@ -25,12 +24,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.impl.application.AuxUploadResourceHandler;
+import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.util.EnvUtils;
 import org.icemobile.util.CSSUtils;
-import org.icemobile.util.ClientDescriptor;
 
 
 public class AugmentedRealityRenderer extends BaseInputRenderer  {
@@ -43,82 +42,49 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
     private static final String MARK_MODEL = "markerModel";
     private static final String MARK_LABEL = "markerLabel";
 
-     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
-         ResponseWriter writer = facesContext.getResponseWriter();
-         String clientId = uiComponent.getClientId(facesContext);
-         AugmentedReality ag = (AugmentedReality)uiComponent;
+         
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = uiComponent.getClientId(facesContext);
+        AugmentedReality ag = (AugmentedReality)uiComponent;
 
-//         boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
-         ClientDescriptor clientDescriptor = MobiJSFUtils.getClientDescriptor();
-         boolean isEnhanced = clientDescriptor.isICEmobileContainer();
-         boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
-         if (!isEnhanced && !isAuxUpload) {  //no container or SX, use text field
-             String myparams = ag.getParams();
-             writer.startElement(HTML.INPUT_ELEM, uiComponent);
-             writer.writeAttribute("data-params", myparams, null);
-             writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-             writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-             writer.endElement(HTML.INPUT_ELEM);
-             return;
-         }
-         writer.startElement(HTML.BUTTON_ELEM, uiComponent);
-         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-         String buttonValue=ag.getButtonLabel();
+        RenderUtils.startButtonElem(uiComponent, writer);
+         
+        RenderUtils.writeDisabled(uiComponent, writer);
+        RenderUtils.writeStyle(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+        RenderUtils.writeTabIndex(uiComponent, writer);
+         
+        String buttonValue=ag.getButtonLabel();
         if (MobiJSFUtils.uploadInProgress(ag))  {
             buttonValue = ag.getCaptureMessageLabel();
         } 
-         if (null!=ag.getStyle()){
-             String style= ag.getStyle();
-             if ( style.trim().length() > 0) {
-                 writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-             }
-         }
-         StringBuilder defaultClass = new StringBuilder(CSSUtils.STYLECLASS_BUTTON);
-         if (null!=ag.getStyleClass()) {
-             String styleClass = ag.getStyleClass();
-             defaultClass.append(" ").append(styleClass);
-         }
-         writer.writeAttribute(HTML.CLASS_ATTR, defaultClass, HTML.CLASS_ATTR);
 
-        String arParams = "";
-        String urlBase = ag.getUrlBase();
-        if (null != urlBase)  {
-            arParams = "ub=" + URLEncoder.encode(urlBase) + "&";
-        }
+        String locationsString = "";
         for (UIComponent child : ag.getChildren())  {
             if (child instanceof AugmentedRealityLocations) {
                 AugmentedRealityLocations locations = 
                         (AugmentedRealityLocations) child;
-                arParams += iterateLocations(facesContext, locations);
+                locationsString = iterateLocations(facesContext, locations, ag.getUrlBase());
             }
             if (child instanceof AugmentedRealityMarkers) {
                 AugmentedRealityMarkers markers =
                         (AugmentedRealityMarkers) child;
-                arParams += iterateMarkers(facesContext, markers);
-                arParams += "v=vuforia" + "&";
+                locationsString += iterateMarkers(facesContext, markers);
+                locationsString += "'v':'vuforia'";
             }
         }
 
-        //allow legacy params value for now
-        if ("".equals(arParams))  {
-            arParams = ag.getParams();
-        }
-        String script;
-        if (isAuxUpload)  {
-            writer.writeAttribute("data-params", arParams, null);
-            writer.writeAttribute("data-command", "aug", null);
-            String sessionId = MobiJSFUtils.getSessionIdCookie();
-            writer.writeAttribute("data-jsessionid", sessionId, null);
-            writer.writeAttribute("data-postURL",
-                    MobiJSFUtils.getPostURL(), null);;
-            script = "ice.mobi.sx(this);";
-        } else {
-            script = "ice.aug( '" + clientId + "', '" + 
-                    arParams + "' );return false;";
-        }
+        String script = "bridgeit.augmentedReality( '" + clientId + "', '', "
+            + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "',"
+            + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) +  "'},"
+            + " locations:{" + locationsString + "}});";
         writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
-         writer.writeText(buttonValue, null);
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeText(buttonValue, null);
+        writer.endElement(HTML.SPAN_ELEM);
+        
         writer.endElement(HTML.BUTTON_ELEM);
      }
 
@@ -145,7 +111,7 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
 
 
     String iterateLocations(FacesContext facesContext, 
-            AugmentedRealityLocations locations)  {
+            AugmentedRealityLocations locations, String urlBase)  {
         String var = locations.getVar();
         if (null == var) {
             //cannot iterate without a var
@@ -162,7 +128,11 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
             Object oldVar = requestMap.put(var, item);
             Map<String,Object> attrs = locations.getAttributes();
             String itemLabel = (String) attrs.get(LOC_LABEL);
-            result.append(URLEncoder.encode(itemLabel)).append("=");
+            result.append("'");
+            result.append(itemLabel);
+            result.append("'");
+            result.append(":");
+            result.append("'");
             result.append(attrs.get(LOC_LAT)).append(",");
             result.append(attrs.get(LOC_LON)).append(",");
 
@@ -178,12 +148,14 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
             result.append(",");
             String itemIcon = (String) attrs.get(LOC_ICON);
             if (null != itemIcon)  {
-                result.append(URLEncoder.encode(itemIcon));
+                result.append(itemIcon);
             }
-            result.append("&");
+            result.append("'");
+            result.append(",");
             requestMap.put(var, oldVar);
         }
-        return result.toString();
+        String finalResult = result.toString();
+        return finalResult.length() > 0 ? finalResult.substring(0,finalResult.length()-1) : ""; // remove last comma
     }
 
     String iterateMarkers(FacesContext facesContext,
@@ -204,13 +176,18 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
             Map<String,Object> attrs = markers.getAttributes();
             String markerLabel = (String) attrs.get(MARK_LABEL);
             String itemID = "_" + index;
-            result.append(markerLabel + itemID).append("=");
+            result.append("'");
+            result.append(markerLabel + itemID);
+            result.append("'");
+            result.append(":");
 
             String markerModel = (String) attrs.get(MARK_MODEL);
             if (null != markerModel)  {
-                result.append(URLEncoder.encode(markerModel));
+                result.append("'");
+                result.append(markerModel);
+                result.append("'");
             }
-            result.append("&");
+            result.append(",");
             requestMap.put(var, oldVar);
             index++;
         }
