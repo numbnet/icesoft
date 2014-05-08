@@ -14,7 +14,7 @@ you would like to install to.
 2) The ant target "get-maven" requires an internet connection in order to obtain the jar needed to run maven from ant. This jar 
 will be placed into icemobile/lib.
 
-3) The ant target "install" will install icefaces-mobi and icemobile-jsp jars and poms to the local repository specified in
+3) The ant target "install" will install icefaces-mobi and poms to the local repository specified in
 the build.properties file.
 
 These steps are not needed if you choose to use the releases repository at
