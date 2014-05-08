@@ -17,3 +17,7 @@
 .mobi-pagePanel-header, .mobi-pagePanel-footer {
     font-weight: 300;
 }
+
+.mobi-pagePanel-footer {
+    border-top: 1px solid #E0E0E0;
+}

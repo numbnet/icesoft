@@ -25,7 +25,7 @@
 
             <mobi:fieldsetRow>
                 <h:outputLabel for="cap" value="Auto-Capitalization"/>
-                <mobi:flipswitch id="cap" style="float:right"
+                <mobi:flipswitch id="cap" 
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true" disableOffline="true"
                                  valueChangeListener="#{flipSwitchBean.autoCapitalizationChange}"
@@ -33,21 +33,21 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="cor" value="Auto-Correction"/>
-                <mobi:flipswitch id="cor" style="float:right"
+                <mobi:flipswitch id="cor"
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  value="#{flipSwitchBean.autoCorrection}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="spell" value="Check Spelling"/>
-                <mobi:flipswitch id="spell" style="float:right"
+                <mobi:flipswitch id="spell" 
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  value="#{flipSwitchBean.checkSpelling}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="lock" value="Enable Caps Lock"/>
-                <mobi:flipswitch id="lock" style="float:right"
+                <mobi:flipswitch id="lock" 
                                  labelOn="ON" labelOff="OFF"
                                  singleSubmit="true"
                                  value="#{flipSwitchBean.enableCapsLock}"/>

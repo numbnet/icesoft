@@ -18,7 +18,7 @@
 .mobi-contentStack-container.single > .mobi-contentStack-panes > .mobi-contentpane-hidden {
    -webkit-transition: left .1s ease-in, opacity .1s linear .1s;
       -moz-transition: left .1s ease-in, opacity .1s linear .1s;
-        -0-transition: left .1s ease-in, opacity .1s linear .1s;
+        -o-transition: left .1s ease-in, opacity .1s linear .1s;
            transition: left .1s ease-in, opacity .1s linear .1s;
 }
 .mobi-contentStack-container.single > .mobi-contentStack-panes > .mobi-contentpane,

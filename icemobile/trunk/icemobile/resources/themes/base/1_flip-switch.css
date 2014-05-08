@@ -19,6 +19,7 @@
     text-decoration: none;
     -webkit-background-clip: padding;
     background-clip: padding-box;
+    outline: none;
 }
 .mobi-flipswitch.disabled{
     opacity: 0.5;

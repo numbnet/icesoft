@@ -21,8 +21,8 @@ import org.icefaces.mobi.utils.Attribute;
 
 public class FlipSwitch extends FlipSwitchBase {
     
-    public static final String FLIPSWITCH_ON_CLASS = "mobi-flipswitch mobi-flipswitch-on ui-btn-down-c";
-    public static final String FLIPSWITCH_OFF_CLASS = "mobi-flipswitch mobi-flipswitch-off ui-btn-down-c";
+    public static final String FLIPSWITCH_ON_CLASS = "mobi-flipswitch mobi-flipswitch-on";
+    public static final String FLIPSWITCH_OFF_CLASS = "mobi-flipswitch mobi-flipswitch-off";
     private Attribute[] attributesNames = {
             new Attribute("tabindex", null),
             new Attribute("style", null)};

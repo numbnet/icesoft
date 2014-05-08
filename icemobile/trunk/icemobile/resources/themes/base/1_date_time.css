@@ -152,6 +152,7 @@
     width: 100%;
     height: 35px;
     border: none;
+    outline: none;
 }
 .mobi-time-popup-btn {
     width: 27px;

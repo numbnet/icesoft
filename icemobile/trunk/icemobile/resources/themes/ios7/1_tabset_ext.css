@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
  
-.mobi-tabset > .mobi-tabset-tabs{
-    border-bottom: 1px solid #C8C7CC;
+.mobi-tabset > .mobi-tabset-tabs > ul > li {
+    border-bottom: 1px solid #DFDFDF;
 }
