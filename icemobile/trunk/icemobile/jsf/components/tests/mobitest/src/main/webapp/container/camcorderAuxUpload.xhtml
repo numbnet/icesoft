@@ -35,8 +35,7 @@
             <mobi:camcorder id="camcorder" value="#{videoBean.clip}"
                     valueChangeListener="#{videoBean.methodOne}"/>
             <mobi:thumbnail for="camcorder"/>
-            <h:commandButton value="upload" rendered="#{videoBean.enhancedBrowser}" />
-           <h:commandButton value="upload" rendered="#{!videoBean.enhancedBrowser}">
+            <h:commandButton value="upload">
               <f:ajax disabled="true" />
             </h:commandButton>
 

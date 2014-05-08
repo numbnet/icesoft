@@ -32,10 +32,7 @@
         <h:form prependId="false" class="centered" enctype="multipart/form-data" >
             <h:commandButton value="ICEmobileBud" onclick="window.location='icemobile:c=camera%3Fid%3Dcamera&amp;r='+escape(window.location)+'&amp;JSESSIONID=#{session.id}'+'&amp;u='+escape('#{auxUpload.uploadURL}')+'&amp;p='+escape('');" />
 		<mobi:microphone id="mic_one" duration="10" value="#{micBean.clip}" valueChangeListener="#{micBean.methodOne}"/>
-            <h:commandButton value="upload" rendered="#{cameraBean.enhancedBrowser}" />
-           <h:commandButton value="upload" rendered="#{!cameraBean.enhancedBrowser}">
-              <f:ajax disabled="true" />
-            </h:commandButton>
+            <h:commandButton value="upload" />
 
         </h:form>
     </div>

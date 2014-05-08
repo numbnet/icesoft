@@ -141,18 +141,6 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase, S
         }
     }
 
-    /**
-     * Test to see if the calling browser has the ICEmobile enhancements/extensions.
-     *
-     * @return true if an ICEmobile enhancements are detected, otherwise false.
-     */
-    public boolean isEnhancedBrowser() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
-        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
-        return isEnhanced || isAuxUpload;
-    }
-
     public String getDescriptionPath() {
         return descriptionPath;
     }
