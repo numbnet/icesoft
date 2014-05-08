@@ -30,10 +30,6 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
-        <mobi:getEnhanced/>
-        
-        <mobi:uploadhelper/>
-        
         <mobi:geolocation 
                           latitude="#{realityBean.latitude}"
                           longitude="#{realityBean.longitude}"/>
@@ -146,7 +142,7 @@
                 <mobi:augmentedReality buttonLabel="3D Augmented Reality"
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}"
-                    disabled="#{not mobiClient.iOS}"
+                    disabled="#{not mobiClient.IOS}"
                     styleClass="mobi-col">
                     <mobi:augmentedRealityMarkers
                         value="#{realityBean.markers}" var="marker"
