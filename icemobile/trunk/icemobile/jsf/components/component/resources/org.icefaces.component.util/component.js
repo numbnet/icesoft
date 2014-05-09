@@ -705,29 +705,7 @@ ice.mobi.ab = function(cfg) { mobi.AjaxRequest(cfg); };
 ice.mobi.extend = function(targetObject, sourceObject) {
     for (var attrname in sourceObject) { targetObject[attrname] = sourceObject[attrname]; }
 }
-mobi.registerAuxUpload = function (sessionid, uploadURL) {
 
-    var splashClause = ice.mobi.impl.getSplashClause();
-
-    var sxURL = "icemobile:c=register&r=" +
-                        escape(window.location) + "&JSESSIONID=" + sessionid +
-                        splashClause +
-                        "&u=" + escape(uploadURL);
-
-    if (window.chrome)  {
-        window.location.href = sxURL;
-        return;
-    }
-
-    var auxiframe = document.getElementById('auxiframe');
-    if (null == auxiframe) {
-        auxiframe = document.createElement('iframe');
-        auxiframe.setAttribute("id", "auxiframe");
-        auxiframe.setAttribute("style", "width:0px; height:0px; border: 0px");
-        auxiframe.setAttribute("src", sxURL);
-        document.body.appendChild(auxiframe);
-    }
-};
 ice.mobi.getScrollOffset = function(elem){
     if( !elem ){
         return 0;
@@ -1054,54 +1032,6 @@ if (window.addEventListener) {
             ice.push.connection.resumeConnection();
         }
     }, false);
-
-    window.addEventListener("hashchange", function () {
-        var data = ice.mobi.getDeviceCommand();
-        var deviceParams;
-        if (null != data)  {
-            var name;
-            var value;
-            var needRefresh = true;
-            if ("" != data)  {
-                deviceParams = ice.mobi.unpackDeviceResponse(data);
-                if (deviceParams.name)  {
-                    name = deviceParams.name;
-                    value = deviceParams.value;
-                    ice.mobi.setInput(name, name, value);
-                    needRefresh = false;
-                }
-            }
-            if (needRefresh)  {
-                if (window.ice.ajaxRefresh)  {
-                    ice.ajaxRefresh();
-                }
-            }
-            setTimeout( function(){
-                var loc = window.location;
-                //changing hash to temporary value ensures changes
-                //to repeated values are detected
-                history.pushState("", document.title,
-                        loc.pathname + loc.search + "#clear-icemobilesx");
-                history.pushState("", document.title,
-                        loc.pathname + loc.search);
-                var sxEvent = {
-                    name : name,
-                    value : value
-                };
-                if ("!r" === name.substring(0,2))  {
-                    //need to implement iteration over the full set
-                    //of response values
-                    sxEvent.response = value;
-                    sxEvent.name = "";
-                    sxEvent.value = "";
-                }
-                if (ice.mobi.deviceCommandCallback)  {
-                    ice.mobi.deviceCommandCallback(sxEvent);
-                    ice.mobi.deviceCommandCallback = null;
-                }
-            }, 1);
-        }
-    }, false);
 }
 ice.mobi.inputText = {
     activate: function(clientId, cfg){
@@ -1203,124 +1133,6 @@ ice.mobi.formOf = function(element) {
             return parent;
         }
         parent = parent.parentNode;
-    }
-}
-
-ice.mobi.getDeviceCommand = function()  {
-    var sxkey = "#icemobilesx";
-    var sxlen = sxkey.length;
-    var locHash = "" + window.location.hash;
-    if (sxkey === locHash.substring(0, sxlen))  {
-        return locHash.substring(sxlen + 1);
-    }
-    return null;
-}
-
-ice.mobi.sx = function (element, uploadURL) {
-    var ampchar = String.fromCharCode(38);
-    var form = ice.mobi.formOf(element);
-    var formAction = form.getAttribute("action");
-    var command = element.getAttribute("data-command");
-    var id = element.getAttribute("data-id");
-    var sessionid = element.getAttribute("data-jsessionid");
-    var ub = element.getAttribute("data-ub");
-    if ((null == id) || ("" == id)) {
-        id = element.getAttribute("id");
-    }
-    var params = element.getAttribute("data-params");
-    var windowLocation = window.location;
-    var barURL = windowLocation.toString();
-    var baseURL = barURL.substring(0,
-            barURL.lastIndexOf("/")) + "/";
-    var ubConfig = "";
-    if ((null != ub) && ("" != ub)) {
-        if ("." === ub) {
-            ubConfig = "ub=" + escape(baseURL) + ampchar;
-        } else {
-            ubConfig = "ub=" + escape(ub) + ampchar;
-        }
-    }
-
-    if (!uploadURL) {
-        uploadURL = element.getAttribute("data-posturl");
-    }
-    if (!uploadURL) {
-        if (0 === formAction.indexOf("/")) {
-            uploadURL = window.location.origin + formAction;
-        } else if ((0 === formAction.indexOf("http://")) ||
-                (0 === formAction.indexOf("https://"))) {
-            uploadURL = formAction;
-        } else {
-            uploadURL = baseURL + formAction;
-        }
-    }
-
-    var returnURL = "" + window.location;
-    if ("" == window.location.hash) {
-        var lastHash = returnURL.lastIndexOf("#");
-        if (lastHash > 0) {
-            returnURL = returnURL.substring(0, lastHash);
-        }
-        returnURL += "#icemobilesx";
-    }
-
-    if ("" != params) {
-        params = ubConfig + params;
-    }
-
-    var sessionidClause = "";
-    if ("" != sessionid) {
-        sessionidClause = "&JSESSIONID=" + escape(sessionid);
-    }
-    var sxURL = "icemobile:c=" + escape(command +
-            "?id=" + id + ampchar + params) +
-            "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
-            sessionidClause +
-            "&p=" + escape(ice.mobi.serialize(form, false));
-
-    window.location = sxURL;
-}
-
-ice.mobi.impl.getSplashClause = function()  {
-    var splashClause = "";
-    if (null != ice.mobi.splashImageURL)  {
-        var splashImage = "i=" + escape(ice.mobi.splashImageURL);
-        splashClause = "&s=" + escape(splashImage);
-    }
-    return splashClause;
-}
-
-ice.mobi.unpackDeviceResponse = function (data)  {
-    var result = {};
-    var params = data.split("&");
-    var len = params.length;
-    for (var i = 0; i < len; i++) {
-        var splitIndex = params[i].indexOf("=");
-        var paramName = unescape(params[i].substring(0, splitIndex));
-        var paramValue = unescape(params[i].substring(splitIndex + 1));
-        if ("!" === paramName.substring(0,1))  {
-            //ICEmobile parameters are set directly
-            result[paramName.substring(1)] = paramValue;
-        } else  {
-            //only one user value is supported
-            result.name = paramName;
-            result.value = paramValue;
-        }
-    }
-    return result;
-}
-
-ice.mobi.invoke = function(element)  {
-    var command = element.getAttribute("data-command");
-    if (ice[command])  {
-        var params = element.getAttribute("data-params");
-        var id = element.getAttribute("data-id");
-        if ((null == id) || ("" == id)) {
-            id = element.getAttribute("id");
-        }
-        ice[command](id,params);
-    } else {
-        ice.mobi.sx(element);
     }
 }
 
