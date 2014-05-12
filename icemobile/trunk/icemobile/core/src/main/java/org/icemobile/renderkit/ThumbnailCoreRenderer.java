@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the
@@ -34,6 +34,13 @@ public class ThumbnailCoreRenderer {
         ClientDescriptor cd = component.getClient();
         if (cd.isDesktopBrowser()){
         //    logger.info("desktop browser");
+            return;
+        }
+        boolean renderThumbnail = false;
+        if (cd.isICEmobileContainer() || cd.isSXRegistered()){
+            renderThumbnail = true;
+        }
+        if (!renderThumbnail){
             return;
         }
         String thumbId = component.getMFor() + "-thumb";
