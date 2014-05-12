@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the
@@ -114,10 +114,11 @@ public class CSSUtils {
             theme = Theme.ANDROID_LIGHT;
         } 
         else if (client.isIOS()) {
+            /*
             if( client.isIOS7() ){
                 theme = Theme.IOS7;
             }
-            else if (view == View.SMALL) {
+            else*/ if (view == View.SMALL) {
                 theme = Theme.IPHONE;
             }
             else if( view == View.LARGE ){
