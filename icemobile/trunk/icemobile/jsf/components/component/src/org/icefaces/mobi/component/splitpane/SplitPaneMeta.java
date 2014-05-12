@@ -14,14 +14,15 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.component.meta;
+package org.icefaces.mobi.component.splitpane;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Facet;
 import org.icefaces.ace.meta.annotation.Facets;
 import org.icefaces.ace.meta.annotation.JSP;
 import org.icefaces.ace.meta.annotation.Property;
-import org.icemobile.component.baseMeta.PanelMeta;
+import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -39,21 +40,9 @@ import javax.faces.component.UIComponent;
                 "page layout.  It can be scrollable, have columnDivider at certain location. " +
                 " Requires a left and right facet for two, side by side, panels." +
                 " Eventually will also be resizable.")
-@JSP(tagName                        = "splitPane",
-     tagClass                       = "org.icemobile.jsp.tags.layout.SplitPaneTag",
-     generatedTagClass              = "org.icemobile.jsp.tags.layout.SplitPaneBaseTag",
-     generatedInterfaceClass        = "org.icemobile.component.ISplitPane",
-     generatedInterfaceExtendsClass = "org.icemobile.component.IMobiComponent",
-     tlddoc = "SplitPane must be used with 2 children that are " +
-              "fragment.  The first will represent the left and the " +
-              "second the right side, as only vertical split is currently " +
-              "supported.  The user may determine the width of the first or " +
-              "left column with an integer % value with the remainder " +
-              "being assigned to the right column or inner div. both " +
-              "inner children will be scrollable by default unless " +
-              "scrollable attribute is set to false.")
+
 @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
-public class SplitPaneMeta extends PanelMeta {
+public class SplitPaneMeta extends UIPanelMeta{
     @Property(defaultValue="true",
              tlddoc="Determines if the contents of this panel are both scrollable.")
     private boolean scrollable;
@@ -69,6 +58,15 @@ public class SplitPaneMeta extends PanelMeta {
         @Facet
         UIComponent right;
     }
+
+    @Property(tlddoc = TLDConstants.STYLE)
+    private String style;
+
+    @Property(tlddoc = TLDConstants.STYLECLASS)
+    private String styleClass;
+
+    @Property(defaultValue="false", tlddoc = TLDConstants.DISABLED)
+    private boolean disabled;
 
  /*   @Property(defaultValue="none",
               tlddoc = " TODO resize needs to be further defined, but initially will be 2 adjacent panes " +

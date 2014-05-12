@@ -559,7 +559,7 @@
 	<delete dir="${tld.doc}"/>
 	<mkdir dir="${tld.doc}"/>
 	<gen.tld.doc tld.file="${tld.file}" />
-	<gen.tld.doc tld.file="${tld.file2}" />
+<!--	<gen.tld.doc tld.file="${tld.file2}" /> -->
 </target>
 
 

@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.component.meta;
+package org.icefaces.mobi.component.openresource;
 
 
 import org.icefaces.ace.meta.annotation.Component;
@@ -23,7 +23,8 @@ import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.annotation.Only;
 import org.icefaces.ace.meta.annotation.OnlyType;
 import org.icefaces.ace.meta.annotation.JSP;
-import org.icemobile.component.baseMeta.SimpleMeta;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -43,34 +44,22 @@ import javax.faces.application.ResourceDependency;
                 " as a button or a link, whichever is easier. On compatible devices," +
                 " this is a device command where the value of the link is passed to an \"open\" command. "
 )
-@JSP(tagName                        = "openResource",
-     tagClass                       = "org.icemobile.jsp.tags.resource.OpenResourceTag",
-     generatedTagClass              = "org.icemobile.jsp.tags.resource.OpenResourceBaseTag",
-     generatedInterfaceClass        = "org.icemobile.component.IOpenResource",
-     generatedInterfaceExtendsClass = "org.icemobile.component.IBaseClientComponent",
-     tlddoc = "This component provides a link to a resource that will be opened on a mobile device" +
-                " For desktop, this falls back to a simple hyperlink. For the short term it can be styled" +
-                " as a button or a link, whichever is easier. On compatible devices," +
-                " this is a device command where the value of the link is passed to an \"open\" command. " )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 
-public class OpenResourceMeta extends SimpleMeta{
+public class OpenResourceMeta extends UIComponentBaseMeta{
 
     @Property(tlddoc = "The link to resource source. for now a url ")
     private Object value;
 
-    @Only(OnlyType.JSF)
     @Property(defaultValue = "session", tlddoc="The JSF Resource scope of the object resolving from the \"value\" " +
     		"attribute. Possible values are \"flash\", \"request\", \"view\", \"session\", and \"application\". ")
     private String scope;
 
-    @Only(OnlyType.JSF)
     @Property(tlddoc = "The name is used for JSF Resource registration. ")
     private String name;
 
-    @Only(OnlyType.JSF)
     @Property(tlddoc = "The library used for JSF Resource registration. ")
     private String library;
 
@@ -83,5 +72,13 @@ public class OpenResourceMeta extends SimpleMeta{
     @Field
     private String srcAttribute;
 
+    @Property(tlddoc = TLDConstants.STYLE)
+    private String style;
+
+    @Property(tlddoc = TLDConstants.STYLECLASS)
+    private String styleClass;
+
+    @Property(defaultValue="false", tlddoc = TLDConstants.DISABLED)
+    private boolean disabled;
 }
 

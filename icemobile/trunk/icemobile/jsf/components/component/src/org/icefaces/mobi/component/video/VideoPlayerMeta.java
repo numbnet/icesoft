@@ -14,11 +14,12 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.component.meta;
+package org.icefaces.mobi.component.video;
 
 
 import org.icefaces.ace.meta.annotation.*;
-import org.icemobile.component.baseMeta.SimpleMeta;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -36,18 +37,11 @@ import javax.faces.application.ResourceDependency;
         tlddoc = "videoPlayer renders a video player to play back videos. " +
                 "The component can be bound to a variety of source types. "
 )
-@JSP(tagName                        = "videoPlayer",
-     tagClass                       = "org.icemobile.jsp.tags.media.VideoPlayerTag",
-     generatedTagClass              = "org.icemobile.jsp.tags.media.VideoPlayerBaseTag",
-     generatedInterfaceClass        = "org.icemobile.component.IVideoPlayer",
-     generatedInterfaceExtendsClass = "org.icemobile.component.IBaseClientComponent",
-     tlddoc = "This component renders an HTML5 video element. " +
-              "Playback options can be controlled. " )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 
-public class VideoPlayerMeta extends SimpleMeta {
+public class VideoPlayerMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "auto", tlddoc = "Determies whether video source is preloaded. Accepted values are auto,none or metadata;  " +
              "where metadata means preload just the metadata, auto leaves the browser to " +
@@ -107,5 +101,13 @@ public class VideoPlayerMeta extends SimpleMeta {
     @Field
     private String srcAttribute;
 
+    @Property(tlddoc = TLDConstants.STYLE)
+    private String style;
+
+    @Property(tlddoc = TLDConstants.STYLECLASS)
+    private String styleClass;
+
+    @Property(defaultValue="false", tlddoc = TLDConstants.DISABLED)
+    private boolean disabled;
  }
 
