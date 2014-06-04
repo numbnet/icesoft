@@ -35,7 +35,6 @@ package com.icesoft.faces.application;
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
-import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.parser.JspPageToDocument;
@@ -318,8 +317,8 @@ public class D2DViewHandler extends ViewHandler {
 
     private String getContextPath(ExternalContext extContext) {
         if (contextPath == null) {
-            Configuration configuration = ((BridgeExternalContext) extContext).getConfiguration();
-            contextPath = configuration.getAttribute("publicContextPath", extContext.getRequestContextPath());
+            String publicContextPath = extContext.getInitParameter("com.icesoft.faces.publicContextPath");
+            contextPath = publicContextPath == null ? extContext.getRequestContextPath() : publicContextPath;
             if (!contextPath.startsWith("/")) {
                 contextPath = "/" + contextPath;
             }
