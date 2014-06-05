@@ -21,6 +21,7 @@ import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icemobile.util.ClientDescriptor;
 import org.icefaces.mobi.utils.JSONBuilder;
+import org.icemobile.util.UserAgentInfo;
 
 import java.lang.StringBuilder;
 import java.util.Date;
@@ -71,6 +72,13 @@ public class InputTextRenderer extends BaseInputRenderer {
         }
 
         String type = inputText.validateType(inputText.getType());
+
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        //iE 8 and 9 do not support number input type
+        if (client.isIE9orLessBrowser()) {
+            type = "text";
+        }
+
         String componentType = "input";
 
         if (type.equals("textarea")) {
@@ -106,15 +114,13 @@ public class InputTextRenderer extends BaseInputRenderer {
         } else if (isNumberType) {
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getNumberAttributeNames());
         } else {
-            ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-            String typeVal = (String)uiComponent.getAttributes().get("type");
             if( isDateType && client.isAndroidBrowserOrWebView() ){ //Android container borks date types
-                typeVal = "text";
+                type = "text";
             }
             if( client.isIOS() ){
                 writer.writeAttribute("onblur", "setTimeout(ice.mobi.resizeAllContainers,10);", null);
             }
-            writer.writeAttribute("type", typeVal, null);
+            writer.writeAttribute("type", type, null);
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getInputtextAttributeNames());
         }
         if (!isDateType) writer.writeAttribute("autocorrect", "off", null);
