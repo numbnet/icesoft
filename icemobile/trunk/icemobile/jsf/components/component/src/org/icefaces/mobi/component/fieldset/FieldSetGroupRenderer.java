@@ -39,7 +39,7 @@ public class FieldSetGroupRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
         FieldSetGroup field = (FieldSetGroup) uiComponent;
         //write out root tag
-        writer.startElement(HTML.FIELDSET_ELEM, uiComponent);
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
 
         // apply default style class
@@ -65,6 +65,6 @@ public class FieldSetGroupRenderer extends Renderer {
         FieldSetGroup field = (FieldSetGroup) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
         OnlineStatusListenerUtil.renderOnlineStatusScript(field, writer);
-        writer.endElement(HTML.FIELDSET_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
      }
 }
