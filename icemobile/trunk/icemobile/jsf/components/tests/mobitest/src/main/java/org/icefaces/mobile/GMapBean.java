@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.samples.mobileshowcase.view.examples.layout.gmap;
+package org.icefaces.mobile;
 
 import java.io.Serializable;
 

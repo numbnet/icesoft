@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.mobile;
+package org.icefaces.mobile.layout;
 
 
 import java.io.Serializable;
