@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.mobile;
+package org.icefaces.mobile.util;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -67,11 +67,11 @@ public class VisitTreeMonitor implements Serializable {
                  });
     }
 
-    public List<org.icefaces.mobile.VisitTreeMonitor.CompDef> getResultCompList() {
+    public List<VisitTreeMonitor.CompDef> getResultCompList() {
         return resultCompList;
     }
 
-    public void setResultCompList(List<org.icefaces.mobile.VisitTreeMonitor.CompDef> resultCompList) {
+    public void setResultCompList(List<VisitTreeMonitor.CompDef> resultCompList) {
         this.resultCompList = resultCompList;
     }
 

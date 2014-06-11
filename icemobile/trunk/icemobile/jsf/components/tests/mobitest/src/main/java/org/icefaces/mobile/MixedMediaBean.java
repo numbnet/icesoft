@@ -14,32 +14,24 @@
  * governing permissions and limitations under the License.
  */
 
-package icefaces.mobile;
+package org.icefaces.mobile;
 
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
 
-import org.icefaces.application.PushRenderer;
-import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.util.EnvUtils;
-
 /**
  * <p>The CameraBean is used to test camera component.</p>
  */
