@@ -338,8 +338,8 @@ public class DataViewRenderer extends Renderer {
             if (value != null) {
                 Boolean bval = (Boolean)value;
                 String resUrl;
-                if (bval) resUrl = "icon-check";
-                else resUrl = "icon-check-empty";
+                if (bval) resUrl = "fa fa-check";
+                else resUrl = "fa fa-check-empty";
 
                 writer.writeAttribute(HTML.CLASS_ATTR, resUrl, null);
             }

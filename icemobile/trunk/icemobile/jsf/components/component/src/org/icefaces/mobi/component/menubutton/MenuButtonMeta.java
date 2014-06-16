@@ -16,7 +16,6 @@
 package org.icefaces.mobi.component.menubutton;
 
 
-import javax.el.MethodExpression;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Field;
@@ -25,8 +24,6 @@ import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-
-
 
 @Component(
         tagName = "menuButton",

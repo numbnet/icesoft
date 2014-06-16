@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="icefaces-core" default="lib" basedir="." xmlns:ice="urn:ICEsoft" >
+<project name="icefaces-core" default="all" basedir="." xmlns:ice="urn:ICEsoft" >
 	<description>
         ICEfaces Mobile Core
     </description>

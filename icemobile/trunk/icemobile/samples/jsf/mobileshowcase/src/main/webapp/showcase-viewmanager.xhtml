@@ -41,7 +41,8 @@
              transitionType="#{viewManagerBean.transitionType}"
              headerStyle="#{viewManagerBean.headerStyle}"
              selected="#{viewManagerBean.view}"
-             history="#{viewManagerBean.history}">
+             history="#{viewManagerBean.history}"
+             clientSide="#{viewManagerBean.clientSide}">
              
              <!-- SPLASH SCREEN -->
              <mobi:view id="splash" splash="true" includeInMenu="false">
@@ -113,7 +114,7 @@
                 </ui:include>
              </mobi:view>
              <!-- TABSET -->
-             <mobi:view id="tabsetDemo" title="Tabset" menuIcon="folder-close"
+             <mobi:view id="tabsetDemo" title="Tabset" menuIcon="folder"
                 navBarGroup="tabset">
                  <ui:include src="/WEB-INF/includes/examples/layout/tabset-example.xhtml" />
              </mobi:view>
@@ -163,7 +164,7 @@
              </mobi:view>
              
              <!-- DATE AND TIME -->
-             <mobi:view id="dateTimeDemo" title="Date and Time" menuIcon="time"
+             <mobi:view id="dateTimeDemo" title="Date and Time" menuIcon="clock-o"
                 navBarGroup="dateTime">
                  <ui:include src="/WEB-INF/includes/examples/input/date-example.xhtml" />
              </mobi:view>
@@ -180,7 +181,7 @@
              </mobi:view>
              
              <!-- FLIPSWITCH -->
-             <mobi:view id="flipswitchDemo" title="Flip Switch" menuIcon="off"
+             <mobi:view id="flipswitchDemo" title="Flip Switch" menuIcon="power-off"
                 navBarGroup="flipswitch">
                  <ui:include src="/WEB-INF/includes/examples/input/flip-switch-example.xhtml" />
              </mobi:view>
