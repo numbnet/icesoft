@@ -67,8 +67,8 @@
       <snapshotVersion>
         <classifier>javadoc</classifier>
         <extension>jar.asc.asc</extension>
-        <value>4.0.0-20140512.191915-7</value>
-        <updated>20140512191915</updated>
+        <value>4.0.0-20140616.225335-8</value>
+        <updated>20140616225335</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>sources</classifier>
