@@ -87,11 +87,12 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         }
         writer.startElement(HTML.H1_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_title", "pageTitle");
+        /*
         if( selected == null || selected.length() == 0 || ViewManager.MENU_ID.equals(selected))
             writer.write(vm.getTitle());
         else{
             writer.write(vm.getSelectedView().getTitle());
-        }
+        }*/
         writer.endElement(HTML.H1_ELEM);
         writer.startElement(HTML.ANCHOR_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_back", null);
@@ -126,7 +127,7 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
                 writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view.getId() + "');", null);
                 if( view.getMenuIcon() != null ){
                     writer.startElement("i", null);
-                    writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-menu-icon icon-" + view.getMenuIcon(), null);
+                    writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-menu-icon fa fa-" + view.getMenuIcon(), null);
                     writer.endElement("i");
                 }
                 writer.write(view.getTitle());

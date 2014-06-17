@@ -87,7 +87,9 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         } 
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = camcorder.getClientId();
-        
+        writer.startElement(SPAN_ELEM, null);
+        RenderUtils.writeStyle(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
         if( client.isBridgeItSupportedPlatform(BridgeItCommand.CAMCORDER) ){
         
             RenderUtils.startButtonElem(uiComponent, writer);
@@ -108,8 +110,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
             writer.writeAttribute(ONCLICK_ATTR, script, null);
             
             RenderUtils.writeDisabled(uiComponent, writer);
-            RenderUtils.writeStyle(uiComponent, writer);
-            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
             RenderUtils.writeTabIndex(uiComponent, writer);
             
             writer.startElement(SPAN_ELEM, camcorder);
@@ -143,5 +144,6 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
                 writer.endElement(INPUT_ELEM);
             }
         }
+        writer.endElement(SPAN_ELEM);
     }
 }

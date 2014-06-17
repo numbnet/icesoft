@@ -71,6 +71,10 @@ public class ViewManagerMeta extends UIComponentBaseMeta {
             + " be set to the associated view title. ", defaultValue = "mobi-view")
     private String backButtonLabel;
     
+    @Property(tlddoc = "Render the views client side. If set to true, the views will be fully rendered, and fully client side navigation will be possible.",
+        defaultValue = "false")
+    private boolean clientSide; 
+    
     
 
     

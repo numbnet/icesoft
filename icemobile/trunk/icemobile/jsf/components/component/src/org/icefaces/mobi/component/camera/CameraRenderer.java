@@ -99,7 +99,9 @@ public class CameraRenderer extends Renderer {
         } 
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = camera.getClientId();
-        
+        writer.startElement(SPAN_ELEM, null);
+        RenderUtils.writeStyle(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
         if( client.isBridgeItSupportedPlatform(BridgeItCommand.CAMERA) ){
             RenderUtils.startButtonElem(uiComponent, writer);
             
@@ -118,9 +120,9 @@ public class CameraRenderer extends Renderer {
             script += "});";
             writer.writeAttribute(ONCLICK_ATTR, script, null);
             
+            writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
+            
             RenderUtils.writeDisabled(uiComponent, writer);
-            RenderUtils.writeStyle(uiComponent, writer);
-            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
             RenderUtils.writeTabIndex(uiComponent, writer);
             
             writer.startElement(SPAN_ELEM, camera);
@@ -159,7 +161,7 @@ public class CameraRenderer extends Renderer {
                 writer.endElement(INPUT_ELEM);
             }
         }
-        
+        writer.endElement(SPAN_ELEM);
         
        
     }

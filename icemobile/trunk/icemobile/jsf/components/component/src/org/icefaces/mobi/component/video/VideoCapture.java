@@ -15,10 +15,7 @@
  */
 package org.icefaces.mobi.component.video;
 
-import org.icefaces.mobi.api.ThumbnailProvider;
-
-
-public class VideoCapture extends VideoCaptureBase implements ThumbnailProvider{
+public class VideoCapture extends VideoCaptureBase{
 
    
 
