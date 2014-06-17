@@ -63,6 +63,8 @@ public class UserAgentInfo implements Serializable{
     public static final String FIREFOX_ANDROID_MOBILE = "android; mobile;";
     public static final String CHROME = "chrome";
     public static final String ANDROID2 = "android 2";
+    public static final String ANDROID2_2 = "android 2.2";
+    public static final String WP8 = "windows phone 8";
     
 
     public UserAgentInfo(String userAgent) {
@@ -235,6 +237,13 @@ public class UserAgentInfo implements Serializable{
    public boolean isAndroid2(){
        return userAgentString.contains(ANDROID2);
    }
+   
+   public boolean isAndroid2_2(){
+       return userAgentString.contains(ANDROID2_2);
+   }
 
+   public boolean isWindowsPhone8(){
+       return userAgentString.contains(WP8);
+   }
 
 }

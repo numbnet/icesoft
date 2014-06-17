@@ -17,10 +17,12 @@
 package org.icemobile.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -36,8 +38,6 @@ public class ClientDescriptor implements Serializable{
     private final static String SESSION_KEY = "mobiClient";
     private final static String HEADER_ACCEPT = "Accept";
     private final static String HEADER_ACCEPT_BLACKBERRY_EMUL = "vnd.rim";  //found when emulating IE or FF on BB
-    private final static String COOKIE_NAME_ICEMOBILE_CONTAINER = "com.icesoft.user-agent";
-    private final static String COOKIE_VALUE_ICEMOBILE_CONTAINER = "HyperBrowser";
     private final static String SIMULATOR_KEY = "org.icemobile.simulator";
 
     private static Logger log = Logger.getLogger(ClientDescriptor.class.getName());
@@ -267,6 +267,10 @@ public class ClientDescriptor implements Serializable{
         return _userAgentInfo.isAndroid2();
     }
     
+    public boolean isBridgeItSupportedAndroid(){
+        return isAndroidOS() && !_userAgentInfo.isAndroid2_2();
+    }
+    
     /*
      * Fixed position is problematic on Android 2 (non-Firefox) and all Android
      * WebViews on tablets, as well as BlackBerry
@@ -276,6 +280,49 @@ public class ClientDescriptor implements Serializable{
                && !(isHandheldBrowser() && isAndroid2OS() && !_userAgentInfo.isFirefoxAndroid() ) //Handheld, Android2 (Firefox works well, no Chrome available)
                && !_userAgentInfo.isBlackberry6OS(); //BB6 & 7 do not support fixed well
     }
+    
+    private List<BridgeItCommand> commands = Arrays.asList(BridgeItCommand.values());
+    private boolean[] iPhone6Support =  {true, true, true, true, true, true, false, true, true, false, false};
+    private boolean[] iPhone7Support =  {true, true, true, true, true, true, true, true, true, true, true};
+    private boolean[] iPad6Support =  {true, true, true, true, true, true, false, true, false, false, false};
+    private boolean[] iPad7Support =  {true, true, true, true, true, true, true,  true, false, true, true};
+    private boolean[] wp8Support =  {true, true, true, true, false, false, true, false, true, false, false};
+    private boolean[] androidSupport =  {true, true,  true,  true, false, true,  true, true,  true, false, true};
 
 
+    public boolean isBridgeItSupportedPlatform(BridgeItCommand command){
+        if( command == null ){
+            return false;
+        }
+        if( "register".equals(command.code) ){
+            return true; //do not check platform for cloud push registration
+        }
+        boolean supported = false;
+        int index = commands.indexOf(command);
+        if( isBridgeItSupportedAndroid() ){
+            return androidSupport[index];
+        }
+        else if( _userAgentInfo.isWindowsPhone8() ){
+            return wp8Support[index];
+        }
+        else if( isIOS() ){
+            if( _userAgentInfo.isIphone() ){
+                if( isIOS6() ){
+                    return iPhone6Support[index];
+                }
+                else if( isIOS7() ){
+                    return iPhone7Support[index];
+                }
+            }
+            else {
+                if( isIOS6() ){
+                    return iPad6Support[index];
+                }
+                else if( isIOS7() ){
+                    return iPad7Support[index];
+                }
+            }
+        }
+        return supported;
+    };
 }

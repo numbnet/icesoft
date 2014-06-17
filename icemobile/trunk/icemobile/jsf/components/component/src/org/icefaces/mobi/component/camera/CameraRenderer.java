@@ -20,6 +20,12 @@ package org.icefaces.mobi.component.camera;
 import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
 import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
 import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+import static org.icefaces.mobi.utils.HTML.ANCHOR_ELEM;
+import static org.icefaces.mobi.utils.HTML.INPUT_ELEM;
+import static org.icefaces.mobi.utils.HTML.ID_ATTR;
+import static org.icefaces.mobi.utils.HTML.NAME_ATTR;
+import static org.icefaces.mobi.utils.HTML.TYPE_ATTR;
+import static org.icefaces.mobi.utils.HTML.INPUT_TYPE_FILE;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -35,7 +41,9 @@ import javax.faces.render.Renderer;
 import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.BridgeItCommand;
 import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
 
 
 public class CameraRenderer extends Renderer {
@@ -85,40 +93,75 @@ public class CameraRenderer extends Renderer {
         throws IOException {
         Camera camera = (Camera) uiComponent;
         String oldLabel = camera.getButtonLabel();
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
         if (MobiJSFUtils.uploadInProgress(camera))  {
             camera.setButtonLabel(camera.getCaptureMessageLabel()) ;
         } 
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = camera.getClientId();
         
-        RenderUtils.startButtonElem(uiComponent, writer);
-        
-        String script = "bridgeit.camera('" + clientId + "', '', "
-                + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', ";
-        script += "cookies:{'JSESSIONID':'" + 
-                MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}";
-        int maxwidth = camera.getMaxwidth();
-        if (maxwidth > 0){
-            script += ", maxwidth: " + maxwidth;
+        if( client.isBridgeItSupportedPlatform(BridgeItCommand.CAMERA) ){
+            RenderUtils.startButtonElem(uiComponent, writer);
+            
+            String script = "bridgeit.camera('" + clientId + "', '', "
+                    + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', ";
+            script += "cookies:{'JSESSIONID':'" + 
+                    MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}";
+            int maxwidth = camera.getMaxwidth();
+            if (maxwidth > 0){
+                script += ", maxwidth: " + maxwidth;
+            }
+            int maxheight = camera.getMaxheight();
+            if (maxheight > 0){
+                script += ", maxheight:" + maxheight;
+            }
+            script += "});";
+            writer.writeAttribute(ONCLICK_ATTR, script, null);
+            
+            RenderUtils.writeDisabled(uiComponent, writer);
+            RenderUtils.writeStyle(uiComponent, writer);
+            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            RenderUtils.writeTabIndex(uiComponent, writer);
+            
+            writer.startElement(SPAN_ELEM, camera);
+            writer.writeText(camera.getButtonLabel(), null);
+            writer.endElement(SPAN_ELEM);
+            
+            writer.endElement(BUTTON_ELEM);
+            camera.setButtonLabel(oldLabel);
         }
-        int maxheight = camera.getMaxheight();
-        if (maxheight > 0){
-            script += ", maxheight:" + maxheight;
+        else{
+            //link
+            writer.startElement(ANCHOR_ELEM, uiComponent);
+            writer.writeAttribute(ID_ATTR, clientId, null);
+            RenderUtils.writeDisabled(uiComponent, writer);
+            RenderUtils.writeStyle(uiComponent, writer);
+            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            RenderUtils.writeTabIndex(uiComponent, writer);
+            if( !camera.isDisabled()){
+                writer.writeAttribute(ONCLICK_ATTR, "document.getElementById('" + clientId + "').style.display = 'none'; document.getElementById('" + clientId + "_upload').style.display = 'inline-block';", null);
+            }
+            writer.writeText(camera.getButtonLabel(), null);
+            writer.endElement(ANCHOR_ELEM);
+            //file upload
+            if( !camera.isDisabled()){
+                writer.startElement(INPUT_ELEM, null);
+                writer.writeAttribute(ID_ATTR, clientId + "_upload", null);
+                writer.writeAttribute("style", "display:none", null);
+                writer.writeAttribute(NAME_ATTR, clientId, null);
+                writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE, null);
+                if( client.isIEBrowser() ){
+                    writer.writeAttribute("accept", "image/*;capture=camera", null);
+                }
+                else{
+                    writer.writeAttribute("accept", "image/*", null);
+                }
+                writer.endElement(INPUT_ELEM);
+            }
         }
-        script += "});";
-        writer.writeAttribute(ONCLICK_ATTR, script, null);
         
-        RenderUtils.writeDisabled(uiComponent, writer);
-        RenderUtils.writeStyle(uiComponent, writer);
-        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
-        RenderUtils.writeTabIndex(uiComponent, writer);
         
-        writer.startElement(SPAN_ELEM, camera);
-        writer.writeText(camera.getButtonLabel(), null);
-        writer.endElement(SPAN_ELEM);
-        
-        writer.endElement(BUTTON_ELEM);
-        camera.setButtonLabel(oldLabel);
+       
     }
     
 }
