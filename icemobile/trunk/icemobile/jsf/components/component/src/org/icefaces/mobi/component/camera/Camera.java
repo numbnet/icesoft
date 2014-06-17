@@ -16,9 +16,7 @@
 
 package org.icefaces.mobi.component.camera;
 
-import org.icefaces.mobi.api.ThumbnailProvider;
-
-public class Camera extends CameraBase implements ThumbnailProvider {
+public class Camera extends CameraBase{
 
 
 }

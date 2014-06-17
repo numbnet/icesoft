@@ -63,7 +63,7 @@ public class ViewRenderer extends BaseLayoutRenderer {
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         View view = (View)uiComponent;
         ViewManager vm = (ViewManager)(uiComponent.getParent());
-        if( view.isSplash() || vm.getSelectedView() == view ){
+        if( vm.isClientSide() || view.isSplash() || vm.getSelectedView() == view ){
             JSFUtils.renderChildren(facesContext, uiComponent);
         }
     }
@@ -101,15 +101,16 @@ public class ViewRenderer extends BaseLayoutRenderer {
         String icon, String title)
         throws IOException{
         writer.startElement(HTML.ANCHOR_ELEM, null);
+        /*
         if( active ){
             writer.writeAttribute(HTML.CLASS_ATTR, "active", null);
-        }
+        }*/
         writer.writeAttribute(HTML.STYLE_ATTR, "width: " + width, null);
-        if( !active )
+        //if( !active )
             writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view + "');", null);
         if( icon != null ){
             writer.startElement("i",null);
-            writer.writeAttribute(HTML.CLASS_ATTR, "icon-" + icon, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "fa fa-" + icon, null);
             writer.endElement("i");
         }
         writer.write(title);

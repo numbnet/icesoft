@@ -88,7 +88,9 @@ public class MicrophoneRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = microphone.getClientId();
         ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        
+        writer.startElement(SPAN_ELEM, null);
+        RenderUtils.writeStyle(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
         if( client.isBridgeItSupportedPlatform(BridgeItCommand.MICROPHONE) ){
             RenderUtils.startButtonElem(microphone, writer);
             
@@ -98,8 +100,7 @@ public class MicrophoneRenderer extends Renderer {
             writer.writeAttribute(ONCLICK_ATTR, script, null);
             
             RenderUtils.writeDisabled(uiComponent, writer);
-            RenderUtils.writeStyle(uiComponent, writer);
-            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
             RenderUtils.writeTabIndex(uiComponent, writer);
             
             writer.startElement(SPAN_ELEM, microphone);
@@ -133,7 +134,7 @@ public class MicrophoneRenderer extends Renderer {
                 writer.endElement(INPUT_ELEM);
             }
         }
-        
+        writer.endElement(SPAN_ELEM);
         
     }
 }

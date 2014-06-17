@@ -77,7 +77,6 @@ public class CameraBean implements Serializable {
     private static int sampleUploadCount = 1;
     int fileId = -1;
 	private int numberImages=0;
-    private boolean useNative=false;
     private Resource imageResource = null;
     private File cameraFile;
     private String uploadMessage;
@@ -270,13 +269,6 @@ public class CameraBean implements Serializable {
         this.messageFromAL = messageFromAL;
     }
 
-    public boolean isUseNative() {
-        return useNative;
-    }
-
-    public void setUseNative(boolean useNative) {
-        this.useNative = useNative;
-    }
         // copy the bytes into the resource object.
     public Resource createResourceObject(InputStream fis,
                                                 String resourceName,
