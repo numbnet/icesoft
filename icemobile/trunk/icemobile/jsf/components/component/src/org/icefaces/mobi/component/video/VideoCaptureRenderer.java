@@ -88,6 +88,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = camcorder.getClientId();
         writer.startElement(SPAN_ELEM, null);
+        writer.writeAttribute(ID_ATTR, clientId + "_wpr", null);
         RenderUtils.writeStyle(uiComponent, writer);
         RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
         if( client.isBridgeItSupportedPlatform(BridgeItCommand.CAMCORDER) ){
@@ -121,27 +122,33 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
             camcorder.setButtonLabel(oldLabel);
         }
         else{
-          //link
-            writer.startElement(ANCHOR_ELEM, uiComponent);
-            writer.writeAttribute(ID_ATTR, clientId, null);
-            RenderUtils.writeDisabled(uiComponent, writer);
-            RenderUtils.writeStyle(uiComponent, writer);
-            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
-            RenderUtils.writeTabIndex(uiComponent, writer);
-            if( !camcorder.isDisabled()){
-                writer.writeAttribute(ONCLICK_ATTR, "document.getElementById('" + clientId + "').style.display = 'none'; document.getElementById('" + clientId + "_upload').style.display = 'inline-block';", null);
+            UIComponent fallbackFacet = uiComponent.getFacet("fallback");
+            if( fallbackFacet == null ){
+                //link
+                writer.startElement(ANCHOR_ELEM, uiComponent);
+                writer.writeAttribute(ID_ATTR, clientId, null);
+                RenderUtils.writeDisabled(uiComponent, writer);
+                RenderUtils.writeStyle(uiComponent, writer);
+                RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+                RenderUtils.writeTabIndex(uiComponent, writer);
+                if( !camcorder.isDisabled()){
+                    writer.writeAttribute(ONCLICK_ATTR, "document.getElementById('" + clientId + "').style.display = 'none'; document.getElementById('" + clientId + "_upload').style.display = 'inline-block';", null);
+                }
+                writer.writeText(camcorder.getButtonLabel(), null);
+                writer.endElement(ANCHOR_ELEM);
+                //file upload
+                if( !camcorder.isDisabled()){
+                    writer.startElement(INPUT_ELEM, null);
+                    writer.writeAttribute(ID_ATTR, clientId + "_upload", null);
+                    writer.writeAttribute("style", "display:none", null);
+                    writer.writeAttribute(NAME_ATTR, clientId, null);
+                    writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE, null);
+                    writer.writeAttribute("accept", "video/*;capture=camcorder", null);
+                    writer.endElement(INPUT_ELEM);
+                }
             }
-            writer.writeText(camcorder.getButtonLabel(), null);
-            writer.endElement(ANCHOR_ELEM);
-            //file upload
-            if( !camcorder.isDisabled()){
-                writer.startElement(INPUT_ELEM, null);
-                writer.writeAttribute(ID_ATTR, clientId + "_upload", null);
-                writer.writeAttribute("style", "display:none", null);
-                writer.writeAttribute(NAME_ATTR, clientId, null);
-                writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE, null);
-                writer.writeAttribute("accept", "video/*;capture=camcorder", null);
-                writer.endElement(INPUT_ELEM);
+            else{
+                fallbackFacet.encodeAll(facesContext);
             }
         }
         writer.endElement(SPAN_ELEM);
