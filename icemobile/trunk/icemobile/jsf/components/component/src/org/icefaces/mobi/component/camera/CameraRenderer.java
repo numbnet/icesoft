@@ -100,6 +100,7 @@ public class CameraRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = camera.getClientId();
         writer.startElement(SPAN_ELEM, null);
+        writer.writeAttribute(ID_ATTR, clientId + "_wpr", null);
         RenderUtils.writeStyle(uiComponent, writer);
         RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
         if( client.isBridgeItSupportedPlatform(BridgeItCommand.CAMERA) ){
@@ -133,32 +134,38 @@ public class CameraRenderer extends Renderer {
             camera.setButtonLabel(oldLabel);
         }
         else{
-            //link
-            writer.startElement(ANCHOR_ELEM, uiComponent);
-            writer.writeAttribute(ID_ATTR, clientId, null);
-            RenderUtils.writeDisabled(uiComponent, writer);
-            RenderUtils.writeStyle(uiComponent, writer);
-            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
-            RenderUtils.writeTabIndex(uiComponent, writer);
-            if( !camera.isDisabled()){
-                writer.writeAttribute(ONCLICK_ATTR, "document.getElementById('" + clientId + "').style.display = 'none'; document.getElementById('" + clientId + "_upload').style.display = 'inline-block';", null);
+            UIComponent fallbackFacet = uiComponent.getFacet("fallback");
+            if( fallbackFacet == null ){
+                //link
+                writer.startElement(ANCHOR_ELEM, uiComponent);
+                writer.writeAttribute(ID_ATTR, clientId, null);
+                RenderUtils.writeDisabled(uiComponent, writer);
+                RenderUtils.writeStyle(uiComponent, writer);
+                RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+                RenderUtils.writeTabIndex(uiComponent, writer);
+                if( !camera.isDisabled()){
+                    writer.writeAttribute(ONCLICK_ATTR, "document.getElementById('" + clientId + "').style.display = 'none'; document.getElementById('" + clientId + "_upload').style.display = 'inline-block';", null);
+                }
+                writer.writeText(camera.getButtonLabel(), null);
+                writer.endElement(ANCHOR_ELEM);
+                //file upload
+                if( !camera.isDisabled()){
+                    writer.startElement(INPUT_ELEM, null);
+                    writer.writeAttribute(ID_ATTR, clientId + "_upload", null);
+                    writer.writeAttribute("style", "display:none", null);
+                    writer.writeAttribute(NAME_ATTR, clientId, null);
+                    writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE, null);
+                    if( client.isIEBrowser() ){
+                        writer.writeAttribute("accept", "image/*;capture=camera", null);
+                    }
+                    else{
+                        writer.writeAttribute("accept", "image/*", null);
+                    }
+                    writer.endElement(INPUT_ELEM);
+                }
             }
-            writer.writeText(camera.getButtonLabel(), null);
-            writer.endElement(ANCHOR_ELEM);
-            //file upload
-            if( !camera.isDisabled()){
-                writer.startElement(INPUT_ELEM, null);
-                writer.writeAttribute(ID_ATTR, clientId + "_upload", null);
-                writer.writeAttribute("style", "display:none", null);
-                writer.writeAttribute(NAME_ATTR, clientId, null);
-                writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE, null);
-                if( client.isIEBrowser() ){
-                    writer.writeAttribute("accept", "image/*;capture=camera", null);
-                }
-                else{
-                    writer.writeAttribute("accept", "image/*", null);
-                }
-                writer.endElement(INPUT_ELEM);
+            else{
+                fallbackFacet.encodeAll(facesContext);
             }
         }
         writer.endElement(SPAN_ELEM);

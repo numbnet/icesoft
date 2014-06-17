@@ -89,6 +89,7 @@ public class MicrophoneRenderer extends Renderer {
         String clientId = microphone.getClientId();
         ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
         writer.startElement(SPAN_ELEM, null);
+        writer.writeAttribute(ID_ATTR, clientId + "_wpr", null);
         RenderUtils.writeStyle(uiComponent, writer);
         RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
         if( client.isBridgeItSupportedPlatform(BridgeItCommand.MICROPHONE) ){
@@ -111,27 +112,33 @@ public class MicrophoneRenderer extends Renderer {
             microphone.setButtonLabel(oldLabel);
         }
         else{
-          //link
-            writer.startElement(ANCHOR_ELEM, uiComponent);
-            writer.writeAttribute(ID_ATTR, clientId, null);
-            RenderUtils.writeDisabled(uiComponent, writer);
-            RenderUtils.writeStyle(uiComponent, writer);
-            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
-            RenderUtils.writeTabIndex(uiComponent, writer);
-            if( !microphone.isDisabled()){
-                writer.writeAttribute(ONCLICK_ATTR, "document.getElementById('" + clientId + "').style.display = 'none'; document.getElementById('" + clientId + "_upload').style.display = 'inline-block';", null);
+            UIComponent fallbackFacet = uiComponent.getFacet("fallback");
+            if( fallbackFacet == null ){
+                //link
+                writer.startElement(ANCHOR_ELEM, uiComponent);
+                writer.writeAttribute(ID_ATTR, clientId, null);
+                RenderUtils.writeDisabled(uiComponent, writer);
+                RenderUtils.writeStyle(uiComponent, writer);
+                RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+                RenderUtils.writeTabIndex(uiComponent, writer);
+                if( !microphone.isDisabled()){
+                    writer.writeAttribute(ONCLICK_ATTR, "document.getElementById('" + clientId + "').style.display = 'none'; document.getElementById('" + clientId + "_upload').style.display = 'inline-block';", null);
+                }
+                writer.writeText(microphone.getButtonLabel(), null);
+                writer.endElement(ANCHOR_ELEM);
+                //file upload
+                if( !microphone.isDisabled()){
+                    writer.startElement(INPUT_ELEM, null);
+                    writer.writeAttribute(ID_ATTR, clientId + "_upload", null);
+                    writer.writeAttribute("style", "display:none", null);
+                    writer.writeAttribute(NAME_ATTR, clientId, null);
+                    writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE, null);
+                    writer.writeAttribute("accept", "audio/*", null);
+                    writer.endElement(INPUT_ELEM);
+                }
             }
-            writer.writeText(microphone.getButtonLabel(), null);
-            writer.endElement(ANCHOR_ELEM);
-            //file upload
-            if( !microphone.isDisabled()){
-                writer.startElement(INPUT_ELEM, null);
-                writer.writeAttribute(ID_ATTR, clientId + "_upload", null);
-                writer.writeAttribute("style", "display:none", null);
-                writer.writeAttribute(NAME_ATTR, clientId, null);
-                writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE, null);
-                writer.writeAttribute("accept", "audio/*", null);
-                writer.endElement(INPUT_ELEM);
+            else{
+                fallbackFacet.encodeAll(facesContext);
             }
         }
         writer.endElement(SPAN_ELEM);

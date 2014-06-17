@@ -91,6 +91,8 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
 
     // upload error message
     private String uploadMessage;
+    
+    private boolean useCustomFallback;
 
     public MicrophoneBean() {
         super(MicrophoneBean.class);
@@ -161,5 +163,13 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
 
     public void setUploadMessage(String uploadMessage) {
         this.uploadMessage = uploadMessage;
+    }
+
+    public boolean isUseCustomFallback() {
+        return useCustomFallback;
+    }
+
+    public void setUseCustomFallback(boolean useCustomFallback) {
+        this.useCustomFallback = useCustomFallback;
     }
 }

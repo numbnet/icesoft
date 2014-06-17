@@ -86,6 +86,8 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
     private Integer maxHeight;
     private Integer maxWidth;
 
+    private boolean useCustomFallback;
+    
     public CameraBean() {
         super(CameraBean.class);
     }
@@ -162,5 +164,13 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
 
     public void setMaxWidth(Integer width) {
         this.maxWidth = width;
+    }
+
+    public boolean isUseCustomFallback() {
+        return useCustomFallback;
+    }
+
+    public void setUseCustomFallback(boolean useCustomFallback) {
+        this.useCustomFallback = useCustomFallback;
     }
 }

@@ -92,6 +92,8 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
 
     // upload error message
     private String uploadMessage;
+    
+    private boolean useCustomFallback;
 
     public CamcorderBean() {
         super(CamcorderBean.class);
@@ -170,5 +172,13 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
 
     public void setUploadMessage(String uploadMessage) {
         this.uploadMessage = uploadMessage;
+    }
+
+    public boolean isUseCustomFallback() {
+        return useCustomFallback;
+    }
+
+    public void setUseCustomFallback(boolean useCustomFallback) {
+        this.useCustomFallback = useCustomFallback;
     }
 }
