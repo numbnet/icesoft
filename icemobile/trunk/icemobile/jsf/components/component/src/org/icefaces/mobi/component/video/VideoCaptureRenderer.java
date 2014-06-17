@@ -17,9 +17,15 @@
 package org.icefaces.mobi.component.video;
 
 
+import static org.icefaces.mobi.utils.HTML.ANCHOR_ELEM;
 import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
+import static org.icefaces.mobi.utils.HTML.ID_ATTR;
+import static org.icefaces.mobi.utils.HTML.INPUT_ELEM;
+import static org.icefaces.mobi.utils.HTML.INPUT_TYPE_FILE;
+import static org.icefaces.mobi.utils.HTML.NAME_ATTR;
 import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
 import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+import static org.icefaces.mobi.utils.HTML.TYPE_ATTR;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -35,7 +41,9 @@ import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.renderkit.BaseInputResourceRenderer;
 import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.BridgeItCommand;
 import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
 
 
 
@@ -72,6 +80,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         VideoCapture camcorder = (VideoCapture) uiComponent;
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
         String oldLabel = camcorder.getButtonLabel();
         if (MobiJSFUtils.uploadInProgress(camcorder))  {
             camcorder.setButtonLabel(camcorder.getCaptureMessageLabel()) ;
@@ -79,33 +88,60 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = camcorder.getClientId();
         
-        RenderUtils.startButtonElem(uiComponent, writer);
+        if( client.isBridgeItSupportedPlatform(BridgeItCommand.CAMCORDER) ){
         
-        String script = "bridgeit.camcorder('" + clientId + "', '', "
-                + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', ";
-        script += "cookies:{'JSESSIONID':'" + 
-            MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}";
-        int maxwidth = camcorder.getMaxwidth();
-        if (maxwidth > 0){
-            script += ", maxwidth: " + maxwidth;
+            RenderUtils.startButtonElem(uiComponent, writer);
+            
+            String script = "bridgeit.camcorder('" + clientId + "', '', "
+                    + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', ";
+            script += "cookies:{'JSESSIONID':'" + 
+                MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}";
+            int maxwidth = camcorder.getMaxwidth();
+            if (maxwidth > 0){
+                script += ", maxwidth: " + maxwidth;
+            }
+            int maxheight = camcorder.getMaxheight();
+            if (maxheight > 0){
+                script += ", maxheight:" + maxheight;
+            }
+            script += "});";
+            writer.writeAttribute(ONCLICK_ATTR, script, null);
+            
+            RenderUtils.writeDisabled(uiComponent, writer);
+            RenderUtils.writeStyle(uiComponent, writer);
+            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            RenderUtils.writeTabIndex(uiComponent, writer);
+            
+            writer.startElement(SPAN_ELEM, camcorder);
+            writer.writeText(camcorder.getButtonLabel(), null);
+            writer.endElement(SPAN_ELEM);
+            
+            writer.endElement(BUTTON_ELEM);
+            camcorder.setButtonLabel(oldLabel);
         }
-        int maxheight = camcorder.getMaxheight();
-        if (maxheight > 0){
-            script += ", maxheight:" + maxheight;
+        else{
+          //link
+            writer.startElement(ANCHOR_ELEM, uiComponent);
+            writer.writeAttribute(ID_ATTR, clientId, null);
+            RenderUtils.writeDisabled(uiComponent, writer);
+            RenderUtils.writeStyle(uiComponent, writer);
+            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            RenderUtils.writeTabIndex(uiComponent, writer);
+            if( !camcorder.isDisabled()){
+                writer.writeAttribute(ONCLICK_ATTR, "document.getElementById('" + clientId + "').style.display = 'none'; document.getElementById('" + clientId + "_upload').style.display = 'inline-block';", null);
+            }
+            writer.writeText(camcorder.getButtonLabel(), null);
+            writer.endElement(ANCHOR_ELEM);
+            //file upload
+            if( !camcorder.isDisabled()){
+                writer.startElement(INPUT_ELEM, null);
+                writer.writeAttribute(ID_ATTR, clientId + "_upload", null);
+                writer.writeAttribute("style", "display:none", null);
+                writer.writeAttribute(NAME_ATTR, clientId, null);
+                writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE, null);
+                writer.writeAttribute("accept", "video/*;capture=camcorder", null);
+                writer.endElement(INPUT_ELEM);
+            }
         }
-        script += "});";
-        writer.writeAttribute(ONCLICK_ATTR, script, null);
-        
-        RenderUtils.writeDisabled(uiComponent, writer);
-        RenderUtils.writeStyle(uiComponent, writer);
-        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
-        RenderUtils.writeTabIndex(uiComponent, writer);
-        
-        writer.startElement(SPAN_ELEM, camcorder);
-        writer.writeText(camcorder.getButtonLabel(), null);
-        writer.endElement(SPAN_ELEM);
-        
-        writer.endElement(BUTTON_ELEM);
-        camcorder.setButtonLabel(oldLabel);
     }
 }
