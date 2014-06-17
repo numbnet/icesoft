@@ -17,9 +17,15 @@
 package org.icefaces.mobi.component.microphone;
 
 
+import static org.icefaces.mobi.utils.HTML.ANCHOR_ELEM;
 import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
+import static org.icefaces.mobi.utils.HTML.ID_ATTR;
+import static org.icefaces.mobi.utils.HTML.INPUT_ELEM;
+import static org.icefaces.mobi.utils.HTML.INPUT_TYPE_FILE;
+import static org.icefaces.mobi.utils.HTML.NAME_ATTR;
 import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
 import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+import static org.icefaces.mobi.utils.HTML.TYPE_ATTR;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -35,7 +41,9 @@ import javax.faces.render.Renderer;
 import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.BridgeItCommand;
 import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
 
 
 public class MicrophoneRenderer extends Renderer {
@@ -79,24 +87,53 @@ public class MicrophoneRenderer extends Renderer {
         } 
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = microphone.getClientId();
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
         
-        RenderUtils.startButtonElem(microphone, writer);
+        if( client.isBridgeItSupportedPlatform(BridgeItCommand.MICROPHONE) ){
+            RenderUtils.startButtonElem(microphone, writer);
+            
+            String script = "bridgeit.microphone('" + clientId + "', '', "
+                    + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', "
+                    + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}});";
+            writer.writeAttribute(ONCLICK_ATTR, script, null);
+            
+            RenderUtils.writeDisabled(uiComponent, writer);
+            RenderUtils.writeStyle(uiComponent, writer);
+            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            RenderUtils.writeTabIndex(uiComponent, writer);
+            
+            writer.startElement(SPAN_ELEM, microphone);
+            writer.writeText(microphone.getButtonLabel(), null);
+            writer.endElement(SPAN_ELEM);
+            
+            writer.endElement(BUTTON_ELEM);
+            microphone.setButtonLabel(oldLabel);
+        }
+        else{
+          //link
+            writer.startElement(ANCHOR_ELEM, uiComponent);
+            writer.writeAttribute(ID_ATTR, clientId, null);
+            RenderUtils.writeDisabled(uiComponent, writer);
+            RenderUtils.writeStyle(uiComponent, writer);
+            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            RenderUtils.writeTabIndex(uiComponent, writer);
+            if( !microphone.isDisabled()){
+                writer.writeAttribute(ONCLICK_ATTR, "document.getElementById('" + clientId + "').style.display = 'none'; document.getElementById('" + clientId + "_upload').style.display = 'inline-block';", null);
+            }
+            writer.writeText(microphone.getButtonLabel(), null);
+            writer.endElement(ANCHOR_ELEM);
+            //file upload
+            if( !microphone.isDisabled()){
+                writer.startElement(INPUT_ELEM, null);
+                writer.writeAttribute(ID_ATTR, clientId + "_upload", null);
+                writer.writeAttribute("style", "display:none", null);
+                writer.writeAttribute(NAME_ATTR, clientId, null);
+                writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_FILE, null);
+                writer.writeAttribute("accept", "audio/*", null);
+                writer.endElement(INPUT_ELEM);
+            }
+        }
         
-        String script = "bridgeit.microphone('" + clientId + "', '', "
-                + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', "
-                + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}});";
-        writer.writeAttribute(ONCLICK_ATTR, script, null);
         
-        RenderUtils.writeDisabled(uiComponent, writer);
-        RenderUtils.writeStyle(uiComponent, writer);
-        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
-        RenderUtils.writeTabIndex(uiComponent, writer);
-        
-        writer.startElement(SPAN_ELEM, microphone);
-        writer.writeText(microphone.getButtonLabel(), null);
-        writer.endElement(SPAN_ELEM);
-        
-        writer.endElement(BUTTON_ELEM);
-        microphone.setButtonLabel(oldLabel);
     }
 }
