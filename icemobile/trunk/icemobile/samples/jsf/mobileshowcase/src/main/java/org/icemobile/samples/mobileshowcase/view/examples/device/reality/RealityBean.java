@@ -40,10 +40,10 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 import javax.imageio.ImageIO;
 
 import org.icefaces.application.ResourceRegistry;
-import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Example;
@@ -101,9 +101,11 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     private double latitude = 0.0;
     private double longitude = 0.0;
     HashMap<String,RealityMessage> messages = new HashMap();
+    List<SelectItem> messagesSelectItems = new ArrayList<SelectItem>();
     static int THUMBSIZE = 128;
-    HashMap<String,HashMap> allMarkers = new HashMap();;
+    HashMap<String,HashMap> allMarkers = new HashMap();
     List<HashMap> markerList;
+    List<SelectItem> markersSelectItems = new ArrayList<SelectItem>();
     private String selectedModel1 = "icemobile";
     private String selectedModel2 = "icemobile";
     private HashMap bought = new HashMap();
@@ -123,24 +125,32 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         marker.put("model", getContextURL() + 
                 "/resources/3d/puz1.obj" );
         markerList.add(marker);
+        markersSelectItems.add(new SelectItem(marker.get("model"), (String)marker.get("label")));
+        
 
         marker = new HashMap();
         marker.put("label", "puz2");
         marker.put("model", getContextURL() +
                 "/resources/3d/puz2.obj" );
         markerList.add(marker);
+        markersSelectItems.add(new SelectItem(marker.get("model"), (String)marker.get("label")));
+        
 
         marker = new HashMap();
         marker.put("label", "icemobile");
         marker.put("model", getContextURL() +
                 "/resources/3d/icemobile.obj" );
         markerList.add(marker);
+        markersSelectItems.add(new SelectItem(marker.get("model"), (String)marker.get("label")));
+        
 
         marker = new HashMap();
         marker.put("label", "ice.arform");
         marker.put("model", getContextURL() +
                 "/resources/3d/catalog.xml" );
         markerList.add(marker);
+        markersSelectItems.add(new SelectItem(marker.get("model"), (String)marker.get("label")));
+        
 
         //general targets feature requires more client testing 
 //        marker = new HashMap();
@@ -153,8 +163,11 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
             allMarkers.put((String) theMarker.get("label"), theMarker);
         }
 
+        
         markerList.set(0, allMarkers.get(selectedModel1));
         markerList.set(1, allMarkers.get(selectedModel2));
+        
+        
 
     }
 
@@ -185,6 +198,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
                 message.setLocation(latitude, longitude);
                 message.setFileName(resourcePath);
                 messages.put(label, message);
+                messagesSelectItems.add(new SelectItem(new String(latitude + "," + longitude), label));
                 uploadMessage = "Locations marked: " + messages.size();
             }
         } else  {
@@ -257,6 +271,9 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
              ("ice.arform".equals(selectedModel)) )  {
             markerList = new ArrayList();
             markerList.add(marker);
+            markersSelectItems.clear();
+            markersSelectItems.add(new SelectItem(marker.get("model"), (String)marker.get("label")));
+            
             isShopping = true;
         } else {
             if (markerList.size() == 1)  {
@@ -264,6 +281,10 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
             }
             markerList.set(0, allMarkers.get(selectedModel1));
             markerList.set(1, allMarkers.get(selectedModel2));
+            markersSelectItems.clear();
+            markersSelectItems.add(new SelectItem( allMarkers.get(selectedModel1).get("model"), (String) allMarkers.get(selectedModel1).get("label")));
+            markersSelectItems.add(new SelectItem( allMarkers.get(selectedModel2).get("model"), (String) allMarkers.get(selectedModel2).get("label")));
+            
         }
     }
 
@@ -385,6 +406,14 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         FileOutputStream fs = new FileOutputStream(imageFile);
         ImageIO.write(image, "jpg", fs);
         fs.close();
+    }
+
+    public List<SelectItem> getMessagesSelectItems() {
+        return messagesSelectItems;
+    }
+
+    public List<SelectItem> getMarkersSelectItems() {
+        return markersSelectItems;
     }
     
 }
