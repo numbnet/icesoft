@@ -17,9 +17,16 @@
 package org.icefaces.mobi.component.scan;
 
 
+import static org.icefaces.mobi.utils.HTML.ANCHOR_ELEM;
 import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
+import static org.icefaces.mobi.utils.HTML.DISABLED_ATTR;
+import static org.icefaces.mobi.utils.HTML.ID_ATTR;
+import static org.icefaces.mobi.utils.HTML.INPUT_ELEM;
+import static org.icefaces.mobi.utils.HTML.INPUT_TYPE_FILE;
+import static org.icefaces.mobi.utils.HTML.NAME_ATTR;
 import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
 import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+import static org.icefaces.mobi.utils.HTML.TYPE_ATTR;
 
 import java.io.IOException;
 import java.util.Map;
@@ -34,7 +41,9 @@ import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.BridgeItCommand;
 import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
 
 
 public class ScanRenderer extends BaseInputRenderer {
@@ -67,6 +76,7 @@ public class ScanRenderer extends BaseInputRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         Scan scan = (Scan) uiComponent;
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
         String oldLabel = scan.getButtonLabel();
         if (MobiJSFUtils.uploadInProgress(scan))  {
            scan.setButtonLabel(scan.getCaptureMessageLabel()) ;
@@ -74,24 +84,49 @@ public class ScanRenderer extends BaseInputRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId();
         
-        RenderUtils.startButtonElem(uiComponent, writer);
-        
-        String script = "bridgeit.scan('" + clientId + "', '', "
-                + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', " 
-                + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}});";
-        writer.writeAttribute(ONCLICK_ATTR, script, null);
-        
-        RenderUtils.writeDisabled(uiComponent, writer);
+        writer.startElement(SPAN_ELEM, null);
+        writer.writeAttribute(ID_ATTR, clientId + "_wpr", null);
         RenderUtils.writeStyle(uiComponent, writer);
-        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
-        RenderUtils.writeTabIndex(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
+        if( client.isBridgeItSupportedPlatform(BridgeItCommand.SCAN) ){
         
-        writer.startElement(SPAN_ELEM, uiComponent);
-        writer.writeText(scan.getButtonLabel(), null);
+            RenderUtils.startButtonElem(uiComponent, writer);
+            
+            String script = "bridgeit.scan('" + clientId + "', '', "
+                    + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', " 
+                    + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) +  "'}});";
+            writer.writeAttribute(ONCLICK_ATTR, script, null);
+            
+            RenderUtils.writeDisabled(uiComponent, writer);
+            writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
+            RenderUtils.writeTabIndex(uiComponent, writer);
+            
+            writer.startElement(SPAN_ELEM, uiComponent);
+            writer.writeText(scan.getButtonLabel(), null);
+            writer.endElement(SPAN_ELEM);
+            
+            writer.endElement(BUTTON_ELEM);
+            scan.setButtonLabel(oldLabel);
+        
+        }
+        else{
+            UIComponent fallbackFacet = uiComponent.getFacet("fallback");
+            if( fallbackFacet != null ){
+                fallbackFacet.encodeAll(facesContext);
+            }
+            else{
+                RenderUtils.startButtonElem(uiComponent, writer);
+                writer.writeAttribute(DISABLED_ATTR, DISABLED_ATTR, DISABLED_ATTR);
+                writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
+                RenderUtils.writeTabIndex(uiComponent, writer);
+                writer.startElement(SPAN_ELEM, uiComponent);
+                writer.writeText(scan.getButtonLabel(), null);
+                writer.endElement(SPAN_ELEM);
+                writer.endElement(BUTTON_ELEM);
+                scan.setButtonLabel(oldLabel);
+            }
+        }
         writer.endElement(SPAN_ELEM);
-        
-        writer.endElement(BUTTON_ELEM);
-        scan.setButtonLabel(oldLabel);
     }
 
 }

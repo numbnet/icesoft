@@ -71,6 +71,7 @@ public class QrCodeBean extends ExampleImpl<QrCodeBean> implements
     private boolean qrScannerUrl;
     // input string for qr image generation.
     private String qrString = "ICEmobile";
+    private boolean useCustomFallback = false;
 
     public QrCodeBean() {
         super(QrCodeBean.class);
@@ -112,5 +113,13 @@ public class QrCodeBean extends ExampleImpl<QrCodeBean> implements
 
     public void setQrString(String qrString) {
         this.qrString = qrString;
+    }
+
+    public boolean isUseCustomFallback() {
+        return useCustomFallback;
+    }
+
+    public void setUseCustomFallback(boolean useCustomFallback) {
+        this.useCustomFallback = useCustomFallback;
     }
 }

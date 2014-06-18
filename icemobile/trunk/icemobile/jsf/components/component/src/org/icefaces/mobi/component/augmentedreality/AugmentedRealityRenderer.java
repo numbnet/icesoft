@@ -63,8 +63,7 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
             RenderUtils.startButtonElem(uiComponent, writer);
              
             RenderUtils.writeDisabled(uiComponent, writer);
-            RenderUtils.writeStyle(uiComponent, writer);
-            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
             RenderUtils.writeTabIndex(uiComponent, writer);
              
             String buttonValue=ag.getButtonLabel();
