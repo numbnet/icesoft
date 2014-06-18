@@ -61,6 +61,7 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
     private String name;
     private String phone;
     private String email;
+    private boolean useCustomFallback = false;
     
     public static final String BEAN_NAME = "contactsBean";
     
@@ -98,6 +99,14 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isUseCustomFallback() {
+        return useCustomFallback;
+    }
+
+    public void setUseCustomFallback(boolean useCustomFallback) {
+        this.useCustomFallback = useCustomFallback;
     }
 
 }

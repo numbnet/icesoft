@@ -18,7 +18,8 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+             xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <h:form id="contactForm">
     
@@ -31,7 +32,19 @@
                     name="#{contactsBean.name}"
                     email="#{contactsBean.email}"
                     phone="#{contactsBean.phone}"
-                    style="width:50%"/>
+                    style="width:50%">
+                    <c:if test="#{contactsBean.useCustomFallback}">
+                        <f:facet name="fallback">
+                           <h:outputText value="This is a custom fallback message for unsupported platforms"/>
+                        </f:facet>
+                     </c:if>
+                </mobi:fetchContact>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="fallback" value="Use Custom Fallback Facet:"/>
+                <mobi:flipswitch id="fallback" 
+                                 singleSubmit="true" 
+                                 value="#{contactsBean.useCustomFallback}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         

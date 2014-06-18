@@ -17,6 +17,8 @@
 package org.icefaces.mobi.component.contactlist;
 
 import static org.icefaces.mobi.utils.HTML.BUTTON_ELEM;
+import static org.icefaces.mobi.utils.HTML.DISABLED_ATTR;
+import static org.icefaces.mobi.utils.HTML.ID_ATTR;
 import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
 import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
 
@@ -35,7 +37,9 @@ import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.ContactDecoder;
+import org.icemobile.util.BridgeItCommand;
 import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
 
 public class ContactListRenderer extends Renderer {
     
@@ -70,26 +74,50 @@ public class ContactListRenderer extends Renderer {
             throws IOException {
 
         ContactList contactList = (ContactList) uiComponent;
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = contactList.getClientId();
         
-        RenderUtils.startButtonElem(uiComponent, writer);
-        
-        String script = "bridgeit.fetchContact('" + clientId + "', '', {postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', "
-            + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) + "'}, "
-            + "fields: '" +contactList.getFields() + "'});";
-        writer.writeAttribute(ONCLICK_ATTR, script, null);
-        
-        RenderUtils.writeDisabled(uiComponent, writer);
+        writer.startElement(SPAN_ELEM, null);
+        writer.writeAttribute(ID_ATTR, clientId + "_wpr", null);
         RenderUtils.writeStyle(uiComponent, writer);
-        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
-        RenderUtils.writeTabIndex(uiComponent, writer);
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
+        if( client.isBridgeItSupportedPlatform(BridgeItCommand.SCAN) ){
         
-        writer.startElement(SPAN_ELEM, contactList);
-        writer.writeText(contactList.getButtonLabel(), null);
+            RenderUtils.startButtonElem(uiComponent, writer);
+            
+            String script = "bridgeit.fetchContact('" + clientId + "', '', {postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "', "
+                + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) + "'}, "
+                + "fields: '" +contactList.getFields() + "'});";
+            writer.writeAttribute(ONCLICK_ATTR, script, null);
+            
+            RenderUtils.writeDisabled(uiComponent, writer);
+            writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
+            RenderUtils.writeTabIndex(uiComponent, writer);
+            
+            writer.startElement(SPAN_ELEM, contactList);
+            writer.writeText(contactList.getButtonLabel(), null);
+            writer.endElement(SPAN_ELEM);
+            
+            writer.endElement(BUTTON_ELEM);
+        }
+        else{
+            UIComponent fallbackFacet = uiComponent.getFacet("fallback");
+            if( fallbackFacet != null ){
+                fallbackFacet.encodeAll(facesContext);
+            }
+            else{
+                RenderUtils.startButtonElem(uiComponent, writer);
+                writer.writeAttribute(DISABLED_ATTR, DISABLED_ATTR, DISABLED_ATTR);
+                writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
+                RenderUtils.writeTabIndex(uiComponent, writer);
+                writer.startElement(SPAN_ELEM, uiComponent);
+                writer.writeText(contactList.getButtonLabel(), null);
+                writer.endElement(SPAN_ELEM);
+                writer.endElement(BUTTON_ELEM);
+            }
+        }
         writer.endElement(SPAN_ELEM);
-        
-        writer.endElement(BUTTON_ELEM);
     }
 
 }
