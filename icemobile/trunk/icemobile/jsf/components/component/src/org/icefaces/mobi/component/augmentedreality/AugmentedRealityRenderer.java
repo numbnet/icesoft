@@ -15,6 +15,9 @@
  */
 package org.icefaces.mobi.component.augmentedreality;
 
+import static org.icefaces.mobi.utils.HTML.ID_ATTR;
+import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
@@ -29,7 +32,9 @@ import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.renderkit.RenderUtils;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.BridgeItCommand;
 import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
 
 
 public class AugmentedRealityRenderer extends BaseInputRenderer  {
@@ -48,44 +53,58 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         AugmentedReality ag = (AugmentedReality)uiComponent;
-
-        RenderUtils.startButtonElem(uiComponent, writer);
-         
-        RenderUtils.writeDisabled(uiComponent, writer);
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        
+        writer.startElement(SPAN_ELEM, null);
+        writer.writeAttribute(ID_ATTR, clientId + "_wpr", null);
         RenderUtils.writeStyle(uiComponent, writer);
-        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
-        RenderUtils.writeTabIndex(uiComponent, writer);
-         
-        String buttonValue=ag.getButtonLabel();
-        if (MobiJSFUtils.uploadInProgress(ag))  {
-            buttonValue = ag.getCaptureMessageLabel();
-        } 
-
-        String locationsString = "";
-        for (UIComponent child : ag.getChildren())  {
-            if (child instanceof AugmentedRealityLocations) {
-                AugmentedRealityLocations locations = 
-                        (AugmentedRealityLocations) child;
-                locationsString = iterateLocations(facesContext, locations, ag.getUrlBase());
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
+        if( client.isBridgeItSupportedPlatform(BridgeItCommand.AUGMENTEDREALITY) ){
+            RenderUtils.startButtonElem(uiComponent, writer);
+             
+            RenderUtils.writeDisabled(uiComponent, writer);
+            RenderUtils.writeStyle(uiComponent, writer);
+            RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+            RenderUtils.writeTabIndex(uiComponent, writer);
+             
+            String buttonValue=ag.getButtonLabel();
+            if (MobiJSFUtils.uploadInProgress(ag))  {
+                buttonValue = ag.getCaptureMessageLabel();
+            } 
+    
+            String locationsString = "";
+            for (UIComponent child : ag.getChildren())  {
+                if (child instanceof AugmentedRealityLocations) {
+                    AugmentedRealityLocations locations = 
+                            (AugmentedRealityLocations) child;
+                    locationsString = iterateLocations(facesContext, locations, ag.getUrlBase());
+                }
+                if (child instanceof AugmentedRealityMarkers) {
+                    AugmentedRealityMarkers markers =
+                            (AugmentedRealityMarkers) child;
+                    locationsString += iterateMarkers(facesContext, markers);
+                    locationsString += "'v':'vuforia'";
+                }
             }
-            if (child instanceof AugmentedRealityMarkers) {
-                AugmentedRealityMarkers markers =
-                        (AugmentedRealityMarkers) child;
-                locationsString += iterateMarkers(facesContext, markers);
-                locationsString += "'v':'vuforia'";
+    
+            String script = "bridgeit.augmentedReality( '" + clientId + "', '', "
+                + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "',"
+                + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) +  "'},"
+                + " locations:{" + locationsString + "}});";
+            writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
+            writer.startElement(HTML.SPAN_ELEM, uiComponent);
+            writer.writeText(buttonValue, null);
+            writer.endElement(HTML.SPAN_ELEM);
+            
+            writer.endElement(HTML.BUTTON_ELEM);
+        }
+        else{
+            UIComponent fallbackFacet = uiComponent.getFacet("fallback");
+            if( fallbackFacet != null ){
+                fallbackFacet.encodeAll(facesContext);
             }
         }
-
-        String script = "bridgeit.augmentedReality( '" + clientId + "', '', "
-            + "{postURL:'" + AuxUploadSetup.getInstance().getUploadURL() + "',"
-            + "cookies:{'JSESSIONID':'" + MobiJSFUtils.getSessionIdCookie(facesContext) +  "'},"
-            + " locations:{" + locationsString + "}});";
-        writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeText(buttonValue, null);
-        writer.endElement(HTML.SPAN_ELEM);
-        
-        writer.endElement(HTML.BUTTON_ELEM);
+        writer.endElement(SPAN_ELEM);
      }
 
     @Override

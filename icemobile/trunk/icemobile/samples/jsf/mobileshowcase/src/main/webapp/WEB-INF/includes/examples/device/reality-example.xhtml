@@ -80,6 +80,12 @@
                         locationLat="#{place.latitude}"
                         locationLon="#{place.longitude}"
                         locationIcon="#{place.fileName}" />
+                    <f:facet name="fallback">
+                        <h:outputLabel value="Manual location selection for unsupported clients: " for="fallbackSelect"/>
+                        <h:selectOneMenu id="fallbackSelect" value="#{realityBean.selection}">
+                            <f:selectItems value="#{realityBean.messagesSelectItems}"/>
+                        </h:selectOneMenu>
+                    </f:facet>
                 </mobi:augmentedReality>
                 <br />
                 <h:panelGroup rendered="#{realityBean.image != null}">
@@ -148,6 +154,12 @@
                         value="#{realityBean.markers}" var="marker"
                         markerLabel="#{marker.label}"
                         markerModel="#{marker.model}" />
+                    <f:facet name="fallback">
+                        <h:outputLabel value="Manual location selection for unsupported clients: " for="fallbackSelect"/>
+                        <h:selectOneMenu id="fallbackSelect" value="#{realityBean.selection}">
+                            <f:selectItems value="#{realityBean.markersSelectItems}"/>
+                        </h:selectOneMenu>
+                    </f:facet>
                 </mobi:augmentedReality>
                 <mobi:commandButton
                     buttonType="important"
