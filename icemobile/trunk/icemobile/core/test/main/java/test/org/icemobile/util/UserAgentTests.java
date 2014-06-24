@@ -35,6 +35,7 @@ public class UserAgentTests  {
     List<String> androidPhones = new ArrayList<String>();
     List<String> androidTablets = new ArrayList<String>();
     List<String> blackberries = new ArrayList<String>();
+    List<String> ies = new ArrayList<String>();
     
     
     private void processUserAgentFile(String file, List<String> list) throws IOException{
@@ -53,6 +54,7 @@ public class UserAgentTests  {
         processUserAgentFile("android-tablets.txt",androidTablets);
         processUserAgentFile("android-handhelds.txt",androidPhones);
         processUserAgentFile("blackberries.txt",blackberries);
+        processUserAgentFile("ie.txt", ies);
     }
            
     @Test
@@ -105,6 +107,23 @@ public class UserAgentTests  {
             assertFalse("ios: "+userAgent, userAgentInfo.isIOS());
             assertFalse("windows: "+userAgent, userAgentInfo.isWindowsOS());
             assertFalse("mac: "+userAgent, userAgentInfo.isMacOS());
+        }
+        
+    }
+    
+    @Test
+    public void testIEs() throws Exception{
+        
+        for( String userAgent : ies ){
+            UserAgentInfo userAgentInfo = new UserAgentInfo(userAgent);
+            System.out.println("Testing IEs: "+userAgent);
+            assertFalse("android: "+userAgent, userAgentInfo.isAndroidOS());
+            assertFalse("tablet: "+userAgent, userAgentInfo.isTabletBrowser());
+            assertFalse("blackberry: "+userAgent, userAgentInfo.isBlackberryOS());
+            assertFalse("ios: "+userAgent, userAgentInfo.isIOS());
+            assertTrue("windows: "+userAgent, userAgentInfo.isWindowsOS());
+            assertFalse("mac: "+userAgent, userAgentInfo.isMacOS());
+            assertTrue("ie: " + userAgent, userAgentInfo.isIE());
         }
         
     }
