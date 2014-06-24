@@ -41,7 +41,7 @@ public class OnlineStatusRenderer extends Renderer {
         if( userClass != null && userClass.length() > 0 ){
             styleClass += " " + userClass;
         }
-        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "fa " + styleClass, null);
         
         String style = comp.getStyle();
         if( style != null && style.length() > 0 ){
