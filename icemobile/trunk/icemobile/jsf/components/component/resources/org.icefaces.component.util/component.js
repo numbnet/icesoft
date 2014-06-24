@@ -1877,8 +1877,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             
             var sortedRows, asc,
                 headCell = ice.mobi.getTarget(event),
-                ascendingClass = blankIndicatorClass + ' icon-caret-up',
-                descendingClass = blankIndicatorClass + ' icon-caret-down',
+                ascendingClass = blankIndicatorClass + ' fa fa-caret-up',
+                descendingClass = blankIndicatorClass + ' fa fa-caret-down',
                 ascIndi = headCell.querySelector(indicatorSelector),
                 ascClass = ascIndi.className;
 
