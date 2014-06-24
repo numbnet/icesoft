@@ -19,6 +19,7 @@ package org.icemobile.util;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class UserAgentInfo implements Serializable{
     
@@ -65,6 +66,8 @@ public class UserAgentInfo implements Serializable{
     public static final String ANDROID2 = "android 2";
     public static final String ANDROID2_2 = "android 2.2";
     public static final String WP8 = "windows phone 8";
+    
+    public static final Pattern IE11_PATTERN = Pattern.compile(".*trident.*rv.*11.*");
     
 
     public UserAgentInfo(String userAgent) {
@@ -202,7 +205,7 @@ public class UserAgentInfo implements Serializable{
    }
    
    public boolean isIE(){
-       return userAgentString.contains(MSIE);
+       return userAgentString.contains(MSIE) || isIE11();
    }
    
    public boolean isIE8orLess(){
@@ -219,6 +222,10 @@ public class UserAgentInfo implements Serializable{
    
    public boolean isIE10(){
        return userAgentString.contains(MSIE10);
+   }
+   
+   public boolean isIE11(){
+       return IE11_PATTERN.matcher(userAgentString).matches();
    }
    
    public boolean isChrome(){
