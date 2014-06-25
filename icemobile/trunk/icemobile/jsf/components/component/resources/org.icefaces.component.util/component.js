@@ -1018,20 +1018,6 @@ if (window.addEventListener) {
                     ice.submitFunction = html5submitFunction;
                 }
             }, false);
-
-    window.addEventListener("pagehide", function () {
-        if (ice.push) {
-            //ice.log.debug(ice.log, 'PAUSING from pagehide');
-            ice.push.connection.pauseConnection();
-        }
-    }, false);
-
-    window.addEventListener("pageshow", function () {
-        if (ice.push) {
-            //ice.log.debug(ice.log, 'RESUMING from pageshow');
-            ice.push.connection.resumeConnection();
-        }
-    }, false);
 }
 ice.mobi.inputText = {
     activate: function(clientId, cfg){
