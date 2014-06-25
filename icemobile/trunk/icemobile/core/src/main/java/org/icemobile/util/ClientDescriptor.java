@@ -169,6 +169,10 @@ public class ClientDescriptor implements Serializable{
         return os == OS.IOS && _userAgentInfo.isIOS7();
     }
     
+    public boolean isIOS8() {
+        return os == OS.IOS && _userAgentInfo.isIOS8();
+    }
+    
     public boolean isBridgeItRegistered(){
         return AuxUploadSetup.getInstance().getEnabled();
     }
@@ -284,11 +288,12 @@ public class ClientDescriptor implements Serializable{
     private List<BridgeItCommand> commands = Arrays.asList(BridgeItCommand.values());
     private boolean[] iPhone6Support =  {true, true, true, true, true, true, false, true, true, false, false};
     private boolean[] iPhone7Support =  {true, true, true, true, true, true, true, true, true, true, true};
+    private boolean[] iPhone8Support =  {true, true, true, true, true, true, true, true, true, true, true};
     private boolean[] iPad6Support =  {true, true, true, true, true, true, false, true, false, false, false};
     private boolean[] iPad7Support =  {true, true, true, true, true, true, true,  true, false, true, true};
+    private boolean[] iPad8Support =  {true, true, true, true, true, true, true,  true, false, true, true};
     private boolean[] wp8Support =  {true, true, true, true, false, false, true, false, true, false, false};
-    private boolean[] androidSupport =  {true, true,  true,  true, false, true,  true, true,  true, false, true};
-
+    private boolean[] androidSupport =  {true, true,  true,  true, false, true,  true, true,  true, false, true};    
 
     public boolean isBridgeItSupportedPlatform(BridgeItCommand command){
         if( command == null ){
@@ -313,6 +318,9 @@ public class ClientDescriptor implements Serializable{
                 else if( isIOS7() ){
                     return iPhone7Support[index];
                 }
+                else if( isIOS8() ){
+                    return iPhone8Support[index];
+                }
             }
             else {
                 if( isIOS6() ){
@@ -320,6 +328,9 @@ public class ClientDescriptor implements Serializable{
                 }
                 else if( isIOS7() ){
                     return iPad7Support[index];
+                }
+                else if( isIOS8() ){
+                    return iPad8Support[index];
                 }
             }
         }
