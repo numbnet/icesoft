@@ -38,7 +38,7 @@
                     <mobi:menuButtonItem
                             label="#{item.label}"
                             actionListener="#{item.commandAction.execute}"/>
-                        
+<!--                     <mobi:ajax execute="@this" render="@form"/> -->
                 </mobi:menuButton>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>The Menu Button also supports option groups with the menuButtonGroup component</mobi:fieldsetRow>
@@ -63,6 +63,7 @@
                        <mobi:menuButtonItem id="itemB3" label="Item B3" value="B3"
                                actionListener="#{menuButton.actionMethod}"/>
                     </mobi:menuButtonGroup>
+<!--                     <mobi:ajax execute="@this" render="@form" /> -->
                </mobi:menuButton>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
