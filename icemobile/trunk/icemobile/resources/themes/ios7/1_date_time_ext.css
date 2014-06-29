@@ -93,13 +93,31 @@
     color: #549FD8;
     margin-right: -28px;
 }
+
 .mobi-date-wrapper:after{
     content: "\f073";
 }
 .mobi-time-wrapper:after{
     content: "\f017";
 }
+
+.ie10 .mobi-date-wrapper:after{
+    content: "";
+}
+.ie10 .mobi-time-wrapper:after{
+    content: "";
+}
 .mobi-date-popup-btn, .mobi-time-popup-btn{
     background-image: none;
     outline: none;
+}
+.ie10 .mobi-date-popup-btn {
+    background-image: url('btn-calendar.png');
+    width: 29px;
+    height: 29px;
+}
+.ie10 .mobi-time-popup-btn {
+    background-image: url('btn-time.png');
+    width: 28px;
+    height: 28px;
 }
