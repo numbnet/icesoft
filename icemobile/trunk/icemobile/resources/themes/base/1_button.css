@@ -51,11 +51,12 @@
 }
 a.mobi-button:hover{ text-decoration:none;}
 .mobi-pagePanel-header .mobi-button{
+    white-space: nowrap;
     position: absolute;
     top: 4px;
     left: 4px;
     margin: 0;
-    max-width: 20%;
+    max-width: 25%;
 }
 div.mobi-button-back {
     position: relative;
