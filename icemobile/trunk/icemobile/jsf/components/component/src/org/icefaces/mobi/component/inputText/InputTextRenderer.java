@@ -84,6 +84,11 @@ public class InputTextRenderer extends BaseInputRenderer {
         if (type.equals("textarea")) {
             componentType = "textarea";
         }
+        
+        if( client.isIOS() ){
+            writer.writeAttribute("onfocus", "ice.mobi.resizeAllContainers();",null);
+            writer.writeAttribute("onblur", "ice.mobi.resizeAllContainers();",null);
+        }
 
         boolean isNumberType = type.equals("number");
         boolean isDateType = type.equals("date");
@@ -116,9 +121,6 @@ public class InputTextRenderer extends BaseInputRenderer {
         } else {
             if( isDateType && client.isAndroidBrowserOrWebView() ){ //Android container borks date types
                 type = "text";
-            }
-            if( client.isIOS() ){
-                writer.writeAttribute("onblur", "setTimeout(ice.mobi.resizeAllContainers,10);", null);
             }
             writer.writeAttribute("type", type, null);
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getInputtextAttributeNames());
