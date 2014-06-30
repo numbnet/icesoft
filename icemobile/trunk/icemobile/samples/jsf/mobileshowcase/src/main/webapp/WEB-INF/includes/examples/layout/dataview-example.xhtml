@@ -70,7 +70,7 @@
             <mobi:dataViewColumns>
                 <mobi:dataViewColumn headerText="Model" value="#{car.name}" />
 
-                <mobi:dataViewColumn type="bool" headerText="Manual"
+                <mobi:dataViewColumn type="bool" headerText="Man"
                                      value="#{car.manual}" />
 
                 <mobi:dataViewColumn type="date" headerText="Release"
@@ -84,22 +84,12 @@
                 <mobi:dataViewColumn headerText="Weight" value="#{car.weight} lbs."
                                      rendered="#{dataViewBean.weightColVis}" />
 
-                <mobi:dataViewColumn headerText="Acceleration" value="#{car.acceleration}"
+                <mobi:dataViewColumn headerText="Accel" value="#{car.acceleration}"
                                      rendered="#{dataViewBean.accelColVis}" />
 
                 <mobi:dataViewColumn headerText="MPG" value="#{car.mpg}"
                                      rendered="#{dataViewBean.mpgColVis}" />
 
-                <mobi:dataViewColumn headerText="Lorem"
-                                     styleClass="minCol"
-                                     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
-                                     rendered="#{dataViewBean.textColVis}" />
-                <mobi:dataViewColumn headerText="Lorem"
-                                     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
-                                     rendered="#{dataViewBean.textColVis}" />
-                <mobi:dataViewColumn headerText="Lorem"
-                                     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
-                                     rendered="#{dataViewBean.textColVis}" />
             </mobi:dataViewColumns>
         </mobi:dataView>
         <mobi:commandButton value="Cost"
@@ -118,9 +108,5 @@
                             styleClass="footButton"
                             actionListener="#{dataViewBean.toggleMpgColVis}"
                             buttonType="#{dataViewBean.mpgColVis ? 'important' : null}"/>
-        <mobi:commandButton value="Text"
-                            styleClass="footButton"
-                            actionListener="#{dataViewBean.toggleTextColVis}"
-                            buttonType="#{dataViewBean.textColVis ? 'important' : null}"/>
     </h:form>
 </ui:composition>
