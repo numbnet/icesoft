@@ -22,8 +22,7 @@
 
     <h:form prependId="false" enctype="multipart/form-data" >
     
-        <mobi:registerCloudPush/>
-
+        
         <h3>Send Notification</h3>
         
         <mobi:fieldsetGroup>
@@ -60,13 +59,14 @@
                 </h:selectOneMenu>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow style="text-align:right">
+                <mobi:registerCloudPush style="width:32%"/>
                 <mobi:commandButton value="Priority Push"
                         buttonType="attention"
                         actionListener="#{notificationBean.sendPriorityPushMessage}"
-                        style="width: 45%"/>
+                        style="width: 32%"/>
                 <mobi:commandButton value="Simple Push" 
                         buttonType="important"
-                        style="width: 45%"
+                        style="width: 32%"
                         actionListener="#{notificationBean.sendNormalPushMessage}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
