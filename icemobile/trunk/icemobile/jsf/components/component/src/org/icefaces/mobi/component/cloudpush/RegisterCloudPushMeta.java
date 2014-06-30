@@ -19,7 +19,9 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 @Component(
         tagName = "registerCloudPush",
@@ -30,12 +32,28 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         componentType = "org.icefaces.component.RegisterCloudPush",
         rendererType = "org.icefaces.component.RegisterCloudPushRenderer",
         componentFamily = "org.icefaces.RegisterCloudPush",
-        tlddoc = "Register the current user for Cloud Push through BridgeIt" 
+        tlddoc = "Renders a button to allow the user to register for Cloud Push device notifications through BridgeIt" 
 )
 
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "bridgeit.js")
 })
 public class RegisterCloudPushMeta extends UIComponentBaseMeta{
+    
+    @Property(tlddoc = "The button label. ", defaultValue="Register for Cloud Push")
+    private String buttonLabel;
+    
+    @Property(defaultValue = "false", 
+            tlddoc = TLDConstants.DISABLED)
+    private boolean disabled;
+
+    @Property(tlddoc = TLDConstants.STYLE)
+    private String style;
+
+    @Property(tlddoc = TLDConstants.STYLECLASS)
+    private String styleClass;
+    
+    
+    
 
 }

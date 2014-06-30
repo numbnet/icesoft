@@ -27,7 +27,8 @@ public enum BridgeItCommand {
     GEOSPY("geospy"),
     SMS("sms"),
     BEACONS("beacons"), 
-    SPEECH("speech");
+    SPEECH("speech"),
+    REGISTER("register");
     
     public String code;
     
