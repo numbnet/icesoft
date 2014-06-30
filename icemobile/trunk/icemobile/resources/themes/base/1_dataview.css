@@ -87,10 +87,20 @@
 
 .mobi-dv-body table {
     width:100%;
+    max-width: 100%;
     border-spacing: 0;
     border-collapse: collapse;
 }
-
+.mobi-dv table th{
+    white-space: nowrap;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+.mobi-dv table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .mobi-dv-foot {
     width:100%;
     border-spacing: 0;

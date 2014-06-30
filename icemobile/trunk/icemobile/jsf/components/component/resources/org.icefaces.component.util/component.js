@@ -1472,7 +1472,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                     /* fix body column widths */
                     for (var i = 0; i < frbcWidths.length; i++) {
                         if( sheet.insertRule ){
-                            sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { width: "+frbcWidths[i] + 'px'+"; }", 0);
+                            sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { maxWidth: " + frbcWidths[i] + "px;minWidth: " + frbcWidths[i] + "px;width: " + frbcWidths[i] + "px;}", 0);
                         }
                     }
     
@@ -1492,7 +1492,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         
                     /* copy head col widths from duplicate header */
                     for (var i = 0; i < dupeHeadCellWidths.length; i++) {
-                        headCells[i].style.width = dupeHeadCellWidths[i] + 'px';
+                        headCells[i].style.width = headCells[i].style.maxWidth = dupeHeadCellWidths[i] + 'px';
                     }
 
                     if (navigator.appVersion.indexOf("Win")!=-1){
@@ -1502,7 +1502,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                     /* copy foot col widths from duplicate footer */
                     if (footCells.length > 0){
                         for (var i = 0; i < dupeFootCellWidths.length; i++) {
-                            footCells[i].style.width = dupeFootCellWidths[i] + 'px';
+                            footCells[i].style.width = footCells[i].style.maxWidth = dupeFootCellWidths[i] + 'px';
                         }
                     }
                 }
@@ -1976,7 +1976,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         setTimeout( function(){
             initTableAlignment();
             recalcScrollHeight();
-        }, 1);
+        }, 50);
 
         var oriChange = false;
         
@@ -2113,16 +2113,16 @@ ice.mobi.addListener(document, "touchstart", function(){});
         
         var contentHeight = currentHeight - 45; //adjust for header
         var currentView = getNodeForView(getCurrentView());
-        if( currentView.querySelectorAll('.mobi-vm-nav-bar').length > 0 ){
-            contentHeight -= 40; //adjust for nav bar if exists
-        }
-        var contentNode = currentView.querySelectorAll('.mobi-vm-view-content')[0];
-        if( contentNode ){
-            contentNode.style.height = '' + contentHeight + 'px';
-            //ice.log.debug(ice.log, 'set view content height to ' + contentHeight);
-        }
+            if( currentView.querySelectorAll('.mobi-vm-nav-bar').length > 0 ){
+                contentHeight -= 40; //adjust for nav bar if exists
+            }
+            var contentNode = currentView.querySelectorAll('.mobi-vm-view-content')[0];
+            if( contentNode ){
+                contentNode.style.height = '' + contentHeight + 'px';
+                //ice.log.debug(ice.log, 'set view content height to ' + contentHeight);
+            }
         else
-            console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find content node for view = ' + currentView.id);
+                console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find content node for view = ' + currentView.id);
         var menuNode = document.querySelectorAll('.mobi-vm-menu')[0];
         if( menuNode ){
             menuNode.style.height = '' + (currentHeight - 45) + 'px';
@@ -2321,7 +2321,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     function viewHasNavBar(view){
         return view.querySelectorAll('.mobi-vm-nav-bar').length > 0;
     }
-
+    
     im.viewManager = {
         showView: function(view){
             //ice.log.debug(ice.log, 'showView(' + view + ') current');
