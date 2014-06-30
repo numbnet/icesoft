@@ -59,7 +59,7 @@
 
     </h:form>
 
-    <h:form styleClass="results">
+    <h:form>
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
@@ -73,7 +73,7 @@
             <mobi:fieldsetRow style="text-align:center">
                 <mobi:augmentedReality
                     urlBase="#{realityBean.baseURL}"
-                    value="#{realityBean.selection}" style="width:50%">
+                    value="#{realityBean.selection}">
                     <mobi:augmentedRealityLocations 
                         value="#{realityBean.messages}" var="place"
                         locationLabel="#{place.title}"
@@ -144,12 +144,10 @@
                 </h:selectOneMenu>
            </mobi:fieldsetRow>
             <mobi:fieldsetRow style="text-align:center">
-                <div class="mobi-grid mobi-justify">
                 <mobi:augmentedReality buttonLabel="3D Augmented Reality"
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}"
-                    disabled="#{not mobiClient.IOS}"
-                    styleClass="mobi-col">
+                    disabled="#{not mobiClient.IOS}">
                     <mobi:augmentedRealityMarkers
                         value="#{realityBean.markers}" var="marker"
                         markerLabel="#{marker.label}"
@@ -164,7 +162,6 @@
                 <mobi:commandButton
                     buttonType="important"
                     value="Submit"/>
-                </div>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
                 
