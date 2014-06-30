@@ -45,7 +45,7 @@ public class GoogleAnalyticsRenderer extends CoreRenderer {
                 if (null != warnOnce)  {
                     return;
                 }
-                log.warning("The Google Analytics account has not been set for the <mobi:googleAnalytics> tag. " +
+                log.info("The Google Analytics account has not been set for the <mobi:googleAnalytics> tag. " +
 						"Please use the 'account' tag attribute, or the '"+GoogleAnalytics.ACCOUNT_ENVVAR+"' " +
 								"system environment variable. The Google Analytics script will not be generated.");
                 facesContext.getExternalContext()
