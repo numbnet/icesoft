@@ -23,9 +23,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -194,6 +195,9 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
                     logger.warning("Error setting up video resource object");
                 }
                 RealityMessage message = new RealityMessage();
+                if( label == null || label.length() == 0 ){
+                    label = new Date().toString();
+                }
                 message.setTitle(label);
                 message.setLocation(latitude, longitude);
                 message.setFileName(resourcePath);
