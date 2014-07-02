@@ -57,7 +57,9 @@ html.simulator *{
 .icon-mobi-online{
     color: rgba(0,0,0,0.5);
     text-shadow:none;
-    
+}
+.jqm .icon-mobi-online, .android_dark .icon-mobi-online{
+    color: rgba(255,255,255,0.5);
 }
 .icon-mobi-online:before{
     content: "\f0c1";
