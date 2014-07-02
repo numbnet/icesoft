@@ -338,7 +338,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
             markers += " simulator";
         }
         writer.writeText("document.documentElement.className = document.documentElement.className+'" 
-                + markers + "'; ice.mobi.addListener(window,'load', function() {document.body.className = 'ui-body-c';});", null);
+                + markers + "';", null);
         
         writer.endElement("script");
     }

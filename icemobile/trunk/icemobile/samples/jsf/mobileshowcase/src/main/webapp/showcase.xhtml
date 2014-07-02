@@ -49,13 +49,17 @@
                                        rendered="#{mobiNavigationModel.canGoBack}"
                                        value="Back"/>
                         <h:commandLink title="&amp;#9776;"
-                                       styleClass="ui-icon ui-icon-home"
+                                       styleClass="home-link"
                                        action="#{mobiNavigationModel.goToHome}"
-                                       rendered="#{mobiNavigationModel.selectedPanel eq 'menu'}"/>
+                                       rendered="#{mobiNavigationModel.selectedPanel eq 'menu'}">
+                            <i class="fa fa-home"></i>
+                        </h:commandLink>
                         <h:commandLink title="&amp;#9776;"
-                                       styleClass="ui-icon ui-icon-menu"
+                                       styleClass="home-link"
                                        action="#{mobiNavigationModel.goToMenu}"
-                                       rendered="#{mobiNavigationModel.selectedPanel eq 'splash'}"/>
+                                       rendered="#{mobiNavigationModel.selectedPanel eq 'splash'}">
+                             <i class="fa fa-bars"></i>
+                         </h:commandLink>
                     </h:form>
                     <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
                     <mobi:onlineStatus style="position: absolute;top: 10px;"
@@ -117,6 +121,8 @@
             preloaded[2].setAttribute('src','./resources/images/auction/icesailor.png');
             preloaded[3] = document.createElement('img');
             preloaded[3].setAttribute('src','./resources/images/auction/iceskate.png');
+            
+            
         </script>
         
     </h:body>

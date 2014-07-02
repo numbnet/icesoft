@@ -15,7 +15,7 @@
  */
 
 /**************************** JQuery Mobi Overrides ***************************/
-.mobi-dv.ui-body-c, .mobi-dv .mobi-dv-det.ui-body-c {
+.mobi-dv, .mobi-dv .mobi-dv-det {
     border-left: 0;
     border-right: 0;
     border-top: 0;
@@ -71,7 +71,7 @@
 
 /******************************* ICEsoft Styles *******************************/
 .mobi-dv-body {
-    overflow:scroll;
+    overflow:auto;
     -webkit-overflow-scrolling: touch;
 }
 
