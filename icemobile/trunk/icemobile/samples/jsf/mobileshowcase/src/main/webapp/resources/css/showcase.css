@@ -32,56 +32,17 @@
     right: 2em;
     bottom: 0px;
 }
-.ui-icon {
+.home-link {
     width: 30px;
     height: 25px;
-    border-radius: 7px;
     display: block;
     position: absolute;
     left: 0.5em;
-    top: 5px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    background-color: inherit;
-    background-image: url(images/icons-white.png.jsf);
-    background-repeat: no-repeat;
+    top: 8px;
+    text-shadow: none;
 }
-html.android_light .ui-icon {
-    border: 2px solid #D6D6D6;
-    background-color: #9C9C9C;
-}
-html.bberry .ui-icon{
-    border-color: rgb(119, 119, 119);
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-.ui-icon-home {
-    background-position: -571px 50%;
-}
-.ui-icon-menu {
-    background-position: -428px 50%;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-       only screen and (min--moz-device-pixel-ratio: 1.5),
-       only screen and (min-resolution: 240dpi) {
-    .ui-icon {
-        -moz-background-size: 776px 18px;
-        -o-background-size: 776px 18px;
-        -webkit-background-size: 776px 18px;
-        background-size: 776px 18px;
-    }
-    html.iphone .ui-icon, html.ipad .ui-icon {
-        background-image: url(images/icons-36-white.png.jsf);
-    }
-    html.bberry .ui-icon {
-        background-image: url(images/icons-36-black.png.jsf);
-    }
-    html.iphone .ui-icon-menu, html.bberry .ui-icon-menu {
-        background-position: -702px 50%;
-    }
-    html.iphone .ui-icon-home, html.bberry .ui-icon-home {
-        background-position: -511px 50%;
-    }
+.iphone .home-link, .bberry .home-link, .bb10 .home-link{
+    color: #FFF;
 }
 #splash header{ 
     text-align: center;

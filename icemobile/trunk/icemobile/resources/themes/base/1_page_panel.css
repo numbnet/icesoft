@@ -76,14 +76,10 @@
 
 .mobi-pagePanel.mobi-fixed-header .mobi-pagePanel-header{
     position: fixed;
-    top: 0;
+    top: -1px;
 }
 .mobi-pagePanel.mobi-fixed-header .mobi-pagePanel-body{
-    margin-top: 40px;
-}
-.mobi-pagePanel.mobi-fixed-header .mobi-pagePanel-header{
-    position: fixed;
-    top: 0;
+    margin-top: 39px;
 }
 .mobi-pagePanel.mobi-fixed-footer .mobi-pagePanel-body{
     margin-bottom: 40px;

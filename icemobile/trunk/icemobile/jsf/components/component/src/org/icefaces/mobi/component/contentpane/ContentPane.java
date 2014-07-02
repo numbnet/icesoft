@@ -36,8 +36,8 @@ public class ContentPane extends ContentPaneBase{
     private static final Logger logger =
             Logger.getLogger(ContentPane.class.toString());
     
-    public static final String CONTENT_SELECTED = "mobi-contentpane ui-body-c ";
-    public static final String CONTENT_LEFT_SELECTED = "mobi-contentpane-left ui-body-c";
+    public static final String CONTENT_SELECTED = "mobi-contentpane ";
+    public static final String CONTENT_LEFT_SELECTED = "mobi-contentpane-left ";
     public static final String CONTENT_HIDDEN = "mobi-contentpane-hidden ";
     public static final String CONTENT_LEFT_HIDDEN = "mobi-contentpane-left-hidden";
     public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs ui-bar-b");

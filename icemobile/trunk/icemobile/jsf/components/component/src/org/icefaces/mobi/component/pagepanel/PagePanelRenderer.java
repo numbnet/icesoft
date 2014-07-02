@@ -54,7 +54,7 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.STYLE_ATTR, pagePanel.getStyle(), HTML.STYLE_ATTR);
         }
         StringBuilder headerClass = new StringBuilder(PagePanel.HEADER_CLASS + " ui-bar-a");
-        StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS+"ui-body-c");
+        StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS);
         StringBuilder footerClass = new StringBuilder(PagePanel.FOOTER_CLASS +"ui-bar-a");
         StringBuilder headerFooterContentsClass = new StringBuilder(PagePanel.CTR_CLASS);
 
