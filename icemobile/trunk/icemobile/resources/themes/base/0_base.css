@@ -55,7 +55,9 @@ html.simulator *{
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 .icon-mobi-online{
-    color: #666;
+    color: rgba(0,0,0,0.5);
+    text-shadow:none;
+    
 }
 .icon-mobi-online:before{
     content: "\f0c1";
