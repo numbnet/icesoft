@@ -53,6 +53,11 @@ public class RegisterCloudPushMeta extends UIComponentBaseMeta{
     @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
     
+    @Property(tlddoc = "Normally the <mobi:registerCloudPush> component is disabled, "
+            + "but still displayed on unsupported platforms. Set this to true to "
+            + "hide the button on unsupported platforms", defaultValue="false")
+    private boolean hideWhenUnsupported = false;
+    
     
     
 

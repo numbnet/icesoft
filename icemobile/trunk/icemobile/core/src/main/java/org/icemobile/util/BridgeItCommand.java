@@ -30,6 +30,16 @@ public enum BridgeItCommand {
     SPEECH("speech"),
     REGISTER("register");
     
+                                      //cam    video   mic     contact aug     push    scan    geospy  sms     beacons speech   register
+    static boolean[] iPhone6Support =  {true,  true,   true,   true,   true,   true,   false,  true,   true,   false,  false,   true};
+    static boolean[] iPhone7Support =  {true,  true,   true,   true,   true,   true,   true,   true,   true,   true,   true,    true};
+    static boolean[] iPhone8Support =  {true,  true,   true,   true,   true,   true,   true,   true,   true,   true,   true,    true};
+    static boolean[] iPad6Support =    {true,  true,   true,   true,   true,   true,   false,  true,   false,  false,  false,   true};
+    static boolean[] iPad7Support =    {true,  true,   true,   true,   true,   true,   true,   true,   false,  true,   true,    true};
+    static boolean[] iPad8Support =    {true,  true,   true,   true,   true,   true,   true,   true,   false,  true,   true,    true};
+    static boolean[] wp8Support =      {true,  true,   true,   true,   false,  false,  true,   false,  true,   false,  false,   true};
+    static boolean[] androidSupport =  {true,  true,   true,   true,   false,  true,   true,   true,   true,   false,  true,    true};    
+    
     public String code;
     
     BridgeItCommand(String code){

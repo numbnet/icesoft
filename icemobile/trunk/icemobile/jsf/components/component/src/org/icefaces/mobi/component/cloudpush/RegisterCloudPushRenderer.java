@@ -44,40 +44,31 @@ public class RegisterCloudPushRenderer extends Renderer{
         
         RegisterCloudPush registerCloudPush = (RegisterCloudPush) uiComponent;
         ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        if( client.isBridgeItRegistered() ){
+            return;
+        }
+        boolean supported = client.isBridgeItSupportedPlatform(BridgeItCommand.REGISTER);
+        if( !supported && registerCloudPush.isHideWhenUnsupported()){
+            return;
+        }
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = registerCloudPush.getClientId();
-        
-        writer.startElement(SPAN_ELEM, null);
-        writer.writeAttribute(ID_ATTR, clientId + "_wpr", null);
+        RenderUtils.startButtonElem(uiComponent, writer);
         RenderUtils.writeStyle(uiComponent, writer);
-        RenderUtils.writeStyleClassAndBase(uiComponent, writer, "mobi-wrapper");
-        if( client.isBridgeItSupportedPlatform(BridgeItCommand.REGISTER) ){
-        
-            RenderUtils.startButtonElem(uiComponent, writer);
-            
+        RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
+        if( supported ){
             writer.writeAttribute(ONCLICK_ATTR, "bridgeit.register('" + clientId + "');", null);
-            
             RenderUtils.writeDisabled(uiComponent, writer);
-            writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
-            RenderUtils.writeTabIndex(uiComponent, writer);
-            
-            writer.startElement(SPAN_ELEM, registerCloudPush);
-            writer.writeText(registerCloudPush.getButtonLabel(), null);
-            writer.endElement(SPAN_ELEM);
-            
-            writer.endElement(BUTTON_ELEM);
         }
         else{
-            RenderUtils.startButtonElem(uiComponent, writer);
             writer.writeAttribute(DISABLED_ATTR, DISABLED_ATTR, DISABLED_ATTR);
-            writer.writeAttribute("class",CSSUtils.STYLECLASS_BUTTON, null);
-            RenderUtils.writeTabIndex(uiComponent, writer);
-            writer.startElement(SPAN_ELEM, uiComponent);
-            writer.writeText(registerCloudPush.getButtonLabel(), null);
-            writer.endElement(SPAN_ELEM);
-            writer.endElement(BUTTON_ELEM);
         }
+        RenderUtils.writeTabIndex(uiComponent, writer);
+        writer.startElement(SPAN_ELEM, registerCloudPush);
+        writer.writeText(registerCloudPush.getButtonLabel(), null);
         writer.endElement(SPAN_ELEM);
+        writer.endElement(BUTTON_ELEM);
+        
     }
 
 }
