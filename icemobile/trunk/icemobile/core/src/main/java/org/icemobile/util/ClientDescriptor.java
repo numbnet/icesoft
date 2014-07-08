@@ -174,7 +174,8 @@ public class ClientDescriptor implements Serializable{
     }
     
     public boolean isBridgeItRegistered(){
-        return AuxUploadSetup.getInstance().getEnabled();
+        boolean res = AuxUploadSetup.getInstance().getEnabled();
+        return res;
     }
 
     public boolean isSimulator(){
@@ -286,51 +287,40 @@ public class ClientDescriptor implements Serializable{
     }
     
     private List<BridgeItCommand> commands = Arrays.asList(BridgeItCommand.values());
-    private boolean[] iPhone6Support =  {true, true, true, true, true, true, false, true, true, false, false};
-    private boolean[] iPhone7Support =  {true, true, true, true, true, true, true, true, true, true, true};
-    private boolean[] iPhone8Support =  {true, true, true, true, true, true, true, true, true, true, true};
-    private boolean[] iPad6Support =  {true, true, true, true, true, true, false, true, false, false, false};
-    private boolean[] iPad7Support =  {true, true, true, true, true, true, true,  true, false, true, true};
-    private boolean[] iPad8Support =  {true, true, true, true, true, true, true,  true, false, true, true};
-    private boolean[] wp8Support =  {true, true, true, true, false, false, true, false, true, false, false};
-    private boolean[] androidSupport =  {true, true,  true,  true, false, true,  true, true,  true, false, true};    
 
     public boolean isBridgeItSupportedPlatform(BridgeItCommand command){
         if( command == null ){
             return false;
         }
-        if( "register".equals(command.code) ){
-            return true; //do not check platform for cloud push registration
-        }
         boolean supported = false;
         int index = commands.indexOf(command);
         if( isBridgeItSupportedAndroid() ){
-            return androidSupport[index];
+            return BridgeItCommand.androidSupport[index];
         }
         else if( _userAgentInfo.isWindowsPhone8() ){
-            return wp8Support[index];
+            return BridgeItCommand.wp8Support[index];
         }
         else if( isIOS() ){
             if( _userAgentInfo.isIphone() ){
                 if( isIOS6() ){
-                    return iPhone6Support[index];
+                    return BridgeItCommand.iPhone6Support[index];
                 }
                 else if( isIOS7() ){
-                    return iPhone7Support[index];
+                    return BridgeItCommand.iPhone7Support[index];
                 }
                 else if( isIOS8() ){
-                    return iPhone8Support[index];
+                    return BridgeItCommand.iPhone8Support[index];
                 }
             }
             else {
                 if( isIOS6() ){
-                    return iPad6Support[index];
+                    return BridgeItCommand.iPad6Support[index];
                 }
                 else if( isIOS7() ){
-                    return iPad7Support[index];
+                    return BridgeItCommand.iPad7Support[index];
                 }
                 else if( isIOS8() ){
-                    return iPad8Support[index];
+                    return BridgeItCommand.iPad8Support[index];
                 }
             }
         }
