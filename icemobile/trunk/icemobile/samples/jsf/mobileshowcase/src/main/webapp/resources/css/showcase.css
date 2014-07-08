@@ -217,3 +217,14 @@ html.iphone .examplesLink{
 .icon-mobi-online{
     right: 10px;
 }
+.cloud-push-button{
+    width: 30%;
+}
+@media screen and (max-width: 579px) {  
+    .cloud-push-button{
+        width: 100%;
+        max-width: 100%;
+        display: block;
+        float: none !important;
+    }
+}
