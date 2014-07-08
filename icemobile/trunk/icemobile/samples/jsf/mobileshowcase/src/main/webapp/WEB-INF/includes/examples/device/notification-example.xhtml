@@ -59,15 +59,15 @@
                 </h:selectOneMenu>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow style="text-align:right">
-                <mobi:registerCloudPush style="width:30%"/>
+                <mobi:registerCloudPush styleClass="cloud-push-button"/>
                 <mobi:commandButton value="Priority Push"
                         buttonType="attention"
                         actionListener="#{notificationBean.sendPriorityPushMessage}"
-                        style="width: 30%"/>
+                        styleClass="cloud-push-button"/>
                 <mobi:commandButton value="Simple Push" 
                         buttonType="important"
-                        style="width: 30%"
-                        actionListener="#{notificationBean.sendNormalPushMessage}"/>
+                        actionListener="#{notificationBean.sendNormalPushMessage}"
+                        styleClass="cloud-push-button"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
