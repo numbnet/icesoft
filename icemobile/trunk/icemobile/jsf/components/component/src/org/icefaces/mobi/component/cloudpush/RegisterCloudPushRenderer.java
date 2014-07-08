@@ -57,7 +57,9 @@ public class RegisterCloudPushRenderer extends Renderer{
         RenderUtils.writeStyle(uiComponent, writer);
         RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
         if( supported ){
-            writer.writeAttribute(ONCLICK_ATTR, "bridgeit.register('" + clientId + "');", null);
+            writer.writeAttribute(ONCLICK_ATTR, 
+                    String.format("bridgeit.register('%s', '', {postURL:'%s', cookies:{'JSESSIONID':'%s'}});", 
+                            clientId, AuxUploadSetup.getInstance().getUploadURL(), MobiJSFUtils.getSessionIdCookie(facesContext)), null);
             RenderUtils.writeDisabled(uiComponent, writer);
         }
         else{
