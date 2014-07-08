@@ -52,7 +52,7 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
             history = vm.getHistoryStack();
         }
         
-        String selected = vm.getSelected();
+        vm.getSelected();
         
         String formId = vm.getId() + "_form";
         for(int i = 0; i < vm.getChildCount(); i++) {
@@ -69,6 +69,7 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
         writer.writeAttribute("data-title", vm.getTitle(), null);
+        writer.writeAttribute("data-clientside", vm.isClientSide(), null);
         String styleClass = ViewManager.STYLECLASS;
         String userClass = vm.getStyleClass();
         if( userClass != null )

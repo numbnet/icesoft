@@ -58,6 +58,12 @@
                 <mobi:inputText id="headerStyle" value="#{viewManagerBean.headerStyle}"
                     singleSubmit="true"/>
             </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Client Side:" for="clientside" styleClass="ui-input-text"/>
+                <mobi:flipswitch id="clientside" value="#{viewManagerBean.clientSide}">
+                    <mobi:ajax render="@all" execute="@this"/>
+                </mobi:flipswitch>
+            </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
     </h:form>

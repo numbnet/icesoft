@@ -72,6 +72,7 @@ public class ViewManagerBean extends ExampleImpl<ViewManagerBean> implements
     private String headerStyle;
     private String view = null;
     private Stack<String> history;
+    private boolean clientSide = false;
 
     public ViewManagerBean() {
         super(ViewManagerBean.class);
@@ -108,6 +109,14 @@ public class ViewManagerBean extends ExampleImpl<ViewManagerBean> implements
 
     public void setHistory(Stack<String> history) {
         this.history = history;
+    }
+
+    public boolean isClientSide() {
+        return clientSide;
+    }
+
+    public void setClientSide(boolean clientSide) {
+        this.clientSide = clientSide;
     }
 
  }
