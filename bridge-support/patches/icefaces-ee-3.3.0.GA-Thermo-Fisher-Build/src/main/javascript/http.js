@@ -246,22 +246,7 @@ var ResponseProxy = function(nativeRequestResponse) {
         });
 
         method(contentAsDOM, function(self) {
-            try {
-                return nativeRequestResponse.responseXML;
-            } catch (e) {
-                var txt = '<error>' + e + '</error>';
-                var doc;
-                if (window.DOMParser) {
-                    var parser = new DOMParser();
-                    doc = parser.parseFromString(txt,"text/xml");
-                } else {
-                    doc = new ActiveXObject("Microsoft.XMLDOM");
-                    doc.async = false;
-                    doc.loadXML(txt);
-                }
-
-                return doc;
-            }
+            return nativeRequestResponse.responseXML;
         });
 
         method(asString, function(self) {
