@@ -1,0 +1,55 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+.mobi-flipswitch{
+    border-radius: 0.2em;
+}
+.mobi-flipswitch-off, .mobi-flipswitch-on {
+    border: 1px solid #888888;
+}
+.mobi-flipswitch-off {
+    background: -moz-linear-gradient(top, #c8c8c8, #ffffff) repeat scroll 0 0 #ffffff;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #c8c8c8), color-stop(1, #ffffff));
+}
+.mobi-flipswitch-off .mobi-flipswitch-txt-off{
+    color: #666666;
+    text-shadow: 0 -1px 1px #b6e6ff;
+}
+.mobi-flipswitch-on {
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #0099ff), color-stop(1, #0066cc));
+    background-image: -moz-linear-gradient(top, #0099ff, #0066cc);
+}
+.mobi-flipswitch-on span{
+    border-left: 1px solid #888888;
+}
+.mobi-flipswitch-on .mobi-flipswitch-txt-on {
+    color: #ffffff;
+    text-shadow: 0 -1px 1px #133585;
+    border-left: none;
+}
+.mobi-flipswitch-off .mobi-flipswitch-txt-on, .mobi-flipswitch-on .mobi-flipswitch-txt-off {
+    background: -moz-linear-gradient(top, #e3e3e3, #fcfcfc) repeat scroll 0 0 #fcfcfc;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #e3e3e3), color-stop(1, #fcfcfc));
+    color: transparent;
+    text-shadow: none;
+    border-radius: 0.2em;
+}
+.mobi-flipswitch-on .mobi-flipswitch-txt-off { border-left: 1px solid #888888; }
+
+.mobi-flipswitch-off .mobi-flipswitch-txt-on {
+    border-right: 1px solid #888888;
+    color: transparent;
+}
