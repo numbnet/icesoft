@@ -1,0 +1,74 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <h:form id="panelConfForm">
+
+        <mobi:fieldsetGroup styleClass="intro">
+            <mobi:fieldsetRow>
+                The panelConfirmation component will be displayed when the
+                execute button is pressed. The user then has the choice to
+                veto execution or let it proceed.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:commandButton value="Execute" styleClass="submit"
+                                    panelConfirmation="panelConfirmation"
+                                    actionListener="#{panelConfirmationBean.execute}"/>
+        
+        <mobi:panelConfirmation id="panelConfirmation"
+                                        title="Confirm"
+                                        message="#{panelConfirmationBean.message}"
+                                        acceptLabel="#{panelConfirmationBean.acceptLabel}"
+                                        cancelLabel="#{panelConfirmationBean.cancelLabel}"
+                                        type="#{panelConfirmationBean.type}"/>
+        
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <label>Execution count:</label>
+                <span>#{panelConfirmationBean.count}</span>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:inputText id="message" label="Message:" 
+                    value="#{panelConfirmationBean.message}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:inputText id="acceptLabel" label="Accept Label:"
+                    value="#{panelConfirmationBean.acceptLabel}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:inputText id="cancelLabel" label="Cancel Label:" 
+                    value="#{panelConfirmationBean.cancelLabel}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="type" value="Type:" class="ui-input-text"/>
+                <h:selectOneMenu id="type" value="#{panelConfirmationBean.type}"
+                    styleClass="mobi-input-text" style="font-size:15px">
+                    <f:selectItem itemValue="both"/>
+                    <f:selectItem itemValue="acceptOnly"/>
+                    <f:selectItem itemValue="cancelOnly"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+    </h:form>
+</ui:composition>

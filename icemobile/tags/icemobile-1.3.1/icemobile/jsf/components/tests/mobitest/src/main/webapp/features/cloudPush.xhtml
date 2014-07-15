@@ -1,0 +1,83 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components">
+<h:head>
+    <meta charset="UTF-8" content="text/html"></meta>
+    <title>Notifications</title>
+    <script type="text/javascript">
+        function pause(element) {
+            var pauseConnectionMessage = 'pause';
+            var resumeConnectionMessage = 'resume';
+            if (element.value == pauseConnectionMessage) {
+                ice.push.connection.pauseConnection();
+                element.value = resumeConnectionMessage;
+            } else {
+                ice.push.connection.resumeConnection();
+                element.value = pauseConnectionMessage;
+            }
+        }
+        function park(element) {
+           ice.push.parkInactivePushIds('mail:' + document.getElementById('email').value);
+        }
+
+    </script>
+</h:head>
+<h:body style="font-family:sans-serif">
+    <h3>Send Notification</h3>
+    <h:form>
+        <div style="position: relative; border: 1px dotted silver; max-width: 500px;">
+          <div>
+            <h:inputText style="width:50%;" value="#{notificationBean.subject}" placeholder="subject" />
+            <h:commandButton style="float: right;" action="#{notificationBean.sendNotification}"
+                                     value="Send"/>
+          </div>
+          <div >
+            <h:inputText style="width:50%;" value="#{notificationBean.message}" placeholder="message" />
+            <h:commandButton style="position:absolute; right:1px;" action="#{notificationBean.sendImportantNotification}"
+                                     value="!Send!"/>
+          </div>
+        </div>
+    </h:form>
+    <h3>Received Notification</h3>
+    <div style="border: 1px dotted silver; font-weight:bold; text-align:center; max-width: 500px;">
+        <h:outputText style="font-weight:bold;" value="#{messagingHub.message}&nbsp;"/>
+    </div>
+    <h3>Park/Pause/Resume Connection</h3>
+    <div style="border: 1px dotted silver; max-width: 500px;">
+        <input type="input" name="email" value="" placeholder="email" id="email"/>
+        <input type="button" style="float: right;"
+                       onclick="pause(this);"
+                       name="pauseresume"
+                       value="pause"
+                       id="pause"/>
+        <input type="button" style="float: right;"
+                       onclick="park(this);"
+                       name="park"
+                       value="park"
+                       id="park"/>
+    </div>
+    <ul>
+        <li><a href="../index.html">index page</a></li>
+    </ul>
+</h:body>
+</html>

@@ -1,0 +1,108 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/* JQM Derived Styles as stop-gap until true JQM based themes */
+
+.mobi-dv .ui-bar-b {
+    background: #8dabb4; /* Old browsers */
+    background: -moz-linear-gradient(top,  #8dabb4 0%, #b6c9cf 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8dabb4), color-stop(100%,#b6c9cf)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #8dabb4 0%,#b6c9cf 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #8dabb4 0%,#b6c9cf 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #8dabb4 0%,#b6c9cf 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #8dabb4 0%,#b6c9cf 100%); /* W3C */
+    border-bottom: 1px solid #999999;
+    border-top: 1px solid #7D7D7D;
+    color: #FFFFFF;
+    text-shadow: 0 1px 0 #666666;
+}
+
+.mobi-dv, .mobi-dv .ui-body-c,
+.mobi-dv .ui-overlay-c {
+    border: 1px solid 		#aaa /*{c-body-border}*/;
+    color: 					#333 /*{c-body-color}*/;
+    text-shadow: 0 /*{c-body-shadow-x}*/ 1px /*{c-body-shadow-y}*/ 0 /*{c-body-shadow-radius}*/ #fff /*{c-body-shadow-color}*/;
+    background: 			#ffffff /*{c-body-background-color}*/;
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #ffffff /*{c-body-background-start}*/), to( #fafafa /*{c-body-background-end}*/)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( #ffffff /*{c-body-background-start}*/, #fafafa /*{c-body-background-end}*/); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #ffffff /*{c-body-background-start}*/, #fafafa /*{c-body-background-end}*/); /* FF3.6 */
+    background-image:     -ms-linear-gradient( #ffffff /*{c-body-background-start}*/, #fafafa /*{c-body-background-end}*/); /* IE10 */
+    background-image:      -o-linear-gradient( #ffffff /*{c-body-background-start}*/, #fafafa /*{c-body-background-end}*/); /* Opera 11.10+ */
+    background-image:         linear-gradient( #ffffff /*{c-body-background-start}*/, #fafafa /*{c-body-background-end}*/);
+}
+.mobi-dv,
+.mobi-dv .ui-body-c,
+.mobi-dv .ui-body-c input,
+.mobi-dv .ui-body-c select,
+.mobi-dv .ui-body-c textarea,
+.mobi-dv .ui-body-c button {
+    font-family: "Droid Sans", Helvetica, Arial, sans-serif /*{global-font-family}*/;
+}
+.mobi-dv .ui-body-c .ui-link-inherit {
+    color: 	#333 /*{c-body-color}*/;
+}
+.mobi-dv .ui-body-c .ui-link {
+    color: #2489ce /*{c-body-link-color}*/;
+    font-weight: bold;
+}
+.mobi-dv .ui-body-c .ui-link:visited {
+    color: #2489ce /*{c-body-link-visited}*/;
+}
+.mobi-dv .ui-body-c .ui-link:hover,
+.mobi-dv .ui-body-c a:hover {
+    color: #2489ce /*{c-body-link-hover}*/;
+}
+.mobi-dv .ui-body-c .ui-link:active {
+    color: #2489ce /*{c-body-link-active}*/;
+}
+
+.mobi-dv .ui-bar-e {
+    border: 1px solid 		#f7c942 /*{e-bar-border}*/;
+    background: 			#fadb4e /*{e-bar-background-color}*/;
+    color: 					#333 /*{e-bar-color}*/;
+    font-weight: bold;
+    text-shadow: 0 /*{e-bar-shadow-x}*/ 1px /*{e-bar-shadow-y}*/ 0 /*{e-bar-shadow-radius}*/ 	#fff /*{e-bar-shadow-color}*/;
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #fceda7 /*{e-bar-background-start}*/), to( #fbef7e /*{e-bar-background-end}*/)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/); /* FF3.6 */
+    background-image:     -ms-linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/); /* IE10 */
+    background-image:      -o-linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/); /* Opera 11.10+ */
+    background-image:         linear-gradient( #fceda7 /*{e-bar-background-start}*/, #fbef7e /*{e-bar-background-end}*/);
+}
+.mobi-dv .ui-bar-e,
+.mobi-dv .ui-bar-e input,
+.mobi-dv .ui-bar-e select,
+.mobi-dv .ui-bar-e textarea,
+.mobi-dv .ui-bar-e button {
+    font-family: "Droid Sans", Helvetica, Arial, sans-serif /*{global-font-family}*/;
+}
+.mobi-dv .ui-bar-e .ui-link-inherit {
+    color: 	#333 /*{e-bar-color}*/;
+}
+.mobi-dv .ui-bar-e a.ui-link {
+    color: #2489ce /*{e-bar-link-color}*/;
+    font-weight: bold;
+}
+.mobi-dv .ui-bar-e a.ui-link:visited {
+    color: #2489ce /*{e-bar-link-visited}*/;
+}
+.mobi-dv .ui-bar-e a.ui-link:hover,
+.mobi-dv .ui-bar-e a:hover {
+    color: #2489ce /*{e-bar-link-hover}*/;
+}
+.mobi-dv .ui-bar-e a.ui-link:active {
+    color: #2489ce /*{e-bar-link-active}*/;
+}
