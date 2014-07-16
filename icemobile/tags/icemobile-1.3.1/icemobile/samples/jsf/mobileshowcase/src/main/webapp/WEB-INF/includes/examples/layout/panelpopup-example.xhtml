@@ -1,0 +1,129 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+             xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:form id="popupForm">
+
+        <mobi:fieldsetGroup styleClass="intro">
+            <mobi:fieldsetRow>
+                The panelPopup is a container component that renders a popup panel. 
+                Click the "Show Popup" button to display a popup.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:panelPopup id="panelPopup" singleSubmit="true"
+                         visible="#{panelPopupBean.visible}"
+                         clientSide="#{panelPopupBean.clientSide}"
+                         autoCenter="#{panelPopupBean.autoCenter}"
+                         width="260" 
+                         headerText="Selected: #{panelPopupBean.selectedListItem}"
+                         style="#{panelPopupBean.autoCenter ? '' : (mobiClient.handheldBrowser ? 'top:50px;left:10px' : 'top:50px;left:32%' )}">
+            <mobi:outputList inset="false">
+                <mobi:outputListItem>
+                    <h:commandLink styleClass="ui-link-inherit"
+                            actionListener="#{panelPopupBean.selectListItemAction}">
+                        <f:param name="listItem" value="System Update"/>
+                        System Update
+                    </h:commandLink>
+                </mobi:outputListItem>
+                <mobi:outputListItem>
+                    <h:commandLink styleClass="ui-link-inherit"
+                            actionListener="#{panelPopupBean.selectListItemAction}">
+                        <f:param name="listItem" value="Status"/>
+                        Status
+                    </h:commandLink>
+                </mobi:outputListItem>
+                <mobi:outputListItem>
+                    <h:commandLink styleClass="ui-link-inherit"
+                            actionListener="#{panelPopupBean.selectListItemAction}">
+                        <f:param name="listItem" value="Battery Use"/>
+                        Battery use
+                    </h:commandLink>
+                </mobi:outputListItem>
+                <mobi:outputListItem>
+                    <h:commandLink styleClass="ui-link-inherit"
+                            actionListener="#{panelPopupBean.selectListItemAction}">
+                        <f:param name="listItem"
+                                 value="Device Information"/>
+                        Device Information
+                    </h:commandLink>
+                </mobi:outputListItem>
+                <mobi:outputListItem>
+                    <h:commandLink styleClass="ui-link-inherit"
+                            actionListener="#{panelPopupBean.selectListItemAction}"
+                            action="#{panelPopupBean.toggleVisible}"
+                            rendered="#{not panelPopupBean.clientSide}">
+                        <f:param name="listItem" value="Model Number"/>
+                        Model Number (Dismisses Popup)
+                    </h:commandLink>
+                    <h:commandLink styleClass="ui-link-inherit"
+                            actionListener="#{panelPopupBean.selectListItemAction}"
+                            rendered="#{panelPopupBean.clientSide}">
+                        <f:param name="listItem" value="Model Number"/>
+                        Model Number
+                    </h:commandLink>
+                </mobi:outputListItem>
+                <mobi:outputListItem style="text-align:right;" >
+                  <c:if test="#{not panelPopupBean.clientSide}">
+                        <mobi:commandButton  singleSubmit="true"
+                            actionListener="#{panelPopupBean.toggleVisible}"
+                            buttonType="important"
+                            value="Close Popup"/>
+                   </c:if>
+                   <c:if test="#{panelPopupBean.clientSide}">
+                   <div>
+                    <a onclick="ice.mobi.panelPopup.closeClient('panelPopup');"
+                        class="mobi-button mobi-button-important ui-btn-up-c">Close Popup</a>
+                   </div>
+                  </c:if>
+                </mobi:outputListItem>
+            </mobi:outputList>
+            
+        </mobi:panelPopup>
+
+        <mobi:commandButton styleClass="submit"
+                            buttonType="important"
+                            value="Show Popup"
+                            actionListener="#{panelPopupBean.toggleVisible}"
+                            rendered="#{not panelPopupBean.clientSide}"/>
+                            
+        <c:if test="#{panelPopupBean.clientSide}">
+            <a href="#" onclick="ice.mobi.panelPopup.openClient('panelPopup');"
+                class="mobi-button mobi-button-important ui-btn-up-c submit">Show Client-side Popup</a>
+        </c:if>
+                            
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="clientSide" value="Client Side:" />
+                <mobi:flipswitch id="clientSide" value="#{panelPopupBean.clientSide}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="autoCenter" value="Auto-center:"/>
+                <mobi:flipswitch id="autoCenter" value="#{panelPopupBean.autoCenter}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="results">
+                <h:outputLabel value="Selected Value:"/>
+                <span>#{panelPopupBean.selectedListItem}</span>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+    </h:form>
+</ui:composition>
