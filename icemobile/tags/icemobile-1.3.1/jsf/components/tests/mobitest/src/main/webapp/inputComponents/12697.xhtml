@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ace="http://www.icefaces.org/icefaces/components"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<mobi:deviceResource theme="android_light" />
+</h:head>
+<h:body>
+    <h3>submitNotification tests on commandButton</h3>
+     <h:form id="form1">
+         <mobi:fieldsetGroup>
+             <mobi:fieldsetRow>
+                 <h5>just submitNotification on button</h5>
+             </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                 <h:outputLabel for="text1" value="Inputname for submitNotification Popup"/>
+                 <mobi:inputText id="text1" value="#{submitNotification.name}"
+                                 type="text" placeholder="name" />
+             </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                 <h:outputLabel for="labela" value="updated by buttons button:" />
+                 <h:outputText id="labela" value="#{submitNotification.label}" />
+             </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                 <h:outputLabel for="button1" value="button no singleSubmit"></h:outputLabel>
+                 <mobi:commandButton id="button1" value="fullAjaxSubmit"
+                              submitNotification="sn1"
+                              actionListener="#{submitNotification.actionMethod}"/>
+             </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                 <h:outputLabel for="button2" value="button singleSubmit"></h:outputLabel>
+                 <mobi:commandButton id="button2" value="singleSubmit"
+                              singleSubmit="true"
+                              submitNotification="sn1"
+                              actionListener="#{submitNotification.actionMethod2}"/>
+             </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                 <h:outputLabel for="button3" value="button with mobi ajax"></h:outputLabel>
+                 <mobi:commandButton id="button3" value="ajaxTag"
+                              submitNotification="sn1"
+                              actionListener="#{submitNotification.actionMethod3}">
+                       <mobi:ajax render="@form" execute="@this"/>
+                 </mobi:commandButton>
+             </mobi:fieldsetRow>
+         </mobi:fieldsetGroup>
+         <mobi:submitNotification id="sn1"
+                                  style="#{submitNotification.style}"
+                                  styleClass = "#{submitNotification.styleClass}"
+                                  disabled="#{submitNotification.disabled}">
+              <h:outputText value="WORKING..."/>
+         </mobi:submitNotification>
+
+     </h:form>
+    <h:form id="outform">
+    <h3>RESULTS</h3>
+     <mobi:fieldsetGroup>
+     <mobi:fieldsetRow>
+             <h:outputLabel for="name" value="Field will not be updated by mobi ajax enabled button:" />
+             <h:outputText id="name" value="#{submitNotification.name}" />
+         </mobi:fieldsetRow>
+    <!--         <mobi:fieldsetRow>
+             <h:outputLabel for="disabled" value="Disabled:" />
+             <mobi:flipswitch id="disabled" value="#{submitNotification.disabled}" singleSubmit="true"/>
+         </mobi:fieldsetRow>   -->
+         <mobi:fieldsetRow>
+             <h:outputLabel for="label" value="Field will not be updated by mobi ajax enabled button:" />
+             <h:outputText id="label" value="#{submitNotification.label}" />
+         </mobi:fieldsetRow>
+         <mobi:fieldsetRow>
+             <h:outputLabel for="styleClass" value="Cancel Label:"/>
+             <mobi:inputText id="styleClass" value="#{submitNotification.styleClass}" singleSubmit="true"/>
+         </mobi:fieldsetRow>
+
+     </mobi:fieldsetGroup>
+  </h:form>
+</h:body>
+</html>
