@@ -325,6 +325,9 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         if( client.isIE10Browser() ){
             markers += " ie10";
         }
+        else if( client.isIE10orHigherBrowser() ){
+            markers += " ie11";
+        }
         if( client.isAndroidOS() ){
             markers += " android";
         }

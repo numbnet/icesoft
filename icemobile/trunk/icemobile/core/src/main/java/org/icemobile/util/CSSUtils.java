@@ -96,7 +96,6 @@ public class CSSUtils {
      * @return The theme name
      */
     public static Theme deriveTheme(String targetView, HttpServletRequest request) {
-
         ClientDescriptor client = ClientDescriptor.getInstance(request);
         Theme theme = null;
         View view = View.getEnum(targetView);
@@ -110,7 +109,7 @@ public class CSSUtils {
         else if (client.isBlackBerryOS()) {
             theme = Theme.BBERRY;
         } 
-        else if (client.isAndroidOS()) {
+        else if (client.isAndroidOS() || client.isIE10orHigherBrowser()) {
             theme = Theme.ANDROID_LIGHT;
         } 
         else if (client.isIOS()) {
