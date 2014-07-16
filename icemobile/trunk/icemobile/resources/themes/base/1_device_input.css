@@ -16,11 +16,6 @@
  
  .mobi-wrapper{
     display: inline-block;
-    overflow: hidden;
- }
- .mobi-wrapper > .mobi-button{
-    width: 100%;
-    max-width: 100%;
  }
 
 .mobi-audio, .mobi-video{ display: inline-block; }
