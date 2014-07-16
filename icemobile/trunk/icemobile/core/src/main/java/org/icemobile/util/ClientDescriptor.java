@@ -153,6 +153,10 @@ public class ClientDescriptor implements Serializable{
         return _userAgentInfo.isIE10();
     }
     
+    public boolean isIE10orHigherBrowser(){
+        return _userAgentInfo.isIE10() || _userAgentInfo.isIE11() || _userAgentInfo.isIE12orHigher();
+    }
+    
     public boolean isIOS() {
         return os == OS.IOS;
     }

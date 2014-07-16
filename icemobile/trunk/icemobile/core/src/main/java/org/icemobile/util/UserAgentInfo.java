@@ -68,8 +68,8 @@ public class UserAgentInfo implements Serializable{
     public static final String ANDROID2_2 = "android 2.2";
     public static final String WP8 = "windows phone 8";
     
-    public static final Pattern IE11_PATTERN = Pattern.compile(".*trident.*rv.*11.*");
-    
+    public static final Pattern IE11_PATTERN = Pattern.compile(".*trident/7.*");
+    public static final Pattern IE12_PATTERN = Pattern.compile(".*trident/8.*");
 
     public UserAgentInfo(String userAgent) {
         if (userAgent != null) {
@@ -220,7 +220,7 @@ public class UserAgentInfo implements Serializable{
    }
    
    public boolean isIE9orLess(){
-       return userAgentString.contains(MSIE6) || userAgentString.contains(MSIE7) || userAgentString.contains(MSIE8) || userAgentString.contains(MSIE9);
+       return !isIE10() && !isIE11() && !isIE12orHigher() && (userAgentString.contains(MSIE6) || userAgentString.contains(MSIE7) || userAgentString.contains(MSIE8) || userAgentString.contains(MSIE9));
    }
    
    public boolean isIE9(){
@@ -233,6 +233,10 @@ public class UserAgentInfo implements Serializable{
    
    public boolean isIE11(){
        return IE11_PATTERN.matcher(userAgentString).matches();
+   }
+   
+   public boolean isIE12orHigher(){
+       return IE12_PATTERN.matcher(userAgentString).matches();
    }
    
    public boolean isChrome(){
