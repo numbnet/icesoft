@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+     <mobi:deviceResource   includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}"/>
+    <title>Menu with contentStack dynamic testing</title>
+</h:head>
+<h:body>
+  <header>
+       <a href="../../layoutComponents.html">index page</a>
+  </header>
+  <h:panelGrid columns="2">
+    <h:panelGroup id="pgroupmnu" style="top: 10px;">
+      <h:form id="menuForm" >
+        <mobi:contentStackMenu id="mnu"  contentStackId="#{contentMenuBean.stackId}"
+                 accordion = "#{contentMenuBean.accordion}"
+                 selectedPane="#{contentMenuBean.twoColSelectedPane}">
+           <mobi:contentMenuItem label="Menu Title" />
+           <mobi:contentMenuItem label="Panel1" value="panel1" styleClass="#{contentMenuBean.styleClass}"/>
+           <mobi:contentMenuItem value="panel2" style="#{contentMenuBean.style}" />
+           <mobi:contentMenuItem value="panel3" label="Panel3"/>
+           <mobi:contentMenuItem url="http://www.icesoft.com" disabled="#{contentMenuBean.disabled}"/>
+           <mobi:contentMenuItem label="index" url="../../index.html" disabled="#{contentMenuBean.disabled}"/>
+        </mobi:contentStackMenu>
+      </h:form>
+   </h:panelGroup>
+    <mobi:contentStack id="stack1" currentId="#{contentMenuBean.twoColSelectedPane}"
+            contentMenuId="mnu">
+         <mobi:contentPane id="panel1" client="true">
+              <h:form id="testFrm">
+                  <h3>DYNAMIC UPDATES</h3>
+                  <mobi:fieldsetRow>
+                     <h:outputLabel for="disabled" value="Disabled last contentMenuItem with href:" />
+                     <mobi:flipswitch id="disabled" value="#{contentMenuBean.disabled}" singleSubmit="true"/>
+                  </mobi:fieldsetRow>
+                  <mobi:fieldsetRow>
+                     <h:outputLabel for="styleClass" value="StyleClass:" />
+                     <mobi:inputText id="styleClass" value="#{contentMenuBean.styleClass}" singleSubmit="true"/>
+                  </mobi:fieldsetRow>
+                  <mobi:fieldsetRow>
+                     <h:outputLabel for="style" value="Style:" />
+                     <mobi:inputText id="style" value="#{contentMenuBean.style}" singleSubmit="true"/>
+                  </mobi:fieldsetRow>
+                  In order to test what happens when stackId is null or not found. have to set
+                  the stackId in the backing bean to something other than stack1 and then
+                  deploy.  To test other things dynamically, change the stackId back to
+                  stack1 and then redeploy.  contentStackMenu stores the value for the
+                  stack id after finding it first and will only find it again if its
+                  not found(MOBI-470)
+                  panel2 has no value set for label, so the renderer will determine if the
+                  value is not null and use the string value of that instead. panel2 must not
+                  have label of null. (MOBI476).
+                    <h3>RESULTS:</h3>
+                    <mobi:fieldsetRow>
+                        <h:outputLabel for="stckout" value="contentStackId used:-"/>
+                         <h:outputText id="stckout" value="#{contentMenuBean.stackId}"/>
+                    </mobi:fieldsetRow>
+                    <mobi:fieldsetRow>
+                        <h:outputLabel for="scout" value="StyleClass:-"/>
+                         <h:outputText id="scout" value="#{contentMenuBean.styleClass}"/>
+                    </mobi:fieldsetRow>
+                    <mobi:fieldsetRow>
+                        <h:outputLabel for="sout" value="Style:-"/>
+                         <h:outputText id="sout" value="#{contentMenuBean.style}"/>
+                    </mobi:fieldsetRow>
+              </h:form>
+         </mobi:contentPane>
+         <mobi:contentPane id="panel2" >
+             <h:form id="pane2form">
+                 <ui:include src="../includes/date-example.xhtml"/>
+             </h:form>
+         </mobi:contentPane>
+         <mobi:contentPane id="panel3" facelet="true">
+             <h:form id="pane3form">
+                <ui:include src="../includes/other.xhtml" />
+             </h:form>
+         </mobi:contentPane>
+    </mobi:contentStack>
+  </h:panelGrid>
+</h:body>
+</html>

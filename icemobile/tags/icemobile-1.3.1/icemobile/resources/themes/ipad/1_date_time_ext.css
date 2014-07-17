@@ -1,0 +1,125 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+ 
+ 
+ .mobi-date-popup-btn {
+    width: 22px;
+    height: 21px;
+}
+.mobi-time-popup-btn {
+    width: 28px;
+    height: 26px;
+}
+
+.mobi-date-container, .mobi-time-container {
+    background-color: #ccc;
+    border-radius: 6px;
+    -moz-box-shadow: 3px 3px 5px black;
+    -webkit-box-shadow: 3px 3px 5px black;
+    box-shadow: 3px 3px 5px black;
+    border: 1px solid #e4e4e4;
+    color: #000000;
+}
+
+.mobi-date-title-container, .mobi-time-title-container  {
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #e4e4e4;
+    background: #aab8c9; /* Old browsers */
+    background: -moz-linear-gradient(top,  #aab8c9 0%, #6e84a2 50%, #6e84a2 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#aab8c9), color-stop(50%,#6e84a2), color-stop(100%,#6e84a2)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #aab8c9 0%,#6e84a2 50%,#6e84a2 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #aab8c9 0%,#6e84a2 50%,#6e84a2 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #aab8c9 0%,#6e84a2 50%,#6e84a2 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #aab8c9 0%,#6e84a2 50%,#6e84a2 100%); /* W3C */
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    font-weight: bold;
+}
+
+.mobi-date-select-container, .mobi-time-select-container {
+    color: white;
+}
+
+.mobi-date-submit-container, .mobi-time-submit-container {
+    color: black;
+    height: 35px;
+    padding: 5px 3px;
+    background: #f4f5f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f4f5f7 0%, #a8acb9 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f4f5f7), color-stop(100%,#a8acb9)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f4f5f7 0%,#a8acb9 100%); /* W3C */
+}
+
+.mobi-date-submit-container .mobi-button,
+.mobi-time-submit-container .mobi-button{
+    width: 49%;
+    margin: 0;
+}
+
+.mobi-date-submit-container .mobi-button:first-child,
+.mobi-time-submit-container .mobi-button:first-child{
+    float: left;
+}
+
+.mobi-date-submit-container .mobi-button:last-child,
+.mobi-time-submit-container .mobi-button:last-child{
+    float: right;
+}
+
+.mobi-date-select-value-cont, .mobi-time-select-value-cont {
+    margin: 8px 10px;
+    border-radius: 6px;
+    border: 3px solid #aaacbf;
+}
+
+.mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr {
+    border-radius: 6px 6px 0 0;
+    background: #f7f7f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f7f7f7 0%, #bdbebd 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(100%,#bdbebd)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f7f7f7 0%,#bdbebd 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f7f7f7 0%,#bdbebd 100%); /* W3C */
+}
+
+.mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
+    border-radius: 0 0 6px 6px;
+    background: #bdbebd; /* Old browsers */
+    background: -moz-linear-gradient(top,  #bdbebd 0%, #f7f7f7 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bdbebd), color-stop(100%,#f7f7f7)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #bdbebd 0%,#f7f7f7 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #bdbebd 0%,#f7f7f7 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #bdbebd 0%,#f7f7f7 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #bdbebd 0%,#f7f7f7 100%); /* W3C */
+}
+
+.mobi-date-btn-incr, .mobi-time-btn-incr {
+    border-radius: 6px 6px 0 0;
+}
+
+.mobi-date-btn-decr, .mobi-time-btn-decr {
+    border-radius: 0 0 6px 6px;
+}
+
+.mobi-date-select-value, .mobi-time-select-value {
+    background-color: #E2E3EC;
+}

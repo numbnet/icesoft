@@ -1,0 +1,71 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <h:form style="margin-top:10px;" id="notificationForm">
+    
+        <mobi:fieldsetGroup styleClass="intro">
+            <mobi:fieldsetRow>
+                The submitNotification panel provides the user with a visual indication
+                that a submit has taken place. Once the response has been
+                received, the notification panel is hidden. The submitNotification 
+                component can be used with either the ICEmobile commandButton or
+                menuButton components.
+             </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <h3>submitNotification with a commandButton</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow style="text-align:center">
+                <mobi:commandButton value="Execute Long Task"
+                                    submitNotification="submitNotification1"
+                                    actionListener="#{submitNotificationBean.longRunningTask}"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:submitNotification id="submitNotification1">
+            <span>Processing Command<br/>Button Request</span>
+        </mobi:submitNotification>
+        
+        <h3>submitNotification with a menuButton</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow style="text-align:center">
+                <mobi:menuButton buttonLabel="Action Menu" id="menuButton"
+                                 var="item" value="#{submitNotificationBean.menuButtons}">
+                     <mobi:menuButtonItem label="#{item.label}"
+                            actionListener="#{submitNotificationBean.longRunningTask}"
+                            submitNotification="submitNotification2"/>
+                </mobi:menuButton>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:submitNotification id="submitNotification2">
+            <h:outputText value="Processing Menu Button Request"/>
+        </mobi:submitNotification>
+        
+        <script type="text/javascript">
+            var preloaded = new Array();
+            preloaded[0] = document.createElement('img');
+            preloaded[0].setAttribute('src','./javax.faces.resource/org.icefaces.component.skins/#{themeBean.derivedTheme}/spinner.gif.jsf');
+        </script>
+        
+    </h:form>
+</ui:composition>

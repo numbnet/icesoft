@@ -1,0 +1,88 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:icecore="http://www.icefaces.org/icefaces/core"
+                xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+   
+    <mobi:pagePanel id="pagePanel">
+        <f:facet name="header">
+            <h:form id="toolbar" prependId="false">
+                <icecore:singleSubmit rendered="false"/>
+                <h:commandLink style="position: absolute;left: 0.5em;top: 3px;"
+                        action="#{mobiNavigationModel.navigateToParam}">
+                    <f:param name="panelID" value="splash"/>
+                    <f:param name="beanName" value="null"/>
+                    <h:graphicImage library="images"
+                                    name="icemobile_thumb.png"/>
+                </h:commandLink>
+                <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
+                
+                <!-- theme selector -->
+                <c:if test="#{!mobiClient.IE9orLessBrowser}">
+                     <div style="position: absolute;right: 10px;top: 6px;">
+                        <mobi:onlineStatus onOnline="console.log('online: ' + event);"
+                            onOffline="console.log('offline: ' + event);"/>
+                        <span style="font-size: 14px">
+                            <i class="icon-eye-open" style="padding:3px"/>Theme: 
+                        </span>
+                        <h:selectOneMenu
+                                style="font-size:14px;font-weight:normal;"
+                                onchange="ice.s(event, this);"
+                                value="#{themeBean.currentTheme}">
+                            <f:selectItem itemLabel="Auto" itemValue=""/>
+                            <f:selectItem itemLabel="iOS 6" itemValue="ipad"/> 
+                            <f:selectItem itemLabel="iOS 7" itemValue="ios7"/>
+                            <f:selectItem itemLabel="Android Light"
+                                          itemValue="android_light"/>
+                            <f:selectItem itemLabel="Android Dark"
+                                          itemValue="android_dark"/>
+                            <f:selectItem itemLabel="BlackBerry 10"
+                                          itemValue="bb10"/>
+                            <f:selectItem itemLabel="jQuery Mobile"
+                                          itemValue="jqm"/>
+                            
+                            <f:ajax disabled="true"/>
+                        </h:selectOneMenu>
+                    </div>
+                </c:if>
+            </h:form>
+        </f:facet>
+
+
+        <f:facet name="body">
+  	       <mobi:splitPane id="splitPane" scrollable="true" columnDivider="30">
+				<f:facet name="left">
+                <!-- always present menu on left side of device. -->
+                <!-- main content include of page content -->
+                   <ui:include src="/WEB-INF/includes/content/menu.xhtml"/>
+                </f:facet>
+
+				<f:facet name="right">
+                <!-- main content include of page content -->
+                  <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
+                     <ui:param name="selectedPanel"
+                              value="#{mobiNavigationModel.selectedPanel == null?'splash':mobiNavigationModel.selectedPanel}"/>
+                  </ui:include>
+                </f:facet>
+            </mobi:splitPane>
+        </f:facet>
+
+    </mobi:pagePanel>
+</ui:composition>
