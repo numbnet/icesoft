@@ -35,13 +35,13 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ResourceTyp
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 @Destination(
-        title = "example.media.audio.destination.title.short",
-        titleExt = "example.media.audio.destination.title.long",
-        titleBack = "example.media.audio.destination.title.back"
+        title = "example.layout.viewmanager.destination.title.short",
+        titleExt = "example.layout.viewmanager.destination.title.long",
+        titleBack = "example.layout.viewmanager.destination.title.back"
 )
 @Example(
-        descriptionPath = "/WEB-INF/includes/examples/media/audio-desc.xhtml",
-        examplePath = "/WEB-INF/includes/examples/media/audio-example.xhtml",
+        descriptionPath = "/WEB-INF/includes/examples/layout/viewmanager-desc.xhtml",
+        examplePath = "/WEB-INF/includes/examples/layout/viewmanager-example.xhtml",
         resourcesPath = "/WEB-INF/includes/examples/example-resources.xhtml"
 )
 @ExampleResources(
@@ -69,7 +69,7 @@ public class ViewManagerBean extends ExampleImpl<ViewManagerBean> implements
             Logger.getLogger(ViewManagerBean.class.toString());
             
     private String transitionType = "horizontal";
-    private String headerStyle;
+    private String barStyle;
     private String view = null;
     private Stack<String> history;
     private boolean clientSide = false;
@@ -85,14 +85,6 @@ public class ViewManagerBean extends ExampleImpl<ViewManagerBean> implements
 
     public void setTransitionType(String transitionType) {
         this.transitionType = transitionType;
-    }
-
-    public String getHeaderStyle() {
-        return headerStyle;
-    }
-
-    public void setHeaderStyle(String headerStyle) {
-        this.headerStyle = headerStyle;
     }
 
     public String getView() {
@@ -117,6 +109,14 @@ public class ViewManagerBean extends ExampleImpl<ViewManagerBean> implements
 
     public void setClientSide(boolean clientSide) {
         this.clientSide = clientSide;
+    }
+
+    public String getBarStyle() {
+        return barStyle;
+    }
+
+    public void setBarStyle(String barStyle) {
+        this.barStyle = barStyle;
     }
 
  }

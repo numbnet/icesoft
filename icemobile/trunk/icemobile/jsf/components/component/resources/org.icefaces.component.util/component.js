@@ -2127,6 +2127,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
 
     function refreshViewDimensions(){
         //ice.log.debug(ice.log, 'refreshViewDimensions()');
+        document.body.style.overflowY = 'hidden';
         if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight)){
             currentWidth = window.innerWidth;
             currentHeight = window.innerHeight;
@@ -2134,7 +2135,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             setOrientation(orient);
         }
         
-        var contentHeight = currentHeight - 45; //adjust for header
+        var contentHeight = currentHeight - 39; //adjust for header
         var currentView = getNodeForView(getCurrentView());
         if( currentView ){
             if( currentView.querySelectorAll('.mobi-vm-nav-bar').length > 0 ){
@@ -2149,10 +2150,13 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find content node for view = ' + currentView.id);
             }
         }
-        var menuNode = document.querySelectorAll('.mobi-vm-menu')[0];
+        var menuNode = document.querySelector('.mobi-vm-menu');
         if( menuNode ){
-            menuNode.style.height = '' + (currentHeight - 45) + 'px';
-            //ice.log.debug(ice.log, 'set menu height to ' + (currentHeight - 45));
+            menuNode.children[0].style.height = '' + (currentHeight - 39) + 'px';
+        }
+        var splashNode = document.querySelector('.mobi-vm-splash');
+        if( splashNode ){
+            splashNode.children[0].style.height = '' + (currentHeight - 39) + 'px';
         }
         else
             console.error('ice.mobi.viewManager.refreshViewDimensions() cannot find menu node');
@@ -2319,10 +2323,11 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     var prevView = getNodeForView(prev);
                     if( prevView ){
                         backButton.style.display = "inline";
-                        var title = prevView.getAttribute('data-title');
-                        var backButtonLabel = backButton.getAttribute('data-backbutton-label') == 'mobi-view' ? 
-                                (title ? title : "Back") : backButton.getAttribute('data-backbutton-label');
-                        backButton.innerHTML = backButtonLabel;
+                        var title = prevView.getAttribute('data-title'),
+                            backButtonLabel = backButton.getAttribute('data-backbutton-label') == 'mobi-view' ? 
+                                (title ? title : "Back") : backButton.getAttribute('data-backbutton-label'),
+                            backButtonText = backButton.querySelector('.mobi-vm-back-text');
+                        backButtonText.innerHTML = backButtonLabel;
                     }
                 }
             }
@@ -2404,9 +2409,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
             else{
                 console.error('ViewManager.goBack() invalid state history = ' + viewHistory);
             }
-        },
-        goToMenu: function(){
-            im.viewManager.showView(menuId);
         },
         setState: function(transition, formId, vHistory){
             if( vHistory.length < 1 ){
@@ -3477,10 +3479,10 @@ mobi.flipswitch = {
                             if( !source ){
                                 source = getContainerElem().querySelectorAll('.mobi-accordion-proxy')[0];
                             }
-                            if( !source ){
-                                ice.log.error(ice.log, 'Could not find proxy accordion form for ' + clientId + ' please include a <mobi:accordionFormProxy> in a nested form.');
-                                return;
-                            }
+                        if( !source ){
+                            ice.log.error(ice.log, 'Could not find proxy accordion form for ' + clientId + ' please include a <mobi:accordionFormProxy> in a nested form.');
+                            return;
+                        }
                         }
                         mobi.AjaxRequest({source:source.id});
                     }

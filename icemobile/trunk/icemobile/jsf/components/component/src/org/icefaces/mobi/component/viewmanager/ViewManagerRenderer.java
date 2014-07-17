@@ -81,7 +81,7 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, vm.getClientId()+"_header", null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-header", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-header mobi-vm-bar", null);
         String headerStyle = vm.getHeaderStyle();
         if( headerStyle != null){
             writer.writeAttribute(HTML.STYLE_ATTR, headerStyle, null);
@@ -101,6 +101,12 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.goBack(this);", null);
         writer.writeAttribute("data-backbutton-label", vm.getBackButtonLabel(), null);
         writer.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
+        writer.startElement("i", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "fa fa-chevron-left", null);
+        writer.endElement("i");
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-back-text", null);
+        writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.ANCHOR_ELEM);
         writer.endElement(HTML.DIV_ELEM);
         
@@ -119,7 +125,7 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
                 String divider = view.getDivider();
                 if( divider != null ){
                     writer.startElement(HTML.LI_ELEM, null);
-                    writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-menu-divider", null);
+                    writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-menu-divider mobi-vm-bar", null);
                     writer.write(divider);
                     writer.endElement(HTML.LI_ELEM);
                 }
@@ -161,9 +167,12 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         writer.endElement(HTML.DIV_ELEM);
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId() + "_controller", null);
-        
+        writer.writeAttribute(HTML.CLASS_ATTR, "mobi-hidden", null);
         createAndRenderProxyForm(vm, facesContext, writer);
-        
+        writer.startElement(HTML.STYLE_ATTR, null);
+        writer.writeAttribute("type", "text/css", null);
+        writer.write(".mobi-vm-bar{" + vm.getBarStyle() + "}");
+        writer.endElement(HTML.STYLE_ATTR);
         writer.startElement(HTML.SCRIPT_ELEM, null);
         String state = "ice.mobi.viewManager.setState('" + vm.getTransitionType() 
             + "','" + vm.getId() + "_form'," + vm.getHistoryAsJSON() + ");";

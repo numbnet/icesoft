@@ -53,11 +53,16 @@
                     <!-- f:selectItem itemLabel="Page Turn" itemValue="pageturn"/-->
                 </h:selectOneMenu>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel value="Header Style:" for="headerStyle" styleClass="ui-input-text"/>
-                <mobi:inputText id="headerStyle" value="#{viewManagerBean.headerStyle}"
+            <mobi:fieldsetRow rendered="#{not mobiClient.chromeBrowser}">
+                <h:outputLabel value="Bar Style:" for="barStyle" styleClass="ui-input-text"/>
+                <mobi:inputText id="barStyle" value="#{viewManagerBean.barStyle}"
                     singleSubmit="true"/>
             </mobi:fieldsetRow>
+            <mobi:fieldsetRow rendered="#{mobiClient.chromeBrowser}">
+                <label>Header Color:</label>
+                <input type="color" onchange="var sheet = ice.mobi.getStyleSheet('vm-example'); if( !sheet){ sheet = ice.mobi.addStyleSheet('vm-example', 'body'); } sheet.insertRule('.mobi-vm-bar{ background-color: ' + this.value + '}',0);"/>
+            </mobi:fieldsetRow>
+            
             <mobi:fieldsetRow>
                 <h:outputLabel value="Client Side:" for="clientside" styleClass="ui-input-text"/>
                 <mobi:flipswitch id="clientside" value="#{viewManagerBean.clientSide}">
