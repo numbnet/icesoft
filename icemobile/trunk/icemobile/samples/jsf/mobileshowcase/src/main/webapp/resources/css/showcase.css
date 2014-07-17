@@ -195,7 +195,7 @@ html.iphone .examplesLink{
     font-size: 12px;
 }
 .buttons .mobi-fieldset-row{ text-align:center; }
-.buttons .mobi-button{ min-width:125px;max-width:300px;width:40%; }
+.buttons .mobi-button{ min-width:120px;max-width:300px;width:40%; }
 .accordionpage{ min-height:1000px;}
 
 .results label{ 
