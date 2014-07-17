@@ -1,0 +1,73 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+*, *:before, *:after {
+ -moz-box-sizing: border-box;
+ -webkit-box-sizing: border-box;
+ box-sizing: border-box;
+}
+.clearfix:after {
+    content:"";
+    display:table;
+    clear:both;
+}
+html, body{ height: 100%; -webkit-overflow-scrolling: touch; }
+html {
+  height:auto !important; /* fix issue with body background images */
+  -webkit-text-size-adjust: none;
+}
+body{ 
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255,255,255,0.9);
+}
+h1, h2, h3, h4, h5, h6 { 
+    margin: 8px 10px; 
+    clear: both;
+}
+img{ border:none; }
+a, a:visited{ text-decoration:none;}
+a:hover{ text-decoration: underline;}
+.mobi-hidden{
+    display:none !important;
+}
+
+html.ie10 *{ filter: none !important; } /* turn off filters for ie10 */
+
+html.android-browser .ice-status-indicator-overlay{ display: none !important; } /* avoid android container rendering issues on session expiry */
+
+html.simulator *::-webkit-scrollbar{
+    width: 0;
+}
+html.simulator *{
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+.icon-mobi-online{
+    color: rgba(0,0,0,0.5);
+    text-shadow:none;
+}
+.jqm .icon-mobi-online, .android_dark .icon-mobi-online{
+    color: rgba(255,255,255,0.5);
+}
+.icon-mobi-online:before{
+    content: "\f0c1";
+}
+.icon-mobi-offline{
+    color: red;
+}
+.icon-mobi-offline:before{
+    content: "\f127";
+}
