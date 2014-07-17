@@ -75,6 +75,9 @@ public class ViewManagerMeta extends UIComponentBaseMeta {
         defaultValue = "false")
     private boolean clientSide; 
     
+    @Property(tlddoc = "The style to apply to all shaded bar elements in the ViewManager, such as the header and menu dividers.")
+    private String barStyle;
+    
     
 
     
