@@ -1,0 +1,212 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <title>ICEfaces Mobile Showcase</title>
+    <mobi:deviceResource theme="#{themeBean.currentTheme}"/>
+    <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
+    <c:if test="#{themeBean.simulator}">
+        <h:outputStylesheet library="css" name="showcase-simulator-skin.css" media="screen"/>
+    </c:if>
+    <c:if test="#{mobiNavigationModel.selectedPanel eq 'gmap'}">
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
+    </c:if>
+    
+    <mobi:googleAnalytics/>
+</h:head>
+    <h:body>
+         <f:metadata>
+            <f:viewParam name="theme" value="#{themeBean.currentTheme}" /> 
+            <f:viewParam name="simulator" value="#{themeBean.simulator}"/>
+         </f:metadata>
+         <style type="text/css" id="themebuilder"></style>
+        <mobi:pagePanel>
+            <f:facet name="header">
+                <h:form id="toolbar2" prependId="false" >
+                    <mobi:commandButton buttonType="back"
+                                   action="#{mobiNavigationModel.goBack}"
+                                   rendered="#{mobiNavigationModel.canGoBack}"
+                                   value="Back"/>
+                    <h:commandLink title="&amp;#9776;"
+                                   styleClass="ui-icon ui-icon-home"
+                                   action="#{mobiNavigationModel.goToHome}"
+                                   rendered="#{mobiNavigationModel.selectedPanel eq 'menu'}"/>
+                    <h:commandLink title="&amp;#9776;"
+                                   styleClass="ui-icon ui-icon-menu"
+                                   action="#{mobiNavigationModel.goToMenu}"
+                                   rendered="#{mobiNavigationModel.selectedPanel eq 'splash'}"/>
+                </h:form>
+                <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
+                <ui:insert name="toolBarContent"/>
+            </f:facet>
+    
+            <f:facet name="body">
+                <mobi:contentStack currentId="#{mobiNavigationModel.selectedPanel}" id="contentStack">
+            
+                    <!-- menu and splash screen -->
+                    <mobi:contentPane id="splash" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/content/splash.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="menu" >
+                        <ui:include src="/WEB-INF/includes/content/menu.xhtml" />
+                    </mobi:contentPane>
+                    <!-- Device input examples -->
+                    <mobi:contentPane id="camcorder" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/device/camcorder.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="camera" facelet="true" client="false"  >
+                        <ui:include src="/WEB-INF/includes/examples/device/camera.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="microphone" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/device/microphone.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="notification" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/device/notification.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="qrcode" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/device/qrcode.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="reality" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/device/reality.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="contacts" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/device/contactlist.xhtml" />
+                    </mobi:contentPane>
+            
+                    <!-- input examples -->
+                    <mobi:contentPane id="button" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/input/button.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="date" >
+                        <ui:include src="/WEB-INF/includes/examples/input/date.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="flipswitch" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/input/flip-switch.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="geolocation" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/input/geolocation.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="gmap" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/input/gmap.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="input" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/input/input.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="menubutton" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/input/menubutton.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="submitnotification" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/input/submitnotification.xhtml" />
+                    </mobi:contentPane>
+            
+                    <!-- layout examles -->
+                    <mobi:contentPane id="carousel" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/carousel.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="contentstack" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/contentstack.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="dataview" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/dataview.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="tabset" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/tabset.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="accordion" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/accordion.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="fieldset" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/fieldset.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="list" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/list.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="panelconfirmation" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/panelconfirmation.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="panelpopup" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/panelpopup.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="theme" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/layout/theme.xhtml" />
+                    </mobi:contentPane>
+                    
+                    <!-- media examles -->
+                    <mobi:contentPane id="audio" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/media/audio.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="image" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/media/image.xhtml" />
+                    </mobi:contentPane>
+                    <mobi:contentPane id="video" facelet="true" client="false" >
+                        <ui:include src="/WEB-INF/includes/examples/media/video.xhtml" />
+                    </mobi:contentPane>
+            
+                </mobi:contentStack>
+            </f:facet>
+    
+            <f:facet name="footer">
+                <h:form styleClass="theme">
+                    <icecore:singleSubmit rendered="false"/>
+    
+                    <span style="font-size:14px;font-weight:bold;">Theme: </span>
+                    <h:selectOneMenu value="#{themeBean.currentTheme}"
+                                     onchange="ice.s(event, this);"
+                                     style="font-size:13px;">
+                        <f:selectItem itemLabel="Auto" itemValue=""/>
+                        <f:selectItem itemLabel="iPhone"
+                                      itemValue="iphone"/>
+                        <f:selectItem itemLabel="Android Light"
+                                      itemValue="android_light"/>
+                        <f:selectItem itemLabel="Android Dark"
+                                      itemValue="android_dark"/>
+                        <f:selectItem itemLabel="BlackBerry"
+                                      itemValue="bberry"/>
+                        <f:selectItem itemLabel="BlackBerry 10"
+                                  itemValue="bb10"/>
+                        <f:selectItem itemLabel="jQuery Mobile"
+                                      itemValue="jqm"/>
+                        <f:ajax disabled="true"/>
+                    </h:selectOneMenu>
+                </h:form>
+                <a href="http://www.icemobile.org/demos.html" class="icon">
+                    <h:graphicImage library="images" name="icemobile_thumb.png"/>
+                </a>
+            </f:facet>
+        </mobi:pagePanel>
+        <script type="text/javascript">
+            //precache commonly used images
+            var preloaded = new Array();
+            preloaded[0] = document.createElement('img');
+            preloaded[0].setAttribute('src','./resources/images/auction/icebreaker.png');
+            preloaded[1] = document.createElement('img');
+            preloaded[1].setAttribute('src','./resources/images/auction/icecar.png');
+            preloaded[2] = document.createElement('img');
+            preloaded[2].setAttribute('src','./resources/images/auction/icesailor.png');
+            preloaded[3] = document.createElement('img');
+            preloaded[3].setAttribute('src','./resources/images/auction/iceskate.png');
+        </script>
+        
+    </h:body>
+</html>
