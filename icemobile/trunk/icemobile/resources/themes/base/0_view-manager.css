@@ -206,7 +206,9 @@ body.landscape .mobi-vm-header > h1 {
     display: block;
     padding: 2px;
 }
-
+.mobi-vm-back-text{
+    margin-left: 2px;
+}
 @media screen and (min-width: 768px) {  
     .mobi-vm-header {
         position: relative;
@@ -259,3 +261,4 @@ body.landscape .mobi-vm-header > h1 {
        opacity: 1;
     }
 }
+
