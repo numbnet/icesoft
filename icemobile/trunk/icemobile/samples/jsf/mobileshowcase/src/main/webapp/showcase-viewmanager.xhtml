@@ -333,6 +333,22 @@
                 </ui:include>
              </mobi:view>
              
+             <!-- CONTACT LIST -->
+             <mobi:view id="contact" title="Contact List" menuIcon="group" navBarGroup="contactlist">
+                 <ui:include src="/WEB-INF/includes/examples/device/contactlist-example.xhtml" />
+             </mobi:view>
+             <mobi:view id="contactlistDocs" title="Docs" menuIcon="book"
+                 includeInMenu="false" navBarGroup="contactlist">
+                <ui:include src="/WEB-INF/includes/examples/device/contactlist-desc.xhtml" />
+             </mobi:view>
+             <mobi:view id="contactlistCode" title="Code" menuIcon="code"
+                 includeInMenu="false" navBarGroup="contactlist">
+                <ui:include src="/WEB-INF/includes/examples/example-resources2.xhtml">
+                    <ui:param name="xhtmlResources" value="#{contactsBean.xhtmlResources}"/>
+                    <ui:param name="javaResources" value="#{contactsBean.javaResources}"/>
+                </ui:include>
+             </mobi:view>
+             
              <!-- QR CODE -->
              <mobi:view id="qrcode" title="Scan" menuIcon="qrcode" navBarGroup="qrcode">
                  <ui:include src="/WEB-INF/includes/examples/device/qrcode-example.xhtml" />
