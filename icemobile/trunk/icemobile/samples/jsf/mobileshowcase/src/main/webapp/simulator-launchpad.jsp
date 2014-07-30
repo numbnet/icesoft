@@ -17,7 +17,7 @@
 <%@page import="org.icemobile.util.UserAgentInfo"%>
 <%
    UserAgentInfo ua = new UserAgentInfo(request.getHeader("User-Agent"));
-   if( ua.isDesktopBrowser() ){
+   if( ua.isDesktopBrowser() && !ua.isIE9orLess()){
        response.sendRedirect("./simulator");
    }
    else{
