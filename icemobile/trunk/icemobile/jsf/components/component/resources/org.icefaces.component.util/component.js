@@ -2031,7 +2031,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 footer = pagePanels[i].querySelector(".mobi-pagePanel-footer"),
                 //hasFixedHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel.mobi-fixed-header").length > 0,
                 //hasFixedFooter = pagePanels[i].querySelectorAll(".mobi-pagePanel.mobi-fixed-footer").length > 0,
-                pagePanelBodyMinHeight = window.innerHeight;
+                pagePanelBodyMinHeight = (window.innerHeight || document.documentElement.clientHeight);
                         
             if( header ){
                 pagePanelBodyMinHeight -= header.offsetHeight;
