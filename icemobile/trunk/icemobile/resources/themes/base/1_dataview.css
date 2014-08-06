@@ -20,6 +20,10 @@
     border-right: 0;
     border-top: 0;
 }
+.mobi-dv-body th{
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
 .mobi-dv-body tbody tr.ui-bar-e  {
     font-weight: normal;
     border-left:0;
