@@ -98,7 +98,8 @@ public class DataViewRenderer extends Renderer {
         boolean reactive = dataView.isReactiveColumnVisibility();
 
         String cfg = "{";
-        cfg += "active:'" + dataView.getActivationMode() + "'";
+        cfg += "active:'" + dataView.getActivationMode() + "', ";
+        cfg += "scrollOnRowSelection: " + dataView.isScrollOnRowSelection();
         if (reactive) cfg = encodeColumnPriorities(cfg, dataView);
         cfg += "}";
 
