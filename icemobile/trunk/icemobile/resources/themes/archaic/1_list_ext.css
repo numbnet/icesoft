@@ -36,13 +36,12 @@
     line-height: 26px;
     color: black;
     border-top: 1px solid #d3d6db;
-    border-bottom: 1px solid #b5b9c0;
     background-color: #e6e8eb;
 }
 
 .mobi-list-item-group {
-    background-color: #b8c1c8;
-    border-bottom: 1px solid #999fa5;
+    background-color: #E2E2E2;
+    border-bottom: 1px solid #DFDFDF;
     color: #555;
     font-size: 17px;
     line-height: 14px;
