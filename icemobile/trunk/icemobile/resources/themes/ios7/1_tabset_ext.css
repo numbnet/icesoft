@@ -13,7 +13,9 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
- 
-.mobi-tabset > .mobi-tabset-tabs > ul > li {
-    border-bottom: 1px solid #DFDFDF;
+.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul{
+    border-top-color: #DFDFDF;
+}
+.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul{
+    border-bottom-color: #DFDFDF;
 }
