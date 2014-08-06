@@ -96,4 +96,9 @@ public class DataViewMeta extends UIComponentBaseMeta {
     
     @Property
     String rowStyle;
+    
+    @Property(defaultValue="true", tlddoc="Setting this to true (default) will cause the DataView component to automatically scroll the "
+            + "selected row to the top of the data list.")
+    boolean scrollOnRowSelection;
+    
 }

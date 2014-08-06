@@ -1971,12 +1971,15 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 im.ab(options);
             }
 
-            setTimeout(function(){
-                var activeRow = getNode('body').querySelector('.ui-bar-e');
-                if( activeRow && !ice.mobi.isSimulator()){
-                    activeRow.scrollIntoView();
-                }
-            },100);
+            if( config.scrollOnRowSelection ){
+                setTimeout(function(){
+                    var activeRow = getNode('body').querySelector('.ui-bar-e');
+                    if( activeRow && !ice.mobi.isSimulator()){
+                        activeRow.scrollIntoView();
+                    }
+                },100);
+            }
+            
         }
 
         function update(newCfg){
