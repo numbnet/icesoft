@@ -14,27 +14,24 @@
  * governing permissions and limitations under the License.
  */
  
-.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul > li {
-    border-bottom: 1px solid #999;
-    margin-top: -1px;
-}
-.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul > li{
-    border-top:1px solid #999;
-}
 .mobi-tabset > .mobi-tabset-tabs > ul{
-    background-color: #e8e9ea;
+    background-color: #E2E2E2;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#E2E2E2', EndColorStr='#CCCCCC')";
+    
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li {
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f1f1f2', EndColorStr='#d9dadb')";
-    background-color: #d9dadb;
-    border-left: 1px solid #999;
+    border-left: 1px solid #BDBDBD;
     color:#868688;
     font-weight: bold;
-    margin: 0;
-    padding: 0;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li:first-child{
     border-left:none;
+}
+.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul{
+    border-top-color: #BDBDBD;
+}
+.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul{
+    border-bottom-color: #BDBDBD;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li.activeTab {
     color:#525253;

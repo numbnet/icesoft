@@ -14,13 +14,7 @@
  * governing permissions and limitations under the License.
  */
  
-.mobi-tabset > .mobi-tabset-tabs > ul{
-    height:40px;
-    width:100%;
-}
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
-    line-height:39px;
-    float:left;
     -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
@@ -29,11 +23,11 @@
 .mobi-tabset > .mobi-tabset-tabs > ul > li:first-child{
     border-left:none;
 }
-.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul > li{
-    border-top: 1px solid #A5A9B6;
+.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul{
+    border-top-color: #A5A9B6;
 }
-.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul > li{
-    border-bottom: 1px solid #A5A9B6;
+.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul{
+    border-bottom-color: #A5A9B6;
 }
 .mobi-tabset .mobi-tabset-tabs .ui-btn-active{
     border-bottom-color: transparent;

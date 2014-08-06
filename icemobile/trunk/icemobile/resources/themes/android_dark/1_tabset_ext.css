@@ -14,14 +14,8 @@
  * governing permissions and limitations under the License.
  */
  
-.mobi-tabset > .mobi-tabset-tabs > ul{
-    height:40px;
-    width:100%;
-}
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
     color:#d3d3d3;
-    line-height:39px;
-    float:left;
     -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
     border-color: #A5A9B6;
 }
@@ -31,9 +25,9 @@
 .mobi-tabset > .mobi-tabset-tabs > ul > li:first-child{
     border-left:none;
 }
-.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
-    border-top: 1px solid #A5A9B6;
+.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul{
+    border-top-color: #A5A9B6;
 }
-.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs{
-    border-bottom: 1px solid #A5A9B6;
+.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul{
+    border-bottom-color: #A5A9B6;
 }

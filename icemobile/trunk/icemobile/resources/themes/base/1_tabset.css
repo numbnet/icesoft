@@ -22,7 +22,6 @@
     height: 100%;
 }
 .mobi-tabset > .mobi-tabset-tabs{
-/*     position: fixed; */
     text-align:center;
     width: 100%;
     z-index: 496;
@@ -31,7 +30,9 @@
 .mobi-tabset > .mobi-tabset-tabs > ul{
     margin: 0;
     padding: 0;
-    height: 40px;
+    height: 39px;
+    width:100%;
+    box-sizing: content-box;
 }
 .mobi-tabset-content{
     overflow-y: auto;
@@ -52,9 +53,18 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 40px;
+    height: 39px;
     float: left;
 }
+.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul{
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul{
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
 .mobi-tabpage, .mobi-tabpage > div{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
