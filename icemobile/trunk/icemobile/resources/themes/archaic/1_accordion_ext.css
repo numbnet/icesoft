@@ -15,15 +15,15 @@
  */
 
 .mobi-accordion-ctr{
-    border-top: 1px solid #b5b9c0;
-    border-bottom: 1px solid #b5b9c0;
+    border-top: 1px solid #DFDFDF;
+    border-bottom: 1px solid #DFDFDF;
 }
 .mobi-accordion .handle {
-    background-color: #A8ACB9;
-    border-bottom: 1px solid #7A8091;
+    background-color: #E2E2E2;
+    border-bottom: 1px solid #DFDFDF;
     border-top: 1px solid #fff;
     color: #717880;
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#F4F5F7', EndColorStr='#A8ACB9')";
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#E2E2E2', EndColorStr='#CCCCCC')";
     font-weight: bold;
 }
 .mobi-accordion-ctr > .open > .handle > .pointer{
