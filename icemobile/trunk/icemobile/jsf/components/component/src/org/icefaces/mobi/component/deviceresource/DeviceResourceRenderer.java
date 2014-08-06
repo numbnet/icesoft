@@ -25,12 +25,15 @@ import java.util.logging.Logger;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ListenerFor;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 import javax.faces.render.Renderer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -41,9 +44,8 @@ import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.mobi.utils.Attribute;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
-import org.icefaces.mobi.utils.MobiJSFConstants;
-import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 import org.icemobile.util.CSSUtils;
 import org.icemobile.util.CSSUtils.Theme;
@@ -51,30 +53,31 @@ import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Constants;
 
 @ListenerFor(systemEventClass = javax.faces.event.PostAddToViewEvent.class)
-public class DeviceResourceRenderer  extends Renderer implements javax.faces.event.ComponentSystemEventListener {
-    private static final Logger log = Logger.getLogger(DeviceResourceRenderer.class.getName());
+public class DeviceResourceRenderer extends Renderer implements
+        javax.faces.event.ComponentSystemEventListener {
+    private static final Logger log = Logger
+            .getLogger(DeviceResourceRenderer.class.getName());
 
-    
-
+    public static final String MOBI_THEME_KEY = "org.icefaces.mobi.theme";
     public static final String CSS_LOCATION = "org.icefaces.component.skins";
-    public static final String UTIL_RESOURCE =
-            "org.icefaces.component.util";
+    public static final String UTIL_RESOURCE = 
+              "org.icefaces.component.util";
     public static final String RESOURCE_URL_ERROR = "MOBI_RES_NOT_FOUND";
     public static final String IOS_APP_ID = "727736414";
-    
+
     public static final String META_CONTENTTYPE = "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>";
     public static final String META_VIEWPORT = "<meta name='viewport' content='width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>";
     public static final String META_VIEWPORT_IOS7 = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui'/>";
     public static final String META_IOS_WEBAPPCAPABLE = "<meta name='apple-mobile-web-app-capable' content='yes'/>";
     public static final String META_IOS_APPSTATUSBAR = "<meta name='apple-mobile-web-app-status-bar-style' content='black'/>";
     public static final String META_IOS_SMARTAPPBANNER = "<meta name='apple-itunes-app' content=\"app-id=%s, app-argument=%s\"/>";
-    
+
     public static final String LINK_SHORTCUT_ICON = "<link href='%s/resources/images/favicon.ico' rel='shortcut icon' type='image/x-icon'/>";
     public static final String LINK_FAV_ICON = "<link href='%s/resources/images/favicon.ico' rel='icon' type='image/x-icon'/>";
-    
+
     public static final String SCRIPT_SIMULATOR = "simulator-interface.js";
-	public static final String CSS_SIMULATOR = "simulator.css";
-	public final static String COOKIE_FORMAT = "org.icemobile.cookieformat";
+    public static final String CSS_SIMULATOR = "simulator.css";
+    public final static String COOKIE_FORMAT = "org.icemobile.cookieformat";
 
 
     public void processEvent(ComponentSystemEvent event)
@@ -88,34 +91,57 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
             log.finer("processEvent for component = " + component.getClass().getName());
         }
         context.getViewRoot().addComponentResource(context, component, HTML.HEAD_ELEM);
+        
+        ClientDescriptor client = ClientDescriptor
+                .getInstance((HttpServletRequest) context.getExternalContext()
+                        .getRequest());
+        String themeParam = context.getExternalContext()
+                .getRequestParameterMap().get("theme");
+        Theme theme = null;
+        if (client.isIE9orLessBrowser()) {
+            theme = Theme.ARCHAIC;
+        } else {
+            theme = Theme.getEnum(themeParam != null ? themeParam
+                    : (String) event.getComponent().getAttributes().get("theme"));
+            if (theme == null) {
+                String targetView = (String) event.getComponent().getAttributes().get("view");
+                theme = CSSUtils.deriveTheme(targetView, JSFUtils.getRequest());
+            }
+        }
+
+        // android and honeycomb themes deprecated
+        if (theme == Theme.ANDROID || theme == Theme.HONEYCOMB) {
+            theme = Theme.ANDROID_DARK;
+        }
+        context.getExternalContext().getSessionMap().put(MOBI_THEME_KEY, theme);
     }
-    
+
     /**
      * Get the default BridgeIt Register URL ending in /icemobile
      * @return The full upload URL
      */
-    public String getRegisterBridgetItURL(){
-        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    public String getRegisterBridgetItURL() {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String sessionID = getSessionIdCookie(request);
         String redirectParm = "&r=" + getBaseURL(request);
-        String forward = (String)request.getAttribute("javax.servlet.forward.servlet_path");
-        if( forward == null ){
+        String forward = (String) request.getAttribute("javax.servlet.forward.servlet_path");
+        if (forward == null) {
             forward = "";
         }
-        else if( forward.startsWith("/")){
+        else if (forward.startsWith("/")) {
             forward = forward.substring(1);
         }
         String params = "";
-        if( request.getQueryString() != null ){
-            params = "?"+request.getQueryString();
+        if (request.getQueryString() != null) {
+            params = "?" + request.getQueryString();
         }
         redirectParm += forward + params;
         String jsessionParam = "&JSESSIONID=" + sessionID;
-        String uploadParam = "&u="+getBaseURL(request) + "/icemobile";
-        String url = "icemobile:c=register"+redirectParm+jsessionParam+uploadParam;
+        String uploadParam = "&u=" + getBaseURL(request) + "/icemobile";
+        String url = "icemobile:c=register" + redirectParm + jsessionParam + uploadParam;
         return url;
     }
-    
+
     public static String getSessionIdCookie(HttpServletRequest request) {
         String sessionID = null;
         String cookieFormat = null;
@@ -123,7 +149,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         if (null != httpSession) {
             sessionID = httpSession.getId();
             cookieFormat = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext())
-                .getInitParameter(COOKIE_FORMAT);
+                 .getInitParameter(COOKIE_FORMAT);
         } else {
             return sessionID;
         }
@@ -137,7 +163,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         cookieFormatter.close();
         return out.toString();
     }
-    
+
     public static String getBaseURL(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String serverName = httpRequest.getHeader("x-forwarded-host");
@@ -149,20 +175,20 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
                 + httpRequest.getContextPath() + "/";
     }
 
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent uiComponent) throws IOException {
-        
-        DeviceResource comp = (DeviceResource)uiComponent;
-        
+
+        DeviceResource comp = (DeviceResource) uiComponent;
+
         boolean ios6orHigher = false;
         boolean desktop = false;
         boolean isSimulated = false;
-    
+
         ClientDescriptor client = ClientDescriptor
-                .getInstance((HttpServletRequest)context.getExternalContext().getRequest());
+                .getInstance((HttpServletRequest) context.getExternalContext().getRequest());
         ios6orHigher = client.isIOS6() || client.isIOS7();
-        if( !ios6orHigher ){
+        if (!ios6orHigher) {
             desktop = client.isDesktopBrowser();
         }
         if (desktop) {
@@ -170,57 +196,40 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         }
 
         String contextRoot = context.getExternalContext().getRequestContextPath();
-        
+
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.write(String.format(LINK_FAV_ICON, contextRoot));
         writer.write(String.format(LINK_SHORTCUT_ICON, contextRoot));
-        if( !desktop ){
-            if( client.isIOS7() ){
+        if (!desktop) {
+            if (client.isIOS7()) {
                 writer.write(META_VIEWPORT_IOS7);
             }
-            else{
+            else {
                 writer.write(META_VIEWPORT);
             }
-            
-            if( ios6orHigher ){
+
+            if (ios6orHigher) {
                 writer.write(META_IOS_WEBAPPCAPABLE);
                 writer.write(META_IOS_APPSTATUSBAR);
-                if (isNeedAppBanner(context, comp, client))  {
-                    String smartAppMeta = String.format(META_IOS_SMARTAPPBANNER, IOS_APP_ID, 
+                if (isNeedAppBanner(context, comp, client)) {
+                    String smartAppMeta = String.format(META_IOS_SMARTAPPBANNER, IOS_APP_ID,
                             this.getRegisterBridgetItURL());
                     writer.write(smartAppMeta);
                     context.getAttributes().put(Constants.IOS_SMART_APP_BANNER_KEY, Boolean.TRUE);
                 }
             }
         }
-        String themeParam = context.getExternalContext().getRequestParameterMap().get("theme");
-        Theme theme = null;
-        if( client.isIE9orLessBrowser() ){
-            theme = Theme.ARCHAIC;
-        }
-        else{
-            theme = Theme.getEnum(themeParam != null ? themeParam : (String)comp.getAttributes().get("theme"));
-            if( theme == null ){
-                String targetView = (String)comp.getAttributes().get("view");
-                theme = CSSUtils.deriveTheme(targetView, JSFUtils.getRequest());
-            }
-        }
-        
-        //android and honeycomb themes deprecated
-        if( theme == Theme.ANDROID || theme == Theme.HONEYCOMB ){
-            theme = Theme.ANDROID_DARK;
-        }
-        writeOutDeviceStyleSheets(context,comp,theme);
 
         if (client.isAndroid2OS()) {
             writeOverthrow(context);
         }
-
-        if (isSimulated)  {
+        Theme theme = (Theme)context.getExternalContext().getSessionMap().get(MOBI_THEME_KEY);
+        
+        if (isSimulated) {
             writeSimulatorResources(context, comp, theme);
         }
-        encodeMarkers(writer,theme, client);
+        encodeMarkers(writer, theme, client);
 
     }
 
@@ -234,39 +243,39 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.endElement("script");
     }
 
-    private boolean isNeedAppBanner(FacesContext facesContext, 
-            DeviceResource comp, ClientDescriptor client)  {
+    private boolean isNeedAppBanner(FacesContext facesContext,
+            DeviceResource comp, ClientDescriptor client) {
         ProjectStage projectStage = facesContext.getApplication().getProjectStage();
-        if (ProjectStage.Development == projectStage)  {
+        if (ProjectStage.Development == projectStage) {
             return false;
         }
         return (comp.isIncludeIOSSmartAppBanner() && !AuxUploadSetup.getInstance().getEnabled());
     }
 
     private void writeOutDeviceStyleSheets(FacesContext facesContext, DeviceResource comp, Theme theme) throws IOException {
-        
+
         /**
          * The component has three modes in which it executes.
          * 1.) no attributes - then component tries to detect a mobile device
-         *     in from the user-agent.  If a mobile device is discovered, then
-         *     it will fall into three possible matches, iphone, ipad,  android and
+         *     in from the user-agent. If a mobile device is discovered, then
+         *     it will fall into three possible matches, iphone, ipad, android and
          *     blackberry.  If the mobile device is not not know then ipad
          *     is loaded. Library is always assumed to be DEFAULT_LIBRARY.
-         *
+         * 
          * 2.) name attribute - component will default to using a library name
          *     of DEFAULT_LIBRARY.  The name attribute specifies one of the
          *     possible device themes; iphone.css, android.css or bberry.css.
          *     Error will result if named resource could not be resolved.
-         *
+         * 
          * 3.) name and libraries attributes. - component will use the library
-         *     and name specified by the user.  Component is fully manual in this
+         *     and name specified by the user. Component is fully manual in this
          *     mode. Error will result if name and library can not generate a
          *     value resource.
          */
         boolean prod = facesContext.isProjectStage(ProjectStage.Production);
         String cssFile = CSSUtils.getThemeCSSFileName(theme, prod);
-        
-        String library = deriveLibrary( facesContext.getAttributes());
+
+        String library = deriveLibrary(facesContext.getAttributes());
         Resource resource = facesContext.getApplication().getResourceHandler()
                 .createResource(cssFile, library, "text/css");
         String resourceUrl = RESOURCE_URL_ERROR;
@@ -280,10 +289,10 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.LINK_TYPE_TEXT_CSS, HTML.TYPE_ATTR);
         writer.writeAttribute(HTML.REL_ATTR, HTML.STYLE_REL_STYLESHEET, HTML.REL_ATTR);
         PassThruAttributeWriter.renderNonBooleanAttributes(
-                writer, comp, new Attribute[]{new Attribute("media",null)});
+                writer, comp, new Attribute[] { new Attribute("media", null) });
         writer.writeURIAttribute(HTML.HREF_ATTR, resourceUrl, HTML.HREF_ATTR);
         writer.endElement(HTML.LINK_ELEM);
-        
+
     }
 
     private void writeSimulatorResources(FacesContext facesContext,
@@ -291,20 +300,20 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         ResponseWriter writer = facesContext.getResponseWriter();
 
         Resource simulatorCss = facesContext.getApplication()
-            .getResourceHandler().createResource(
-                CSS_SIMULATOR, CSS_LOCATION, "text/css");
+                .getResourceHandler().createResource(
+                     CSS_SIMULATOR, CSS_LOCATION, "text/css");
         writer.startElement(HTML.LINK_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.LINK_TYPE_TEXT_CSS,
                 HTML.TYPE_ATTR);
         writer.writeAttribute(HTML.REL_ATTR, HTML.STYLE_REL_STYLESHEET,
                 HTML.REL_ATTR);
-        writer.writeURIAttribute(HTML.HREF_ATTR,
-                simulatorCss.getRequestPath(), HTML.HREF_ATTR);
+        writer.writeURIAttribute(HTML.HREF_ATTR, 
+                simulatorCss.getRequestPath(),HTML.HREF_ATTR);
         writer.endElement(HTML.LINK_ELEM);
 
         Resource simulatorScript = facesContext.getApplication()
-            .getResourceHandler().createResource(
-                SCRIPT_SIMULATOR, UTIL_RESOURCE );
+                .getResourceHandler().createResource(
+                     SCRIPT_SIMULATOR, UTIL_RESOURCE);
         String src = simulatorScript.getRequestPath();
         writer.startElement("script", component);
         writer.writeAttribute("type", "text/javascript", null);
@@ -314,7 +323,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.writeText(
-            "console.log('Welcome to the Matrix');",null);
+            "console.log('Welcome to the Matrix');", null);
         writer.endElement("script");
     }
 
@@ -322,38 +331,81 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         String markers = " " + theme.fileName();// + " ui-mobile";
-        if( client.isIE10Browser() ){
+        if (client.isIE10Browser()) {
             markers += " ie10";
         }
-        else if( client.isIE10orHigherBrowser() ){
+        else if (client.isIE10orHigherBrowser()) {
             markers += " ie11";
         }
-        if( client.isAndroidOS() ){
+        if (client.isAndroidOS()) {
             markers += " android";
         }
-        if( client.isAndroidBrowserOrWebView()){
+        if (client.isAndroidBrowserOrWebView()) {
             markers += " android-browser";
         }
-        if( client.isDesktopBrowser()){
+        if (client.isDesktopBrowser()) {
             markers += " desktop";
         }
-        if( client.isSimulator() ){
+        if (client.isSimulator()) {
             markers += " simulator";
         }
-        writer.writeText("document.documentElement.className = document.documentElement.className+'" 
-                + markers + "';", null);
-        
+        writer.writeText("document.documentElement.className = document.documentElement.className+'"
+                        + markers + "';", null);
+
         writer.endElement("script");
     }
-    
-    private String deriveLibrary(Map attributes){
+
+    private String deriveLibrary(Map attributes) {
         String library = (String) attributes.get(HTML.LIBRARY_ATTR);
-        if( library == null ){
+        if (library == null) {
             library = CSS_LOCATION;
         }
         return library;
     }
-    
 
+    public static class AddTheme implements SystemEventListener {
+        private String deriveLibrary(Map attributes) {
+            String library = (String) attributes.get(HTML.LIBRARY_ATTR);
+            if (library == null) {
+                library = CSS_LOCATION;
+            }
+            return library;
+        }
+
+        public void processEvent(SystemEvent event)
+                throws AbortProcessingException {
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Theme theme = (Theme)externalContext.getSessionMap().get(MOBI_THEME_KEY);
+
+            boolean prod = context.isProjectStage(ProjectStage.Production);
+            String name = CSSUtils.getThemeCSSFileName(theme, prod);
+
+            String library = deriveLibrary(context.getAttributes());
+            
+            UIComponent resource = createThemeResource(context, library, name);
+            context.getViewRoot().addComponentResource(context, resource);
+            
+        }
+
+        public boolean isListenerForSource(Object source) {
+            return source instanceof UIViewRoot;
+        }
+
+        private static UIComponent createThemeResource(FacesContext fc,
+                String library, String resourceName) {
+            UIComponent resource = fc.getApplication().createComponent(
+                    "javax.faces.Output");
+            resource.setRendererType("javax.faces.resource.Stylesheet");
+            resource.setTransient(true);
+
+            Map<String, Object> attrs = resource.getAttributes();
+            attrs.put("name", resourceName);
+            attrs.put("library", library);
+            attrs.put("target", "head");
+
+            return resource;
+        }
+    }
 
 }
