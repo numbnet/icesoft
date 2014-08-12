@@ -79,11 +79,7 @@
 	
 	
 
-	<target name="compile.scss">
-		<taskdef name="rubyrunner" classname="org.icesoft.tools.ant.RubyRunnerTask">
-	        <classpath refid="ruby.runner.classpath"/>  
-	    </taskdef>
-	
+	<target name="prepare.themes">
 		<echo>${basedir}</echo>
 		<property name="themes.build.dir" location="./build/themes"/>
 		<mkdir dir="${themes.build.dir}/android_dark" />
@@ -110,8 +106,6 @@
         <copy.theme.resources build.dir="${themes.build.dir}" name="iphone"/>
         <copy.theme.resources build.dir="${themes.build.dir}" name="simulator"/>
 		<copy.theme.resources build.dir="${themes.build.dir}" name="ios7"/>
-		
-		<rubyrunner file="themes/compile.scss.rb"/>
 		<echo message="Done compiling scss files!" />
 	</target>
 	

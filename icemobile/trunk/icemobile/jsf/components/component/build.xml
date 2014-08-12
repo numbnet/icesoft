@@ -433,10 +433,9 @@
 <target name="skins" unless="skins.skip" depends="init-skip-css-properties" description="Generate skinning resources for deployment.">
 	<echo message="path to cssurlMapper is ${lib.dir}/generator" />
 	
-	<ice:subant target="compile.scss" >
+	<ice:subant target="prepare.themes" >
         <fileset dir="../../../resources" includes="build.xml" />
     </ice:subant>
-	
 	<taskdef name="cssurlmapper" classname="${cssurlmapper.class}" classpath="${lib.dir}/generator/cssurlmapper.jar;${lib.dir}/generator/commons-cli-1.2.jar" />
 
 	<!-- Declare all the resources to include -->
