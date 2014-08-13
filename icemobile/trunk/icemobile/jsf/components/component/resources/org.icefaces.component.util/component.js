@@ -439,7 +439,10 @@ ice.mobi.getTarget = function(e){
 ice.mobi.escapeJsfId = function(id) {
     return id.replace(/:/g,"\\:");
 }
-ice.mobi.addListener= function(obj, event, fnc){
+ice.mobi.windowHeight = function(){
+    return window.innerHeight || document.documentElement.clientHeight;
+}
+ice.mobi.addListener = function(obj, event, fnc){
     if (obj.addEventListener){
         obj.addEventListener(event, fnc, false);
     } else if (obj.attachEvent) {
@@ -447,7 +450,10 @@ ice.mobi.addListener= function(obj, event, fnc){
     } else {
         //ice.log.debug(ice.log, 'WARNING:- this browser does not support addEventListener or attachEvent');
     }
-} ;
+};
+ice.mobi.isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
 ice.mobi.removeListener= function(obj, event, fnc){
     if (obj.addEventListener){
         obj.removeEventListener(event, fnc, false);
@@ -1406,7 +1412,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         var config = cfg,
             selectorId = '#' + im.escapeJsfId(clientId),
             bodyRowSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-body > table > tbody > tr',
-            headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > table > thead > tr > th';
+            headCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-head > table > thead > tr > th',
+            nonFixedHeadCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-body > table > thead > tr > th';
 
         function getNode(elem) {
             var footCellSelector = selectorId + ' > .mobi-dv-mst > .mobi-dv-foot > tfoot > tr > td',
@@ -1428,6 +1435,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 case 'firstrow': return document.querySelector(firstRowSelector);
                 case 'footcells': return document.querySelectorAll(footCellSelector);
                 case 'headCtr': return document.querySelector(headCtrSelector);
+                case 'nonfixedheadcells' : return document.querySelectorAll(nonFixedHeadCellSelector);
             }
         }
 
@@ -1537,7 +1545,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
             /* hide duplicate header */
             setTimeout(function() {
-                if (dupeHead) dupeHead.style.display = 'none';
+                if (dupeHead && config.fixedHeaders) dupeHead.style.display = 'none';
                 if (dupeFoot) dupeFoot.style.display = 'none';
             }, 50) /* hiding instantly broke scrolling when init'ing the first time on landscape ipad */
         }
@@ -1596,7 +1604,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             if (!element) return;
 
             var dim = element.getBoundingClientRect(),
-                maxHeight = (window.innerHeight || document.documentElement.clientHeight) - dim.top,
+                maxHeight = ice.mobi.windowHeight() - dim.top,
                 headHeight = head ? head.clientHeight : 0,
                 footHeight = foot ? foot.clientHeight : 0,
                 fullHeight = maxHeight - headHeight - footHeight - 1;
@@ -1626,10 +1634,11 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             lastTouchTime;
 
         function headCellTouchStart(e) {
-            var cell = e.currentTarget;
+            var cell = e.currentTarget,
+                selector = config.fixedHeaders ? headCellSelector : nonFixedHeadCellSelector;
             /* targetTouches[0] - ignore multi touch starting here */
             touchedHeadCellIndex[e.targetTouches[0].identifier] = getIndex(cell);
-            if (im.matches(cell,headCellSelector+":first-child"))
+            if (im.matches(cell,selector+":first-child"))
                 touchedFirstCell = true;
 
             /*prevent scrolling due to drags */
@@ -1638,7 +1647,8 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
         function headCellTouchEnd(e) {
             var touch = e.changedTouches[0],
-                cell = closest(document.elementFromPoint(touch.pageX, touch.pageY), 'th');
+                cell = closest(document.elementFromPoint(touch.pageX, touch.pageY), 'th'),
+                selector = config.fixedHeaders ? headCellSelector : nonFixedHeadCellSelector;
 
             /* do jump scroll to top */
             if (lastTouchTime && (new Date().getTime() - lastTouchTime < 300)) {
@@ -1649,7 +1659,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 if (cell) {
                     var index = getIndex(cell);
                     // clear sort if dragged from first to last cell
-                    if (touchedFirstCell && im.matches(cell,headCellSelector+":last-child")) {
+                    if (touchedFirstCell && im.matches(cell,selector+":last-child")) {
                         clearSort();
                     } else if (index == touchedHeadCellIndex[touch.identifier])
                         // delay sort to see if jump scroll tap occurs
@@ -1706,7 +1716,14 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         }
 
         function initSortingEvents() {
-            var headCells = getNode('headcells');
+            var selector;
+            if( config.fixedHeaders ){
+                selector = 'headcells';
+            }
+            else{
+                selector = 'nonfixedheadcells';
+            }
+            var headCells = getNode(selector);
             for (var i = 0; i < headCells.length; ++i) {
                 var cell = headCells[i];
                 if (isTouchDevice) {
@@ -1859,9 +1876,9 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
         function clearSort() {
             sortCriteria = [];
-            Array.prototype.every.call(getNode('headcells'), function(c) {
+            Array.prototype.every.call(getNode(config.fixedHeaders ? 'headcells' : 'nonfixedheadcells'), function(c) {
                     var indi = c.querySelector(indicatorSelector);
-                    indi.className = blankIndicatorClass;
+                    if( indi ) indi.className = blankIndicatorClass;
                     return true;
                 });
 
@@ -1889,14 +1906,14 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 ascendingClass = blankIndicatorClass + ' fa fa-caret-up',
                 descendingClass = blankIndicatorClass + ' fa fa-caret-down',
                 ascIndi = headCell.querySelector(indicatorSelector),
-                ascClass = ascIndi.className;
+                ascClass = ascIndi ? ascIndi.className : '';
 
             /* find col index */
             var columnIndex = getIndex(headCell);
 
             /* set ascending flag and indicator */
             asc = ascClass == descendingClass || ascClass == blankIndicatorClass;
-            ascIndi.className = asc ? ascendingClass : descendingClass;
+            if( ascIndi ) ascIndi.className = asc ? ascendingClass : descendingClass;
 
             // sortCriteria = sortCriteria.filter(function(c) { return c.index != columnIndex});
 
@@ -1905,7 +1922,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 
             /* remove indicator from other cols */
             var sortedIndexes = sortCriteria.map(function(c) {return c.index});
-            var headCells = getNode('headcells');
+            var headCells = getNode( config.fixedHeaders ? 'headcells' : 'nonfixedheadcells');
             for( var k = 0 ; k < headCells.length ; k++ ){
                 var c = headCells[k];
                 if( sortedIndexes.indexOf(getIndex(c)) === -1 ){
@@ -2034,7 +2051,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 footer = pagePanels[i].querySelector(".mobi-pagePanel-footer"),
                 //hasFixedHeader = pagePanels[i].querySelectorAll(".mobi-pagePanel.mobi-fixed-header").length > 0,
                 //hasFixedFooter = pagePanels[i].querySelectorAll(".mobi-pagePanel.mobi-fixed-footer").length > 0,
-                pagePanelBodyMinHeight = (window.innerHeight || document.documentElement.clientHeight);
+                pagePanelBodyMinHeight = ice.mobi.windowHeight();
                         
             if( header ){
                 pagePanelBodyMinHeight -= header.offsetHeight;
@@ -2131,9 +2148,9 @@ ice.mobi.addListener(document, "touchstart", function(){});
     function refreshViewDimensions(){
         //ice.log.debug(ice.log, 'refreshViewDimensions()');
         document.body.style.overflowY = 'hidden';
-        if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight)){
+        if ((window.innerWidth != currentWidth) || (ice.mobi.windowHeight() != currentHeight)){
             currentWidth = window.innerWidth;
-            currentHeight = window.innerHeight;
+            currentHeight = ice.mobi.windowHeight();
             var orient = (currentWidth < currentHeight) ? 'portrait' : 'landscape';
             setOrientation(orient);
         }
@@ -2982,7 +2999,7 @@ ice.mobi.splitpane = {
 
             return {
                 resize: function(elId) {
-                    var height = window.innerHeight || document.documentElement.clientHeight,
+                    var height = ice.mobi.windowHeight(),
                         leftNode = document.getElementById(elId + "_left"),
                         rtNode = document.getElementById(elId + "_right"),
                         splt = document.getElementById(elId + "_splt"),
@@ -3836,4 +3853,43 @@ ice.mobi.menubutton = {
         //ice.log.debug(ice.log, 'ice.onAfterUpdate: resizing containers');
         im.resizeAllContainers();
     });
+    
+    im.fitContainerToAvailableHeight = function(elem){
+        if (!elem) return;
+        
+        function getScrollableContainer() {
+            var height = elem.clientHeight,
+                parent = elem.parentNode;
+            while (parent != null && parent.scrollHeight == parent.clientHeight)
+                parent = parent.parentNode;
+            return parent;
+        }
+        
+        elem.style.height = '' + elem.clientHeight + 'px';
+
+        var dim = elem.getBoundingClientRect(),
+            scrollableParent = getScrollableContainer(),
+            height = elem.clientHeight;
+        
+        if( scrollableParent ){
+            while( scrollableParent ){
+                height--;
+                if( height < 1 ) break;
+                elem.style.height = '' + height + 'px';
+                elem.style.maxHeight = '' + height + 'px';
+                scrollableParent = getScrollableContainer();
+            }
+        }
+        else{
+            while( !scrollableParent ){
+                height++;
+                if( height > ice.mobi.windowHeight() ) break;
+                elem.style.height = '' + height + 'px';
+                elem.style.maxHeight = '' + height + 'px';
+                scrollableParent = getScrollableContainer();
+            }
+            elem.style.height = '' + height-- + 'px';
+        }
+    };
+    
 })(ice.mobi);
