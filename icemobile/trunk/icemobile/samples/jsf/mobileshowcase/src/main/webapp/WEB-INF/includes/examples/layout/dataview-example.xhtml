@@ -89,6 +89,12 @@
 
                 <mobi:dataViewColumn headerText="MPG" value="#{car.mpg}"
                                      rendered="#{dataViewBean.mpgColVis}" />
+                                     
+                 <mobi:dataViewColumn headerText="Lorem"
+                                     styleClass="minCol"
+                                     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus lacus, varius."
+                                     rendered="#{dataViewBean.textColVis}" />
+                
 
             </mobi:dataViewColumns>
         </mobi:dataView>
@@ -108,5 +114,10 @@
                             styleClass="footButton"
                             actionListener="#{dataViewBean.toggleMpgColVis}"
                             buttonType="#{dataViewBean.mpgColVis ? 'important' : null}"/>
+        <mobi:commandButton value="Text"
+                            styleClass="footButton"
+                            actionListener="#{dataViewBean.toggleTextColVis}"
+                            buttonType="#{dataViewBean.textColVis ? 'important' : null}"/>
+         
     </h:form>
 </ui:composition>

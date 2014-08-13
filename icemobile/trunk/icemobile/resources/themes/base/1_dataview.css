@@ -20,9 +20,16 @@
     border-right: 0;
     border-top: 0;
 }
-.mobi-dv-body th{
+.mobi-dv-fixed-hdrs .mobi-dv-body th{
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+
+.mobi-dv-head{
+    display: none;
+}
+.mobi-dv-fixed-hdrs .mobi-dv-head{
+    display: block;
 }
 .mobi-dv-body tbody tr.ui-bar-e  {
     font-weight: normal;
@@ -100,18 +107,13 @@
     border-left: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
 }
-.mobi-dv table td {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 .mobi-dv-foot {
     width:100%;
     border-spacing: 0;
     border-collapse: collapse;
 }
 
-.mobi-dv-head .mobi-dv-si {
+.mobi-dv-si{
     position: absolute;
     padding: .2em;
 }

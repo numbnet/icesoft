@@ -101,4 +101,7 @@ public class DataViewMeta extends UIComponentBaseMeta {
             + "selected row to the top of the data list.")
     boolean scrollOnRowSelection;
     
+    @Property(defaultValue="true", tlddoc="Setting this to true (default) will cause the column headers to remain fixed while scrolling the data region.")
+    boolean fixedHeaders;
+    
 }

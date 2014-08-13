@@ -57,6 +57,9 @@ public class DataViewRenderer extends Renderer {
         writer.writeAttribute(HTML.ID_ATTR, dvId, null);
 
         String styleClass = IDataView.DATAVIEW_CLASS;
+        if( dataView.isFixedHeaders() ){
+            styleClass += " mobi-dv-fixed-hdrs"; 
+        }
         String userClass = dataView.getStyleClass();
         if (userClass != null) styleClass += " " + userClass;
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
@@ -99,7 +102,8 @@ public class DataViewRenderer extends Renderer {
 
         String cfg = "{";
         cfg += "active:'" + dataView.getActivationMode() + "', ";
-        cfg += "scrollOnRowSelection: " + dataView.isScrollOnRowSelection();
+        cfg += "scrollOnRowSelection: " + dataView.isScrollOnRowSelection() + ", ";
+        cfg += "fixedHeaders: " + dataView.isFixedHeaders();
         if (reactive) cfg = encodeColumnPriorities(cfg, dataView);
         cfg += "}";
 
@@ -166,7 +170,6 @@ public class DataViewRenderer extends Renderer {
                                DataViewColumnsModel columnModel,
                                DataViewDataModel dataModel,
                                boolean writeTable) throws IOException {
-        /* Skip table when writing duplicate alignment header */
         if (writeTable) {
             writer.startElement(HTML.DIV_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, IDataView.DATAVIEW_HEAD_CLASS + " " + IDataView.DATAVIEW_HEADER_ROW_CLASS, null);
@@ -174,6 +177,9 @@ public class DataViewRenderer extends Renderer {
         }
 
         writer.startElement(HTML.THEAD_ELEM, null);
+        if( !writeTable ){
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-bar-b", null);
+        }
         writer.startElement(HTML.TR_ELEM, null);
 
         for (IndexedIterator<DataViewColumnModel> columnIter = columnModel.iterator(); columnIter.hasNext();) {
