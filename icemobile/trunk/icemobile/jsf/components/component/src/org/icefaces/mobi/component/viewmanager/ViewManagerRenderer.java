@@ -98,7 +98,7 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
         writer.startElement(HTML.ANCHOR_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_back", null);
         writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-back", null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.goBack(this);", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.goBack(event);", null);
         writer.writeAttribute("data-backbutton-label", vm.getBackButtonLabel(), null);
         writer.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
         writer.startElement("i", null);
@@ -131,7 +131,7 @@ public class ViewManagerRenderer extends BaseLayoutRenderer{
                 }
                 writer.startElement(HTML.LI_ELEM, null);
                 writer.startElement(HTML.ANCHOR_ELEM, null);
-                writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view.getId() + "');", null);
+                writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view.getId() + "', event);", null);
                 if( view.getMenuIcon() != null ){
                     writer.startElement("i", null);
                     writer.writeAttribute(HTML.CLASS_ATTR, "mobi-vm-menu-icon fa fa-" + view.getMenuIcon(), null);

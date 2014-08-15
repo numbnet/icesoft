@@ -107,7 +107,7 @@ public class ViewRenderer extends BaseLayoutRenderer {
         }*/
         writer.writeAttribute(HTML.STYLE_ATTR, "width: " + width, null);
         //if( !active )
-            writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view + "');", null);
+            writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.viewManager.showView('" + view + "', event);", null);
         if( icon != null ){
             writer.startElement("i",null);
             writer.writeAttribute(HTML.CLASS_ATTR, "fa fa-" + icon, null);
