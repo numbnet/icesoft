@@ -47,7 +47,7 @@ body.landscape .mobi-vm-header > h1 {
     font-size: 20px;
     width: 150px;
     font-weight: bold;
-    text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0;
+    text-shadow: rgba(0, 0, 0, 0.4) -1px -1px 0;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -160,6 +160,9 @@ body.landscape .mobi-vm-header > h1 {
     text-shadow: 1px 1px 1px #555;
     font-size: 14px;
     padding: 5px 0 5px 10px;
+}
+.mobi-vm-menu-divider.mobi-vm-bar{
+    color: #FFF;
 }
 .mobi-vm-nav-bar{
     width: 100%;
