@@ -1547,7 +1547,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             setTimeout(function() {
                 if (dupeHead && config.fixedHeaders) dupeHead.style.display = 'none';
                 if (dupeFoot) dupeFoot.style.display = 'none';
-            }, 50) /* hiding instantly broke scrolling when init'ing the first time on landscape ipad */
+            }, 10) /* hiding instantly broke scrolling when init'ing the first time on landscape ipad */
         }
 
         function setupColumnVisibiltyRules(firstRowCells) {
@@ -2019,7 +2019,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         setTimeout( function(){
             initTableAlignment();
             recalcScrollHeight();
-        }, 50);
+        }, 30);
 
         var oriChange = false;
         
@@ -2756,7 +2756,9 @@ ice.mobi.addListener(document, "touchstart", function(){});
         }
         
         function fitToParent(){
+            console.log('TabSet fitToParent()');
             if( !fit ){
+                console.log('TabSet no fit');
                 return;
             }
             var container = getTabset();
@@ -2793,6 +2795,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     var calcHeight = window.innerHeight - 40 - siblingHeight - (hasHeader ? 40 : 0) - (hasFooter && window.innerHeight > 399 ? 40 : 0);
                     container.querySelector('.mobi-tabset-content').style.height 
                         = ''+calcHeight+'px';
+                    console.log('TabSet snapped 1: ' + calcHeight);
                     //ice.log.debug(ice.log, 'tabset.fitToParent height: window.innerHeight && parent.offsetHeight > window.innerHeight calcHeight:' + calcHeight);
                     snapped = true;
                     break;
@@ -2805,6 +2808,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                     }*/
                     container.querySelector('.mobi-tabset-content').style.height 
                         = ''+calcHeight+'px';
+                    console.log('TabSet snapped 2: ' + calcHeight);
                     //ice.log.debug(ice.log, 'tabset.fitToParent height:parent.offsetHeight != height || parent.classList.contains(mobi-pagePanel-body) calcHeight:' + calcHeight);
                     snapped = true;
                     break;
@@ -2815,6 +2819,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
                 parent = parent.parentElement;
             }
             if( !snapped ){
+                console.log('TabSet !snapped');
                 container.querySelector('.mobi-tabset-content').style.height 
                     = ''+(height-40-siblingHeight)+'px';
             }
