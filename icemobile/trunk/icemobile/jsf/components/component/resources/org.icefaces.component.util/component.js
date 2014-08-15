@@ -2390,7 +2390,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
     }
     
     im.viewManager = {
-        showView: function(view){
+        showView: function(view, event){
             //ice.log.debug(ice.log, 'showView(' + view + ') current');
             var currentView = getCurrentView();
             if( view == currentView ){
@@ -2421,10 +2421,10 @@ ice.mobi.addListener(document, "touchstart", function(){});
             
             return false;
         },
-        goBack: function(src){
+        goBack: function(event){
             var goTo = viewHistory.slice(-2,-1)[0];
             if( goTo != undefined ){
-                im.viewManager.showView(goTo);
+                im.viewManager.showView(goTo, event);
             }
             else{
                 console.error('ViewManager.goBack() invalid state history = ' + viewHistory);
