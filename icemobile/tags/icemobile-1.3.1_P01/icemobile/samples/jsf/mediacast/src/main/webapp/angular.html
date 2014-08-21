@@ -1,0 +1,111 @@
+<!doctype html>
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html ng-app>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+    <script >
+    
+        function PhotoCtrl($scope) {
+          $scope.photos = [ ];
+         
+          $scope.addPhoto = function() {
+            $scope.photos.push({text:$scope.photoText, done:false});
+            $scope.photoText = '';
+          };
+         
+          $scope.upload = function(theForm) {
+            console.log("upload the form " + theForm.$name);
+            if (window.ice && ice.upload)  {
+              ice.upload(theForm.$name);
+            } else {
+              console.log("ICEmobile upload not available");
+            }
+          };
+
+        }
+
+    </script>
+
+    <style>
+        .done-true {
+          text-decoration: line-through;
+          color: grey;
+        }
+        .tbox {
+            width: 100%;
+        }
+        .photolist li  {
+            margin-bottom: 4px;
+        }
+        .vcentered {
+            vertical-align:middle;
+        }
+        .camera, .plus, .upload {
+            background: white;
+            border-radius: 8px;
+            background-size: 75%;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 32px;
+            vertical-align:middle;
+        }
+
+        .camera {
+            width: 32px;
+            background-image: url("resources/images/camera.png");
+        }
+        .plus {
+            width: 32px;
+            background-image: url("resources/images/plus.png");
+        }
+        .upload {
+            width: 84px;
+            -webkit-appearance:none;
+            font-size: 100%;
+            background: #2463DE;
+        }
+
+    </style>
+
+  </head>
+  <body>
+    <h2>Photos</h2>
+    <div ng-controller="PhotoCtrl" >
+      <form name="pics" id="pics" action="upload/" >
+        <span>Ready to upload {{photos.length}} photos.</span>
+        <ul class="photolist">
+          <li ng-repeat="photo in photos">
+            <input type="checkbox" ng-model="photo.done">
+            <span class="done-{{photo.done}}">{{photo.text}}</span>
+            <input type="hidden" name="title{{$index}}" value="{{photo.text}}">
+            <input type="button" class="camera" name="cam{{$index}}" id="cam{{$index}}"
+              onclick="ice.camera(this.id);" ></td>
+            <img class="vcentered" id="cam{{$index}}-thumb" width='32' height='32'>
+          </li>
+        </ul>
+      </form>
+      <input type="text" ng-model="photoText"  size="30"
+               placeholder="add new photo title">
+      <input class="plus" type="button" ng-click="addPhoto()" >
+      <div>
+        <input class="upload" ng-click="upload(pics)" type="button" value="Upload">
+      </div>
+    </div>
+  </body>
+</html>
