@@ -1,0 +1,123 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <h:form id="frmDataview" styleClass="dataviewpage">
+        <style type="text/css">
+            .dv-fieldset label{ 
+                min-width: 30%;
+                display: inline-block;
+                vertical-align: middle;
+                font-weight: 600;
+                text-align: right;
+                padding-right: 20px;
+            }
+            .dv-fieldset { 
+                padding: 5px 10px; 
+                border-bottom: 1px solid #DFDFDF;
+            }
+
+            .footButton {
+                padding: .5em 5px;
+                width:17%;
+            }
+
+            .minCol {
+                min-width: 150px;
+            }
+        </style>
+
+        <mobi:dataView value="#{dataViewBean.cars}" var="car" activationMode="server"
+                       rowStripe="true" rowStyle="#{car.cost > 30000 ? 'color:red' : 'color:green'}">
+            <mobi:dataViewDetails>
+                <h:panelGroup layout="block" styleClass="dv-fieldset">
+                    <label>Name:</label> <h:outputText value="#{car.name}"/>
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="dv-fieldset">
+                    <h:outputLabel for="manual" value="Manual:"/>  
+                    <h:selectBooleanCheckbox value="#{car.manual}" id="manual">
+                        <f:ajax execute="@this" render="@form" />
+                    </h:selectBooleanCheckbox>
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="dv-fieldset">
+                    <h:outputLabel for="cost" value="Cost:"/>
+                    <h:inputText value="#{car.cost}" id="cost">
+                        <f:ajax execute="@this" render="@form" />
+                    </h:inputText>
+                </h:panelGroup>
+                <h:panelGroup layout="block">
+                    <h:messages/>
+                </h:panelGroup>
+            </mobi:dataViewDetails>
+
+            <mobi:dataViewColumns>
+                <mobi:dataViewColumn headerText="Model" value="#{car.name}" />
+
+                <mobi:dataViewColumn type="bool" headerText="Man"
+                                     value="#{car.manual}" />
+
+                <mobi:dataViewColumn type="date" headerText="Release"
+                                     value="#{car.releaseDate}">
+                    <f:convertDateTime type="date" dateStyle="short" />
+                </mobi:dataViewColumn>
+
+                <mobi:dataViewColumn headerText="Cost" value="$#{car.cost}"
+                                     rendered="#{dataViewBean.costColVis}" />
+
+                <mobi:dataViewColumn headerText="Weight" value="#{car.weight} lbs."
+                                     rendered="#{dataViewBean.weightColVis}" />
+
+                <mobi:dataViewColumn headerText="Accel" value="#{car.acceleration}"
+                                     rendered="#{dataViewBean.accelColVis}" />
+
+                <mobi:dataViewColumn headerText="MPG" value="#{car.mpg}"
+                                     rendered="#{dataViewBean.mpgColVis}" />
+                                     
+                 <mobi:dataViewColumn headerText="Lorem ipsum dolor sit amet"
+                                     styleClass="minCol"
+                                     value="Lorem,ipsum,dolor,sit,amet,consectetur,adipiscing elit.Quisque,lectus,lacus,varius."
+                                     rendered="#{dataViewBean.textColVis}" />
+                
+
+            </mobi:dataViewColumns>
+        </mobi:dataView>
+        <mobi:commandButton value="Cost"
+                            styleClass="footButton"
+                            actionListener="#{dataViewBean.toggleCostColVis}"
+                            buttonType="#{dataViewBean.costColVis ? 'important' : null}"/>
+        <mobi:commandButton value="Weight"
+                            styleClass="footButton"
+                            actionListener="#{dataViewBean.toggleWeightColVis}"
+                            buttonType="#{dataViewBean.weightColVis ? 'important' : null}"/>
+        <mobi:commandButton value="Accel"
+                            styleClass="footButton"
+                            actionListener="#{dataViewBean.toggleAccelColVis}"
+                            buttonType="#{dataViewBean.accelColVis ? 'important' : null}"/>
+        <mobi:commandButton value="MPG"
+                            styleClass="footButton"
+                            actionListener="#{dataViewBean.toggleMpgColVis}"
+                            buttonType="#{dataViewBean.mpgColVis ? 'important' : null}"/>
+        <mobi:commandButton value="Text"
+                            styleClass="footButton"
+                            actionListener="#{dataViewBean.toggleTextColVis}"
+                            buttonType="#{dataViewBean.textColVis ? 'important' : null}"/>
+         
+    </h:form>
+</ui:composition>

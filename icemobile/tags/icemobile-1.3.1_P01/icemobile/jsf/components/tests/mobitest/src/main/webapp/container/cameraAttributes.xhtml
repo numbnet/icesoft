@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+  <meta charset="UTF-8"></meta>
+  <meta name = "viewport" content = "width = device-width"></meta>
+	<title>camera  component</title>
+</h:head>
+<h:body>
+<!--   <h:form prependId="false"  id="cform"> --> 
+    <h:form id="cform">
+		<h3>Mobile Camera</h3>
+		<h5>uploaded images</h5>
+		<div id="uploadedImage" rendered="#{cameraBean.imageResource !=null}">
+
+                   <h5>last uploaded image of #{cameraBean.numberImages}</h5>
+                     <mobi:graphicImage width="180"
+                            value="#{cameraBean.imageResource}"
+                            style="padding-left:1px;padding-right:1px;"/>
+
+		</div>
+		<div>
+		<h5>path to file from imageStore</h5>
+		   <h:outputText value="#{CameraBean.pathToFile}"/>
+		</div>
+
+		<br />
+        <br />
+     </h:form>   
+    <h2>Take a Picture with width and height attributes</h2>
+    <fieldset>
+        <h:form prependId="false" id="cform2"  >
+          <div >
+              <mobi:camera id="camera2" maxheight="200" maxwidth="200" value="#{cameraBean.cameraImage}"
+                    valueChangeListener="#{cameraBean.methodOne}"/>
+              <mobi:thumbnail for="camera2"/>
+
+              <h:commandButton value="upload" actionListener="#{cameraBean.processUploadedImage}"/>
+
+           </div>
+        </h:form>
+    </fieldset>
+   <h2>Take a Picture with no  attributes</h2>
+    <fieldset>
+        <h:form prependId="false" id="cform3"  >
+          <div id="skinningPnl" >
+              <mobi:camera id="camera" value="#{cameraBean.cameraImage}"
+                    valueChangeListener="#{cameraBean.methodOne}"/>
+              <mobi:thumbnail for="camera"/>
+
+              <h:commandButton value="upload" actionListener="#{cameraBean.processUploadedImage}"/>
+
+           </div>
+        </h:form>
+    </fieldset>
+    <li><a href="../index.html">index page</a>
+	</li>
+
+</h:body>
+</html>
