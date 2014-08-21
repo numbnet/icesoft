@@ -370,8 +370,10 @@ public class DataViewRenderer extends Renderer {
                 }
             writer.endElement(HTML.UL_ELEM);
         }
-        else if (value != null)
-            writer.write(value.toString());
+        else if (value != null){
+            String val = value.toString().replaceAll(",", ",&#8203;");
+            writer.write(val);
+        }
 
         writer.writeAttribute(HTML.CLASS_ATTR, colClass, null);
 
