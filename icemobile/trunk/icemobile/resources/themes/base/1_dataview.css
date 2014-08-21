@@ -81,6 +81,9 @@
 /******************************************************************************/
 
 /******************************* ICEsoft Styles *******************************/
+.mobi-dv{
+    min-height: 200px;
+}
 .mobi-dv-body {
     overflow:auto;
     -webkit-overflow-scrolling: touch;
