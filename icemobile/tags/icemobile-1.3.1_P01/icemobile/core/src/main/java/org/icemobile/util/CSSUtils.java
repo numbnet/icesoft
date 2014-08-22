@@ -22,7 +22,8 @@ public class CSSUtils {
     
     /* Common CSS Class Names */
     public static final String HIDDEN = "ui-screen-hidden";
-    
+    public static final String NONE = "none"; //for MOBI-1094 when navigation to page without deviceResource
+        
     /* Mobi Style Classes */
     public static final String STYLECLASS_BUTTON = "mobi-button ui-btn-up-c";
     public static final String STYLECLASS_BUTTON_DISABLED = " mobi-button-dis";
