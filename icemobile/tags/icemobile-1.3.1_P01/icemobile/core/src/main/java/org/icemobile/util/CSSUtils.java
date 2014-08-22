@@ -145,7 +145,11 @@ public class CSSUtils {
     }
     
     public static String getThemeCSSFileName(Theme theme, boolean production){
-        return theme.fileName() + ".css";
+        if (theme !=null && theme.fileName() !=null){
+            return theme.fileName() + ".css";
+        }else {
+            return NONE + ".css";  //mobi-1094 better to have 404 than NPE
+        }
     }
 
 
