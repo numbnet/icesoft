@@ -1547,7 +1547,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             setTimeout(function() {
                 if (dupeHead && config.fixedHeaders) dupeHead.style.display = 'none';
                 if (dupeFoot) dupeFoot.style.display = 'none';
-            }, 50) /* hiding instantly broke scrolling when init'ing the first time on landscape ipad */
+            }, config.delay) /* hiding instantly broke scrolling when init'ing the first time on landscape ipad */
         }
 
         function setupColumnVisibiltyRules(firstRowCells) {

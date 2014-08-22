@@ -104,6 +104,7 @@ public class DataViewRenderer extends Renderer {
         cfg += "active:'" + dataView.getActivationMode() + "', ";
         cfg += "scrollOnRowSelection: " + dataView.isScrollOnRowSelection() + ", ";
         cfg += "fixedHeaders: " + dataView.isFixedHeaders();
+        cfg += " delay: " + dataView.getDupHeaderDelay();;
         if (reactive) cfg = encodeColumnPriorities(cfg, dataView);
         cfg += "}";
 

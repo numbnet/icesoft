@@ -103,5 +103,8 @@ public class DataViewMeta extends UIComponentBaseMeta {
     
     @Property(defaultValue="true", tlddoc="Setting this to true (default) will cause the column headers to remain fixed while scrolling the data region.")
     boolean fixedHeaders;
-    
+
+    @Property(defaultValue="50", tlddoc="time in ms for the duplicated and calculated headers to disappear. ")
+    Integer dupHeaderDelay;
+
 }
