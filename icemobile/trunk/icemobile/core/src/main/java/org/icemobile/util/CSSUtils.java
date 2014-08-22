@@ -22,7 +22,7 @@ public class CSSUtils {
     
     /* Common CSS Class Names */
     public static final String HIDDEN = "ui-screen-hidden";
-    
+    public static final String NONE = "none"; //for MOBI-1094 when navigation to page without deviceResource
     /* Mobi Style Classes */
     public static final String STYLECLASS_BUTTON = "mobi-button ui-btn-up-c";
     public static final String STYLECLASS_BUTTON_DISABLED = " mobi-button-dis";
@@ -143,9 +143,22 @@ public class CSSUtils {
     public static Theme deriveTheme(HttpServletRequest request){
         return deriveTheme(null, request);
     }
-    
+
+    /**
+     * Note that MOBI-1094 showed an NPE when navigating from a page with a
+     * deviceResource component to a page without one (like an non-icemobile
+     * error page).  So....let the default be ANDROID_LIGHT in the case of this
+     * if theme or theme.fileName() are null, return ANDROID_LIGHT
+     * @param theme
+     * @param production
+     * @return
+     */
     public static String getThemeCSSFileName(Theme theme, boolean production){
-        return theme.fileName() + ".css";
+        if (theme !=null && theme.fileName() !=null){
+            return theme.fileName() + ".css";
+        }else {
+            return NONE + ".css";  //mobi-1094 better to have 404 than NPE
+        }
     }
 
 
