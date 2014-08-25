@@ -1502,7 +1502,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
         
                     /* fix body column widths */
                     for (var i = 0; i < frbcWidths.length; i++) {
-                        if( sheet.insertRule ){
+                        if( sheet && sheet.insertRule ){
                             sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { maxWidth: " + frbcWidths[i] + "px;minWidth: " + frbcWidths[i] + "px;width: " + frbcWidths[i] + "px;}", 0);
                         }
                     }
@@ -1582,12 +1582,12 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 // add column conditional visibility rule
                 hideRule += 'th.'+columnClassname+', td.'+columnClassname;
                 if (i != (prioritizedCells.length - 1)) hideRule += ', ';
-                if( colVisSheet.insertRule )
+                if(colVisSheet && colVisSheet.insertRule )
                     colVisSheet.insertRule('@media screen and (min-width: '+minDevWidth+'px) { td.'+columnClassname+', th.'+columnClassname+' { display: table-cell; }}', 0);
             }
 
             hideRule += '{ display:none; }}';
-            if( colVisSheet.insertRule )
+            if( colVisSheet && colVisSheet.insertRule )
                 colVisSheet.insertRule(hideRule, 0);
         }
 
@@ -3520,9 +3520,12 @@ mobi.flipswitch = {
                     openPaneContent = null;
                 if( fitToParent ){
                     if( openId ){
-                        openPaneContent = getPane(openId).children[1];
-                        openPaneScrollPos = openPaneContent.scrollTop;
-                        setHeight(getPane(openId).children[1], null);
+                        var openPane = getPane(openId);
+                        if (openPane){   //check first as per MOBI-1095
+                            openPaneContent = getPane(openId).children[1];
+                            openPaneScrollPos = openPaneContent.scrollTop;
+                            setHeight(getPane(openId).children[1], null);
+                        }
                     }
                     var rootElem = getRootElem();
                     setHeight(rootElem, null);
@@ -3534,7 +3537,8 @@ mobi.flipswitch = {
                 }
                 calcCurrentHeight();
                 if( openId ){
-                    if( !openPaneContent ){
+                    var openPane = getPane(openId);
+                    if( !openPaneContent  && openPane){
                         openPaneContent = getPane(openId).children[1];
                     }
                     setHeight(openPaneContent, currentHeight);
