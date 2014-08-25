@@ -99,12 +99,11 @@ public class DataViewRenderer extends Renderer {
         writer.writeAttribute(HTML.ID_ATTR, dvId + "_js", null);
 
         boolean reactive = dataView.isReactiveColumnVisibility();
-
         String cfg = "{";
         cfg += "active:'" + dataView.getActivationMode() + "', ";
         cfg += "scrollOnRowSelection: " + dataView.isScrollOnRowSelection() + ", ";
-        cfg += "fixedHeaders: " + dataView.isFixedHeaders();
-        cfg += " delay: " + dataView.getDupHeaderDelay();;
+        cfg += "fixedHeaders: " + dataView.isFixedHeaders()+", ";
+        cfg += " delay: " + dataView.getDupHeaderDelay();
         if (reactive) cfg = encodeColumnPriorities(cfg, dataView);
         cfg += "}";
 
@@ -113,7 +112,6 @@ public class DataViewRenderer extends Renderer {
                 + '"' + dvId + '"'
                 + ", " + cfg
             + ");";
-
         writer.writeText(js, null);
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
