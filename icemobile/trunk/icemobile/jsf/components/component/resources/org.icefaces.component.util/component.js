@@ -3520,9 +3520,12 @@ mobi.flipswitch = {
                     openPaneContent = null;
                 if( fitToParent ){
                     if( openId ){
-                        openPaneContent = getPane(openId).children[1];
-                        openPaneScrollPos = openPaneContent.scrollTop;
-                        setHeight(getPane(openId).children[1], null);
+                        var openPane = getPane(openId);
+                        if (openPane){   //check first as per MOBI-1095
+                            openPaneContent = getPane(openId).children[1];
+                            openPaneScrollPos = openPaneContent.scrollTop;
+                            setHeight(getPane(openId).children[1], null);
+                        }
                     }
                     var rootElem = getRootElem();
                     setHeight(rootElem, null);
@@ -3534,7 +3537,8 @@ mobi.flipswitch = {
                 }
                 calcCurrentHeight();
                 if( openId ){
-                    if( !openPaneContent ){
+                    var openPane = getPane(openId);
+                    if( !openPaneContent  && openPane){
                         openPaneContent = getPane(openId).children[1];
                     }
                     setHeight(openPaneContent, currentHeight);
