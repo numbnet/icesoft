@@ -27,8 +27,8 @@
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom.asc</extension>
-        <value>4.0.0-20140826.172013-11</value>
-        <updated>20140826172013</updated>
+        <value>4.0.0-20140902.151626-12</value>
+        <updated>20140902151626</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
