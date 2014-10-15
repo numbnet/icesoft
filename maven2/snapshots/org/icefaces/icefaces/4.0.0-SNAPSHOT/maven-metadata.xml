@@ -73,8 +73,8 @@
       <snapshotVersion>
         <classifier>sources</classifier>
         <extension>jar.asc.asc</extension>
-        <value>4.0.0-20141009.160751-13</value>
-        <updated>20141009160751</updated>
+        <value>4.0.0-20141015.235852-14</value>
+        <updated>20141015235852</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
