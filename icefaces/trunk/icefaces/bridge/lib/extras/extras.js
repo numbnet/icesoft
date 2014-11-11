@@ -456,7 +456,7 @@ Ice.pnlClpFocus = function(anc) {
 Ice.pnlClpBlur = function(anc) {
     var parent = anc.parentNode;
     Ice.simulateBlur(parent, anc);
-    parent.style.padding='1px';   
+    parent.style.padding='0px';
 }
 
 Ice.simulateFocus = function(ele, anc) {
