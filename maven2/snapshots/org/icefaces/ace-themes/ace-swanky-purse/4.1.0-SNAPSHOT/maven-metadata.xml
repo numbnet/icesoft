@@ -20,6 +20,11 @@
         <value>4.1.0-20141115.002044-1</value>
         <updated>20141115002044</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <extension>jar.asc</extension>
+        <value>4.1.0-20141115.002044-1</value>
+        <updated>20141115002044</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
