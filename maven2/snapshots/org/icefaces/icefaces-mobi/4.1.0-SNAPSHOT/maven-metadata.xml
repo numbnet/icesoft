@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.icefaces</groupId>
+  <artifactId>icefaces-mobi</artifactId>
+  <version>4.1.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20141115.002807</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20141115002807</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>4.1.0-20141115.002807-1</value>
+        <updated>20141115002807</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
