@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.icefaces.samples</groupId>
+  <artifactId>showcase-portlet</artifactId>
+  <version>4.1.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20141115.003017</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20141115003017</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>war</extension>
+        <value>4.1.0-20141115.003017-1</value>
+        <updated>20141115003017</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>4.1.0-20141115.003017-1</value>
+        <updated>20141115003017</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
