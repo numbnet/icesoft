@@ -70,6 +70,12 @@
         <value>4.1.0-20141115.001535-1</value>
         <updated>20141115001535</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <classifier>sources</classifier>
+        <extension>jar.asc.asc</extension>
+        <value>4.1.0-20141115.001535-1</value>
+        <updated>20141115001535</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
