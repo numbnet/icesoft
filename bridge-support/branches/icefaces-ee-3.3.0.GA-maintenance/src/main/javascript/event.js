@@ -91,10 +91,16 @@ function IEEvent(event, capturingElement) {
 
         method(cancelBubbling, function (self) {
             event.cancelBubble = true;
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
         });
 
         method(cancelDefaultAction, function (self) {
             event.returnValue = false;
+            if (event.preventDefault) {
+                event.preventDefault();
+            }
         });
 
         method(asString, function (self) {
