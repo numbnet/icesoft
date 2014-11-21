@@ -35,7 +35,12 @@
                                   value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
                   <mobi:ajax execute="@this" render="@all"/>
            </mobi:commandButton>
+            <mobi:commandButton id="b2" value="renderFalsePane3"
+                                actionListener="#{layoutBean.render3false}">
+                <mobi:ajax execute="@this" render="@all"/>
+            </mobi:commandButton>
          </h:form>
+              <h:outputText value="render3false is:-#{layoutBean.pane3Rendered}"/>
       </div>
   </header>
      <h:form id="selectForm">
@@ -98,7 +103,9 @@
                   </fieldset>
                 </div>
               </mobi:contentPane>
-             <mobi:contentPane id="panel3" title="panel3" facelet="true">
+             <mobi:contentPane id="panel3" title="panel3"
+                               rendered="#{layoutBean.pane3Rendered}"
+                               facelet="true">
                 <div id="inner3">
                  <fieldset title="panel3">
                       <legend>Panel3</legend>
