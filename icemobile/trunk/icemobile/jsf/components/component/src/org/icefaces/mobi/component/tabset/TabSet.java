@@ -17,6 +17,7 @@ package org.icefaces.mobi.component.tabset;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.List;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
@@ -68,7 +69,7 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
         int tabIndex = 0;
         // no current id then default to defaultId if present or as a last
         // resort to the first contentPane which is index zero.
-        if (currentId == null || currentId.length() == 0) {
+        if (!isRendered() || currentId == null || currentId.length() == 0) {
             String defaultId = getDefaultId();
             if (defaultId != null && defaultId.length() > 0) {
                 // load the default id
@@ -194,5 +195,14 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
         return this.index;
     }
 
+    public int getRenderedChildCount(){
+        int numberRenderedChildren= 0;
+        List<UIComponent> children = getChildren();
+        for (UIComponent c : children) {
+             if (c.isRendered())numberRenderedChildren++;
+        }
+  System.out.println(" number of rendered Children="+numberRenderedChildren);
+        return numberRenderedChildren;
+    }
 
 }

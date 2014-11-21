@@ -117,7 +117,8 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         String baseTabsClass = ITabSet.TABSET_TABS_CLASS.toString();
         baseTabsClass += " mobi-tabset-tabs";
         writer.writeAttribute("class", baseTabsClass, "class");
-        int tabsNum = uiComponent.getChildCount();
+    //    int tabsNum = uiComponent.getChildCount(); //MOBI-1116 just the rendered children!
+        int tabsNum = controller.getRenderedChildCount();
         if (tabsNum <= 0) {
             if (logger.isLoggable(Level.FINER)) {
                 logger.finer(" no contentPane children for this component. Please read DOCS");
@@ -146,34 +147,36 @@ public class TabSetRenderer extends BaseLayoutRenderer {
             UIComponent child = controller.getChildren().get(i);
             if (child instanceof ContentPane) {
                 ContentPane cp = (ContentPane) child;
-                boolean client = cp.isClient();
-                writer.startElement(HTML.LI_ELEM, uiComponent);
-                writer.writeAttribute(HTML.ID_ATTR, clientId + "tab_" + i, HTML.ID_ATTR);
-                StringBuilder sb = new StringBuilder("ice.mobi.tabsetController.showContent('").append(clientId);
-                sb.append("', this, ").append("{");
-                sb.append("singleSubmit: true, tIndex: ").append(i);
-                sb.append(",client: ").append(client);
-                sb.append("});");
-                writer.writeAttribute("onclick", sb.toString(), "onclick");
-                if (autoWidth){
-                    String width = null;
-                    if( i < tabsNum-1){
-                        width = percentWidth;
+                if (cp.isRendered()){
+                    boolean client = cp.isClient();
+                    writer.startElement(HTML.LI_ELEM, uiComponent);
+                    writer.writeAttribute(HTML.ID_ATTR, clientId + "tab_" + i, HTML.ID_ATTR);
+                    StringBuilder sb = new StringBuilder("ice.mobi.tabsetController.showContent('").append(clientId);
+                    sb.append("', this, ").append("{");
+                    sb.append("singleSubmit: true, tIndex: ").append(i);
+                    sb.append(",client: ").append(client);
+                    sb.append("});");
+                    writer.writeAttribute("onclick", sb.toString(), "onclick");
+                    if (autoWidth){
+                        String width = null;
+                        if( i < tabsNum-1){
+                            width = percentWidth;
+                        }
+                        else{
+                            width = lastPercentWidth;
+                        }
+                        writer.writeAttribute(HTML.STYLE_ATTR, width, HTML.STYLE_ATTR);
                     }
-                    else{
-                        width = lastPercentWidth;
+                    String icon = cp.getIcon();
+                    if( icon != null ){
+                        writer.startElement("i", null);
+                        writer.writeAttribute(HTML.CLASS_ATTR, "fa fa-" + icon, null);
+                        writer.endElement("i");
                     }
-                    writer.writeAttribute(HTML.STYLE_ATTR, width, HTML.STYLE_ATTR);
+                    String title = cp.getTitle();
+                    writer.write(title);
+                    writer.endElement(HTML.LI_ELEM);
                 }
-                String icon = cp.getIcon();
-                if( icon != null ){
-                    writer.startElement("i", null);
-                    writer.writeAttribute(HTML.CLASS_ATTR, "fa fa-" + icon, null);
-                    writer.endElement("i");
-                }
-                String title = cp.getTitle();
-                writer.write(title);
-                writer.endElement(HTML.LI_ELEM);
             }
         }
         writer.endElement(HTML.UL_ELEM);
