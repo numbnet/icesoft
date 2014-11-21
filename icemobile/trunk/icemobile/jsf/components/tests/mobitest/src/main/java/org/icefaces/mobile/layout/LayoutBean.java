@@ -23,6 +23,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class LayoutBean implements Serializable {
     private String styleClass;
     private String style;
     private boolean scrollablePaneContent;
+    private boolean pane3Rendered = true;
     private long timestamp;
     private long headTimestamp;
     private String orientation="top";
@@ -212,6 +214,18 @@ public class LayoutBean implements Serializable {
 
     public void setSelectedPane2(String selectedPane2) {
         this.selectedPane2 = selectedPane2;
+    }
+
+    public void render3false(ActionEvent ae){
+          this.pane3Rendered=!pane3Rendered;
+    }
+
+    public boolean isPane3Rendered() {
+        return pane3Rendered;
+    }
+
+    public void setPane3Rendered(boolean pane3Rendered) {
+        this.pane3Rendered = pane3Rendered;
     }
 
     public String getInputString() {
