@@ -58,6 +58,10 @@ public class DataViewColumnMeta {
             "replacing the substring {{value}} with the String representation of the 'value' attribute.")
     String markup;
 
+    /* added for ICEmobile-1.3.1-ee_P02 MOBI-1117*/
+    @Property(tlddoc = "Define if the column is sortable.", defaultValue = "true")
+	boolean sortable;
+
     @Property(expression = Expression.VALUE_EXPRESSION,
               tlddoc = "Define a ValueExpression whose resulting Object will be iteratively rendered in the table " +
                       "region of the DataView according to the 'type' of this column.")
