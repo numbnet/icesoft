@@ -1904,9 +1904,13 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
             var sortedRows, asc,
                 headCell = ice.mobi.getTarget(event),
                 ascendingClass = blankIndicatorClass + ' fa fa-caret-up',
-                descendingClass = blankIndicatorClass + ' fa fa-caret-down',
-                ascIndi = headCell.querySelector(indicatorSelector),
-                ascClass = ascIndi ? ascIndi.className : '';
+                descendingClass = blankIndicatorClass + ' icon-caret-down';
+            var ascIndi = headCell.querySelector(indicatorSelector);
+	        if (!ascIndi) {
+	            //non-sortable column
+	            return;
+	        }
+            var ascClass = ascIndi.className;
 
             /* find col index */
             var columnIndex = getIndex(headCell);
@@ -1927,7 +1931,9 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                 var c = headCells[k];
                 if( sortedIndexes.indexOf(getIndex(c)) === -1 ){
                     var indi = c.querySelector(indicatorSelector);
-                    indi.className = blankIndicatorClass;
+                    if (indi) {
+                        indi.className = blankIndicatorClass;
+                    }
                 }
             }
             
