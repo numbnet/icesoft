@@ -30,6 +30,7 @@ public class NavigationBean implements Serializable {
 
     private String defaultView;
     private boolean forceView;
+    private String accordionPane="sentPanel2";
 	private String singleColSelectedPane = "mnuPanelS";
 	private String twoColSelectedPane = "panel1L";
 	private String selectedTabPane = "panelt1";
@@ -79,5 +80,13 @@ public class NavigationBean implements Serializable {
 
     public void setForceView(boolean forceView) {
         this.forceView = forceView;
+    }
+
+    public String getAccordionPane() {
+        return accordionPane;
+    }
+
+    public void setAccordionPane(String accordionPane) {
+        this.accordionPane = accordionPane;
     }
 }
