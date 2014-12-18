@@ -81,6 +81,7 @@
                 commons-discovery.jar
                 commons-el.jar
                 commons-fileupload.jar
+                commons-io.jar
                 commons-logging.jar
                 FastInfoset.jar
                 icefaces.jar
