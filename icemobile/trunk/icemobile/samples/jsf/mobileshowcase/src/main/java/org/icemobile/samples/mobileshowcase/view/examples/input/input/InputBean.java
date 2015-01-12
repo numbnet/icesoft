@@ -17,11 +17,16 @@
 package org.icemobile.samples.mobileshowcase.view.examples.input.input;
 
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.util.JavaScriptRunner;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -65,6 +70,7 @@ public class InputBean extends ExampleImpl<InputBean> implements
     private String textArea;
     private String urlInput;
     private Double numberInput;
+    private Double numberStep = 1.0d;
     private String dateInput;
 
 
@@ -135,5 +141,20 @@ public class InputBean extends ExampleImpl<InputBean> implements
 
     public void setTextArea(String textArea) {
         this.textArea = textArea;
+    }
+    
+    public void action(){
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        if( client.isIOS() ){
+            JavaScriptRunner.runScript(FacesContext.getCurrentInstance(), "window.scrollTo(0, 0);");
+        }
+    }
+
+    public Double getNumberStep() {
+        return numberStep;
+    }
+
+    public void setNumberStep(Double numberStep) {
+        this.numberStep = numberStep;
     }
 }

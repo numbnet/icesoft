@@ -201,7 +201,6 @@ public class TabSet extends TabSetBase implements ContentPaneController, ITabSet
         for (UIComponent c : children) {
              if (c.isRendered())numberRenderedChildren++;
         }
-  System.out.println(" number of rendered Children="+numberRenderedChildren);
         return numberRenderedChildren;
     }
 
