@@ -112,9 +112,9 @@ public class InputTextMeta extends UIInputMeta {
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="Maximum value, only applicable to type number.")
     private int max;
     
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="The step to increase/decrease the value of the number input. " +
+    @Property(defaultValue = "1f", tlddoc="The step to increase/decrease the value of the number input. " +
             "Applicable only to type \"number\". ")
-    private int step;
+    private float step;
     
     @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Value of the component. ")
     private Object value;

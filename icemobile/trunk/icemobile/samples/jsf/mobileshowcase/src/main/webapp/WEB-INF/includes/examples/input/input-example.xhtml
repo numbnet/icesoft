@@ -42,6 +42,15 @@
                                 placeholder="Text input"
                                 value="#{inputBean.textInput}"/>
             </mobi:fieldsetRow>
+            
+            <!-- Number step -->
+            <mobi:fieldsetRow>
+                <mobi:inputText id="numberStep" label="Number Step:" 
+                                singleSubmit="false"
+                                placeholder="Number step"
+                                value="#{inputBean.numberStep}">
+                </mobi:inputText>
+            </mobi:fieldsetRow>
 
             <!-- Number input -->
             <mobi:fieldsetRow>
@@ -49,6 +58,7 @@
                                 type="number"
                                 singleSubmit="false"
                                 placeholder="Number input"
+                                step="#{inputBean.numberStep}"
                                 value="#{inputBean.numberInput}">
                 </mobi:inputText>
             </mobi:fieldsetRow>
