@@ -1503,7 +1503,7 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
                     /* fix body column widths */
                     for (var i = 0; i < frbcWidths.length; i++) {
                         if( sheet && sheet.insertRule ){
-                            sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { maxWidth: " + frbcWidths[i] + "px;minWidth: " + frbcWidths[i] + "px;width: " + frbcWidths[i] + "px;}", 0);
+                            sheet.insertRule(selectorId + " ." + firstRowBodyCells[i].classList[0] + " { max-width: " + frbcWidths[i] + "px;min-width: " + frbcWidths[i] + "px;width: " + frbcWidths[i] + "px;}", 0);
                         }
                     }
     
