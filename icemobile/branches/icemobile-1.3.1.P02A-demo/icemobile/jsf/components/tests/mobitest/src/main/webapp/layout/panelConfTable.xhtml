@@ -1,0 +1,98 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">panelConf table Tests</title>
+	  <mobi:deviceResource   includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}"/>
+
+</h:head>
+
+<h:body>
+ 
+   <h3>panelconfirmation test in datatable</h3>
+   <h5>add button has submitnotification as well as panelConfirmation</h5>
+   <h:form id="tabForm">
+        <h:dataTable id="table1" value="#{menu.data}" var="item">
+             <h:column>
+                 <f:facet name="header">
+                     <h:outputText value="Label"/>
+                 </f:facet>
+                 <h:outputText value="#{item.label}"/>
+             </h:column>
+             <h:column>
+                 <f:facet name="header">
+                     <h:outputText value="panelConf ID"/>
+                 </f:facet>
+                 <h:outputText value="#{item.panelConfId}"/>
+             </h:column>
+             <h:column>
+                 <f:facet name="header">
+                     <h:outputText value="submitNotif ID"/>
+                 </f:facet>
+                 <h:outputText value="#{item.submitNotif}"/>
+             </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="button"/>
+                </f:facet>
+                <mobi:commandButton rendered = "#{item.panelConfOnly}"
+                                    actionListener="#{item.actionMethod}"
+                                    value="#{item.value}"
+                                    panelConfirmation="#{item.panelConfId}"/>
+                <mobi:commandButton rendered = "#{item.submitNotifOnly}"
+                                    actionListener="#{item.actionMethod}"
+                                    value="#{item.value}"
+                                    submitNotification="#{item.submitNotif}"/>
+                <mobi:commandButton actionListener="#{item.actionMethod}"
+                                    rendered = "#{item.both}"
+                                    value="#{item.value}"
+                                    panelConfirmation="#{item.panelConfId}"
+                                    submitNotification="#{item.submitNotif}"/>
+                <mobi:commandButton actionListener="#{item.actionMethod}"
+                                    rendered = "#{item.none}"
+                                    value="#{item.value}"/>
+            </h:column>
+        </h:dataTable>
+        <mobi:panelConfirmation id="pc1" message="working..."/>
+        <mobi:panelConfirmation id="pcAdd" message="adding record.." />
+        <mobi:panelConfirmation id="pcDel" message="Are you sure you want to delete?"/>
+        <mobi:submitNotification id="sn1">
+             <h:outputText value="...working"/>
+        </mobi:submitNotification>
+   </h:form>
+
+       <br />
+
+   <h3>RESULTS</h3>
+    <fieldset title="outputResults">
+        <legend title="Results"/>
+     <h:outputLabel for="out1" value="A. simple:-"/>
+      <h:outputText id="out1" value="#{menu.outputString}">
+    </h:outputText>
+   </fieldset>
+
+    <br />
+	<li><a href="../layoutComponents.html">index page</a>
+	</li>
+</h:body>
+</html>

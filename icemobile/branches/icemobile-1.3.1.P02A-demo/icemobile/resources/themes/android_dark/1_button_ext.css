@@ -1,0 +1,109 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+.mobi-button, a.mobi-button:visited {
+     background-color: #555;
+     border-top-color: #878787;
+     color: #F1F1F1;
+     font-weight: bold;
+     border-bottom: 1px solid #555;
+     border-right: none;
+     border-left: none;
+}
+.mobi-button:active, .mobi-button:focus, .mobi-button[selected], div.mobi-button-back > input:active {
+    -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    -webkit-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    background-color:#66AFFF;
+}
+.mobi-button.mobi-button-attention{
+    color: white !important;
+    background: #e74139;
+    background: -moz-linear-gradient(top,  #000000 0%, #842829 1%, #8c2821 2%, #e74139 3%, #ef4142 4%, #ef4142 5%, #e74542 6%, #ef4142 8%, #e74542 9%, #ef4142 10%, #e74142 11%, #e74142 16%, #de4142 17%, #e74142 18%, #de3c39 19%, #de4142 20%, #de3c39 22%, #de4142 23%, #de4142 24%, #de3c39 25%, #d64142 26%, #de3c39 27%, #d64142 28%, #d63c39 29%, #d64142 30%, #d63c39 31%, #d63c42 32%, #d63c39 33%, #d63c42 34%, #d63c39 35%, #ce3c42 37%, #d63c39 38%, #d63c39 39%, #ce3c39 40%, #ce3839 42%, #ce3c39 43%, #ce3839 44%, #c63c39 45%, #ce3839 46%, #ce3c39 47%, #c63839 48%, #c63c39 49%, #c63839 51%, #c63839 53%, #bd3839 54%, #c63839 55%, #c63831 56%, #bd3839 57%, #bd3831 58%, #bd3839 59%, #bd3839 60%, #bd3431 61%, #b53839 62%, #bd3431 63%, #b53839 65%, #b53431 66%, #b53839 67%, #b53431 68%, #b53839 69%, #b53431 70%, #ad3439 71%, #b53431 72%, #ad3439 73%, #b53431 74%, #b53431 75%, #ad3431 76%, #ad3431 80%, #ad3031 81%, #a53431 82%, #ad3031 83%, #ad3431 84%, #a53031 85%, #a53431 86%, #a53031 87%, #a53031 89%, #9c3031 90%, #a53031 91%, #a53031 92%, #9c3031 94%, #9c3029 95%, #9c3031 96%, #9c3029 97%, #9c2c29 99%, #943031 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#000000), color-stop(1%,#842829), color-stop(2%,#8c2821), color-stop(3%,#e74139), color-stop(4%,#ef4142), color-stop(5%,#ef4142), color-stop(6%,#e74542), color-stop(8%,#ef4142), color-stop(9%,#e74542), color-stop(10%,#ef4142), color-stop(11%,#e74142), color-stop(16%,#e74142), color-stop(17%,#de4142), color-stop(18%,#e74142), color-stop(19%,#de3c39), color-stop(20%,#de4142), color-stop(22%,#de3c39), color-stop(23%,#de4142), color-stop(24%,#de4142), color-stop(25%,#de3c39), color-stop(26%,#d64142), color-stop(27%,#de3c39), color-stop(28%,#d64142), color-stop(29%,#d63c39), color-stop(30%,#d64142), color-stop(31%,#d63c39), color-stop(32%,#d63c42), color-stop(33%,#d63c39), color-stop(34%,#d63c42), color-stop(35%,#d63c39), color-stop(37%,#ce3c42), color-stop(38%,#d63c39), color-stop(39%,#d63c39), color-stop(40%,#ce3c39), color-stop(42%,#ce3839), color-stop(43%,#ce3c39), color-stop(44%,#ce3839), color-stop(45%,#c63c39), color-stop(46%,#ce3839), color-stop(47%,#ce3c39), color-stop(48%,#c63839), color-stop(49%,#c63c39), color-stop(51%,#c63839), color-stop(53%,#c63839), color-stop(54%,#bd3839), color-stop(55%,#c63839), color-stop(56%,#c63831), color-stop(57%,#bd3839), color-stop(58%,#bd3831), color-stop(59%,#bd3839), color-stop(60%,#bd3839), color-stop(61%,#bd3431), color-stop(62%,#b53839), color-stop(63%,#bd3431), color-stop(65%,#b53839), color-stop(66%,#b53431), color-stop(67%,#b53839), color-stop(68%,#b53431), color-stop(69%,#b53839), color-stop(70%,#b53431), color-stop(71%,#ad3439), color-stop(72%,#b53431), color-stop(73%,#ad3439), color-stop(74%,#b53431), color-stop(75%,#b53431), color-stop(76%,#ad3431), color-stop(80%,#ad3431), color-stop(81%,#ad3031), color-stop(82%,#a53431), color-stop(83%,#ad3031), color-stop(84%,#ad3431), color-stop(85%,#a53031), color-stop(86%,#a53431), color-stop(87%,#a53031), color-stop(89%,#a53031), color-stop(90%,#9c3031), color-stop(91%,#a53031), color-stop(92%,#a53031), color-stop(94%,#9c3031), color-stop(95%,#9c3029), color-stop(96%,#9c3031), color-stop(97%,#9c3029), color-stop(99%,#9c2c29), color-stop(100%,#943031));
+    background: -webkit-linear-gradient(top,  #000000 0%,#842829 1%,#8c2821 2%,#e74139 3%,#ef4142 4%,#ef4142 5%,#e74542 6%,#ef4142 8%,#e74542 9%,#ef4142 10%,#e74142 11%,#e74142 16%,#de4142 17%,#e74142 18%,#de3c39 19%,#de4142 20%,#de3c39 22%,#de4142 23%,#de4142 24%,#de3c39 25%,#d64142 26%,#de3c39 27%,#d64142 28%,#d63c39 29%,#d64142 30%,#d63c39 31%,#d63c42 32%,#d63c39 33%,#d63c42 34%,#d63c39 35%,#ce3c42 37%,#d63c39 38%,#d63c39 39%,#ce3c39 40%,#ce3839 42%,#ce3c39 43%,#ce3839 44%,#c63c39 45%,#ce3839 46%,#ce3c39 47%,#c63839 48%,#c63c39 49%,#c63839 51%,#c63839 53%,#bd3839 54%,#c63839 55%,#c63831 56%,#bd3839 57%,#bd3831 58%,#bd3839 59%,#bd3839 60%,#bd3431 61%,#b53839 62%,#bd3431 63%,#b53839 65%,#b53431 66%,#b53839 67%,#b53431 68%,#b53839 69%,#b53431 70%,#ad3439 71%,#b53431 72%,#ad3439 73%,#b53431 74%,#b53431 75%,#ad3431 76%,#ad3431 80%,#ad3031 81%,#a53431 82%,#ad3031 83%,#ad3431 84%,#a53031 85%,#a53431 86%,#a53031 87%,#a53031 89%,#9c3031 90%,#a53031 91%,#a53031 92%,#9c3031 94%,#9c3029 95%,#9c3031 96%,#9c3029 97%,#9c2c29 99%,#943031 100%);
+    background: -o-linear-gradient(top,  #000000 0%,#842829 1%,#8c2821 2%,#e74139 3%,#ef4142 4%,#ef4142 5%,#e74542 6%,#ef4142 8%,#e74542 9%,#ef4142 10%,#e74142 11%,#e74142 16%,#de4142 17%,#e74142 18%,#de3c39 19%,#de4142 20%,#de3c39 22%,#de4142 23%,#de4142 24%,#de3c39 25%,#d64142 26%,#de3c39 27%,#d64142 28%,#d63c39 29%,#d64142 30%,#d63c39 31%,#d63c42 32%,#d63c39 33%,#d63c42 34%,#d63c39 35%,#ce3c42 37%,#d63c39 38%,#d63c39 39%,#ce3c39 40%,#ce3839 42%,#ce3c39 43%,#ce3839 44%,#c63c39 45%,#ce3839 46%,#ce3c39 47%,#c63839 48%,#c63c39 49%,#c63839 51%,#c63839 53%,#bd3839 54%,#c63839 55%,#c63831 56%,#bd3839 57%,#bd3831 58%,#bd3839 59%,#bd3839 60%,#bd3431 61%,#b53839 62%,#bd3431 63%,#b53839 65%,#b53431 66%,#b53839 67%,#b53431 68%,#b53839 69%,#b53431 70%,#ad3439 71%,#b53431 72%,#ad3439 73%,#b53431 74%,#b53431 75%,#ad3431 76%,#ad3431 80%,#ad3031 81%,#a53431 82%,#ad3031 83%,#ad3431 84%,#a53031 85%,#a53431 86%,#a53031 87%,#a53031 89%,#9c3031 90%,#a53031 91%,#a53031 92%,#9c3031 94%,#9c3029 95%,#9c3031 96%,#9c3029 97%,#9c2c29 99%,#943031 100%);
+    background: -ms-linear-gradient(top,  #000000 0%,#842829 1%,#8c2821 2%,#e74139 3%,#ef4142 4%,#ef4142 5%,#e74542 6%,#ef4142 8%,#e74542 9%,#ef4142 10%,#e74142 11%,#e74142 16%,#de4142 17%,#e74142 18%,#de3c39 19%,#de4142 20%,#de3c39 22%,#de4142 23%,#de4142 24%,#de3c39 25%,#d64142 26%,#de3c39 27%,#d64142 28%,#d63c39 29%,#d64142 30%,#d63c39 31%,#d63c42 32%,#d63c39 33%,#d63c42 34%,#d63c39 35%,#ce3c42 37%,#d63c39 38%,#d63c39 39%,#ce3c39 40%,#ce3839 42%,#ce3c39 43%,#ce3839 44%,#c63c39 45%,#ce3839 46%,#ce3c39 47%,#c63839 48%,#c63c39 49%,#c63839 51%,#c63839 53%,#bd3839 54%,#c63839 55%,#c63831 56%,#bd3839 57%,#bd3831 58%,#bd3839 59%,#bd3839 60%,#bd3431 61%,#b53839 62%,#bd3431 63%,#b53839 65%,#b53431 66%,#b53839 67%,#b53431 68%,#b53839 69%,#b53431 70%,#ad3439 71%,#b53431 72%,#ad3439 73%,#b53431 74%,#b53431 75%,#ad3431 76%,#ad3431 80%,#ad3031 81%,#a53431 82%,#ad3031 83%,#ad3431 84%,#a53031 85%,#a53431 86%,#a53031 87%,#a53031 89%,#9c3031 90%,#a53031 91%,#a53031 92%,#9c3031 94%,#9c3029 95%,#9c3031 96%,#9c3029 97%,#9c2c29 99%,#943031 100%);
+    background: linear-gradient(to bottom,  #000000 0%,#842829 1%,#8c2821 2%,#e74139 3%,#ef4142 4%,#ef4142 5%,#e74542 6%,#ef4142 8%,#e74542 9%,#ef4142 10%,#e74142 11%,#e74142 16%,#de4142 17%,#e74142 18%,#de3c39 19%,#de4142 20%,#de3c39 22%,#de4142 23%,#de4142 24%,#de3c39 25%,#d64142 26%,#de3c39 27%,#d64142 28%,#d63c39 29%,#d64142 30%,#d63c39 31%,#d63c42 32%,#d63c39 33%,#d63c42 34%,#d63c39 35%,#ce3c42 37%,#d63c39 38%,#d63c39 39%,#ce3c39 40%,#ce3839 42%,#ce3c39 43%,#ce3839 44%,#c63c39 45%,#ce3839 46%,#ce3c39 47%,#c63839 48%,#c63c39 49%,#c63839 51%,#c63839 53%,#bd3839 54%,#c63839 55%,#c63831 56%,#bd3839 57%,#bd3831 58%,#bd3839 59%,#bd3839 60%,#bd3431 61%,#b53839 62%,#bd3431 63%,#b53839 65%,#b53431 66%,#b53839 67%,#b53431 68%,#b53839 69%,#b53431 70%,#ad3439 71%,#b53431 72%,#ad3439 73%,#b53431 74%,#b53431 75%,#ad3431 76%,#ad3431 80%,#ad3031 81%,#a53431 82%,#ad3031 83%,#ad3431 84%,#a53031 85%,#a53431 86%,#a53031 87%,#a53031 89%,#9c3031 90%,#a53031 91%,#a53031 92%,#9c3031 94%,#9c3029 95%,#9c3031 96%,#9c3029 97%,#9c2c29 99%,#943031 100%);
+    text-shadow: none;
+}
+.mobi-button.mobi-button-important{
+    color: white !important;
+    background: #316594;
+    background: -moz-linear-gradient(top,  #316594 0%, #29659c 1%, #429eef 2%, #429aef 4%, #429ee7 5%, #429aef 7%, #429ae7 8%, #429aef 9%, #4296e7 10%, #429ae7 11%, #4296e7 15%, #4296de 16%, #4296e7 17%, #3996de 18%, #4292de 20%, #3992de 21%, #4292de 22%, #4292de 23%, #3992de 24%, #428ed6 25%, #398ede 26%, #428ed6 27%, #398ed6 28%, #428ed6 29%, #398ed6 30%, #428ad6 32%, #398ad6 33%, #428ed6 34%, #398ad6 35%, #428ace 36%, #398ad6 37%, #3986d6 38%, #398ace 39%, #3986ce 43%, #3986c6 45%, #3986ce 46%, #3982ce 47%, #3982c6 48%, #3982c6 52%, #397dbd 53%, #397dc6 54%, #3182c6 55%, #397dbd 57%, #317dbd 58%, #397dbd 59%, #3979bd 60%, #317dbd 61%, #397db5 62%, #3179bd 63%, #3979b5 64%, #3179b5 65%, #3979b5 66%, #3179b5 67%, #3979b5 68%, #3175b5 70%, #3975ad 71%, #3175b5 72%, #3975ad 73%, #3175b5 74%, #3171b5 75%, #3171ad 76%, #3175ad 77%, #3171ad 78%, #3171ad 80%, #316da5 82%, #316dad 83%, #3171ad 84%, #316da5 85%, #316da5 87%, #3169a5 88%, #316da5 89%, #316d9c 90%, #3169a5 91%, #3169a5 92%, #31699c 93%, #29699c 95%, #31699c 96%, #29659c 97%, #29659c 99%, #316594 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#316594), color-stop(1%,#29659c), color-stop(2%,#429eef), color-stop(4%,#429aef), color-stop(5%,#429ee7), color-stop(7%,#429aef), color-stop(8%,#429ae7), color-stop(9%,#429aef), color-stop(10%,#4296e7), color-stop(11%,#429ae7), color-stop(15%,#4296e7), color-stop(16%,#4296de), color-stop(17%,#4296e7), color-stop(18%,#3996de), color-stop(20%,#4292de), color-stop(21%,#3992de), color-stop(22%,#4292de), color-stop(23%,#4292de), color-stop(24%,#3992de), color-stop(25%,#428ed6), color-stop(26%,#398ede), color-stop(27%,#428ed6), color-stop(28%,#398ed6), color-stop(29%,#428ed6), color-stop(30%,#398ed6), color-stop(32%,#428ad6), color-stop(33%,#398ad6), color-stop(34%,#428ed6), color-stop(35%,#398ad6), color-stop(36%,#428ace), color-stop(37%,#398ad6), color-stop(38%,#3986d6), color-stop(39%,#398ace), color-stop(43%,#3986ce), color-stop(45%,#3986c6), color-stop(46%,#3986ce), color-stop(47%,#3982ce), color-stop(48%,#3982c6), color-stop(52%,#3982c6), color-stop(53%,#397dbd), color-stop(54%,#397dc6), color-stop(55%,#3182c6), color-stop(57%,#397dbd), color-stop(58%,#317dbd), color-stop(59%,#397dbd), color-stop(60%,#3979bd), color-stop(61%,#317dbd), color-stop(62%,#397db5), color-stop(63%,#3179bd), color-stop(64%,#3979b5), color-stop(65%,#3179b5), color-stop(66%,#3979b5), color-stop(67%,#3179b5), color-stop(68%,#3979b5), color-stop(70%,#3175b5), color-stop(71%,#3975ad), color-stop(72%,#3175b5), color-stop(73%,#3975ad), color-stop(74%,#3175b5), color-stop(75%,#3171b5), color-stop(76%,#3171ad), color-stop(77%,#3175ad), color-stop(78%,#3171ad), color-stop(80%,#3171ad), color-stop(82%,#316da5), color-stop(83%,#316dad), color-stop(84%,#3171ad), color-stop(85%,#316da5), color-stop(87%,#316da5), color-stop(88%,#3169a5), color-stop(89%,#316da5), color-stop(90%,#316d9c), color-stop(91%,#3169a5), color-stop(92%,#3169a5), color-stop(93%,#31699c), color-stop(95%,#29699c), color-stop(96%,#31699c), color-stop(97%,#29659c), color-stop(99%,#29659c), color-stop(100%,#316594));
+    background: -webkit-linear-gradient(top,  #316594 0%,#29659c 1%,#429eef 2%,#429aef 4%,#429ee7 5%,#429aef 7%,#429ae7 8%,#429aef 9%,#4296e7 10%,#429ae7 11%,#4296e7 15%,#4296de 16%,#4296e7 17%,#3996de 18%,#4292de 20%,#3992de 21%,#4292de 22%,#4292de 23%,#3992de 24%,#428ed6 25%,#398ede 26%,#428ed6 27%,#398ed6 28%,#428ed6 29%,#398ed6 30%,#428ad6 32%,#398ad6 33%,#428ed6 34%,#398ad6 35%,#428ace 36%,#398ad6 37%,#3986d6 38%,#398ace 39%,#3986ce 43%,#3986c6 45%,#3986ce 46%,#3982ce 47%,#3982c6 48%,#3982c6 52%,#397dbd 53%,#397dc6 54%,#3182c6 55%,#397dbd 57%,#317dbd 58%,#397dbd 59%,#3979bd 60%,#317dbd 61%,#397db5 62%,#3179bd 63%,#3979b5 64%,#3179b5 65%,#3979b5 66%,#3179b5 67%,#3979b5 68%,#3175b5 70%,#3975ad 71%,#3175b5 72%,#3975ad 73%,#3175b5 74%,#3171b5 75%,#3171ad 76%,#3175ad 77%,#3171ad 78%,#3171ad 80%,#316da5 82%,#316dad 83%,#3171ad 84%,#316da5 85%,#316da5 87%,#3169a5 88%,#316da5 89%,#316d9c 90%,#3169a5 91%,#3169a5 92%,#31699c 93%,#29699c 95%,#31699c 96%,#29659c 97%,#29659c 99%,#316594 100%);
+    background: -o-linear-gradient(top,  #316594 0%,#29659c 1%,#429eef 2%,#429aef 4%,#429ee7 5%,#429aef 7%,#429ae7 8%,#429aef 9%,#4296e7 10%,#429ae7 11%,#4296e7 15%,#4296de 16%,#4296e7 17%,#3996de 18%,#4292de 20%,#3992de 21%,#4292de 22%,#4292de 23%,#3992de 24%,#428ed6 25%,#398ede 26%,#428ed6 27%,#398ed6 28%,#428ed6 29%,#398ed6 30%,#428ad6 32%,#398ad6 33%,#428ed6 34%,#398ad6 35%,#428ace 36%,#398ad6 37%,#3986d6 38%,#398ace 39%,#3986ce 43%,#3986c6 45%,#3986ce 46%,#3982ce 47%,#3982c6 48%,#3982c6 52%,#397dbd 53%,#397dc6 54%,#3182c6 55%,#397dbd 57%,#317dbd 58%,#397dbd 59%,#3979bd 60%,#317dbd 61%,#397db5 62%,#3179bd 63%,#3979b5 64%,#3179b5 65%,#3979b5 66%,#3179b5 67%,#3979b5 68%,#3175b5 70%,#3975ad 71%,#3175b5 72%,#3975ad 73%,#3175b5 74%,#3171b5 75%,#3171ad 76%,#3175ad 77%,#3171ad 78%,#3171ad 80%,#316da5 82%,#316dad 83%,#3171ad 84%,#316da5 85%,#316da5 87%,#3169a5 88%,#316da5 89%,#316d9c 90%,#3169a5 91%,#3169a5 92%,#31699c 93%,#29699c 95%,#31699c 96%,#29659c 97%,#29659c 99%,#316594 100%);
+    background: -ms-linear-gradient(top,  #316594 0%,#29659c 1%,#429eef 2%,#429aef 4%,#429ee7 5%,#429aef 7%,#429ae7 8%,#429aef 9%,#4296e7 10%,#429ae7 11%,#4296e7 15%,#4296de 16%,#4296e7 17%,#3996de 18%,#4292de 20%,#3992de 21%,#4292de 22%,#4292de 23%,#3992de 24%,#428ed6 25%,#398ede 26%,#428ed6 27%,#398ed6 28%,#428ed6 29%,#398ed6 30%,#428ad6 32%,#398ad6 33%,#428ed6 34%,#398ad6 35%,#428ace 36%,#398ad6 37%,#3986d6 38%,#398ace 39%,#3986ce 43%,#3986c6 45%,#3986ce 46%,#3982ce 47%,#3982c6 48%,#3982c6 52%,#397dbd 53%,#397dc6 54%,#3182c6 55%,#397dbd 57%,#317dbd 58%,#397dbd 59%,#3979bd 60%,#317dbd 61%,#397db5 62%,#3179bd 63%,#3979b5 64%,#3179b5 65%,#3979b5 66%,#3179b5 67%,#3979b5 68%,#3175b5 70%,#3975ad 71%,#3175b5 72%,#3975ad 73%,#3175b5 74%,#3171b5 75%,#3171ad 76%,#3175ad 77%,#3171ad 78%,#3171ad 80%,#316da5 82%,#316dad 83%,#3171ad 84%,#316da5 85%,#316da5 87%,#3169a5 88%,#316da5 89%,#316d9c 90%,#3169a5 91%,#3169a5 92%,#31699c 93%,#29699c 95%,#31699c 96%,#29659c 97%,#29659c 99%,#316594 100%);
+    background: linear-gradient(to bottom,  #316594 0%,#29659c 1%,#429eef 2%,#429aef 4%,#429ee7 5%,#429aef 7%,#429ae7 8%,#429aef 9%,#4296e7 10%,#429ae7 11%,#4296e7 15%,#4296de 16%,#4296e7 17%,#3996de 18%,#4292de 20%,#3992de 21%,#4292de 22%,#4292de 23%,#3992de 24%,#428ed6 25%,#398ede 26%,#428ed6 27%,#398ed6 28%,#428ed6 29%,#398ed6 30%,#428ad6 32%,#398ad6 33%,#428ed6 34%,#398ad6 35%,#428ace 36%,#398ad6 37%,#3986d6 38%,#398ace 39%,#3986ce 43%,#3986c6 45%,#3986ce 46%,#3982ce 47%,#3982c6 48%,#3982c6 52%,#397dbd 53%,#397dc6 54%,#3182c6 55%,#397dbd 57%,#317dbd 58%,#397dbd 59%,#3979bd 60%,#317dbd 61%,#397db5 62%,#3179bd 63%,#3979b5 64%,#3179b5 65%,#3979b5 66%,#3179b5 67%,#3979b5 68%,#3175b5 70%,#3975ad 71%,#3175b5 72%,#3975ad 73%,#3175b5 74%,#3171b5 75%,#3171ad 76%,#3175ad 77%,#3171ad 78%,#3171ad 80%,#316da5 82%,#316dad 83%,#3171ad 84%,#316da5 85%,#316da5 87%,#3169a5 88%,#316da5 89%,#316d9c 90%,#3169a5 91%,#3169a5 92%,#31699c 93%,#29699c 95%,#31699c 96%,#29659c 97%,#29659c 99%,#316594 100%);
+    text-shadow: none;
+}
+.mobi-button.mobi-button-unimportant{
+    color: #727272;
+}
+.mobi-button.mobi-button-back{
+    background-image: url('back.png');
+    background-color: #444;
+    background-position: 0 47%;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    border: none;
+    color:#F1F1F1;
+    font-weight:bold;
+    text-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+@media screen and (min-resolution: 300dpi){
+    .mobi-button.mobi-button-back{
+        background-image: url('back_2x.png');
+    }
+}
+.mobi-button.mobi-button-back:active, .mobi-button.mobi-button-back:hover{
+    background-image: url('back-active.png');
+    color: #33B5E5;
+    box-shadow: 0px 0px 10px #33B5E5 inset;
+    -webkit-transition: color 200ms, box-shadow 200ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -moz-transition: color 200ms, box-shadow 200ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -ms-transition: color 200ms, box-shadow 200ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -o-transition: color 200ms, box-shadow 200ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+        transition: color 200ms, box-shadow 200ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+    
+}
+.mobi-pagePanel-header .mobi-button{
+    border-radius: 0.5em;
+    border: 1px solid #878787;
+}
+.mobi-pagePanel-header .mobi-button-back{
+    left: 0;
+    top: 0;
+    border: none;
+    border-radius: 0;
+    height: 38px;
+    line-height: 22px;
+}
+.mobi-pagePanel-header div.mobi-button-back {
+    height: 35px;
+    min-width: 50px;
+}
+div.mobi-button-back > input{
+    left: 5px;
+    color: #F1F1F1;
+}
+.mobi-button-placeholder{
+    padding: 1em;
+}

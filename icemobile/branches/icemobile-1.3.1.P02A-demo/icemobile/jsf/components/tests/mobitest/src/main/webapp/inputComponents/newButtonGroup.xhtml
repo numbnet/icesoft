@@ -1,0 +1,106 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">commandButtonGroup manages own state</title>
+    <mobi:deviceResource
+            name="#{themeSwitcher.theme}" />
+</h:head>
+
+<h:body>
+    <h3>MOBI Command Button Group manages own state without mobi ajax tag</h3>
+
+    <h:form id="inputForm">
+        <h3>Button Groups</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <mobi:commandButtonGroup orientation="#{button.orientation}"
+                                         styleClass="#{button.styleClass}"
+                                         disabled="#{button.groupDisabled}"
+                                         style="#{button.buttonGroupStyle}">
+                    <mobi:commandButton value="Yes"
+                             buttonType="${button.buttonType}">
+                    </mobi:commandButton>
+                    <mobi:commandButton value="No"
+                            buttonType="#{button.buttonType}">
+                    </mobi:commandButton>
+                    <mobi:commandButton value="Please"
+                            buttonType="#{button.buttonType}" >
+                    </mobi:commandButton>
+                </mobi:commandButtonGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
+    <h:form id="sel">
+        <h3>Dynamic attributes</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h5>NOTE that buttonType is not supported when using buttons in button group....need to know what attributes are for testing</h5>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="selectOr" value="buttonType:-"/>
+                <h:selectOneMenu id="selectOr"  value="#{button.buttonType}">
+                    <f:selectItem itemValue="important" itemLabel="important"/>
+                    <f:selectItem itemValue="default" itemLabel="default" />
+                    <f:selectItem itemValue="unimportant" itemLabel="unimportant"/>
+                    <f:selectItem itemValue="attention" itemLabel="attention" />
+                    <f:selectItem itemValue="back" itemLabel="back" />
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="orientation" value="Orientation:-"/>
+                <h:selectOneMenu id="orientation"  value="#{button.orientation}">
+                    <f:selectItem itemValue="vertical" itemLabel="vertical"/>
+                    <f:selectItem itemValue="horizontal" itemLabel="horizontal" />
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                <h:outputLabel for="styleClass" value="StyleClass:" />
+                <mobi:inputText id="styleClass" value="#{button.styleClass}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h5>use this for testing style= width:80%;margin:0 auto;</h5>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="style" value="Style:" />
+                <mobi:inputText id="style" value="#{button.style}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="groupstyle" value="ButtonGroupStyle:" />
+                <mobi:inputText id="groupstyle" value="#{button.buttonGroupStyle}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:" />
+                <mobi:flipswitch id="disabled" value="#{button.groupDisabled}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
+
+
+    <br />
+	<li><a href="../inputComponents.html">index page</a>
+	</li>
+
+</h:body>
+</html>

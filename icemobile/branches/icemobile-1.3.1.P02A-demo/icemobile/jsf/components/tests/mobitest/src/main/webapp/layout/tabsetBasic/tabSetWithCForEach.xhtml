@@ -1,0 +1,103 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>ContentPane</title>
+    <mobi:deviceResource  includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}" />
+
+</h:head>
+
+<h:body>
+    <a href="../../layoutComponents.html">index page</a>
+    <h:form id="selectForm">
+        <h:panelGroup id="selectorGroup">
+            <h:outputText value="select the pane to open:-"/>
+            <h:selectOneMenu id="selectPane" value="#{layoutBean.selectedPane}">
+                <f:selectItems value="#{layoutBean.allContentPanes}"/>
+                <f:ajax execute="@this" render="@all"/>
+            </h:selectOneMenu>
+        </h:panelGroup>
+    </h:form>
+
+    <h1> test page for tabSet</h1>
+    <h:form id="contentForm">
+        <mobi:tabSet id="test1" currentId="#{layoutBean.selectedPane}"
+                     tabChangeListener="#{layoutBean.tabChangeListener}"
+                     fixedHeight="333px"
+                     fitToParent="false"
+                     parentHeader="false"
+                     parentFooter="false" autoWidth="true"
+                     orientation="top">
+            <c:forEach items="#{layoutBean.eachContentPane}"
+                       var="currContentPane">
+                <mobi:contentPane id="#{currContentPane.id}"
+                                  title="#{currContentPane.legend}"
+                                  client="#{currContentPane.client}"
+                                  facelet="#{currContentPane.facelet}">
+                    <fieldset title="#{currContentPane.title}">
+                        <legend>#{currContentPane.legend}</legend>
+                        <h3> #{currContentPane.header}</h3>
+
+                        <p> #{currContentPane.content} </p>
+                        <figure>
+                            <img width="85" height="150"
+                                 src="#{currContentPane.imgSrc}"
+                                 alt="#{currContentPane.alt}"/>
+                            <figcaption>#{currContentPane.figcaption}</figcaption>
+                        </figure>
+
+                    </fieldset>
+                </mobi:contentPane>
+            </c:forEach>
+        </mobi:tabSet>
+
+        <div style="clear:both" />
+
+        <div id="output" >
+            selected pane ...
+            <mark>#{layoutBean.selectedPane}</mark>
+            ... is selected pane
+        </div>
+        <div style="clear:both" />
+        <div>
+            <mobi:commandButton id="but1"
+                                value="SelectPane3"
+                                actionListener="#{layoutBean.changeToPane3}">
+                <mobi:ajax execute="@this" render="@all"/>
+            </mobi:commandButton>
+            <mobi:commandButton id="butadd"
+                                value="Add ContentPane"
+                                actionListener="#{layoutBean.addContentPane}">
+                <mobi:ajax execute="@this" render="@all"/>
+            </mobi:commandButton>
+            <mobi:commandButton id="butrem"
+                                value="Remove Content Pane"
+                                actionListener="#{layoutBean.removeContentPane}">
+                <mobi:ajax execute="@this" render="@all"/>
+            </mobi:commandButton>
+        </div>
+    </h:form>
+
+</h:body>
+</html>
