@@ -1,0 +1,123 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+.mobi-date-container, .mobi-time-container{
+    border-radius: 5px;
+    padding: 0;
+    border: 1px solid #549FD8;
+    box-shadow: none;
+}
+.mobi-date-title-container, .mobi-time-title-container{
+    background-color: #549FD8;
+    background-image: none;
+    padding: 10px;
+    border-radius: 0;
+    font-size: 15px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.mobi-date-submit-container, .mobi-time-submit-container{
+    background-color: #FFF;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: 1px solid #549FD8;
+    padding: 0;
+    font-size: 16px;
+}
+.mobi-date-submit-container .mobi-button, .mobi-time-submit-container .mobi-button{
+    border: none;
+    margin: 0;
+    width: 50%;
+    height: 100%;
+    font-size: 15px;
+    border-radius: 0;
+}
+.mobi-date-submit-container .mobi-button:first-child, .mobi-time-submit-container .mobi-button:first-child{
+    border-bottom-left-radius: 5px;
+}
+.mobi-date-submit-container .mobi-button:last-child, .mobi-time-submit-container .mobi-button:last-child{
+    border-bottom-right-radius: 5px;
+    border-left: 1px solid #549FD8;
+}
+.mobi-date-select-container, .mobi-time-select-container {
+    padding: 20px 30px;
+    text-align: center;
+    background-color: #FFF;
+}
+.mobi-date-select-value-cont, .mobi-time-select-value-cont {
+    width: 50px;
+    margin: 0;
+    background-color: #FFF;
+    border: none;
+    display: inline-block;
+}
+
+.mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr {
+    border-bottom: 1px solid #549FD8;
+}
+.mobi-date-select-value, .mobi-time-select-value {
+    height: auto;
+    background-color: transparent;
+}
+.mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
+    border-top: 1px solid #549FD8;
+}
+.mobi-date-btn-decr, .mobi-time-btn-decr, .mobi-date-btn-incr, .mobi-time-btn-incr{
+    box-shadow: none;
+}
+.mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr, .mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr {
+    background-image: none;
+    outline: none;
+}
+.mobi-date-popup-btn, .mobi-time-popup-btn {
+    height: 28px;
+    width: 28px;
+}
+.mobi-date-wrapper:after, .mobi-time-wrapper:after {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: 27px;
+    color: #549FD8;
+    margin-right: -28px;
+}
+
+.mobi-date-wrapper:after{
+    content: "\f073";
+}
+.mobi-time-wrapper:after{
+    content: "\f017";
+}
+
+.ie10 .mobi-date-wrapper:after{
+    content: "";
+}
+.ie10 .mobi-time-wrapper:after{
+    content: "";
+}
+.mobi-date-popup-btn, .mobi-time-popup-btn{
+    background-image: none;
+    outline: none;
+}
+.ie10 .mobi-date-popup-btn {
+    background-image: url('btn-calendar.png');
+    width: 29px;
+    height: 29px;
+}
+.ie10 .mobi-time-popup-btn {
+    background-image: url('btn-time.png');
+    width: 28px;
+    height: 28px;
+}

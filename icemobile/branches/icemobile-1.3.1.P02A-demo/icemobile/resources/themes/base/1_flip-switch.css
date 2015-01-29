@@ -1,0 +1,45 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+.mobi-flipswitch {
+    display: inline-block;
+    text-decoration: none;
+    -webkit-background-clip: padding;
+    background-clip: padding-box;
+    outline: none;
+}
+.mobi-flipswitch.disabled{
+    opacity: 0.5;
+}
+/* active state */
+.mobi-flipswitch-on .mobi-flipswitch-txt-on, .mobi-flipswitch-off .mobi-flipswitch-txt-off {
+    color: inherit;
+    min-width:35px;
+    text-shadow: none;
+}
+/* inactive state */
+.mobi-flipswitch-off .mobi-flipswitch-txt-on, .mobi-flipswitch-on .mobi-flipswitch-txt-off {
+    color: transparent;
+    text-shadow: none;
+    margin: 1px;
+    width:28px;
+}
+.mobi-flipswitch-txt-on, .mobi-flipswitch-txt-off {
+    font-size: 15px;
+    display: inline-block;
+    text-align: center;
+    padding: 4px 5px;
+}

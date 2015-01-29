@@ -1,0 +1,74 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <h4><h:outputText value="Date Spinner Input"/></h4>
+        <mobi:fieldsetGroup>
+           <!-- date spinner -->
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Date: "/>
+                <h:panelGroup style="float:right;">
+                    <mobi:dateSpinner style="width:100px;"
+                                      useNative="true"
+                                     value="#{date.selectedDate}">
+                    </mobi:dateSpinner>
+                </h:panelGroup>
+            </mobi:fieldsetRow>
+            <!-- time spinner -->
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Time: "/>
+                <h:panelGroup style="float:right;">
+                    <mobi:timeSpinner style="width:100px;"
+                                      useNative="true"  timeZone="Mountain Standard Time"
+                                     value="#{date.time1}">
+                    </mobi:timeSpinner>
+                </h:panelGroup>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:commandButton id="submitBUtton" value="Submit" />
+            </mobi:fieldsetRow>
+
+        </mobi:fieldsetGroup>
+        <h:messages />
+
+    <h4><h:outputText value="Date Spinner Value Echo"/></h4>
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Date:"/>
+            <h:outputText
+                          value="#{date.selectedDate}">
+                <f:convertDateTime type="date" />
+            </h:outputText>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Time:"/>
+            <h:outputText
+                          value="#{date.time1}">
+                <f:convertDateTime type="time" pattern="hh:mm a" timeZone="Mountain Standard Time"/>
+            </h:outputText>
+        </mobi:fieldsetRow>
+
+    </mobi:fieldsetGroup>
+
+
+</ui:composition>
