@@ -1762,9 +1762,11 @@ ice.mobi.addStyleSheet = function (sheetId, parentSelector) {
 			}
             var valueParts = dir.split('|');
             var details = getNode('det');
+            console.log('processUpdateStr: valueParts.length' + valueParts.length);
 
             /* lookup elem by id and apply updates */
             for (var i = 0; i < valueParts.length; i++) {
+                console.log('valueParts[' + i + ']=' + valueParts[i] );
                 var v = valueParts[i].split('='),
                         elem = details.querySelector('[id$='+im.escapeJsfId(v[0])+']'),
                         dir = v[1],
