@@ -123,7 +123,7 @@ if (!document.getElementsByClassName) document.getElementsByClassName = function
     instanceMethods.getElementsByClassName = Prototype.BrowserFeatures.XPath ?
             function(element, className) {
                 className = className.toString().strip();
-                var cond = /\s/.test(className) ? $w(className).map(iter).join('') : iter(className);
+                var cond = /\s/.test(className) ? $w(className).mapWith(iter).join('') : iter(className);
                 return cond ? document._getElementsByXPath('.//*' + cond, element) : [];
             } : function(element, className) {
         className = className.toString().strip();

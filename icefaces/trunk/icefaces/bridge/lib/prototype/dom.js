@@ -6314,7 +6314,7 @@ Form.Methods = {
         form = $(form);
         var inputs = form.getElementsByTagName('input');
 
-        if (!typeName && !name) return $A(inputs).map(Element.extend);
+        if (!typeName && !name) return $A(inputs).mapWith(Element.extend);
 
         for (var i = 0, matchingInputs = [], length = inputs.length; i < length; i++) {
             var input = inputs[i];

@@ -281,7 +281,7 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
                 blockUI = function() {
                     blockUIOverlay.on();
                     var rollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([], function(result, type) {
-                        return result.concat($enumerate(container.getElementsByTagName(type)).collect(function(e) {
+                        return result.concat($enumerate(container.getElementsByTagName(type)).collectWith(function(e) {
                             if (e.hasCallbacksDisabled) {
                                 //return No-Op rollback function when the callbacks are already disabled
                                 return Function.NOOP;

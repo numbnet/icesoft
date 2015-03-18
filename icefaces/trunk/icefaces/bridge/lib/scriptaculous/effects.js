@@ -31,7 +31,7 @@ String.prototype.parseColor = function() {
 /*--------------------------------------------------------------------------*/
 
 Element.collectTextNodes = function(element) {
-    return $A($(element).childNodes).collect(
+    return $A($(element).childNodes).collectWith(
             function(node) {
                 return (node.nodeType == 3 ? node.nodeValue :
                         (node.hasChildNodes() ? Element.collectTextNodes(node) : ''));
@@ -39,7 +39,7 @@ Element.collectTextNodes = function(element) {
 };
 
 Element.collectTextNodesIgnoreClass = function(element, className) {
-    return $A($(element).childNodes).collect(
+    return $A($(element).childNodes).collectWith(
             function(node) {
                 return (node.nodeType == 3 ? node.nodeValue :
                         ((node.hasChildNodes() && !Element.hasClassName(node, className)) ?
@@ -509,10 +509,10 @@ Effect.Highlight = Class.create(Effect.Base, {
                 if (!this.options.restorecolor)
                     this.options.restorecolor = this.element.getStyle('background-color');
                 // init color calculations
-                this._base = $R(0, 2).map(function(i) {
+                this._base = $R(0, 2).mapWith(function(i) {
                     return parseInt(this.options.startcolor.slice(i * 2 + 1, i * 2 + 3), 16)
                 }.bind(this));
-                this._delta = $R(0, 2).map(function(i) {
+                this._delta = $R(0, 2).mapWith(function(i) {
                     return parseInt(this.options.endcolor.slice(i * 2 + 1, i * 2 + 3), 16) - this._base[i]
                 }.bind(this));
             },
@@ -980,12 +980,12 @@ Effect.Morph = Class.create(Effect.Base, {
                 function parseColor(color) {
                     if (!color || ['rgba(0, 0, 0, 0)','transparent'].include(color)) color = '#ffffff';
                     color = color.parseColor();
-                    return $R(0, 2).map(function(i) {
+                    return $R(0, 2).mapWith(function(i) {
                         return parseInt(color.slice(i * 2 + 1, i * 2 + 3), 16);
                     });
                 }
 
-                this.transforms = this.style.map(function(pair) {
+                this.transforms = this.style.mapWith(function(pair) {
                     var property = pair[0], value = pair[1], unit = null;
 
                     if (value.parseColor('#zzzzzz') != '#zzzzzz') {
@@ -1056,11 +1056,11 @@ Effect.Transform = Class.create({
             },
             play: function() {
                 return new Effect.Parallel(
-                        this.tracks.map(
+                        this.tracks.mapWith(
                                 function(track) {
                                     var ids = track.get('ids'), effect = track.get('effect'), options = track.get('options');
                                     var elements = [$(ids) || $$(ids)].flatten();
-                                    return elements.map(function(e) {
+                                    return elements.mapWith(function(e) {
                                         return new effect(e, Object.extend({ sync:true }, options))
                                     });
                                 }).flatten(),

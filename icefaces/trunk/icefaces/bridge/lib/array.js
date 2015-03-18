@@ -66,7 +66,7 @@ Object.extend(Array.prototype, {
     },
 
     copy: function() {
-        return this.collect(function(element) {
+        return this.collectWith(function(element) {
             return element;
         });
     },

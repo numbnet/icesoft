@@ -328,7 +328,7 @@ var Draggable = Class.create({
 
                     var pointer = [Event.pointerX(event), Event.pointerY(event)];
                     var pos = this.element.cumulativeOffset();
-                    this.offset = [0,1].map(function(i) {
+                    this.offset = [0,1].mapWith(function(i) {
                         return (pointer[i] - pos[i])
                     });
 
@@ -490,7 +490,7 @@ var Draggable = Class.create({
                     pos[1] -= this.options.scroll.scrollTop - this.originalScrollTop;
                 }
 
-                var p = [0,1].map(function(i) {
+                var p = [0,1].mapWith(function(i) {
                     return (point[i] - pos[i] - this.offset[i])
                 }.bind(this));
 
@@ -499,11 +499,11 @@ var Draggable = Class.create({
                         p = this.options.snap(p[0], p[1], this);
                     } else {
                         if (Object.isArray(this.options.snap)) {
-                            p = p.map(function(v, i) {
+                            p = p.mapWith(function(v, i) {
                                 return (v / this.options.snap[i]).round() * this.options.snap[i]
                             }.bind(this));
                         } else {
-                            p = p.map(function(v) {
+                            p = p.mapWith(function(v) {
                                 return (v / this.options.snap).round() * this.options.snap
                             }.bind(this));
                         }
@@ -926,7 +926,7 @@ var Sortable = {
         element = $(element);
         var options = Object.extend(this.options(element), arguments[1] || { });
 
-        return $(this.findElements(element, options) || []).map(function(item) {
+        return $(this.findElements(element, options) || []).mapWith(function(item) {
             return item.id.match(options.format) ? item.id.match(options.format)[1] : '';
         });
     },
@@ -958,13 +958,13 @@ var Sortable = {
                 (arguments[1] && arguments[1].name) ? arguments[1].name : element.id);
 
         if (options.tree) {
-            return Sortable.tree(element, arguments[1]).children.map(
+            return Sortable.tree(element, arguments[1]).children.mapWith(
                     function (item) {
                         return [name + Sortable._constructIndex(item) + "[id]=" +
-                                encodeURIComponent(item.id)].concat(item.children.map(arguments.callee));
+                                encodeURIComponent(item.id)].concat(item.children.mapWith(arguments.callee));
                     }).flatten().join('&');
         } else {
-            return Sortable.sequence(element, arguments[1]).map(
+            return Sortable.sequence(element, arguments[1]).mapWith(
                     function(item) {
                         return name + "[]=" + encodeURIComponent(item);
                     }).join('&');
