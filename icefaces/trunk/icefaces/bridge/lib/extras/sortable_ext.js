@@ -280,7 +280,7 @@ var Sortable = {
             format: sortableOptions.format || /^[^_]*_(.*)$/
         }, arguments[1] || {});
         //alert("Last Drag [" + sortableOptions.lastDrag + "]");
-        return "first;" + sortableOptions.lastDrag + ";changed;" + $(this.findElements(element, options) || []).map(function(item) {
+        return "first;" + sortableOptions.lastDrag + ";changed;" + $(this.findElements(element, options) || []).mapWith(function(item) {
             return item.id;
         }).join(";");
     }

@@ -18,7 +18,7 @@ Control.Slider = Class.create({
                 var slider = this;
 
                 if (Object.isArray(handle)) {
-                    this.handles = handle.collect(function(e) {
+                    this.handles = handle.collectWith(function(e) {
                         return $(e)
                     });
                 } else {
@@ -34,10 +34,10 @@ Control.Slider = Class.create({
                 this.range = this.options.range || $R(0, 1);
 
                 this.value = 0; // assure backwards compat
-                this.values = this.handles.map(function() {
+                this.values = this.handles.mapWith(function() {
                     return 0
                 });
-                this.spans = this.options.spans ? this.options.spans.map(function(s) {
+                this.spans = this.options.spans ? this.options.spans.mapWith(function(s) {
                     return $(s)
                 }) : false;
                 this.options.startSpan = $(this.options.startSpan || null);

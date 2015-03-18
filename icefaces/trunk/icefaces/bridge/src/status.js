@@ -138,7 +138,7 @@
                 var cursorRollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([ element ],
                     function(result, type) {
                         return result.concat($enumerate(element.getElementsByTagName(type)).toArray());
-                    }).collect(function(e) {
+                    }).collectWith(function(e) {
                         var c = e.style.cursor;
                         e.style.cursor = 'wait';
                         return function() {

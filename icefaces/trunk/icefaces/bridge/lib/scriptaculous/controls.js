@@ -832,7 +832,7 @@ Ajax.InPlaceCollectionEditor = Class.create(Ajax.InPlaceEditor, {
 
             buildOptionList: function() {
                 this._form.removeClassName(this.options.loadingClassName);
-                this._collection = this._collection.map(function(entry) {
+                this._collection = this._collection.mapWith(function(entry) {
                     return 2 === entry.length ? entry : [entry, entry].flatten();
                 });
                 var marker = ('value' in this.options) ? this.options.value : this._text;

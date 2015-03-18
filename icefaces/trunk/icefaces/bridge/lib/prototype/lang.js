@@ -1760,7 +1760,7 @@ Object.extend(String.prototype, (function() {
     function extractScripts() {
         var matchAll = new RegExp(Prototype.ScriptFragment, 'img'),
                 matchOne = new RegExp(Prototype.ScriptFragment, 'im');
-        return (this.match(matchAll) || []).map(function(scriptTag) {
+        return (this.match(matchAll) || []).mapWith(function(scriptTag) {
             return (scriptTag.match(matchOne) || ['', ''])[1];
         });
     }
@@ -1814,7 +1814,7 @@ Object.extend(String.prototype, (function() {
      *  an array containing the value returned by each script.
      **/
     function evalScripts() {
-        return this.extractScripts().map(function(script) {
+        return this.extractScripts().mapWith(function(script) {
             return eval(script)
         });
     }
@@ -2643,7 +2643,7 @@ var Enumerable = (function() {
         if (number < 1) return array;
         while ((index += number) < array.length)
             slices.push(array.slice(index, index + number));
-        return slices.collect(iterator, context);
+        return slices.collectWith(iterator, context);
     }
 
     /**
@@ -2968,7 +2968,7 @@ var Enumerable = (function() {
      **/
     function invoke(method) {
         var args = $A(arguments).slice(1);
-        return this.map(function(value) {
+        return this.mapWith(function(value) {
             return value[method].apply(value, args);
         });
     }
@@ -3157,7 +3157,7 @@ var Enumerable = (function() {
      *      // -> ['is', 'nice', 'this', 'world', 'hello']
      **/
     function sortBy(iterator, context) {
-        return this.map(
+        return this.mapWith(
                 function(value, index) {
                     return {
                         value: value,
@@ -3184,7 +3184,7 @@ var Enumerable = (function() {
      *      // -> [['name', 'Sunny'], ['age', 20]]
      **/
     function toArray() {
-        return this.map();
+        return this.mapWith();
     }
 
     /**
@@ -3224,8 +3224,8 @@ var Enumerable = (function() {
         if (Object.isFunction(args.last()))
             iterator = args.pop();
 
-        var collections = [this].concat(args).map($A);
-        return this.map(function(value, index) {
+        var collections = [this].concat(args).mapWith($A);
+        return this.mapWith(function(value, index) {
             return iterator(collections.pluck(index));
         });
     }
@@ -3287,8 +3287,8 @@ var Enumerable = (function() {
         every:      all,
         any:        any,
         some:       any,
-        collect:    collect,
-        map:        collect,
+        collectWith:collect,
+        mapWith:        collect,
         detect:     detect,
         findAll:    findAll,
         select:     findAll,
@@ -3717,7 +3717,7 @@ Array.from = $A;
      *      // -> "['Apples', [object Object], 3, 34]"
      **/
     function inspect() {
-        return '[' + this.map(Object.inspect).join(', ') + ']';
+        return '[' + this.mapWith(Object.inspect).join(', ') + ']';
     }
 
     /**
@@ -4177,9 +4177,9 @@ var Hashtable = Class.create(Enumerable, (function() {
      *  Returns the debug-oriented string representation of the Hash.
      **/
     function inspect() {
-        return '#<Hash:{' + this.map(
+        return '#<Hash:{' + this.mapWith(
                 function(pair) {
-                    return pair.map(Object.inspect).join(': ');
+                    return pair.mapWith(Object.inspect).join(': ');
                 }).join(', ') + '}>';
     }
 

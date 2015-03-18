@@ -209,7 +209,7 @@
             };
 
             function registeredSessions() {
-                return Cookie.lookup('ice.sessions').loadValue().split(' ').collect(function(s) {
+                return Cookie.lookup('ice.sessions').loadValue().split(' ').collectWith(function(s) {
                     return s.split('#')[0];
                 });
             }

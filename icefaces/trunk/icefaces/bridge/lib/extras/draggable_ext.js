@@ -124,11 +124,11 @@ Draggable.prototype.draw = function(point) {
             p = this.options.snap(p[0], p[1]);
         } else {
             if (this.options.snap instanceof Array) {
-                p = p.map(function(v, i) {
+                p = p.mapWith(function(v, i) {
                     return Math.round(v / this.options.snap[i]) * this.options.snap[i]
                 }.bind(this))
             } else {
-                p = p.map(function(v) {
+                p = p.mapWith(function(v) {
                     return Math.round(v / this.options.snap) * this.options.snap
                 }.bind(this))
             }

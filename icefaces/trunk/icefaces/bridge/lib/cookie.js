@@ -70,7 +70,7 @@
     });
 
     This.Cookie.all = function() {
-        return This.Cookie.parse().collect(function(tuple) {
+        return This.Cookie.parse().collectWith(function(tuple) {
             var name = tuple[0];
             var value = tuple[1];
             return new This.Cookie(name, value);
@@ -98,7 +98,7 @@
 
     //private
     This.Cookie.parse = function() {
-        return document.cookie.split('; ').collect(function(tupleDetails) {
+        return document.cookie.split('; ').collectWith(function(tupleDetails) {
             return tupleDetails.contains('=') ? tupleDetails.split('=') : [tupleDetails, ''];
         });
     };
