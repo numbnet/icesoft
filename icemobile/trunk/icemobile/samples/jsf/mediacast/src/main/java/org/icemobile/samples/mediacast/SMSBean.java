@@ -2,6 +2,7 @@ package org.icemobile.samples.mediacast;
 
 import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushRenderer;
+import org.icefaces.application.PushMessage;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -25,7 +26,8 @@ public class SMSBean implements Serializable {
     }
 
     public void push(ActionEvent event){
-        portableRenderer.render("mobi");
+        portableRenderer.render("mobi", new PushMessage("SMSBean Test Message", "This is a message from an SMSBean sent @ " + System.currentTimeMillis()));
+        System.out.println("SMSBean.push: sent PushMessage");
     }
 
 }
