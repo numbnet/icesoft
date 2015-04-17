@@ -65,7 +65,7 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
     static {
         rendererJavascript = new HashMap();
         rendererJavascript.put(HTML.ONKEYUP_ATTR,
-                DomBasicRenderer.ICESUBMIT);
+                "var form=formOf(this);" + DomBasicRenderer.ICESUBMIT);
         rendererJavascript.put(HTML.ONKEYPRESS_ATTR,
                 "var e = $event(event); if (e.isEnterKey()) e.cancelDefaultAction();");
         rendererJavascript.put(HTML.ONFOCUS_ATTR,
@@ -75,13 +75,13 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
         rendererJavascript.put(HTML.ONMOUSEDOWN_ATTR, "this.focus();");
         rendererJavascriptPartialSubmit = new HashMap();
         rendererJavascriptPartialSubmit.put(HTML.ONKEYUP_ATTR,
-                DomBasicRenderer.ICESUBMIT);
+                "var form=formOf(this);" + DomBasicRenderer.ICESUBMIT);
         rendererJavascriptPartialSubmit.put(HTML.ONKEYPRESS_ATTR,
                 "var e = $event(event); if (e.isEnterKey()) e.cancelDefaultAction();");
         rendererJavascriptPartialSubmit.put(HTML.ONFOCUS_ATTR,
                 "setFocus(this.id);");
         rendererJavascriptPartialSubmit.put(HTML.ONBLUR_ATTR,
-                "setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL);
+                "var form=formOf(this);setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL);
         rendererJavascriptPartialSubmit.put(HTML.ONMOUSEDOWN_ATTR, "this.focus();");
     }
 

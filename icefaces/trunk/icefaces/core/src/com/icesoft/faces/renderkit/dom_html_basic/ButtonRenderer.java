@@ -161,7 +161,7 @@ public class ButtonRenderer extends DomBasicRenderer {
      */
     protected void renderOnClick(UIComponent uiComponent, Element root) {
         String onclick = (String) uiComponent.getAttributes().get("onclick");
-        String submitCode = this.ICESUBMIT + "return false;";
+        String submitCode = "var form=formOf(this);" + this.ICESUBMIT + "return false;";
         root.setAttribute("onclick", combinedPassThru(onclick, submitCode));
     }
 

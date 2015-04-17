@@ -131,7 +131,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, input, null, new String[]{HTML.TABINDEX_ATTR, HTML.ONCLICK_ATTR});
         input.setAttribute("onkeypress", combinedPassThru((String) uiSelectOne.getAttributes().get("onkeypress"),
-                "Ice.util.radioCheckboxEnter(form,this,event);"));
+                "var form=formOf(this);Ice.util.radioCheckboxEnter(form,this,event);"));
         Element label = domContext.createElement("label");
         td.appendChild(label);
         label.setAttribute("for", inputID);
@@ -235,7 +235,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
                 input,
                 new String[]{"disabled"});
         input.setAttribute("onkeypress", combinedPassThru((String) selectOne.getAttributes().get("onkeypress"),
-                "Ice.util.radioCheckboxEnter(form,this,event);"));
+                "var form=formOf(this);Ice.util.radioCheckboxEnter(form,this,event);"));
         rootNode.appendChild(input);
         rootNode.appendChild(label);
 

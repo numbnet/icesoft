@@ -105,14 +105,14 @@ public class SecretRenderer
 
         HtmlInputSecret secret = (HtmlInputSecret) uiComponent;
         //Add the enter key behavior by default
-        root.setAttribute("onkeyup", combinedPassThru(secret.getOnkeyup(), this.ICESUBMIT));
+        root.setAttribute("onkeyup", combinedPassThru(secret.getOnkeyup(), "var form=formOf(this);" + this.ICESUBMIT));
         // set the focus id
         root.setAttribute("onfocus", combinedPassThru(secret.getOnfocus(), "setFocus(this.id);"));
         // clear focus id
         String applicationOnblur = secret.getOnblur();
         String rendererOnblur = null;
         if (((IceExtended) uiComponent).getPartialSubmit()) {
-            rendererOnblur = "setFocus('');iceSubmitPartial(form,this,event); return false;";
+            rendererOnblur = "var form=formOf(this);setFocus('');iceSubmitPartial(form,this,event); return false;";
         } else {
             rendererOnblur = "setFocus('');";
         }

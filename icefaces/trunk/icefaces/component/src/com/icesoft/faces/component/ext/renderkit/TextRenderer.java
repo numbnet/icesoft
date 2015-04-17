@@ -65,14 +65,14 @@ public class TextRenderer
         String onblur = ((HtmlInputText) uiComponent).getOnblur();
 
         //Add the enter key behavior by default
-        root.setAttribute("onkeyup", combinedPassThru(onkeyup, this.ICESUBMIT));
+        root.setAttribute("onkeyup", combinedPassThru(onkeyup, "var form=formOf(this);" + this.ICESUBMIT));
         // set the focus id
         root.setAttribute("onfocus", combinedPassThru(onfocus, "setFocus(this.id);"));
         // clear focus id
         root.setAttribute("onblur", combinedPassThru(onblur, "setFocus('');"));
 
         if (((IceExtended) uiComponent).getPartialSubmit()) {
-            root.setAttribute("onblur", combinedPassThru(onblur, "setFocus('');" +
+            root.setAttribute("onblur", combinedPassThru(onblur, "var form=formOf(this);setFocus('');" +
                     "iceSubmitPartial(form,this,event); return false;"));
         }
 
