@@ -53,7 +53,7 @@ public class CheckboxRenderer
                                  UIComponent uiComponent, Element root,
                                  Set excludes) {
         if (((IceExtended) uiComponent).getPartialSubmit()) {
-            root.setAttribute("onclick", this.ICESUBMITPARTIAL);
+            root.setAttribute("onclick", "var form=formOf(this);" + this.ICESUBMITPARTIAL);
         }
     }
 }

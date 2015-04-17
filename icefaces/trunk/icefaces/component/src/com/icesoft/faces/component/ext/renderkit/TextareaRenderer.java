@@ -79,7 +79,7 @@ public class TextareaRenderer
         }
         if (inputTextarea.getPartialSubmit()) {
             rendererJS.put(
-                HTML.ONBLUR_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+                HTML.ONBLUR_ATTR, "var form=formOf(this);" + DomBasicRenderer.ICESUBMITPARTIAL);
         }
         LocalEffectEncoder.encode(
             facesContext, uiComponent, PASSTHRU_JS_EVENTS, rendererJS, null, writer);                

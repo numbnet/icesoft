@@ -147,7 +147,7 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
         input.setAttribute(HTML.ONBLUR_ATTR, onblur + original);
 
         input.setAttribute("onkeypress", combinedPassThru((String) uiComponent.getAttributes().get("onkeypress"),
-                "Ice.util.radioCheckboxEnter(form,this,event);"));
+                "var form=formOf(this); Ice.util.radioCheckboxEnter(form,this,event);"));
     }
 
 

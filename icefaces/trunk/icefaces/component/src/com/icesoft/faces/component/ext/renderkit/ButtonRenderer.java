@@ -46,9 +46,9 @@ public class ButtonRenderer
         String onclick = (String) uiComponent.getAttributes().get("onclick");
         String submitCode;
         if (button.getPartialSubmit()) {
-            submitCode = this.ICESUBMITPARTIAL + "return false;";
+            submitCode = "var form=formOf(this);" + this.ICESUBMITPARTIAL + "return false;";
         } else {
-            submitCode = this.ICESUBMIT + "return false;";
+            submitCode = "var form=formOf(this);" + this.ICESUBMIT + "return false;";
         }
         
         if (null != uiComponent.getAttributes().get("panelConfirmation")) {
