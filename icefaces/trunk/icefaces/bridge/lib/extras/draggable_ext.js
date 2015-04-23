@@ -55,11 +55,6 @@ Draggable.prototype.initialize = function(element) {
     };
     if (!ops.endeffect) ops.endeffect = function() {
     };
-    if (ops.handle) {
-        ops.handle = $(ops.handle);
-        //Might not have the element the first time. When rebuilding we could have a ref to a non existing element
-        ops.handle = $(ops.handle.id);
-    }
     this.ORIGINAL_initialize(this.element, ops);
     if (!ops.sort) {
         Ice.DnD.logger.debug("Draggable Created ID[" + this.element.id + "]");
