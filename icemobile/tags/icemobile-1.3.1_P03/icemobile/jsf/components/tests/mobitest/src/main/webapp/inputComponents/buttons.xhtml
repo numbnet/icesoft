@@ -1,0 +1,138 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">commandButton Tests</title>
+    <mobi:deviceResource
+            name="#{themeSwitcher.theme}" />
+</h:head>
+
+<h:body>
+    <h3>MOBI Command Button Tests without mobi ajax tag</h3>
+
+    <h:form id="inputForm">
+    
+       <h5>mobi input type is text</h5>
+       <mobi:fieldsetGroup>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="input1" value="input1 no singleSubmit"/>
+               <mobi:inputText id="input1" value="#{button.someText}" type="text"  title="validation stuff in title"/>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+               <h:outputLabel for="input2" value="input2 with singleSubmit"/>
+               <mobi:inputText id="input2" value="#{button.someText2}" type="text"
+                   singleSubmit="true"  title="you should have known better"/>
+           </mobi:fieldsetRow>
+          <mobi:fieldsetRow>
+              <h:outputLabel for="output1" value="submitted value for input1"/>
+              <h:outputText id="output1" value="#{button.someText}"/>
+          </mobi:fieldsetRow>
+          <mobi:fieldsetRow>
+              <h:outputLabel for="output2" value="submitted value for input2"/>
+              <h:outputText id="output2" value="#{button.someText2}"/>
+          </mobi:fieldsetRow>
+          <mobi:fieldsetRow>
+              <h:outputLabel for="param1R" value="param1 Value returned"/>
+              <h:outputText id="param1R" value="#{button.param1Returned}"/>
+          </mobi:fieldsetRow>
+          <mobi:fieldsetRow>
+              <h:outputLabel for="param2R" value="param2 Value returned"/>
+              <h:outputText id="param2R" value="#{button.param2Returned}"/>
+          </mobi:fieldsetRow>
+          <mobi:fieldsetRow>
+              <h:outputLabel for="button1" value="Button With params"/>
+              <mobi:commandButton id="button1" buttonType="#{button.buttonType}"
+                      type="#{button.type}"
+                      disabled="#{button.disabled}"
+                      value="#{button.value}"
+                      singleSubmit="#{button.singleSubmit}"
+                      actionListener="#{button.method}"
+                      styleClass="#{button.styleClass}"
+                      style="#{button.style}">
+                   <f:param name="param1" value="#{button.param1}"/>
+                   <f:param name="param2" value="#{button.param2}"/>
+              </mobi:commandButton>
+         </mobi:fieldsetRow>
+      </mobi:fieldsetGroup>
+    </h:form>
+    <h:form id="sel">
+        <h3>Dynamic modify attributes</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="selectOr" value="buttonType:-"/>
+                <h:selectOneMenu id="selectOr"  value="#{button.buttonType}">
+                    <f:selectItem itemValue="important" itemLabel="important"/>
+                    <f:selectItem itemValue="default" itemLabel="default" />
+                    <f:selectItem itemValue="unimportant" itemLabel="unimportant"/>
+                    <f:selectItem itemValue="attention" itemLabel="attention" />
+                    <f:selectItem itemValue="back" itemLabel="back" />
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+              <h5>for now leaving type submit until mobi ajax disabled true can be relied upon</h5>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="selectOr2" value="type:-"/>
+                <h:selectOneMenu id="selectOr2"  value="#{button.type}">
+                    <f:selectItem itemValue="button" itemLabel="button"/>
+                    <f:selectItem itemValue="submit" itemLabel="submit" />
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:" />
+                <mobi:flipswitch id="disabled" value="#{button.disabled}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                <h:outputLabel for="styleClass" value="StyleClass:" />
+                <mobi:inputText id="styleClass" value="#{button.styleClass}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="style" value="Style:" />
+                <mobi:inputText id="style" value="#{button.style}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="param1" value="set param1:" />
+                <mobi:inputText id="param1" value="#{button.param1}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="param2" value="set param2:" />
+                <mobi:inputText id="param2" value="#{button.param2}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
+    <h3>RESULTS</h3>
+    <h:outputText id="out1" value="#{input.someText}">
+            <h:outputLabel for="out1" value="A. text SS False:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="bOut" value="#{input.someText2}">
+       <h:outputLabel for="bOut" value="B. text singleSubmitTrue:-"/>
+    </h:outputText>
+
+    <br />
+	<li><a href="../inputComponents.html">index page</a>
+	</li>
+
+</h:body>
+</html>
