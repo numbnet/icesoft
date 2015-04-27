@@ -1,0 +1,60 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<project name="icemobile-maven" default="install"
+         xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+    <property file="../build.properties"/>
+    <property file="./build.properties"/>
+    <property name="lib.dir" location="../lib"/>
+	<property name="maven.ant.version" value="2.0.10"/>
+	<property name="maven.ant.jar" value="maven-ant-tasks-${maven.ant.version}.jar"/>
+	<available property="maven.ant.task.available" file="${lib.dir}/${maven.ant.jar}"/>
+	
+
+
+    <path id="maven-ant-tasks.classpath"
+          path="${lib.dir}/${maven.ant.jar}"/>
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+             uri="antlib:org.apache.maven.artifact.ant"
+             classpathref="maven-ant-tasks.classpath"/>
+
+
+    <target name="install" depends="get-maven">
+        <artifact:localRepository id="local.repository"
+                                  path="${local.repository}" layout="default"/>
+
+        <artifact:pom id="mobiPom" file="icefaces-mobi.pom">
+            <localRepository refid="local.repository"/>
+        </artifact:pom>
+        <echo>installing ${icefaces-mobi.lib.name}.jar to local
+            repository
+        </echo>
+        <artifact:install file="${lib.dir}/${icefaces-mobi.lib.name}.jar">
+            <localRepository refid="local.repository"/>
+            <pom refid="mobiPom"/>
+        </artifact:install>
+
+        
+    </target>
+
+    <target name="get-maven" unless="maven.ant.task.available">
+        <echo message="lib.dir is ${lib.dir}"/>
+        <get src="http://repo1.maven.org/maven2/org/apache/maven/maven-ant-tasks/${maven.ant.version}/${maven.ant.jar}"
+             dest="${lib.dir}/${maven.ant.jar}"/>
+    </target>
+</project>
+

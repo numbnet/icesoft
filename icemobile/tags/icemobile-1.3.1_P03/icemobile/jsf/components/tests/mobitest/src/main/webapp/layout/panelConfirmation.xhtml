@@ -1,0 +1,108 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">panelConfirmation Tests</title>
+    <mobi:deviceResource   includeIOSSmartAppBanner="false"
+          name="#{themeSwitcher.theme}"/>
+
+</h:head>
+
+<h:body>
+ 
+    <h3>panelConfirmation with commandButton</h3>
+  <fieldset title="form1">
+      <h:form id="inputForm">
+    
+          <h5>commandButton to submit form</h5>
+          <p>
+          <h:outputText value="A. mobi comp singleSubmit is false "/>
+          <mobi:inputText id="textSSFalse" value="#{input.someText}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+          </p>
+              <h:outputText value="#{input.eventString}"/>
+          <h5>SingleSubmit will not be
+              available with panelConfirmation</h5>
+          <mobi:commandButton id="defaultOne" value="StandardSubmit"
+                           panelConfirmation="pc1"
+                           actionListener="#{input.defaultEvent}"/>
+          <mobi:panelConfirmation id="pc1" message="working Button1"/>
+          <br />
+       </h:form>
+ </fieldset>
+ <fieldset title="form2">
+     <h:form id="inputform2">
+        <h4>this button is standard submit with no mobi ajax tag. </h4>
+        <p>
+            <h:outputText value="A. mobi comp singleSubmit is false "/>
+            <mobi:inputText id="inp3" value="#{input.someText2}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+        </p>
+
+        <h4>this button is standard submit with no mobi ajax tag and incorrect reference to panelConfirmation </h4>
+        <h5>Should just do standard submit if panelConfirmation not found</h5>
+        <mobi:commandButton id="defaultTwo" value="Incorrect"
+                           panelConfirmation="pc2"
+                           actionListener="#{input.defaultEvent}"/>
+        <br />
+
+     </h:form>
+ </fieldset>
+ <fieldset title="form3">
+     <h:form id="inputform3">
+         <h4>two buttons with same conf panel </h4>
+         <p>
+            <h:outputText value="A. mobi comp singleSubmit is false "/>
+            <mobi:inputText id="inp4" value="#{input.name}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+         </p>
+
+         <h4>Button 1 is standard submit with no mobi ajax tag and refers to same panelConfirmation as
+             Buttton 2 which has mobi ajax tag</h4>
+         <mobi:commandButton id="def3" value="Button1"
+                           panelConfirmation="pc1a"
+                           actionListener="#{input.defaultEvent}"/>
+         <mobi:commandButton id="def4" value="Button2"
+                           panelConfirmation="pc1a"
+                           actionListener="#{input.defaultEvent}">
+               <mobi:ajax default="@form" render="@all"/>
+         </mobi:commandButton>
+         <mobi:panelConfirmation id="pc1a" message="working"/>
+     </h:form>
+ </fieldset>
+
+     <h3>RESULTS</h3>
+     <h5>first test result</h5>
+     <h:outputText id="out1" value="#{input.someText}">
+            <h:outputLabel for="out1" value="A. simple:-"/>
+     </h:outputText> <br />
+     <h5>second test result</h5>
+     <h:outputText id="out2" value="#{input.someText2}">
+            <h:outputLabel for="out2" value="B. invalid panelConf:-"/>
+     </h:outputText>  <br />
+     <h5>third test result from input</h5>
+     <h:outputText id="out3" value="#{input.name}">
+            <h:outputLabel for="out3" value="C. mobi ajax:-"/>
+     </h:outputText>
+     <br/>
+
+	 <li><a href="../layoutComponents.html">index page</a>
+	 </li>
+</h:body>
+</html>

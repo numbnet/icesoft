@@ -1,0 +1,149 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+   <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
+
+</h:head>
+
+<h:body>
+ 
+    <h3>html5 input types should bring up proper device keyboard</h3>
+
+    <h:form id="inputForm">
+    
+       <h5>mobi input type is text</h5>
+       <p>
+        <h:outputText value="A. mobi comp singleSubmit is false "/>
+        <mobi:inputText id="textSSFalse" value="#{input.someText}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+       </p>
+       <p>
+        <h:outputText value="B. mobi comp singleSubmit is true "/>
+        <mobi:inputText id="textSStrueId" value="#{input.someText2}" type="text" 
+                   singleSubmit="true" placeholder="#{input.placeholder}" title="basic text input"/>      
+       </p>
+       <p>
+       <h5>mobi input type is textfield</h5>
+         <h:outputText value="C. inputTextfield"/>
+         <mobi:inputText id="textareaId" value="#{input.textField}" type="textarea" 
+                   placeholder="#{input.placeholder}"
+                         rows="3" cols="40" title="inputText field"/>
+                         
+       </p>
+       <h5>mobi input type is password</h5>
+         <h:outputText value="D. password"/>
+         <mobi:inputText id="passwordId" value="#{input.password}" type="password" placeholder="enter password" title="password"/>
+       <p>
+       <p>
+       <h5>mobi input type is email</h5>
+         <h:outputText value="E. email"/>
+         <mobi:inputText id="emailId" value="#{input.email}" type="email" placeholder="#{input.placeholder}"
+                         title="email field"/>
+                         
+       </p>
+      <p>
+       <h5>mobi input type is number no converter</h5>
+         <h:outputText value="F. number"/>
+         <mobi:inputText id="numberId" value="#{input.numberInput}" type="number" placeholder="9999"
+                       singleSubmit="true"  min="0" max="100" step="5" title="number field"/>
+                         
+       </p>
+       <p>
+       <h5>mobi input type is number with converter</h5>
+         <h:outputText value="F2. number"/>
+         <mobi:inputText id="numberIdConv" value="#{input.numberInput2}" type="number" placeholder="9999"
+                       singleSubmit="true"  min="0" max="100" step="5" title="number field">
+                       <f:convertNumber type="number"/>
+         </mobi:inputText>
+                         
+       </p>
+      <p>
+       <h5>mobi input type is phone</h5>
+         <h:outputText value="G. phone"/>
+         <mobi:inputText id="phoneId" value="#{input.phone}" type="phone" 
+             singleSubmit="true" placeholder="504-555-2323"
+                          title="phone field"/>
+                         
+       </p> 
+     <p>
+       <h5>mobi input type is Url</h5>
+         <h:outputText value="H. url"/>
+         <mobi:inputText id="urlId" value="#{input.url}" type="url"
+                placeholder="http://www.icesoft.com"
+                singleSubmit="true"
+                 title="url field"/>
+                         
+       </p>         
+          <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
+          <h:outputText value="#{input.eventString}"/>
+          
+       </p>
+       <mobi:commandButton id="defaultOne" value="defaultSStrue" singleSubmit="true" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton  id="defaultTwo" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton id="importantOne" buttonType="important" value="importantSStrue" singleSubmit="true"
+                 actionListener="#{input.importantEvent}"/>
+       <mobi:commandButton id="importantTwo" buttonType="important" value="importantSSFalse"
+                 actionListener="#{input.importantEvent}"/>
+    </h:form>
+    <h3>RESULTS</h3>
+    <h:outputText id="out1" value="#{input.someText}">
+            <h:outputLabel for="out1" value="A. text SS False:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="bOut" value="#{input.someText2}">
+       <h:outputLabel for="bOut" value="B. text singleSubmitTrue:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="cOut" value="#{input.textField}">
+         <h:outputLabel for="cOut" value="C. textarea :-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="dOut" value="#{input.password}">
+          <h:outputLabel for="dOut" value="D. password :-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="emailOut" value="#{input.email}">
+          <h:outputLabel for="emailOut" value="E. email :-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="fOut" value="#{input.numberInput}">
+          <h:outputLabel for="fOut" value="F. number singleSubmit true:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="f2Out" value="#{input.numberInput2}">
+          <h:outputLabel for="f2Out" value="F2. number with converter and singleSubmie :-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="gOut" value="#{input.phone}">
+          <h:outputLabel for="gOut" value="G. phone:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="hOut" value="#{input.url}">
+          <h:outputLabel for="hOut" value="H. url:- " />
+    </h:outputText>
+    <br />
+	<li><a href="../inputComponents.html">index page</a>
+	</li>
+
+</h:body>
+</html>

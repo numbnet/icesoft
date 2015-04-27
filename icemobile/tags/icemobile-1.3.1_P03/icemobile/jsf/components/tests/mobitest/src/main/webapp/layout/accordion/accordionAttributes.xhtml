@@ -1,0 +1,166 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>Accordion dynamic attributes test</title>
+    <mobi:deviceResource includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}"  />
+</h:head>
+
+<h:body>
+
+   <h:form id="selectForm">
+       <h:panelGroup id="selectorGroup">
+         <h:outputText  value="select the pane to open:-"/>
+         <h:selectOneMenu id="selectPane"  value="#{layoutBean.selectedPane}">
+             <f:selectItem itemValue="panel1" itemLabel="Open First panel"/>
+             <f:selectItem itemValue="panel2" itemLabel="Open 2nd panel" />
+             <f:selectItem itemValue="panel3" itemLabel="Open 3rd panel" />
+             <f:selectItem itemValue="panel4" itemLabel="Open 4th panel" />
+             <f:ajax execute="@this" render="@all"/>
+         </h:selectOneMenu>
+       </h:panelGroup>
+      </h:form>
+      <h1> test page for accordion pane1 client, pane3 facelet true</h1>
+    <p>autoHeight is true</p>
+      <br />
+     <h:form id="contentForm">
+       <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}"
+                       height="#{layoutBean.fixedHeightString}"
+                       paneChangeListener="#{layoutBean.paneChange}"
+                       disabled="#{layoutBean.disabled}"
+                       autoHeight="#{layoutBean.autoHeight}">
+              <mobi:contentPane id="panel1" title="panel1">
+                  <div id="inner1">
+                      <fieldset title="panel1">
+                      <legend>Panel1</legend>
+                      <h3> header for panel 1</h3>
+                       <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                           <img width="85" height="150"
+                          src="../../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                      <p>
+                          some more stuff to make sure that the heights
+                          of contentPanes are not equal
+                      </p>
+                  </fieldset>
+                  </div>
+              </mobi:contentPane>
+               <mobi:contentPane id="panel2" title="panel2" style="background-color:#00ADFF">
+                <div id="inner2">
+                 <fieldset title="panel2">
+                   <legend>Panel2</legend>
+                  <h3> header for panel 2</h3>
+                  <p> content for panel 2 - ace of diamonds   </p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../../images/queen.jpg"
+                            alt="queen of clubs" />
+                         <figcaption>Queen of Clubs</figcaption>
+                        </figure>
+                      <br />
+                     Change panes with this button
+                   <br />
+                     <mobi:commandButton id="but2"  singleSubmit="true"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                      </mobi:commandButton>
+                     <br />
+                  </fieldset>
+                 </div>
+              </mobi:contentPane>
+             <mobi:contentPane id="panel3" title="panel3" facelet="true">
+                 <div id="inner3">
+                 <fieldset title="panel3">
+                      <legend>Panel3</legend>
+                  <h3> header for panel 3</h3>
+                  <p> content for panel 3 - some other card..</p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../../images/Joker.jpg"
+                            alt="joker" />
+                         <figcaption>joker</figcaption>
+                        </figure>
+                  </fieldset>
+                 </div>
+              </mobi:contentPane>
+              <mobi:contentPane id="panel4" title="panel4" >
+                <div id="inner4">
+                 <fieldset title="panel2">
+                   <legend>Panel2</legend>
+                  <h3> header for panel 2</h3>
+                  <p> content for panel 2 - ace of diamonds   </p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../../images/DSC_1.jpg"
+                            alt="ottawa" />
+                         <figcaption>Ottawa</figcaption>
+                        </figure>
+                      <br />
+                     Change panes with this button
+                   <br />
+                     <mobi:commandButton id="but4"  singleSubmit="true"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                      </mobi:commandButton>
+                     <br />
+                  </fieldset>
+                 </div>
+              </mobi:contentPane>
+       </mobi:accordion>
+      </h:form>
+      <h:form id="outputfrm">
+       <div id="output" style="display:block;">
+          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
+       </div>
+      <div>
+         <h3>Accordion Settings</h3>
+
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="autoHeight" value="Auto Height:" />
+                <mobi:flipswitch id="autoHeight" value="#{layoutBean.autoHeight}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:" />
+                <mobi:flipswitch id="disabled" value="#{layoutBean.disabled}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="fixedHeight" value="Fixed Height:" style="width:50px"/>
+                <mobi:inputText id="fixedHeight" value="#{layoutBean.fixedHeightString}"
+                    singleSubmit="true" placeholder="Fixed height, eg '10em'"
+                    style="font-size:12px"/>
+                <mobi:commandButton value="Clear" actionListener="#{layoutBean.clearFixedHeight}"
+                                    singleSubmit="true"
+                    style="max-width:50px;min-width:50px;"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+      </div>
+     </h:form>
+    <footer>
+
+        <a href="../../layoutComponents.html">index page</a>
+    </footer>
+
+</h:body>
+</html>
