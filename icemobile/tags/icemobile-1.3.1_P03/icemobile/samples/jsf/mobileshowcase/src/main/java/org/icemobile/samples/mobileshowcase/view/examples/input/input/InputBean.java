@@ -70,7 +70,7 @@ public class InputBean extends ExampleImpl<InputBean> implements
     private String textArea;
     private String urlInput;
     private Double numberInput;
-    private Double numberStep = 1.0d;
+    private Float numberStep = 1.0f;
     private String dateInput;
 
 
@@ -150,11 +150,11 @@ public class InputBean extends ExampleImpl<InputBean> implements
         }
     }
 
-    public Double getNumberStep() {
+    public Float getNumberStep() {
         return numberStep;
     }
 
-    public void setNumberStep(Double numberStep) {
+    public void setNumberStep(Float numberStep) {
         this.numberStep = numberStep;
     }
 }
