@@ -44,13 +44,14 @@
             </mobi:fieldsetRow>
             
             <!-- Number step -->
-            <mobi:fieldsetRow>
+    <!--        <mobi:fieldsetRow>
                 <mobi:inputText id="numberStep" label="Number Step:" 
                                 singleSubmit="false"
                                 placeholder="Number step"
                                 value="#{inputBean.numberStep}">
+                    <f:convertNumber maxFractionDigits="1"/>
                 </mobi:inputText>
-            </mobi:fieldsetRow>
+            </mobi:fieldsetRow>  -->
 
             <!-- Number input -->
             <mobi:fieldsetRow>
@@ -58,7 +59,7 @@
                                 type="number"
                                 singleSubmit="false"
                                 placeholder="Number input"
-                                step="#{inputBean.numberStep}"
+                                step="1"
                                 value="#{inputBean.numberInput}">
                 </mobi:inputText>
             </mobi:fieldsetRow>
