@@ -20,6 +20,8 @@ import static org.icefaces.mobi.utils.HTML.DISABLED_ATTR;
 import static org.icefaces.mobi.utils.HTML.ID_ATTR;
 import static org.icefaces.mobi.utils.HTML.ONCLICK_ATTR;
 import static org.icefaces.mobi.utils.HTML.SPAN_ELEM;
+import static org.icefaces.mobi.utils.HTML.SCRIPT_ELEM;
+import static org.icefaces.mobi.utils.HTML.TYPE_ATTR;
 
 import java.io.IOException;
 
@@ -44,9 +46,6 @@ public class RegisterCloudPushRenderer extends Renderer{
         
         RegisterCloudPush registerCloudPush = (RegisterCloudPush) uiComponent;
         ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        if( client.isBridgeItRegistered() ){
-            return;
-        }
         boolean supported = client.isBridgeItSupportedPlatform(BridgeItCommand.REGISTER);
         if( !supported && registerCloudPush.isHideWhenUnsupported()){
             return;
@@ -69,6 +68,10 @@ public class RegisterCloudPushRenderer extends Renderer{
         writer.startElement(SPAN_ELEM, registerCloudPush);
         writer.writeText(registerCloudPush.getButtonLabel(), null);
         writer.endElement(SPAN_ELEM);
+		writer.startElement(SCRIPT_ELEM, registerCloudPush);
+		writer.writeAttribute(TYPE_ATTR, "text/javascript", TYPE_ATTR);
+		writer.writeText("if (bridgeit.isRegistered()) document.getElementById('"+clientId+"').style.display = 'none';", null);
+		writer.endElement(SCRIPT_ELEM);
         writer.endElement(BUTTON_ELEM);
         
     }
