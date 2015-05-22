@@ -57,7 +57,7 @@ public class RegisterCloudPushRenderer extends Renderer{
         RenderUtils.writeStyleClassAndBase(uiComponent, writer, CSSUtils.STYLECLASS_BUTTON);
         if( supported ){
             writer.writeAttribute(ONCLICK_ATTR, 
-                    String.format("bridgeit.register('%s', '', {postURL:'%s', cookies:{'JSESSIONID':'%s'}});", 
+                    String.format("bridgeit.register('%s', '"+clientId+"_hide', {postURL:'%s', cookies:{'JSESSIONID':'%s'}});", 
                             clientId, AuxUploadSetup.getInstance().getUploadURL(), MobiJSFUtils.getSessionIdCookie(facesContext)), null);
             RenderUtils.writeDisabled(uiComponent, writer);
         }
@@ -70,7 +70,8 @@ public class RegisterCloudPushRenderer extends Renderer{
         writer.endElement(SPAN_ELEM);
 		writer.startElement(SCRIPT_ELEM, registerCloudPush);
 		writer.writeAttribute(TYPE_ATTR, "text/javascript", TYPE_ATTR);
-		writer.writeText("if (bridgeit.isRegistered()) document.getElementById('"+clientId+"').style.display = 'none';", null);
+		writer.writeText("window['"+clientId+"_hide'] = function() {if (bridgeit.isRegistered()) document.getElementById('"+clientId+"').style.display = 'none';};", null);
+		writer.writeText("window['"+clientId+"_hide']();", null);
 		writer.endElement(SCRIPT_ELEM);
         writer.endElement(BUTTON_ELEM);
         
