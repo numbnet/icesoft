@@ -144,7 +144,10 @@ var Draggables = {
 
             Event.observe(document, "mouseup", this.eventMouseUp);
             Event.observe(document, "mousemove", this.eventMouseMove);
-            Event.observe(document, "keypress", this.eventKeypress);
+            if (Prototype.Browser.WebKit)
+                Event.observe(document, "keyup", this.eventKeypress);
+            else
+                Event.observe(document, "keypress", this.eventKeypress);
         }
         this.drags.push(draggable);
     },
@@ -462,7 +465,10 @@ var Draggable = Class.create({
 
             keyPress: function(event) {
                 if (event.keyCode != Event.KEY_ESC) return;
+                var originalRevert = this.options.revert;
+                this.options.revert = true;
                 this.finishDrag(event, false);
+                this.options.revert = originalRevert;
                 Event.stop(event);
             },
 
