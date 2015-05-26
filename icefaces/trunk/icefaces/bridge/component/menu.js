@@ -112,9 +112,11 @@ Ice.Menu = {
                 }
                 if (submenuDiv.viewportOffset().top + submOH < viewport.getHeight()) {
                     if (Prototype.Browser.IE)
-                        Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
+                        Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
+                            offsetTop: (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop)});
                     else
-                        submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
+                        submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false, 
+                            offsetTop: (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop)});
                 } else {
                     if (Prototype.Browser.IE)
                         Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
