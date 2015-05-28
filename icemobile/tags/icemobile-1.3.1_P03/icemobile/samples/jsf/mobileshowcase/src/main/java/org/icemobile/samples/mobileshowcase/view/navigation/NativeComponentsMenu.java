@@ -29,7 +29,6 @@ import org.icemobile.samples.mobileshowcase.view.examples.device.microphone.Micr
 import org.icemobile.samples.mobileshowcase.view.examples.device.open.OpenBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.notification.NotificationBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.qrcode.QrCodeBean;
-import org.icemobile.samples.mobileshowcase.view.examples.device.reality.RealityBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 
 /**
@@ -38,9 +37,6 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 @org.icemobile.samples.mobileshowcase.view.metadata.annotation.Menu(
         title = "menu.native.title",
         menuLinks = {
-                @MenuLink(title = "menu.native.reality.title",
-                        exampleBeanName = RealityBean.BEAN_NAME,
-                        examplePanelId = "reality"),
                 @MenuLink(title = "menu.native.camcorder.title",
                         exampleBeanName = CamcorderBean.BEAN_NAME,
                         examplePanelId = "camcorder"),
