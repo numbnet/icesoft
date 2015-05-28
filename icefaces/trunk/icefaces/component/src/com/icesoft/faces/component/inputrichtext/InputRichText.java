@@ -92,9 +92,7 @@ public class InputRichText extends UIInput {
         //the following static variables are used, so the library can be load 
         //for each separate views 
         exist = Boolean.TRUE;
-        JavascriptContext.includeLib(STATIC_BASE + "editor/ckeditor.js",
-                                     FacesContext.getCurrentInstance());
-        JavascriptContext.includeLib(STATIC_BASE + "editor/ckeditor_ext.js",
+        JavascriptContext.includeLib(STATIC_BASE + "loadeditor.js",
                                      FacesContext.getCurrentInstance());
     }
 
