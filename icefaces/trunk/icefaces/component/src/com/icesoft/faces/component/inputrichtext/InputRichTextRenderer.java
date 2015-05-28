@@ -69,19 +69,20 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             }
             root.appendChild(textarea);
 
+			String appContext = facesContext.getExternalContext().getRequestContextPath();
             Element scrptWrpr = domContext.createElement(HTML.SPAN_ELEM);
             scrptWrpr.setAttribute(HTML.ID_ATTR, clientId+ "scrpt");
             root.getParentNode().appendChild(scrptWrpr);
             Element scrpt = domContext.createElement(HTML.SCRIPT_ELEM);
             scrpt.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             String customConfig =  (inputRichText.getCustomConfigPath() == null)? "": inputRichText.getCustomConfigPath();
-            scrpt.appendChild(domContext.createTextNodeUnescaped("renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"'," +
+            scrpt.appendChild(domContext.createTextNodeUnescaped("inputrichtext.init(function(){ renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"'," +
             		"'"+ inputRichText.getLanguage()+"'," +
             		"'"+ inputRichText.getSkin().toLowerCase()+"'," +
             		"'"+ inputRichText.getHeight() + "'," +
             		"'"+ inputRichText.getWidth() +"'," +
             		"'"+ customConfig + "'," +
-            		inputRichText.isSaveOnSubmit()+ ")"));
+            		inputRichText.isSaveOnSubmit()+ "); _uev('"+ ClientIdPool.get(clientId) +"'); }, '"+appContext+"');"));
             scrptWrpr.appendChild(scrpt);
            	JavascriptContext.addJavascriptCall(facesContext, "_uev('"+ ClientIdPool.get(clientId) +"');");
             domContext.stepOver();
