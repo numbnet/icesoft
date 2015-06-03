@@ -465,10 +465,12 @@ var Draggable = Class.create({
 
             keyPress: function(event) {
                 if (event.keyCode != Event.KEY_ESC) return;
-                var originalRevert = this.options.revert;
-                this.options.revert = true;
+				if (this.dragGhost == true) {
+					this.element = this._original;
+					Element.remove(this._ghost);
+					this._ghost = null;
+				}
                 this.finishDrag(event, false);
-                this.options.revert = originalRevert;
                 Event.stop(event);
             },
 

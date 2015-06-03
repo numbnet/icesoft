@@ -49,8 +49,10 @@ Draggable.prototype.initialize = function(element) {
     }
     this.element = $(element);
     var ops = arguments[1];
-    if (ops.dragGhost == true)
+    if (ops.dragGhost == true) {
         this.dragGhost = true;
+        ops.reverteffect = function(element, top_offset, left_offset) { };
+    }
     if (!ops.starteffect) ops.starteffect = function() {
     };
     if (!ops.endeffect) ops.endeffect = function() {
