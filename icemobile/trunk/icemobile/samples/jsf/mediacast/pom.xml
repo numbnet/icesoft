@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.icemobile.samples</groupId>
         <artifactId>jsf-samples-parent</artifactId>
-        <version>1.3.1.GA_P03</version>
+        <version>1.3.1.GA_P04.SNAPSHOT</version>
         <relativePath>..</relativePath>       
     </parent>
     <properties>
