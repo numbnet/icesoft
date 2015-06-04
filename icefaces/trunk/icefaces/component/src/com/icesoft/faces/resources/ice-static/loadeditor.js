@@ -23,7 +23,7 @@ inputrichtext.loadEditor = function(context) {
 	var head = document.getElementsByTagName('head')[0];
 
 	var initPending = function() {
-		if (renderEditor) {
+		if (window.renderEditor) {
 			inputrichtext.loaded = true;
 			for (var i = 0; i < inputrichtext.pendingInit.length; i++) {
 				var f = inputrichtext.pendingInit[i];
