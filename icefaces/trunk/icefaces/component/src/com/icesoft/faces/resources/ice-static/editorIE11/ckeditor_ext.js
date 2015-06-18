@@ -62,7 +62,11 @@ function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _cus
 		if (CKEDITOR.instances[editor]) {
 			CKEDITOR.instances[editor].destroy(true);
 		}
- 
+	} catch(e) {
+		CKEDITOR.remove(CKEDITOR.instances[editor]);
+	}
+
+	try {
 		var editorInstance = CKEDITOR.replace(editor, {
 				toolbar : getToolbar(defaultToolbar),
 				height: _height,
@@ -79,9 +83,7 @@ function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _cus
 			htmlNode.onmouseout =  updateElement;			
 			editorInstance.on('blur', updateElement);		
 		}
-	} catch(e) {
-		alert(e);	
-	}
+	} catch(e) {}
 }
 // Update editor value
 function _uev(editor) {
