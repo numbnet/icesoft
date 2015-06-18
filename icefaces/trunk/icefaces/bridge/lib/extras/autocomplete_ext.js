@@ -123,7 +123,8 @@ Autocompleter.Base.prototype = {
         Element.hide(this.update);
         Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this));
         var keyEvent = "keypress";
-        if (Prototype.Browser.IE ||  Prototype.Browser.WebKit ) {
+        if (Prototype.Browser.IE ||  Prototype.Browser.WebKit
+			|| !!navigator.userAgent.match(/Trident.*rv\:11\./)) { // IE11
         	keyEvent = "keydown";
         }
         Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this));
