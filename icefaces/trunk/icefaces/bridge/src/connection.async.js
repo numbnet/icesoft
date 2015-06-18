@@ -339,6 +339,19 @@
 
             this.blockingConnectionMonitor = setInterval(blockingConnectionMonitorProcess, pollingPeriod);
 
+            //purge view IDs that belong to discarded sessions
+            function purgeDiscardedSessionViewIDs(viewIDs) {
+                var result = [];
+                registeredSessions().each(function(sessionID) {
+                    viewIDs.each(function(viewID) {
+                        if (viewID.indexOf(sessionID) > -1) {
+                            result.push(viewID);
+                        }
+                    });
+                });
+                return result;
+            }
+
             function pickUpdates() {
                 self.sendChannel.postAsynchronously(self.getURI, self.defaultQuery.asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
@@ -356,7 +369,7 @@
 
             function updatesMonitorProcess() {
                 try {
-                    var views = self.updatedViews.loadValue().split(' ');
+                    var views = purgeDiscardedSessionViewIDs(self.updatedViews.loadValue().split(' '));
                     if (views.include(fullViewID)) {
                         pickUpdates();
                         self.updatedViews.saveValue(views.complement([ fullViewID ]).join(' '));
