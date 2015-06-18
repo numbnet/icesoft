@@ -53,6 +53,13 @@ Draggable.prototype.initialize = function(element) {
         this.dragGhost = true;
         ops.reverteffect = function(element, top_offset, left_offset) { };
     }
+    if (ops.ghosting == true && ops.revert == true) {
+        ops.reverteffect = function(element, top_offset, left_offset) {
+			element.style.position = "relative";
+			element.style.zIndex = '';
+			return false;
+		};
+    }
     if (!ops.starteffect) ops.starteffect = function() {
     };
     if (!ops.endeffect) ops.endeffect = function() {
