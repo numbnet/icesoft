@@ -37,4 +37,5 @@ public interface DataViewColumnModel {
     public boolean isRendered();
     public Integer getReactivePriority();
     public String getStyleClass();
+	public boolean isEscape();
 }

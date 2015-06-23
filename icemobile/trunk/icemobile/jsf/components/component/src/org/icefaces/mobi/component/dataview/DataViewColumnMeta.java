@@ -70,6 +70,9 @@ public class DataViewColumnMeta {
     @Property(tlddoc = TLDConstants.STYLECLASS)
     String styleClass;
 
+    @Property(tlddoc = "Flag indicating that characters that are sensitive in HTML and XML markup must be escaped.", defaultValue = "false")
+    boolean escape;
+
     @Field // MyFaces -  converter must be state saved, cannot cache at component instance level
     Converter converter;
 }
