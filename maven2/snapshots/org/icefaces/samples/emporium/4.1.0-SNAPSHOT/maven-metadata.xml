@@ -25,6 +25,11 @@
         <value>4.1.0-20150706.184615-1</value>
         <updated>20150706184615</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom.asc</extension>
+        <value>4.1.0-20150706.184615-1</value>
+        <updated>20150706184615</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
