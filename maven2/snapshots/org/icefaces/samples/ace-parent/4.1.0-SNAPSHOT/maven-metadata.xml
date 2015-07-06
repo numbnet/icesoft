@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.icefaces.samples</groupId>
+  <artifactId>ace-parent</artifactId>
+  <version>4.1.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20150706.184604</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20150706184604</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>4.1.0-20150706.184604-1</value>
+        <updated>20150706184604</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
