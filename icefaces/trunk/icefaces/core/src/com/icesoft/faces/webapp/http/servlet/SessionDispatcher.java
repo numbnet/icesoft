@@ -144,7 +144,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
             //associate monitor to session outside the synchronized block to avoid deadlocks when HttpSession implementation is synchronized
             monitor.associateMonitorToSession();
-            monitor.touchSession();
 
             synchronized (sessionBoundServers) {
                 if (!sessionBoundServers.containsKey(id)) {
@@ -388,7 +387,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         public Monitor(String id, HttpSession session) {
             this.id = id;
             this.session = session;
-            this.lastAccess = 0;
+            touchSession();
         }
 
         private void associateMonitorToSession() {
