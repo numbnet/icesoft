@@ -66,35 +66,64 @@ function ConsoleLogHandler(priority) {
         return join(['[', join(category, '.'), '] [', timestamp, '] ', message], '');
     }
 
+    function storeLogMessage(level, message, exception) {
+        var previousMessages = localStorage['ConsoleLogHandler-store'] || '';
+
+        var fullMessage = '[' + level + '] [' + ice.windowID + '] ' + message;
+        if (exception) {
+            fullMessage = fullMessage + '\n' + exception.message;
+        }
+        var messages = previousMessages + '%%' + fullMessage;
+
+        localStorage['ConsoleLogHandler-currentEntry'] = fullMessage;
+        localStorage['ConsoleLogHandler-store'] = messages;
+    }
+
     var ieConsole = !window.console.debug;
 
     var debugPrimitive = ieConsole ?
             function(self, category, message, exception) {
-                exception ? console.log(formatOutput(category, message), '\n', exception) : console.log(formatOutput(category, message));
+                var formattedMessage = formatOutput(category, message);
+                exception ? console.log(formattedMessage, '\n', exception) : console.log(formattedMessage);
+                storeLogMessage('debug', formattedMessage, exception);
             } :
             function(self, category, message, exception) {
-                exception ? console.debug(formatOutput(category, message), exception) : console.debug(formatOutput(category, message));
+                var formattedMessage = formatOutput(category, message);
+                exception ? console.debug(formattedMessage, exception) : console.debug(formattedMessage);
+                storeLogMessage('debug', formattedMessage, exception);
             };
     var infoPrimitive = ieConsole ?
             function(self, category, message, exception) {
-                exception ? console.info(formatOutput(category, message), '\n', exception) : console.info(formatOutput(category, message));
+                var formattedMessage = formatOutput(category, message);
+                exception ? console.info(formattedMessage, '\n', exception) : console.info(formattedMessage);
+                storeLogMessage('info ', formattedMessage, exception);
             } :
             function(self, category, message, exception) {
-                exception ? console.info(formatOutput(category, message), exception) : console.info(formatOutput(category, message));
+                var formattedMessage = formatOutput(category, message);
+                exception ? console.info(formattedMessage, exception) : console.info(formattedMessage);
+                storeLogMessage('info ', formattedMessage, exception);
             };
     var warnPrimitive = ieConsole ?
             function(self, category, message, exception) {
-                exception ? console.warn(formatOutput(category, message), '\n', exception) : console.warn(formatOutput(category, message));
+                var formattedMessage = formatOutput(category, message);
+                exception ? console.warn(formattedMessage, '\n', exception) : console.warn(formattedMessage);
+                storeLogMessage('warn ', formattedMessage, exception);
             } :
             function(self, category, message, exception) {
-                exception ? console.warn(formatOutput(category, message), exception) : console.warn(formatOutput(category, message));
+                var formattedMessage = formatOutput(category, message);
+                exception ? console.warn(formattedMessage, exception) : console.warn(formattedMessage);
+                storeLogMessage('warn ', formattedMessage, exception);
             };
     var errorPrimitive = ieConsole ?
-            function(self, category, message, exception) {
-                exception ? console.error(formatOutput(category, message), '\n', exception) : console.error(formatOutput(category, message));
+            function (self, category, message, exception) {
+                var formattedMessage = formatOutput(category, message);
+                exception ? console.error(formattedMessage, exception) : console.error(formattedMessage);
+                storeLogMessage('error', formattedMessage, exception);
             } :
-            function(self, category, message, exception) {
-                exception ? console.error(formatOutput(category, message), exception) : console.error(formatOutput(category, message));
+            function (self, category, message, exception) {
+                var formattedMessage = formatOutput(category, message);
+                exception ? console.error(formattedMessage, exception) : console.error(formattedMessage);
+                storeLogMessage('error', formattedMessage, exception);
             };
 
     var handlers = [
