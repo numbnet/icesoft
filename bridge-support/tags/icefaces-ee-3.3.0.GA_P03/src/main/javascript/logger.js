@@ -43,42 +43,88 @@ function Logger(category, handler) {
     });
 }
 
-function ConsoleLogHandler(priority) {
-    function formatOutput(category, message) {
-        var timestamp = (new Date()).toUTCString();
-        return join(['[', join(category, '.'), '] [', timestamp, '] ', message], '');
-    }
+function formatOutput(category, message) {
+    var timestamp = (new Date()).toUTCString();
+    return join(['[', join(category, '.'), '] [', timestamp, '] ', message], '');
+}
 
+function LocalStorageLogHandler(handler) {
+
+    function storeLogMessage(level, message, exception) {
+        var previousMessages = localStorage['LocalStorageLogHandler-store'] || '';
+
+        var fullMessage = '[' + level + '] [' + ice.windowID + '] ' + message;
+        if (exception) {
+            fullMessage = fullMessage + '\n' + exception.message;
+        }
+        var messages = previousMessages + '%%' + fullMessage;
+
+        localStorage['LocalStorageLogHandler-currentEntry'] = fullMessage;
+        localStorage['LocalStorageLogHandler-store'] = messages;
+    }
+    return object(function(method) {
+        method(threshold, function(self, priority) {
+            threshold(handler, priority);
+        });
+
+        method(log, function(self, operation, category, message, exception) {
+            if (namespace.localStorageLog) {
+                var formattedMessage = formatOutput(category, message);
+                var priorityName;
+                switch (operation) {
+                    case debug:
+                        priorityName = 'debug';
+                        break;
+                    case info:
+                        priorityName = 'info ';
+                        break;
+                    case warn:
+                        priorityName = 'warn ';
+                        break;
+                    case error:
+                        priorityName = 'error';
+                        break;
+                    default:
+                        priorityName = 'debug';
+                }
+                storeLogMessage(priorityName, formattedMessage, exception);
+            }
+            log(handler, operation, category, message, exception);
+        });
+    });
+}
+
+function ConsoleLogHandler(priority) {
     var ieConsole = !window.console.debug;
 
     var debugPrimitive = ieConsole ?
-            function(self, category, message, exception) {
-                exception ? console.log(formatOutput(category, message), '\n', exception) : console.log(formatOutput(category, message));
-            } :
-            function(self, category, message, exception) {
-                exception ? console.debug(formatOutput(category, message), exception) : console.debug(formatOutput(category, message));
-            };
+        function(self, category, message, exception) {
+            exception ? console.log(formatOutput(category, message), '\n', exception) : console.log(formatOutput(category, message));
+        } :
+        function(self, category, message, exception) {
+            exception ? console.debug(formatOutput(category, message), exception) : console.debug(formatOutput(category, message));
+        };
     var infoPrimitive = ieConsole ?
-            function(self, category, message, exception) {
-                exception ? console.info(formatOutput(category, message), '\n', exception) : console.info(formatOutput(category, message));
-            } :
-            function(self, category, message, exception) {
-                exception ? console.info(formatOutput(category, message), exception) : console.info(formatOutput(category, message));
-            };
+        function(self, category, message, exception) {
+            exception ? console.info(formatOutput(category, message), '\n', exception) : console.info(formatOutput(category, message));
+        } :
+        function(self, category, message, exception) {
+            exception ? console.info(formatOutput(category, message), exception) : console.info(formatOutput(category, message));
+        };
     var warnPrimitive = ieConsole ?
-            function(self, category, message, exception) {
-                exception ? console.warn(formatOutput(category, message), '\n', exception) : console.warn(formatOutput(category, message));
-            } :
-            function(self, category, message, exception) {
-                exception ? console.warn(formatOutput(category, message), exception) : console.warn(formatOutput(category, message));
-            };
+        function(self, category, message, exception) {
+            exception ? console.warn(formatOutput(category, message), '\n', exception) : console.warn(formatOutput(category, message));
+        } :
+        function(self, category, message, exception) {
+            exception ? console.warn(formatOutput(category, message), exception) : console.warn(formatOutput(category, message));
+        };
     var errorPrimitive = ieConsole ?
-            function(self, category, message, exception) {
-                exception ? console.error(formatOutput(category, message), '\n', exception) : console.error(formatOutput(category, message));
-            } :
-            function(self, category, message, exception) {
-                exception ? console.error(formatOutput(category, message), exception) : console.error(formatOutput(category, message));
-            };
+        function(self, category, message, exception) {
+            exception ? console.error(formatOutput(category, message), '\n', exception) : console.error(formatOutput(category, message));
+        } :
+        function(self, category, message, exception) {
+            exception ? console.error(formatOutput(category, message), exception) : console.error(formatOutput(category, message));
+        };
 
     var handlers = [
         Cell(debug, object(function(method) {
