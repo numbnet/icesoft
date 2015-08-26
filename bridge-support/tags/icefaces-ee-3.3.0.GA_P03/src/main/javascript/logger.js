@@ -51,16 +51,22 @@ function formatOutput(category, message) {
 function LocalStorageLogHandler(handler) {
 
     function storeLogMessage(level, message, exception) {
-        var previousMessages = localStorage['LocalStorageLogHandler-store'] || '';
+        var previousMessages = localStorage['ice.localStorageLogHandler.store'] || '';
 
         var fullMessage = '[' + level + '] [' + ice.windowID + '] ' + message;
         if (exception) {
             fullMessage = fullMessage + '\n' + exception.message;
         }
         var messages = previousMessages + '%%' + fullMessage;
+        //assume that characters take up 1 byte (for simplicity and performance sake)
+        var maxStorageUsed = localStorage['ice.localStorageLogHandler.maxSize'] || 500;
+        var overflow = messages.length - maxStorageUsed * 1024;
+        if (overflow > 0) {
+            messages = messages.substr(overflow);
+        }
 
-        localStorage['LocalStorageLogHandler-currentEntry'] = fullMessage;
-        localStorage['LocalStorageLogHandler-store'] = messages;
+        localStorage['ice.localStorageLogHandler.currentEntry'] = fullMessage;
+        localStorage['ice.localStorageLogHandler.store'] = messages;
     }
     return object(function(method) {
         method(threshold, function(self, priority) {
@@ -68,7 +74,7 @@ function LocalStorageLogHandler(handler) {
         });
 
         method(log, function(self, operation, category, message, exception) {
-            if (namespace.localStorageLog) {
+            if (localStorage['ice.localStorageLogHandler.enabled']) {
                 var formattedMessage = formatOutput(category, message);
                 var priorityName;
                 switch (operation) {
