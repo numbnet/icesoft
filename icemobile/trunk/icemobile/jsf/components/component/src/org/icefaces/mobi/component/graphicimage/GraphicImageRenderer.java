@@ -70,7 +70,7 @@ public class GraphicImageRenderer extends Renderer {
         String mimeType = uiGraphic.getMimeType();
         if (null == mimeType) mimeType = "image/jpeg";
         String scope = uiGraphic.getScope().toLowerCase().trim();
-        if (!scope.equals("flash") && !(scope.equals("window")) && !(scope.equals("application"))
+        if (!(scope.equals("window")) && !(scope.equals("application"))
                 && (!scope.equals("request")) && (!scope.equals("view"))) {
             scope = "session";
             if (logger.isLoggable(Level.FINE)) {
