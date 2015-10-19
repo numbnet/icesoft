@@ -50,6 +50,14 @@ function formatOutput(category, message) {
 
 function LocalStorageLogHandler(handler) {
 
+    var enabled = false;
+
+    window.addEventListener('storage', function(e) {
+        if (e.key == 'ice.localStorageLogHandler.enabled') {
+            enabled = e.newValue == 'yes';
+        }
+    }, false);
+
     function storeLogMessage(level, message, exception) {
         var previousMessages = localStorage['ice.localStorageLogHandler.store'] || '';
 
@@ -68,27 +76,13 @@ function LocalStorageLogHandler(handler) {
         localStorage['ice.localStorageLogHandler.currentEntry'] = fullMessage;
         localStorage['ice.localStorageLogHandler.store'] = messages;
     }
-
-    //local storage doesn't work well in Firefox 3.6 and older
-    var ffMatch = navigator.userAgent.match(/Firefox\/(\w\.?\w)/);
-    var firefoxGreaterThan3point6 = ffMatch ? (Number(ffMatch[1]) > 3.6) : true;
-    var ie = window.attachEvent || /Trident.*rv\:11\./.test(navigator.userAgent) || /MSIE/.test(navigator.userAgent);
-
-    function enableLogging() {
-        try {
-            return window.localStorage && firefoxGreaterThan3point6 && !ie;
-        } catch (ex) {
-            return false;
-        }
-    }
-
     return object(function(method) {
         method(threshold, function(self, priority) {
             threshold(handler, priority);
         });
 
         method(log, function(self, operation, category, message, exception) {
-            if (enableLogging() && window.localStorage['ice.localStorageLogHandler.enabled']) {
+            if (window.localStorage && (window.localStorage['ice.localStorageLogHandler.enabled'] || enabled)) {
                 var formattedMessage = formatOutput(category, message);
                 var priorityName;
                 switch (operation) {
