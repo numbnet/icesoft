@@ -68,13 +68,27 @@ function LocalStorageLogHandler(handler) {
         localStorage['ice.localStorageLogHandler.currentEntry'] = fullMessage;
         localStorage['ice.localStorageLogHandler.store'] = messages;
     }
+
+    //local storage doesn't work well in Firefox 3.6 and older
+    var ffMatch = navigator.userAgent.match(/Firefox\/(\w\.?\w)/);
+    var firefoxGreaterThan3point6 = ffMatch ? (Number(ffMatch[1]) > 3.6) : true;
+    var ie = window.attachEvent || /Trident.*rv\:11\./.test(navigator.userAgent) || /MSIE/.test(navigator.userAgent);
+
+    function enableLogging() {
+        try {
+            return window.localStorage && firefoxGreaterThan3point6 && !ie;
+        } catch (ex) {
+            return false;
+        }
+    }
+
     return object(function(method) {
         method(threshold, function(self, priority) {
             threshold(handler, priority);
         });
 
         method(log, function(self, operation, category, message, exception) {
-            if (window.localStorage && window.localStorage['ice.localStorageLogHandler.enabled']) {
+            if (enableLogging() && window.localStorage['ice.localStorageLogHandler.enabled']) {
                 var formattedMessage = formatOutput(category, message);
                 var priorityName;
                 switch (operation) {
@@ -104,33 +118,33 @@ function ConsoleLogHandler(priority) {
     var ieConsole = !window.console.debug;
 
     var debugPrimitive = ieConsole ?
-            function(self, category, message, exception) {
-                exception ? console.log(formatOutput(category, message), '\n', exception) : console.log(formatOutput(category, message));
-            } :
-            function(self, category, message, exception) {
-                exception ? console.debug(formatOutput(category, message), exception) : console.debug(formatOutput(category, message));
-            };
+        function(self, category, message, exception) {
+            exception ? console.log(formatOutput(category, message), '\n', exception) : console.log(formatOutput(category, message));
+        } :
+        function(self, category, message, exception) {
+            exception ? console.debug(formatOutput(category, message), exception) : console.debug(formatOutput(category, message));
+        };
     var infoPrimitive = ieConsole ?
-            function(self, category, message, exception) {
-                exception ? console.info(formatOutput(category, message), '\n', exception) : console.info(formatOutput(category, message));
-            } :
-            function(self, category, message, exception) {
-                exception ? console.info(formatOutput(category, message), exception) : console.info(formatOutput(category, message));
-            };
+        function(self, category, message, exception) {
+            exception ? console.info(formatOutput(category, message), '\n', exception) : console.info(formatOutput(category, message));
+        } :
+        function(self, category, message, exception) {
+            exception ? console.info(formatOutput(category, message), exception) : console.info(formatOutput(category, message));
+        };
     var warnPrimitive = ieConsole ?
-            function(self, category, message, exception) {
-                exception ? console.warn(formatOutput(category, message), '\n', exception) : console.warn(formatOutput(category, message));
-            } :
-            function(self, category, message, exception) {
-                exception ? console.warn(formatOutput(category, message), exception) : console.warn(formatOutput(category, message));
-            };
+        function(self, category, message, exception) {
+            exception ? console.warn(formatOutput(category, message), '\n', exception) : console.warn(formatOutput(category, message));
+        } :
+        function(self, category, message, exception) {
+            exception ? console.warn(formatOutput(category, message), exception) : console.warn(formatOutput(category, message));
+        };
     var errorPrimitive = ieConsole ?
-            function(self, category, message, exception) {
-                exception ? console.error(formatOutput(category, message), '\n', exception) : console.error(formatOutput(category, message));
-            } :
-            function(self, category, message, exception) {
-                exception ? console.error(formatOutput(category, message), exception) : console.error(formatOutput(category, message));
-            };
+        function(self, category, message, exception) {
+            exception ? console.error(formatOutput(category, message), '\n', exception) : console.error(formatOutput(category, message));
+        } :
+        function(self, category, message, exception) {
+            exception ? console.error(formatOutput(category, message), exception) : console.error(formatOutput(category, message));
+        };
 
     var handlers = [
         Cell(debug, object(function(method) {
