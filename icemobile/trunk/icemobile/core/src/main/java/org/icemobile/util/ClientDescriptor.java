@@ -261,7 +261,7 @@ public class ClientDescriptor implements Serializable{
     }
     
     public boolean isHasNativeDatePicker() {
-        return isIOS5() || isIOS6() || isIOS7() || isBlackBerryOS() || isChromeBrowser() || _userAgentInfo.isFirefoxAndroid();
+        return isIOS() || isBlackBerryOS() || isChromeBrowser() || _userAgentInfo.isFirefoxAndroid();
     }
 	
 	public boolean isAndroidBrowser(){
