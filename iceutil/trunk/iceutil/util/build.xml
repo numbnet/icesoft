@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright 2004-2016 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<project name="iceutil" default="jar">
+
+    <!-- The ee-build.properties are only used in the ee-environment to override
+         certain directory and file locations. -->
+
+    <property file="../build.properties" />
+    <property file="build.properties" />
+    <property name="root.offset" value=".." />
+    <property name="java.dir" location="src/main/java" />
+    <property file="${root.offset}/build.properties" />
+
+    <!-- ===================================================================
+         ICEsoft Util Properties
+         =================================================================== -->
+
+    <!-- Source -->
+
+    <!-- ===================================================================
+         ICEsoft Util Paths
+         =================================================================== -->
+
+    <path id="compile.run.classpath">
+        <pathelement location="${classes.dir}" />
+        <fileset dir="${root.offset}/${lib.dir}" />
+    </path>
+
+    <!-- ===================================================================
+         ICEsoft Util Targets
+         =================================================================== -->
+
+    <target name="clean"
+            description="Clean up all artifacts.">
+
+        <delete dir="${build.dir}" />
+        <delete file="${root.offset}/${lib.dir}/iceutil.jar" />
+    </target>
+
+    <target name="pre.compile">
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${classes.dir}" />
+        <mkdir dir="${dist.dir}" />
+    </target>
+
+    <target name="compile"
+            depends="pre.compile"
+            description="Compile the ICEsoft Util sources.">
+
+        <javac debug="true"
+               destdir="${classes.dir}"
+               includeantruntime="false"
+               source="1.5"
+               srcdir="${java.dir}"
+               target="1.5">
+
+            <classpath refid="compile.run.classpath" />
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile"
+            description="Create the ICEsoft Util library.">
+
+        <jar destfile="${dist.dir}/iceutil.jar" duplicate="preserve">
+            <fileset dir="${classes.dir}">
+                <include name="org/**" />
+            </fileset>
+            <fileset dir="${java.dir}">
+                <include name="org/**/*.java" />
+            </fileset>
+        </jar>
+        <copy file="${dist.dir}/iceutil.jar" todir="${root.offset}/${lib.dir}" />
+    </target>
+
+</project>
