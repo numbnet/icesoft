@@ -89,9 +89,9 @@ implements NotificationProvider {
     private final String userName;
 
     private EmailNotificationProvider(
-        final InternetAddress from, final String scheme, final String host, final int port, final String userName,
-        final String password, final String security, final boolean verify, final boolean debug) {
-
+        final String from, final String scheme, final String host, final int port, final String userName,
+        final String password, final String security, final boolean verify, final boolean debug)
+    throws IllegalArgumentException {
         super();
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(
@@ -110,7 +110,11 @@ implements NotificationProvider {
                     ")"
             );
         }
-        this.from = from;
+        try {
+            this.from = new InternetAddress(from);
+        } catch (final AddressException exception) {
+            throw new IllegalArgumentException("Illegal argument from: '" + from + "'", exception);
+        }
         this.scheme = scheme;
         this.host = host;
         this.port = port;
@@ -287,104 +291,95 @@ implements NotificationProvider {
             }
             try {
                 Class.forName("javax.mail.Message");
-                try {
-                    InternetAddress _from =
-                        new InternetAddress(
-                            _configuration.getAttribute(Property.Name.FROM, Property.DefaultValue.FROM)
-                        );
-                    String _host =
-                        _configuration.getAttribute(Property.Name.HOST, Property.DefaultValue.HOST);
-                    if (isNullOrIsEmpty(_host)) {
-                        if (LOGGER.isLoggable(Level.INFO)) {
-                            LOGGER.log(
-                                Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + Property.Name.HOST + ")"
-                            );
-                        }
-                        return;
-                    }
-                    String _security =
-                        _configuration.getAttribute(Property.Name.SECURITY, Property.DefaultValue.SECURITY);
-                    if (isNullOrIsEmpty(_security)) {
-                        if (LOGGER.isLoggable(Level.INFO)) {
-                            LOGGER.log(
-                                Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + Property.Name.SECURITY + ")"
-                            );
-                        }
-                        return;
-                    }
-                    String _scheme;
-                    int _port;
-                    if (_security.equalsIgnoreCase(Security.SSL) || _security.equalsIgnoreCase(Security.TLS)) {
-                        _scheme =
-                            _configuration.getAttribute(Property.Name.SCHEME, Property.DefaultValue.SECURE_SCHEME);
-                        _port =
-                            _configuration.getAttributeAsInteger(Property.Name.PORT, Property.DefaultValue.SECURE_PORT);
-                    } else {
-                        _scheme =
-                            _configuration.getAttribute(Property.Name.SCHEME, Property.DefaultValue.SCHEME);
-                        _port =
-                            _configuration.getAttributeAsInteger(Property.Name.PORT, Property.DefaultValue.PORT);
-                    }
-                    if (isNullOrIsEmpty(_scheme)) {
-                        if (LOGGER.isLoggable(Level.INFO)) {
-                            LOGGER.log(
-                                Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + Property.Name.SCHEME + ")"
-                            );
-                        }
-                        return;
-                    }
-                    String _userName =
-                        _configuration.getAttribute(Property.Name.USER_NAME, Property.DefaultValue.USER_NAME);
-                    if (isNullOrIsEmpty(_userName)) {
-                        if (LOGGER.isLoggable(Level.INFO)) {
-                            LOGGER.log(
-                                Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + Property.Name.USER_NAME + ")"
-                            );
-                        }
-                        return;
-                    }
-                    String _password =
-                        _configuration.getAttribute(Property.Name.PASSWORD, Property.DefaultValue.PASSWORD);
-                    if (isNullOrIsEmpty(_password)) {
-                        if (LOGGER.isLoggable(Level.INFO)) {
-                            LOGGER.log(
-                                Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + Property.Name.PASSWORD + ")"
-                            );
-                        }
-                        return;
-                    }
-                    boolean _debug =
-                        _configuration.getAttributeAsBoolean(Property.Name.DEBUG, Property.DefaultValue.DEBUG);
-                    boolean _verify =
-                        _configuration.getAttributeAsBoolean(Property.Name.VERIFY, Property.DefaultValue.VERIFY);
-                    setNotificationProvider(
-                        new EmailNotificationProvider(
-                            _from, _scheme, _host, _port, _userName, _password, _security, _verify, _debug
-                        )
-                    );
-                    super.contextInitialized(event);
-                    if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.log(Level.INFO, "E-mail Notification Provider registered successfully.");
-                    }
-                } catch (final AddressException exception) {
+                String _from =
+                    _configuration.getAttribute(Property.Name.FROM, Property.DefaultValue.FROM);
+                if (isNullOrIsEmpty(_from)) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.log(
                             Level.INFO,
-                            "E-mail Notification Provider is off.  " +
-                                "(" +
-                                    "Parse failed for " +
-                                        "'" +
-                                            _configuration.
-                                                getAttribute(Property.Name.FROM, Property.DefaultValue.FROM) +
-                                        "'" +
-                                ")"
+                            "E-mail Notification Provider is off.  (Missing " + Property.Name.FROM + ")"
                         );
                     }
+                    return;
+                }
+                String _host =
+                    _configuration.getAttribute(Property.Name.HOST, Property.DefaultValue.HOST);
+                if (isNullOrIsEmpty(_host)) {
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.log(
+                            Level.INFO,
+                            "E-mail Notification Provider is off.  (Missing " + Property.Name.HOST + ")"
+                        );
+                    }
+                    return;
+                }
+                String _security =
+                    _configuration.getAttribute(Property.Name.SECURITY, Property.DefaultValue.SECURITY);
+                if (isNullOrIsEmpty(_security)) {
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.log(
+                            Level.INFO,
+                            "E-mail Notification Provider is off.  (Missing " + Property.Name.SECURITY + ")"
+                        );
+                    }
+                    return;
+                }
+                String _scheme;
+                int _port;
+                if (_security.equalsIgnoreCase(Security.SSL) || _security.equalsIgnoreCase(Security.TLS)) {
+                    _scheme =
+                        _configuration.getAttribute(Property.Name.SCHEME, Property.DefaultValue.SECURE_SCHEME);
+                    _port =
+                        _configuration.getAttributeAsInteger(Property.Name.PORT, Property.DefaultValue.SECURE_PORT);
+                } else {
+                    _scheme =
+                        _configuration.getAttribute(Property.Name.SCHEME, Property.DefaultValue.SCHEME);
+                    _port =
+                        _configuration.getAttributeAsInteger(Property.Name.PORT, Property.DefaultValue.PORT);
+                }
+                if (isNullOrIsEmpty(_scheme)) {
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.log(
+                            Level.INFO,
+                            "E-mail Notification Provider is off.  (Missing " + Property.Name.SCHEME + ")"
+                        );
+                    }
+                    return;
+                }
+                String _userName =
+                    _configuration.getAttribute(Property.Name.USER_NAME, Property.DefaultValue.USER_NAME);
+                if (isNullOrIsEmpty(_userName)) {
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.log(
+                            Level.INFO,
+                            "E-mail Notification Provider is off.  (Missing " + Property.Name.USER_NAME + ")"
+                        );
+                    }
+                    return;
+                }
+                String _password =
+                    _configuration.getAttribute(Property.Name.PASSWORD, Property.DefaultValue.PASSWORD);
+                if (isNullOrIsEmpty(_password)) {
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.log(
+                            Level.INFO,
+                            "E-mail Notification Provider is off.  (Missing " + Property.Name.PASSWORD + ")"
+                        );
+                    }
+                    return;
+                }
+                boolean _debug =
+                    _configuration.getAttributeAsBoolean(Property.Name.DEBUG, Property.DefaultValue.DEBUG);
+                boolean _verify =
+                    _configuration.getAttributeAsBoolean(Property.Name.VERIFY, Property.DefaultValue.VERIFY);
+                setNotificationProvider(
+                    new EmailNotificationProvider(
+                        _from, _scheme, _host, _port, _userName, _password, _security, _verify, _debug
+                    )
+                );
+                super.contextInitialized(event);
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.log(Level.INFO, "E-mail Notification Provider registered successfully.");
                 }
             } catch (final ClassNotFoundException exception) {
                 if (LOGGER.isLoggable(Level.INFO)) {
