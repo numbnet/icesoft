@@ -28,7 +28,7 @@
     <groupId>org.icesoft.util</groupId>
     <artifactId>${iceutil.lib.name}</artifactId>
     <packaging>jar</packaging>
-    <name>${iceutil.product.name} Core Library</name>
+    <name>${iceutil.product.name} Library</name>
     <url>http://www.icesoft.org</url>
     <description>${iceutil.product.name} Core Library</description>
 

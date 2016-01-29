@@ -28,7 +28,7 @@
     <groupId>org.icesoft.notify</groupId>
     <artifactId>${icenotify.lib.name}</artifactId>
     <packaging>jar</packaging>
-    <name>${icenotify.product.name} Core Library</name>
+    <name>${icenotify.product.name} Library</name>
     <url>http://www.icesoft.org</url>
     <description>${icenotify.product.name} Core Library</description>
 
