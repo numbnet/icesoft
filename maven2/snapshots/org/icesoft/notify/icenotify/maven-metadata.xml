@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.icesoft.notify</groupId>
+  <artifactId>icenotify</artifactId>
+  <versioning>
+    <versions>
+      <version>4.2.0-SNAPSHOT-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20160205232642</lastUpdated>
+  </versioning>
+</metadata>
