@@ -70,6 +70,12 @@
         <value>4.1.1-20160205.213042-1</value>
         <updated>20160205213042</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <classifier>javadoc</classifier>
+        <extension>jar.asc.asc</extension>
+        <value>4.1.1-20160205.213042-1</value>
+        <updated>20160205213042</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
