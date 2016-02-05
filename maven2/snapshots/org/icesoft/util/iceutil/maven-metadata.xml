@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.icesoft.util</groupId>
+  <artifactId>iceutil</artifactId>
+  <versioning>
+    <versions>
+      <version>4.2.0-SNAPSHOT-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20160205232628</lastUpdated>
+  </versioning>
+</metadata>
