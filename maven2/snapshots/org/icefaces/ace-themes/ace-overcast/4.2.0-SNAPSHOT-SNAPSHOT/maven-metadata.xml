@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.icefaces.ace-themes</groupId>
+  <artifactId>ace-overcast</artifactId>
+  <version>4.2.0-SNAPSHOT-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20160205.233107</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20160205233107</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>4.2.0-SNAPSHOT-20160205.233107-1</value>
+        <updated>20160205233107</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>4.2.0-SNAPSHOT-20160205.233107-1</value>
+        <updated>20160205233107</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
