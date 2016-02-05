@@ -48,6 +48,12 @@
         <value>4.2.0-SNAPSHOT-20160205.233958-1</value>
         <updated>20160205233958</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <classifier>javadoc</classifier>
+        <extension>jar.asc</extension>
+        <value>4.2.0-SNAPSHOT-20160205.233958-1</value>
+        <updated>20160205233958</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
