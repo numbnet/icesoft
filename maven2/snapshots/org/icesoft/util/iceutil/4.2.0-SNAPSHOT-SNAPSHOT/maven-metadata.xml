@@ -30,6 +30,11 @@
         <value>4.2.0-SNAPSHOT-20160205.232626-1</value>
         <updated>20160205232626</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <extension>jar.asc.asc</extension>
+        <value>4.2.0-SNAPSHOT-20160205.232626-1</value>
+        <updated>20160205232626</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
