@@ -42,6 +42,12 @@
         <value>4.2.0-20160206.004139-1</value>
         <updated>20160206004139</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <classifier>sources</classifier>
+        <extension>jar.asc</extension>
+        <value>4.2.0-20160206.004139-1</value>
+        <updated>20160206004139</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
