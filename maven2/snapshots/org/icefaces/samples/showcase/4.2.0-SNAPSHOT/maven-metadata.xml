@@ -20,6 +20,11 @@
         <value>4.2.0-20160206.004434-1</value>
         <updated>20160206004434</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <extension>war.asc</extension>
+        <value>4.2.0-20160206.004434-1</value>
+        <updated>20160206004434</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
