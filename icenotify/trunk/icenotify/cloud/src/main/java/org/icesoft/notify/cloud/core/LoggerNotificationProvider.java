@@ -25,6 +25,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import org.icesoft.util.Configuration;
+import org.icesoft.util.ConfigurationException;
 import org.icesoft.util.SystemConfiguration;
 import org.icesoft.util.servlet.ServletContextConfiguration;
 
@@ -39,7 +40,7 @@ implements NotificationProvider {
 
     private static final class Property {
         private static final class Name {
-            private static final String ENABLED = "com.icesoft.notify.cloud.logger.enabled";
+            private static final String ENABLED = "notify.cloud.logger.enabled";
         }
         private static class DefaultValue {
             private static final boolean ENABLED = true;
@@ -114,40 +115,74 @@ implements NotificationProvider {
 
         @Override
         public void contextInitialized(final ServletContextEvent event) {
-            ServletContext _servletContext = event.getServletContext();
-            Configuration _configuration =
-                new SystemConfiguration(
-                    new ServletContextConfiguration(
-                        _servletContext
-                    )
-                );
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(
-                    Level.FINE,
-                    "\r\n" +
-                    "\r\n" +
-                    "Logger Notification Provider configuration: \r\n" +
-                    "-    " + Property.Name.ENABLED + " = " + _configuration.getAttributeAsBoolean(Property.Name.ENABLED, Property.DefaultValue.ENABLED) + "\r\n"
-                );
+            new Thread(
+                new RegistrationTask(event.getServletContext()), "Logger Notification Provider set-up thread"
+            ).start();
+        }
+
+        protected class RegistrationTask
+        extends AbstractRegistrationTask
+        implements Runnable {
+            protected RegistrationTask(final ServletContext servletContext) {
+                super(servletContext);
             }
-            if (!_configuration.getAttributeAsBoolean(Property.Name.ENABLED, Property.DefaultValue.ENABLED)) {
+
+            @Override
+            public void run() {
+                awaitSignal();
+                Configuration _configuration =
+                    new SystemConfiguration(
+                        new ServletContextConfiguration(
+                            getServletContext()
+                        )
+                    );
+                String _enabledPropertyName =
+                    _configuration.getAttribute(
+                        "notify.cloud.logger.enabled.property.name", Property.Name.ENABLED
+                    );
+                boolean _enabledPropertyValue;
+                try {
+                    _enabledPropertyValue = _configuration.getAttributeAsBoolean(_enabledPropertyName);
+                } catch (final ConfigurationException exception) {
+                    if (!_enabledPropertyName.equals(Property.Name.ENABLED)) {
+                        _enabledPropertyName = Property.Name.ENABLED;
+                        _enabledPropertyValue =
+                            _configuration.getAttributeAsBoolean(
+                                _enabledPropertyName,
+                                Property.DefaultValue.ENABLED
+                            );
+                    } else {
+                        _enabledPropertyValue = Property.DefaultValue.ENABLED;
+                    }
+                }
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(
+                        Level.FINE,
+                        "\r\n" +
+                        "\r\n" +
+                        "Logger Notification Provider configuration: \r\n" +
+                        "-    " + _enabledPropertyName + " = " + _enabledPropertyValue + "\r\n"
+                    );
+                }
+                if (!_enabledPropertyValue) {
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.log(
+                            Level.INFO,
+                            "Logger Notification Provider is disabled by configuration."
+                        );
+                    }
+                    return;
+                }
+                setNotificationProvider(
+                    new LoggerNotificationProvider()
+                );
+                super.run();
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.log(
                         Level.INFO,
-                        "Logger Notification Provider is disabled by configuration."
+                        "LOGGER Notification Provider registered successfully."
                     );
                 }
-                return;
-            }
-            setNotificationProvider(
-                new LoggerNotificationProvider()
-            );
-            super.contextInitialized(event);
-            if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.log(
-                    Level.INFO,
-                    "LOGGER Notification Provider registered successfully."
-                );
             }
         }
     }

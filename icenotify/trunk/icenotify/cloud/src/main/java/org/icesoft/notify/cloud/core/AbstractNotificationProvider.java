@@ -20,6 +20,7 @@ import static org.icesoft.util.PreCondition.checkIfIsNotNull;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -66,26 +67,56 @@ implements NotificationProvider {
         }
 
         public void contextInitialized(final ServletContextEvent event) {
-            if (hasNotificationProvider()) {
-                ExtensionRegistry.registerExtension(
-                    NotificationProvider.class.getName(),
-                    getNotificationProvider(),
-                    10,
-                    event.getServletContext()
-                );
-            }
+            // Do nothing.
         }
 
-        protected NotificationProvider getNotificationProvider() {
+        protected final NotificationProvider getNotificationProvider() {
             return notificationProvider;
         }
 
-        protected boolean hasNotificationProvider() {
+        protected final boolean hasNotificationProvider() {
             return getNotificationProvider() != null;
         }
 
-        protected void setNotificationProvider(final NotificationProvider notificationProvider) {
+        protected final void setNotificationProvider(final NotificationProvider notificationProvider) {
             this.notificationProvider = notificationProvider;
+        }
+
+        protected abstract class AbstractRegistrationTask
+        implements Runnable {
+            private final ServletContext servletContext;
+
+            protected AbstractRegistrationTask(final ServletContext servletContext) {
+                this.servletContext = servletContext;
+            }
+
+            public void run() {
+                if (hasNotificationProvider()) {
+                    ExtensionRegistry.registerExtension(
+                        NotificationProvider.class.getName(),
+                        getNotificationProvider(),
+                        10,
+                        getServletContext()
+                    );
+                }
+            }
+
+            protected void awaitSignal() {
+                CloudNotificationService.getSetUpLock(getServletContext()).lock();
+                try {
+                    try {
+                        CloudNotificationService.getSetUpCondition(getServletContext()).await();
+                    } catch (final InterruptedException exception) {
+                        // Do nothing.
+                    }
+                } finally {
+                    CloudNotificationService.getSetUpLock(getServletContext()).unlock();
+                }
+            }
+
+            protected final ServletContext getServletContext() {
+                return servletContext;
+            }
         }
     }
 }

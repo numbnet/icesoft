@@ -31,6 +31,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -68,6 +69,26 @@ implements Service {
 
     public CloudNotificationService(final ServletContext servletContext) {
         setUp(servletContext);
+    }
+
+    public static synchronized Condition getSetUpCondition(final ServletContext servletContext) {
+        Condition _setUpCondition =
+            (Condition)servletContext.getAttribute(CloudNotificationService.class.getName() + "#setUpCondition");
+        if (_setUpCondition == null) {
+            _setUpCondition = getSetUpLock(servletContext).newCondition();
+            servletContext.setAttribute(CloudNotificationService.class.getName() + "#setUpCondition", _setUpCondition);
+        }
+        return _setUpCondition;
+    }
+
+    public static synchronized Lock getSetUpLock(final ServletContext servletContext) {
+        Lock _setUpLock =
+            (Lock)servletContext.getAttribute(CloudNotificationService.class.getName() + "#setUpLock");
+        if (_setUpLock == null) {
+            _setUpLock = new ReentrantLock();
+            servletContext.setAttribute(CloudNotificationService.class.getName() + "#setUpLock", _setUpLock);
+        }
+        return _setUpLock;
     }
 
     public void pushToNotifyBackURI(
