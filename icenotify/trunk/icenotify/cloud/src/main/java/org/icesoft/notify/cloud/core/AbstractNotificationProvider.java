@@ -24,6 +24,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.icesoft.util.Configuration;
+import org.icesoft.util.ConfigurationException;
+import org.icesoft.util.NameValuePair;
 import org.icesoft.util.servlet.ExtensionRegistry;
 
 public abstract class AbstractNotificationProvider
@@ -112,6 +115,63 @@ implements NotificationProvider {
                 } finally {
                     CloudNotificationService.getSetUpLock(getServletContext()).unlock();
                 }
+            }
+
+            protected NameValuePair<String, String> getNameValuePair(
+                final Configuration configuration, final String nameIdentifier, final String defaultName,
+                final String defaultValue) {
+
+                String _name = configuration.getAttribute(nameIdentifier, defaultName);
+                String _value;
+                try {
+                    _value = configuration.getAttribute(_name);
+                } catch (final ConfigurationException exception) {
+                    if (!_name.equals(defaultName)) {
+                        _name = defaultName;
+                        _value = configuration.getAttribute(_name, defaultValue);
+                    } else {
+                        _value = defaultValue;
+                    }
+                }
+                return new NameValuePair<String, String>(_name, _value);
+            }
+
+            protected NameValuePair<String, Boolean> getNameBooleanValuePair(
+                final Configuration configuration, final String nameIdentifier, final String defaultName,
+                final boolean defaultValue) {
+
+                String _name = configuration.getAttribute(nameIdentifier, defaultName);
+                boolean _value;
+                try {
+                    _value = configuration.getAttributeAsBoolean(_name);
+                } catch (final ConfigurationException exception) {
+                    if (!_name.equals(defaultName)) {
+                        _name = defaultName;
+                        _value = configuration.getAttributeAsBoolean(_name, defaultValue);
+                    } else {
+                        _value = defaultValue;
+                    }
+                }
+                return new NameValuePair<String, Boolean>(_name, _value);
+            }
+
+            protected NameValuePair<String, Integer> getNameIntegerValuePair(
+                final Configuration configuration, final String nameIdentifier, final String defaultName,
+                final int defaultValue) {
+
+                String _name = configuration.getAttribute(nameIdentifier, defaultName);
+                int _value;
+                try {
+                    _value = configuration.getAttributeAsInteger(_name);
+                } catch (final ConfigurationException exception) {
+                    if (!_name.equals(defaultName)) {
+                        _name = defaultName;
+                        _value = configuration.getAttributeAsInteger(_name, defaultValue);
+                    } else {
+                        _value = defaultValue;
+                    }
+                }
+                return new NameValuePair<String, Integer>(_name, _value);
             }
 
             protected final ServletContext getServletContext() {
