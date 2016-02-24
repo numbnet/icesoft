@@ -180,7 +180,7 @@ implements NotificationProvider {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.log(
                         Level.INFO,
-                        "LOGGER Notification Provider registered successfully."
+                        "Logger Notification Provider registered successfully."
                     );
                 }
             }
