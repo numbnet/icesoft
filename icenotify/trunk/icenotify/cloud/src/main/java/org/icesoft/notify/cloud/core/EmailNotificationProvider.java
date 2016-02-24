@@ -35,7 +35,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import org.icesoft.util.Configuration;
-import org.icesoft.util.ConfigurationException;
+import org.icesoft.util.NameValuePair;
 import org.icesoft.util.SystemConfiguration;
 import org.icesoft.util.servlet.ServletContextConfiguration;
 
@@ -48,17 +48,29 @@ implements NotificationProvider {
         private static final String PROTOCOL = "mailto";
     }
     private static final class Property {
+        private static final class NameIdentifier {
+            private static final String DEBUG = "com.icesoft.notify.cloud.email.debug.property.name";
+            private static final String ENABLED = "com.icesoft.notify.cloud.email.enabled.property.name";
+            private static final String FROM = "com.icesoft.notify.cloud.email.from.property.name";
+            private static final String HOST = "com.icesoft.notify.cloud.email.host.property.name";
+            private static final String PASSWORD = "com.icesoft.notify.cloud.email.password.property.name";
+            private static final String PORT = "com.icesoft.notify.cloud.email.port.property.name";
+            private static final String SCHEME = "com.icesoft.notify.cloud.email.scheme.property.name";
+            private static final String SECURITY = "com.icesoft.notify.cloud.email.security.property.name";
+            private static final String USER_NAME = "com.icesoft.notify.cloud.email.userName.property.name";
+            private static final String VERIFY = "com.icesoft.notify.cloud.email.verify.property.name";
+        }
         private static final class Name {
-            private static final String DEBUG = "notify.cloud.email.debug";
-            private static final String ENABLED = "notify.cloud.email.enabled";
-            private static final String FROM = "notify.cloud.email.from";
-            private static final String HOST = "notify.cloud.email.host";
-            private static final String PASSWORD = "notify.cloud.email.password";
-            private static final String PORT = "notify.cloud.email.port";
-            private static final String SCHEME = "notify.cloud.email.scheme";
-            private static final String SECURITY = "notify.cloud.email.security";
-            private static final String USER_NAME = "notify.cloud.email.userName";
-            private static final String VERIFY = "notify.cloud.email.verify";
+            private static final String DEBUG = "com.icesoft.notify.cloud.email.debug";
+            private static final String ENABLED = "com.icesoft.notify.cloud.email.enabled";
+            private static final String FROM = "com.icesoft.notify.cloud.email.from";
+            private static final String HOST = "com.icesoft.notify.cloud.email.host";
+            private static final String PASSWORD = "com.icesoft.notify.cloud.email.password";
+            private static final String PORT = "com.icesoft.notify.cloud.email.port";
+            private static final String SCHEME = "com.icesoft.notify.cloud.email.scheme";
+            private static final String SECURITY = "com.icesoft.notify.cloud.email.security";
+            private static final String USER_NAME = "com.icesoft.notify.cloud.email.userName";
+            private static final String VERIFY = "com.icesoft.notify.cloud.email.verify";
         }
         private static final class DefaultValue {
             private static final boolean DEBUG = false;
@@ -277,229 +289,137 @@ implements NotificationProvider {
                             getServletContext()
                         )
                     );
-                String _enabledPropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.enabled.property.name", Property.Name.ENABLED
+                NameValuePair<String, Boolean> _enabled =
+                    getNameBooleanValuePair(
+                        _configuration,
+                        Property.NameIdentifier.ENABLED,
+                        Property.Name.ENABLED,
+                        Property.DefaultValue.ENABLED
                     );
-                boolean _enabledPropertyValue;
-                try {
-                    _enabledPropertyValue = _configuration.getAttributeAsBoolean(_enabledPropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_enabledPropertyName.equals(Property.Name.ENABLED)) {
-                        _enabledPropertyName = Property.Name.ENABLED;
-                        _enabledPropertyValue =
-                            _configuration.getAttributeAsBoolean(
-                                _enabledPropertyName,
-                                Property.DefaultValue.ENABLED
-                            );
-                    } else {
-                        _enabledPropertyValue = Property.DefaultValue.ENABLED;
-                    }
-                }
-                String _securityPropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.security.property.name", Property.Name.SECURITY
+                NameValuePair<String, String> _security =
+                    getNameValuePair(
+                        _configuration,
+                        Property.NameIdentifier.SECURITY,
+                        Property.Name.SECURITY,
+                        Property.DefaultValue.SECURITY
                     );
-                String _securityPropertyValue;
-                try {
-                    _securityPropertyValue = _configuration.getAttribute(_securityPropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_securityPropertyName.equals(Property.Name.SECURITY)) {
-                        _securityPropertyName = Property.Name.SECURITY;
-                        _securityPropertyValue =
-                            _configuration.getAttribute(
-                                _securityPropertyName,
-                                Property.DefaultValue.SECURITY
-                            );
-                    } else {
-                        _securityPropertyValue = Property.DefaultValue.SECURITY;
-                    }
-                }
-                String _verifyPropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.verify.property.name", Property.Name.VERIFY
+                NameValuePair<String, Boolean> _verify =
+                    getNameBooleanValuePair(
+                        _configuration,
+                        Property.NameIdentifier.VERIFY,
+                        Property.Name.VERIFY,
+                        Property.DefaultValue.VERIFY
                     );
-                boolean _verifyPropertyValue;
-                try {
-                    _verifyPropertyValue = _configuration.getAttributeAsBoolean(_verifyPropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_verifyPropertyName.equals(Property.Name.VERIFY)) {
-                        _verifyPropertyName = Property.Name.VERIFY;
-                        _verifyPropertyValue =
-                            _configuration.getAttributeAsBoolean(
-                                _verifyPropertyName,
-                                Property.DefaultValue.VERIFY
-                            );
-                    } else {
-                        _verifyPropertyValue = Property.DefaultValue.VERIFY;
-                    }
-                }
-                String _fromPropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.from.property.name", Property.Name.FROM
+                NameValuePair<String, String> _from =
+                    getNameValuePair(
+                        _configuration,
+                        Property.NameIdentifier.FROM,
+                        Property.Name.FROM,
+                        Property.DefaultValue.FROM
                     );
-                String _fromPropertyValue;
-                try {
-                    _fromPropertyValue = _configuration.getAttribute(_fromPropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_fromPropertyName.equals(Property.Name.FROM)) {
-                        _fromPropertyName = Property.Name.FROM;
-                        _fromPropertyValue =
-                            _configuration.getAttribute(
-                                _fromPropertyName,
-                                Property.DefaultValue.FROM
-                            );
-                    } else {
-                        _fromPropertyValue = Property.DefaultValue.FROM;
-                    }
-                }
-                String _schemePropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.scheme.property.name", Property.Name.SCHEME
+                NameValuePair<String, String> _scheme =
+                    getNameValuePair(
+                        _configuration,
+                        Property.NameIdentifier.SCHEME,
+                        Property.Name.SCHEME,
+                        _security.getValue().equalsIgnoreCase(Security.SSL) ||
+                        _security.getValue().equalsIgnoreCase(Security.TLS) ?
+                            Property.DefaultValue.SECURE_SCHEME :
+                            Property.DefaultValue.SCHEME
                     );
-                String _schemePropertyValue;
-                try {
-                    _schemePropertyValue = _configuration.getAttribute(_schemePropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_schemePropertyName.equals(Property.Name.SCHEME)) {
-                        _schemePropertyName = Property.Name.SCHEME;
-                        _schemePropertyValue =
-                            _configuration.getAttribute(
-                                _schemePropertyName,
-                                _securityPropertyValue.equalsIgnoreCase(Security.SSL) ||
-                                _securityPropertyValue.equalsIgnoreCase(Security.TLS) ?
-                                    Property.DefaultValue.SECURE_SCHEME :
-                                    Property.DefaultValue.SCHEME
-                            );
-                    } else {
-                        _schemePropertyValue =
-                            _securityPropertyValue.equalsIgnoreCase(Security.SSL) ||
-                            _securityPropertyValue.equalsIgnoreCase(Security.TLS) ?
-                                Property.DefaultValue.SECURE_SCHEME :
-                                Property.DefaultValue.SCHEME;
-                    }
-                }
-                String _hostPropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.host.property.name", Property.Name.HOST
+                NameValuePair<String, String> _host =
+                    getNameValuePair(
+                        _configuration,
+                        Property.NameIdentifier.HOST,
+                        Property.Name.HOST,
+                        Property.DefaultValue.HOST
                     );
-                String _hostPropertyValue;
-                try {
-                    _hostPropertyValue = _configuration.getAttribute(_hostPropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_hostPropertyName.equals(Property.Name.HOST)) {
-                        _hostPropertyName = Property.Name.HOST;
-                        _hostPropertyValue =
-                            _configuration.getAttribute(
-                                _hostPropertyName,
-                                Property.DefaultValue.HOST
-                            );
-                    } else {
-                        _hostPropertyValue = Property.DefaultValue.HOST;
-                    }
-                }
-                String _portPropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.port.property.name", Property.Name.PORT
+                NameValuePair<String, Integer> _port =
+                    getNameIntegerValuePair(
+                        _configuration,
+                        Property.NameIdentifier.PORT,
+                        Property.Name.PORT,
+                        _security.getValue().equalsIgnoreCase(Security.SSL) ||
+                        _security.getValue().equalsIgnoreCase(Security.TLS) ?
+                            Property.DefaultValue.SECURE_PORT :
+                            Property.DefaultValue.PORT
                     );
-                int _portPropertyValue;
-                try {
-                    _portPropertyValue = _configuration.getAttributeAsInteger(_portPropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_portPropertyName.equals(Property.Name.PORT)) {
-                        _portPropertyName = Property.Name.PORT;
-                        _portPropertyValue =
-                            _configuration.getAttributeAsInteger(
-                                _portPropertyName,
-                                _securityPropertyValue.equalsIgnoreCase(Security.SSL) ||
-                                _securityPropertyValue.equalsIgnoreCase(Security.TLS) ?
-                                    Property.DefaultValue.SECURE_PORT :
-                                    Property.DefaultValue.PORT
-                            );
-                    } else {
-                        _portPropertyValue =
-                            _securityPropertyValue.equalsIgnoreCase(Security.SSL) ||
-                            _securityPropertyValue.equalsIgnoreCase(Security.TLS) ?
-                                Property.DefaultValue.SECURE_PORT :
-                                Property.DefaultValue.PORT;
-                    }
-                }
-                String _userNamePropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.userName.property.name", Property.Name.USER_NAME
+                NameValuePair<String, String> _userName =
+                    getNameValuePair(
+                        _configuration,
+                        Property.NameIdentifier.USER_NAME,
+                        Property.Name.USER_NAME,
+                        Property.DefaultValue.USER_NAME
                     );
-                String _userNamePropertyValue;
-                try {
-                    _userNamePropertyValue = _configuration.getAttribute(_userNamePropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_userNamePropertyName.equals(Property.Name.USER_NAME)) {
-                        _userNamePropertyName = Property.Name.USER_NAME;
-                        _userNamePropertyValue =
-                            _configuration.getAttribute(
-                                _userNamePropertyName,
-                                Property.DefaultValue.USER_NAME
-                            );
-                    } else {
-                        _userNamePropertyValue = Property.DefaultValue.USER_NAME;
-                    }
-                }
-                String _passwordPropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.password.property.name", Property.Name.PASSWORD
+                NameValuePair<String, String> _password =
+                    getNameValuePair(
+                        _configuration,
+                        Property.NameIdentifier.PASSWORD,
+                        Property.Name.PASSWORD,
+                        Property.DefaultValue.PASSWORD
                     );
-                String _passwordPropertyValue;
-                try {
-                    _passwordPropertyValue = _configuration.getAttribute(_passwordPropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_passwordPropertyName.equals(Property.Name.PASSWORD)) {
-                        _passwordPropertyName = Property.Name.PASSWORD;
-                        _passwordPropertyValue =
-                            _configuration.getAttribute(
-                                _passwordPropertyName,
-                                Property.DefaultValue.PASSWORD
-                            );
-                    } else {
-                        _passwordPropertyValue = Property.DefaultValue.PASSWORD;
-                    }
-                }
-                String _debugPropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.email.debug.property.name", Property.Name.DEBUG
+                NameValuePair<String, Boolean> _debug =
+                    getNameBooleanValuePair(
+                        _configuration,
+                        Property.NameIdentifier.DEBUG,
+                        Property.Name.DEBUG,
+                        Property.DefaultValue.DEBUG
                     );
-                boolean _debugPropertyValue;
-                try {
-                    _debugPropertyValue = _configuration.getAttributeAsBoolean(_debugPropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_debugPropertyName.equals(Property.Name.DEBUG)) {
-                        _debugPropertyName = Property.Name.DEBUG;
-                        _debugPropertyValue =
-                            _configuration.getAttributeAsBoolean(
-                                _debugPropertyName,
-                                Property.DefaultValue.DEBUG
-                            );
-                    } else {
-                        _debugPropertyValue = Property.DefaultValue.DEBUG;
-                    }
-                }
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(
                         Level.FINE,
                         "\r\n" +
                         "\r\n" +
                         "E-mail Notification Provider configuration: \r\n" +
-                        "-    " + _enabledPropertyName + " = " + _enabledPropertyValue + "\r\n" +
-                        "-    " + _securityPropertyName + " = " + _securityPropertyValue + "\r\n" +
-                        "-    " + _verifyPropertyName + " = " + _verifyPropertyValue + "\r\n" +
-                        "-    " + _fromPropertyName + " = " + _fromPropertyValue + "\r\n" +
-                        "-    " + _schemePropertyName + " = " + _schemePropertyValue + "\r\n" +
-                        "-    " + _hostPropertyName + " = " + _hostPropertyValue + "\r\n" +
-                        "-    " + _portPropertyName + " = " + _portPropertyValue + "\r\n" +
-                        "-    " + _userNamePropertyName + " = " + _userNamePropertyValue + "\r\n" +
-                        "-    " + _passwordPropertyName + " = " + _passwordPropertyValue.replaceAll(".", "*") + "\r\n" +
-                        "-    " + _debugPropertyName + " = " + _debugPropertyValue + "\r\n"
+                        "-    " + _enabled.getName() + " = " + _enabled.getValue() +
+                            (_enabled.getValue().equals(Property.DefaultValue.ENABLED) ? " [default]" : "") +
+                                "\r\n" +
+                        "-    " + _security.getName() + " = " + _security.getValue() +
+                            (_security.getValue().equals(Property.DefaultValue.SECURITY) ? " [default]" : "") +
+                                "\r\n" +
+                        "-    " + _verify.getName() + " = " + _verify.getValue() +
+                            (_verify.getValue().equals(Property.DefaultValue.VERIFY) ? " [default]" : "") +
+                                "\r\n" +
+                        "-    " + _from.getName() + " = " + _from.getValue() +
+                            (_from.getValue().equals(Property.DefaultValue.FROM) ? " [default]" : "") +
+                                "\r\n" +
+                        "-    " + _scheme.getName() + " = " + _scheme.getValue() +
+                            (
+                                _scheme.getValue().equals(
+                                    _security.getValue().equalsIgnoreCase(Security.SSL) ||
+                                    _security.getValue().equalsIgnoreCase(Security.TLS) ?
+                                        Property.DefaultValue.SECURE_SCHEME :
+                                        Property.DefaultValue.SCHEME
+                                ) ?
+                                    " [default]" : ""
+                            ) +
+                                "\r\n" +
+                        "-    " + _host.getName() + " = " + _host.getValue() +
+                            (_host.getValue().equals(Property.DefaultValue.HOST) ? " [default]" : "") +
+                                "\r\n" +
+                        "-    " + _port.getName() + " = " + _port.getValue() +
+                            (
+                                _port.getValue().equals(
+                                    _security.getValue().equalsIgnoreCase(Security.SSL) ||
+                                    _security.getValue().equalsIgnoreCase(Security.TLS) ?
+                                        Property.DefaultValue.SECURE_PORT :
+                                        Property.DefaultValue.PORT
+                                ) ?
+                                    " [default]" : ""
+                            ) +
+                                "\r\n" +
+                        "-    " + _userName.getName() + " = " + _userName.getValue() +
+                            (_userName.getValue().equals(Property.DefaultValue.USER_NAME) ? " [default]" : "") +
+                                "\r\n" +
+                        "-    " + _password.getName() + " = " + _password.getValue().replaceAll(".", "*") +
+                            (_password.getValue().equals(Property.DefaultValue.PASSWORD) ? " [default]" : "") +
+                                "\r\n" +
+                        "-    " + _debug.getName() + " = " + _debug.getValue() +
+                            (_debug.getValue().equals(Property.DefaultValue.DEBUG) ? " [default]" : "") +
+                                "\r\n"
                     );
                 }
-                if (!_enabledPropertyValue) {
+                if (!_enabled.getValue()) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.log(
                             Level.INFO,
@@ -510,71 +430,71 @@ implements NotificationProvider {
                 }
                 try {
                     Class.forName("javax.mail.Message");
-                    if (isNullOrIsEmpty(_fromPropertyValue)) {
+                    if (isNullOrIsEmpty(_from.getValue())) {
                         if (LOGGER.isLoggable(Level.INFO)) {
                             LOGGER.log(
                                 Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + _fromPropertyName + ")"
+                                "E-mail Notification Provider is off.  (Missing " + _from.getName() + ")"
                             );
                         }
                         return;
                     }
-                    if (isNullOrIsEmpty(_hostPropertyValue)) {
+                    if (isNullOrIsEmpty(_host.getValue())) {
                         if (LOGGER.isLoggable(Level.INFO)) {
                             LOGGER.log(
                                 Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + _hostPropertyName + ")"
+                                "E-mail Notification Provider is off.  (Missing " + _host.getName() + ")"
                             );
                         }
                         return;
                     }
-                    if (isNullOrIsEmpty(_securityPropertyValue)) {
+                    if (isNullOrIsEmpty(_security.getValue())) {
                         if (LOGGER.isLoggable(Level.INFO)) {
                             LOGGER.log(
                                 Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + _securityPropertyName + ")"
+                                "E-mail Notification Provider is off.  (Missing " + _security.getName() + ")"
                             );
                         }
                         return;
                     }
-                    if (isNullOrIsEmpty(_schemePropertyValue)) {
+                    if (isNullOrIsEmpty(_scheme.getValue())) {
                         if (LOGGER.isLoggable(Level.INFO)) {
                             LOGGER.log(
                                 Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + _schemePropertyName + ")"
+                                "E-mail Notification Provider is off.  (Missing " + _scheme.getName() + ")"
                             );
                         }
                         return;
                     }
-                    if (isNullOrIsEmpty(_userNamePropertyValue)) {
+                    if (isNullOrIsEmpty(_userName.getValue())) {
                         if (LOGGER.isLoggable(Level.INFO)) {
                             LOGGER.log(
                                 Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + _userNamePropertyName + ")"
+                                "E-mail Notification Provider is off.  (Missing " + _userName.getName() + ")"
                             );
                         }
                         return;
                     }
-                    if (isNullOrIsEmpty(_passwordPropertyValue)) {
+                    if (isNullOrIsEmpty(_password.getValue())) {
                         if (LOGGER.isLoggable(Level.INFO)) {
                             LOGGER.log(
                                 Level.INFO,
-                                "E-mail Notification Provider is off.  (Missing " + _passwordPropertyName + ")"
+                                "E-mail Notification Provider is off.  (Missing " + _password.getName() + ")"
                             );
                         }
                         return;
                     }
                     setNotificationProvider(
                         new EmailNotificationProvider(
-                            _fromPropertyValue,
-                            _schemePropertyValue,
-                            _hostPropertyValue,
-                            _portPropertyValue,
-                            _userNamePropertyValue,
-                            _passwordPropertyValue,
-                            _securityPropertyValue,
-                            _verifyPropertyValue,
-                            _debugPropertyValue
+                            _from.getValue(),
+                            _scheme.getValue(),
+                            _host.getValue(),
+                            _port.getValue(),
+                            _userName.getValue(),
+                            _password.getValue(),
+                            _security.getValue(),
+                            _verify.getValue(),
+                            _debug.getValue()
                         )
                     );
                     super.run();

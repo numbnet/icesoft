@@ -25,7 +25,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import org.icesoft.util.Configuration;
-import org.icesoft.util.ConfigurationException;
+import org.icesoft.util.NameValuePair;
 import org.icesoft.util.SystemConfiguration;
 import org.icesoft.util.servlet.ServletContextConfiguration;
 
@@ -39,8 +39,11 @@ implements NotificationProvider {
     }
 
     private static final class Property {
+        private static final class NameIdentifier {
+            private static final String ENABLED = "com.icesoft.notify.cloud.logger.enabled.property.name";
+        }
         private static final class Name {
-            private static final String ENABLED = "notify.cloud.logger.enabled";
+            private static final String ENABLED = "com.icesoft.notify.cloud.logger.enabled";
         }
         private static class DefaultValue {
             private static final boolean ENABLED = true;
@@ -136,35 +139,25 @@ implements NotificationProvider {
                             getServletContext()
                         )
                     );
-                String _enabledPropertyName =
-                    _configuration.getAttribute(
-                        "notify.cloud.logger.enabled.property.name", Property.Name.ENABLED
+                NameValuePair<String, Boolean> _enabled =
+                    getNameBooleanValuePair(
+                        _configuration,
+                        Property.NameIdentifier.ENABLED,
+                        Property.Name.ENABLED,
+                        Property.DefaultValue.ENABLED
                     );
-                boolean _enabledPropertyValue;
-                try {
-                    _enabledPropertyValue = _configuration.getAttributeAsBoolean(_enabledPropertyName);
-                } catch (final ConfigurationException exception) {
-                    if (!_enabledPropertyName.equals(Property.Name.ENABLED)) {
-                        _enabledPropertyName = Property.Name.ENABLED;
-                        _enabledPropertyValue =
-                            _configuration.getAttributeAsBoolean(
-                                _enabledPropertyName,
-                                Property.DefaultValue.ENABLED
-                            );
-                    } else {
-                        _enabledPropertyValue = Property.DefaultValue.ENABLED;
-                    }
-                }
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(
                         Level.FINE,
                         "\r\n" +
                         "\r\n" +
                         "Logger Notification Provider configuration: \r\n" +
-                        "-    " + _enabledPropertyName + " = " + _enabledPropertyValue + "\r\n"
+                        "-    " + _enabled.getName() + " = " + _enabled.getValue() +
+                            (_enabled.getValue().equals(Property.DefaultValue.ENABLED) ? " [default]" : "") +
+                                "\r\n"
                     );
                 }
-                if (!_enabledPropertyValue) {
+                if (!_enabled.getValue()) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.log(
                             Level.INFO,
