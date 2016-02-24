@@ -61,8 +61,8 @@
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom.asc.asc</extension>
-        <value>4.1.1-20160222.172413-4</value>
-        <updated>20160222172413</updated>
+        <value>4.1.1-20160224.222252-5</value>
+        <updated>20160224222252</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>javadoc</classifier>
