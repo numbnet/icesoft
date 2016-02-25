@@ -45,20 +45,6 @@ if (!window.ice.icepush) {
             return window.localStorage && firefoxGreaterThan3point6 && !ie;
         }
 
-        function detectByReference(ref) {
-            return function(o) {
-                return o == ref;
-            };
-        }
-
-        function removeCallbackCallback(callbackList, detector) {
-            return function removeCallback() {
-                var temp = reject(callbackList, detector);
-                empty(callbackList);
-                each(temp, curry(append, callbackList));
-            }
-        }
-
         //include configuration.js
         //include command.js
         //include slot.js
@@ -69,37 +55,31 @@ if (!window.ice.icepush) {
         var notificationListeners = [];
         namespace.onNotification = function(callback) {
             append(notificationListeners, callback);
-            return removeCallbackCallback(notificationListeners, detectByReference(callback));
         };
 
         var receiveListeners = [];
         namespace.onBlockingConnectionReceive = function(callback) {
             append(receiveListeners, callback);
-            return removeCallbackCallback(receiveListeners, detectByReference(callback));
         };
 
         var serverErrorListeners = [];
         namespace.onBlockingConnectionServerError = function(callback) {
             append(serverErrorListeners, callback);
-            return removeCallbackCallback(serverErrorListeners, detectByReference(callback));
         };
 
         var blockingConnectionUnstableListeners = [];
         namespace.onBlockingConnectionUnstable = function(callback) {
             append(blockingConnectionUnstableListeners, callback);
-            return removeCallbackCallback(blockingConnectionUnstableListeners, detectByReference(callback));
         };
 
         var blockingConnectionLostListeners = [];
         namespace.onBlockingConnectionLost = function(callback) {
             append(blockingConnectionLostListeners, callback);
-            return removeCallbackCallback(blockingConnectionLostListeners, detectByReference(callback));
         };
 
         var blockingConnectionReEstablishedListeners = [];
         namespace.onBlockingConnectionReEstablished = function(callback) {
             append(blockingConnectionReEstablishedListeners, callback);
-            return removeCallbackCallback(blockingConnectionReEstablishedListeners, detectByReference(callback));
         };
 
         //constants
@@ -227,11 +207,11 @@ if (!window.ice.icepush) {
             register: function(pushIds, callback) {
                 if ((typeof callback) == 'function') {
                     enlistPushIDsWithWindow(pushIds);
-                    namespace.onNotification(function(ids, payload) {
+                    namespace.onNotification(function(ids) {
                         currentNotifications = asArray(intersect(ids, pushIds));
                         if (notEmpty(currentNotifications)) {
                             try {
-                                callback(currentNotifications, payload);
+                                callback(currentNotifications);
                             } catch (e) {
                                 error(namespace.logger, 'error thrown by push notification callback', e);
                             }
@@ -275,7 +255,7 @@ if (!window.ice.icepush) {
                 }));
             },
 
-            notify: function(group, payload, options) {
+            notify: function(group, options) {
                 var uri = resolveURI(namespace.push.configuration.notifyURI || 'notify.icepush');
                 postAsynchronously(apiChannel, uri, function(q) {
                     parameter(q, BrowserIDName, lookupCookieValue(BrowserIDName));
@@ -283,9 +263,6 @@ if (!window.ice.icepush) {
                     parameter(q, Realm, ice.push.configuration.realm);
                     parameter(q, AccessToken, ice.push.configuration.access_token);
                     parameter(q, 'group', group);
-                    if (payload) {
-                        parameter(q, 'payload', payload);
-                    }
                     if (options) {
                         //provide default values if missing
                         if (!options.duration) {
@@ -443,16 +420,12 @@ if (!window.ice.icepush) {
                 return intersect(ids, registeredIDs);
             }
 
-            function selectWindowNotifications(ids, payload) {
+            function selectWindowNotifications(ids) {
                 try {
                     var windowPushIDs = asArray(intersect(ids, pushIdentifiers));
                     if (notEmpty(windowPushIDs)) {
-                        broadcast(notificationListeners, [ windowPushIDs, payload ]);
-                        if (payload) {
-                            debug(logger, "picked up notifications with payload '" + payload + "' for this window: " + windowPushIDs);
-                        } else {
-                            debug(logger, "picked up notifications for this window: " + windowPushIDs);
-                        }
+                        broadcast(notificationListeners, [ windowPushIDs ]);
+                        debug(logger, 'picked up notifications for this window: ' + windowPushIDs);
                         return windowPushIDs;
                     } else {
                         return [];
@@ -469,36 +442,15 @@ if (!window.ice.icepush) {
 
             //register command that handles the noop message
             register(commandDispatcher, 'noop', noop);
-            //register command that handles the notifications message
-            register(commandDispatcher, 'notifications', function(message) {
-                if (message.nodeName == "notifications") {
-                    var notifications = message;
-                    for (var i = 0; i < notifications.childNodes.length; i++) {
-                        if (notifications.childNodes[i].nodeName == "notification") {
-                            var notification = notifications.childNodes[i];
-                            if (notification.getAttribute("push-ids")) {
-                                var pushIDs = split(notification.getAttribute("push-ids"), ' ');
-                                var payload;
-                                if (notification.firstChild) {
-                                    payload = notification.firstChild.data;
-                                } else {
-                                    payload = '';
-                                }
-                                if (payload) {
-                                    debug(logger, "received notification with payload '" + payload + "' for the push IDs: " + pushIDs);
-                                } else {
-                                    debug(logger, "received notification for the push IDs: " + pushIDs);
-                                }
-                                notifyWindows(notificationBroadcaster, purgeNonRegisteredPushIDs(asSet(pushIDs)), payload);
-                            } else {
-                                warn(logger, "attribute push-ids not found in <notification>");
-                            }
-                        } else {
-                            warn(logger, "unknown child node of <notifications>: <" + notifications.childNodes[i].nodeName + ">");
-                        }
-                    }
+            //register command that handles the notified-pushids message
+            register(commandDispatcher, 'notified-pushids', function(message) {
+                var text = message.firstChild;
+                if (text && !blank(text.data)) {
+                    var receivedPushIDs = split(text.data, ' ');
+                    debug(logger, 'received notifications: ' + receivedPushIDs);
+                    notifyWindows(notificationBroadcaster, purgeNonRegisteredPushIDs(asSet(receivedPushIDs)));
                 } else {
-                    warn(logger, "Unknown root node: <" + message.nodeName + ">");
+                    warn(logger, "No notification was received.");
                 }
             });
 
