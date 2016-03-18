@@ -2648,8 +2648,16 @@ ice.mobi.addListener(document, "touchstart", function(){});
           //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
             var children = containerEl.getElementsByTagName('div');
             for (var i = 0; i < children.length; i++) {
-                if (children[i].scrollHeight > mxht) {
-                    mxht = children[i].scrollHeight;
+                var styleHt = children[i].style.height;
+                var styleHtInt = 0;
+                if (styleHt.indexOf('px')>0) {
+                    styleHtInt = parseFloat(styleHt, 10);
+                    var temp = "500px";
+                    var tempInt = parseInt(temp, 10);
+                }
+                var maxHt = Math.max(children[i].scrollHeight, styleHtInt);
+                if (maxHt > mxht) {
+                    mxht = maxHt;
                 }
             }
         }
@@ -2671,8 +2679,6 @@ ice.mobi.addListener(document, "touchstart", function(){});
             ele.className = " ";
         }
     }
-
-    
 
     function setTabActive(id, cls) {
         var curTab = document.getElementById(id);
@@ -2716,10 +2722,7 @@ ice.mobi.addListener(document, "touchstart", function(){});
             tabContent.style.maxHeight = height;
             tabContent.style.height = height;
         } else if (autoheight == true){
-            var ht = calcMaxChildHeight(tabContent);
-            if (ht > 0) {
-                tabContent.style.height = ht + "px";
-            }
+            setTimeout( function() {setHeight()}, 10);
         }
         setTabActive(tabCtrl + tabIndex, clsActiveTab);
         updateHidden(clientId, tabIndex);
@@ -2736,15 +2739,31 @@ ice.mobi.addListener(document, "touchstart", function(){});
             setTimeout(ice.mobi.tabsetController.fitTabsetsToParents,10);
             ice.mobi.tabsetController.addFitToParentListener(clientId,fitToParent);
         }
-        
         function getTabset(){
             return document.getElementById(id);
+        }
+        function getTabContent(){
+            return document.getElementById(contentId);
+        }
+        function setHeight(height){
+            var container = getTabset();
+            var tabContent = document.getElementById(contentId);
+            if (!container && !tabContent){
+                console.log(" cannot use autoHeight as elements not found");
+            }
+            var updatedHeight = calcMaxChildHeight(container) || "-1";
+            var stringHeight = updatedHeight+"px";
+            if (updatedHeight > 0) {
+                tabContent.style.height = stringHeight;
+                tabContent.setAttribute('height', stringHeight);
+                tabContent.style.maxHeight = stringHeight;
+            }
         }
         
         function getTabs(){
             return document.querySelector( '#' + id.replace(/:/g, '\\:') + ' > .mobi-tabset-tabs > ul');
         }
-        
+
         function setWidthStyle(){
             var tabset = getTabset();
             var tabs = getTabs();
