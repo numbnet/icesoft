@@ -214,7 +214,7 @@ implements NotificationProvider {
             new StringBuilder().
                 append("from: '").append(getFrom()).append("', ").
                 append("host: '").append(getHost()).append("', ").
-                append("password: '").append(getPassword().hashCode()).append("', ").
+                append("password: '").append(getPassword().replaceAll(".", "*")).append("', ").
                 append("port: '").append(getPort()).append("', ").
                 append("scheme: '").append(getScheme()).append("', ").
                 append("session: '").append(getSession()).append("', ").
