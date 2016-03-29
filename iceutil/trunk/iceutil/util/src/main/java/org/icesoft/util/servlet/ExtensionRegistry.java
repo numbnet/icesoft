@@ -27,9 +27,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 
-@WebListener
 public class ExtensionRegistry
 implements ServletContextListener {
     private static final Logger LOGGER = Logger.getLogger(ExtensionRegistry.class.getName());
