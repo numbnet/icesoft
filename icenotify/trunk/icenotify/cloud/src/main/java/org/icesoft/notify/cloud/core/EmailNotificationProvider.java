@@ -171,7 +171,12 @@ implements NotificationProvider {
             MimeMessage _mimeMessage = new MimeMessage(getSession());
             _mimeMessage.setFrom(getFrom());
             _mimeMessage.setSubject(propertyMap.get(NotificationProvider.Property.Name.SUBJECT));
-            _mimeMessage.setText(propertyMap.get(NotificationProvider.Property.Name.DETAIL));
+            _mimeMessage.setText(
+                new StringBuilder().
+                    append(propertyMap.get(NotificationProvider.Property.Name.DETAIL)).
+                    append(" [").append(propertyMap.get(NotificationProvider.Property.Name.URL)).append("]").
+                        toString()
+            );
             Transport _transport = getSession().getTransport(getScheme());
             _transport.connect(getHost(), getPort(), getUserName(), getPassword());
             _transport.sendMessage(
