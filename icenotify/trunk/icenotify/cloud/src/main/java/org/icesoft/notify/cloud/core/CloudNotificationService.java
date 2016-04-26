@@ -229,7 +229,7 @@ implements Service {
                     servletContext
                 )
             );
-        executorService =
+        setExecutorService(
             new ThreadPoolExecutor(
                 _configuration.getAttributeAsInteger(
                     Property.Name.CORE_POOL_SIZE, Property.DefaultValue.CORE_POOL_SIZE
@@ -242,7 +242,7 @@ implements Service {
                 ),
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<Runnable>(),
-                new NamedThreadFactory("Notification Service"),
+                new NamedThreadFactory("Cloud Notification Service"),
                 new ThreadPoolExecutor.CallerRunsPolicy() {
                     @Override
                     public void rejectedExecution(
@@ -258,7 +258,8 @@ implements Service {
                         super.rejectedExecution(runnable, threadPoolExecutor);
                     }
                 }
-            );
+            )
+        );
         Object[] _notificationProviders =
             ExtensionRegistry.getExtensions(NotificationProvider.class.getName(), servletContext);
         if (_notificationProviders != null) {
@@ -278,6 +279,7 @@ implements Service {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE, "Tearing down Notification Service.");
         }
+        getExecutorService().shutdown();
         Object[] _notificationProviders =
             ExtensionRegistry.getExtensions(NotificationProvider.class.getName(), servletContext);
         if (_notificationProviders != null) {
@@ -311,6 +313,10 @@ implements Service {
 
     protected Map<String, NotificationProvider> getModifiableProtocolToNotificationProviderMap() {
         return protocolToNotificationProviderMap;
+    }
+
+    protected void setExecutorService(final ExecutorService executorService) {
+        this.executorService = executorService;
     }
 
     private NotificationProvider getNotificationProvider(final String notifyBackURI)
