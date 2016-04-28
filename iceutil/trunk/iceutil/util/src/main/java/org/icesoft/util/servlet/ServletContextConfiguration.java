@@ -15,6 +15,8 @@
  */
 package org.icesoft.util.servlet;
 
+import static org.icesoft.util.ObjectUtilities.isNotNull;
+import static org.icesoft.util.PreCondition.checkArgument;
 import static org.icesoft.util.StringUtilities.isNullOrIsEmpty;
 
 import java.util.logging.Level;
@@ -35,27 +37,31 @@ implements Configuration {
     private final ServletContext servletContext;
 
     public ServletContextConfiguration(
-        final ServletContext servletContext) {
-
-        this(null, servletContext, null);
+        final ServletContext servletContext)
+    throws IllegalArgumentException {
+        this((String)null, servletContext, (Configuration)null);
     }
 
     public ServletContextConfiguration(
-        final ServletContext servletContext, final Configuration defaultConfiguration) {
-
-        this(null, servletContext, defaultConfiguration);
+        final ServletContext servletContext, final Configuration defaultConfiguration)
+    throws IllegalArgumentException {
+        this((String)null, servletContext, defaultConfiguration);
     }
 
     public ServletContextConfiguration(
-        final String prefix, final ServletContext servletContext) {
-
-        this(prefix, servletContext, null);
+        final String prefix, final ServletContext servletContext)
+    throws IllegalArgumentException {
+        this(prefix, servletContext, (Configuration)null);
     }
 
     public ServletContextConfiguration(
-        final String prefix, final ServletContext servletContext, final Configuration defaultConfiguration) {
-
+        final String prefix, final ServletContext servletContext, final Configuration defaultConfiguration)
+    throws IllegalArgumentException {
         super(defaultConfiguration);
+        checkArgument(
+            isNotNull(servletContext),
+            "Illegal argument servletContext: '" + servletContext + "'.  Argument cannot be null."
+        );
         this.prefix = prefix;
         this.servletContext = servletContext;
     }
