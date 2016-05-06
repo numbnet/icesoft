@@ -17,9 +17,6 @@ public class NameValuePair<N extends String, V> {
         checkArgument(
             isNotNullAndIsNotEmpty(name), "Illegal argument name: '" + name + "'.  Argument cannot be null or empty."
         );
-        checkArgument(
-            isNotNull(value), "Illegal argument value: '" + value + "'.  Argument cannot be null."
-        );
         this.name = name;
         this.value = value;
     }
