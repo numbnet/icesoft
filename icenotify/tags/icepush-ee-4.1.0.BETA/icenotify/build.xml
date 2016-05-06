@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright 2004-2016 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<project name="icenotify-bundle" default="all">
+
+    <property file="./build.properties"/>
+
+    <target name="all" description="Builds the icenotify.jar.">
+        <antcall target="icenotify" />
+    </target>
+
+    <target name="allclean" description="Cleans all remnants of previous ICEsoft Notify builds.">
+        <subant target="clean">
+            <fileset dir="." includes="*/build.xml">
+                <exclude name="**/maven2/build.xml"/>
+            </fileset>
+        </subant>
+        <delete file="lib/icenotify.jar" failonerror="false" />
+        <delete file="lib/iceutil.jar" failonerror="false" />
+    </target>
+
+    <target name="icenotify" description="Compiles and assembles the icenotify.jar.">
+        <antcall target="util" />
+        <antcall target="cloud" />
+        <antcall target="merge-cloud-util" />
+    </target>
+
+    <target name="cloud" description="Compiles and assembles the ICEsoft Notify (o/s) icenotify.jar.">
+        <subant target="jar">
+            <fileset dir="cloud" includes="build.xml" />
+        </subant>
+    </target>
+
+    <target name="util" description="Compiles and assembles the ICEsoft Util (o/s) iceutil.jar.">
+        <subant target="jar">
+            <fileset dir="util" includes="build.xml" />
+        </subant>
+    </target>
+
+    <target name="merge-cloud-util" description="Destructively merges the icenotify.jar and iceutil.jar into the icenotify.jar file.">
+        <move file="lib/icenotify.jar" tofile="lib/icenotify-temp.jar" />
+        <zip destfile="lib/icenotify.jar">
+            <zipfileset src="lib/iceutil.jar" includes="org/**" />
+            <zipfileset src="lib/icenotify-temp.jar" includes="org/**,META-INF/MANIFEST.MF" />
+        </zip>
+        <delete file="lib/icenotify-temp.jar"/>
+        <delete file="lib/iceutil.jar"/>
+    </target>
+
+</project>
