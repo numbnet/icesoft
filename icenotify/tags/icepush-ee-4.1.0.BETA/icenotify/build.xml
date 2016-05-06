@@ -16,6 +16,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
+
 <project name="icenotify-bundle" default="all">
 
     <property file="./build.properties"/>
