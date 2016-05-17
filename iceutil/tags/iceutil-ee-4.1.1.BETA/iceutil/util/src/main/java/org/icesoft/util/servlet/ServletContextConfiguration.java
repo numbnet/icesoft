@@ -69,16 +69,20 @@ implements Configuration {
     public String getAttribute(final String name)
     throws ConfigurationException {
         String _prefixedName = getPrefixedName(name);
-        String _value = getServletContext().getInitParameter(_prefixedName);
-        if (_value != null) {
-            return _value;
-        } else {
-            if (hasDefaultConfiguration()) {
-                // throws ConfigurationException
-                return getDefaultConfiguration().getAttribute(name);
+        try {
+            String _value = getServletContext().getInitParameter(_prefixedName);
+            if (_value != null) {
+                return _value;
             } else {
-                throw new ConfigurationException("Cannot find parameter: " + _prefixedName);
+                if (hasDefaultConfiguration()) {
+                    // throws ConfigurationException
+                    return getDefaultConfiguration().getAttribute(name);
+                } else {
+                    throw new ConfigurationException("Cannot find parameter: " + _prefixedName);
+                }
             }
+        } catch (final NullPointerException exception) {
+            throw new ConfigurationException("Cannot find parameter: " + _prefixedName, exception);
         }
     }
 
