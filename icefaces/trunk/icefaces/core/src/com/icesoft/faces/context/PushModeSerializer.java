@@ -66,69 +66,74 @@ public class PushModeSerializer implements DOMSerializer {
     }
 
     public void serialize(final Document document) throws IOException {
-        Node[] changed = DOMUtils.domDiff(store.load(), document);
-        HashMap depthMaps = new HashMap();
-        for (int i = 0; i < changed.length; i++) {
-            Element changeRoot =
-                    DOMUtils.ascendToNodeWithID(changed[i]);
-            changed[i] = changeRoot;
-            Integer depth = new Integer(getDepth(changeRoot));
-            HashSet peers = (HashSet) depthMaps.get(depth);
-            if (null == peers) {
-                peers = new HashSet();
-                depthMaps.put(depth, peers);
-            }
-            //place the node in a collection of all nodes
-            //at its same depth in the DOM
-            peers.add(changeRoot);
-        }
-        Iterator allDepths = depthMaps.keySet().iterator();
-        while (allDepths.hasNext()) {
-            Integer baseDepth = (Integer) allDepths.next();
-            Iterator checkDepths = depthMaps.keySet().iterator();
-            while (checkDepths.hasNext()) {
-                Integer checkDepth = (Integer) checkDepths.next();
-                if (baseDepth.intValue() < checkDepth.intValue()) {
-                    pruneAncestors(baseDepth, (HashSet) depthMaps.get(baseDepth),
-                            checkDepth, (HashSet) depthMaps.get(checkDepth));
-                }
-            }
-        }
-
-        //Merge all remaining elements at different depths
-        //Collection is a Set so duplicates will be discarded
-        HashSet topElements = new HashSet();
-        Iterator allDepthMaps = depthMaps.values().iterator();
-        while (allDepthMaps.hasNext()) {
-            topElements.addAll((HashSet) allDepthMaps.next());
-        }
-
-        if (!topElements.isEmpty()) {
-            boolean reload = false;
-            int j = 0;
-            Element[] elements = new Element[topElements.size()];
-            HashSet dupCheck = new HashSet();
-            //copy the succsessful changed elements and check for change
-            //to head or body
+        view.aquireDOMLock();
+        try {
+            Node[] changed = DOMUtils.domDiff(store.load(), document);
+            HashMap depthMaps = new HashMap();
             for (int i = 0; i < changed.length; i++) {
-                Element element = (Element) changed[i];
-                String tag = element.getTagName();
-                //send reload command if 'html', 'body', or 'head' elements need to be updated (see: ICE-3063)
-                reload = reload || "html".equalsIgnoreCase(tag) || "head".equalsIgnoreCase(tag);
-                if (topElements.contains(element)) {
-                    if (!dupCheck.contains(element)) {
-                        dupCheck.add(element);
-                        elements[j++] = element;
+                Element changeRoot =
+                        DOMUtils.ascendToNodeWithID(changed[i]);
+                changed[i] = changeRoot;
+                Integer depth = new Integer(getDepth(changeRoot));
+                HashSet peers = (HashSet) depthMaps.get(depth);
+                if (null == peers) {
+                    peers = new HashSet();
+                    depthMaps.put(depth, peers);
+                }
+                //place the node in a collection of all nodes
+                //at its same depth in the DOM
+                peers.add(changeRoot);
+            }
+            Iterator allDepths = depthMaps.keySet().iterator();
+            while (allDepths.hasNext()) {
+                Integer baseDepth = (Integer) allDepths.next();
+                Iterator checkDepths = depthMaps.keySet().iterator();
+                while (checkDepths.hasNext()) {
+                    Integer checkDepth = (Integer) checkDepths.next();
+                    if (baseDepth.intValue() < checkDepth.intValue()) {
+                        pruneAncestors(baseDepth, (HashSet) depthMaps.get(baseDepth),
+                                checkDepth, (HashSet) depthMaps.get(checkDepth));
                     }
                 }
             }
-            if (reload) {
-                //reload document instead of applying an update for the entire page (see: ICE-2189)
-                view.preparePage(new PreparedPage(document));
-                view.put(new Reload(viewNumber));
-            } else {
-                view.put(new UpdateElements(coalesce, elements));
+
+            //Merge all remaining elements at different depths
+            //Collection is a Set so duplicates will be discarded
+            HashSet topElements = new HashSet();
+            Iterator allDepthMaps = depthMaps.values().iterator();
+            while (allDepthMaps.hasNext()) {
+                topElements.addAll((HashSet) allDepthMaps.next());
             }
+
+            if (!topElements.isEmpty()) {
+                boolean reload = false;
+                int j = 0;
+                Element[] elements = new Element[topElements.size()];
+                HashSet dupCheck = new HashSet();
+                //copy the succsessful changed elements and check for change
+                //to head or body
+                for (int i = 0; i < changed.length; i++) {
+                    Element element = (Element) changed[i];
+                    String tag = element.getTagName();
+                    //send reload command if 'html', 'body', or 'head' elements need to be updated (see: ICE-3063)
+                    reload = reload || "html".equalsIgnoreCase(tag) || "head".equalsIgnoreCase(tag);
+                    if (topElements.contains(element)) {
+                        if (!dupCheck.contains(element)) {
+                            dupCheck.add(element);
+                            elements[j++] = element;
+                        }
+                    }
+                }
+                if (reload) {
+                    //reload document instead of applying an update for the entire page (see: ICE-2189)
+                    view.preparePage(new PreparedPage(document));
+                    view.put(new Reload(viewNumber));
+                } else {
+                    view.put(new UpdateElements(view, coalesce, elements));
+                }
+            }
+        } finally {
+            view.releaseDOMLock();
         }
     }
 

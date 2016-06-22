@@ -32,6 +32,7 @@
 
 package com.icesoft.faces.webapp.command;
 
+import com.icesoft.faces.context.DOMLockController;
 import com.icesoft.faces.util.DOMUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -46,10 +47,12 @@ import java.util.regex.Pattern;
 public class UpdateElements extends AbstractCommand {
     private final static Pattern START_CDATA = Pattern.compile("<\\!\\[CDATA\\[");
     private final static Pattern END_CDATA = Pattern.compile("\\]\\]>");
+    private final DOMLockController domLockController;
     private Element[] updates;
     private boolean coalesce = true;
 
-    public UpdateElements(boolean coalesce, Element[] updates) {
+    public UpdateElements(DOMLockController domLockController, boolean coalesce, Element[] updates) {
+        this.domLockController = domLockController;
         this.updates = updates;
         this.coalesce = coalesce;
     }
@@ -57,25 +60,31 @@ public class UpdateElements extends AbstractCommand {
     public Command coalesceWithPrevious(UpdateElements updateElementsCommand) {
         ArrayList coallescedUpdates = new ArrayList();
         Element[] previousUpdates = updateElementsCommand.updates;
-
-        for (int i = 0; i < previousUpdates.length; i++) {
-            Element previousUpdate = previousUpdates[i];
-            boolean overriden = false;
-            //test if any of the new updates is replacing the same element
-            for (int j = 0; j < updates.length; j++) {
-                Element update = updates[j];
-                if (update.getAttribute("id").equals(previousUpdate.getAttribute("id"))) {
-                    overriden = true; break;
+        domLockController.aquireDOMLock();
+        try {
+            for (int i = 0; i < previousUpdates.length; i++) {
+                Element previousUpdate = previousUpdates[i];
+                boolean overriden = false;
+                //test if any of the new updates is replacing the same element
+                for (int j = 0; j < updates.length; j++) {
+                    Element update = updates[j];
+                    if (update.getAttribute("id").equals(previousUpdate.getAttribute("id"))) {
+                        overriden = true;
+                        break;
+                    }
+                }
+                //drop overriden updates
+                if (!overriden) {
+                    coallescedUpdates.add(previousUpdate);
                 }
             }
-            //drop overriden updates
-            if (!overriden) {
-                coallescedUpdates.add(previousUpdate);
-            }
-        }
-        coallescedUpdates.addAll(Arrays.asList(updates));
+            coallescedUpdates.addAll(Arrays.asList(updates));
 
-        return new UpdateElements(coalesce, (Element[]) coallescedUpdates.toArray(new Element[coallescedUpdates.size()]));
+            return new UpdateElements(domLockController, coalesce,
+                    (Element[]) coallescedUpdates.toArray(new Element[coallescedUpdates.size()]));
+        } finally {
+            domLockController.releaseDOMLock();
+        }
     }
 
     public Command coalesceWithNext(Command command) {
@@ -121,41 +130,46 @@ public class UpdateElements extends AbstractCommand {
     }
 
     public void serializeTo(Writer writer) throws IOException {
-        writer.write("<updates>");
-        for (int i = 0; i < updates.length; i++) {
-            Element update = updates[i];
-            if (update == null) continue;
-            writer.write("<update address=\"");
-            writer.write(update.getAttribute("id"));
-            writer.write("\" tag=\"" + update.getTagName() + "\">");
+        domLockController.aquireDOMLock();
+        try {
+            writer.write("<updates>");
+            for (int i = 0; i < updates.length; i++) {
+                Element update = updates[i];
+                if (update == null) continue;
+                writer.write("<update address=\"");
+                writer.write(update.getAttribute("id"));
+                writer.write("\" tag=\"" + update.getTagName() + "\">");
 
-            NamedNodeMap attributes = update.getAttributes();
-            for (int j = 0; j < attributes.getLength(); j++) {
-                Attr attribute = (Attr) attributes.item(j);
-                writer.write("<attribute name=\"");
-                writer.write(attribute.getName());
-                String value = attribute.getValue();
-                if ("".equals(value)) {
-                    writer.write("\"/>");
-                } else {
-                    writer.write("\"><![CDATA[");
-                    writer.write(DOMUtils.escapeAnsi(value));
-                    writer.write("]]></attribute>");
+                NamedNodeMap attributes = update.getAttributes();
+                for (int j = 0; j < attributes.getLength(); j++) {
+                    Attr attribute = (Attr) attributes.item(j);
+                    writer.write("<attribute name=\"");
+                    writer.write(attribute.getName());
+                    String value = attribute.getValue();
+                    if ("".equals(value)) {
+                        writer.write("\"/>");
+                    } else {
+                        writer.write("\"><![CDATA[");
+                        writer.write(DOMUtils.escapeAnsi(value));
+                        writer.write("]]></attribute>");
+                    }
                 }
-            }
 
-            String content = DOMUtils.childrenToString(update);
-            if ("".equals(content)) {
-                writer.write("<content/>");
-            } else {
-                writer.write("<content><![CDATA[");
-                content = START_CDATA.matcher(content).replaceAll("<!#cdata#");
-                content = END_CDATA.matcher(content).replaceAll("##>");
-                writer.write(content);
-                writer.write("]]></content>");
+                String content = DOMUtils.childrenToString(update);
+                if ("".equals(content)) {
+                    writer.write("<content/>");
+                } else {
+                    writer.write("<content><![CDATA[");
+                    content = START_CDATA.matcher(content).replaceAll("<!#cdata#");
+                    content = END_CDATA.matcher(content).replaceAll("##>");
+                    writer.write(content);
+                    writer.write("]]></content>");
+                }
+                writer.write("</update>");
             }
-            writer.write("</update>");
+            writer.write("</updates>");
+        } finally {
+            domLockController.releaseDOMLock();
         }
-        writer.write("</updates>");
     }
 }
