@@ -1,4 +1,4 @@
-/* BridgeIt Mobile 1.0.5
+/* BridgeIt Mobile 1.0.7
  *
  * Copyright 2004-2013 ICEsoft Technologies Canada Corp.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -405,9 +405,11 @@ if (!window.console) {
 			return;
 		}
 		if (b.isIOS())  {
+			console.log('bridgeit.deviceCommand() setting checkTimeout ' + new Date().getTime());
 			checkTimeout = setTimeout( function()  {
+				console.log('bridgeit.deviceCommand() lauchFailed ' + new Date().getTime());
 				bridgeit.launchFailed(id);
-			}, 3000);
+			}, 10000);
 		}
 		if (!options)  {
 			options = {};
@@ -734,6 +736,7 @@ if (!window.console) {
 		window.addEventListener("pagehide", function () {
 			//hiding the page either indicates user does not require
 			//BridgeIt or the url scheme invocation has succeeded
+			console.log('bridgeit clearing lauchFailed timeout on pagehide ' + new Date().getTime());
 			clearTimeout(checkTimeout);
 			if (ice.push && ice.push.connection) {
 				pausePush();
@@ -756,7 +759,9 @@ if (!window.console) {
 		}, false);
 
 		document.addEventListener("webkitvisibilitychange", function () {
+			console.log(new Date().getTime() + ' bridgeit webkitvisibilitychange document.hidden=' + document.hidden + ' visibilityState=' + document.visibilityState);
 			if (document.webkitHidden)  {
+				console.log('bridgeit clearing lauchFailed timeout on webkitvisibilitychange ' + new Date().getTime());
                 clearTimeout(checkTimeout);
 				pausePush();
 			} else {
@@ -765,7 +770,9 @@ if (!window.console) {
 		});
 
 		document.addEventListener("visibilitychange", function () {
+			console.log(new Date().getTime() + ' bridgeit visibilitychange document.hidden=' + document.hidden + ' visibilityState=' + document.visibilityState);
 			if (document.hidden)  {
+				console.log('bridgeit clearing lauchFailed timeout on visibilitychange ' + new Date().getTime());
                 clearTimeout(checkTimeout);
 				pausePush();
 			} else {
@@ -776,16 +783,22 @@ if (!window.console) {
 	};
 
 	function jsonPOST(uri, payload) {
+		var prom = new Promiz();
 		var xhr = new XMLHttpRequest();
-		xhr.open('POST', uri, false);
+		xhr.open('POST', uri, true);
 		xhr.setRequestHeader(
 				"Content-Type", "application/json;charset=UTF-8");
+		xhr.onreadystatechange = function() {
+			if (4 == xhr.readyState)  {
+				if (200 == xhr.status)  {
+					prom.resolve(JSON.parse(xhr.responseText));
+				} else {
+					prom.reject({message:xhr.statusText, status: xhr.status});
+			   }
+			}
+		};
 		xhr.send(JSON.stringify(payload));
-		if (xhr.status == 200) {
-	            return JSON.parse(xhr.responseText);
-	        } else {
-	            throw xhr.statusText + '[' + xhr.status + ']';
-	        }
+		return prom;
 	}
 
 	function httpGET(uri, query) {
@@ -845,6 +858,8 @@ if (!window.console) {
 		return url;
 	}
 
+	var pushPromise = new Promiz();
+
 	function loadPushService(uri, apikey, options) {
 		var baseURI = uri + (endsWith(uri, '/') ? '' : '/');
 		if (ice && ice.push) {
@@ -859,6 +874,7 @@ if (!window.console) {
 		ice.push.configuration.contextPath = baseURI;
 		ice.push.configuration.apikey = apikey;
 		if (options)  {
+			ice.push.configuration.account = options.account;
 			ice.push.configuration.realm = options.realm;
 			if (options.auth)  {
 				ice.push.configuration.access_token =
@@ -868,6 +884,7 @@ if (!window.console) {
 		ice.push.connection.startConnection();
 
 		setupCloudPush();
+		pushPromise.resolve();
 	}
 
 	var pushListeners = {};
@@ -938,21 +955,63 @@ if (!window.console) {
 		}
 	}
 
-	function overlayOptions(defaults, options)  {
-	        var merged = {};
-	        for (var prop in defaults)  {
-        		merged[prop] = defaults[prop];
-        	}
+	function addOptions(base, options)  {
 		for (var prop in options)  {
-			merged[prop] = options[prop];
+			base[prop] = options[prop];
 		}
+		return base;
+	}
+
+	function overlayOptions(defaults, options)  {
+		var merged = {};
+
+		addOptions(merged, defaults);
+		addOptions(merged, options);
+
 		return merged;
-        }
+	}
+
+	var anonAuth = new Promiz();
+	anonAuth.resolve();
 
 	var bridgeitServiceDefaults = {
+		account: "icesoft_technologies_inc",
 		realm: "demo.bridgeit.mobi",
-		serviceBase: "http://api.bridgeit.mobi/"
+		serviceBase: "http://api.bridgeit.mobi/",
+		auth: anonAuth
 	};
+
+	//Real Promise support stalled by IE
+	function Promiz()  {
+		var thePromiz = this;
+		var successes = [];
+		var fails = [];
+		this.then = function(success, fail)  {
+			if (success)  {
+				successes.push(success);
+			}
+			if (fail)  {
+				fails.push(fail);
+			}
+		}
+		function callall(funcs, args)  {
+			for (var i = 0; i < funcs.length; i++) {
+				funcs[i].apply(thePromiz, args);
+			}
+		}
+		this.resolve = function()  {
+			callall(successes, arguments);
+			thePromiz.then = function(success, fail)  {
+				success.apply(thePromiz, arguments);
+			}
+		}
+		this.reject = function()  {
+			callall(fails, arguments);
+			thePromiz.then = function(success, fail)  {
+				fail.apply(thePromiz, arguments);
+			}
+		}
+	}
 
 
 	/* *********************** PUBLIC **********************************/
@@ -1008,11 +1067,10 @@ if (!window.console) {
 			'<a style="float:right;" '+
 			'onclick="document.body.removeChild(this.parentNode)">'+
 			'&times;</a>' +
-			'<p>The BridgeIt App is missing ... would you like to download ' +
-			'it?</p>' +
+			'<p>Having Problems?<BR>The BridgeIt App might not be installed.</p><BR>' +
 			'<a href="' + bridgeit.appStoreURL() + '"'+
 			' onclick="document.body.removeChild(this.parentNode)" ' +
-			'target="_blank">Download the utility app now</a>';
+			'target="_blank" style="text-decoration: underline;">Install BridgeIt</a>';
 		document.body.appendChild(popDiv);
 
 		var centerDiv = function(){
@@ -1192,45 +1250,6 @@ if (!window.console) {
 	};
 
 	/**
-	 * Launch an Augmented Reality view.
-	 *
-	 * The Augmented Reality view displays a set of geographic icons on
-	 * a video overlay. The icons are positioned according to the
-	 * orientation of the device so that they appear in a line-of-sight
-	 * with their physical geographic position.  The user can select an
-	 * icon and this is relayed back to the application.
-	 *
-	 * The callback function will be called once the augmented reality
-	 * view exits with the user selection provided in the return value.
-	 * The command is invoked with a locations parameter containing an
-	 * array of named locations, each with a comma-separated latitude,
-	 * longitude, altitude, direction, and icon URL
-	 *
-	 * @alias plugin.augmentedReality
-	 * @param {String} id The id of the return value
-	 * @param {Function} callback The callback function.
-	 * @param {Object} options Additional command options
-	 * @param {Object} options.locations The augmented reality locations to display
-
-	 *
-	 */
-	b.augmentedReality = function(id, callback, options)  {
-		//copy locations directly into options. The JavaScript API
-		//will not change, but the future deviceCommand will accept
-		//the locations as a subparameter to avoid this copying
-		if (!bridgeit.useJSON64 && options && options.locations)  {
-			for (var key in options.locations)  {
-				if (reservedParams.indexOf(key) < 0)  {
-					options[key] = options.locations[key];
-				}
-			}
-			delete options.locations;
-		}
-
-		deviceCommand("aug", id, callback, options);
-	};
-
-	/**
 	 * Activate location tracking.
 	 *
 	 * Location tracking will run in the
@@ -1357,7 +1376,7 @@ if (!window.console) {
 				iOS = true; break;
 			}
 		}
-		return iOS;
+		return !b.isWindowsPhone8() && iOS;
 	};
 
 	/**
@@ -1365,7 +1384,7 @@ if (!window.console) {
 	 * @alias plugin.isIPhone
 	 */
 	b.isIPhone = function(){
-		return navigator.userAgent.indexOf('iPhone') > -1;
+		return !b.isWindowsPhone8() && navigator.userAgent.indexOf('iPhone') > -1;
 	};
 
 	/**
@@ -1373,7 +1392,7 @@ if (!window.console) {
 	 * @alias plugin.isIOS6
 	 */
 	b.isIOS6 = function(){
-		return /(iPad|iPhone|iPod).*OS 6_/.test( navigator.userAgent );
+		return !b.isWindowsPhone8() && /(iPad|iPhone|iPod).*OS 6_/.test( navigator.userAgent );
 	};
 
 	/**
@@ -1381,7 +1400,7 @@ if (!window.console) {
 	 * @alias plugin.isIOS7
 	 */
 	b.isIOS7 = function(){
-		return /(iPad|iPhone|iPod).*OS 7_/.test( navigator.userAgent );
+		return !b.isWindowsPhone8() && /(iPad|iPhone|iPod).*OS 7_/.test( navigator.userAgent );
 	};
 
 	/**
@@ -1389,7 +1408,15 @@ if (!window.console) {
 	 * @alias plugin.isIOS8
 	 */
 	b.isIOS8 = function(){
-		return /(iPad|iPhone|iPod).*OS 8_/.test( navigator.userAgent );
+		return !b.isWindowsPhone8() && /(iPad|iPhone|iPod).*OS 8_/.test( navigator.userAgent );
+	};
+
+	/**
+	 * Is the current browser iOS 7
+	 * @alias plugin.isIOS8
+	 */
+	b.isIOS9 = function(){
+		return !b.isWindowsPhone8() && /(iPad|iPhone|iPod).*OS 9_/.test( navigator.userAgent );
 	};
 
 	/**
@@ -1397,7 +1424,7 @@ if (!window.console) {
 	 * @alias plugin.isAndroid
 	 */
 	b.isAndroid = function(){
-		return navigator.userAgent.toLowerCase()
+		return !b.isWindowsPhone8() && navigator.userAgent.toLowerCase()
 			.indexOf("android") > -1;
 	};
 
@@ -1406,7 +1433,7 @@ if (!window.console) {
 	 * @alias plugin.isAndroidFroyo
 	 */
 	b.isAndroidFroyo = function(){
-		return navigator.userAgent.indexOf("Android 2.2") > -1;
+		return !b.isWindowsPhone8() && navigator.userAgent.indexOf("Android 2.2") > -1;
 	};
 
 	/**
@@ -1414,7 +1441,7 @@ if (!window.console) {
 	 * @alias plugin.isAndroidGingerBreadOrGreater
 	 */
 	b.isAndroidGingerBreadOrGreater = function(){
-		return b.isAndroid() && !b.isAndroidFroyo();
+		return !b.isWindowsPhone8() && b.isAndroid() && !b.isAndroidFroyo();
 	};
 
 
@@ -1425,48 +1452,47 @@ if (!window.console) {
 	b.isWindowsPhone8 = function(){
 		var ua = navigator.userAgent;
 		return ua.indexOf('IEMobile') > -1
-			|| ( ua.indexOf('MSIE 10') > -1
-				&& typeof window.orientation !== 'undefined');
+			|| ( ua.indexOf('MSIE 10') > -1 && typeof window.orientation !== 'undefined')
+			|| ( ua.indexOf('Windows Phone') > -1);
 	};
 
-	var android = b.isAndroid(),
-		supportedAndroid = b.isAndroidGingerBreadOrGreater(),
-		iOS = b.isIOS(),
-		iOS6 = b.isIOS6(),
-		iOS7 = b.isIOS7(),
-		iOS8 = b.isIOS8(),
-		wp8 = b.isWindowsPhone8(),
-		iPhone = b.isIPhone(),
-		supportMatrix;
 
-	b.commands = [ 'camera', 'camcorder','microphone','fetchContacts','aug', 'push','scan','geospy','sms',  'beacons', 'speech'];
-	supportMatrix = {
-		'iPhone':{
-			'6':   [true,     true,       true,        true,           true,  true,  false, true,    true,   false,     false],
-			'7':   [true,     true,       true,        true,           true,  true,  true,  true,    true,   true,      true],
-			'8':   [true,     true,       true,        true,           true,  true,  true,  true,    true,   true,      true]
-		},
-		'iPad-iPod':{
-			'6':   [true,     true,       true,        true,           true,  true,  false, true,    false,  false,     false],
-			'7':   [true,     true,       true,        true,           true,  true,  true,  true,    false,  true,      true],
-			'8':   [true,     true,       true,        true,           true,  true,  true,  true,    false,  true,      true]
-		},
-		'wp8':     [true,     true,       true,        true,           false, true,  true,  false,   true,   false,     false],
-		'android': [true,     true,       true,        true,           false, true,  true,  true,    true,   false,     true]
+	var android, supportedAndroid, iOS, iOS6, iOS7, iOS8, iOS9, wp8, iPhone, supportMatrix;
+
+	wp8 = b.isWindowsPhone8();
+
+	if( !wp8 ){
+		android = b.isAndroid();
+		supportedAndroid = b.isAndroidGingerBreadOrGreater();
+		iOS = b.isIOS();
+		iOS6 = b.isIOS6();
+		iOS7 = b.isIOS7();
+		iOS8 = b.isIOS8();
+		iOS9 = b.isIOS9();
+		wp8 = b.isWindowsPhone8();
+		iPhone = b.isIPhone();
 	}
 
-	/**
-	 * Set to true to have Augmented Reality (in experimental status) be used on Android (default false)
-	 * @property overrideAugmentedRealityAlphaLevel
-	 */
-	b.overrideAugmentedRealityAlphaLevel = false;
+	b.commands = [ 'camera', 'camcorder','microphone','fetchContacts', 'push','scan','geospy','sms',  'beacons', 'speech'];
+	supportMatrix = {
+		'iPhone':{
+			'6':   [true,     true,       true,        true,           true,  false, true,    true,   false,     false],
+			'7':   [true,     true,       true,        true,           true,  true,  true,    true,   true,      true]
+		},
+		'iPad-iPod':{
+			'6':   [true,     true,       true,        true,           true,  false, true,    false,  false,     false],
+			'7':   [true,     true,       true,        true,           true,  true,  true,    false,  true,      true]
+		},
+		'wp8':     [true,     true,       true,        true,           true,  true,  false,   true,   false,     false],
+		'android': [true,     true,       true,        true,           true,  true,  true,    true,   false,     true]
+	}
 
 	/**
 	 * Check if the current browser is supported by the BridgeIt Native Mobile app.
 	 *
 	 * Currently iOS, Android, and some features on Windows Phone 8 are supported.
-	 * @param {String} command The BridgeIt API command that may or may not be supported
 	 * @alias plugin.isSupportedPlatform
+	 * @param {String} command The BridgeIt API command that may or may not be supported
 	 */
 	b.isSupportedPlatform = function(command){
 		if( 'register' == command ){
@@ -1475,12 +1501,7 @@ if (!window.console) {
 		var supported = false;
 		if( android ){
 			if( supportedAndroid ){
-				if( 'aug' == command ){
-					supported = b.overrideAugmentedRealityAlphaLevel;
-				}
-				else{
-					supported = true;
-				}
+				return supportMatrix['android'][b.commands.indexOf(command)];
 			}
 		}
 		else if( wp8 ){
@@ -1501,7 +1522,7 @@ if (!window.console) {
 				if( iOS6 ){
 					return supportMatrix['iPad-iPod']['6'][b.commands.indexOf(command)];
 				}
-				else /* if( iOS7 ) */ {
+				else /* if( iOS7 or higher ) */ {
 					return supportMatrix['iPad-iPod']['7'][b.commands.indexOf(command)];
 				}
 			}
@@ -1594,20 +1615,28 @@ if (!window.console) {
 	 * @param options Additional options
 	 */
 	b.login = function(username, password, options) {
-		var auth = {};
+		var auth = new Promiz();
 
 		options = overlayOptions(bridgeitServiceDefaults, options);
 		//need to also allow specified auth URL in options
 		var uri = bridgeitServiceDefaults.serviceBase + "/auth/";
-		var loginURI = uri + options.realm + "/token/local";
+		var loginURI = uri + options.account + "/realms/" + options.realm + "/token";
 		var loginRequest = {
 			username: username,
 			password: password
 		}
-		auth = jsonPOST(loginURI, loginRequest);
+		jsonPOST(loginURI, loginRequest).then(
+			function(jsonResult) {
+				addOptions(auth, jsonResult);
+				auth.resolve(auth);
+			},
+			function(err) {
+				auth.reject(err);
+			}
+		);
 
 		//save default authorization if default realm
-		if (options.realm === bridgeitServiceDefaults.realm)  {
+		if (options.account == bridgeitServiceDefaults.account && options.realm === bridgeitServiceDefaults.realm)  {
 			bridgeitServiceDefaults.auth = auth;
 		}
 		return auth;
@@ -1616,14 +1645,12 @@ if (!window.console) {
 	/**
 	 * Set up BridgeIt Services.
 	 * @alias useServices
-	 * @param param String realm name or object with named parameters
+	 * @param param object with named parameters
 	 */
 	b.useServices = function(param) {
 		if ("object" === typeof arguments[0])  {
 			bridgeitServiceDefaults =
 					overlayOptions(bridgeitServiceDefaults, param);
-		} else {
-			bridgeitServiceDefaults.realm = param;
 		}
 	}
 
@@ -1639,6 +1666,9 @@ if (!window.console) {
 		if (0 == arguments.length)  {
 			uri = bridgeitServiceDefaults.serviceBase + "/push";
 		} else if ("object" === typeof arguments[0])  {
+			if (!!arguments[0].account)  {
+				account = arguments[0].account;
+			}
 			if (!!arguments[0].realm)  {
 				realm = arguments[0].realm;
 			}
@@ -1652,9 +1682,9 @@ if (!window.console) {
 			//legacy uri,apikey
 		}
 
-		window.setTimeout(function() {
+		bridgeitServiceDefaults.auth.then(function() {
 			loadPushService(uri, apikey, options);
-		}, 1);
+		});
 	};
 
 	/**
@@ -1666,9 +1696,9 @@ if (!window.console) {
 	 * @alias plugin.addPushListener
 	 */
 	b.addPushListener = function(group, callback) {
-		window.setTimeout(function() {
+		pushPromise.then(function() {
 			addPushListenerImpl(group, callback);
-		}, 1);
+		});
 	};
 
 	/**
@@ -1730,6 +1760,48 @@ if (!window.console) {
 			} else {
 				ice.push.notify(groupName, options);
 			}
+		} else {
+			console.error('Push service is not active');
+		}
+	};
+
+	/**
+	 * Push notification to one or more groups resulting from a
+	 * query to the Doc Service.  The query is to be in MongoDB
+	 * format.
+	 *
+	 * This will result in an Ajax Push (and associated callback)
+	 * to any web pages that have added a push listener to a group
+	 * that resulted from the query sent to the Doc Service.  If
+	 * Cloud Push options are provided (options.subject and
+	 * options.detail) a Cloud Push will be dispatched as a home
+	 * screen notification to any devices unable to receive the
+	 * Ajax Push via the web page.
+	 *
+	 * @param {String} docServiceQuery The query to be sent to the Doc Service.
+	 * @param {String} docServiceFields The fields to be sent to the Doc Service.
+	 * @param {String} docServiceOptions The options to be sent to the Doc Service.
+	 * @param {Object} options Options that a notification can carry
+	 * @param {String} options.subject The subject heading for the notification
+	 * @param {String} options.message The message text to be sent in the notification body
+	 * @alias plugin.pushQuery
+	 */
+ 	b.pushQuery = function(docServiceQuery, docServiceFields, docServiceOptions, options) {
+		if (!absoluteGoBridgeItURL)  {
+			if (!!bridgeit.goBridgeItURL)  {
+				absoluteGoBridgeItURL = getAbsoluteURL(bridgeit.goBridgeItURL);
+			}
+		}
+		if (!!absoluteGoBridgeItURL)  {
+			if (options && !options.url)  {
+				options.url = absoluteGoBridgeItURL;
+			}
+		}
+		if (ice && ice.push && ice.push.configuration.contextPath) {
+			if (options) {
+				console.log("bridgeit.push " + JSON.stringify(options));
+			}
+			ice.push.notifyQuery(docServiceQuery, docServiceFields, docServiceOptions, options);
 		} else {
 			console.error('Push service is not active');
 		}

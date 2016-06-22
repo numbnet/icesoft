@@ -305,28 +305,7 @@ public class ClientDescriptor implements Serializable{
             return BridgeItCommand.wp8Support[index];
         }
         else if( isIOS() ){
-            if( _userAgentInfo.isIphone() ){
-                if( isIOS6() ){
-                    return BridgeItCommand.iPhone6Support[index];
-                }
-                else if( isIOS7() ){
-                    return BridgeItCommand.iPhone7Support[index];
-                }
-                else if( isIOS8() ){
-                    return BridgeItCommand.iPhone8Support[index];
-                }
-            }
-            else {
-                if( isIOS6() ){
-                    return BridgeItCommand.iPad6Support[index];
-                }
-                else if( isIOS7() ){
-                    return BridgeItCommand.iPad7Support[index];
-                }
-                else if( isIOS8() ){
-                    return BridgeItCommand.iPad8Support[index];
-                }
-            }
+                    return BridgeItCommand.iOS9PlusSupport[index];
         }
         return supported;
     };
