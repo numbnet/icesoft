@@ -49,7 +49,6 @@ import com.icesoft.faces.webapp.http.core.LifecycleExecutor;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
-import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
@@ -67,7 +66,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-public class View implements CommandQueue {
+public class View implements CommandQueue, DOMLockController {
 
     public static final String ICEFACES_STATE_MAPS = "icefaces.state.maps";
     private static final Log Log = LogFactory.getLog(View.class);
@@ -133,6 +132,7 @@ public class View implements CommandQueue {
     private Page page = lifecycleExecutedPage;
     private final ReentrantLock queueLock = new ReentrantLock();
     private final ReentrantLock lifecycleLock = new ReentrantLock();
+    private final ReentrantLock domLock = new ReentrantLock();
     private BridgeFacesContext facesContext;
     private PersistentFacesState persistentFacesState;
     private Command currentCommand = NOOP;
@@ -362,6 +362,14 @@ public class View implements CommandQueue {
 
     public void onRelease(Runnable runnable) {
         onReleaseListeners.add(runnable);
+    }
+
+    public void aquireDOMLock() {
+        domLock.lock();
+    }
+
+    public void releaseDOMLock() {
+        domLock.unlock();
     }
 
     private interface Page {

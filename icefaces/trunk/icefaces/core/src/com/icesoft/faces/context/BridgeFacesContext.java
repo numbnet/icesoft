@@ -467,19 +467,24 @@ public class
         if (document == null) return;
         Map parameters = externalContext.getRequestParameterValuesMap();
 
-        NodeList formElements = document.getElementsByTagName("form");
-        int formElementsLength = formElements.getLength();
-        for (int i = 0; i < formElementsLength; i++) {
-            Element formElement = (Element) formElements.item(i);
-            String id = formElement.getAttribute("id");
-            //String formClientId = ((String[]) parameters.get(id))[0];
-            //if (formClientId != null && formClientId.equals(id)) {
-            if (parameters.containsKey(id)) {
-                applyBrowserFormChanges(parameters, document, formElement);
-                break; // This assumes only one form is submitted
+        view.aquireDOMLock();
+        try {
+            NodeList formElements = document.getElementsByTagName("form");
+            int formElementsLength = formElements.getLength();
+            for (int i = 0; i < formElementsLength; i++) {
+                Element formElement = (Element) formElements.item(i);
+                String id = formElement.getAttribute("id");
+                //String formClientId = ((String[]) parameters.get(id))[0];
+                //if (formClientId != null && formClientId.equals(id)) {
+                if (parameters.containsKey(id)) {
+                    applyBrowserFormChanges(parameters, document, formElement);
+                    break; // This assumes only one form is submitted
+                }
             }
+            documentStore.cache(document);
+        } finally {
+            view.releaseDOMLock();
         }
-        documentStore.cache(document);
     }
 
     protected void applyBrowserFormChanges(Map parameters, Document document, Element form) {
