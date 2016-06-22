@@ -34,6 +34,7 @@ public enum BridgeItCommand {
     static boolean[] iPhone6Support =  {true,  true,   true,   true,   true,   true,   false,  true,   true,   false,  false,   true};
     static boolean[] iPhone7Support =  {true,  true,   true,   true,   true,   true,   true,   true,   true,   true,   true,    true};
     static boolean[] iPhone8Support =  {true,  true,   true,   true,   true,   true,   true,   true,   true,   true,   true,    true};
+    static boolean[] iOS9PlusSupport =  {true,  true,   true,   true,   true,   true,   true,   true,   true,   true,   true,    true};
     static boolean[] iPad6Support =    {true,  true,   true,   true,   true,   true,   false,  true,   false,  false,  false,   true};
     static boolean[] iPad7Support =    {true,  true,   true,   true,   true,   true,   true,   true,   false,  true,   true,    true};
     static boolean[] iPad8Support =    {true,  true,   true,   true,   true,   true,   true,   true,   false,  true,   true,    true};
