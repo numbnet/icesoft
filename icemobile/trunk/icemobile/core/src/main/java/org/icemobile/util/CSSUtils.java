@@ -103,7 +103,9 @@ public class CSSUtils {
             view = client.isHandheldBrowser() ? View.SMALL : View.LARGE;
         }
         
-        if (client.isBlackBerry10OS()) {
+		if (client.isDesktopBrowser() && view == View.LARGE) {
+			theme = Theme.BASE;
+        } else if (client.isBlackBerry10OS()) {
             theme = Theme.BB10;
         }
         else if (client.isBlackBerryOS()) {
