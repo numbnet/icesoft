@@ -21,7 +21,9 @@ public interface NotificationProvider {
     public static final class Property {
         public static final class Name {
             public static final String DETAIL = "detail";
+            public static final String PRIORITY = "priority";
             public static final String SUBJECT = "subject";
+            public static final String TIME = "time";
             public static final String URL = "url";
         }
     }
