@@ -19,8 +19,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +37,19 @@ implements ServletContextListener {
     private static final Logger LOGGER = Logger.getLogger(ExtensionRegistry.class.getName());
 
     private static final String EXTENSION_REGISTRY_MAP_NAME = ExtensionRegistry.class.getName() + "$Map";
+
+    private static final Lock extensionRegistryListenerSetLock = new ReentrantLock();
+    private static final Set<ExtensionRegistryListener> extensionRegistryListenerSet =
+        new HashSet<ExtensionRegistryListener>();
+
+    public static void addExtensionRegistryListener(final ExtensionRegistryListener listener) {
+        lockExtensionRegistryListenerSet();
+        try {
+            getModifiableExtensionRegistryListenerSet().add(listener);
+        } finally {
+            unlockExtensionRegistryListenerSet();
+        }
+    }
 
     public void contextInitialized(final ServletContextEvent event) {
         setExtensionRegistryMapIfNeeded(new HashMap<String, List<ExtensionRegistryEntry>>(), event.getServletContext());
@@ -148,11 +165,21 @@ implements ServletContextListener {
         }
         _extensionRegistryEntryList.add(new ExtensionRegistryEntry(extension, quality));
         Collections.sort(_extensionRegistryEntryList);
+        registered(name, extension, quality);
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(
                 Level.FINE,
                 "Successfully registered Extension '" + extension + "' with quality '" + quality + "'."
             );
+        }
+    }
+
+    public static void removeExtensionRegistryListener(final ExtensionRegistryListener listener) {
+        lockExtensionRegistryListenerSet();
+        try {
+            getModifiableExtensionRegistryListenerSet().remove(listener);
+        } finally {
+            unlockExtensionRegistryListenerSet();
         }
     }
 
@@ -169,6 +196,7 @@ implements ServletContextListener {
             for (final ExtensionRegistryEntry _extensionRegistryEntry : _extensionRegistryEntryList) {
                 if (_extensionRegistryEntry.getExtension() == extension) {
                     _extensionRegistryEntryList.remove(_extensionRegistryEntry);
+                    unregistered(name, extension);
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.log(
                             Level.FINE,
@@ -184,6 +212,48 @@ implements ServletContextListener {
                 Level.FINE,
                 "Extension '" + extension + "' has not been registered."
             );
+        }
+    }
+
+    protected static Lock getExtensionRegistryListenerSetLock() {
+        return extensionRegistryListenerSetLock;
+    }
+
+    protected static Set<ExtensionRegistryListener> getModifiableExtensionRegistryListenerSet() {
+        return extensionRegistryListenerSet;
+    }
+
+    protected static void lockExtensionRegistryListenerSet() {
+        getExtensionRegistryListenerSetLock().lock();
+    }
+
+    protected static void registered(final String name, final Object extension, final int quality) {
+        ExtensionRegistryEvent _event =
+            new ExtensionRegistryEvent(name, extension, quality, ExtensionRegistry.class.getName());
+        lockExtensionRegistryListenerSet();
+        try {
+            for (final ExtensionRegistryListener _listener : getModifiableExtensionRegistryListenerSet()) {
+                _listener.registered(_event);
+            }
+        } finally {
+            unlockExtensionRegistryListenerSet();
+        }
+    }
+
+    protected static void unlockExtensionRegistryListenerSet() {
+        getExtensionRegistryListenerSetLock().unlock();
+    }
+
+    protected static void unregistered(final String name, final Object extension) {
+        ExtensionRegistryEvent _event =
+            new ExtensionRegistryEvent(name, extension, ExtensionRegistry.class.getName());
+        lockExtensionRegistryListenerSet();
+        try {
+            for (final ExtensionRegistryListener _listener : getModifiableExtensionRegistryListenerSet()) {
+                _listener.unregistered(_event);
+            }
+        } finally {
+            unlockExtensionRegistryListenerSet();
         }
     }
 
