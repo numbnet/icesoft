@@ -16,6 +16,7 @@
 package org.icesoft.notify.cloud.core;
 
 import java.util.Map;
+import java.util.Set;
 
 public interface NotificationProvider {
     public static final class Property {
@@ -31,6 +32,8 @@ public interface NotificationProvider {
     String getProtocol();
 
     void registerTo(CloudNotificationService cloudNotificationService);
+
+    void send(Map<String, String> propertyMap, Set<String> notifyBackURISet);
 
     void send(Map<String, String> propertyMap, String notifyBackURI);
 

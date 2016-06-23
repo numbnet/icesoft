@@ -62,6 +62,7 @@ implements Service {
             private static final int MAXIMUM_POOL_SIZE = 25;
         }
     }
+
     private final Map<String, NotificationProvider> protocolToNotificationProviderMap =
         new HashMap<String, NotificationProvider>();
 
@@ -319,19 +320,18 @@ implements Service {
         this.executorService = executorService;
     }
 
-    private NotificationProvider getNotificationProvider(final String notifyBackURI)
+    private NotificationProvider getNotificationProvider(final String scheme)
     throws ProtocolException {
-        URI _notifyBackURI= URI.create(notifyBackURI);
-        if (getModifiableProtocolToNotificationProviderMap().containsKey(_notifyBackURI.getScheme())) {
-            return getModifiableProtocolToNotificationProviderMap().get(_notifyBackURI.getScheme());
+        if (getModifiableProtocolToNotificationProviderMap().containsKey(scheme)) {
+            return getModifiableProtocolToNotificationProviderMap().get(scheme);
         } else {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(
                     Level.FINE,
-                    "Notification Provider for Protocol '" + _notifyBackURI.getScheme() + "' not found."
+                    "Notification Provider for Protocol '" + scheme + "' not found."
                 );
             }
-            throw new ProtocolException("Unknown Protocol '" + _notifyBackURI.getScheme() + "'.");
+            throw new ProtocolException("Unknown Protocol '" + scheme + "'.");
         }
     }
 
@@ -382,18 +382,32 @@ implements Service {
         }
 
         public void run() {
+            Map<String, Set<String>> _schemeToNotifyBackURISetMap = new HashMap<String, Set<String>>();
             for (final String _notifyBackURI : getNotifyBackURISet()) {
+                String _scheme = getScheme(_notifyBackURI);
+                Set<String> _notifyBackURISet;
+                if (_schemeToNotifyBackURISetMap.containsKey(_scheme)) {
+                    _notifyBackURISet = _schemeToNotifyBackURISetMap.get(_scheme);
+                } else {
+                    _notifyBackURISet = new HashSet<String>();
+                    _schemeToNotifyBackURISetMap.put(_scheme, _notifyBackURISet);
+                }
+                _notifyBackURISet.add(_notifyBackURI);
+            }
+            for (final Map.Entry<String, Set<String>> _schemeToNotifyBackURISetMapEntry :
+                    _schemeToNotifyBackURISetMap.entrySet()) {
+
                 try {
                     getCloudNotificationService().
-                        getNotificationProvider(_notifyBackURI).
-                            send(getPropertyMap(), _notifyBackURI);
+                        getNotificationProvider(_schemeToNotifyBackURISetMapEntry.getKey()).
+                            send(getPropertyMap(), _schemeToNotifyBackURISetMapEntry.getValue());
                 } catch (final ProtocolException exception) {
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.log(
                             Level.FINE,
                             "Failed to send Cloud Push Notification with " +
                                 "Properties '" + getPropertyMap() + "' to " +
-                                "Notify-Back-URI '" + _notifyBackURI + "'.  " +
+                                "Notify-Back-URIs '" + _schemeToNotifyBackURISetMapEntry.getValue() + "'.  " +
                                     "(" + exception.getMessage() + ")"
                         );
                     }
@@ -403,7 +417,7 @@ implements Service {
                             Level.WARNING,
                             "Failed to send Cloud Push Notification with " +
                                 "Properties '" + getPropertyMap() + "' to " +
-                                "Notify-Back-URI '" + _notifyBackURI + "'." +
+                                "Notify-Back-URIs '" + _schemeToNotifyBackURISetMapEntry.getValue() + "'." +
                             throwable
                         );
                     }
@@ -464,6 +478,10 @@ implements Service {
             } finally {
                 getFutureLock().unlock();
             }
+        }
+
+        private String getScheme(final String notifyBackURI) {
+            return URI.create(notifyBackURI).getScheme();
         }
     }
 }

@@ -16,6 +16,7 @@
 package org.icesoft.notify.cloud.core;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,6 +63,12 @@ implements NotificationProvider {
 
     public String getProtocol() {
         return Constant.PROTOCOL;
+    }
+
+    public void send(final Map<String, String> propertyMap, final Set<String> notifyBackURISet) {
+        for (final String _notifyBackURI : notifyBackURISet) {
+            send(propertyMap, _notifyBackURI);
+        }
     }
 
     public void send(final Map<String, String> propertyMap, final String notifyBackURI) {
