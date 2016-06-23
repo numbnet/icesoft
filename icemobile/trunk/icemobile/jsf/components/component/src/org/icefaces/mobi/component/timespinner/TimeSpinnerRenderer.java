@@ -24,6 +24,7 @@ import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icemobile.util.CSSUtils;
 import org.icefaces.mobi.utils.JSONBuilder;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -108,6 +109,13 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             }
             if (readonly) {
                 writer.writeAttribute("readonly", component, "readonly");
+            }
+            if (readonly && !disabled ) {
+                ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+                // MOBI-1157 since readonly is not being respected in IOS
+                if (client.isIOS()){
+                    writer.writeAttribute("disabled", component, "disabled");
+                }
             }
             if (!readonly && !disabled && hasBehaviors || singleSubmit) {
                 String jsCall = getJSCall(context, hasBehaviors, clientId, cbh, singleSubmit);
