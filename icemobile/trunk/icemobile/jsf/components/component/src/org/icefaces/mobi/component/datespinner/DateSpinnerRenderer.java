@@ -24,6 +24,7 @@ import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.HTML;
 import org.icemobile.util.CSSUtils;
 import org.icefaces.mobi.utils.JSONBuilder;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -114,6 +115,13 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
             if (readonly) {
                 writer.writeAttribute("readonly", component, "readonly");
             }
+            if (readonly && !disabled ) {
+                ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+                // MOBI-1157 since readonly is not being respected in IOS
+                if (client.isIOS()){
+                    writer.writeAttribute("disabled", component, "disabled");
+                }
+            }
             boolean noJs = false;
             if (readonly || disabled){
                 noJs = true;
@@ -157,7 +165,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         if (hasBehaviors) {
             JSONBuilder jb = JSONBuilder.create();
             this.encodeClientBehaviors(context, cbh, jb);
-   // System.out.println(" jb to string="+jb.toString());
             String bh = ", "+jb.toString();
             bh = bh.replace("\"", "\'");
             builder2.append(bh.toString());
