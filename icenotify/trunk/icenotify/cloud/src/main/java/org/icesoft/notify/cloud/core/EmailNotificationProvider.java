@@ -19,6 +19,7 @@ import static org.icesoft.util.StringUtilities.isNullOrIsEmpty;
 
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -118,7 +119,7 @@ implements NotificationProvider {
                         "User Name: '" + userName + "'" +
                         "Password: '" + password.replaceAll(".", "*") + "'" +
                         "Security: '" + security + "', " +
-                        "Verify: '" + verify + "'" +
+                        "Verify: '" + verify + "', " +
                         "Debug: '" + debug + "'" +
                     ")"
             );
@@ -157,6 +158,12 @@ implements NotificationProvider {
 
     public String getProtocol() {
         return Constant.PROTOCOL;
+    }
+
+    public void send(final Map<String, String> propertyMap, final Set<String> notifyBackURISet) {
+        for (final String _notifyBackURI : notifyBackURISet) {
+            send(propertyMap, _notifyBackURI);
+        }
     }
 
     public void send(final Map<String, String> propertyMap, final String notifyBackURI) {
@@ -266,7 +273,10 @@ implements NotificationProvider {
             if (hasNotificationProvider()) {
                 super.contextDestroyed(event);
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.log(Level.INFO, "E-mail Notification Provider unregistered successfully.");
+                    LOGGER.log(
+                        Level.INFO,
+                        "E-mail Notification Provider unregistered successfully."
+                    );
                 }
             }
         }
@@ -504,11 +514,18 @@ implements NotificationProvider {
                     );
                     super.run();
                     if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.log(Level.INFO, "E-mail Notification Provider registered successfully.");
+                        LOGGER.log(
+                            Level.INFO,
+                            "E-mail Notification Provider registered successfully."
+                        );
                     }
                 } catch (final ClassNotFoundException exception) {
                     if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.log(Level.INFO, "E-mail Notification Provider is off.  (Missing mail.jar)");
+                        LOGGER.log(
+                            Level.INFO,
+                            "E-mail Notification Provider is off.  " +
+                                "(Missing mail.jar)"
+                        );
                     }
                 }
             }
