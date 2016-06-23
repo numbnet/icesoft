@@ -247,24 +247,7 @@
                     <ui:param name="javaResources" value="#{videoBean.javaResources}"/>
                 </ui:include>
              </mobi:view>
-             
-             <!-- AUGMENTED REALITY -->
-             <mobi:view id="arDemo" title="Augmented Reality" menuIcon="globe" divider="Native"
-                navBarGroup="ar">
-                 <ui:include src="/WEB-INF/includes/examples/device/reality-example.xhtml" />
-             </mobi:view>
-             <mobi:view id="arDocs" title="Docs" menuIcon="book"
-                 includeInMenu="false" navBarGroup="ar">
-                <ui:include src="/WEB-INF/includes/examples/device/reality-desc.xhtml" />
-             </mobi:view>
-             <mobi:view id="arCode" title="Code" menuIcon="code"
-                 includeInMenu="false" navBarGroup="ar">
-                <ui:include src="/WEB-INF/includes/examples/example-resources2.xhtml">
-                    <ui:param name="xhtmlResources" value="#{realityBean.xhtmlResources}"/>
-                    <ui:param name="javaResources" value="#{realityBean.javaResources}"/>
-                </ui:include>
-             </mobi:view>
-             
+
              <!-- CAMCORDER -->
              <mobi:view id="camcorder" title="Camcorder" menuIcon="film" 
                 navBarGroup="camcorder">
