@@ -45,7 +45,7 @@ import org.icefaces.mobi.utils.TLDConstants;
 
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
-        @ResourceDependency(library = "icefaces.mobi", name = "core/bridgeit.js"),
+        @ResourceDependency(library = "icefaces.mobi", name = "core/bridgeit.js")
 })
 public class CameraMeta extends UIComponentBaseMeta {
 

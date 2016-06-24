@@ -38,7 +38,7 @@ import javax.faces.application.ResourceDependency;
 
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
-        @ResourceDependency(library = "icefaces.mobi", name = "core/bridgeit.js"),
+        @ResourceDependency(library = "icefaces.mobi", name = "core/bridgeit.js")
 })
 public class ScanMeta extends UIComponentBaseMeta {
 

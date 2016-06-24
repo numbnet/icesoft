@@ -36,7 +36,7 @@ import org.icefaces.mobi.utils.TLDConstants;
 )
 
 @ResourceDependencies({
-        @ResourceDependency(library = "icefaces.mobi", name = "core/bridgeit.js"),
+        @ResourceDependency(library = "icefaces.mobi", name = "core/bridgeit.js")
 })
 public class RegisterCloudPushMeta extends UIComponentBaseMeta{
     
