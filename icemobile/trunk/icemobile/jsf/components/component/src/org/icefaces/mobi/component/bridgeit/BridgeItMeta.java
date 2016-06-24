@@ -34,7 +34,7 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 )
 
 @ResourceDependencies({
-        @ResourceDependency(library = "icefaces.mobi", name = "core/bridgeit.js"),
+        @ResourceDependency(library = "icefaces.mobi", name = "core/bridgeit.js")
 })
 public class BridgeItMeta extends UIComponentBaseMeta{
 
