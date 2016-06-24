@@ -17,12 +17,15 @@ package org.icesoft.notify.cloud.core;
 
 import static org.icesoft.util.StringUtilities.isNullOrIsEmpty;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -161,54 +164,11 @@ implements NotificationProvider {
     }
 
     public void send(final Map<String, String> propertyMap, final Set<String> notifyBackURISet) {
-        for (final String _notifyBackURI : notifyBackURISet) {
-            send(propertyMap, _notifyBackURI);
-        }
+        send(propertyMap, notifyBackURISet, 3, 1000);
     }
 
     public void send(final Map<String, String> propertyMap, final String notifyBackURI) {
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(
-                Level.FINE,
-                "Sending E-mail Cloud Push Notification with " +
-                    "Properties '" + propertyMap + "' to Notify-Back-URI '" + notifyBackURI + "'."
-            );
-        }
-        try {
-            MimeMessage _mimeMessage = new MimeMessage(getSession());
-            _mimeMessage.setFrom(getFrom());
-            _mimeMessage.setSubject(propertyMap.get(NotificationProvider.Property.Name.SUBJECT));
-            _mimeMessage.setText(
-                new StringBuilder().
-                    append(propertyMap.get(NotificationProvider.Property.Name.DETAIL)).
-                    append(" [").append(propertyMap.get(NotificationProvider.Property.Name.URL)).append("]").
-                        toString()
-            );
-            Transport _transport = getSession().getTransport(getScheme());
-            _transport.connect(getHost(), getPort(), getUserName(), getPassword());
-            _transport.sendMessage(
-                _mimeMessage,
-                new InternetAddress[] {
-                    new InternetAddress(notifyBackURI.substring("mailto:".length()))
-                }
-            );
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(
-                    Level.FINE,
-                    "Successfully sent E-mail Cloud Push Notification with " +
-                        "Properties '" + propertyMap + "' to Notify-Back-URI '" + notifyBackURI + "'."
-                );
-            }
-        } catch (final MessagingException exception) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(
-                    Level.WARNING,
-                    "Failed to send E-mail Cloud Push Notification with " +
-                        "Properties '" + propertyMap + "' to Notify-Back-URI '" + notifyBackURI + "'.",
-                    exception
-                );
-            }
-        }
+        send(propertyMap, new HashSet<String>(Arrays.asList(notifyBackURI)), 3, 1000);
     }
 
     @Override
@@ -260,6 +220,69 @@ implements NotificationProvider {
 
     protected String getUserName() {
         return userName;
+    }
+
+    protected void send(
+        final Map<String, String> propertyMap, final Set<String> notifyBackURISet, final int retries,
+        final long delay) {
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.log(
+                Level.FINE,
+                "Sending E-mail Cloud Push Notification with " +
+                    "Properties '" + propertyMap + "' to Notify-Back-URIs '" + notifyBackURISet + "'."
+            );
+        }
+        try {
+            MimeMessage _mimeMessage = new MimeMessage(getSession());
+            _mimeMessage.setFrom(getFrom());
+            _mimeMessage.setSubject(propertyMap.get(NotificationProvider.Property.Name.SUBJECT));
+            _mimeMessage.setText(
+                new StringBuilder().
+                    append(propertyMap.get(NotificationProvider.Property.Name.DETAIL)).
+                    append(" [").append(propertyMap.get(NotificationProvider.Property.Name.URL)).append("]").
+                        toString()
+            );
+            if (notifyBackURISet.size() == 1) {
+                Set<InternetAddress> _toSet = new HashSet<InternetAddress>();
+                for (final String _notifyBackURI : notifyBackURISet) {
+                    _toSet.add(new InternetAddress(_notifyBackURI.substring("mailto:".length())));
+                }
+                _mimeMessage.setRecipients(
+                    Message.RecipientType.TO, _toSet.toArray(new InternetAddress[_toSet.size()])
+                );
+            } else {
+                Set<InternetAddress> _bccSet = new HashSet<InternetAddress>();
+                for (final String _notifyBackURI : notifyBackURISet) {
+                    _bccSet.add(new InternetAddress(_notifyBackURI.substring("mailto:".length())));
+                }
+                _mimeMessage.setRecipients(
+                    Message.RecipientType.BCC, _bccSet.toArray(new InternetAddress[_bccSet.size()])
+                );
+            }
+            // throws NoSuchProviderException
+            Transport _transport = getSession().getTransport(getScheme());
+            // throws IllegalStateException, AuthenticationFailedException, MessagingException
+            _transport.connect(getHost(), getPort(), getUserName(), getPassword());
+            // throws SendFailedException, MessagingException
+            _transport.sendMessage(_mimeMessage, _mimeMessage.getAllRecipients());
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(
+                    Level.FINE,
+                    "Successfully sent E-mail Cloud Push Notification with " +
+                        "Properties '" + propertyMap + "' to Notify-Back-URIs '" + notifyBackURISet + "'."
+                );
+            }
+        } catch (final MessagingException exception) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(
+                    Level.WARNING,
+                    "Failed to send E-mail Cloud Push Notification with " +
+                        "Properties '" + propertyMap + "' to Notify-Back-URIs '" + notifyBackURISet + "'.",
+                    exception
+                );
+            }
+        }
     }
 
     @WebListener
