@@ -19,6 +19,7 @@
     <resource name="showcase.css" library="css">
         <requires>
             <resource name="android_light.css"  library="org.icefaces.component.skins"/>
+            <resource name="android_light_desktop.css"  library="org.icefaces.component.skins"/>
             <resource name="android_dark.css"  library="org.icefaces.component.skins"/>
             <resource name="archaic.css"  library="org.icefaces.component.skins"/>
             <resource name="bb10.css"  library="org.icefaces.component.skins"/>

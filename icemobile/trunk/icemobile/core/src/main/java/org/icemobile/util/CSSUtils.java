@@ -54,7 +54,7 @@ public class CSSUtils {
         
     public enum Theme{ 
         BASE, IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, 
-        ARCHAIC, ANDROID_LIGHT, ANDROID_DARK, BB10, JQM, IOS7;
+        ARCHAIC, ANDROID_LIGHT, ANDROID_LIGHT_DESKTOP, ANDROID_DARK, BB10, JQM, IOS7;
         public String fileName(){
             return this.name().toLowerCase();
         }
@@ -103,9 +103,7 @@ public class CSSUtils {
             view = client.isHandheldBrowser() ? View.SMALL : View.LARGE;
         }
         
-		if (client.isDesktopBrowser() && view == View.LARGE) {
-			theme = Theme.BASE;
-        } else if (client.isBlackBerry10OS()) {
+        if (client.isBlackBerry10OS()) {
             theme = Theme.BB10;
         }
         else if (client.isBlackBerryOS()) {
