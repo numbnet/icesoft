@@ -28,6 +28,7 @@
     </phase-listener>
   </lifecycle>
  <application>
+     <resource-handler>org.icefaces.mobi.renderkit.BridgeItResourceHandler</resource-handler>
     <resource-handler>org.icefaces.mobi.component.qrcode.generator.QRCodeResourceHandler</resource-handler>
     <system-event-listener>
         <system-event-listener-class>org.icefaces.mobi.renderkit.InlineScriptEventListener</system-event-listener-class>

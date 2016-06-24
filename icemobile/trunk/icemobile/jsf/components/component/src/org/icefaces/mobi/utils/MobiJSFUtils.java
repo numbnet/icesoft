@@ -29,6 +29,11 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -48,8 +53,8 @@ import org.icemobile.util.Utils;
 public class MobiJSFUtils {
     
     private static Logger logger = Logger.getLogger(Utils.class.getName());
-    
     static String COOKIE_FORMAT = "org.icemobile.cookieformat";
+    public static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
     private static Map<String, String> CONTENT_TYPES;
     static {
@@ -290,7 +295,10 @@ public class MobiJSFUtils {
         }
     }
 
-
+    public static Date parseHTTPDate(String date) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat(HTTP_DATE_FORMAT, Locale.ENGLISH);
+        return formatter.parse(date);
+    }
 
 
 }
