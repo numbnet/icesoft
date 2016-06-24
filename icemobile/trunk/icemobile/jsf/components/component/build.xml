@@ -451,6 +451,7 @@
 	<includeBase3Resources dir="${theme.build.path}/ipad" skin="ipad" />
 	<includeBase3Resources dir="${theme.build.path}/iphone" skin="iphone" />
 	<includeBase3Resources dir="${theme.build.path}/android_light" skin="android_light" />
+	<includeBase3Resources dir="${theme.build.path}/android_light_desktop" skin="android_light_desktop" />
 	<includeBase3Resources dir="${theme.build.path}/android_dark" skin="android_dark" />
 	<includeBase3Resources dir="${theme.build.path}/jqm" skin="jqm" />
 	<includeBase3Resources dir="${theme.build.path}/ios7" skin="ios7" />
@@ -469,6 +470,7 @@
 	<concatskin name="archaic" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="simulator" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="android_light" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+	<concatskin name="android_light_desktop" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="android_dark" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="jqm" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<concatskin name="ios7" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
@@ -526,6 +528,7 @@
 	<generatesprites skin="iphone" />
 	<generatesprites skin="ipad" />
 	<generatesprites skin="android_light" />
+	<generatesprites skin="android_light_desktop" />
 	<generatesprites skin="android_dark" />
 	<generatesprites skin="jqm" />
 	<generatesprites skin="bberry" />
@@ -539,6 +542,7 @@
 	<prepare-skin name="iphone" />
 	<prepare-skin name="ipad" />
 	<prepare-skin name="android_light" />
+	<prepare-skin name="android_light_desktop" />
 	<prepare-skin name="android_dark" />
 	<prepare-skin name="jqm" />
 	<prepare-skin name="bberry" />

@@ -113,6 +113,10 @@ public class DeviceResourceRenderer extends Renderer implements
         if (theme == Theme.ANDROID || theme == Theme.HONEYCOMB) {
             theme = Theme.ANDROID_DARK;
         }
+
+		if (theme == Theme.ANDROID_LIGHT && client.isDesktopBrowser()) {
+			theme = Theme.ANDROID_LIGHT_DESKTOP;
+		}
         context.getExternalContext().getSessionMap().put(MOBI_THEME_KEY, theme);
     }
 
