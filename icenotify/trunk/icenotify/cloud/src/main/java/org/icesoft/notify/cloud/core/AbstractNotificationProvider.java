@@ -104,17 +104,8 @@ implements NotificationProvider {
                 }
             }
 
-            protected void awaitSignal() {
-                CloudNotificationService.getSetUpLock(getServletContext()).lock();
-                try {
-                    try {
-                        CloudNotificationService.getSetUpCondition(getServletContext()).await();
-                    } catch (final InterruptedException exception) {
-                        // Do nothing.
-                    }
-                } finally {
-                    CloudNotificationService.getSetUpLock(getServletContext()).unlock();
-                }
+            protected void waitForSetUpToComplete() {
+                CloudNotificationService.waitForSetUpToComplete(getServletContext());
             }
 
             protected NameValuePair<String, String> getNameValuePair(
