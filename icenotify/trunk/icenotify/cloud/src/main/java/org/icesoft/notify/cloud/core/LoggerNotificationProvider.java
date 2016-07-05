@@ -139,7 +139,7 @@ implements NotificationProvider {
 
             @Override
             public void run() {
-                awaitSignal();
+                waitForSetUpToComplete();
                 Configuration _configuration =
                     new SystemConfiguration(
                         new ServletContextConfiguration(

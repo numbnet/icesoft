@@ -43,11 +43,13 @@ import org.icesoft.util.Configuration;
 import org.icesoft.util.SystemConfiguration;
 import org.icesoft.util.concurrent.NamedThreadFactory;
 import org.icesoft.util.servlet.ExtensionRegistry;
+import org.icesoft.util.servlet.ExtensionRegistryEvent;
+import org.icesoft.util.servlet.ExtensionRegistryListener;
 import org.icesoft.util.servlet.Service;
 import org.icesoft.util.servlet.ServletContextConfiguration;
 
 public class CloudNotificationService
-implements Service {
+implements ExtensionRegistryListener, Service {
     private static final Logger LOGGER = Logger.getLogger(CloudNotificationService.class.getName());
 
     private static class Property {
@@ -63,6 +65,8 @@ implements Service {
         }
     }
 
+    private static boolean setUpComplete = false;
+
     private final Map<String, NotificationProvider> protocolToNotificationProviderMap =
         new HashMap<String, NotificationProvider>();
 
@@ -70,26 +74,6 @@ implements Service {
 
     public CloudNotificationService(final ServletContext servletContext) {
         setUp(servletContext);
-    }
-
-    public static synchronized Condition getSetUpCondition(final ServletContext servletContext) {
-        Condition _setUpCondition =
-            (Condition)servletContext.getAttribute(CloudNotificationService.class.getName() + "#setUpCondition");
-        if (_setUpCondition == null) {
-            _setUpCondition = getSetUpLock(servletContext).newCondition();
-            servletContext.setAttribute(CloudNotificationService.class.getName() + "#setUpCondition", _setUpCondition);
-        }
-        return _setUpCondition;
-    }
-
-    public static synchronized Lock getSetUpLock(final ServletContext servletContext) {
-        Lock _setUpLock =
-            (Lock)servletContext.getAttribute(CloudNotificationService.class.getName() + "#setUpLock");
-        if (_setUpLock == null) {
-            _setUpLock = new ReentrantLock();
-            servletContext.setAttribute(CloudNotificationService.class.getName() + "#setUpLock", _setUpLock);
-        }
-        return _setUpLock;
     }
 
     public void pushToNotifyBackURI(
@@ -217,6 +201,13 @@ implements Service {
         }
     }
 
+    @Override
+    public void registered(final ExtensionRegistryEvent event) {
+        if (event.getExtension() instanceof NotificationProvider) {
+            ((NotificationProvider)event.getExtension()).registerTo(this);
+        }
+    }
+
     public void setUp(final ServletContext servletContext)
     throws NullPointerException {
         // throws NullPointerException
@@ -263,11 +254,12 @@ implements Service {
         );
         Object[] _notificationProviders =
             ExtensionRegistry.getExtensions(NotificationProvider.class.getName(), servletContext);
-        if (_notificationProviders != null) {
+        if (_notificationProviders != null && _notificationProviders.length != 0) {
             for (final Object _notificationProvider : _notificationProviders) {
                 ((NotificationProvider)_notificationProvider).registerTo(this);
             }
         }
+        ExtensionRegistry.addExtensionRegistryListener(this);
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE, "Successfully set up Notification Service.");
         }
@@ -280,6 +272,7 @@ implements Service {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE, "Tearing down Notification Service.");
         }
+        ExtensionRegistry.removeExtensionRegistryListener(this);
         getExecutorService().shutdown();
         Object[] _notificationProviders =
             ExtensionRegistry.getExtensions(NotificationProvider.class.getName(), servletContext);
@@ -308,6 +301,54 @@ implements Service {
         }
     }
 
+    @Override
+    public void unregistered(final ExtensionRegistryEvent event) {
+        if (event.getExtension() instanceof NotificationProvider) {
+            ((NotificationProvider)event.getExtension()).unregisterFrom(this);
+        }
+    }
+
+    public static void waitForSetUpToComplete(final ServletContext servletContext)
+    throws NullPointerException {
+        checkIfIsNotNull(
+            servletContext, "Illegal argument servletContext: '" + servletContext + "'.  Argument cannot be null."
+        );
+        lockSetUp(servletContext);
+        try {
+            if (!setUpComplete) {
+                try {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.log(Level.FINE, "Waiting for set-up to complete...");
+                    }
+                    getSetUpCondition(servletContext).await();
+                } catch (final InterruptedException exception) {
+                    // Do nothing.
+                }
+            }
+        } finally {
+            unlockSetUp(servletContext);
+        }
+    }
+
+    public static void wakeUpAllAsSetUpIsComplete(final ServletContext servletContext)
+    throws NullPointerException {
+        checkIfIsNotNull(
+            servletContext, "Illegal argument servletContext: '" + servletContext + "'.  Argument cannot be null."
+        );
+        lockSetUp(servletContext);
+        try {
+            if (!setUpComplete) {
+                setUpComplete = true;
+            }
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, "Wake up all as set-up is complete.");
+            }
+            getSetUpCondition(servletContext).signalAll();
+        } finally {
+            unlockSetUp(servletContext);
+        }
+    }
+
     protected ExecutorService getExecutorService() {
         return executorService;
     }
@@ -333,6 +374,34 @@ implements Service {
             }
             throw new ProtocolException("Unknown Protocol '" + scheme + "'.");
         }
+    }
+
+    private static synchronized Condition getSetUpCondition(final ServletContext servletContext) {
+        Condition _setUpCondition =
+            (Condition)servletContext.getAttribute(CloudNotificationService.class.getName() + "#setUpCondition");
+        if (_setUpCondition == null) {
+            _setUpCondition = getSetUpLock(servletContext).newCondition();
+            servletContext.setAttribute(CloudNotificationService.class.getName() + "#setUpCondition", _setUpCondition);
+        }
+        return _setUpCondition;
+    }
+
+    private static synchronized Lock getSetUpLock(final ServletContext servletContext) {
+        Lock _setUpLock =
+            (Lock)servletContext.getAttribute(CloudNotificationService.class.getName() + "#setUpLock");
+        if (_setUpLock == null) {
+            _setUpLock = new ReentrantLock();
+            servletContext.setAttribute(CloudNotificationService.class.getName() + "#setUpLock", _setUpLock);
+        }
+        return _setUpLock;
+    }
+
+    private static void lockSetUp(final ServletContext servletContext) {
+        getSetUpLock(servletContext).lock();
+    }
+
+    private static void unlockSetUp(final ServletContext servletContext) {
+        getSetUpLock(servletContext).unlock();
     }
 
     protected static class PushTask
