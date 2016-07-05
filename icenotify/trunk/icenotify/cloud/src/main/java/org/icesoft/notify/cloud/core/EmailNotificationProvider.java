@@ -15,13 +15,25 @@
  */
 package org.icesoft.notify.cloud.core;
 
+import static org.icesoft.util.StringUtilities.getValue;
+import static org.icesoft.util.StringUtilities.isNotNullAndIsNotEmpty;
 import static org.icesoft.util.StringUtilities.isNullOrIsEmpty;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -95,6 +107,11 @@ implements NotificationProvider {
         private static final String NONE = "NONE";
         private static final String SSL = "SSL";
         private static final String TLS = "TLS";
+    }
+
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss (z)");
+    {
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     private final InternetAddress from;
@@ -194,6 +211,10 @@ implements NotificationProvider {
                     toString();
     }
 
+    protected DateFormat getDateFormat() {
+        return dateFormat;
+    }
+
     protected InternetAddress getFrom() {
         return from;
     }
@@ -234,15 +255,76 @@ implements NotificationProvider {
             );
         }
         try {
+            String _content = null;
+            String _contentType = null;
+            String _template = propertyMap.get(NotificationProvider.Property.Name.TEMPLATE);
+            if (isNotNullAndIsNotEmpty(_template)) {
+                try {
+                    URLConnection _urlConnection = new URL(_template).openConnection();
+                    BufferedReader _in = new BufferedReader(new InputStreamReader(_urlConnection.getInputStream()));
+                    StringBuilder _entityBody = new StringBuilder();
+                    String _line;
+                    while ((_line = _in.readLine()) != null) {
+                        _entityBody.append(_line);
+                    }
+                    _in.close();
+                    _content =
+                        _entityBody.toString().
+                            replace(
+                                "{{subject}}",
+                                propertyMap.get(NotificationProvider.Property.Name.SUBJECT)
+                            ).
+                            replace(
+                                "{{detail}}",
+                                propertyMap.get(NotificationProvider.Property.Name.DETAIL)
+                            ).
+                            replace(
+                                "{{priority}}",
+                                getValue(
+                                    propertyMap.get(NotificationProvider.Property.Name.PRIORITY),
+                                    "default"
+                                )
+                            ).
+                            replace(
+                                "{{time}}",
+                                getValue(
+                                    propertyMap.get(NotificationProvider.Property.Name.TIME),
+                                    getDateFormat().format(new Date(System.currentTimeMillis()))
+                                )
+                            ).
+                            replace(
+                                "{{url}}",
+                                propertyMap.get(NotificationProvider.Property.Name.URL)
+                            );
+                    _contentType = "text/html";
+                } catch (final MalformedURLException exception) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(
+                            Level.WARNING,
+                            "Malformed URL for Template: '" + _template + "'.  Reverting to plain text format."
+                        );
+                    }
+                } catch (final IOException exception) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(
+                            Level.WARNING,
+                            "An I/O error occurred: '" + exception.getMessage() + "'.  Reverting to plain text format."
+                        );
+                    }
+                }
+            }
+            if (isNullOrIsEmpty(_content) && isNullOrIsEmpty(_contentType)) {
+                _content =
+                    new StringBuilder().
+                        append(propertyMap.get(NotificationProvider.Property.Name.DETAIL)).
+                        append(" [").append(propertyMap.get(NotificationProvider.Property.Name.URL)).append("]").
+                            toString();
+                _contentType = "text/plain";
+            }
             MimeMessage _mimeMessage = new MimeMessage(getSession());
             _mimeMessage.setFrom(getFrom());
             _mimeMessage.setSubject(propertyMap.get(NotificationProvider.Property.Name.SUBJECT));
-            _mimeMessage.setText(
-                new StringBuilder().
-                    append(propertyMap.get(NotificationProvider.Property.Name.DETAIL)).
-                    append(" [").append(propertyMap.get(NotificationProvider.Property.Name.URL)).append("]").
-                        toString()
-            );
+            _mimeMessage.setContent(_content, _contentType);
             if (notifyBackURISet.size() == 1) {
                 Set<InternetAddress> _toSet = new HashSet<InternetAddress>();
                 for (final String _notifyBackURI : notifyBackURISet) {

@@ -42,6 +42,14 @@ public class StringUtilities {
         return _camelCaseStringBuilder.toString();
     }
 
+    public static String getValue(final String value, final String defaultValue) {
+        if (isNotNull(value)) {
+            return value;
+        } else {
+            return defaultValue;
+        }
+    }
+
     public static boolean isEmpty(final String string)
     throws NullPointerException {
         return
