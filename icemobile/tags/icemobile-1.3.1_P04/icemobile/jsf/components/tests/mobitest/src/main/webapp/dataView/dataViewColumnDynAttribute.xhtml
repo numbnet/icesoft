@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ace="http://www.icefaces.org/icefaces/components"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <h:head>
+    <mobi:deviceResource includeIOSSmartAppBanner="false"/>
+    <title>dataViewColumn sortable attribute test</title>
+    </h:head>
+    <h:body>
+        <h2>mobi:dataViewColumn dynamic attribute test</h2>
+        <p>ReactivePriority is not functional or included in the tlddoc at this time. ICE-9893 is open.</p>
+        <h:form id="form">
+            <h:panelGrid columns="7">
+                <f:ajax execute="@this" render="@all">
+                    <h:outputText style="font-weight:bold;" value="Column"/>
+                    <h:outputText style="font-weight:bold;" value="Rendered"/>
+                    <h:outputText style="font-weight:bold;" value="HeaderText"/>
+                    <h:outputText style="font-weight:bold;" value="FooterText"/>
+                    <h:outputText style="font-weight:bold;" value="ReactivePriority"/>
+                    <h:outputText style="font-weight:bold;" value="StyleClass"/>
+                    <h:outputText style="font-weight:bold;" value="Sortable"/>
+
+                    <h:outputText value="ID"/>
+                    <h:selectBooleanCheckbox id="idRendered" value="#{dataViewColumnBean.idRendered}"/>
+                    <h:inputText id="idHeaderText" size="14" value="#{dataViewColumnBean.idHeaderText}"/>
+                    <h:inputText id="idFooterText" size="14" value="#{dataViewColumnBean.idFooterText}"/>
+                    <h:inputText id="idReactivePriority" size="1" value="#{dataViewColumnBean.idReactivePriority}"/>
+                    <h:selectOneMenu id="idStyleClass" value="#{dataViewColumnBean.idStyleClass}">
+                        <f:selectItems value="#{dataViewColumnBean.styleClasses}"/>
+                    </h:selectOneMenu>
+                    <h:selectBooleanCheckbox id="idSortable" value="#{dataViewColumnBean.idSortable}"/>
+
+                    <h:outputText value="Model"/>
+                    <h:selectBooleanCheckbox id="modelRendered" value="#{dataViewColumnBean.modelRendered}"/>
+                    <h:inputText id="modelHeaderText" size="14" value="#{dataViewColumnBean.modelHeaderText}"/>
+                    <h:inputText id="modelFooterText" size="14" value="#{dataViewColumnBean.modelFooterText}"/>
+                    <h:inputText id="modelReactivePriority" size="1" value="#{dataViewColumnBean.modelReactivePriority}"/>
+                    <h:selectOneMenu id="modelStyleClass" value="#{dataViewColumnBean.modelStyleClass}">
+                        <f:selectItems value="#{dataViewColumnBean.styleClasses}"/>
+                    </h:selectOneMenu>
+                    <h:selectBooleanCheckbox id="modelSortable" value="#{dataViewColumnBean.modelSortable}"/>
+
+                    <h:outputText value="Cost"/>
+                    <h:selectBooleanCheckbox id="costRendered" value="#{dataViewColumnBean.costRendered}"/>
+                    <h:inputText id="costHeaderText" size="14" value="#{dataViewColumnBean.costHeaderText}"/>
+                    <h:inputText id="costFooterText" size="14" value="#{dataViewColumnBean.costFooterText}"/>
+                    <h:inputText id="costReactivePriority" size="1" value="#{dataViewColumnBean.costReactivePriority}"/>
+                    <h:selectOneMenu id="costStyleClass" value="#{dataViewColumnBean.costStyleClass}">
+                        <f:selectItems value="#{dataViewColumnBean.styleClasses}"/>
+                    </h:selectOneMenu>
+                    <h:selectBooleanCheckbox id="costSortable" value="#{dataViewColumnBean.costSortable}"/>
+
+                    <h:outputText value="Sold"/>
+                    <h:selectBooleanCheckbox id="soldRendered" value="#{dataViewColumnBean.soldRendered}"/>
+                    <h:inputText id="soldHeaderText" size="14" value="#{dataViewColumnBean.soldHeaderText}"/>
+                    <h:inputText id="soldFooterText" size="14" value="#{dataViewColumnBean.soldFooterText}"/>
+                    <h:inputText id="soldReactivePriority" size="1" value="#{dataViewColumnBean.soldReactivePriority}"/>
+                    <h:selectOneMenu id="soldStyleClass" value="#{dataViewColumnBean.soldStyleClass}">
+                        <f:selectItems value="#{dataViewColumnBean.styleClasses}"/>
+                    </h:selectOneMenu>
+                    <h:selectBooleanCheckbox id="soldSortable" value="#{dataViewColumnBean.soldSortable}"/>
+
+                    <h:outputText value="Date Listed"/>
+                    <h:selectBooleanCheckbox id="dateListedRendered" value="#{dataViewColumnBean.dateListedRendered}"/>
+                    <h:inputText id="dateListedHeaderText" size="14" value="#{dataViewColumnBean.dateListedHeaderText}"/>
+                    <h:inputText id="dateListedFooterText" size="14" value="#{dataViewColumnBean.dateListedFooterText}"/>
+                    <h:inputText id="dateListedReactivePriority" size="1" value="#{dataViewColumnBean.dateListedReactivePriority}"/>
+                    <h:selectOneMenu id="dateListedStyleClass" value="#{dataViewColumnBean.dateListedStyleClass}">
+                        <f:selectItems value="#{dataViewColumnBean.styleClasses}"/>
+                    </h:selectOneMenu>
+                    <h:selectBooleanCheckbox id="dateListedSortable" value="#{dataViewColumnBean.dateListedSortable}"/>
+
+                    <h:outputText value="Image"/>
+                    <h:selectBooleanCheckbox id="imageURLRendered" value="#{dataViewColumnBean.imageURLRendered}"/>
+                    <h:inputText id="imageURLHeaderText" size="14" value="#{dataViewColumnBean.imageURLHeaderText}"/>
+                    <h:inputText id="imageURLFooterText" size="14" value="#{dataViewColumnBean.imageURLFooterText}"/>
+                    <h:inputText id="imageURLReactivePriority" size="1" value="#{dataViewColumnBean.imageURLReactivePriority}"/>
+                    <h:selectOneMenu id="imageURLStyleClass" value="#{dataViewColumnBean.imageURLStyleClass}">
+                        <f:selectItems value="#{dataViewColumnBean.styleClasses}"/>
+                    </h:selectOneMenu>
+                    <h:selectBooleanCheckbox id="imageSortable" value="#{dataViewColumnBean.imageSortable}"/>
+
+                </f:ajax>
+            </h:panelGrid>
+            <br/><br/>
+            <mobi:dataView id="dataView"
+                           var="carOrder"
+                           value="#{dataViewColumnBean.carOrderData}"
+                           reactiveColumnVisibility="true"
+                           rowStripe="true"
+                           rowStroke="true">
+                <mobi:dataViewDetails>
+                    <h:panelGrid columns="3">
+                        <h:outputText style="font-weight:bold;" value="#{carOrder.model}"/>
+                        <h:panelGroup>
+                            <h:outputLabel for="soldBox" value="Sold "/>
+                            <h:selectBooleanCheckbox id="soldBox" value="#{carOrder.sold}">
+                                <f:ajax execute="@this" render="@all" />
+                            </h:selectBooleanCheckbox>
+                        </h:panelGroup>
+                        <h:panelGroup>
+                            <h:outputLabel for="costInput" value="Cost: "/>
+                            <h:inputText id="costInput" value="#{carOrder.cost}">
+                                <f:ajax execute="@this" render="@all" />
+                            </h:inputText>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </mobi:dataViewDetails>
+                <mobi:dataViewColumns>
+                    <mobi:dataViewColumn value="#{carOrder.id}"
+                                         rendered="#{dataViewColumnBean.idRendered}"
+                                         sortable="#{dataViewColumnBean.idSortable}"
+                                         headerText="#{dataViewColumnBean.idHeaderText}"
+                                         footerText="#{dataViewColumnBean.idFooterText}"
+                                         reactivePriority="#{dataViewColumnBean.idReactivePriority}"
+                                         styleClass="#{dataViewColumnBean.idStyleClass}"
+                                         type="text"/>
+
+                    <mobi:dataViewColumn value="#{carOrder.model}"
+                                         rendered="#{dataViewColumnBean.modelRendered}"
+                                         sortable="#{dataViewColumnBean.modelSortable}"
+                                         headerText="#{dataViewColumnBean.modelHeaderText}"
+                                         footerText="#{dataViewColumnBean.modelFooterText}"
+                                         reactivePriority="#{dataViewColumnBean.modelReactivePriority}"
+                                         styleClass="#{dataViewColumnBean.modelStyleClass}"
+                                         type="text"/>
+
+                    <mobi:dataViewColumn value="#{carOrder.cost}"
+                                         rendered="#{dataViewColumnBean.costRendered}"
+                                         sortable="#{dataViewColumnBean.costSortable}"
+                                         headerText="#{dataViewColumnBean.costHeaderText}"
+                                         footerText="#{dataViewColumnBean.costFooterText}"
+                                         reactivePriority="#{dataViewColumnBean.costReactivePriority}"
+                                         styleClass="#{dataViewColumnBean.costStyleClass}"
+                                         type="text"/>
+
+                    <mobi:dataViewColumn value="#{carOrder.sold}"
+                                         rendered="#{dataViewColumnBean.soldRendered}"
+                                         sortable="#{dataViewColumnBean.soldSortable}"
+                                         headerText="#{dataViewColumnBean.soldHeaderText}"
+                                         footerText="#{dataViewColumnBean.soldFooterText}"
+                                         reactivePriority="#{dataViewColumnBean.soldReactivePriority}"
+                                         styleClass="#{dataViewColumnBean.soldStyleClass}"
+                                         type="bool"/>
+
+                    <mobi:dataViewColumn value="#{carOrder.dateListed}"
+                                         rendered="#{dataViewColumnBean.dateListedRendered}"
+                                         sortable="#{dataViewColumnBean.dateListedSortable}"
+                                         headerText="#{dataViewColumnBean.dateListedHeaderText}"
+                                         footerText="#{dataViewColumnBean.dateListedFooterText}"
+                                         reactivePriority="#{dataViewColumnBean.dateListedReactivePriority}"
+                                         styleClass="#{dataViewColumnBean.dateListedStyleClass}"
+                                         type="date">
+                        <f:convertDateTime type="date"/>
+                    </mobi:dataViewColumn>
+
+                    <mobi:dataViewColumn value="#{carOrder.imageURL}"
+                                         rendered="#{dataViewColumnBean.imageURLRendered}"
+                                         sortable="#{dataViewColumnBean.imageSortable}"
+                                         headerText="#{dataViewColumnBean.imageURLHeaderText}"
+                                         footerText="#{dataViewColumnBean.imageURLFooterText}"
+                                         reactivePriority="#{dataViewColumnBean.imageURLReactivePriority}"
+                                         styleClass="#{dataViewColumnBean.imageURLStyleClass}"
+                                         type="image"/>
+                </mobi:dataViewColumns>
+            </mobi:dataView>
+        </h:form>
+        <br/>
+        <a href="index.jsp">Goto Main page</a>
+    </h:body>
+</HTML>

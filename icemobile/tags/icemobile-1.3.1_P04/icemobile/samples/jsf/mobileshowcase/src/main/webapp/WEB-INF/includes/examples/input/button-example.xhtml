@@ -1,0 +1,105 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <h:form>
+        <h3>Vertical Button List</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <mobi:commandButtonGroup orientation="vertical" style="width:80%;margin:0 auto;">
+                    <mobi:commandButton value="Yes"
+                             actionListener="#{buttonBean.commandGroup1Selected}"
+                             disableOffline="true">
+                        <f:attribute name="selectedName" value="Yes"/>
+                    </mobi:commandButton>
+                    <mobi:commandButton value="No"
+                            actionListener="#{buttonBean.commandGroup1Selected}">
+                        <f:attribute name="selectedName" value="No"/>
+                    </mobi:commandButton>
+                    <mobi:commandButton value="Please"
+                            actionListener="#{buttonBean.commandGroup1Selected}" >
+                        <f:attribute name="selectedName" value="Please" />
+                    </mobi:commandButton>
+                </mobi:commandButtonGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+        <h3>Horizontal button list</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <mobi:commandButtonGroup orientation="horizontal" style="width:80%;margin:0 auto;">
+                    <mobi:commandButton value="Yes" style="width:33%"
+                             actionListener="#{buttonBean.commandGroup2Selected}">
+                        <f:attribute name="selectedName" value="Yes"/>
+                    </mobi:commandButton>
+                    <mobi:commandButton value="No" style="width:33%"
+                            actionListener="#{buttonBean.commandGroup2Selected}">
+                        <f:attribute name="selectedName" value="No"/>
+                    </mobi:commandButton>
+                    <mobi:commandButton value="Please" style="width:33%"
+                            actionListener="#{buttonBean.commandGroup2Selected}">
+                        <f:attribute name="selectedName" value="Please" />
+                    </mobi:commandButton>
+                </mobi:commandButtonGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+        <h3>Button Types</h3>
+        <mobi:fieldsetGroup styleClass="buttons">
+            <mobi:fieldsetRow>
+                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
+                                    value="Default" disableOffline="true">
+                    <f:attribute name="bType" value=""/>
+                </mobi:commandButton>
+                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
+                                    value="Unimportant" buttonType="unimportant">
+                    <f:attribute name="bType" value="Unimportant"/>
+                </mobi:commandButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
+                                    value="Important" buttonType="important">
+                        <f:attribute name="bType" value="Important"/>
+                </mobi:commandButton>
+                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
+                                    value="Attention" buttonType="attention">
+                    <f:attribute name="bType" value="Attention"/>
+                </mobi:commandButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
+                                    buttonType="back" value="Back"
+                                    styleClass="back">
+                    <f:attribute name="bType" value="Back"/>
+                </mobi:commandButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:commandButton id="disabledDefault" value="Disabled" 
+                    disabled="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="results">
+                <label>Selected Value:</label>
+                <h:outputText value="#{empty buttonBean.buttonType ? 'Default' : buttonBean.buttonType}" />
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+    </h:form>
+
+</ui:composition>

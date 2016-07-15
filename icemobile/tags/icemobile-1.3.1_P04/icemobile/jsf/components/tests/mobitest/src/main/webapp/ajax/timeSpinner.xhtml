@@ -1,0 +1,128 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">timeSpinner mobi ajax test</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+ 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+   <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+
+</h:head>
+
+<h:body>
+        <!-- theme switcher -->
+    <ui:include src="/WEB-INF/includes/composite/theme-switcher.xhtml"/>
+
+    <h3>dateSpinner</h3>
+
+    <h:form id="dateForm" >
+
+        <h5> mobi ajax test for timeSpinner with built in conversion for hh:MM a</h5>
+         <h:outputText value="A. date"/>
+            <mobi:timeSpinner id="timeId" value="#{date.time1}"  timeZone="Mountain Standard Time"
+                          title="time input field">
+              <mobi:ajax event="change" execute="#{ajaxTest.execute}" render="#{ajaxTest.render}" />
+           </mobi:timeSpinner>
+
+
+       <h5>this one has useNative as true...also has built in conversion</h5>
+       <h:outputLabel for="timeIOS5" value="B. iOS5 capable:"/>
+        <mobi:timeSpinner id="timeIOS5" useNative="true" value="#{date.time2}" title="date ios5 cap">
+            <mobi:ajax execute="#{ajaxText.execute}" render="#{ajaxTest.render}"/>
+        </mobi:timeSpinner>
+          <br />
+                    <h3>Form 1</h3>
+                    <br/>
+                    <span>Value A: </span><h:inputText id="valueA" value="#{date.time1}" />
+                    <br />
+                    <span>Value B: </span><h:inputText id="valueB" value="#{date.time2}" />
+                    <br />
+                    <h:commandButton actionListener="#{date.clearTime}" value="Reset values" />
+
+    </h:form>
+
+  <h3>RESULTS</h3>
+
+   <h5>date</h5>
+    <h:outputLabel for="dateA" value="A. Time selected:-"/>
+    <h:outputText id="dateA" value="#{date.time1}">
+          <f:convertDateTime type="time" pattern="hh:mm a" timeZone="America/Edmonton"/>
+    </h:outputText>
+    <br />
+     <h:outputLabel for="timeIOS5Out" value="B. time of iOS5 capable:-"/>
+    <h:outputText id="timeIOS5Out" value="#{date.time2}">
+        <f:convertDateTime type="time" pattern="hh:mm a" timeZone="America/Edmonton"/>
+    </h:outputText>
+    <br />
+     <h:panelGroup style="padding:30px;">
+			<h:form id="form2">
+				<h3>Form 2</h3>
+				<span>Execute: </span>
+				<h:selectOneRadio id="execute" value="#{ajaxTest.execute}">
+					<f:ajax execute="@this" render="@all" />
+					<f:selectItem itemValue="@all" itemLabel="@all" />
+					<f:selectItem itemValue="@form" itemLabel="@form" />
+					<f:selectItem itemValue="@this" itemLabel="@this" />
+					<f:selectItem itemValue="@none" itemLabel="@none" />
+					<f:selectItem itemValue="valueA" itemLabel="valueA" />
+					<f:selectItem itemValue="valueB" itemLabel="valueB" />
+					<f:selectItem itemValue="valueA valueB" itemLabel="valueA valueB" />
+				</h:selectOneRadio>
+				<span>Other: </span>
+				<h:inputText id="executeOther" value="#{ajaxTest.execute}">
+					<f:ajax execute="@this" render="@all" />
+				</h:inputText>
+				<br /><br />
+				<span>Render: </span>
+				<h:selectOneRadio id="render" value="#{ajaxTest.render}">
+					<f:ajax execute="@this" render="@all" />
+					<f:selectItem itemValue="@all" itemLabel="@all" />
+					<f:selectItem itemValue="@form" itemLabel="@form" />
+					<f:selectItem itemValue="@this" itemLabel="@this" />
+					<f:selectItem itemValue="@none" itemLabel="@none" />
+					<f:selectItem itemValue="valueA" itemLabel="valueA" />
+					<f:selectItem itemValue="valueB" itemLabel="valueB" />
+					<f:selectItem itemValue="valueA valueB" itemLabel="valueA valueB" />
+				</h:selectOneRadio>
+				<span>Other: </span>
+				<h:inputText id="renderOther" value="#{ajaxTest.render}">
+					<f:ajax execute="@this" render="@all" />
+				</h:inputText>
+				<br />
+				<h:commandButton value="Submit">
+					<f:ajax execute="@form" render="@all" />
+				</h:commandButton>
+			</h:form>
+		</h:panelGroup>
+ <br />
+
+
+ <li><a href="../ajaxComponents.html">index page</a> </li>
+
+</h:body>
+</html>

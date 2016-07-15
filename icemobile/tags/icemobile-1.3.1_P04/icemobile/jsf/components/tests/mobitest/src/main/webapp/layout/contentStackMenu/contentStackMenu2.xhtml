@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
+    <title>layoutMenu with contentStack</title>
+</h:head>
+<h:body>
+  <h:panelGrid columns="2">
+    <h:panelGroup>
+      <h:form id="menuForm">
+        <mobi:contentStackMenu  id="mnu" value="#{contentMenuBean.menuCList}" var="item" contentStackId="stack1"
+                  selectedPane="#{contentMenuBean.twoColSelectedPane}">
+           <mobi:contentMenuItem label="#{item.label}" value="#{item.value}"/>
+        </mobi:contentStackMenu>
+      </h:form>
+   </h:panelGroup>
+    <mobi:contentStack id="stack1" currentId="#{contentMenuBean.twoColSelectedPane}" contentMenuId="mnu">
+         <mobi:contentPane id="panel1" client="true">
+            <h:form id="nav1">
+             <mobi:contentNavBar >
+                 <mobi:contentMenuItem label="panel2" value="panel2"/>
+                 <mobi:contentMenuItem label="panel3" value="panel3"/>
+             <h3>Content Pane 1 client is true</h3>
+            </mobi:contentNavBar>
+          </h:form>
+             <h:panelGroup>
+                 <h:form>
+                     <mobi:commandButton value="got page panel 3"
+                                      action="#{contentMenuBean.goToPane3}">
+                     </mobi:commandButton>
+                 </h:form>
+             </h:panelGroup>
+         </mobi:contentPane>
+         <mobi:contentPane id="panel2" >
+             <h:panelGroup>
+                 panel 2
+             </h:panelGroup>
+             <h:panelGroup>
+                 <h:form>
+                     <mobi:commandButton id="pane2chk" value="got page panel 3"
+                                      action="#{contentMenuBean.setTwoColSelectedPaneAction('panel3')}">
+                     </mobi:commandButton>
+                 </h:form>
+             </h:panelGroup>
+         </mobi:contentPane>
+         <mobi:contentPane id="panel3" facelet="true" >
+             <h:panelGroup>
+                 panel 3
+             </h:panelGroup>
+             <h:form id="testparm">
+                 <h:commandButton value="testParam" action="#{contentMenuBean.testP(213)}"/>
+                 <mobi:commandButton value="testString" action="#{contentMenuBean.testString('abc')}"/>
+                  <h:commandButton value="go to page 1" action="#{contentMenuBean.actionParamTest}">
+                      <f:param name="paneSel" value="panel1"/>
+                  </h:commandButton>
+                 <mobi:commandButton value="gotoP1Mobi" action="#{contentMenuBean.actionParamTest}">
+                      <f:param name="paneSel" value="panel1"/>
+                 </mobi:commandButton>
+             </h:form>
+         </mobi:contentPane>
+    </mobi:contentStack>
+  </h:panelGrid>
+  <div id="outputStuff">
+      <h5>currently selected panel </h5>
+      <br />
+      <h:outputText value="#{contentMenuBean.twoColSelectedPane}"  />
+  </div>
+  <a href="../../layoutComponents.html">index page</a>
+</h:body>
+</html>

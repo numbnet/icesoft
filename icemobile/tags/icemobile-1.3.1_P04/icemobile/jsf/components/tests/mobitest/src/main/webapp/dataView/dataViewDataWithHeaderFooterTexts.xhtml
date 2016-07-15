@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ace="http://www.icefaces.org/icefaces/components"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <h:head>
+    <mobi:deviceResource includeIOSSmartAppBanner="false"/>
+    <title>dataView data empty</title>
+    </h:head>
+    <h:body>
+        <h2>mobi:dataViewColumn data empty test</h2>
+        <p>ReactivePriority is not functional or included in the tlddoc at this time. ICE-9893 is open.</p>
+        <h:form id="form">
+            <br/><br/>
+            <mobi:dataView id="dataView"
+                           var="carOrder"
+                           value="#{dataViewData.carOrderData}"
+                           reactiveColumnVisibility="true"
+                           rowStripe="true"
+                           rowStroke="true">
+                <mobi:dataViewDetails>
+                    <h:panelGrid columns="3">
+                        <h:outputText style="font-weight:bold;" value="#{carOrder.model}"/>
+                        <h:panelGroup>
+                            <h:outputLabel for="soldBox" value="Sold "/>
+                            <h:selectBooleanCheckbox id="soldBox" value="#{carOrder.sold}">
+                                <f:ajax execute="@this" render="@all" />
+                            </h:selectBooleanCheckbox>
+                        </h:panelGroup>
+                        <h:panelGroup>
+                            <h:outputLabel for="costInput" value="Cost: "/>
+                            <h:inputText id="costInput" value="#{carOrder.cost}">
+                                <f:ajax execute="@this" render="@all" />
+                            </h:inputText>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </mobi:dataViewDetails>
+                <mobi:dataViewColumns>
+                    <mobi:dataViewColumn value="#{carOrder.id}"
+                                         headerText="#{dataViewColumnBean.idHeaderText}"
+                                         footerText="#{dataViewColumnBean.idFooterText}"
+                                         type="text"/>
+                    <mobi:dataViewColumn value="#{carOrder.model}"
+                                         headerText="#{dataViewColumnBean.modelHeaderText}"
+                                         footerText="#{dataViewColumnBean.modelFooterText}"
+                                         type="text"/>
+                    <mobi:dataViewColumn value="#{carOrder.cost}"
+                                         headerText="#{dataViewColumnBean.costHeaderText}"
+                                         type="text"/>
+                    <mobi:dataViewColumn value="#{carOrder.sold}"
+                                         headerText="#{dataViewColumnBean.soldHeaderText}"
+                                         footerText="#{dataViewColumnBean.soldFooterText}"
+                                         type="bool"/>
+
+                    <mobi:dataViewColumn value="#{carOrder.dateListed}"
+                                         headerText="#{dataViewColumnBean.dateListedHeaderText}"
+                                         footerText="#{dataViewColumnBean.dateListedFooterText}"
+                                         type="date">
+                        <f:convertDateTime type="date"/>
+                    </mobi:dataViewColumn>
+                </mobi:dataViewColumns>
+            </mobi:dataView>
+        </h:form>
+        <br/>
+        <a href="../index.html">Goto Main page</a>
+    </h:body>
+</HTML>

@@ -1,0 +1,39 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+.mobi-accordion{
+    border-top: 1px solid #b5b9c0;
+    border-bottom: 1px solid #b5b9c0;
+}
+.mobi-accordion .handle {
+    background: #f4f5f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f4f5f7 0%, #a8acb9 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f4f5f7), color-stop(100%,#a8acb9)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f4f5f7 0%,#a8acb9 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f4f5f7 0%,#a8acb9 100%); /* W3C */
+    border-bottom: 1px solid #7A8091;
+    border-top: 1px solid #fff;
+    color: #717880;
+    font-weight: bold;
+}
+.mobi-accordion-ctr > .open > .handle > .pointer{
+    border-top-color: #717880;
+}
+.mobi-accordion-ctr > .closed > .handle > .pointer{
+    border-left-color: #717880;
+}

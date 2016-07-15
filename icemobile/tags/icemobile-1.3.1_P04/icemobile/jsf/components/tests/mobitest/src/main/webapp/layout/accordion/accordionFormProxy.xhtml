@@ -1,0 +1,159 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>Accordion test for proxy</title>
+    <mobi:deviceResource   includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}" />
+</h:head>
+
+<h:body>
+
+   <h:form id="selectForm">
+       <h:panelGroup id="selectorGroup">
+         <h:outputText  value="select the pane to open:-"/>
+         <h:selectOneMenu id="selectPane"  value="#{layoutBean.selectedPane}">
+             <f:selectItem itemValue="panel1" itemLabel="Open First panel"/>
+             <f:selectItem itemValue="panel2" itemLabel="Open 2nd panel" />
+             <f:selectItem itemValue="panel3" itemLabel="Open 3rd panel" />
+             <f:selectItem itemValue="panel4" itemLabel="Open 4th panel" />
+             <f:ajax execute="@this" render="@all"/>
+         </h:selectOneMenu>
+       </h:panelGroup>
+      </h:form>
+      <h1> test page for accordion pane1 client, pane3 facelet true</h1>
+    <p>autoHeight is true</p>
+      <br />
+       <mobi:accordion id="test1"
+                       selectedId="#{layoutBean.selectedPane}"
+                       style="#{layoutBean.style}"
+                       paneChangeListener="#{layoutBean.paneChange}"
+                       disabled="#{layoutBean.disabled}"
+                       styleClass="#{layoutBean.styleClass}"
+                       autoHeight="#{layoutBean.autoHeight}">
+              <mobi:contentPane id="panel1" title="panel1" >
+                   <h2> use ui include for date example</h2>
+                   <h:form id="pane1form">
+                       <mobi:accordionFormProxy/>
+                       <ui:include src="../includes/date-example.xhtml"/>
+                   </h:form>
+              </mobi:contentPane>
+               <mobi:contentPane id="panel2" title="panel2" facelet="true"
+                                 style="background-color:#00ADFF">
+                   <h:form id="panel2frm">
+                       <mobi:accordionFormProxy/>
+                    <div id="inner2">
+                       <fieldset title="panel2">
+                        <legend>Panel2</legend>
+                        <h3> header for panel 2</h3>
+                           <p> content for panel 2 - ace of diamonds   </p>
+                          <figure>
+                         <img width="85" height="150"
+                          src="../../images/queen.jpg"
+                            alt="queen of clubs" />
+                         <figcaption>Queen of Clubs</figcaption>
+                          </figure>
+                         <br />
+                         Change panes with this button
+                        <br />
+                         <mobi:commandButton id="but2"  singleSubmit="true"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                         </mobi:commandButton>
+                        <br />
+                      </fieldset>
+                     </div>
+                   </h:form>
+              </mobi:contentPane>
+             <mobi:contentPane id="panel3" title="panel3" client="true">
+                <h4> this pane has no form as it is only displaying content</h4>
+              </mobi:contentPane>
+              <mobi:contentPane id="panel4" title="panel4" >
+                    <h:form id="pane4frm">
+                        <mobi:accordionFormProxy/>
+                        <mobi:fieldsetRow>
+                            <h:outputLabel for="p4I1" value="Input text:-"/>
+                            <mobi:inputText id="p4I1" value="#{input.someText}"/>
+                        </mobi:fieldsetRow>
+                        <mobi:fieldsetRow>
+                            <mobi:commandButton value="SubmitText"/>
+                        </mobi:fieldsetRow>
+                    </h:form>
+              </mobi:contentPane>
+       </mobi:accordion>
+
+      <h:form id="outputfrm">
+       <div id="output" style="display:block;">
+          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
+       </div>
+      <div>
+           <mobi:commandButton id="but1"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+               <mobi:ajax execute="@this" render="@all"/>
+           </mobi:commandButton>
+      </div>
+      <h3>DYNAMIC UPDATES</h3>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="autoHeight" value="AutoHeight:"/>
+                <mobi:flipswitch id="autoHeight" value="#{layoutBean.autoHeight}" singleSubmit="true"/>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:"/>
+                <mobi:flipswitch id="disabled" value="#{layoutBean.disabled}" singleSubmit="true"/>
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="sc" value="StyleClass"/>
+                <mobi:inputText id="sc" value="#{layoutBean.styleClass}" singleSubmit="true" />
+           </mobi:fieldsetRow>
+           <mobi:fieldsetRow>
+                <h:outputLabel for="s" value="Style"/>
+                <mobi:inputText id="s" value="#{layoutBean.style}" singleSubmit="true" />
+           </mobi:fieldsetRow>
+      <h3>RESULTS:</h3>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="aI1" value="resultsForPanel3Input:-"/>
+                <h:outputText id="aI1" value="#{input.someText}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="ah" value="AutoHeight"/>
+                 <h:outputText id="ah" value="#{layoutBean.autoHeight}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="disabledOut" value="Disabled:"/>
+                <h:outputText id="disabledOut" value="#{layoutBean.disabled}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="scOut" value="StyleClass:"/>
+                <h:outputText id="scOut" value="#{layoutBean.styleClass}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="sOut" value="Style:"/>
+                <h:outputText id="sOut" value="#{layoutBean.style}"/>
+            </mobi:fieldsetRow>
+     </h:form>
+
+    <footer>
+
+        <a href="../../layoutComponents.html">index page</a>
+    </footer>
+
+</h:body>
+</html>

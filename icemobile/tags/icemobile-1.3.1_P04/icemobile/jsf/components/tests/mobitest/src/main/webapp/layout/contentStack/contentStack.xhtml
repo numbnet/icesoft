@@ -1,0 +1,110 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
+    <title>ContentPane</title>
+
+</h:head>
+
+<h:body>
+    <ui:debug/>
+    <h:form id="selectForm">
+       <h:panelGroup id="selectorGroup">
+         <h:outputText  value="select the pane to open:-"/>
+         <h:selectOneMenu id="selectPane"  value="#{layoutBean.selectedPane}">
+             <f:selectItem itemValue="panel1" itemLabel="Open First panel"/>
+             <f:selectItem itemValue="panel2" itemLabel="Open 2nd panel" />
+             <f:selectItem itemValue="panel3" itemLabel="Open 3rd panel" />
+             <f:ajax execute="@this" render="@all"/>
+         </h:selectOneMenu>
+       </h:panelGroup>
+      </h:form>
+      <h1> test page for contentStack</h1>
+      <br />
+     <h:form id="contentForm">
+      <div id="output" style="display:block;">
+          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
+       </div>
+      <div>
+           <mobi:commandButton id="but1"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                  <mobi:ajax execute="@this" render="@form"/>
+           </mobi:commandButton>
+      </div>
+       <a href="../../layoutComponents.html">index page</a>
+       <br/>
+       <mobi:contentStack id="test1" currentId="#{layoutBean.selectedPane}">
+              <mobi:contentPane id="panel1" client="true" style="border-style: solid;">
+                 <fieldset title="panel1">
+                      <legend>Panel1</legend>
+                    <h3> header for panel 1</h3>
+                     <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                         <img width="85" height="150"
+                          src="../../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                    <ui:include src="../included.xhtml"/>
+                  </fieldset>
+              </mobi:contentPane>
+               <mobi:contentPane id="panel2">
+                 <fieldset title="panel2">
+                   <legend>Panel2</legend>
+                  <h3> header for panel 2</h3>
+                  <p> content for panel 2 - ace of diamonds   </p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../../images/queen.jpg"
+                            alt="queen of clubs" />
+                         <figcaption>Queen of Clubs</figcaption>
+                        </figure>
+                      <br />
+                     Change panes with this button
+                   <br />
+                     <mobi:commandButton id="but2"  singleSubmit="true"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                      </mobi:commandButton>
+                     <br />
+                     <ui:include src="../included.xhtml"/>
+                  </fieldset>
+              </mobi:contentPane>
+             <mobi:contentPane id="panel3" facelet="true">
+                 <fieldset title="panel3">
+                      <legend>Panel3</legend>
+                  <h3> header for panel 3</h3>
+                  <p> content for panel 3 - some other card..</p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../../images/Joker.jpg"
+                            alt="joker" />
+                         <figcaption>joker</figcaption>
+                        </figure>
+                     <ui:include src="../included.xhtml"/>
+                  </fieldset>
+              </mobi:contentPane>
+       </mobi:contentStack>
+
+     </h:form>
+  </h:body>
+</html>

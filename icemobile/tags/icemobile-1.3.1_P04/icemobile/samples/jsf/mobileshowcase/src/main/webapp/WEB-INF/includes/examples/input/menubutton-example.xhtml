@@ -1,0 +1,79 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <h:form>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow style="padding-bottom:10px;">
+                The menuButton allows a user to select and execute a menu
+                item.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:fieldsetGroup> 
+            <mobi:fieldsetRow>The Menu Button can be used dynamically with a backing list</mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center">
+                <mobi:menuButton id="dynamicMnuBtn"
+                                 buttonLabel="Dynamic Menu Button"
+                                 value="#{menuButton.dynamicMenuButton}"
+                                 var="item">
+                    <mobi:menuButtonItem
+                            label="#{item.label}"
+                            actionListener="#{item.commandAction.execute}"/>
+<!--                     <mobi:ajax execute="@this" render="@form"/> -->
+                </mobi:menuButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>The Menu Button also supports option groups with the menuButtonGroup component</mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center">
+               <mobi:menuButton id="menuBtnGroup"
+                            buttonLabel="Menu Button Group"
+                            selectTitle="Select an item">
+                   <mobi:menuButtonGroup label="Menu Group A" >
+                       <mobi:menuButtonItem id="itemA1" label="Item A1" value="A1"
+                                  actionListener="#{menuButton.actionMethod}"
+                                  panelConfirmation="pc1"/>
+                       <mobi:menuButtonItem id="itemA2" label="Item A2" value="A2"
+                                  actionListener="#{menuButton.actionMethod}"/>
+                       <mobi:menuButtonItem id="itemA3" label="Item A3" value="A3"
+                                  actionListener="#{menuButton.actionMethod}"/>
+                   </mobi:menuButtonGroup>
+                   <mobi:menuButtonGroup label="Menu Group B">
+                       <mobi:menuButtonItem id="itemB1" label="Item B1" value="B1"
+                               actionListener="#{menuButton.actionMethod}"/>
+                       <mobi:menuButtonItem id="itemB2" label="Item B2" value="B2"
+                               actionListener="#{menuButton.actionMethod}"/>
+                       <mobi:menuButtonItem id="itemB3" label="Item B3" value="B3"
+                               actionListener="#{menuButton.actionMethod}"/>
+                    </mobi:menuButtonGroup>
+<!--                     <mobi:ajax execute="@this" render="@form" /> -->
+               </mobi:menuButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputText value="Selected Command: " />
+                <h:outputText
+                        style="font-style: italic;"
+                        value="#{menuButton.executedCommand}" />
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+    </h:form>
+
+</ui:composition>
