@@ -1,0 +1,53 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+<head><title>(For validation only)</title></head>
+<body>
+
+<!--
+    Contruct to allow users ot view component documentation, source and a usage example.
+-->
+<composite:interface
+        displayName="Add touch scrolling to container. "
+        shortDescription="" >
+
+    <composite:attribute name="styleClass"
+            displayName="Style classes"/>
+
+    <composite:attribute name="style"
+            displayName="style attributes"/>
+
+</composite:interface>
+
+<composite:implementation >
+
+
+    <div id="#{cc.id}" class="#{cc.attrs.styleClass}" style="#{cc.attrs.style}">
+        <composite:insertChildren />
+    </div>
+     <script type="text/javascript">addResizeAfterUpdatesListener('#{cc.id}')</script>
+
+</composite:implementation>
+</body>
+</html>

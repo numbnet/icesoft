@@ -1,0 +1,47 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+.mobi-accordion-ctr > div {
+    min-height: 33px;
+    overflow: hidden;
+}
+.mobi-accordion-ctr > .closed {
+    height: 33px;
+}
+.mobi-accordion-ctr > div > .handle {
+    cursor: pointer;
+    height:33px;
+    line-height:33px;
+}
+.mobi-accordion-ctr > .open > .mobi-accordion-pane-content{
+    overflow: auto;
+}
+.mobi-accordion-ctr > div > .handle > .pointer {
+    display:inline-block;
+    font-size: 1px;
+    line-height: 33px;
+    vertical-align: middle;
+    border:  6px solid transparent;
+}
+.mobi-accordion-ctr > .open > .handle > .pointer{
+    border-top: 9px solid #FFF;
+    margin: 3px 7px 0 3px;
+/*     vertical-align: baseline; */
+}
+.mobi-accordion-ctr > .closed > .handle > .pointer{
+    border-left: 8px solid #FFF;
+    margin: 0 3px 3px 5px;
+}

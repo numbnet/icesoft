@@ -1,0 +1,84 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">submitNotification Tests</title>
+  <mobi:deviceResource   includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}"/>
+
+</h:head>
+
+<h:body>
+ 
+    <h3>panelConfirmation with menuButton and submitNotification MOBI-561</h3>
+
+      <legend>example with panelConfirmation and submitNotification</legend>
+      <h:form id="form2">
+       <mobi:menuButton id="mnu3" disabled="#{panelConfirmation.menuButtonDisabled}">
+           <mobi:menuButtonItem value="item1" label="label1"
+                                panelConfirmation="pc1"
+                                submitNotification="sn1"
+                                disabled="false"
+                                actionListener="#{panelConfirmation.actionMethod}"/>
+           <mobi:menuButtonItem value="item2" label="label2"
+                                panelConfirmation="pc2"
+                                submitNotification="sn2"
+                                actionListener="#{panelConfirmation.actionMethod2}"/>
+           <mobi:menuButtonItem value="item3" label="mobiAjax"
+                                panelConfirmation="pc2"
+                                submitNotification="sn2"
+                                actionListener="#{panelConfirmation.actionMethod}">
+                 <mobi:ajax execute="@this" render="@form"/>
+           </mobi:menuButtonItem>
+        </mobi:menuButton>
+        <mobi:panelConfirmation id="pc1" message="panel Conf 1" />
+        <mobi:panelConfirmation id="pc2" message="panel Conf 2"/>
+        <mobi:submitNotification id="sn1">
+            <h:outputText value="#{panelConfirmation.submitMessage}"/>
+        </mobi:submitNotification>
+        <mobi:submitNotification id="sn2">
+            <h:outputText value="Static Message sn2"/>
+        </mobi:submitNotification>
+        <br />
+    </h:form>
+
+    <br />
+    <h:form id="dynamo">
+     <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="count" value="count Of execute:"/>
+                <h:outputText id="count" value="#{panelConfirmation.count}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Menu Button Disabled:" />
+                <mobi:flipswitch id="disabled" value="#{panelConfirmation.menuButtonDisabled}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="message" value="Submit Notification Message:"/>
+                <mobi:inputText id="message" value="#{panelConfirmation.submitMessage}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+      </h:form>
+	<li><a href="../inputComponents.html">index page</a>
+	</li>
+</h:body>
+</html>

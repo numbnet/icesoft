@@ -1,0 +1,31 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+.mobi-panelpopup-title-container  {
+    background-color: #a8acb9;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
+    border-bottom-color: #7a8091;
+    color: #FFF;
+ }
+.mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container  {
+    background-color:#fff;
+}
+.mobi-panelpopup-container {
+    background-color: #E2E5EA;
+}
+.mobi-submitnotific-container > div {
+    color: #000;
+}

@@ -1,0 +1,130 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:view contentType="text/html">
+<h:head>
+    <title>ICEfaces Mobile Showcase</title>
+    <mobi:deviceResource theme="#{themeBean.currentTheme}"/>
+    <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
+    <c:if test="#{mobiNavigationModel.selectedPanel eq 'gmap'}">
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
+    </c:if>
+    <link rel="apple-touch-icon" href="./resources/images/touch-icon-iphone.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="./resources/images/touch-icon-ipad.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="./resources/images/touch-icon-iphone-retina.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="./resources/images/touch-icon-ipad-retina.png" />
+    <mobi:googleAnalytics/>
+</h:head>
+    <h:body>
+        <mobi:largeView>
+            <ui:include src="WEB-INF/includes/view/large.xhtml"/>
+        </mobi:largeView>
+        <mobi:smallView>
+            <mobi:pagePanel>
+                <f:facet name="header">
+                    <h:form id="toolbar2" prependId="false" >
+                        <mobi:commandButton buttonType="back"
+                                       action="#{mobiNavigationModel.goBack}"
+                                       rendered="#{mobiNavigationModel.canGoBack}"
+                                       value="Back"/>
+                        <h:commandLink title="&amp;#9776;"
+                                       styleClass="home-link"
+                                       action="#{mobiNavigationModel.goToHome}"
+                                       rendered="#{mobiNavigationModel.selectedPanel eq 'menu'}">
+                            <i class="fa fa-home"></i>
+                        </h:commandLink>
+                        <h:commandLink title="&amp;#9776;"
+                                       styleClass="home-link"
+                                       action="#{mobiNavigationModel.goToMenu}"
+                                       rendered="#{mobiNavigationModel.selectedPanel eq 'splash'}">
+                             <i class="fa fa-bars"></i>
+                         </h:commandLink>
+                    </h:form>
+                    <h1 class="ui-title">#{mmsgs[mobiNavigationModel.selectedDestination.title]}</h1>
+                    <mobi:onlineStatus style="position: absolute;top: 10px;"
+                        onOnline="console.log('online: ' + event);"
+                        onOffline="console.log'offline: ' + event);"/>
+                    <ui:insert name="toolBarContent"/>
+                </f:facet>
+        
+                <f:facet name="body">
+                    <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
+                        <ui:param name="selectedPanel"
+                                  value="#{mobiNavigationModel.selectedPanel}"/>
+                    </ui:include>
+                </f:facet>
+        
+                <f:facet name="footer">
+                    <h:form styleClass="theme">
+                        <icecore:singleSubmit rendered="false"/>
+        
+                        <span style="font-size:14px;font-weight:bold;">
+                            <i class="icon-eye-open" style="padding:3px"/>
+                            Theme: 
+                        </span>
+                        <h:selectOneMenu value="#{themeBean.currentTheme}"
+                                         onchange="ice.s(event, this);"
+                                         style="font-size:13px;">
+                            <f:selectItem itemLabel="Auto" itemValue=""/>
+                            <f:selectItem itemLabel="iOS 6"
+                                          itemValue="iphone"/>
+                            <f:selectItem itemLabel="iOS 7"
+                                          itemValue="ios7"/>
+                            <f:selectItem itemLabel="Android Light"
+                                          itemValue="android_light"/>
+                            <f:selectItem itemLabel="Android Dark"
+                                          itemValue="android_dark"/>
+                            <f:selectItem itemLabel="BlackBerry"
+                                          itemValue="bberry"/>
+                            <f:selectItem itemLabel="BlackBerry 10"
+                                  itemValue="bb10"/>
+                            <f:selectItem itemLabel="jQuery Mobile"
+                                      itemValue="jqm"/>
+                            <f:ajax disabled="true"/>
+                        </h:selectOneMenu>
+                    </h:form>
+                    <a href="http://www.icemobile.org/demos.html" class="icon">
+                        <h:graphicImage library="images" name="icemobile_thumb.png"/>
+                    </a>
+                </f:facet>
+            </mobi:pagePanel>
+        </mobi:smallView>
+        <script type="text/javascript">
+            //precache commonly used images
+            var preloaded = new Array();
+            preloaded[0] = document.createElement('img');
+            preloaded[0].setAttribute('src','./resources/images/auction/icebreaker.png');
+            preloaded[1] = document.createElement('img');
+            preloaded[1].setAttribute('src','./resources/images/auction/icecar.png');
+            preloaded[2] = document.createElement('img');
+            preloaded[2].setAttribute('src','./resources/images/auction/icesailor.png');
+            preloaded[3] = document.createElement('img');
+            preloaded[3].setAttribute('src','./resources/images/auction/iceskate.png');
+            
+            
+        </script>
+        
+    </h:body>
+</f:view>
+</html>

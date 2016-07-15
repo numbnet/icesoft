@@ -1,0 +1,92 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>Carousel with Link to redirect</title>
+    <mobi:deviceResource   />
+    <style type="text/css">
+
+    .view-play-icon {
+    display: inline-block;
+    height: 26px;
+    left: 50px;
+    margin: 0;
+    position: relative;
+    top: -32px;
+    width: 33px;
+    opacity: 0.7;
+}
+    </style>
+
+</h:head>
+
+<h:body>
+
+    <h2>Carousel - with lnk</h2>
+
+    <p>using value of list for items</p>
+    <h:form id="carouselForm">
+
+	    <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item"
+                       singleSubmit="true"
+                       valueChangeListener="#{carousel.changedIndex}"
+	                   selectedItem="#{carousel.selectedIndex}"
+                       nextLabel="next" previousLabel="previous">
+
+	        <h:panelGroup id="imgPanel">
+               <div id="inner"  style="#{item.style}">
+                    #{item.title}
+	               <h:graphicImage id="innerImg" value="#{item.imageUrl}"
+	                            height="#{item.height}"/>
+	           </div>
+
+               <div id="lnkdiv">
+                   <h:commandLink  id="innrlink"
+                            action="#{carousel.viewDetail}"
+                            class="view-play-icon">
+                        <f:setPropertyActionListener
+                               target="#{carousel.propertyAL}"
+                               value="testing"/>
+                        <f:param name="target" value="#{item.imageUrl}"/>
+                        <h:graphicImage value="../../images/view-icon.png"/>
+                  </h:commandLink>
+               </div>
+	        </h:panelGroup>
+	    </mobi:carousel>
+
+    </h:form>
+    <br />
+
+    <div id="outputId">
+           <h:outputText value="updated selectedIndex to #{carousel.selectedIndex}"/>
+    </div>
+
+     <br />
+    <div id="propOutputId">
+         <h5>proper action listener set prop to </h5>
+        <h:outputText value="#{carousel.propertyAL}"/>
+    </div>
+     <a href="../../layoutComponents.html">index page</a>
+</h:body>
+</html>

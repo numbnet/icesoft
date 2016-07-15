@@ -1,0 +1,97 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<project name="common">
+    
+    <property file="build.properties"/>
+    <property file="../../build.properties"/>
+
+    <property name="icemobile.base.dir" location="../../.."/>
+    <property name="samples.dist.dir" location="${icemobile.base.dir}/samples/dist"/>
+
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+    <property name="compile.debug" value="true"/>
+
+    <property name="lib.icemobile.dir" location="../../../lib"/>
+    <property name="lib.application.dir" location="./src/main/webapp/WEB-INF/lib"/>
+
+    <property name="java.dir" location="./src/main/java"/>
+    <property name="res.dir" location="./src/main/resources"/>
+    <property name="web.dir" location="./src/main/webapp"/>
+
+    <property name="build.dir" location="./build"/>
+    <property name="classes.dir" location="${build.dir}/classes"/>
+    <property name="webxml.dir" location="${build.dir}/webxml"/>
+    <property name="dist.dir" location="${build.dir}/dist"/>
+
+	<property file="${icemobile.server.config}" />
+
+    <property name="FACES_SERVLET" value="Faces Servlet"/>
+    <property name="WEBXML_PREAMBLE"
+        value="&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+         version=&quot;3.0&quot; metadata-complete=&quot;false&quot;&gt;"/>
+    <property name="MULTIPART_CONFIG" value="&lt;multipart-config/&gt;"/>
+    <property name="EXTRA_CONTEXT_PARAMS" value=""/>
+    <property name="EXTRA_FILTERS" value=""/>
+    <property name="EXTRA_FILTER_MAPPINGS" value=""/>
+    <property name="EXTRA_SERVLET_MAPPINGS" value=""/>
+    <property name="EXTRA_SERVLETS" value=""/>
+
+    <patternset id="pattern.all">
+        <include name="*.jar"/>
+    </patternset>
+
+    <!-- Extra libs are added to sample .wars based on setting
+         a property for the dependencies in question.-->
+    <resources id="extra.libs">
+
+        <mappedresources>
+
+            <!-- For each 3rd party set of libs just add the appropriate
+                 include statement and property to this fileset-->
+            <fileset dir="${lib.icemobile.dir}" includes="" erroronmissingdir="false">
+                <include name="aws/*.jar" if="aws"/>
+                <include name="twilio/*.jar" if="twilio"/>
+            </fileset>
+
+            <!-- The chain of mappers...
+                   1) strips all directory entries from each file's path
+                   2) "repaths" each resource so they end up in the WEB-INF/lib of the .war file
+            -->
+            <chainedmapper>
+                <mapper type="flatten"/>
+                <mapper type="glob" from="*.jar" to="WEB-INF/lib/*.jar"/>
+            </chainedmapper>
+        </mappedresources>
+
+    </resources>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="./target"/>
+    </target>
+
+    <target name="pre.compile">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dir}/classes"/>
+        <mkdir dir="${build.dir}/dist"/>
+    </target>
+    
+</project>

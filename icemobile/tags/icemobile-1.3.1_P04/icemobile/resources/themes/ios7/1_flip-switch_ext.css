@@ -1,0 +1,99 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+.mobi-flipswitch {
+    height: 32px;
+    width: 60px;
+    position: relative;
+}
+.mobi-flipswitch-off {
+    background-color: #FFF;
+}
+
+.mobi-flipswitch-off .mobi-flipswitch-txt-on{
+    border-right: 1px solid #888888;
+    color: transparent ;
+}
+.mobi-flipswitch-on, .mobi-flipswitch-on.ui-btn-down-c, .mobi-flipswitch-on.ui-btn-up-c{
+    background-color: #53D769 !important;
+    border: 1px solid #39CC51;
+}
+.mobi-flipswitch-off, .mobi-flipswitch-off.ui-btn-down-c, .mobi-flipswitch-off.ui-btn-up-c{
+    background-color: #DDE0E5 !important;
+    border: 1px solid #D1D2D3;
+}
+.mobi-flipswitch-on span{
+    border-left: 1px solid #888888;
+    color:transparent;
+}
+
+.mobi-flipswitch-off .mobi-flipswitch-txt-on, .mobi-flipswitch-on .mobi-flipswitch-txt-off {
+    border-top: 1px solid white;
+    background-color: #e3e3e3;
+    color: transparent;
+    text-shadow: none;
+    border-radius: 1em;
+    background-clip: border-box;
+    width: 30px;
+    height: 29px;
+}
+.mobi-flipswitch-off .mobi-flipswitch-txt-on{
+    left: 0;
+    -webkit-transition: left 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -moz-transition: left 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -ms-transition: left 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -o-transition: left 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+        transition: left 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+    
+}
+.mobi-flipswitch-on .mobi-flipswitch-txt-off{
+    right: 0;
+    -webkit-transition: right 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -moz-transition: right 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -ms-transition: right 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -o-transition: right 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+        transition: right 100ms, cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+}
+.mobi-flipswitch-txt-on, .mobi-flipswitch-txt-off {
+    display: inline-block;
+    text-align: center;
+    padding: 3px;
+    position: absolute;
+    top: 0;
+}
+
+.mobi-flipswitch-on .mobi-flipswitch-txt-on{
+    color: transparent;
+    border-left: none;
+}
+.mobi-flipswitch-on .mobi-flipswitch-txt-off{
+    border: 1px solid #53D769;
+    background: #FFF;
+    margin: 0;
+}
+.mobi-flipswitch-off .mobi-flipswitch-txt-off {
+    color: transparent;
+}
+.mobi-flipswitch-off .mobi-flipswitch-txt-on {
+    border: 1px solid #E7E7E7;
+    background: #FFF;
+    margin: 0;
+}
+.mobi-flipswitch-on .mobi-flipswitch-txt-on, .mobi-flipswitch-off .mobi-flipswitch-txt-off {
+    min-width: inherit;
+}
+.mobi-flipswitch-txt-on, .mobi-flipswitch-txt-off {
+    font-size: inherit;
+}

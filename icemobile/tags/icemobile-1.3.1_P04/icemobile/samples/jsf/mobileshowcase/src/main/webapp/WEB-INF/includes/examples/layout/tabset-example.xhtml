@@ -1,0 +1,78 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+             
+
+        <h:form id="tabset" style="height:100%"> 
+            <mobi:tabSet selectedId="#{tabsetBean.currentId}"
+                    fitToParent="#{tabsetBean.fitToParent}"
+                    parentFooter="#{mobiClient.handheldBrowser}"
+                    orientation="#{tabsetBean.orientationTop ? 'top' : 'bottom'}"
+                    styleClass="exampleTabs">
+                    
+                    
+                <mobi:contentPane title="Settings" id="tab0"
+                                  facelet="false" client="true" >
+                    <mobi:fieldsetGroup styleClass="intro">
+                        <mobi:fieldsetRow>
+                            The tabSet is a container component that renders a tabbed layout. 
+                            Click the "Settings" tab to display some of the available attributes.
+                        </mobi:fieldsetRow>
+                    </mobi:fieldsetGroup>
+             
+                    <mobi:fieldsetGroup>
+                        <mobi:fieldsetRow>
+                            <h:outputLabel for="fitToParent" value="Fit to Parent:" styleClass="ui-input-text"/>
+                            <mobi:flipswitch id="fitToParent" value="#{tabsetBean.fitToParent}">
+                                <mobi:ajax render="tabset" execute="tabset"/>
+                            </mobi:flipswitch>
+                        </mobi:fieldsetRow>
+                        <mobi:fieldsetRow>
+                            <h:outputLabel for="orientation" value="Orientation:" styleClass="ui-input-text"/>
+                            <mobi:flipswitch id="orientation" value="#{tabsetBean.orientationTop}"
+                                labelOff="Bottom" labelOn="Top">
+                                <mobi:ajax render="tabset" execute="tabset"/>
+                            </mobi:flipswitch>
+                        </mobi:fieldsetRow>
+                    </mobi:fieldsetGroup>
+                </mobi:contentPane>
+    
+                <mobi:contentPane title="Sailor" id="tab1"
+                                  facelet="false" client="true" >
+                    <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
+                </mobi:contentPane>
+    
+                <mobi:contentPane title="Breaker" id="tab2"
+                              facelet="false" client="true" >
+    
+                     <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
+    
+                </mobi:contentPane>
+    
+                <mobi:contentPane title="Skate" id="tab3"
+                                  facelet="false" client="true" >
+                     <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
+                </mobi:contentPane>
+    
+            </mobi:tabSet>
+        </h:form>
+
+</ui:composition>
