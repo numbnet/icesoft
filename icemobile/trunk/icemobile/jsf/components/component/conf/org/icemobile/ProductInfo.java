@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ * Copyright 2004-2016 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the
@@ -25,12 +25,12 @@ public class ProductInfo {
     /**
      * The company that owns this product.
      */
-    public static String COMPANY = "ICEsoft Technologies, Inc.";
+    public static String COMPANY = "ICEsoft Technologies Canada Corp.";
 
     /**
      * The name of the product.
      */
-    public static String PRODUCT = "ICEmobile JSF Library";
+    public static String PRODUCT = "ICEmobile EE Components";
 
     /**
      * The 3 levels of version identification, e.g. 1.0.0.
@@ -74,8 +74,7 @@ public class ProductInfo {
         info.append(".");
         info.append(TERTIARY);
         if ( (RELEASE_TYPE.length() > 0) &&
-            (!RELEASE_TYPE.equals("x")) &&
-        	(!RELEASE_TYPE.equals("@release.type@")) ) { 
+            (!RELEASE_TYPE.equals("x")) ) { 
 	        info.append(".");
 	        info.append(RELEASE_TYPE);
         }    
