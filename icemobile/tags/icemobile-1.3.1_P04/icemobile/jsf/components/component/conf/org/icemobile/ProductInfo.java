@@ -30,7 +30,7 @@ public class ProductInfo {
     /**
      * The name of the product.
      */
-    public static String PRODUCT = "ICEmobile EE Components";
+    public static String PRODUCT = "ICEmobile EE";
 
     /**
      * The 3 levels of version identification, e.g. 1.0.0.
@@ -74,8 +74,9 @@ public class ProductInfo {
         info.append(".");
         info.append(TERTIARY);
         if ( (RELEASE_TYPE.length() > 0) &&
-            (!RELEASE_TYPE.equals("x")) ) { 
-	        info.append(".");
+            (!RELEASE_TYPE.equals("x")) &&
+        	(!RELEASE_TYPE.equals("@release.type@")) ) { 
+	      //  info.append(".");
 	        info.append(RELEASE_TYPE);
         }    
         info.append("\n");
