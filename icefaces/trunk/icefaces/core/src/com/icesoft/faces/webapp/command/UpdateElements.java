@@ -53,8 +53,18 @@ public class UpdateElements extends AbstractCommand {
 
     public UpdateElements(DOMLockController domLockController, boolean coalesce, Element[] updates) {
         this.domLockController = domLockController;
-        this.updates = updates;
         this.coalesce = coalesce;
+
+        //keep only the elements that have the 'id' attribute
+        ArrayList updatesWithID = new ArrayList();
+        for (int i = 0; i < updates.length; i++) {
+            Element update = updates[i];
+            String id = update.getAttribute("id");
+            if (id != null && !id.trim().isEmpty()) {
+                updatesWithID.add(update);
+            }
+        }
+        this.updates = (Element[]) updatesWithID.toArray(new Element[0]);
     }
 
     public Command coalesceWithPrevious(UpdateElements updateElementsCommand) {
