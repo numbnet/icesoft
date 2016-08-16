@@ -60,7 +60,7 @@ public class UpdateElements extends AbstractCommand {
         for (int i = 0; i < updates.length; i++) {
             Element update = updates[i];
             String id = update.getAttribute("id");
-            if (id != null && !id.trim().isEmpty()) {
+            if (id != null && id.trim().length() > 0) {
                 updatesWithID.add(update);
             }
         }
