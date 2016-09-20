@@ -5,20 +5,20 @@
   <version>4.2.0-SNAPSHOT</version>
   <versioning>
     <snapshot>
-      <timestamp>20160206.004434</timestamp>
-      <buildNumber>1</buildNumber>
+      <timestamp>20160920.215756</timestamp>
+      <buildNumber>2</buildNumber>
     </snapshot>
-    <lastUpdated>20160206004434</lastUpdated>
+    <lastUpdated>20160920215756</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>war</extension>
-        <value>4.2.0-20160206.004434-1</value>
-        <updated>20160206004434</updated>
+        <value>4.2.0-20160920.215756-2</value>
+        <updated>20160920215756</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>4.2.0-20160206.004434-1</value>
-        <updated>20160206004434</updated>
+        <value>4.2.0-20160920.215756-2</value>
+        <updated>20160920215756</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>war.asc</extension>
