@@ -21,6 +21,16 @@ import java.util.logging.Logger;
 public class ObjectUtilities {
     private static final Logger LOGGER = Logger.getLogger(ObjectUtilities.class.getName());
 
+    public static boolean isEqual(final Object object1, final Object object2) {
+        return
+             (object1 == null && object2 == null) ||
+             (object1 != null && object1.equals(object2));
+    }
+
+    public static boolean isNotEqual(final Object object1, final Object object2) {
+        return !isEqual(object1, object2);
+    }
+
     public static boolean isNotNull(final Object object) {
         return !isNull(object);
     }
