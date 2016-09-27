@@ -32,11 +32,11 @@ public interface NotificationProvider {
 
     String getProtocol();
 
-    void registerTo(CloudNotificationService cloudNotificationService);
+    void registerTo(LocalCloudNotificationService localCloudNotificationService);
 
     void send(Map<String, String> propertyMap, Set<String> notifyBackURISet);
 
     void send(Map<String, String> propertyMap, String notifyBackURI);
 
-    void unregisterFrom(CloudNotificationService cloudNotificationService);
+    void unregisterFrom(LocalCloudNotificationService localCloudNotificationService);
 }

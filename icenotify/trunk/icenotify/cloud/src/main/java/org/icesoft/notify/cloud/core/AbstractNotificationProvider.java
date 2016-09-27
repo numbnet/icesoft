@@ -37,18 +37,20 @@ implements NotificationProvider {
         // Do nothing.
     }
 
-    public void registerTo(final CloudNotificationService cloudNotificationService)
+    public void registerTo(final LocalCloudNotificationService localCloudNotificationService)
     throws IllegalArgumentException {
         // throws IllegalArgumentException
         checkIfIsNotNull(
-            cloudNotificationService, "Illegal argument cloudNotificationService: '" + cloudNotificationService + "'"
+            localCloudNotificationService,
+            "Illegal argument cloudNotificationService: '" + localCloudNotificationService + "'"
         ).registerNotificationProvider(getProtocol(), this);
     }
 
-    public void unregisterFrom(final CloudNotificationService cloudNotificationService) {
+    public void unregisterFrom(final LocalCloudNotificationService localCloudNotificationService) {
         // throws IllegalArgumentException
         checkIfIsNotNull(
-            cloudNotificationService, "Illegal argument cloudNotificationService: '" + cloudNotificationService + "'"
+            localCloudNotificationService,
+            "Illegal argument cloudNotificationService: '" + localCloudNotificationService + "'"
         ).unregisterNotificationProvider(getProtocol());
     }
 
@@ -65,7 +67,7 @@ implements NotificationProvider {
                     getNotificationProvider(),
                     event.getServletContext()
                 );
-                setNotificationProvider(null);
+                setNotificationProvider((NotificationProvider)null);
             }
         }
 
@@ -105,7 +107,7 @@ implements NotificationProvider {
             }
 
             protected void waitForSetUpToComplete() {
-                CloudNotificationService.waitForSetUpToComplete(getServletContext());
+                LocalCloudNotificationService.waitForSetUpToComplete(getServletContext());
             }
 
             protected NameValuePair<String, String> getNameValuePair(

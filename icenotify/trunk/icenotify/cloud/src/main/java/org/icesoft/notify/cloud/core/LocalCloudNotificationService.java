@@ -31,7 +31,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -48,9 +47,10 @@ import org.icesoft.util.servlet.ExtensionRegistryListener;
 import org.icesoft.util.servlet.Service;
 import org.icesoft.util.servlet.ServletContextConfiguration;
 
-public class CloudNotificationService
+public class LocalCloudNotificationService
+extends CloudNotificationService
 implements ExtensionRegistryListener, Service {
-    private static final Logger LOGGER = Logger.getLogger(CloudNotificationService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LocalCloudNotificationService.class.getName());
 
     private static class Property {
         private static class Name {
@@ -65,14 +65,12 @@ implements ExtensionRegistryListener, Service {
         }
     }
 
-    private static boolean setUpComplete = false;
-
     private final Map<String, NotificationProvider> protocolToNotificationProviderMap =
         new HashMap<String, NotificationProvider>();
 
     private ExecutorService executorService;
 
-    public CloudNotificationService(final ServletContext servletContext) {
+    public LocalCloudNotificationService(final ServletContext servletContext) {
         setUp(servletContext);
     }
 
@@ -201,7 +199,6 @@ implements ExtensionRegistryListener, Service {
         }
     }
 
-    @Override
     public void registered(final ExtensionRegistryEvent event) {
         if (event.getExtension() instanceof NotificationProvider) {
             ((NotificationProvider)event.getExtension()).registerTo(this);
@@ -301,51 +298,9 @@ implements ExtensionRegistryListener, Service {
         }
     }
 
-    @Override
     public void unregistered(final ExtensionRegistryEvent event) {
         if (event.getExtension() instanceof NotificationProvider) {
             ((NotificationProvider)event.getExtension()).unregisterFrom(this);
-        }
-    }
-
-    public static void waitForSetUpToComplete(final ServletContext servletContext)
-    throws NullPointerException {
-        checkIfIsNotNull(
-            servletContext, "Illegal argument servletContext: '" + servletContext + "'.  Argument cannot be null."
-        );
-        lockSetUp(servletContext);
-        try {
-            if (!setUpComplete) {
-                try {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.log(Level.FINE, "Waiting for set-up to complete...");
-                    }
-                    getSetUpCondition(servletContext).await();
-                } catch (final InterruptedException exception) {
-                    // Do nothing.
-                }
-            }
-        } finally {
-            unlockSetUp(servletContext);
-        }
-    }
-
-    public static void wakeUpAllAsSetUpIsComplete(final ServletContext servletContext)
-    throws NullPointerException {
-        checkIfIsNotNull(
-            servletContext, "Illegal argument servletContext: '" + servletContext + "'.  Argument cannot be null."
-        );
-        lockSetUp(servletContext);
-        try {
-            if (!setUpComplete) {
-                setUpComplete = true;
-            }
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, "Wake up all as set-up is complete.");
-            }
-            getSetUpCondition(servletContext).signalAll();
-        } finally {
-            unlockSetUp(servletContext);
         }
     }
 
@@ -376,34 +331,6 @@ implements ExtensionRegistryListener, Service {
         }
     }
 
-    private static synchronized Condition getSetUpCondition(final ServletContext servletContext) {
-        Condition _setUpCondition =
-            (Condition)servletContext.getAttribute(CloudNotificationService.class.getName() + "#setUpCondition");
-        if (_setUpCondition == null) {
-            _setUpCondition = getSetUpLock(servletContext).newCondition();
-            servletContext.setAttribute(CloudNotificationService.class.getName() + "#setUpCondition", _setUpCondition);
-        }
-        return _setUpCondition;
-    }
-
-    private static synchronized Lock getSetUpLock(final ServletContext servletContext) {
-        Lock _setUpLock =
-            (Lock)servletContext.getAttribute(CloudNotificationService.class.getName() + "#setUpLock");
-        if (_setUpLock == null) {
-            _setUpLock = new ReentrantLock();
-            servletContext.setAttribute(CloudNotificationService.class.getName() + "#setUpLock", _setUpLock);
-        }
-        return _setUpLock;
-    }
-
-    private static void lockSetUp(final ServletContext servletContext) {
-        getSetUpLock(servletContext).lock();
-    }
-
-    private static void unlockSetUp(final ServletContext servletContext) {
-        getSetUpLock(servletContext).unlock();
-    }
-
     protected static class PushTask
     implements Runnable {
         private static final Logger LOGGER = Logger.getLogger(PushTask.class.getName());
@@ -413,18 +340,18 @@ implements ExtensionRegistryListener, Service {
         private final Map<String, String> propertyMap = new HashMap<String, String>();
 
         private final ExecutorService executorService;
-        private final CloudNotificationService cloudNotificationService;
+        private final LocalCloudNotificationService localCloudNotificationService;
 
         private Future future;
 
         protected PushTask(
             final Set<String> notifyBackURISet, final Map<String, String> propertyMap,
-            final ExecutorService executorService, final CloudNotificationService cloudNotificationService) {
+            final ExecutorService executorService, final LocalCloudNotificationService localCloudNotificationService) {
 
             getModifiableNotifyBackURISet().addAll(notifyBackURISet);
             getModifiablePropertyMap().putAll(propertyMap);
             this.executorService = executorService;
-            this.cloudNotificationService = cloudNotificationService;
+            this.localCloudNotificationService = localCloudNotificationService;
         }
 
         public void execute() {
@@ -467,7 +394,7 @@ implements ExtensionRegistryListener, Service {
                     _schemeToNotifyBackURISetMap.entrySet()) {
 
                 try {
-                    getCloudNotificationService().
+                    getLocalCloudNotificationService().
                         getNotificationProvider(_schemeToNotifyBackURISetMapEntry.getKey()).
                             send(getPropertyMap(), _schemeToNotifyBackURISetMapEntry.getValue());
                 } catch (final ProtocolException exception) {
@@ -528,8 +455,8 @@ implements ExtensionRegistryListener, Service {
             return propertyMap;
         }
 
-        protected CloudNotificationService getCloudNotificationService() {
-            return cloudNotificationService;
+        protected LocalCloudNotificationService getLocalCloudNotificationService() {
+            return localCloudNotificationService;
         }
 
         protected Set<String> getNotifyBackURISet() {
