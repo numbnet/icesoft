@@ -180,7 +180,7 @@ public class GMap extends UIPanel{
         if (jsLibraryLoaded) return;
         String key = context.getCurrentInstance().getExternalContext().getInitParameter("com.icesoft.faces.gmapKey");
         if(key != null) {
-            JavascriptContext.includeLib("http://maps.googleapis.com/maps/api/js?key=" + key + "&sensor=true", FacesContext.getCurrentInstance());
+            JavascriptContext.includeLib("http://maps.googleapis.com/maps/api/js?key=" + key, FacesContext.getCurrentInstance());
             jsLibraryLoaded = true;
         } else {
             //log you must need to define googlemap key in web.xml
