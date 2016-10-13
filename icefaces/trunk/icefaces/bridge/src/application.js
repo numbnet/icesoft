@@ -99,12 +99,12 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
         var allViews = allViewsCookie.loadValue().split(' ');
         views.each(function(v) {
             deregisterSession(v.name);
+			deregisterView(v.name, v.value);
             allViews = allViews.reject(function(i) {
                 return i == v.name + ':' + v.value;
             });
         });
         allViewsCookie.saveValue(allViews.join(' '));
-        views.clear();
     };
 
     var channel = new Ice.Ajax.Client(logger.child('dispose'));
@@ -126,6 +126,8 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
 
     var deregisterView = function(session, view) {
         deregisterSession(session);
+		//remove updated views that are about to be disposed
+        purgeUpdatedViews(session, view);
         views = views.reject(function(i) {
             return i.name == session && i.value == view;
         });
@@ -145,6 +147,13 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
     var disposeWindowViews = function() {
         sendDisposeViews(views);
         deregisterWindowViews();
+    };
+
+	var purgeUpdatedViews = function(session, view) {
+        var updatedViews = Ice.Cookie.lookup('updates');
+        var currentUpdates = updatedViews.loadValue().split(' ');
+        var cleanedUpdatedViews = currentUpdates.complement([session + ':' + view]);
+        updatedViews.saveValue(cleanedUpdatedViews.join(' '));
     };
 
     window.onBeforeUnload(disposeWindowViews);
