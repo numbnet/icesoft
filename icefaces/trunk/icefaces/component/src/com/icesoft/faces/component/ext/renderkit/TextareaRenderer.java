@@ -81,6 +81,7 @@ public class TextareaRenderer
             rendererJS.put(
                 HTML.ONBLUR_ATTR, "var form=formOf(this);" + DomBasicRenderer.ICESUBMITPARTIAL);
         }
+        rendererJS.put(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
         LocalEffectEncoder.encode(
             facesContext, uiComponent, PASSTHRU_JS_EVENTS, rendererJS, null, writer);                
     }
