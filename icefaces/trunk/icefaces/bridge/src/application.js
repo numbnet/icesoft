@@ -150,10 +150,14 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
     };
 
 	var purgeUpdatedViews = function(session, view) {
-        var updatedViews = Ice.Cookie.lookup('updates');
-        var currentUpdates = updatedViews.loadValue().split(' ');
-        var cleanedUpdatedViews = currentUpdates.complement([session + ':' + view]);
-        updatedViews.saveValue(cleanedUpdatedViews.join(' '));
+        try {
+            var updatedViews = Ice.Cookie.lookup('updates');
+            var currentUpdates = updatedViews.loadValue().split(' ');
+            var cleanedUpdatedViews = currentUpdates.complement([session + ':' + view]);
+            updatedViews.saveValue(cleanedUpdatedViews.join(' '));
+        } catch (e) {
+            logger.debug('skipping purging the updated views, running in synchronous mode', e)
+        }
     };
 
     window.onBeforeUnload(disposeWindowViews);
@@ -266,8 +270,12 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
                     logger.warn('Session has expired');
                     //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
                     deregisterView(sessionID, viewID);
-                    var updatedViews = Ice.Cookie.lookup('updates');
-                    updatedViews.saveValue(allViewsCookie.loadValue());
+                    try {
+                        var updatedViews = Ice.Cookie.lookup('updates');
+                        updatedViews.saveValue(allViewsCookie.loadValue());
+                    } catch (e) {
+                        logger.debug('skip cleaning the updated views, running in synchronous mode', e)
+                    }
                 } finally {
                     dispose();
                     sessionExpiredListeners.broadcast();
