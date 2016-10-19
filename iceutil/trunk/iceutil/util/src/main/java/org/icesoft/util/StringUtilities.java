@@ -19,6 +19,9 @@ import static org.icesoft.util.ObjectUtilities.isNotNull;
 import static org.icesoft.util.ObjectUtilities.isNull;
 import static org.icesoft.util.PreCondition.checkIfIsNotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
@@ -40,6 +43,24 @@ public class StringUtilities {
                 append(_string.substring(0, 1).toUpperCase()).append(_string.substring(1).toLowerCase());
         }
         return _camelCaseStringBuilder.toString();
+    }
+
+    public static String[] toArray(final String string, final String delimitingRegex) {
+        String[] _strings;
+        if (isNotNullAndIsNotEmpty(string)) {
+            if (isNotNullAndIsNotEmpty(delimitingRegex)) {
+                String[] _rawStrings = string.split(delimitingRegex);
+                _strings = new String[_rawStrings.length];
+                for (int _index = 0; _index < _strings.length; _index++) {
+                    _strings[_index] = _rawStrings[_index].trim();
+                }
+            } else {
+                _strings = new String[] { string.trim() };
+            }
+        } else {
+            _strings = new String[0];
+        }
+        return _strings;
     }
 
     public static String getValue(final String value, final String defaultValue) {
