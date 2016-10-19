@@ -79,7 +79,7 @@ public class TextareaRenderer
         }
         if (inputTextarea.getPartialSubmit()) {
             rendererJS.put(
-                HTML.ONBLUR_ATTR, "var form=formOf(this);" + DomBasicRenderer.ICESUBMITPARTIAL);
+                HTML.ONBLUR_ATTR, "setFocus(''); var form=formOf(this);" + DomBasicRenderer.ICESUBMITPARTIAL);
         }
         rendererJS.put(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
         LocalEffectEncoder.encode(
