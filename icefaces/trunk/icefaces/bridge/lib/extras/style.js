@@ -239,18 +239,20 @@ Ice.modal = {
                     e.onkeydown = cancelEvent;
                     e.onclick = cancelEvent;
 
-                    rollbacks.push(function() {
-                        try {
-                            e.onkeypress = onkeypress;
-                            e.onkeyup = onkeyup;
-                            e.onkeydown = onkeydown;
-                            e.onclick = onclick;
+                    if (e) {
+                        rollbacks.push(function () {
+                            try {
+                                e.onkeypress = onkeypress;
+                                e.onkeyup = onkeyup;
+                                e.onkeydown = onkeydown;
+                                e.onclick = onclick;
 
-                            e.hasCallbacksDisabled = null;
-                        } catch (ex) {
-                            logger.error('failed to restore callbacks on ' + e, ex);
-                        }
-                    });
+                                e.hasCallbacksDisabled = null;
+                            } catch (ex) {
+                                logger.debug('failed to restore callbacks on element ' + e.id);
+                            }
+                        });
+                    }
                 }
             }
 
