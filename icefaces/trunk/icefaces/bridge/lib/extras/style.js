@@ -239,20 +239,18 @@ Ice.modal = {
                     e.onkeydown = cancelEvent;
                     e.onclick = cancelEvent;
 
-                    if (e) {
-                        rollbacks.push(function () {
-                            try {
-                                e.onkeypress = onkeypress;
-                                e.onkeyup = onkeyup;
-                                e.onkeydown = onkeydown;
-                                e.onclick = onclick;
+                    rollbacks.push(function() {
+                        try {
+                            e.onkeypress = onkeypress;
+                            e.onkeyup = onkeyup;
+                            e.onkeydown = onkeydown;
+                            e.onclick = onclick;
 
-                                e.hasCallbacksDisabled = null;
-                            } catch (ex) {
-                                logger.debug('failed to restore callbacks on element ' + e.id);
-                            }
-                        });
-                    }
+                            e.hasCallbacksDisabled = null;
+                        } catch (ex) {
+                            logger.error('failed to restore callbacks on ' + e, ex);
+                        }
+                    });
                 }
             }
 
@@ -267,7 +265,7 @@ Ice.modal = {
                 });
             });
             $enumerate(document.body.getElementsByTagName('iframe')).each(function(f) {
-                if (!childOfTarget(f)) {
+                if (!childOfTarget(f) && f != iframe) {
                     var iframeDocument = f.contentDocument || f.contentWindow.document;
                     var iframeWindow = f.contentWindow;
                     //cancel only the events that are not triggered within this iframe
