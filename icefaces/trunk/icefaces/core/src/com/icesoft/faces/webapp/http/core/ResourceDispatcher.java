@@ -117,7 +117,7 @@ public class ResourceDispatcher implements Server {
             }
         }
         final String name = prefix + encode(resource) + "/";
-        final String pathExpression = ".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "$";
+        final String pathExpression = ".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "(\\;\\w*\\=\\w*)*$";
         if (!registered.contains(name)) {
             registered.add(name);
             ResourceServer resourceServer = new ResourceServer(resource);
