@@ -98,13 +98,16 @@ window.console ? new Ice.Log.ConsoleLogHandler(window.logger) : new Ice.Log.Wind
     var deregisterWindowViews = function() {
         var allViews = allViewsCookie.loadValue().split(' ');
         views.each(function(v) {
-            deregisterSession(v.name);
-			deregisterView(v.name, v.value);
+            var session = v.name;
+            var viewNo = v.value;
+            deregisterSession(session);
             allViews = allViews.reject(function(i) {
-                return i == v.name + ':' + v.value;
+                return i == session + ':' + viewNo;
             });
+            purgeUpdatedViews(session, viewNo);
         });
         allViewsCookie.saveValue(allViews.join(' '));
+        views.clear();
     };
 
     var channel = new Ice.Ajax.Client(logger.child('dispose'));
